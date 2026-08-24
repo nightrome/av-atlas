@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas — Categories</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme-light.css">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .page-title { margin: 0 0 16px; font-size: 1.5em; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
+  .bar-row, .bar-header { display: grid; grid-template-columns: 190px 1fr 80px 70px 80px; align-items: center; gap: 10px; padding: 6px 0; }
+  .bar-row a { color: var(--text); text-decoration: none; font-size: 0.92em; }
+  .bar-row a:hover { text-decoration: underline; }
+  .bar-track { background: var(--panel2); border-radius: 4px; height: 18px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-num { text-align: right; font-variant-numeric: tabular-nums; font-size: 0.85em; color: var(--muted); }
+  .bar-header { font-size: 0.78em; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .bar-header .bar-num { font-weight: 600; }
+  .bar-num.active-metric { color: var(--text); font-weight: 700; }
+
+  .line-chart-wrap { position: relative; }
+  .line-chart-wrap svg { width: 100%; height: auto; display: block; }
+  .series-line { fill: none; stroke-width: 2.5; opacity: 0.9; }
+  .series-line.dimmed { opacity: 0.12; }
+  .series-dot { cursor: pointer; }
+  .series-dot.dimmed { opacity: 0.12; }
+  .axis-line { stroke: var(--border); }
+  .axis-label { fill: var(--muted); font-size: 10.5px; }
+  .crosshair { stroke: var(--muted); stroke-dasharray: 3 3; pointer-events: none; }
+  .legend-row { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 12px 0 4px; }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px; font-size: 0.82em; color: var(--text);
+    cursor: pointer; user-select: none; padding: 2px 4px; border-radius: 5px;
+  }
+  .legend-item:hover { background: var(--panel2); }
+  .legend-item.off { color: var(--muted); text-decoration: line-through; opacity: 0.6; }
+  .legend-item .swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .tooltip-box {
+    position: absolute; background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 10px; font-size: 0.8em; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    min-width: 140px; display: none; z-index: 10;
+  }
+  .tooltip-box .tt-year { font-weight: 700; margin-bottom: 4px; }
+  .tooltip-box .tt-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .tooltip-box .tt-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .tooltip-box .tt-val { margin-left: auto; font-variant-numeric: tabular-nums; padding-left: 10px; }
+  .timeline-controls-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: -4px 0 4px; font-size: 0.85em; color: var(--muted); }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<div id="filter-bar-container"></div>
+
+<div class="panel" id="timeline-panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0; font-size: 1.1em;">Categories over time</h2>
+  </div>
+  <div class="timeline-controls-row">
+    <label style="display:flex;align-items:center;gap:4px;">
+      <input type="checkbox" id="category-normalize" checked>
+      Normalize by total papers that year
+    </label>
+    <span style="color:var(--muted);">Click a legend entry to toggle it on/off.</span>
+  </div>
+  <div class="line-chart-wrap" id="category-chart-wrap">
+    <svg id="category-chart"></svg>
+    <div class="tooltip-box" id="category-tooltip"></div>
+  </div>
+  <div class="legend-row" id="category-legend"></div>
+</div>
+
+<div class="panel">
+  <h2 style="margin-top:0; font-size: 1.1em;">Category ranking</h2>
+  <div id="bars"></div>
+</div>
+
+<script src="filters.js"></script>
+<script>
+const SEQ_RAMP = ['#cde2fb', '#9ec5f4', '#6da7ec', '#3987e5', '#256abf', '#184f95', '#0d366b'];
+
+let currentStats = null, currentFilters = null;
+let currentTimelineDraw = null;
+// No "Show" (relevance) filter -- user-requested: a non-AV-relevant paper
+// isn't meaningfully categorized in the first place (category alone, per
+// About's own Method section, isn't what decides AV-relevance; the adjacent
+// set is mostly generic CV/ML work the taxonomy's broad keywords still match
+// something in), so browsing it by category doesn't answer a real question
+// the way it does for Papers/Authors/Institutions. Always the core set.
+fetchStatsWithRelevance('').then(stats => {
+  currentStats = stats;
+  currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'categories.html', {
+    showCategory: false,
+    checkbox: {
+      id: 'exclude-datasets', label: 'Exclude dataset papers',
+      storageKey: 'categories-exclude-datasets', onChange: () => render(),
+    },
+    metrics: [
+      { key: 'avg', label: 'Citations / paper' },
+      { key: 'total', label: 'Total citations' },
+      { key: 'papers', label: 'Paper count' },
+    ],
+    // Not applied to the category-ranking list below the chart -- that list
+    // is every category there is (~23), never large enough to need capping
+    // the way Papers/Institutions/Venues/Countries' tables are.
+    topN: {
+      default: 10, storageKey: 'category-timeline-topn',
+      onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); },
+    },
+  });
+  render();
+}).catch(err => {
+  document.getElementById('bars').textContent = 'Could not load stats.json: ' + err;
+});
+
+// "Datasets" (the dataset-benchmark-paper category) papers introduce datasets
+// rather than reporting a method's results -- their citation/paper counts
+// behave very differently from every other category (a handful of landmark
+// dataset papers accumulate huge citation counts just by being the standard
+// benchmark everyone reports on), which can dominate both the ranking bars
+// and the "over time" chart. User-requested: an explicit toggle to exclude
+// them, applied to both -- not just this page's own display, but the
+// category counts a reader sees reflected in the ranking bars and chart.
+function withoutDatasetsIfExcluded(papers) {
+  const excludeCheckbox = document.getElementById('exclude-datasets');
+  if (!excludeCheckbox || !excludeCheckbox.checked) return papers;
+  return papers.filter(p => p.category !== 'dataset-benchmark-paper');
+}
+
+// CATEGORY_LABELS/categoryLabel now live in filters.js (shared with the
+// Category dropdown on every other page, and every table's Category column).
+const labelFor = categoryLabel;
+
+// Same fixed categorical palette as network.html, for a consistent visual
+// language across the site's "many distinct series" pages.
+const PALETTE = [
+  '#e6614f', '#3987e5', '#3fae6a', '#e6a53f', '#9366d9', '#3fb8bd',
+  '#d9527a', '#7a9e3f', '#c98e3f', '#5f7de6', '#4fa88a', '#c95fd0',
+];
+
+function computeYearAgg(papers) {
+  const agg = {};
+  papers.forEach(p => {
+    if (!p.year) return;
+    agg[p.year] = agg[p.year] || { papers: 0, citations: 0, papersWithCitations: 0 };
+    agg[p.year].papers += 1;
+    if (p.citations != null) {
+      agg[p.year].citations += p.citations;
+      agg[p.year].papersWithCitations += 1;
+    }
+  });
+  const out = {};
+  Object.keys(agg).sort().forEach(y => {
+    const v = agg[y];
+    out[y] = {
+      papers: v.papers,
+      citations: v.citations,
+      avg_citations: v.papersWithCitations ? Math.round(v.citations / v.papersWithCitations) : null,
+    };
+  });
+  return out;
+}
+
+// lineChart itself now lives in filters.js, shared with datasets.html and
+// every other "N series over time" page -- this page keeps its own
+// renderCategoryTimeline since it has the normalize-by-year-total toggle
+// that no other page needs.
+function renderCategoryTimeline(stats, filters) {
+  const allYearsPapers = withoutDatasetsIfExcluded(filterPapers(stats.all_papers || [], { ...filters, category: null }));
+  const overallByYear = computeYearAgg(allYearsPapers);
+  const allYears = Object.keys(overallByYear).sort();
+
+  const byCategory = {};
+  allYearsPapers.forEach(p => {
+    const cat = p.category || 'uncategorized';
+    // "Uncategorized" isn't a real category -- it's every paper the
+    // taxonomy hasn't caught up to yet (see categories.json's _readme) --
+    // so it doesn't belong as a series next to genuine categories here.
+    if (cat === 'uncategorized') return;
+    (byCategory[cat] = byCategory[cat] || []).push(p);
+  });
+
+  // In memory only for this pageview, not persisted -- a refresh always
+  // starts with every series visible (user-flagged: a struck-out legend
+  // entry surviving a refresh reads as stuck, not remembered).
+  const hidden = new Set();
+
+  const normalizeCheckbox = document.getElementById('category-normalize');
+
+  function rebuild(topN) {
+    const topCategories = Object.entries(byCategory)
+      .sort((a, b) => b[1].length - a[1].length)
+      .slice(0, topN)
+      .map(kv => kv[0]);
+
+    const legend = document.getElementById('category-legend');
+    legend.innerHTML = '';
+    renderLegendToggleAll(legend, hidden, topCategories, () => rebuild(topN));
+    topCategories.forEach((cat, i) => {
+      const item = document.createElement('div');
+      item.className = 'legend-item' + (hidden.has(cat) ? ' off' : '');
+      renderSwatchLabel(item, PALETTE[i % PALETTE.length], `${labelFor(cat)} (${byCategory[cat].length})`);
+      item.addEventListener('click', () => {
+        if (hidden.has(cat)) hidden.delete(cat); else hidden.add(cat);
+        item.classList.toggle('off');
+        draw();
+      });
+      legend.appendChild(item);
+    });
+
+    function draw() {
+      const normalize = normalizeCheckbox.checked;
+      const series = topCategories
+        .filter(cat => !hidden.has(cat))
+        .map(cat => {
+          const catAgg = computeYearAgg(byCategory[cat]);
+          const values = {};
+          allYears.forEach(yr => {
+            if (normalize) {
+              const totalThatYear = (overallByYear[yr] || {}).papers || 0;
+              values[yr] = totalThatYear && catAgg[yr] ? catAgg[yr].papers / totalThatYear : (catAgg[yr] ? 0 : null);
+            } else {
+              values[yr] = catAgg[yr] ? catAgg[yr].papers : null;
+            }
+          });
+          return { name: labelFor(cat), color: PALETTE[topCategories.indexOf(cat) % PALETTE.length], values };
+        });
+      const fmt = normalize ? (v => `${(v * 100).toFixed(1)}% of that year's papers`) : (v => `${v} papers`);
+      const axisFmt = normalize ? (v => `${Math.round(v * 100)}%`) : undefined;
+      const yLabel = normalize ? '% of that year\'s papers' : 'Papers per year';
+      lineChart(document.getElementById('category-chart'), document.getElementById('category-tooltip'),
+        series, allYears, fmt, { formatAxis: axisFmt, yLabel });
+    }
+    normalizeCheckbox.onchange = draw;
+    draw();
+  }
+
+  return rebuild;
+}
+
+// null means no paper in that category has a citation count at all (as
+// opposed to a real average of 0) -- show "—", not a misleading number.
+function fmtAvg(v) { return v == null ? '—' : v; }
+
+function render() {
+  const stats = currentStats, filters = currentFilters;
+  const papers = withoutDatasetsIfExcluded(filterPapers(stats.all_papers || [], filters));
+  const cats = aggregateByDimension(papers, p => [p.category || 'uncategorized'], { minPapers: 0 });
+
+  const metric = getMetric('avg');
+  const byAvg = (a, b) => (b.avg_citations ?? -Infinity) - (a.avg_citations ?? -Infinity);
+  const sorters = {
+    total: (a, b) => b.citations - a.citations,
+    avg: byAvg,
+    papers: (a, b) => b.papers - a.papers,
+  };
+  cats.sort(sorters[metric] || byAvg);
+
+  document.getElementById('result-count').textContent = `${cats.length} categories`;
+
+  const rankKey = metric === 'avg' ? 'avg_citations' : metric === 'papers' ? 'papers' : 'citations';
+  const max = Math.max(1, ...cats.map(c => c[rankKey] || 0));
+  const bars = document.getElementById('bars');
+  bars.innerHTML = '';
+
+  const header = document.createElement('div');
+  header.className = 'bar-header';
+  const nameHead = document.createElement('div');
+  nameHead.textContent = 'Category';
+  header.appendChild(nameHead);
+  header.appendChild(document.createElement('div'));
+  // Clicking a metric header re-ranks by that metric, same as clicking a
+  // real <table> column header does everywhere else on the site -- this
+  // panel renders as CSS-grid divs, not a <table>, so sortable.js doesn't
+  // apply to it, but the same click-to-sort expectation still holds
+  // (user-flagged: "Category ranking columns are not sortable").
+  const metricTooltips = {
+    total: 'How many other papers in this corpus cite a paper from this category. Counted only within this corpus, never from an external database.',
+    papers: 'Number of AV-relevant papers currently assigned this category.',
+    avg: 'Average in-corpus citations per paper, counted only over papers with a known citation count.',
+  };
+  [['total', 'Citations'], ['papers', 'Papers'], ['avg', 'Citations / paper']].forEach(([key, label]) => {
+    const cell = document.createElement('div');
+    cell.className = 'bar-num' + (metric === key ? ' active-metric' : '');
+    cell.textContent = label;
+    cell.title = metricTooltips[key];
+    cell.style.cursor = 'pointer';
+    cell.addEventListener('click', () => { location.href = withParam('categories.html', 'metric', key); });
+    header.appendChild(cell);
+  });
+  bars.appendChild(header);
+
+  cats.forEach(c => {
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+
+    const label = document.createElement('a');
+    label.href = `index.html?category=${encodeURIComponent(c.name)}`;
+    label.textContent = labelFor(c.name);
+    row.appendChild(label);
+
+    // The bar always visualizes whichever metric is currently selected as
+    // the ranking metric (see rankKey above), not a fixed one -- so
+    // switching "Rank by" both re-sorts the rows and re-draws every bar to
+    // reflect the new metric.
+    const track = document.createElement('div');
+    track.className = 'bar-track';
+    const fill = document.createElement('div');
+    fill.className = 'bar-fill';
+    const t = (c[rankKey] || 0) / max;
+    const step = Math.min(SEQ_RAMP.length - 1, Math.round(t * (SEQ_RAMP.length - 1)));
+    fill.style.background = SEQ_RAMP[step];
+    fill.style.width = (t * 100) + '%';
+    track.appendChild(fill);
+    row.appendChild(track);
+
+    const citNum = document.createElement('div');
+    citNum.className = 'bar-num' + (metric === 'total' ? ' active-metric' : '');
+    citNum.textContent = c.citations;
+    row.appendChild(citNum);
+
+    const papersNum = document.createElement('div');
+    papersNum.className = 'bar-num' + (metric === 'papers' ? ' active-metric' : '');
+    papersNum.textContent = c.papers;
+    row.appendChild(papersNum);
+
+    const avgNum = document.createElement('div');
+    avgNum.className = 'bar-num' + (metric === 'avg' ? ' active-metric' : '');
+    avgNum.textContent = fmtAvg(c.avg_citations);
+    row.appendChild(avgNum);
+
+    bars.appendChild(row);
+  });
+
+  document.getElementById('timeline-panel').style.display = filters.category ? 'none' : '';
+  if (!filters.category) {
+    currentTimelineDraw = renderCategoryTimeline(stats, filters);
+    currentTimelineDraw(filters.topN || 10);
+  }
+}
+</script>
+<script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,3047 @@
+[
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Audio-Visual Speech Super-Resolution",
+    "authors": "Rudrabha Mukhopadhyay, Sindhu B. Hegde, Vinay P. Namboodiri, C. V. Jawahar",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Geometry-Aware Multi-Task Learning for Binaural Audio Generation from Video",
+    "authors": "Rishabh Garg, Ruohan Gao, Kristen Grauman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Taming Visually Guided Sound Generation",
+    "authors": "Vladimir Iashin, Esa Rahtu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Deep Least Squares Alignment for Unsupervised Domain Adaptation",
+    "authors": "Youshan Zhang, Brian D. Davison 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Domain Attention Consistency for Multi-Source Domain Adaptation",
+    "authors": "Zhongying Deng, Kaiyang Zhou, Yongxin Yang, Tao Xiang 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Collision Replay: What Does Bumping Into Things Tell You About Scene Geometry?",
+    "authors": "Alexander Raistrick, Nilesh Kulkarni, David Fouhey",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Towards Monocular Shape from Refraction",
+    "authors": "Antonin Sulc, Imari Sato, Bastian Goldluecke, Tali Treibitz",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Self-Supervised Point Cloud Completion via Inpainting",
+    "authors": "Himangi Mittal, Brian Okorn, Arpit Jangid, David Held",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Adaptive GMM Convolution for Point Cloud Learning",
+    "authors": "Fei Yang, Huan Wang 0013, Zhong Jin",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning Attention Map for 3D Human Recovery from a Single RGB Image",
+    "authors": "Peng Xu, Na Jiang, Jun Li 0072, Zhiping Shi 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Foreground Mining via Contrastive Guidance for Weakly Supervised Object Localization",
+    "authors": "Wonyoung Lee 0004, Minsong Ki, Cheolhyun Mun, Sungpil Kho, Hyeran Byun",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning to Hide Residual for Boosting Image Compression",
+    "authors": "Yi-Lun Lee, Yen-Chung Chen, Min-Yuan Tseng, Yi-Hsuan Tsai, Wei-Chen Chiu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning Exposure Correction Via Consistency Modeling",
+    "authors": "Ntumba Elie Nsampi, Zhongyun Hu, Qing Wang 0006",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Approaching the Limit of Image Rescaling via Flow Guidance",
+    "authors": "Shang Li, Guixuan Zhang, Zhengxiong Luo 0001, Jie Liu 0028, Zhi Zeng, Shuwu Zhang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Gradient Frequency Modulation for Visually Explaining Video Understanding Models",
+    "authors": "Xinmiao Lin, Wentao Bao, Matthew K. Wright, Yu Kong 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Semi-Supervised Raw-to-Raw Mapping",
+    "authors": "Mahmoud Afifi, Abdullah Abuolaim",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Crafting Object Detection in Very Low Light",
+    "authors": "Yang Hong, Kaixuan Wei, Linwei Chen, Ying Fu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Feature Space Saturation during Training",
+    "authors": "Mats L. Richter, Justin Shenk, Wolf Byttner, Anna Wiedenroth, Mikael Huss",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Adaptive End-to-End Budgeted Network Learning via Inverse Scale Space",
+    "authors": "Zuyuan Zhong, Chen Liu 0030, Yanwei Fu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Median Pixel Difference Convolutional Network for Robust Face Recognition",
+    "authors": "Jiehua Zhang, Zhuo Su 0002, Li Liu 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Recurrence-in-Recurrence Networks for Video Deblurring",
+    "authors": "JoonKyu Park, Seungjun Nah, Kyoung Mu Lee",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning Synergistic Attention for Light Field Salient Object Detection",
+    "authors": "Yi Zhang 0076, Geng Chen 0001, Qian Chen, Yujia Sun, Yong Xia 0001, Olivier D&#233;forges, Wassim Hamidouche, Lu Zhang 0037",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Does a GAN leave distinct model-specific fingerprints?",
+    "authors": "Yuzhen Ding, Nupur Thakur, Baoxin Li",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Make Baseline Model Stronger: Embedded Knowledge Distillation in Weight-Sharing Based Ensemble Network",
+    "authors": "Shuchang Lyu, Qi Zhao 0037, Yujing Ma, Lijiang Chen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "FAR: A General Framework for Attributional Robustness",
+    "authors": "Adam Ivankay, Ivan Girardi, Chiara Marchiori, Pascal Frossard",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Adversarial Robustness Comparison of Vision Transformer and MLP-Mixer to CNNs",
+    "authors": "Philipp Benz, Soomin Ham, Chaoning Zhang, Adil Karjauv, In So Kweon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "PDF-Distil: including Prediction Disagreements in Feature-based Distillation for object detection",
+    "authors": "Heng Zhang 0045, &#201;lisa Fromont, S&#233;bastien Lef&#232;vre, Bruno Avignon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "PhIT-Net: Photo-consistent Image Transform for Robust Illumination Invariant Matching",
+    "authors": "Damian Kaliroff, Guy Gilboa",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Absolute Scale from Varifocal Monocular Camera through SfM and Defocus Combined",
+    "authors": "Nao Mishima, Akihito Seki, Shinsaku Hiura",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Deep Motion Blind Video Stabilization",
+    "authors": "Muhammad Kashif Ali, Sangjoon Yu, Tae Hyun Kim 0006",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "PS-Transformer: Learning Sparse Photometric Stereo Network using Self-Attention Mechanism",
+    "authors": "Satoshi Ikehata",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "MUSE: Feature Self-Distillation with Mutual Information and Self-Information",
+    "authors": "Yu Gong, Ye Yu 0003, Gaurav Mittal, Greg Mori, Mei Chen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Updated Paired Regions for Shadow Detection from Single Image",
+    "authors": "Xiao Wang 0017, Siyuan Yao, Pengwen Dai, Rui Wang 0032, Xiaochun Cao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Semi-Online Knowledge Distillation",
+    "authors": "Zhiqiang Liu, Yanxia Liu, Chengkai Huang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SamplingAug: On the Importance of Patch Sampling Augmentation for Single Image Super-Resolution",
+    "authors": "Shizun Wang, Ming Lu 0002, Kaixin Chen 0001, Jiaming Liu 0003, Xiaoqi Li 0009, Chuang Zhang, Ming Wu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Deep Video Inpainting Detection",
+    "authors": "Peng Zhou 0009, Ning Yu 0006, Zuxuan Wu, Larry Davis 0001, Abhinav Shrivastava, Ser-Nam Lim",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "POEM: 1-bit Point-wise Operations based on Expectation-Maximization for Efficient Point Cloud Processing",
+    "authors": "Sheng Xu 0007, Junhe Zhao, Yanjing Li, Baochang Zhang 0001, Guodong Guo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "One-Step Pixel-Level Perturbation-Based Saliency Detector",
+    "authors": "Vinnam Kim, Hyunsouk Cho, Sehee Chung",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Rethinking Clustering for Robustness",
+    "authors": "Motasem Alfarra, Juan C. P&#233;rez, Adel Bibi, Ali K. Thabet, Pablo Arbel&#225;ez, Bernard Ghanem",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Inter-intra Variant Dual Representations for Self-supervised Video Recognition",
+    "authors": "Lin Zhang 0040, Qi She, Zhengyang Shen, Changhu Wang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "ContourletNet: A Generalized Rain Removal Architecture Using Multi-Direction Representation and Hierarchical Decomposition",
+    "authors": "Wei-Ting Chen, Cheng-Che Tsai, Hao-Yu Fang, I-Hsiang Chen, Jian-Jiun Ding, Sy-Yen Kuo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "X-Distill: Improving Self-Supervised Monocular Depth via Cross-Task Distillation",
+    "authors": "Hong Cai, Janarbek Matai, Shubhankar Borse, Yizhe Zhang 0001, Amin Ansari, Fatih Porikli",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multiple Fusion Adaptation: A Strong Framework for Unsupervised Semantic Segmentation Adaptation",
+    "authors": "Kai Zhang, Yifan Sun, Rui Wang 0079, Haichang Li, Xiaohui Hu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "ECINN: Efficient Counterfactuals from Invertible Neural Networks",
+    "authors": "Frederik Hvilsh&#248;j, Alexandros Iosifidis, Ira Assent",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Progressive Growing of Points with Tree-structured Generators",
+    "authors": "Hyeontae Son, Young Min Kim 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning Neural Transmittance for Efficient Rendering of Reflectance Fields",
+    "authors": "Mohammad Shafiei, Sai Bi, Zhengqin Li, Aidas Liaudanskas, Rodrigo Ortiz Cayon, Ravi Ramamoorthi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Intrinsic Examples: Robust Fingerprinting of Deep Neural Networks",
+    "authors": "Siyue Wang, Pu Zhao 0001, Xiao Wang 0028, Sang Chin 0001, Thomas Wahl, Yunsi Fei, Qi Alfred Chen, Xue Lin 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Edge-aware Bidirectional Diffusion for Dense Depth Estimation from Light Fields",
+    "authors": "Numair Khan, Min H. Kim 0001, James Tompkin 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "ZeBRA: Precisely Destroying Neural Networks with Zero-Data Based Repeated Bit Flip Attack",
+    "authors": "Dahoon Park, Kon-Woo Kwon, Sunghoon Im 0001, Jaeha Kung",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Enhancing Local Feature Learning for 3D Point Cloud Processing using Unary-Pairwise Attention",
+    "authors": "Haoyi Xiu, Xin Liu 0020, Weiming Wang, Kyoung-Sook Kim 0001, Takayuki Shinohara, Qiong Chang, Masashi Matsuoka",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Deep Image Matting with Flexible Guidance Input",
+    "authors": "Hang Cheng, Shugong Xu, Xiufeng Jiang, Rongrong Wang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Spatial Aggregation for Scene Text Recognition",
+    "authors": "Yi-Li Huang, Chengyu Gu, Shilin Wang, Zheng Huang, Kai Chen 0006",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SIR-SRGAN: Super-Resolution Generative Adversarial Networks with Self-Interpolation Ranker",
+    "authors": "Jun-Hong Huang, Hai-Kun Wang, Zhi-Wu Liao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A Mixed Quantization Network for Efficient Mobile Inverse Tone Mapping",
+    "authors": "Juan Borrego-Carazo, Mete Ozay, Frederik Laboyrie, Paul Wisbey",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Simpler Does It: Generating Semantic Labels with Objectness Guidance",
+    "authors": "Md. Amirul Islam, Matthew Kowal, Sen Jia 0002, Konstantinos G. Derpanis, Neil D. B. Bruce",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "AMICO: Amodal Instance Composition",
+    "authors": "Peiye Zhuang, Denis Demandolx, Ayush Saraf, Xuejian Rong, Changil Kim 0001, Jia-Bin Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Noisy Annotation Refinement for Object Detection",
+    "authors": "Jiafeng Mao, Qing Yu 0013, Yoko Yamakata, Kiyoharu Aizawa",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Quality Level Prediction of Image Compression using Block-wise Confidence-aware CNN",
+    "authors": "Kyuwon Kim, Chulju Yang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Teacher-Class Network: A Neural Network Compression Mechanism",
+    "authors": "Shaiq Munir Malik, Fnu Mohbat, Muhammad Umair Haider, Muhammad Musab Rasheed, Murtaza Taj",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "UWC: Unit-wise Calibration Towards Rapid Network Compression",
+    "authors": "Chen Lin, Zheyang Li, Bo Peng, Wenming Tan, Ye Ren, Shiliang Pu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Hardware-Aware Mixed-Precision Neural Networks using In-Train Quantization",
+    "authors": "Manoj Rohit Vemparala, Nael Fasfous, Lukas Frickenstein, Alexander Frickenstein, Anmol Singh, Driton Salihu, Christian Unger, Naveen Shankar Nagaraja, Walter Stechele",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-bit Adaptive Distillation for Binary Neural Networks",
+    "authors": "Ying Nie, Kai Han 0002, Yunhe Wang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-scale Residual Aggregation Deraining Network with Spatial Context-aware Pooling and Activation",
+    "authors": "Kohei Yamamichi, Xian-Hua Han",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Global Context and Geometric Priors for Effective Non-Local Self-Attention",
+    "authors": "Sanghyun Woo, Dahun Kim, Joon-Young Lee, In So Kweon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "LUCES: A Dataset for Near-Field Point Light Source Photometric Stereo",
+    "authors": "Roberto Mecca, Fotios Logothetis, Ignas Budvytis, Roberto Cipolla",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Beyond Classification: Knowledge Distillation using Multi-Object Impressions",
+    "authors": "Gaurav Kumar Nayak, Monish Keswani, Sharan Seshadri, Anirban Chakraborty 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Rethinking local and global feature representation for semantic segmentation",
+    "authors": "Mohan Chen 0001, Xinxuan Zhao, Bingfei Fu, Li Zhang 0040, Xiangyang Xue 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Faster-FCoViAR: Faster Frequency-Domain Compressed Video Action Recognition",
+    "authors": "Lu Xiong, Xia Jia, Yue Ming 0001, Jiangwan Zhou, Fan Feng, Nannan Hu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Training Object Detectors if Only Large Objects are Labeled",
+    "authors": "Daniel Pototzky, Matthias Kirschner, Azhar Sultan, Lars Schmidt-Thieme",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "TinyStarGAN v2: Distilling StarGAN v2 for Efficient Diverse Image Synthesis for Multiple Domains",
+    "authors": "Paras Kapoor, Tien D. Bui",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SAGAN: Adversarial Spatial-asymmetric Attention for Noisy Nona-Bayer Reconstruction",
+    "authors": "S. M. A. Sharif, Rizwan Ali Naqvi, Mithun Biswas",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Robustness Learning via Decision Tree Search Robust Optimisation",
+    "authors": "Yi-Ling Liu, Alessio Lomuscio",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Deep Knowledge Distillation using Trainable Dense Attention",
+    "authors": "Bharat Bhusan Sau, Soumya Roy, Vinay P. Namboodiri, Raghu Sesha Iyengar",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Contour-guided Image Completion with Perceptual Grouping",
+    "authors": "Morteza Rezanejad, Sidharth Gupta, Chandra Gummaluru, Ryan Marten, John Wilder, Michael Gruninger, Dirk B. Walther",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "C4Net: Contextual Compression and Complementary Combination Network for Salient Object Detection",
+    "authors": "Hazarapet Tunanyan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Noise-Aware Video Saliency Prediction",
+    "authors": "Ekta Prashnani, Orazio Gallo, Joohwan Kim, Josef B. Spjut, Pradeep Sen, Iuri Frosio",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "NOD: Taking a Closer Look at Detection under Extreme Low-Light Conditions with Night Object Detection Dataset",
+    "authors": "Igor Morawski, Yu-An Chen, Yu-Sheng Lin, Winston H. Hsu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Regression as a Simple Yet Effective Tool for Self-supervised Knowledge Distillation",
+    "authors": "K. L. Navaneet, Soroush Abbasi Koohpayegani, Ajinkya Tejankar, Hamed Pirsiavash",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "In-N-Out: Towards Good Initialization for Inpainting and Outpainting",
+    "authors": "Changho Jo, Woobin Im, Sung-Eui Yoon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Object Re-identification Using Teacher-Like and Light Students",
+    "authors": "Yi Xie, Hanxiao Wu, Fei Shen 0004, Jianqing Zhu, Huanqiang Zeng",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "From Under- to Overexposure: Single Image Contrast Enhancement via Semi-Supervised Learning",
+    "authors": "Ziwen Li, Yuehuan Wang, Ruowang Chang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-Exit Vision Transformer for Dynamic Inference",
+    "authors": "Arian Bakhtiarnia, Qi Zhang 0013, Alexandros Iosifidis",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SILT: Self-supervised Lighting Transfer Using Implicit Image Decomposition",
+    "authors": "Nikolina Kubiak, Armin Mustafa, Graeme Phillipson, Stephen Jolly, Simon Hadfield",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Efficient Video Super Resolution by Gated Local Self Attention",
+    "authors": "Davide Abati, Amir Ghodrati, Amirhossein Habibian",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Microdosing: Knowledge Distillation for GAN Based Compression",
+    "authors": "Leonhard Helminger, Roberto Azevedo, Abdelaziz Djelouah, Markus Gross 0001, Christopher Schroers",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Reference Guided Image Inpainting using Facial Attributes",
+    "authors": "Dongsik Yoon, Youngsaeng Jin, Jeong-gi Kwak, Yuanming Li, David K. Han, Hanseok Ko",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Conditional De-Identification of 3D Magnetic Resonance Images",
+    "authors": "Lennart Alexander Van der Goten, Tobias Hepp 0002, Zeynep Akata, Kevin Smith 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "M-CAM: Visual Explanation of Challenging Conditioned Dataset with Bias-reducing Memory",
+    "authors": "Seongyeop Kim, Yong Man Ro",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A Design of Contractive Appearance Flow for Photometric Stereo",
+    "authors": "Lixiong Chen, Victor Adrian Prisacariu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "One Model to Reconstruct Them All: A Novel Way to Use the Stochastic Noise in StyleGAN",
+    "authors": "Christian Bartz, Joseph Bethge, Haojin Yang 0001, Christoph Meinel",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "IamAlpha: Instant and Adaptive Mobile Network for Alpha Matting",
+    "authors": "Avinav Goel, Manoj Kumar, Pavan Sudheendra",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "An Adaptive Rectification Model for Arbitrary-Shaped Scene Text Recognition",
+    "authors": "Ye Qian, Long Chen, Feng Su",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "CamLessMonoDepth: Monocular Depth Estimation with Unknown Camera Parameters",
+    "authors": "Sai Shyam Chanduri, Igor Vozniak, Zeeshan Khan Suri",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "MAGECally invert images for realistic editing",
+    "authors": "Asya Grechka, Jean-Fran&#231;ois Goudou, Matthieu Cord",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "GhostShiftAddNet: More Features from Energy-Efficient Operations",
+    "authors": "Jia Bi, Jonathon S. Hare, Geoff V. Merrett",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Lightweight HDR Camera ISP for Robust Perception in Dynamic Illumination Conditions via Fourier Adversarial Networks",
+    "authors": "Pranjay Shyam, Sandeep Singh Sengar, Kuk-Jin Yoon, Kyung-Soo Kim 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Adverse Weather Image Translation with Asymmetric and Uncertainty-aware GAN",
+    "authors": "Jeong-gi Kwak, Youngsaeng Jin, Yuanming Li, Dongsik Yoon, Donghyeon Kim, Hanseok Ko",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Deep Degradation Prior for Real-World Super-Resolution",
+    "authors": "Kyungdeuk Ko, Bokyeung Lee, Jonghwan Hong, David K. Han, Hanseok Ko",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "From Seq2Seq Recognition to Handwritten Word Embeddings",
+    "authors": "George Retsinas, Giorgos Sfikas, Christophoros Nikou, Petros Maragos",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Skeleton-aware Text Image Super-Resolution",
+    "authors": "Shimon Nakaune, Satoshi Iizuka, Kazuhiro Fukui",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Adaptive Distillation: Aggregating Knowledge from Multiple Paths for Efficient Distillation",
+    "authors": "Sumanth Chennupati, Mohammad Mahdi Kamani, Zhongwei Cheng, Lin Chen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Sparse Adversarial Video Attacks with Spatial Transformations",
+    "authors": "Ronghui Mu, Wenjie Ruan, Leandro Soriano Marcolino, Qiang Ni",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Corrosion Image Data Set for Automating Scientific Assessment of Materials",
+    "authors": "Biao Yin, Nicholas Josselyn, Thomas A. Considine, John V. Kelley, Berend C. Rinderspacher, Robert E. Jensen, James F. Snyder, Ziming Zhang, Elke A. Rundensteiner",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Unsupervised computation of salient motion maps from the interpretation of a frame-based classification network",
+    "authors": "Etienne Meunier, Patrick Bouthemy",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Robust channel-wise illumination estimation",
+    "authors": "Firas Laakom, Jenni Raitoharju, Jarno Nikkanen, Alexandros Iosifidis, Moncef Gabbouj",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Perception Visualization: Seeing Through The Eyes Of a DNN",
+    "authors": "Loris Giulivi, Mark J. Carman, Giacomo Boracchi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Mitigating Reverse Engineering Attacks on Local Feature Descriptors",
+    "authors": "Deeksha Dangwal, Vincent T. Lee, Hyo Jin Kim 0004, Tianwei Shen, Meghan Cowan, Rajvi Shah, Caroline Trippel, Brandon Reagen, Timothy Sherwood, Vasileios Balntas, Armin Alaghi, Eddy Ilg",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Parameter Efficient Dynamic Convolution via Tensor Decomposition",
+    "authors": "Zejiang Hou, Sun-Yuan Kung",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Self-Validation: Early Stopping for Single-Instance Deep Generative Priors",
+    "authors": "Taihui Li, Zhong Zhuang, Hengyue Liang, Le Peng, Hengkang Wang, Ju Sun",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Hierarchical Contrastive Motion Learning for Video Action Recognition",
+    "authors": "Xitong Yang, Xiaodong Yang 0001, Sifei Liu, Deqing Sun, Larry Davis 0001, Jan Kautz",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Revisiting spatio-temporal layouts for compositional action recognition",
+    "authors": "Gorjan Radevski, Marie-Francine Moens, Tinne Tuytelaars",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "AEI: Actors-Environment Interaction with Adaptive Attention for Temporal Action Proposals Generation",
+    "authors": "Khoa Vo 0001, Hyekang Joo, Kashu Yamazaki, Sang Truong, Kris Kitani, Minh-Triet Tran, Ngan Le",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Unsupervised Human Action Recognition with Skeletal Graph Laplacian and Self-Supervised Viewpoints Invariance",
+    "authors": "Giancarlo Paoletti, Jacopo Cavazza, Cigdem Beyan, Alessio Del Bue",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "UNIK: A Unified Framework for Real-world Skeleton-based Action Recognition",
+    "authors": "Di Yang 0002, Yaohui Wang 0001, Antitza Dantcheva, Lorenzo Garattoni, Gianpiero Francesca, Fran&#231;ois Br&#233;mond",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Lane Line Detection based on Parallel Spatial Separation Convolution",
+    "authors": "Xile Shen, Zongqing Lu 0001, Youcheng Zhang, Jing-Hao Xue",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Holistic Guidance for Occluded Person Re-Identification",
+    "authors": "Madhu Kiran, Gnana Praveen Rajasekhar, Le Thanh Nguyen-Meidine, Soufiane Belharbi, Louis-Antoine Blais-Morin, Eric Granger",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "MMD-ReID: A Simple but Effective Solution for Visible-Thermal Person ReID",
+    "authors": "Chaitra Jambigi, Ruchit Rawal, Anirban Chakraborty 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "The Curious Layperson: Fine-Grained Image Recognition without Expert Labels",
+    "authors": "Subhabrata Choudhury, Iro Laina, Christian Rupprecht 0001, Andrea Vedaldi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Grid Cell Path Integration For Movement-Based Visual Object Recognition",
+    "authors": "Niels Leadholm, Marcus Lewis, Subutai Ahmad",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "HCV: Hierarchy-Consistency Verification for Incremental Implicitly-Refined Classification",
+    "authors": "Kai Wang 0060, Xialei Liu, Luis Herranz, Joost van de Weijer 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SuperStyleNet: Deep Image Synthesis with Superpixel Based Style Encoder",
+    "authors": "Jonghyun Kim 0007, Gen Li 0008, Cheolkon Jung, Joongkyu Kim",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "UBR&#178;S: Uncertainty-Based Resampling and Reweighting Strategy for Unsupervised Domain Adaptation",
+    "authors": "Tobias Ringwald, Rainer Stiefelhagen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Repaint: Improving the Generalization of Down-Stream Visual Tasks by Generating Multiple Instances of Training Examples",
+    "authors": "Amin Banitalebi-Dehkordi, Yong Zhang 0004",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Leveraging Class Hierarchies with Metric-Guided Prototype Learning",
+    "authors": "Vivien Sainte Fare Garnot, Lo&#239;c Landrieu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Measuring the Biases and Effectiveness of Content-Style Disentanglement",
+    "authors": "Xiao Liu 0037, Spyridon Thermos, Gabriele Valvano, Agisilaos Chartsias, Alison Q. O'Neil, Sotirios A. Tsaftaris",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-Teacher Single-Student Visual Transformer with Multi-Level Attention for Face Spoofing Detection",
+    "authors": "Yao-Hui Huang, Jun-Wei Hsieh, Ming-Ching Chang, Lipeng Ke, Siwei Lyu, Arpita Samanta Santra",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A Strong Baseline for Semi-Supervised Incremental Few-Shot Learning",
+    "authors": "Linglan Zhao, Dashan Guo, Yunlu Xu, Liang Qiao 0001, Zhanzhan Cheng, Shiliang Pu, Yi Niu, Xiangzhong Fang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Single-Modal Entropy based Active Learning for Visual Question Answering",
+    "authors": "Dong-Jin Kim 0003, Jae-Won Cho, Jinsoo Choi, Yunjae Jung, In So Kweon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Alleviating Noisy-label Effects in Image Classification via Probability Transition Matrix",
+    "authors": "Ziqi Zhang 0013, Yuexiang Li, Hongxin Wei, Kai Ma 0002, Tao Xu 0026, Yefeng Zheng 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Semi-Supervised Learning with Taxonomic Labels",
+    "authors": "Jong-Chyi Su, Subhransu Maji",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Feature and Label Embedding Spaces Matter in Addressing Image Classifier Bias",
+    "authors": "William Thong, Cees Snoek",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Defensive Tensorization",
+    "authors": "Adrian Bulat, Jean Kossaifi, Sourav Bhattacharya, Yannis Panagakis, Timothy M. Hospedales, Georgios Tzimiropoulos, Nicholas D. Lane, Maja Pantic",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Two-directional Image Retargeting with Region-Aware Texture Enhancement",
+    "authors": "Dubok Park",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "DU-DARTS: Decreasing the Uncertainty of Differentiable Architecture Search",
+    "authors": "Shun Lu 0001, Yu Hu 0001, Longxing Yang, Zihao Sun, Jilin Mei, Yiming Zeng 0003, Xiaowei Li 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Equivariance-bridged SO(2)-Invariant Representation Learning using Graph Convolutional Network",
+    "authors": "Sungwon Hwang, Hyungtae Lim, Hyun Myung",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Contextual Convolution Blocks",
+    "authors": "David Marwood, Shumeet Baluja",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Transformer-based Monocular Depth Estimation with Attention Supervision",
+    "authors": "Wenjie Chang, Yueyi Zhang 0001, Zhiwei Xiong",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A Probabilistic Hard Attention Model For Sequentially Observed Scenes",
+    "authors": "Samrudhdhi B. Rangrej, James J. Clark",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Mitigating Bias in Visual Transformers via Targeted Alignment",
+    "authors": "Sruthi Sudhakar, Viraj Prabhu, Arvindkumar Krishnakumar, Judy Hoffman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Rethinking Token-Mixing MLP for MLP-based Vision Backbone",
+    "authors": "Tan Yu, Xu Li 0001, Yunfeng Cai, Mingming Sun 0001, Ping Li 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "ESAD: End-to-end Semi-supervised Anomaly Detection",
+    "authors": "Chaoqin Huang, Fei Ye, Peisen Zhao, Ya Zhang 0002, Yanfeng Wang 0001, Qi Tian 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Searching for TrioNet: Combining Convolution with Local and Global Self-Attention",
+    "authors": "Huaijin Pi, Huiyu Wang, Yingwei Li 0002, Zizhang Li, Alan L. Yuille",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-Glimpse Network: A Robust and Efficient Classification Architecture based on Recurrent Downsampled Attention",
+    "authors": "Sia Huat Tan, Runpei Dong, Kaisheng Ma",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "UDIS: Unsupervised Discovery of Bias in Deep Visual Recognition Models",
+    "authors": "Arvindkumar Krishnakumar, Viraj Prabhu, Sruthi Sudhakar, Judy Hoffman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Image Composition Assessment with Saliency-augmented Multi-pattern Pooling",
+    "authors": "Bo Zhang 0075, Li Niu 0002, Liqing Zhang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "On Adversarial Robustness of 3D Point Cloud Classification under Adaptive Attacks",
+    "authors": "Jiachen Sun, Karl Koenig, Yulong Cao, Qi Alfred Chen, Zhuoqing Morley Mao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Back to the Future: Cycle Encoding Prediction for Self-supervised Video Representation Learning",
+    "authors": "Xinyu Yang, Majid Mirmehdi, Tilo Burghardt",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Unsupervised Domain Adaptation of Black-Box Source Models",
+    "authors": "Haojian Zhang, Yabin Zhang 0001, Kui Jia, Lei Zhang 0006",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Adaptive Tensor Networks Decomposition",
+    "authors": "Chang Nie, Huan Wang, Le Tian",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Grand Unified Domain Adaptation",
+    "authors": "Ziyun Cai, Tengfei Zhang 0001, Xiao-Yuan Jing, Ling Shao 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Human Attention in Fine-grained Classification",
+    "authors": "Yao Rong 0001, Wenjia Xu, Zeynep Akata, Enkelejda Kasneci",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Tendentious Noise-rectifying Framework for Pathological HCC Grading",
+    "authors": "Xiaotian Yu, Zunlei Feng, Yuexuan Wang, Thomas Kwok To Li, Xiuming Zhang, Mingli Song",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Rich Semantics Improve Few-Shot Learning",
+    "authors": "Mohamed Afham, Salman Khan 0001, Muhammad Haris Khan, Muzammal Naseer, Fahad Shahbaz Khan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Self-Supervised Learning in Multi-Task Graphs through Iterative Consensus Shift",
+    "authors": "Emanuela Haller, Elena Burceanu, Marius Leordeanu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Improving Text-to-Image Synthesis Using Contrastive Learning",
+    "authors": "Hui Ye, Xiulong Yang, Martin Tak&#225;c 0001, Rajshekhar Sunderraman, Shihao Ji 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Prototype-based Incremental Few-Shot Segmentation",
+    "authors": "Fabio Cermelli, Massimiliano Mancini, Yongqin Xian, Zeynep Akata, Barbara Caputo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Generative Dynamic Patch Attack",
+    "authors": "Xiang Li 0080, Shihao Ji 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "EBJR: Energy-Based Joint Reasoning for Adaptive Inference",
+    "authors": "Mohammad Akbari, Amin Banitalebi-Dehkordi, Yong Zhang 0004",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Robust Semantic Segmentation with Superpixel-Mix",
+    "authors": "Gianni Franchi, Nacim Belkhir, Mai Lan Ha, Yufei Hu, Andrei Bursuc, Volker Blanz, Angela Yao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Jitter-CAM: Improving the Spatial Resolution of CAM-Based Explanations",
+    "authors": "Thomas Hartley, Kirill A. Sidorov, Christopher Willis 0001, A. David Marshall",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Quantised Transforming Auto-Encoders: Achieving Equivariance to Arbitrary Transformations in Deep Networks",
+    "authors": "Jianbo Jiao, Jo&#227;o F. Henriques",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Modeling Explicit Concerning States for Reinforcement Learning in Visual Dialogue",
+    "authors": "Zipeng Xu, Fandong Meng, Xiaojie Wang 0006, Duo Zheng, Chenxu Lv, Jie Zhou 0016",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Variance-stationary Differentiable NAS",
+    "authors": "Hyeokjun Choe, Byunggook Na, Jisoo Mok, Sungroh Yoon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "AttNAS: Searching Attentions for Lightweight Semantic Segmentation",
+    "authors": "Yingying Jiang 0001, Zhuoxin Gan, Ke Lin, Yong A",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Few-shot Semantic Segmentation with Self-supervision from Pseudo-classes",
+    "authors": "Yiwen Li, Gratianus Wesley Putra Data, Yunguan Fu, Yipeng Hu, Victor Adrian Prisacariu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Class-Balanced Distillation for Long-Tailed Visual Recognition",
+    "authors": "Ahmet Iscen, Andr&#233; Ara&#250;jo 0001, Boqing Gong, Cordelia Schmid",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning to Generate Novel Classes for Deep Metric Learning",
+    "authors": "Kyungmoon Lee, Sungyeon Kim, Seunghoon Hong, Suha Kwak",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Unsupervised View-Invariant Human Posture Representation",
+    "authors": "Faegheh Sardari, Bj&#246;rn Ommer, Majid Mirmehdi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Self-Supervised Training Enhances Online Continual Learning",
+    "authors": "Gianmarco J. Gallardo, Tyler L. Hayes, Christopher Kanan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SemGIF: A Semantics Guided Incremental Few-shot Learning Framework with Generative Replay",
+    "authors": "S. Divakar Bhat, Biplab Banerjee, Subhasis Chaudhuri",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Feature Fusion Vision Transformer for Fine-Grained Visual Categorization",
+    "authors": "Jun Wang 0121, Xiaohan Yu 0001, Yongsheng Gao 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-Source Domain Adaptation via supervised contrastive learning and confident consistency regularization",
+    "authors": "Marin Scalbert, Florent Couzini&#233;-Devy, Maria Vakalopoulou",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Fine-grained Multi-Modal Self-Supervised Learning",
+    "authors": "Duo Wang, Salah Karout",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Logsig-RNN: a novel network for robust and efficient skeleton-based action recognition",
+    "authors": "Hao Ni 0001, Shujian Liao, Weixin Yang, Kevin Schlegel, Terry J. Lyons",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "CvS: Classification via Segmentation For Small Datasets",
+    "authors": "Nooshin Mojab, Philip S. Yu, Joelle A. Hallak, Darvin Yi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "HS3: Learning with Proper Task Complexity in Hierarchically Supervised Semantic Segmentation",
+    "authors": "Shubhankar Borse, Hong Cai, Yizhe Zhang 0001, Fatih Porikli",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Mode-Guided Feature Augmentation for Domain Generalization",
+    "authors": "Muhammad Haris Khan, Syed Muhammad talha Zaidi, Salman Khan 0001, Fahad Shahbaz Khan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Surprisingly Simple Semi-Supervised Domain Adaptation with Pretraining and Consistency",
+    "authors": "Samarth Mishra, Kate Saenko, Venkatesh Saligrama",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Neighborhood-Aware Neural Architecture Search",
+    "authors": "Xiaofang Wang, Shengcao Cao, Mengtian Li, Kris Kitani",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Self-supervised Knowledge Distillation for Few-shot Learning",
+    "authors": "Jathushan Rajasegaran, Salman Khan 0001, Munawar Hayat, Fahad Shahbaz Khan, Mubarak Shah",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-Class Novelty Detection with Generated Hard Novel Features",
+    "authors": "Wei-Ta Chu, Wei-Ting Cao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Latent-optimization based Disease-aware Image Editing for Medical Image Augmentation",
+    "authors": "Aakash Saboo, Prashnna K. Gyawali, Ankit Shukla 0001, Manoj Sharma, Neeraj Jain, Linwei Wang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Meta-learning the Learning Trends Shared Across Tasks",
+    "authors": "Jathushan Rajasegaran, Salman Khan 0001, Munawar Hayat, Fahad Shahbaz Khan, Mubarak Shah",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Grouping Bilinear Pooling",
+    "authors": "Rui Zeng, Jingsong He",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Temporal Alignment via Event Boundary for Few-shot Action Recongnition",
+    "authors": "Shuyuan Li, Huabin Liu 0001, Mengjuan Fei, Xiaoyuan Yu, Weiyao Lin",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Siamese Prototypical Contrastive Learning",
+    "authors": "Shentong Mo, Zhun Sun, Chao Li 0013",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SPARROW: Semantically Coherent Prototypes for Image Classification",
+    "authors": "Stefan Kraft, Klaus Broelemann, Andreas Theissler, Gjergji Kasneci",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "PropMix: Hard Sample Filtering and Proportional MixUp for Learning with Noisy Labels",
+    "authors": "Filipe Rolim Cordeiro, Vasileios Belagiannis, Ian Reid 0001, Gustavo Carneiro 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Incremental Learning for Animal Pose Estimation using RBF k-DPP",
+    "authors": "Gaurav Kumar Nayak, Het Shah, Anirban Chakraborty 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "TridentAdapt: Learning Domain-invariance via Source-Target Confrontation and Self-induced Cross-domain Augmentation",
+    "authors": "Fengyi Shen, Akhil Gurram, Ahmet Faruk Tuna, Onay Urfalioglu, Alois C. Knoll",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Coloured Edge Maps for Oil Palm Ripeness Classification",
+    "authors": "Wei Yuen Teh, Ian Tan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SLURP: Side Learning Uncertainty for Regression Problems",
+    "authors": "Xuanlong Yu, Gianni Franchi, Emanuel Aldea",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Probabilistic Regression with Huber Distributions",
+    "authors": "David Mohlin, G&#233;rald Bianchi, Josephine Sullivan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Training Better Deep Neural Networks with Uncertainty Mining Net",
+    "authors": "Yang Sun, Abhishek Kolagunda, Steven Eliuk, Xiaolong Wang 0006",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Mini-batch Similarity Graphs for Robust Image Classification",
+    "authors": "Arnab Kumar Mondal, Vineet Jain, Kaleem Siddiqi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "PAL : Pretext-based Active Learning",
+    "authors": "Shubhang Bhatnagar, Sachin Goyal, Darshan Tank, Amit Sethi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Quality Map Fusion for Adversarial Learning",
+    "authors": "Uche Osahor, Nasser M. Nasrabadi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Non-Autoregressive Sign Language Production with Gaussian Space",
+    "authors": "Eui Jun Hwang, Jung-Ho Kim 0002, Jong C. Park",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Source-free Unsupervised Domain Adaptation with Surrogate Data Generation",
+    "authors": "Yan Hao, Yuhong Guo, Chunsheng Yang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Evolving Image Compositions for Feature Representation Learning",
+    "authors": "Paola Cascante-Bonilla, Arshdeep Sekhon, Yanjun Qi, Vicente Ordonez",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learnable Discrete Wavelet Pooling (LDW-Pooling) for Convolutional Networks",
+    "authors": "Bor-Shiun Wang, Jun-Wei Hsieh, Ping-Yang Chen, Ming-Ching Chang, Lipeng Ke, Siwei Lyu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Are conditional GANs explicitly conditional?",
+    "authors": "Houssem-eddine Boulahbal, Adrian Voicila, Andrew I. Comport",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Bias Field Robustness Verification of Large Neural Image Classifiers",
+    "authors": "Patrick Henriksen, Kerstin Hammernik, Daniel Rueckert, Alessio Lomuscio",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Simple Dialogue System with AUDITED",
+    "authors": "Yusuf Tas, Piotr Koniusz",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "FFNB: Forgetting-Free Neural Blocks for Deep Continual Learning",
+    "authors": "Hichem Sahbi, Haoming Zhan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Hidden-Fold Networks: Random Recurrent Residuals Using Sparse Supermasks",
+    "authors": "&#193;ngel L&#243;pez Garc&#237;a-Arias, Masanori Hashimoto, Masato Motomura, Jaehoon Yu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A Simple Approach to Image Tilt Correction with Self-Attention MobileNet for Smartphones",
+    "authors": "Siddhant Garg, Debi Prasanna Mohanty, Siva Prasad Thota, Sukumar Moharana",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Structured Latent Embeddings for Recognizing Unseen Classes in Unseen Domains",
+    "authors": "Shivam Chandhok, Sanath Narayan, Hisham Cholakkal, Rao Muhammad Anwer, Vineeth N. Balasubramanian, Fahad Shahbaz Khan, Ling Shao 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "WP2-GAN: Wavelet-based Multi-level GAN for Progressive Facial Expression Translation with Parallel Generators",
+    "authors": "Jun Shao, Tien Bui",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "OODformer: Out-Of-Distribution Detection Transformer",
+    "authors": "Rajat Koner, Poulami Sinhamahapatra, Karsten Roscher, Stephan G&#252;nnemann, Volker Tresp",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Frequency learning for structured CNN filters with Gaussian fractional derivatives",
+    "authors": "Nikhil Saldanha, Silvia-Laura Pintea, Jan C. van Gemert, Nergis Tomen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Dynamic Feature Alignment for Semi-supervised Domain Adaptation",
+    "authors": "Yu Zhang 0094, Gongbo Liang, Nathan Jacobs",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Dual Graph-Based Context Aggregation for Scene Parsing",
+    "authors": "Mengyu Liu, Hujun Yin",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Stylistic Multi-Task Analysis of Ukiyo-e Woodblock Prints",
+    "authors": "Selina J. Khan, Nanne van Noord",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Using Synthetic Corruptions to Measure Robustness to Natural Distribution Shifts",
+    "authors": "Alfred Laugros, Alice Caplier, Matthieu Ospici",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Introducing the Boundary-Aware loss for deep image segmentation",
+    "authors": "Minh On Vu Ngoc, Yizi Chen, Nicolas Boutry, Joseph Chazalon, Edwin Carlinet, Cl&#233;ment Mallet, Thierry G&#233;raud",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning to ignore: rethinking attention in CNNs",
+    "authors": "Firas Laakom, Kateryna Chumachenko, Jenni Raitoharju, Alexandros Iosifidis, Moncef Gabbouj",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Noisy Differentiable Architecture Search",
+    "authors": "Xiangxiang Chu, Bo Zhang 0047",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Cascaded Cross MLP-Mixer GANs for Cross-View Image Translation",
+    "authors": "Bin Ren 0005, Hao Tang 0005, Nicu Sebe",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "HairFIT: Pose-invariant Hairstyle Transfer via Flow-based Hair Alignment and Semantic-region-aware Inpainting",
+    "authors": "Chaeyeon Chung, Taewoo Kim, Hyelin Nam, Seunghwan Choi, Gyojung Gu, Sunghyun Park 0005, Jaegul Choo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "StyleVideoGAN: A Temporal Generative Model using a Pretrained StyleGAN",
+    "authors": "Gereon Fox, Ayush Tewari, Mohamed A. Elgharib, Christian Theobalt",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Temporal Meta-Adaptor for Video Object Detection",
+    "authors": "Chi Wang, Yang Hua 0001, Zheng Lu, Jian Gao 0018, Neil Robertson 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Tensor Component Analysis for Interpreting the Latent Space of GANs",
+    "authors": "James Oldfield 0001, Markos Georgopoulos, Yannis Panagakis, Mihalis A. Nicolaou, Ioannis Patras",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "BI-GCN: Boundary-Aware Input-Dependent Graph Convolution Network for Biomedical Image Segmentation",
+    "authors": "Yanda Meng, Hongrun Zhang, Dongxu Gao, Yitian Zhao, Xiaoyun Yang, Xuesheng Qian, Xiaowei Huang 0001, Yalin Zheng",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "CTRN: Class-Temporal Relational Network for Action Detection",
+    "authors": "Rui Dai 0001, Srijan Das, Fran&#231;ois Br&#233;mond",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Everybody Is Unique: Towards Unbiased Human Mesh Recovery",
+    "authors": "Ren Li, Srikrishna Karanam, Meng Zheng 0002, Terrence Chen, Ziyan Wu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "End-to-End Object Detection with Adaptive Clustering Transformer",
+    "authors": "Minghang Zheng, Peng Gao 0007, Renrui Zhang, Kunchang Li 0002, Hongsheng Li 0001, Hao Dong 0003",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A 2-D Wrist Motion Based Sign Language Video Summarization",
+    "authors": "Evangelos G. Sartinas, Emmanouil Z. Psarakis, Klimis Antzakas, Dimitrios I. Kosmopoulos",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Mask-aware IoU for Anchor Assignment in Real-time Instance Segmentation",
+    "authors": "Kemal Oksuz, Baris Can Cam, Fehmi Kahraman, Zeynep Sonat Baltaci, Sinan Kalkan, Emre Akbas",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Continuous-Time Video Generation via Learning Motion Dynamics with Neural ODE",
+    "authors": "Kangyeol Kim, Sunghyun Park 0005, Junsoo Lee 0002, Joonseok Lee, Sookyung Kim, Jaegul Choo, Edward Choi 0003",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Human-object Interaction Detection without Alignment Supervision",
+    "authors": "Mert Kilickaya, Arnold W. M. Smeulders",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Segmenting Invisible Moving Objects",
+    "authors": "Hala Lamdouar, Weidi Xie, Andrew Zisserman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Hand-Object Contact Prediction via Motion-Based Pseudo-Labeling and Guided Progressive Label Correction",
+    "authors": "Takuma Yagi, Md Tasnimul Hasan, Yoichi Sato 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "LSTA-Net: Long short-term Spatio-Temporal Aggregation Network for Skeleton-based Action Recognition",
+    "authors": "Tailin Chen, Shidong Wang, Desen Zhou, Yu Guan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Exemplar-Based Early Event Prediction in Video",
+    "authors": "Zekun Zhang, Farrukh M. Koraishy, Minh Hoai",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "DRT: Detection Refinement for Multiple Object Tracking",
+    "authors": "Bisheng Wang, Christian Fruhwirth-Reisinger, Horst Possegger, Horst Bischof, Guo Cao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "ASFormer: Transformer for Action Segmentation",
+    "authors": "Fangqiu Yi, Hongyu Wen, Tingting Jiang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A Closer Look at Few-Shot Video Classification: A New Baseline and Benchmark",
+    "authors": "Zhenxi Zhu, Limin Wang 0002, Sheng Guo 0005, Gangshan Wu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "MinMaxCAM: Improving object coverage for CAM-based Weakly Supervised Object Localization",
+    "authors": "Kaili Wang, Jos&#233; Oramas, Tinne Tuytelaars",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "PlaneRecNet: Multi-Task Learning with Cross-Task consistency for Piece-Wise Plane Detection and Reconstruction from a Single RGB Image",
+    "authors": "Yaxu Xie, Fangwen Shu, Jason R. Rambach, Alain Pagani, Didier Stricker",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Stacked Temporal Attention: Improving First-person Action Recognition by Emphasizing Discriminative Clips",
+    "authors": "Lijin Yang, Yifei Huang 0002, Yusuke Sugano, Yoichi Sato 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Diagnosing Errors in Video Relation Detectors",
+    "authors": "Shuo Chen 0010, Pascal Mettes, Cees Snoek",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "360&#176; Optical Flow using Tangent Images",
+    "authors": "Mingze Yuan, Christian Richardt",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Depth-only Object Tracking",
+    "authors": "Song Yan, Jinyu Yang, Ales Leonardis, Joni-Kristian Kamarainen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Spatial-Temporal Residual Aggregation for High Resolution Video Inpainting",
+    "authors": "Vishnu Sanjay Ramiya Srinivasan, Rui Ma 0011, Qiang Tang 0002, Zili Yi, Zhan Xu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Knowing What, Where and When to Look: Video Action modelling with Attention",
+    "authors": "Juan-Manuel P&#233;rez-R&#250;a, Brais Mart&#237;nez, Xiatian Zhu, Antoine Toisoul, Victor Escorcia, Tao Xiang 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "FacialGAN: Style Transfer and Attribute Manipulation on Synthetic Faces",
+    "authors": "Ricard Durall Lopez, Jireh Jam, Dominik Strassel, Moi Hoon Yap, Janis Keuper",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Render In-between: Motion Guided Video Synthesis for Action Interpolation",
+    "authors": "Hsuan-I Ho, Xu Chen 0025, Jie Song 0006, Otmar Hilliges",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Towards Overcoming False Positives in Visual Relationship Detection",
+    "authors": "Daisheng Jin, Xiao Ma, Chongzhi Zhang, Yizhuo Zhou, Jiashu Tao, Mingyuan Zhang, Zhoujun Li",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Few-shot Action Recognition with Prototype-centered Attentive Learning",
+    "authors": "Xiatian Zhu, Antoine Toisoul, Juan-Manuel P&#233;rez-R&#250;a, Li Zhang 0040, Brais Mart&#237;nez, Tao Xiang 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A Comprehensive CT Dataset for Liver Computer Assisted Diagnosis",
+    "authors": "Qingsen Yan, Bo Wang 0011, Dong Gong, Dingwen Zhang, Yang Yang 0009, Zheng You, Yanning Zhang 0001, Javen Qinfeng Shi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "ExSinGAN: Learning an Explainable Generative Model from a Single Image",
+    "authors": "Zicheng Zhang, Congying Han, Tiande Guo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Few-Shot Temporal Action Localization with Query Adaptive Transformer",
+    "authors": "Sauradip Nag, Xiatian Zhu, Tao Xiang 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "FlowVOS: Weakly-Supervised Visual Warping for Detail-Preserving and Temporally Consistent Single-Shot Video Object Segmentation",
+    "authors": "Julia Gong, F. Christopher Holsinger, Serena Yeung",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Hierarchical Interaction Network for Video Object Segmentation from Referring Expressions",
+    "authors": "Zhao Yang 0002, Yansong Tang, Luca Bertinetto, Hengshuang Zhao, Philip H. S. Torr",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Space-Time Memory Network for Sounding Object Localization in Videos",
+    "authors": "Sizhe Li, Yapeng Tian, Chenliang Xu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "View Birdification in the Crowd: Ground-Plane Localization from Perceived Movements",
+    "authors": "Mai Nishimura, Shohei Nobuhara, Ko Nishino",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "You Better Look Twice: a new perspective for designing accurate detectors with reduced computations",
+    "authors": "Alexandra Dana, Maor Shutman, Yotam Perlitz, Ran Vitek, Tomer Peleg, Roy J. Jevnisek",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "LARNet: Latent Action Representation for Human Action Synthesis",
+    "authors": "Naman Biyani, Aayush Jung Rana, Shruti Vyas, Yogesh S. Rawat",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Point3D: tracking actions as moving points with 3D CNNs",
+    "authors": "Shentong Mo, Jingfei Xia, Xiaoqing Tan, Bhiksha Raj",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "TEAM-Net: Multi-modal Learning for Video Action Recognition with Partial Decoding",
+    "authors": "Zhengwei Wang, Qi She, Aljosa Smolic",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Audio-Visual Synchronisation in the wild",
+    "authors": "Triantafyllos Afouras, Honglie Chen, Weidi Xie, Arsha Nagrani, Andrea Vedaldi, Andrew Zisserman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "2.5D-VoteNet: Depth Map based 3D Object Detection for Real-Time Applications",
+    "authors": "Lanxiao Li, Michael Heizmann",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Model Composition: Can Multiple Neural Networks Be Combined into a Single Network Using Only Unlabeled Data?",
+    "authors": "Amin Banitalebi-Dehkordi, Xinyu Kang, Yong Zhang 0004",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "MFE: Multi-scale Feature Enhancement for Object Detection",
+    "authors": "Zhenhu Zhang, Xueying Qin, Fan Zhong 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Exploiting Scene Depth for Object Detection with Multimodal Transformers",
+    "authors": "Hwanjun Song, Eunyoung Kim, Varun Jampani, Deqing Sun, Jae-Gil Lee 0001, Ming-Hsuan Yang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "MOS: A Low Latency and Lightweight Framework for Face Detection, Landmark Localization, and Head Pose Estimation",
+    "authors": "Yepeng Liu 0002, Zaiwang Gu, Shenghua Gao, Dong Wang, Yusheng Zeng, Jun Cheng 0003",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Channel DropBlock: An Improved Regularization Method for Fine-Grained Visual Classification",
+    "authors": "Yifeng Ding, Shuwei Dong, Yujun Tong, Zhanyu Ma, Bo Xiao, Haibin Ling",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "With a Little Help from my Temporal Context: Multimodal Egocentric Action Recognition",
+    "authors": "Evangelos Kazakos, Jaesung Huh, Arsha Nagrani, Andrew Zisserman, Dima Damen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "HR-RCNN: Hierarchical Relational Reasoning for Object Detection",
+    "authors": "Hao Chen 0066, Abhinav Shrivastava",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Move to See Better: Self-Improving Embodied Object Detection",
+    "authors": "Zhaoyuan Fang, Ayush Jain, Gabriel Sarch, Adam W. Harley, Katerina Fragkiadaki",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Joint Detection of Motion Boundaries and Occlusions",
+    "authors": "Hannah Halin Kim, Shuzhi Yu, Carlo Tomasi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Boosting Adversarial Transferability through Enhanced Momentum",
+    "authors": "Xiaosen Wang, Jiadong Lin, Han Hu 0001, Jingdong Wang 0001, Kun He 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Deep Video Decaptioning",
+    "authors": "Pengpeng Chu, Weize Quan, Tong Wang 0013, Pan Wang 0008, Peiran Ren, Dong-Ming Yan 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Paying Attention to Varying Receptive Fields: Object Detection with Atrous Filters and Vision Transformers",
+    "authors": "Arthur Jian Shun Lam, JunYi Lim, Ricky Sutopo, Vishnu Monn Baskaran",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "CAFENet: Class-Agnostic Few-Shot Edge Detection Network",
+    "authors": "Younghyun Park, Jun Seo, Jaekyun Moon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Re-ID-AR: Improved Person Re-identification in Videovia Joint Weakly Supervised Action Recognition",
+    "authors": "Aishah Alsehaim, Toby P. Breckon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "TICaM: A Time-of-flight In-car Cabin Monitoring Dataset",
+    "authors": "Jigyasa Singh Katrolia, Ahmed El-Sherif, Hartmut Feld, Bruno Mirbach, Jason R. Rambach, Didier Stricker",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Spatiotemporal Deformable Scene Graphs for Complex Activity Detection",
+    "authors": "Salman Khan 0001, Fabio Cuzzolin",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning Not to Reconstruct Anomalies",
+    "authors": "Marcella Astrid, Muhammad Zaigham Zaheer, Jae-Yeong Lee, Seung-Ik Lee",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Towards Dynamic and Scalable Active Learning with Neural Architecture Adaption for Object Detection",
+    "authors": "Fuhui Tang, Chenhan Jiang, Dafeng Wei, Hang Xu 0004, Andi Zhang 0001, Wei Zhang 0196, Hongtao Lu 0001, Chunjing Xu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Zero-Shot Action Recognition from Diverse Object-Scene Compositions",
+    "authors": "Carlo Bretti, Pascal Mettes",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Grounded Situation Recognition with Transformers",
+    "authors": "Junhyeong Cho, Youngseok Yoon, Hyeonjun Lee, Suha Kwak",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Unsupervised Discovery of Actions in Instructional Videos",
+    "authors": "A. J. Piergiovanni, Anelia Angelova, Michael S. Ryoo, Irfan Essa",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "VIN: Voxel-based Implicit Network for Joint3D Object Detection and Segmentation for Lidars",
+    "authors": "Yuanxin Zhong, Minghan Zhu, Huei Peng",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Wide and Narrow: Video Prediction from Context and Motion",
+    "authors": "Jaehoon Cho, Jiyoung Lee 0005, Changjae Oh, Wonil Song, Kwanghoon Sohn",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Weakly-Supervised Dense Action Anticipation",
+    "authors": "Haotong Zhang 0001, Fuhai Chen, Angela Yao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Quantum Unsupervised Domain Adaptation: Does Entanglement Help?",
+    "authors": "Nanqing Dong, Michael C. Kampffmeyer, Irina Voiculescu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A cappella: Audio-visual Singing Voice Separation",
+    "authors": "Juan F. Montesinos, Venkatesh S. Kadandale, Gloria Haro",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Dynamic Graph Warping Transformer for Video Alignment",
+    "authors": "Junyan Wang 0001, Yang Long 0001, Maurice Pagnucco, Yang Song 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Semi-Supervised Few-Shot Object Detection with a Teacher-Student Network",
+    "authors": "Wuti Xiong, Yawen Cui, Li Liu 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Guided Flow Field Estimation by Generating Independent Patches",
+    "authors": "Mohsen Tabejamaat, Farhood Negin, Fran&#231;ois Br&#233;mond",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "GTA: Global Temporal Attention for Video Action Understanding",
+    "authors": "Bo He 0004, Xitong Yang, Zuxuan Wu, Hao Chen 0066, Ser-Nam Lim, Abhinav Shrivastava",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A Simple Baseline for Weakly-Supervised Human-centric Relation Detection",
+    "authors": "Raghav Goyal, Leonid Sigal",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "One-Shot Deep Model for End-to-End Multi-Person Activity Recognition",
+    "authors": "Shuhei Tarashima",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Attention to Action: Leveraging Attention for Object Navigation",
+    "authors": "Shi Chen 0001, Qi Zhao 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Refining FFT-based Heatmap for the Detection of Cluster Distributed Targets in Satellite Images",
+    "authors": "Huan Zhang 0013, Zhiyi Xu, Xiaolin Han 0001, Weidong Sun",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Semantic-Guided Radar-Vision Fusion for Depth Estimation and Object Detection",
+    "authors": "Wei-Yu Lee, Ljubomir Jovanov, Wilfried Philips",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-Modality Task Cascade for 3D Object Detection",
+    "authors": "Jinhyung Park, Xinshuo Weng, Yunze Man, Kris Kitani",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Selective Pseudo-Labeling with Reinforcement Learning for Semi-Supervised Domain Adaptation",
+    "authors": "Bingyu Liu, Yuhong Guo, Jieping Ye, Weihong Deng",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "V3GAN: Decomposing Background, Foreground and Motion for Video Generation",
+    "authors": "Arti Keshari, Sonam Gupta 0001, Sukhendu Das",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Transferring Domain-Agnostic Knowledge in Video Question Answering",
+    "authors": "Tianran Wu, Noa Garcia, Mayu Otani, Chenhui Chu, Yuta Nakashima, Haruo Takemura",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Unsupervised Spatio-temporal Latent Feature Clustering for Multiple-object Tracking and Segmentation",
+    "authors": "Abubakar Siddique 0003, Reza Jalil Mozhdehi, Henry Medeiros 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Label2im: Knowledge Graph Guided Image Generation from Labels",
+    "authors": "Hewen Xiao, Yuqiu Kong, Hongchen Tan, Xiuping Liu, Baocai Yin",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "TNT: Text-Conditioned Network with Transductive Inference for Few-Shot Video Classification",
+    "authors": "Andr&#233;s Villa, Juan-Manuel P&#233;rez-R&#250;a, Vladimir Araujo, Juan Carlos Niebles, Victor Escorcia, Alvaro Soto",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "A Foundation for 3D Human Behavior Detection in Privacy-Sensitive Domains",
+    "authors": "Thomas Heitzinger, Martin Kampel",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Student-Teacher Feature Pyramid Matching for Anomaly Detection",
+    "authors": "Guodong Wang 0006, Shumin Han, Errui Ding, Di Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Image Completion with Adaptive Multi-Temperature Mask-Guided Attention",
+    "authors": "Xiang Zhou, Yuan Zeng 0001, Yi Gong 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "TAPL: Dynamic Part-based Visual Tracking via Attention-guided Part Localization",
+    "authors": "Wei Han, Hantao Huang, Xiaoxi Yu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SVD-GAN for Real-Time Unsupervised Video Anomaly Detection",
+    "authors": "R. Dinesh Jackson Samuel, Fabio Cuzzolin",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Localizing Objects with Self-supervised Transformers and no Labels",
+    "authors": "Oriane Sim&#233;oni, Gilles Puy, Huy V. Vo, Simon Roburin, Spyros Gidaris, Andrei Bursuc, Patrick P&#233;rez, Renaud Marlet, Jean Ponce",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "FAST3D: Flow-Aware Self-Training for 3D Object Detectors",
+    "authors": "Christian Fruhwirth-Reisinger, Michael Opitz, Horst Possegger, Horst Bischof",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Conditional Model Selection for Efficient Video Understanding",
+    "authors": "Mihir Jain, Haitam Ben Yahia, Amir Ghodrati, Amirhossein Habibian, Fatih Porikli",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Order-independent Matching with Shape Similarity for Parking Slot Detection",
+    "authors": "Ziyi Yin 0001, Ruijin Liu, Zejian Yuan, Zhiliang Xiong",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "FETNet: Feature Exchange Transformer Network for RGB-D Object Detection",
+    "authors": "Zhibin Xiao, Jing-Hao Xue, Pengwei Xie, Guijin Wang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "AudViSum: Self-Supervised Deep Reinforcement Learning for Diverse Audio-Visual Summary Generation",
+    "authors": "Sanjoy Chowdhury, Aditya Patra, Subhrajyoti Dasgupta, Ujjwal Bhattacharya",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "MIGS: Meta Image Generation from Scene Graphs",
+    "authors": "Azade Farshad, Sabrina Musatian, Helisa Dhamo, Nassir Navab",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "3D Object Tracking with Transformer",
+    "authors": "Yubo Cui, Zheng Fang 0001, Jiayao Shan, Zuoxu Gu, Sifan Zhou",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-attribute Pizza Generator: Cross-domain Attribute Control with Conditional StyleGAN",
+    "authors": "Fangda Han, Guoyao Hao, Ricardo Guerrero, Vladimir Pavlovic 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Monocular Arbitrary Moving Object Discovery and Segmentation",
+    "authors": "Michal Neoral, Jan Sochman, Jiri Matas",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "An attention-driven hierarchical multi-scale representation for visual recognition",
+    "authors": "Zachary Wharton, Ardhendu Behera, Asish Bera",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "ERA: Entity-relationship Aware Video Summarization with Wasserstein GAN",
+    "authors": "Guande Wu, Jianzhe Peter Lin, Cl&#225;udio T. Silva",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Enhancing Human Motion Assessment by Self-supervised Representation Learning",
+    "authors": "Mahdiar Nekoui, Li Cheng 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Livestock Monitoring with Transformer",
+    "authors": "Bhavesh Tangirala, Ishan Bhandari, D&#225;niel L&#225;szl&#243;, Deepak K. Gupta, Rajat Mani Thomas, Devanshu Arya",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "CHASE: Robust Visual Tracking via Cell-Level Differentiable Neural Architecture Search",
+    "authors": "Seyed Mojtaba Marvasti-Zadeh, Javad Khaghani, Li Cheng 0001, Hossein Ghanei-Yakhdan, Shohreh Kasaei",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Highly Efficient Natural Image Matting",
+    "authors": "Yijie Zhong 0001, Bo Li 0115, Lv Tang, Hao Tang 0005, Shouhong Ding",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Single Pixel Spectral Color Constancy",
+    "authors": "Samu Koskinen, Erman Acar, Joni-Kristian Kamarainen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Few-Shot Domain Adaptation for Low Light RAW Image Enhancement",
+    "authors": "K. Ram Prabhakar, Vishal Vinod, Nihar R. Sahoo, Venkatesh Babu Radhakrishnan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learned Regularizers and Geometry for Image Denoising",
+    "authors": "Stacey Levine, Ryan M. Cecil, Marcelo Bertalm&#237;o",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Unsupervised Image Denoising with Frequency Domain Knowledge",
+    "authors": "Nahyun Kim, Donggon Jang, Sunhyeok Lee, Bomi Kim, Daeshik Kim",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "KonIQ++: Boosting No-Reference Image Quality Assessment in the Wild by Jointly Predicting Image Quality and Defects",
+    "authors": "Shaolin Su, Vlad Hosu, Hanhe Lin, Yanning Zhang 0001, Dietmar Saupe",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Selection of Source Images Heavily Influences the Effectiveness of Adversarial Attacks",
+    "authors": "Utku Ozbulak, Esla Timothy Anzaku, Wesley De Neve, Arnout Van Messem",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Pseudo-Labeling for Class Incremental Learning",
+    "authors": "Alexis Lechat, St&#233;phane Herbin, Fr&#233;d&#233;ric Jurie",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning to Sparsify Differences of Synaptic Signal for Efficient Event Processing",
+    "authors": "Yusuke Sekikawa, Keisuke Uto",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "DISCO: accurate Discrete Scale Convolutions",
+    "authors": "Ivan Sosnovik, Artem Moskalev, Arnold W. M. Smeulders",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "How Important is Importance Sampling for Deep Budgeted Training?",
+    "authors": "Eric Arazo, Diego Ortego, Paul Albert, Noel E. O'Connor, Kevin McGuinness",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "TransFusion: Cross-view Fusion with Transformer for 3D Human Pose Estimation",
+    "authors": "Haoyu Ma, Liangjian Chen, Deying Kong, Zhe Wang, Xingwei Liu, Hao Tang 0010, Xiangyi Yan, Yusheng Xie, Shih-Yao Lin 0001, Xiaohui Xie",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Text-Based Person Search with Limited Data",
+    "authors": "Xiao Han, Sen He 0001, Li Zhang 0040, Tao Xiang 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "PartGAN: Unsupervised Part Decomposition for Image Generation and Segmentation",
+    "authors": "Yuheng Li, Krishna Kumar Singh, Yang Xue, Yong Jae Lee",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Each Attribute Matters: Contrastive Attention for Sentence-based Image Editing",
+    "authors": "Liuqing Zhao, Fan Lyu, Fuyuan Hu, Kaizhu Huang, Fenglei Xu, Linyan Li",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Boundary Guided Context Aggregation for Semantic Segmentation",
+    "authors": "Haoxiang Ma, Hongyu Yang 0001, Di Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning multiplane images from single views with self-supervision",
+    "authors": "Gustavo Sutter P. Carvalho, Diogo C. Luvizon, Antonio Joia, Andr&#233; G. C. Pacheco, Ot&#225;vio A. B. Penatti",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Local-Global Associative Frame Assemble in Video Re-ID",
+    "authors": "Qilei Li, Jiabo Huang, Shaogang Gong",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Image-Text Alignment using Adaptive Cross-attention with Transformer Encoder for Scene Graphs",
+    "authors": "Juyong Song, Sunghyun Choi 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Joint-Aware Regression: Rethinking Regression-Based Method for 3D Hand Pose Estimation",
+    "authors": "Xiaozheng Zheng, Pengfei Ren 0001, Haifeng Sun 0001, Jingyu Wang 0001, Qi Qi 0001, Jianxin Liao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "AniFormer: Data-driven 3D Animation with Transformer",
+    "authors": "Haoyu Chen 0001, Hao Tang 0005, Nicu Sebe, Guoying Zhao 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "HandTailor: Towards High-Precision Monocular 3D Hand Recovery",
+    "authors": "Jun Lv, Wenqiang Xu, Lixin Yang 0001, Sucheng Qian, Chongzhao Mao, Cewu Lu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Temporal-Spatial Graph Attention Networks for DCE-MRI Breast Tumor Segmentation",
+    "authors": "Tianxu Lv, Xiang Pan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "MorphGAN: One-Shot Face Synthesis GAN for Detecting Recognition Bias",
+    "authors": "Nataniel Ruiz, Barry-John Theobald, Anurag Ranjan, Ahmed Hussen Abdelaziz, Nicholas Apostoloff",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "MVT: Multi-view Vision Transformer for 3D Object Recognition",
+    "authors": "Shuo Chen 0010, Tan Yu, Ping Li 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning Texture Generators for 3D Shape Collections from Internet Photo Sets",
+    "authors": "Rui Yu, Yue Dong 0001, Pieter Peers, Xin Tong 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Leveraging Geometry for Shape Estimation from a Single RGB Image",
+    "authors": "Florian Langer, Ignas Budvytis, Roberto Cipolla",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Higher-Order Implicit Fairing Networks for 3D Human Pose Estimation",
+    "authors": "Jianning Quan, Abdessamad Ben Hamza",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Talking Head Generation with Audio and Speech Related Facial Action Units",
+    "authors": "Sen Chen, Zhilei Liu, Jiaxing Liu 0001, Zhengxiang Yan, Longbiao Wang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Deep Line Encoding for Monocular 3D Object Detection and Depth Prediction",
+    "authors": "Ce Liu 0004, Shuhang Gu, Luc Van Gool, Radu Timofte",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "DomainMix: Learning Generalizable Person Re-Identification Without Human Annotations",
+    "authors": "Wenhao Wang, Shengcai Liao, Fang Zhao 0006, Cuicui Kang, Ling Shao 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Separating Content and Style for Unsupervised Image-to-Image Translation",
+    "authors": "Yunfei Liu 0001, Haofei Wang 0001, Yang Yue, Feng Lu 0005",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Extended Differentiable Marching Cubes by Manifold-Preserving Shape Inflation",
+    "authors": "Kiichi Itoh, Tatsuya Yatagawa, Yutaka Ohtake, Hiromasa Suzuki",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Robust Ellipsoid-specific Fitting via Expectation Maximization",
+    "authors": "Mingyang Zhao 0001, Xiaohong Jia 0001, Lei Ma 0008, Xinlin Qiu, Xin Jiang 0008, Dong-Ming Yan 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-Granularity Hypergraphs and Adversarial Complementary Learning for Person Re-identification",
+    "authors": "Yi Ma, Tian Bai 0005, Wenyu Zhang 0004, Jian Hu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Intersection Prediction from Single 360&#176; Image via Deep Detection of Possible Direction of Travel",
+    "authors": "Naoki Sugimoto, Satoshi Ikehata, Kiyoharu Aizawa",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Elsa: Energy-based Learning for Semi-supervised Anomaly Detection",
+    "authors": "Sungwon Han 0001, Hyeonho Song, SeungEon Lee 0001, Sungwon Park 0001, Meeyoung Cha",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Inside Out Visual Place Recognition",
+    "authors": "Sarah Ibrahimi, Nanne van Noord, Tim Alpherts, Marcel Worring",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "GaitMask: Mask-based Model for Gait Recognition",
+    "authors": "Beibei Lin, Yu Liu, Shunli Zhang 0005",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "PRN: Psychology-Inspired Relation Network for Detecting Social Interaction Groups from Single Images",
+    "authors": "Jiaqi Yu, Jinhai Yang 0001, Hua Yang 0001, Guangtao Zhai",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Leveraging Human Selective Attention for Medical Image Analysis with Limited Training Data",
+    "authors": "Yifei Huang 0002, Xiaoxiao Li, Lijin Yang, Lin Gu 0003, Yingying Zhu 0004, Hirofumi Seo, Qiuming Meng, Tatsuya Harada, Yoichi Sato 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "OMAD: Object Model with Articulated Deformations for Pose Estimation and Retrieval",
+    "authors": "Han Xue, Liu Liu 0012, Wenqiang Xu, Haoyuan Fu, Cewu Lu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Separable Batch Normalization for Robust Facial Landmark Localization",
+    "authors": "Shuangping Jin, Zhenhua Feng 0001, Wankou Yang, Josef Kittler",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Cascading Feature Extraction for Fast Point Cloud Registration",
+    "authors": "Yoichiro Hisadome, Yusuke Matsui 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Center-wise Local Image Mixture For Contrastive Representation Learning",
+    "authors": "Hao Li 0090, Xiaopeng Zhang 0008, Hongkai Xiong",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-Stream Attention Learning for Monocular Vehicle Velocity and Inter-Vehicle Distance Estimation",
+    "authors": "Kuan-Chih Huang, Yu-Kai Huang, Winston H. Hsu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "GaussiGAN: Controllable Image Synthesis with 3D Gaussians from Unposed Silhouettes",
+    "authors": "Youssef Alami Mejjati, Isa Milefchik, Aaron Gokaslan, Oliver Wang, Kwang In Kim, James Tompkin 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "360-Degree Gaze Estimation in the Wild Using Multiple Zoom Scales",
+    "authors": "Ashesh, Chu-Song Chen, Hsuan-Tien Lin",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "DEX: Domain Embedding Expansion for Generalized Person Re-identification",
+    "authors": "Eugene P. W. Ang, Shan Lin, Alex C. Kot",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Mitigating Mode Collapse by Sidestepping Catastrophic Forgetting",
+    "authors": "Karttikeya Mangalam, Rohin Garg",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Privacy Preserving for Medical Image Analysis via Non-Linear Deformation Proxy",
+    "authors": "Bach Ngoc Kim, Jose Dolz, Christian Desrosiers, Pierre-Marc Jodoin",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Depth-aware Object Segmentation and Grasp Detection for Robotic Picking Tasks",
+    "authors": "Stefan Ainetter, Christoph B&#246;hm 0004, Rohit Dhakate, Stephan Weiss 0002, Friedrich Fraundorfer",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Ray-ONet: Efficient 3D Reconstruction From A Single RGB Image",
+    "authors": "Wenjing Bian, Zirui Wang, Kejie Li, Victor Adrian Prisacariu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Self-Supervised Monocular Depth Estimation with Internal Feature Fusion",
+    "authors": "Hang Zhou, David Greenwood 0001, Sarah Taylor",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "DeepSportLab: a Unified Framework for Ball Detection, Player Instance Segmentation and Pose Estimation in Team Sports Scenes",
+    "authors": "Seyed Abolfazl Ghasemzadeh, Gabriel Van Zandycke, Maxime Istasse, Niels Sayez, Amirafshar Moshtaghpour, Christophe De Vleeschouwer",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Visual Keyword Spotting with Attention",
+    "authors": "K. R. Prajwal, Liliane Momeni, Triantafyllos Afouras, Andrew Zisserman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multimodal Semi-Supervised Learning for 3D Objects",
+    "authors": "Zhimin Chen, Longlong Jing, Yang Liang, Yingli Tian, Bing Li 0008",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Improving Face Recognition with Large Age Gaps by Learning to Distinguish Children",
+    "authors": "Jungsoo Lee, Jooyeol Yun, Sunghyun Park 0005, Yonggyu Kim, Jaegul Choo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Bird's Eye View Segmentation Using Lifted 2D Semantic Features",
+    "authors": "Isht Dwivedi, Srikanth Malla, Yi-Ting Chen 0001, Behzad Dariush",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Decentralised Person Re-Identification with Selective Knowledge Aggregation",
+    "authors": "Shitong Sun, Guile Wu, Shaogang Gong",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Weakly Supervised Semantic Segmentation: From Box to Tag and Back",
+    "authors": "Zongliang Ji, Olga Veksler",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Context-Aware Unsupervised Clustering for Person Search",
+    "authors": "Byeong-Ju Han, Kuhyeun Ko, Jae-Young Sim",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Hierarchical Graph Networks for 3D Human Pose Estimation",
+    "authors": "Han Li, Bowen Shi 0003, Wenrui Dai, Yabo Chen, Botao Wang, Yu Sun, Min Guo, Chenglin Li, Junni Zou, Hongkai Xiong",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Local and Global Point Cloud Reconstruction for 3D Hand Pose Estimation",
+    "authors": "Ziwei Yu, Linlin Yang 0001, Shicheng Chen, Angela Yao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Self-Supervised Learning of Image Scale and Orientation",
+    "authors": "Jongmin Lee 0005, Yoonwoo Jeong, Minsu Cho",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Continuous Event-Line Constraint for Closed-Form Velocity Initialization",
+    "authors": "Xin Peng 0005, Wanting Xu, Jiaqi Yang, Laurent Kneip",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "IB-MVS: An Iterative Algorithm for Deep Multi-View Stereo based on Binary Decisions",
+    "authors": "Christian Sormann, Mattia Rossi, Andreas Kuhn 0005, Friedrich Fraundorfer",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "On Automatic Data Augmentation for 3D Point Cloud Classification",
+    "authors": "Wanyue Zhang, Xun Xu 0002, Fayao Liu, Le Zhang 0001, Chuan Sheng Foo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Unified 3D Mesh Recovery of Humans and Animals by Learning Animal Exercise",
+    "authors": "Kim Youwang, Ji-Yeon Kim, Kyungdon Joo, Tae-Hyun Oh",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Weakly Supervised Training of Monocular 3D Object Detectors Using Wide Baseline Multi-view Traffic Camera Data",
+    "authors": "Matthew Howe, Ian Reid 0001, Jamie Mackenzie",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Discriminative Clue Alignment Network for Both Image- and Video-Based Person Re-Identification",
+    "authors": "Panwen Hu, Xinyu Zhou, Rui Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "3D Flow Field Estimation around a Vehicle Using Convolutional Neural Networks",
+    "authors": "Fangge Chen, Kei Akasaka",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "DeepUME: Learning the Universal Manifold Embedding for Robust Point Cloud Registration",
+    "authors": "Natalie Lang, Joseph M. Francos",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Self-Supervised Real-time Video Stabilization",
+    "authors": "Jinsoo Choi, Jaesik Park, In So Kweon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Two Heads are Better than One: Geometric-Latent Attention for Point Cloud Classification and Segmentation",
+    "authors": "Hanz Cuevas-Velasquez, Antonio Javier Gallego 0001, Robert B. Fisher",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Looking at the whole picture: constrained unsupervised anomaly segmentation",
+    "authors": "Julio Silva-Rodr&#237;guez, Valery Naranjo, Jose Dolz",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "GPRAR: Graph Convolutional Network based Pose Reconstruction and Action Recognition for Human Trajectory Prediction",
+    "authors": "Manh Huynh, Gita Alaghband",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning to Deblur and Rotate Motion-Blurred Faces",
+    "authors": "Givi Meishvili, Attila Szab&#243;, Simon Jenni, Paolo Favaro",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning Query Expansion over the Nearest Neighbor Graph",
+    "authors": "Benjamin Eliot Klein, Lior Wolf",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Learning to Predict Convolutional Filters with Guidance for Conditional Image Generation",
+    "authors": "Lei Chen 0023, Mengyao Zhai, Greg Mori",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "3D-RETR: End-to-End Single and Multi-View 3D Reconstruction with Transformers",
+    "authors": "Zai Shi, Zhao Meng, Yiran Xing, Yunpu Ma, Roger Wattenhofer",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Scan-IT: Domain segmentation of spatial transcriptomics images by graph neural network",
+    "authors": "Zixuan Cang, Xinyi Ning, Annika Nie, Min Xu, Jing Zhang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Distilling Dynamic Spatial Relation Network for Human Pose Estimation",
+    "authors": "Kewei Wu, Tao Wang, Zhao Xie, Dan Guo 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Diffeomorphism Matching for Fast Unsupervised Pretraining on Radiographs",
+    "authors": "Huynh Minh Thanh, Chanh D. Tr. Nguyen, Ta Duc Huy, Hoang Cao Huyen, Trung H. Bui, Steven Quoc Hung Truong",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Efficient Cross-Modal Retrieval via Deep Binary Hashing and Quantization",
+    "authors": "Yang Shi, Young-joo Chung",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Planar Shape Based Registration for Multi-modal Geometry",
+    "authors": "Muxingzi Li, Florent Lafarge",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Adaptive Content Feature Enhancement GAN for Multimodal Selfie to Anime Translation",
+    "authors": "Yuanming Li, Jeong-gi Kwak, Dongsik Yoon, Youngsaeng Jin, David K. Han, Hanseok Ko",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "HAT-Net: A Hierarchical Transformer Graph Neural Network for Grading of Colorectal Cancer Histology Images",
+    "authors": "Yihan Su, Yu Bai 0020, Bo Zhang 0032, Zheng Zhang 0038, Wendong Wang 0003",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "DKMA-ULD: Domain Knowledge augmented Multi-head Attention based Robust Universal Lesion Detection",
+    "authors": "Manu Sheoran, Meghal Dani, Monika Sharma, Lovekesh Vig",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "ASM-Net: Category-level Pose and Shape Estimation Using Parametric Deformation",
+    "authors": "Shuichi Akizuki, Manabu Hashimoto",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SDNet: Unconstrained Object Structure Detector Network for In-Field Real-Time Crop Part Location And Phenotyping",
+    "authors": "Louis Lac, Jean-Pierre Da Costa, Marc Donias, Barna Keresztes, Marine Louargant",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "X Resolution Correspondence Networks",
+    "authors": "Georgi Tinchev, Shuda Li, Kai Han 0001, David Mitchell, Rigas Kouskouridas",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Stabilized Semi-Supervised Training for COVID Lesion Segmentation",
+    "authors": "Pranjal Sahu, Saikiran Kumar Vunnava, Hong Qin 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Towards Holistic Real-time Human 3D Pose Estimation using MocapNETs",
+    "authors": "Ammar Qammaz, Antonis A. Argyros",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Probabilistic Estimation of 3D Human Shape and Pose with a Semantic Local Parametric Model",
+    "authors": "Akash Sengupta, Ignas Budvytis, Roberto Cipolla",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "WAN: Watermarking Attack Network",
+    "authors": "Seung-Hun Nam, In-Jae Yu, Seung-Min Mun, Daesik Kim, Wonhyuk Ahn",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Robust Crowd Counting via Image Enhancement and Dynamic Feature Selection",
+    "authors": "Nayeong Kim, Suha Kwak",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Subpixel Heatmap Regression for Facial Landmark Localization",
+    "authors": "Adrian Bulat, Enrique Sanchez, Georgios Tzimiropoulos",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Gaussian map predictions for 3D surface feature localisation and counting",
+    "authors": "Justin Le Lou&#235;dec, Grzegorz Cielniak",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Multi-view Image-based Hand Geometry Refinement using Differentiable Monte Carlo Ray Tracing",
+    "authors": "Giorgos Karvounas, Nikolaos Kyriazis, Iason Oikonomidis, Aggeliki Tsoli, Antonis A. Argyros",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Surround-view Free Space Boundary Detection with Polar Representation",
+    "authors": "Zidong Cao, Ang Li, Zhiliang Xiong, Zejian Yuan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Duplicate Latent Representation Suppression for Multi-object Variational Autoencoders",
+    "authors": "Nanbo Li, Robert B. Fisher",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Shape Feature Loss for Kidney Segmentation in 3D Ultrasound Images",
+    "authors": "Haithem Boussaid, Laurence Rouet",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Personalized One-Shot Lipreading for an ALS Patient",
+    "authors": "Bipasha Sen, Aditya Agarwal, Rudrabha Mukhopadhyay, Vinay P. Namboodiri, C. V. Jawahar",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "OSS-Net: Memory Efficient High Resolution Semantic Segmentation of 3D Medical Data",
+    "authors": "Christoph Reich, Tim Prangemeier, &#214;zdemir &#199;etin, Heinz Koeppl",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Pose-Transformation and Radial Distance Clustering for Unsupervised Person Re-identification",
+    "authors": "Siddharth Seth, Akash Sonth, Anirban Chakraborty 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "AGCN: Adversarial Graph Convolutional Network for 3D Point Cloud Segmentation",
+    "authors": "Seunghoi Kim, Daniel C. Alexander",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "SwinFGHash: Fine-grained Image Retrieval via Transformer-based Hashing Network",
+    "authors": "Di Lu, Jinpeng Wang 0002, Ziyun Zeng, Bin Chen 0011, Shudeng Wu, Shu-Tao Xia",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Cross-Modal Generative Augmentation for Visual Question Answering",
+    "authors": "Zixu Wang, Yishu Miao, Lucia Specia",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2021,
+    "title": "Tensor Composition Net for Visual Relationship Prediction",
+    "authors": "Yuting Qiang, Yongxin Yang, Xueting Zhang, Yanwen Guo 0001, Timothy M. Hospedales",
+    "abstract": null
+  }
+]

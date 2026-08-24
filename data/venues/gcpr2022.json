@@ -1,0 +1,254 @@
+[
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "InvGAN: Invertible GANs",
+    "authors": "Partha Ghosh, Dominik Zietlow, Michael J. Black, Larry S. Davis, Xiaochen Hu",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Auto-Compressing Subset Pruning for Semantic Image Segmentation",
+    "authors": "Konstantin Ditschuneit, Johannes S. Otterbach",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Improving Robustness and Calibration in Ensembles with Diversity Regularization",
+    "authors": "Hendrik Alexander Mehrtens, Camila Gonz&#225;lez, Anirban Mukhopadhyay 0003",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "FastSiam: Resource-Efficient Self-supervised Learning on a Single GPU",
+    "authors": "Daniel Pototzky, Azhar Sultan, Lars Schmidt-Thieme",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Reiterative Domain Aware Multi-target Adaptation",
+    "authors": "Sudipan Saha, Shan Zhao 0007, Nasrullah Sheikh, Xiao Xiang Zhu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Augmentation Learning for Semi-Supervised Classification",
+    "authors": "Tim Frommknecht, Pedro Alves Zipf, Quanfu Fan, Nina Shvetsova, Hilde Kuehne",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Multi-attribute Open Set Recognition",
+    "authors": "Piyapat Saranrittichai, Chaithanya Kumar Mummadi, Claudia Blaiotta, Mauricio Munoz, Volker Fischer 0003",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "A Syntactic Pattern Recognition Based Approach to Online Anomaly Detection and Identification on Electric Motors",
+    "authors": "Kutalmis Coskun, Zeynep Kumralbas, Hazel &#199;avus, Borahan T&#252;mer",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Sparse Visual Counterfactual Explanations in Image Space",
+    "authors": "Valentyn Boreiko, Maximilian Augustin, Francesco Croce, Philipp Berens, Matthias Hein 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Blind Single Image Super-Resolution via Iterated Shared Prior Learning",
+    "authors": "Thomas Pinetz, Erich Kobler, Thomas Pock, Alexander Effland",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "A Bhattacharyya Coefficient-Based Framework for Noise Model-Aware Random Walker Image Segmentation",
+    "authors": "Dominik Drees, Florian Eilers, Ang Bian, Xiaoyi Jiang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Optimizing Edge Detection for Image Segmentation with Multicut Penalties",
+    "authors": "Steffen Jung 0001, Sebastian Ziegler, Amirhossein Kardoost, Margret Keuper",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Hyperspectral Demosaicing of Snapshot Camera Images Using Deep Learning",
+    "authors": "Eric L. Wisotzky, Charul Daudkane, Anna Hilsmann, Peter Eisert",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "SF2SE3: Clustering Scene Flow into SE(3)-Motions via Proposal and Selection",
+    "authors": "Leonhard Sommer, Philipp Schr&#246;ppel, Thomas Brox",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Improving Unsupervised Label Propagation for Pose Tracking and Video Object Segmentation",
+    "authors": "Urs Waldmann, Jannik Bamberger, Ole Johannsen, Oliver Deussen, Bastian Goldl&#252;cke",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "D-InLoc++: Indoor Localization in Dynamic Environments",
+    "authors": "Martina Dubenova, Anna Zderadickova, Ondrej Kafka, Tom&#225;s Pajdla, Michal Polic",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Global Hierarchical Attention for 3D Point Cloud Analysis",
+    "authors": "Dan Jia, Alexander Hermans, Bastian Leibe",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "InterCap: Joint Markerless 3D Tracking of Humans and Objects in Interaction",
+    "authors": "Yinghao Huang, Omid Taheri, Michael J. Black, Dimitrios Tzionas",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Online Marker-Free Extrinsic Camera Calibration Using Person Keypoint Detections",
+    "authors": "Bastian P&#228;tzold, Simon Bultmann, Sven Behnke",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "NeuralMeshing: Differentiable Meshing of Implicit Neural Representations",
+    "authors": "Mathias Vetsch, Sandro Lombardi, Marc Pollefeys, Martin R. Oswald",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Image-Based Detection of Structural Defects Using Hierarchical Multi-scale Attention",
+    "authors": "Christian Benz, Volker Rodehorst",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "A Dataset for Analysing Complex Document Layouts in the Digital Humanities and Its Evaluation with Krippendorff's Alpha",
+    "authors": "David Tschirschwitz, Franziska Klemstein, Benno Stein 0001, Volker Rodehorst",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "End-to-End Single Shot Detector Using Graph-Based Learnable Duplicate Removal",
+    "authors": "Shuxiao Ding, Eike Rehder, Lukas Schneider, Marius Cordts, J&#252;rgen Gall",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Localized Vision-Language Matching for Open-vocabulary Object Detection",
+    "authors": "Mar&#237;a Alejandra Bravo, Sudhanshu Mittal, Thomas Brox",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Diverse Video Captioning by Adaptive Spatio-temporal Attention",
+    "authors": "Zohreh Ghaderi, Leonard Salewski, Hendrik P. A. Lensch",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Self-supervised Learning for Unintentional Action Prediction",
+    "authors": "Olga Zatsarynna, Yazan Abu Farha, Juergen Gall",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Robust Object Detection Using Knowledge Graph Embeddings",
+    "authors": "Christopher Lang, Alexander Braun 0003, Abhinav Valada",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "On Hyperbolic Embeddings in Object Detection",
+    "authors": "Christopher Lang, Alexander Braun 0003, Lars Schillingmann, Abhinav Valada",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Probabilistic Biomass Estimation with Conditional Generative Adversarial Networks",
+    "authors": "Johannes Leonhardt, Lukas Drees, Peter Jung 0001, Ribana Roscher",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Time Dependent Image Generation of Plants from Incomplete Sequences with CNN-Transformer",
+    "authors": "Lukas Drees, Immanuel Weber, Marc Ru&#223;wurm, Ribana Roscher",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "I-MuPPET: Interactive Multi-Pigeon Pose Estimation and Tracking",
+    "authors": "Urs Waldmann, Hemal Naik, Nagy M&#225;t&#233;, Fumihiro Kano, Iain D. Couzin, Oliver Deussen, Bastian Goldl&#252;cke",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Interpretable Prediction of Pulmonary Hypertension in Newborns Using Echocardiograms",
+    "authors": "Hanna Ragnarsd&#243;ttir, Laura Manduchi, Holger Michel, Fabian Laumer, Sven Wellmann, Ece Ozkan, Julia E. Vogt",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "A Framework for Benchmarking Real-Time Embedded Object Detection",
+    "authors": "Michael Schlosser 0004, Daniel K&#246;nig, Michael Teutsch",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "ArtFID: Quantitative Evaluation of Neural Style Transfer",
+    "authors": "Matthias Wright, Bj&#246;rn Ommer",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "GazeTransformer: Gaze Forecasting for Virtual Reality Using Transformer Networks",
+    "authors": "Tim Rolff, Harm Matthias Harms, Frank Steinicke, Simone Frintrop",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2022,
+    "title": "Improving Traffic Sign Recognition by Active Search",
+    "authors": "Sami Jaghouar, Hannes Gustafsson, Bernhard Mehlig, Erik Werner, Niklas Gustafsson",
+    "abstract": null
+  }
+]

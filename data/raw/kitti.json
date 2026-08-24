@@ -1,0 +1,22 @@
+[
+  {"title": "Deep multimodal data fusion", "authors": "F Zhao, C Zhang, B Geng", "year": 2024, "venue": "ACM Computing Surveys", "citations": 692},
+  {"title": "A survey on integrated sensing, communication, and computation", "authors": "D Wen, Y Zhou, X Li, Y Shi, K Huang", "year": 2024, "venue": "IEEE Communications Surveys & Tutorials", "citations": 295},
+  {"title": "Depth anything v2", "authors": "L Yang, B Kang, Z Huang, Z Zhao", "year": 2024, "venue": "Advances in Neural Information Processing Systems", "citations": 2648},
+  {"title": "Depth pro: Sharp monocular metric depth in less than a second", "authors": "A Bochkovskiy, A Delaunoy, H Germain", "year": 2025, "venue": "International Conference on Learning Representations", "citations": 631},
+  {"title": "Depth anything: Unleashing the power of large-scale unlabeled data", "authors": "L Yang, B Kang, Z Huang, X Xu", "year": 2024, "venue": "CVPR", "citations": 2671},
+  {"title": "Dust3r: Geometric 3d vision made easy", "authors": "S Wang, V Leroy, Y Cabon", "year": 2024, "venue": "CVPR", "citations": 1852},
+  {"title": "Continuous 3d perception model with persistent state", "authors": "Q Wang, Y Zhang, A Holynski, AA Efros", "year": 2025, "venue": "CVPR", "citations": 482},
+  {"title": "Spatialrgpt: Grounded spatial reasoning in vision-language models", "authors": "AC Cheng, H Yin, Y Fu, Q Guo", "year": 2024, "venue": "Advances in Neural Information Processing Systems", "citations": 534},
+  {"title": "Repurposing diffusion-based image generators for monocular depth estimation", "authors": "B Ke, A Obukhov, S Huang, N Metzger", "year": 2024, "venue": "CVPR", "citations": 1110},
+  {"title": "Dinov2: Learning robust visual features without supervision", "authors": "M Oquab, T Darcet, T Moutakanni, H Vo", "year": 2023, "venue": "arXiv preprint", "citations": 11221},
+  {"title": "Monst3r: A simple approach for estimating geometry in the presence of motion", "authors": "J Zhang, C Herrmann, J Hur, V Jampani", "year": 2025, "venue": "International Conference on Learning Representations", "citations": 433},
+  {"title": "Permutation-Equivariant Visual Geometry Learning", "authors": "Y Wang, J Zhou, H Zhu, W Chang", "year": 2026, "venue": "International Conference on Learning Representations", "citations": 318},
+  {"title": "Drivevlm: The convergence of autonomous driving and large vision-language models", "authors": "X Tian, J Gu, B Li, Y Liu, Y Wang, Z Zhao", "year": 2024, "venue": "arXiv preprint", "citations": 746},
+  {"title": "Dinov3", "authors": "O Simeoni, HV Vo, M Seitzer, F Baldassarre", "year": 2025, "venue": "arXiv preprint", "citations": 1020},
+  {"title": "Depth anything 3: Recovering the visual space from any views", "authors": "H Lin, S Chen, J Liew, DY Chen, Z Li, G Shi", "year": 2025, "venue": "arXiv preprint", "citations": 457},
+  {"title": "Depthsplat: Connecting gaussian splatting and depth", "authors": "H Xu, S Peng, F Wang, H Blum, D Barath", "year": 2025, "venue": "CVPR", "citations": 312},
+  {"title": "Video depth anything: Consistent depth estimation for super-long videos", "authors": "S Chen, H Guo, S Zhu, F Zhang", "year": 2025, "venue": "CVPR", "citations": 260},
+  {"title": "Scaling vision transformers to 22 billion parameters", "authors": "M Dehghani, J Djolonga, B Mustafa", "year": 2023, "venue": "International Conference on Machine Learning", "citations": 1070},
+  {"title": "Visual prompt tuning", "authors": "M Jia, L Tang, BC Chen, C Cardie, S Belongie", "year": 2022, "venue": "European Conference on Computer Vision", "citations": 3913},
+  {"title": "Metric3d v2: A versatile monocular geometric foundation model for zero-shot metric depth and surface normal estimation", "authors": "M Hu, W Yin, C Zhang, Z Cai, X Long", "year": 2024, "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence", "citations": 390}
+]

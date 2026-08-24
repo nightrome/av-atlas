@@ -1,0 +1,64 @@
+# Generated build output -- rebuilt fresh by scripts/build_public_site.py,
+# published to gh-pages by scripts/deploy.py, never committed to main.
+public/
+
+# papers_full.json is a ~265MB derived merge of data/venues/*.json +
+# enriched.json (regenerate with scripts/merge_corpus.py) -- redundant to
+# store both, and GitHub flags it as an oversized file. Keep the sources,
+# not the merge output.
+data/papers_full.json
+# stats.json is likewise fully derived (regenerate with scripts/aggregate.py,
+# after merge_corpus.py) -- untracked to keep diffs/commits to source data
+# and code, not a ~90MB regenerable leaderboard dump. build_public_site.py
+# copies whatever's currently on disk into the published output, same as
+# always; this only affects what git tracks in the repo, not what deploys.
+data/stats.json
+# Same reasoning as stats.json above -- regenerable, not reviewable as a
+# diff.
+data/stats_adjacent.json
+# sql.js-httpvfs prototype's SQLite file (build with scripts/build_sqlite.py)
+# -- regenerable, ~90MB, and authors_sql_prototype.html is a local-only
+# spike (not linked from nav, not deployed) so this never needs to ship.
+data/av_research_prototype.db
+av_research_prototype.db
+# Citation-source side files (fetch_citations_openalex.py, build_citation_graph.py)
+# -- same reasoning as papers_full.json/stats.json above: fully regenerable,
+# not reviewable as a diff, folded into papers_full.json by
+# apply_citation_sources.py before aggregate.py runs.
+data/citations_openalex.json
+data/citation_graph.json
+data/affiliations_arxiv.json
+data/affiliations_cvf.json
+data/reference_lists_cvf.json
+data/reference_lists_arxiv.json
+# fetch_arxiv_links.py's resumability cache -- its output is folded into
+# papers_full.json's arxiv_url field by apply_arxiv_links.py, same pattern
+# as every other fetch/apply side-file pair above.
+data/arxiv_ids.json
+data/s2_citing_seeds.json
+# fetch_s2_author_ids.py's own resumability caches -- its meaningful output,
+# data/s2_author_ids.json, feeds fetch_orcids.py directly (not tracked
+# either, an intermediate ID lookup) but the FINAL orcids.json output IS
+# tracked (small, real per-author enrichment, same treatment as
+# scholar_profiles.json).
+data/s2_author_ids.json
+data/s2_author_ids_checked_papers.json
+# arxiv_s2_citing.json (34MB+, ~4x the next-largest venues/*.json file) is
+# a bulk crawl dump, not a hand-curated proceedings listing like every
+# other venues/*.json -- most of its entries don't even pass classify.py's
+# relevance check. Same reasoning as papers_full.json/reference_lists_*.json
+# above: fully regenerable by rerunning fetch_semanticscholar_citing.py
+# (resumable via s2_citing_seeds.json), not meaningfully reviewable as a
+# diff, not worth the repo bloat.
+data/venues/arxiv_s2_citing.json
+# label_relevance.html is generated (build_labeling_tool.py) and embeds
+# labeling_candidates.json, itself a regenerable sample (fixed seed) of
+# papers_full.json -- neither is source. relevance_labels.json (the actual
+# hand-labeled output, once it exists) is NOT ignored -- that's real human
+# work, same treatment as scholar_profiles.json.
+label_relevance.html
+data/labeling_candidates.json
+
+__pycache__/
+*.pyc
+.env

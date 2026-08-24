@@ -1,0 +1,338 @@
+[
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Topology-Based 3D Reconstruction of Mid-Level Primitives in Man-Made Environments",
+    "authors": "Dominik Wolters, Reinhard Koch",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Associative Deep Clustering: Training a Classification Network with No Labels",
+    "authors": "Philip H&#228;usser, Johannes Plapp, Vladimir Golkov, Elie Aljalbout, Daniel Cremers",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "A Table Tennis Robot System Using an Industrial KUKA Robot Arm",
+    "authors": "Jonas Tebbe, Yapeng Gao, Marc Sastre-Rienietz, Andreas Zell",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "View-Aware Person Re-identification",
+    "authors": "Gregor Blott, Jie Yu 0013, Christian Heipke",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "MC2SLAM: Real-Time Inertial Lidar Odometry Using Two-Scan Motion Compensation",
+    "authors": "Frank Neuhaus, Tilman Ko&#223;, Robert Kohnen, Dietrich Paulus",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "An Analysis by Synthesis Approach for Automatic Vertebral Shape Identification in Clinical QCT",
+    "authors": "Stefan Reinhold, Timo Damm, Lukas Huber, Reimer Andresen, Reinhard Barkmann, Claus C. Gl&#252;er, Reinhard Koch",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Parcel Tracking by Detection in Large Camera Networks",
+    "authors": "Sascha Clausen, Claudius Zelenka, Tobias Schwede, Reinhard Koch",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Segmentation of Head and Neck Organs at Risk Using CNN with Batch Dice Loss",
+    "authors": "Oldrich Kodym, Michal Spanel, Adam Herout",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Detection of Mechanical Damages in Sawn Timber Using Convolutional Neural Networks",
+    "authors": "Nikolay Rudakov, Tuomas Eerola, Lasse Lensu, Heikki K&#228;lvi&#228;inen, Heikki Haario",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Compressed-Domain Video Object Tracking Using Markov Random Fields with Graph Cuts Optimization",
+    "authors": "Fernando Bombardelli 0001, Serhan G&#252;l, Cornelius Hellge",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Metric-Driven Learning of Correspondence Weighting for 2-D/3-D Image Registration",
+    "authors": "Roman Schaffert, Jian Wang 0009, Peter Fischer 0001, Anja Borsdorf, Andreas Maier 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Multi-view X-Ray R-CNN",
+    "authors": "Jan-Martin O. Steitz, Faraz Saeedan, Stefan Roth 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Ex Paucis Plura: Learning Affordance Segmentation from Very Few Examples",
+    "authors": "Johann Sawatzky, Martin Garbade, Juergen Gall",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Domain Generalization with Domain-Specific Aggregation Modules",
+    "authors": "Antonio D'Innocente, Barbara Caputo",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "X-GAN: Improving Generative Adversarial Networks with ConveX Combinations",
+    "authors": "Oliver Blum, Biagio Brattoli, Bj&#246;rn Ommer",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "A Randomized Gradient-Free Attack on ReLU Networks",
+    "authors": "Francesco Croce, Matthias Hein 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Cross and Learn: Cross-Modal Self-supervision",
+    "authors": "Nawid Sayed, Biagio Brattoli, Bj&#246;rn Ommer",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "KS(conf): A Light-Weight Test if a ConvNet Operates Outside of Its Specifications",
+    "authors": "R&#233;my Sun, Christoph H. Lampert",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Sublabel-Accurate Convex Relaxation with Total Generalized Variation Regularization",
+    "authors": "Michael Strecke, Bastian Goldluecke",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "On the Integration of Optical Flow and Action Recognition",
+    "authors": "Laura Sevilla-Lara, Yiyi Liao, Fatma G&#252;ney, Varun Jampani, Andreas Geiger 0001, Michael J. Black",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Context-driven Multi-stream LSTM (M-LSTM) for Recognizing Fine-Grained Activity of Drivers",
+    "authors": "Ardhendu Behera, Alexander Keidel, Bappaditya Debnath",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "3D Fluid Flow Estimation with Integrated Particle Reconstruction",
+    "authors": "Katrin Lasinger, Christoph Vogel, Thomas Pock, Konrad Schindler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "NRST: Non-rigid Surface Tracking from Monocular Video",
+    "authors": "Marc Habermann, Weipeng Xu, Helge Rhodin, Michael Zollh&#246;fer, Gerard Pons-Moll, Christian Theobalt",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Counting the Uncountable: Deep Semantic Density Estimation from Space",
+    "authors": "Andr&#233;s C. Rodr&#237;guez, Jan D. Wegner",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Acquire, Augment, Segment and Enjoy: Weakly Supervised Instance Segmentation of Supermarket Products",
+    "authors": "Patrick Follmann, Bertram Drost, Tobias B&#246;ttger",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Vehicle Re-identification in Context",
+    "authors": "Ayta&#231; Kanaci, Xiatian Zhu, Shaogang Gong",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Low-Shot Learning of Plankton Categories",
+    "authors": "Simon-Martin Schr&#246;der, Rainer Kiko, Jean-Olivier Irisson, Reinhard Koch",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Multimodal Dense Stereo Matching",
+    "authors": "Max Mehltretter, Sebastian P. Kleinschmidt, Bernardo Wagner, Christian Heipke",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Deep Distance Transform to Segment Visually Indistinguishable Merged Objects",
+    "authors": "S&#246;ren Klemm, Xiaoyi Jiang 0001, Benjamin Risse",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Multi-class Cell Segmentation Using CNNs with F _1 -measure Loss Function",
+    "authors": "Aaron Scherzinger, Philipp Hugenroth, Marike R&#252;der, Sven Bogdan, Xiaoyi Jiang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Improved Semantic Stixels via Multimodal Sensor Fusion",
+    "authors": "Florian Piewak, Peter Pinggera, Markus Enzweiler, David Pfeiffer, Marius Z&#246;llner 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Convolve, Attend and Spell: An Attention-based Sequence-to-Sequence Model for Handwritten Word Recognition",
+    "authors": "Lei Kang 0002, Juan Ignacio Toledo, Pau Riba, Mauricio Villegas, Alicia Forn&#233;s, Mar&#231;al Rusi&#241;ol",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Illumination Estimation Is Sufficient for Indoor-Outdoor Image Classification",
+    "authors": "Nikola Banic, Sven Loncaric",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "DeepKey: Towards End-to-End Physical Key Replication from a Single Photograph",
+    "authors": "Rory Smith, Tilo Burghardt",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Deriving Neural Network Architectures Using Precision Learning: Parallel-to-Fan Beam Conversion",
+    "authors": "Christopher Syben, Bernhard Stimpel, Jonathan Lommen, Tobias W&#252;rfl, Arnd D&#246;rfler, Andreas Maier 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Detecting Face Morphing Attacks by Analyzing the Directed Distances of Facial Landmarks Shifts",
+    "authors": "Naser Damer, Viola Boller, Yaza Wainakh, Fadi Boutros, Philipp Terh&#246;rst, Andreas Braun 0001, Arjan Kuijper",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "KloudNet: Deep Learning for Sky Image Analysis and Irradiance Forecasting",
+    "authors": "Dinesh Pothineni, Martin R. Oswald, Jan Poland, Marc Pollefeys",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Learning Style Compatibility for Furniture",
+    "authors": "Divyansh Aggarwal, Elchin Valiyev, Fadime Sener, Angela Yao",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Temporal Interpolation as an Unsupervised Pretraining Task for Optical Flow Estimation",
+    "authors": "Jonas Wulff, Michael J. Black",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Decoupling Respiratory and Angular Variation in Rotational X-ray Scans Using a Prior Bilinear Model",
+    "authors": "Tobias Geimer, Paul J. Keall, Katharina Breininger, Vincent Caillet, Michelle Dunbar, Christoph Bert, Andreas Maier 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Inference, Learning and Attention Mechanisms that Exploit and Preserve Sparsity in CNNs",
+    "authors": "Timo Hackel, Mikhail Usvyatsov, Silvano Galliani, Jan Dirk Wegner, Konrad Schindler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "End-to-End Learning of Deterministic Decision Trees",
+    "authors": "Thomas M. Hehn, Fred A. Hamprecht",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Taming the Cross Entropy Loss",
+    "authors": "Manuel Mart&#237;nez 0001, Rainer Stiefelhagen",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Supervised Deep Kriging for Single-Image Super-Resolution",
+    "authors": "Gianni Franchi, Angela Yao, Andreas Kolb 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Information-Theoretic Active Learning for Content-Based Image Retrieval",
+    "authors": "Bj&#246;rn Barz, Christoph K&#228;ding, Joachim Denzler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "AFSI: Adaptive Restart for Fast Semi-Iterative Schemes for Convex Optimisation",
+    "authors": "J&#243;n Arnar T&#243;masson, Peter Ochs, Joachim Weickert",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Invexity Preserving Transformations for Projection Free Optimization with Sparsity Inducing Non-convex Constraints",
+    "authors": "Sebastian Mathias Keller, Damian Murezzan, Volker Roth 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2018,
+    "title": "Unsupervised Label Learning on Manifolds by Spatially Regularized Geometric Assignment",
+    "authors": "Artjom Zern, Matthias Zisler, Freddie &#197;str&#246;m, Stefania Petra, Christoph Schn&#246;rr",
+    "abstract": null
+  }
+]

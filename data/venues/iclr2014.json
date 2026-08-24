@@ -1,0 +1,247 @@
+[
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "A Simple Model for Learning Multilingual Compositional Semantics",
+    "authors": "Karl Moritz Hermann, Phil Blunsom",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Zero-Shot Learning by Convex Combination of Semantic Embeddings",
+    "authors": "Mohammad Norouzi 0002, Tomás Mikolov, Samy Bengio, Yoram Singer,  Jonathon Shlens, Andrea Frome, Greg Corrado, Jeffrey Dean",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Exact solutions to the nonlinear dynamics of learning in deep linear neural networks",
+    "authors": "Andrew M. Saxe, James L. McClelland, Surya Ganguli",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Revisiting Natural Gradient for Deep Networks",
+    "authors": "Razvan Pascanu, Yoshua Bengio",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Unit Tests for Stochastic Optimization",
+    "authors": "Tom Schaul, Ioannis Antonoglou, David Silver 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Auto-Encoding Variational Bayes",
+    "authors": "Diederik P. Kingma, Max Welling",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Group-sparse Embeddings in Collective Matrix Factorization",
+    "authors": "Arto Klami, Guillaume Bouchard, Abhishek Tripathi",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "OverFeat: Integrated Recognition, Localization and Detection using Convolutional Networks",
+    "authors": "Pierre Sermanet, David Eigen, Xiang Zhang 0013, Michaël Mathieu, Rob Fergus, Yann LeCun",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Multi-digit Number Recognition from Street View Imagery using Deep Convolutional Neural Networks",
+    "authors": "Ian J. Goodfellow, Yaroslav Bulatov, Julian Ibarz, Sacha Arnoud, Vinay D. Shet",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Sequentially Generated Instance-Dependent Image Representations for Classification",
+    "authors": "Gabriel Dulac-Arnold, Ludovic Denoyer, Nicolas Thome, Matthieu Cord, Patrick Gallinari",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Learned versus Hand-Designed Feature Representations for 3d Agglomeration",
+    "authors": "John A. Bogovic, Gary B. Huang, Viren Jain",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Spectral Networks and Locally Connected Networks on Graphs",
+    "authors": "Joan Bruna, Wojciech Zaremba, Arthur Szlam, Yann LeCun",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Sparse similarity-preserving hashing",
+    "authors": "Jonathan Masci, Alexander M. Bronstein, Michael M. Bronstein, Pablo Sprechmann, Guillermo Sapiro",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Learning Transformations for Classification Forests",
+    "authors": "Qiang Qiu 0001, Guillermo Sapiro",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "The return of AdaBoost.MH: multi-class Hamming trees",
+    "authors": "Balázs Kégl",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Neuronal Synchrony in Complex-Valued Deep Networks",
+    "authors": "David P. Reichert, Thomas Serre",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Bounding the Test Log-Likelihood of Generative Models",
+    "authors": "Yoshua Bengio, Li Yao",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "A Generative Product-of-Filters Model of Audio",
+    "authors": "Dawen Liang, Matthew D. Hoffman, Gautham J. Mysore",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "How to Construct Deep Recurrent Neural Networks",
+    "authors": "Razvan Pascanu, Çaglar Gülçehre, Kyunghyun Cho, Yoshua Bengio",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Zero-Shot Learning and Clustering for Semantic Utterance Classification",
+    "authors": "Yann N. Dauphin, Gökhan Tür, Dilek Hakkani-Tür, Larry P. Heck",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "An empirical analysis of dropout in piecewise linear networks",
+    "authors": "David Warde-Farley, Ian J. Goodfellow, Aaron C. Courville, Yoshua Bengio",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "An Empirical Investigation of Catastrophic Forgeting in Gradient-Based Neural Networks",
+    "authors": "Ian J. Goodfellow, Mehdi Mirza, Xia Da, Aaron C. Courville, Yoshua Bengio",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "On Fast Dropout and its Applicability to Recurrent Networks",
+    "authors": "Justin Bayer, Christian Osendorfer, Nutan Chen, Sebastian Urban, Patrick van der Smagt",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Network In Network",
+    "authors": "Min Lin, Qiang Chen 0007, Shuicheng Yan",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Learning Human Pose Estimation Features with Convolutional Networks",
+    "authors": "Arjun Jain, Jonathan Tompson, Mykhaylo Andriluka, Graham W. Taylor, Christoph Bregler",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "EXMOVES: Classifier-based Features for Scalable Action Recognition",
+    "authors": "Du Tran, Lorenzo Torresani",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "On the number of inference regions of deep feed forward networks with piece-wise linear activations",
+    "authors": "Razvan Pascanu, Guido Montúfar, Yoshua Bengio",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Intriguing properties of neural networks",
+    "authors": "Christian Szegedy, Wojciech Zaremba, Ilya Sutskever, Joan Bruna, Dumitru Erhan, Ian J. Goodfellow, Rob Fergus",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Fast Training of Convolutional Networks through FFTs",
+    "authors": "Michaël Mathieu, Mikael Henaff, Yann LeCun",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Deep and Wide Multiscale Recursive Networks for Robust Image Labeling",
+    "authors": "Gary B. Huang, Viren Jain",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Some Improvements on Deep Convolutional Neural Network Based Image Classification",
+    "authors": "Andrew G. Howard",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Deep Convolutional Ranking for Multilabel Image Annotation",
+    "authors": "Yunchao Gong, Yangqing Jia, Thomas Leung, Alexander Toshev, Sergey Ioffe",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "The role of spatio-temporal synchrony in the encoding of motion",
+    "authors": "Kishore Reddy Konda, Roland Memisevic, Vincent Michalski",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "Multi-View Priors for Learning Detectors from Sparse Viewpoint Data",
+    "authors": "Bojan Pepik, Michael Stark 0003, Peter V. Gehler, Bernt Schiele",
+    "abstract": null
+  },
+  {
+    "conference": "ICLR",
+    "year": 2014,
+    "title": "k-Sparse Autoencoders",
+    "authors": "Alireza Makhzani, Brendan J. Frey",
+    "abstract": null
+  }
+]

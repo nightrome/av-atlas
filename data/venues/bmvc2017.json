@@ -1,0 +1,1332 @@
+[
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Probabilistic and Deep Models for 3D Reconstruction",
+    "authors": "Andreas Geiger 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Intro to Reinforcement Learning",
+    "authors": "Shimon Whiteson",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Deep Learning for 3D Localization",
+    "authors": "Vincent Lepetit",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "3D Reconstruction of Dynamic Scenes from Monocular Video",
+    "authors": "Lourdes Agapito",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Semantics-Preserving Locality Embedding for Zero-Shot Learning",
+    "authors": "Shi-Yen Tao, Yi-Ren Yeh, Yu-Chiang Frank Wang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Hyperspectral CNN Classification with Limited Training Samples",
+    "authors": "Lloyd Windrim, Rishi Ramakrishnan, Arman Melkumyan, Richard J. Murphy",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Which is the better inpainted image? Learning without subjective annotation",
+    "authors": "Mariko Isogawa, Dan Mikami, Kosuke Takahashi, Hideaki Kimata",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Spatio-Temporal Consistency to Detect and Segment Carried Objects",
+    "authors": "Farnoosh Ghadiri, Robert Bergevin, Guillaume-Alexandre Bilodeau",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Improved Image Segmentation via Cost Minimization of Multiple Hypotheses",
+    "authors": "Marc Bosch, Christopher M. Gifford, Austin G. Dress, Clare W. Lau, Jeffrey G. Skibo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Face Parsing via Recurrent Propagation",
+    "authors": "Sifei Liu, Jianping Shi, Liang Ji, Ming-Hsuan Yang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Accurate Camera Registration in Urban Environments Using High-Level Feature Matching",
+    "authors": "Anil Armagan, Martin Hirzer, Peter M. Roth, Vincent Lepetit",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "The Devil is in the Decoder",
+    "authors": "Zbigniew Wojna, Jasper R. R. Uijlings, Sergio Guadarrama, Nathan Silberman, Liang-Chieh Chen, Alireza Fathi, Vittorio Ferrari",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Virtual to Real Reinforcement Learning for Autonomous Driving",
+    "authors": "Xinlei Pan, Yurong You, Ziyan Wang, Cewu Lu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Real-Time Salient Closed Boundary Tracking using Perceptual Grouping and Shape Priors",
+    "authors": "Xuebin Qin, Shida He, Zichen Zhang 0001, Masood Dehghan, Martin J&#228;gersand",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Kinematic-Layout-aware Random Forests for Depth-based Action Recognition",
+    "authors": "Seungryul Baek, Zhiyuan Shi 0001, Masato Kawade, Tae-Kyun Kim 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Total Capture: 3D Human Pose Estimation Fusing Video and Inertial Sensors",
+    "authors": "Matthew Trumble, Andrew Gilbert, Charles Malleson, Adrian Hilton 0001, John P. Collomosse",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Indirect deep structured learning for 3D human body shape and pose prediction",
+    "authors": "Vince Tan, Ignas Budvytis, Roberto Cipolla",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Real-time Visual-Inertial Odometry for Event Cameras using Keyframe-based Nonlinear Optimization",
+    "authors": "Henri Rebecq, Timo Horstschaefer, Davide Scaramuzza 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Adapting Models to Signal Degradation using Distillation",
+    "authors": "Jong-Chyi Su, Subhransu Maji",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Localizing Actions from Video Labels and Pseudo-Annotations",
+    "authors": "Pascal Mettes, Cees Snoek, Shih-Fu Chang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Introduction to Coherent Depth Fields for Dense Monocular Surface Recovery",
+    "authors": "Vladislav Golyanik, Torben Fetzer, Didier Stricker",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Real-time Factored ConvNets: Extracting the X Factor in Human Parsing",
+    "authors": "James Charles, Ignas Budvytis, Roberto Cipolla",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Holistic, Instance-level Human Parsing",
+    "authors": "Qizhu Li, Anurag Arnab, Philip H. S. Torr",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "CT from Motion: Volumetric Capture of Moving Shapes using X-rays",
+    "authors": "Julien Pansiot, Edmond Boyer",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Concise Radiometric Calibration Using The Power of Ranking",
+    "authors": "Han Gong, Graham D. Finlayson, Maryam M. Darrodi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Scale Exploiting Minimal Solvers for Relative Pose with Calibrated Cameras",
+    "authors": "Stephan Liwicki, Christopher Zach",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Multiple Instance Curriculum Learning for Weakly Supervised Object Detection",
+    "authors": "Siyang Li 0002, Xiangxin Zhu, Qin Huang 0006, Hao Xu, C.-C. Jay Kuo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Fast Feature Fool: A data independent approach to universal adversarial perturbations",
+    "authors": "Konda Reddy Mopuri, Utsav Garg, Venkatesh Babu Radhakrishnan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "3D color charts for camera spectral sensitivity estimation",
+    "authors": "Rada Deeb, Damien Muselet, Mathieu H&#233;bert, Alain Tr&#233;meau, Joost van de Weijer 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Guided Robust Matte-Model Fitting for Accelerating Multi-light Reflectance Processing Techniques",
+    "authors": "Ruggero Pintus, Andrea Giachetti 0001, Giovanni Pintore, Enrico Gobbetti",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Fast Event-based Corner Detection",
+    "authors": "Elias Mueggler, Chiara Bartolozzi, Davide Scaramuzza 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "PCN: Part and Context Information for Pedestrian Detection with CNNs",
+    "authors": "Shiguang Wang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Adaptive Local Contrast Normalization for Robust Object Detection and Pose Estimation",
+    "authors": "Mahdi Rad, Vincent Lepetit, Peter M. Roth",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Object-Extent Pooling for Weakly Supervised Single-Shot Localization",
+    "authors": "Amogh Gudi, Nicolai van Rosmalen, Marco Loog, Jan C. van Gemert",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Transformed Anti-Sparse Hashing",
+    "authors": "Zhangyang Wang, Ji Liu 0002, Shuai Huang 0001, Xinchao Wang, Shiyu Chang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Deeply Supervised 3D Recurrent FCN for Salient Object Detection in Videos",
+    "authors": "Trung-Nghia Le, Akihiro Sugimoto",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Robust Dense Depth Maps Generations from Sparse DVS Stereos",
+    "authors": "Dongqing Zou, Feng Shi, Wei-Heng Liu, Jia Li, Qiang Wang 0023, Paul K. J. Park, Hyunsurk Ryu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Adaptive Temporal Pooling for Object Detection using Dynamic Vision Sensor",
+    "authors": "Jia Li, Feng Shi, Wei-Heng Liu, Dongqing Zou, Qiang Wang 0023, Paul K. J. Park, Hyunsurk Ryu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "High-Resolution Stereo Matching based on Sampled Photoconsistency Computation",
+    "authors": "Chloe LeGendre, Konstantinos Batsos, Philippos Mordohai",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Generative OpenMax for Multi-Class Open Set Classification",
+    "authors": "Zongyuan Ge, Sergey Demyanov, Rahil Garnavi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "ANSAC: Adaptive Non-Minimal Sample and Consensus",
+    "authors": "Victor Fragoso, Christopher Sweeney, Pradeep Sen, Matthew Turk 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Color Restoration of Underwater Images",
+    "authors": "Dana Menaker, Tali Treibitz, Shai Avidan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Fine-Grained Image Retrieval: the Text/Sketch Input Dilemma",
+    "authors": "Jifei Song, Yi-Zhe Song, Tony Xiang, Timothy M. Hospedales",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Cross-domain Generative Learning for Fine-Grained Sketch-Based Image Retrieval",
+    "authors": "Kaiyue Pang, Yi-Zhe Song, Tony Xiang, Timothy M. Hospedales",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Epipolar Plane Diffusion: An Efficient Approach for Light Field Editing",
+    "authors": "Oriel Frigo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Group Cost-sensitive Boosting with Multi-scale Decorrelated Filters for Pedestrian Detection",
+    "authors": "Chengju Zhou, Meiqing Wu, Siew-Kei Lam",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Moving Object Segmentation in Jittery Videos by Stabilizing Trajectories Modeled in Kendall's Shape Space",
+    "authors": "Geethu Miriam Jacob, Sukhendu Das",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Urban Image Stitching using Planar Perspective Guidance",
+    "authors": "Joo Ho Lee 0003, Seung-Hwan Baek, Min H. Kim 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Detecting Parts for Action Localization",
+    "authors": "Nicolas Chesneau, Gr&#233;gory Rogez, Karteek Alahari, Cordelia Schmid",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Cascaded Boundary Regression for Temporal Action Detection",
+    "authors": "Jiyang Gao, Zhenheng Yang, Ram Nevatia",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Confidence and Diversity for Active Selection of Feedback in Image Retrieval",
+    "authors": "Bhavin Modi, Adriana Kovashka",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Shape Generation using Spatially Partitioned Point Clouds",
+    "authors": "Matheus Gadelha, Subhransu Maji, Rui Wang 0003",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Person Re-Identification by Localizing Discriminative Regions",
+    "authors": "Tanzila Rahman, Mrigank Rochan, Yang Wang 0003",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Adapting Object Detectors from Images to Weakly Labeled Videos",
+    "authors": "Omit Chanda, Eu Wern Teh, Mrigank Rochan, Zhenyu Guo, Yang Wang 0003",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Bayesian SegNet: Model Uncertainty in Deep Convolutional Encoder-Decoder Architectures for Scene Understanding",
+    "authors": "Alex Kendall, Vijay Badrinarayanan, Roberto Cipolla",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "DepthComp: Real-time Depth Image Completion Based on Prior Semantic Scene Segmentation",
+    "authors": "Amir Atapour Abarghouei, Toby P. Breckon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "DEEP eye contact detector: Robust eye contact bid detection using convolutional neural network",
+    "authors": "Yu Mitsuzumi, Atsushi Nakazawa, Toyoaki Nishida",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "BiSeg: Simultaneous Instance Segmentation and Semantic Segmentation with Fully Convolutional Networks",
+    "authors": "Viet Quoc Pham, Satoshi Ito, Tatsuo Kozakaya",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Salient Object Detection using a Context-Aware Refinement Network",
+    "authors": "Md. Amirul Islam, Mahmoud Kalash, Mrigank Rochan, Neil D. B. Bruce, Yang Wang 0003",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Visual Odometry with Drift-Free Rotation Estimation Using Indoor Scene Regularities",
+    "authors": "Pyojin Kim, Brian Coltin, Hyoun Jin Kim",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "One For All: Adaptive Learning-based Temporal Tracker for 3D Head Shape Models",
+    "authors": "David Joseph Tan, Federico Tombari, Nassir Navab",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Dominant Set Clustering and Pooling for Multi-View 3D Object Recognition",
+    "authors": "Chu Wang, Marcello Pelillo, Kaleem Siddiqi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "A Generalised Formulation for Collaborative Representation of Image Patches (GP-CRC)",
+    "authors": "Tapabrata Chakraborti, Brendan McCane, Steven Mills, Umapada Pal 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "DeepShoe: A Multi-Task View-Invariant CNN for Street-to-Shop Shoe Retrieval",
+    "authors": "Huijing Zhan, Boxin Shi, Alex C. Kot",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Weakly Supervised Saliency Detection with A Category-Driven Map Generator",
+    "authors": "Kuang-Jui Hsu, Yen-Yu Lin, Yung-Yu Chuang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Saliency Detection by Compactness Diffusion",
+    "authors": "Qi Zheng 0003, Peng Zhang 0040, Xinge You",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Weakly-supervised Learning of Mid-level Features for Pedestrian Attribute Recognition and Localization",
+    "authors": "Yang Zhou, Kai Yu 0003, Biao Leng, Zhang Zhang 0001, Dangwei Li, Kaiqi Huang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "AST-Net: An Attribute-based Siamese Temporal Network for Real-Time Emotion Recognition",
+    "authors": "Shu-hui Wang, Chiou-Ting Hsu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Combined Internal and External Category-Specific Image Denoising",
+    "authors": "Saeed Anwar, Cong Phuoc Huynh, Fatih Porikli",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Temporal Perceptive Network for Skeleton-Based Action Recognition",
+    "authors": "Yueyu Hu, Chunhui Liu 0002, Yanghao Li, Jiaying Liu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Detecting Semantic Parts on Partially Occluded Objects",
+    "authors": "Jianyu Wang 0001, Zhishuai Zhang, Cihang Xie, Jun Zhu 0001, Lingxi Xie, Alan L. Yuille",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Place Recognition in Semi-Dense Maps",
+    "authors": "Yawei Ye, Titus Cieslewski, Antonio Loquercio, Davide Scaramuzza 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Image Completion with Intrinsic Reflectance Guidance",
+    "authors": "Soomin Kim 0004, Taeyoung Kim, Min H. Kim 0001, Sung-Eui Yoon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Enhancement of SSD by concatenating feature maps for object detection",
+    "authors": "Jisoo Jeong, Hyojin Park 0001, Nojun Kwak",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Colour Constancy: Biologically-inspired Contrast Variant Pooling Mechanism",
+    "authors": "Arash Akbarinia, Raquel Gil Rodr&#237;guez, C. Alejandro P&#225;rraga",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Superpixel-based semantic segmentation trained by statistical process control",
+    "authors": "Hyojin Park 0001, Jisoo Jeong, Youngjoon Yoo, Nojun Kwak",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Robust Pixel-wise Dehazing Algorithm based on Advanced Haze-Relevant Features",
+    "authors": "Guisik Kim, Junseok Kwon",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "General Deep Image Completion with Lightweight Conditional Generative Adversarial Networks",
+    "authors": "Ching Wei Tseng, Hung-Jin Lin, Shang-Hong Lai",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Augmented Reality meets Deep Learning",
+    "authors": "Hassan Abu Alhaija, Siva Karthik Mustikovela, Lars M. Mescheder, Andreas Geiger 0001, Carsten Rother",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Improved IR-Colorization using Adversarial Training and Estuary Networks",
+    "authors": "Matthias Limmer, Hendrik P. A. Lensch",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Realtime Novel View Synthesis with Eigen-Texture Regression",
+    "authors": "Yuta Nakashima, Fumio Okura, Norihiko Kawai, Ryosuke Kimura, Hiroshi Kawasaki, Katsushi Ikeuchi, Ambrosio Blanco",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Human Action Recognition Using A Multi-Modal Hybrid Deep Learning Model",
+    "authors": "Hany A. El-Ghaish, Mohamed E. Hussein 0001, Amin A. Shoukry",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Probabilistic Image Colorization",
+    "authors": "Amelie Royer, Alexander Kolesnikov 0003, Christoph H. Lampert",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Iterated Lifting for Robust Cost Optimization",
+    "authors": "Christopher Zach, Guillaume Bourmaud",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Slanted Stixels: Representing San Francisco's Steepest Streets",
+    "authors": "Daniel Hern&#225;ndez Ju&#225;rez, Lukas Schneider, Antonio Espinosa 0001, Juan C. Moure, David V&#225;zquez 0001, Antonio M. L&#243;pez 0001, Uwe Franke, Marc Pollefeys",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Deformable Part-based Fully Convolutional Network for Object Detection",
+    "authors": "Taylor Mordan, Nicolas Thome, Gilles H&#233;naff, Matthieu Cord",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Multiple Instance Visual-Semantic Embedding",
+    "authors": "Zhou Ren, Hailin Jin, Zhe Lin 0001, Chen Fang, Alan L. Yuille",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Thinking Outside the Box: Spatial Anticipation of Semantic Categories",
+    "authors": "Martin Garbade, Juergen Gall",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Real-Time Temporal Action Localization in Untrimmed Videos by Sub-Action Discovery",
+    "authors": "Rui Hou 0008, Rahul Sukthankar, Mubarak Shah",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "RED: Reinforced Encoder-Decoder Networks for Action Anticipation",
+    "authors": "Jiyang Gao, Zhenheng Yang, Ram Nevatia",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "End-to-End, Single-Stream Temporal Action Detection in Untrimmed Videos",
+    "authors": "Shyamal Buch, Victor Escorcia, Bernard Ghanem, Li Fei-Fei 0001, Juan Carlos Niebles",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Recognizing and Curating Photo Albums via Event-Specific Image Importance",
+    "authors": "Yufei Wang 0001, Zhe Lin 0001, Xiaohui Shen, Radom&#237;r Mech, Gavin S. P. Miller, Garrison W. Cottrell",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Spatio-Temporal Action Detection with Cascade Proposal and Location Anticipation",
+    "authors": "Zhenheng Yang, Jiyang Gao, Ram Nevatia",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Video Segmentation with Background Motion Models",
+    "authors": "Scott Wehrwein, Richard Szeliski",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Orientation-boosted Voxel Nets for 3D Object Recognition",
+    "authors": "Nima Sedaghat, Mohammadreza Zolfaghari, Ehsan Amiri, Thomas Brox",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Semantic 3D Reconstruction with Finite Element Bases",
+    "authors": "Audrey Richard, Christoph Vogel, Maros Blaha, Thomas Pock, Konrad Schindler",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "SilNet : Single- and Multi-View Reconstruction by Learning from Silhouettes",
+    "authors": "Olivia Wiles, Andrew Zisserman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "A Differential Approach to Shape from Polarization",
+    "authors": "Roberto Mecca, Fotios Logothetis, Roberto Cipolla",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Fast dense feature extraction with convolutional neural networks that have pooling or striding layers",
+    "authors": "Christian Bailer, Tewodros Habtegebrial, Kiran Varanasi, Didier Stricker",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Local Visual Microphones: Improved Sound Extraction from Silent Video",
+    "authors": "Mohammad Amin Sadeghi, Mohammad Amin Shabani, Laleh Samadfam",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Unsupervised Deep Generative Hashing",
+    "authors": "Yuming Shen, Li Liu 0004, Ling Shao 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Sampled Image Tagging and Retrieval Methods on User Generated Content",
+    "authors": "Karl Ni, Kyle Zaragoza, Alexander Gude, Yonas Tesfaye, Carmen Carrano, Charles Foster, Barry Chen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Criteria Sliders: Learning Continuous Database Criteria via Interactive Ranking",
+    "authors": "James Tompkin 0001, Kwang In Kim, Hanspeter Pfister, Christian Theobalt",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Now You See Me: Deep Face Hallucination for Unviewed Sketches",
+    "authors": "Conghui Hu, Da Li 0001, Yi-Zhe Song, Timothy M. Hospedales",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "From Benedict Cumberbatch to Sherlock Holmes: Character Identification in TV series without a Script",
+    "authors": "Arsha Nagrani, Andrew Zisserman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Quantifying Facial Age by Posterior of Age Comparisons",
+    "authors": "Yunxuan Zhang, Li Liu, Cheng Li 0009, Chen Change Loy",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "You said that?",
+    "authors": "Joon Son Chung, Amir Jamaludin, Andrew Zisserman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Video to Text Summary: Joint Video Summarization and Captioning with Recurrent Neural Networks",
+    "authors": "Bor-Chun Chen, Yan-Ying Chen, Francine Chen 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "A Recurrent Variational Autoencoder for Human Motion Synthesis",
+    "authors": "Ikhsanul Habibie, Daniel Holden, Jonathan Schwarz, Joe Yearsley, Taku Komura",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "A deep learning pipeline for semantic facade segmentation",
+    "authors": "Radwa Fathalla, George Vogiatzis",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Deep Reinforcement Learning Attention Selection For Person Re-Identification",
+    "authors": "Xu Lan, Hangxiao Wang, Shaogang Gong, Xiatian Zhu",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Case-Based Histopathological Malignancy Diagnosis using Convolutional Neural Networks",
+    "authors": "Qicheng Lao, Thomas Fevens",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Labelless Scene Classification with Semantic Matching",
+    "authors": "Meng Ye 0002, Yuhong Guo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Patch-based Interferometric Phase Estimation via Mixture of Gaussian Density Modelling &#38; Non-local Averaging in the Complex Domain",
+    "authors": "Joshin Krishnan, Jos&#233; M. Bioucas-Dias",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Feature Sequence Representation Via Slow Feature Analysis For Action Classification",
+    "authors": "Takumi Kobayashi 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "A Convolutional Temporal Encoder for Video Caption Generation",
+    "authors": "Qingle Huang, Zicheng Liao",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Marginalized CNN: Learning Deep Invariant Representations",
+    "authors": "Jian Zhao 0006, Jianshu Li, Fang Zhao 0006, Xuecheng Nie, Yunpeng Chen, Shuicheng Yan, Jiashi Feng",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Correlation Hashing Network for Efficient Cross-Modal Retrieval",
+    "authors": "Yue Cao 0001, Mingsheng Long, Jianmin Wang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Sunrise or Sunset: Selective Comparison Learning for Subtle Attribute Recognition",
+    "authors": "Hong-Yu Zhou, Bin-Bin Gao, Jianxin Wu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "BIM: Ball Intersection Multi Template Matching",
+    "authors": "Bat El Shlomo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Visual Textbook Network: Watch Carefully before Answering Visual Questions",
+    "authors": "Difei Gao, Ruiping Wang 0001, Shiguang Shan, Xilin Chen 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Key Person Aided Re-identification in Partially Ordered Pedestrian Set",
+    "authors": "Chen Chen 0036, Min Cao 0005, Silong Peng",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Learning confidence measures in the wild",
+    "authors": "Fabio Tosi, Matteo Poggi, Stefano Mattoccia, Alessio Tonioni, Luigi Di Stefano",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Deep View-Sensitive Pedestrian Attribute Inference in an end-to-end Model",
+    "authors": "M. Saquib Sarfraz, Arne Schumann, Yan Wang, Rainer Stiefelhagen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Divide and Fuse: A Re-ranking Approach for Person Re-identification",
+    "authors": "Rui Yu 0002, Zhichao Zhou, Song Bai 0001, Xiang Bai",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Joint Optimization of Coded Illumination and Grayscale Conversion for One-Shot Raw Material Classification",
+    "authors": "Chao Wang, Takahiro Okabe",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Learning Cross-scale Correspondence and Patch-based Synthesis for Reference-based Super-Resolution",
+    "authors": "Haitian Zheng, Mengqi Ji, Lei Han, Ziwei Xu 0001, Haoqian Wang, Yebin Liu, Lu Fang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Anomaly Detection using a Convolutional Winner-Take-All Autoencoder",
+    "authors": "Hanh Tran, David C. Hogg",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "A Parallel Architecture for High Frame Rate Stereo using Semi-Global Matching",
+    "authors": "Akshay Jain 0003, Alexander Fell, Saket Anand",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Accelerating Computation of Exemplar-SVM by Binary Approximation based on Matrix Decomposition",
+    "authors": "Takato Kurokawa, Yuji Yamauchi, Mitsuru Ambai, Takayoshi Yamashita, Hironobu Fujiyoshi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Sparse and Noisy to Dense Depth Map Upsampling Based on Mesh and Colour Consistency",
+    "authors": "Hanshin Lim, Junseok Lee",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Efficient 3D Tracking in Urban Environments with Semantic Segmentation",
+    "authors": "Martin Hirzer, Peter M. Roth, Vincent Lepetit",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Class Weighted Convolutional Features for Visual Instance Search",
+    "authors": "Albert Jimenez, Jose M. Alvarez, Xavier Gir&#243;-i-Nieto",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Dynamic Steerable Blocks in Deep Residual Networks",
+    "authors": "J&#246;rn-Henrik Jacobsen, Bert De Brabandere, Arnold W. M. Smeulders",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Towards Complete Scene Reconstruction from Single-View Depth and Human Motion",
+    "authors": "Sam Fowler, Hansung Kim 0001, Adrian Hilton 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Flow Based Video Super-Resolution with Spatio-temporal Patch Similarity",
+    "authors": "Joan Duran, Antoni Buades",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "BV-CNNs: Binary Volumetric Convolutional Networks for 3D Object Recognition",
+    "authors": "Chao Ma 0014, Wei An 0003, Yinjie Lei, Yulan Guo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Combining Edge Images and Depth Maps for Robust Visual Odometry",
+    "authors": "Fabian Schenk, Friedrich Fraundorfer",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Order-Adaptive and Illumination-Aware Variational Optical Flow Refinement",
+    "authors": "Daniel Maurer 0002, Michael Stoll, Andr&#233;s Bruhn",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Large-scale Continual Road Inspection: Visual Infrastructure Assessment in the Wild",
+    "authors": "Ke Ma 0005, Minh Hoai, Dimitris Samaras",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Correlation Filter Tracking: Beyond an Open-loop System",
+    "authors": "Qingyong Hu, Yulan Guo, Yunjin Chen, Jingjing Xiao, Wei An 0003",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Photorealistic Style Transfer with Screened Poisson Equation",
+    "authors": "Roey Mechrez, Eli Shechtman, Lihi Zelnik-Manor",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Probabilistic Spatial Regression using a Deep Fully Convolutional Neural Network",
+    "authors": "S. M. Masudur Rahman Al-Arif, Karen Knapp, Greg Slabaugh",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Lip Reading in Profile",
+    "authors": "Joon Son Chung, Andrew Zisserman",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Adversarial Robustness: Softmax versus Openmax",
+    "authors": "Andras Rozsa, Manuel G&#252;nther, Terrance E. Boult",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Generative 3D Hand Tracking with Spatially Constrained Pose Sampling",
+    "authors": "Konstantinos Roditakis, Alexandros Makris, Antonis A. Argyros",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Efficient Online Surface Correction for Real-time Large-Scale 3D Reconstruction",
+    "authors": "Robert Maier 0001, Raphael Schaller, Daniel Cremers",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Long Range Stereo from Synchronized Monocular Optical Flow Streamss",
+    "authors": "Darius Burschka",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Learning temporal structures for human activity recognition",
+    "authors": "Tiantian Xu, Edward K. Wong",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "End-to-End Multi-View Lipreading",
+    "authors": "Stavros Petridis, Yujiang Wang 0001, Zuwei Li, Maja Pantic",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Supervised Scale-Regularized Linear Convolutionary Filters",
+    "authors": "Marco Loog, Fran&#231;ois Lauze",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Sparse Deep Feature Representation for Object Detection from Wearable Cameras",
+    "authors": "Quanfu Fan, Richard Chen",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Human Action Segmentation using 3D Fully Convolutional Network",
+    "authors": "Pei Yu, Jiang Wang 0001, Ying Wu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Deep fisher faces",
+    "authors": "Harald Hanselmann, Shen Yan, Hermann Ney",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Improving target tracking robustness with Bayesian data fusion",
+    "authors": "Yevgeniy Reznichenko, Henry Medeiros 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "One-Shot Learning for Semantic Segmentation",
+    "authors": "Amirreza Shaban, Shray Bansal, Zhen Liu 0019, Irfan Essa, Byron Boots",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Efficent Traffic-Sign Recognition with Scale-aware CNN",
+    "authors": "Yuchen Yang, Shuo Liu 0009, Wei Ma 0008, Qiuyuan Wang, Zheng Liu 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Plane-Aided Visual-Inertial Odometry for Pose Estimation of a 3D Camera based Indoor Blind Navigation System",
+    "authors": "He Zhang, Cang Ye",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Dissecting scale from pose estimation in visual odometry",
+    "authors": "Rong Yuan, Hongyi Fan, Benjamin B. Kimia",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Automatic Image transformation for inducing affect",
+    "authors": "Mohsen Ali, Afsheen Rafaqat Ali",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Subpixel Semantic Flow",
+    "authors": "Berk Sevilmis, Benjamin B. Kimia",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Light Cascaded Convolutional Neural Networks for Accurate Player Detection",
+    "authors": "Keyu Lu, Jianhui Chen, James J. Little, Hangen He",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Exploiting Protrusion Cues for Fast and Effective Shape Modeling via Ellipses",
+    "authors": "Alex Wong 0001, Alan L. Yuille, Brian Taylor 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "A CNN-Based Approach for Automatic License Plate Recognition in the Wild",
+    "authors": "Meng Dong, Dongliang He, Chong Luo 0001, Dong Liu 0002, Wenjun Zeng 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Multi-Region Ensemble Convolutional Neural Network for High Accuracy Age Estimation",
+    "authors": "Yiliang Chen, Zichang Tan, Alex Po Leung, Jun Wan 0001, Jianguo Zhang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Primitive-based Surface Regularization for Urban 3D Reconstruction",
+    "authors": "Thomas Holzmann, Martin R. Oswald, Marc Pollefeys, Friedrich Fraundorfer, Horst Bischof",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Cross-modal Retrieval via Memory Network",
+    "authors": "Ge Song, Xiaoyang Tan",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "A Compact Parametric Solution to Depth Sensor Calibration",
+    "authors": "Andrew Spek, Tom Drummond",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Pansharpening via Locality-Constrained Sparse Representation",
+    "authors": "Songze Tang, Nan Zhou, Liang Xiao 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Residual Conv-Deconv Grid Network for Semantic Segmentation",
+    "authors": "Damien Fourure, R&#233;mi Emonet, &#201;lisa Fromont, Damien Muselet, Alain Tr&#233;meau, Christian Wolf 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Deep GrabCut for Object Selection",
+    "authors": "Ning Xu 0007, Brian L. Price, Scott Cohen, Jimei Yang, Thomas S. Huang",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Solar Power Plant Detection on Multi-Spectral Satellite Imagery using Weakly-Supervised CNN with Feedback Features and m-PCNN Fusion",
+    "authors": "Nevrez Imamoglu, Motoki Kimura, Hiroki Miyamoto, Aito Fujita, Ryosuke Nakamura",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Multiple-Kernel Local-Patch Descriptor",
+    "authors": "Arun Mukundan, Giorgos Tolias, Ondrej Chum",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "AutoScaler: Scale-Attention Networks for Visual Correspondence",
+    "authors": "Shenlong Wang, Linjie Luo, Ning Zhang, Jia Li",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Cross-View GAN Based Vehicle Generation for Re-identification",
+    "authors": "Yi Zhou 0007, Ling Shao 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Efficient Video Summarization Using Principal Person Appearance for Video-Based Person Re-Identification",
+    "authors": "Seongro Yoon, Furqan Khan, Fran&#231;ois Br&#233;mond",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Fine-Grained Forensic Matching",
+    "authors": "Bailey Kong, James Steven Supancic III, Deva Ramanan, Charless C. Fowlkes",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Learning Accurate Low-Bit Deep Neural Networks with Stochastic Quantization",
+    "authors": "Yinpeng Dong, Jianguo Li, Renkun Ni",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Weakly Supervised Semantic Segmentation Based on Co-segmentation",
+    "authors": "Tong Shen, Guosheng Lin, Lingqiao Liu, Chunhua Shen, Ian Reid 0001",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Semantic Segmentation with Reverse Attention",
+    "authors": "Qin Huang 0006, Chi-Hao Wu 0001, Chunyang Xia, Ye Wang 0013, C.-C. Jay Kuo",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Double Expansion for Optimization of Multilabel Energies",
+    "authors": "Lena Gorelick, Zhengqin Li, Olga Veksler",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Discovering Class-Specific Pixels for Weakly-Supervised Semantic Segmentation",
+    "authors": "Arslan Chaudhry, Puneet Kumar Dokania, Philip H. S. Torr",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Online Adaptation of Convolutional Neural Networks for Video Object Segmentation",
+    "authors": "Paul Voigtlaender, Bastian Leibe",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Improved Bilinear Pooling with CNNs",
+    "authors": "Tsung-Yu Lin, Subhransu Maji",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Reflectance and Shape Estimation with a Light Field Camera under Natural Illumination",
+    "authors": "Trung Ngo Thanh, Hajime Nagahara, Ko Nishino, Rin-Ichiro Taniguchi, Yasushi Yagi",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "GeneGAN: Learning Object Transfiguration and Object Subspace from Unpaired Data",
+    "authors": "Shuchang Zhou 0001, Taihong Xiao, Yi Yang 0033, Dieqiao Feng, Qinyao He, Weiran He",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "PixColor: Pixel Recursive Colorization",
+    "authors": "Sergio Guadarrama, Ryan Dahl, David Bieber,  Jonathon Shlens, Mohammad Norouzi 0002, Kevin Murphy 0002",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Depth Estimation and Blur Removal from a Single Out-of-focus Image",
+    "authors": "Saeed Anwar, Zeeshan Hayder, Fatih Porikli",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Exploring the structure of a real-time, arbitrary neural artistic stylization network",
+    "authors": "Golnaz Ghiasi, Honglak Lee, Manjunath Kudlur, Vincent Dumoulin,  Jonathon Shlens",
+    "abstract": null
+  },
+  {
+    "conference": "BMVC",
+    "year": 2017,
+    "title": "Fine-Pruning: Joint Fine-Tuning and Compression of a Convolutional Network with Bayesian Optimization",
+    "authors": "Frederick Tung, Srikanth Muralidharan, Greg Mori",
+    "abstract": null
+  }
+]

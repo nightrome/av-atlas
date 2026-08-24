@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas — Author</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme-light.css">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .header { display: flex; gap: 20px; align-items: center; margin-bottom: 8px; }
+  .avatar {
+    width: 96px; height: 96px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.7em; color: #fff; flex-shrink: 0; overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .header h2 { margin: 0 0 4px; font-size: 1.5em; }
+  .header .tags { color: var(--muted); font-size: 0.9em; }
+  .header .tags .tag-link { color: var(--accent); text-decoration: none; }
+  .header .tags .tag-link:hover { text-decoration: underline; }
+  .header .scholar-link { display: inline-block; margin-top: 6px; font-size: 0.9em; color: var(--accent); text-decoration: none; }
+  .header .scholar-link:hover { text-decoration: underline; }
+  .ambiguous-warning {
+    color: #c0392b; font-size: 0.85em; font-weight: 600; margin: 4px 0 6px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0; }
+  .stat-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .stat-tile .value { font-size: 1.6em; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stat-tile .label { color: var(--muted); font-size: 0.82em; margin-top: 2px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+  .panel h2 { margin-top: 0; font-size: 1.1em; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover { background: var(--panel2); }
+  td a { color: var(--accent); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  .chart { display: flex; align-items: flex-end; gap: 3px; height: 100px; padding: 4px 0 0; border-bottom: 2px solid var(--border); }
+  .chart .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+  .chart .bar { width: 100%; max-width: 26px; border-radius: 4px 4px 0 0; background: var(--accent); min-height: 2px; }
+  .chart .xlabel { font-size: 0.68em; color: var(--muted); margin-top: 4px; white-space: nowrap; }
+  .chart .tooltip {
+    display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: var(--panel); font-size: 0.72em; padding: 3px 7px; border-radius: 5px;
+    white-space: nowrap; margin-bottom: 4px; z-index: 5;
+  }
+  .chart .bar-wrap:hover .tooltip { display: block; }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<div id="detail-back-container"></div>
+
+<div class="header">
+  <div class="avatar" id="avatar"></div>
+  <div>
+    <h2 id="name">—</h2>
+    <div class="ambiguous-warning" id="ambiguous-warning" style="display:none;"></div>
+    <div class="tags" id="tags"></div>
+    <a class="scholar-link" id="scholar-link" target="_blank" rel="noopener"></a>
+    <a class="scholar-link" id="orcid-link" target="_blank" rel="noopener" style="display:none;"></a>
+  </div>
+</div>
+
+<div class="stat-grid" id="stat-grid"></div>
+
+<div class="panel">
+  <h2>Citations by year of publication</h2>
+  <div class="chart" id="year-chart"></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2>Top co-authors</h2>
+    <div class="limit-row">
+      Show
+      <select id="coauthors-limit">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="1000">All</option>
+      </select>
+    </div>
+  </div>
+  <table><thead><tr><th>Co-author</th><th class="num">Papers coauthored</th><th>Country</th><th>Institution</th></tr></thead>
+  <tbody id="coauthors-body"></tbody></table>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2>Papers</h2>
+    <div id="export-container"></div>
+  </div>
+  <table><thead><tr><th>Title</th><th>Year</th><th>Venue</th><th>Category</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th></tr></thead>
+  <tbody id="papers-body"></tbody></table>
+</div>
+
+<script src="filters.js"></script>
+<script>
+const backLink = renderBackLink();
+if (backLink) document.getElementById('detail-back-container').appendChild(backLink);
+
+function hashString(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+function colorFor(name) { return `hsl(${hashString(name) % 360}, 60%, 45%)`; }
+function initials(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function stat(value, label, opts) {
+  const tile = document.createElement('div');
+  tile.className = 'stat-tile';
+  const valueEl = document.createElement('div');
+  valueEl.className = 'value';
+  const labelEl = document.createElement('div');
+  labelEl.className = 'label';
+  labelEl.textContent = label;
+  tile.appendChild(valueEl);
+  tile.appendChild(labelEl);
+  if (typeof value === 'number' && isFinite(value)) animateCount(valueEl, value, opts);
+  else valueEl.textContent = value;
+  return tile;
+}
+
+const params = new URLSearchParams(location.search);
+const name = params.get('name') || '';
+document.getElementById('name').textContent = name || 'Unknown author';
+
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
+  document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
+});
+
+function row(cells) {
+  const tr = document.createElement('tr');
+  cells.forEach((c, i) => {
+    const td = document.createElement('td');
+    if (i > 0 && typeof c === 'number') td.className = 'num';
+    if (c instanceof Node) td.appendChild(c);
+    else td.textContent = c;
+    tr.appendChild(td);
+  });
+  return tr;
+}
+
+function titleLink(p) {
+  const a = document.createElement('a');
+  a.href = `paper.html?title=${encodeURIComponent(p.title)}`;
+  a.className = 'truncate-cell';
+  a.textContent = p.title;
+  a.title = p.title;
+  return a;
+}
+
+function render(stats) {
+  const papers = (stats.all_papers || []).filter(p => (p.authors || []).includes(name));
+  const detail = (stats.author_detail || {})[name] || {};
+  // Real total for "how many citations do their AV papers have" (informational);
+  // the average is only over papers that actually have a citation count, so
+  // an uncited paper doesn't silently drag the average toward zero.
+  const citedPapers = papers.filter(p => p.citations != null);
+  const totalCitations = citedPapers.reduce((s, p) => s + p.citations, 0);
+  const avg = citedPapers.length ? Math.round((totalCitations / citedPapers.length) * 10) / 10 : null;
+
+  // A small, manually-reviewed set of names (scholar_profiles.json) where a
+  // real search couldn't tell two-or-more different real people apart --
+  // warns a reader rather than presenting one merged identity's stats as
+  // if they reliably belonged to one person.
+  const warningEl = document.getElementById('ambiguous-warning');
+  if (detail.ambiguous) {
+    warningEl.textContent = '⚠ There may be multiple researchers with this name. The statistics below may not all belong to the same person.';
+    warningEl.style.display = '';
+  } else {
+    warningEl.style.display = 'none';
+  }
+
+  const avatar = document.getElementById('avatar');
+  if (detail.photo_url) {
+    const img = document.createElement('img');
+    img.src = detail.photo_url;
+    img.alt = name;
+    img.referrerPolicy = 'no-referrer';
+    avatar.appendChild(img);
+  } else {
+    avatar.style.background = colorFor(name);
+    avatar.textContent = initials(name);
+  }
+
+  const tagsEl = document.getElementById('tags');
+  tagsEl.innerHTML = '';
+  const institutions = detail.institutions || [];
+  const countries = detail.countries || [];
+  if (!institutions.length && !countries.length) {
+    tagsEl.textContent = 'Affiliation not yet enriched';
+  } else {
+    // Institutions are already in chronological order (earliest first_year
+    // first) -- show each with its year range so two entries read as "was
+    // there, then moved on" rather than an unordered list of employers.
+    const parts = institutions.map(inst => {
+      const a = document.createElement('a');
+      a.href = `institution.html?name=${encodeURIComponent(inst.name)}`;
+      const yr = inst.first_year == null ? ''
+        : inst.first_year === inst.last_year ? ` (${inst.first_year})`
+        : ` (${inst.first_year}–${inst.last_year})`;
+      a.textContent = inst.name + yr;
+      a.className = 'tag-link';
+      return a;
+    });
+    parts.forEach((el, i) => {
+      if (i > 0) tagsEl.append(' · ');
+      tagsEl.appendChild(el);
+    });
+    if (countries.length) {
+      if (parts.length) tagsEl.append(' · ');
+      tagsEl.append(countries.join(' · '));
+    }
+  }
+
+  // Only ever a real, manually-confirmed profile URL (data/scholar_profiles.json)
+  // -- never a live "search Scholar for this name" link. A name-based search
+  // link looks confirmed but usually isn't (common names collide, "profile
+  // not verified" is invisible to a reader), and re-running the same search
+  // on every pageview for every author doesn't scale. If this author hasn't
+  // been manually looked up (or was looked up and had no Scholar profile),
+  // just say so instead of guessing.
+  // Most authors have simply never been manually looked up (see the note
+  // below) -- that's the overwhelming common case, not something worth a
+  // line of muted text on every single researcher page. Only a genuinely
+  // checked-and-confirmed-absent result ("we looked, there isn't one") is
+  // worth stating; anything else just hides the element entirely.
+  const scholarLink = document.getElementById('scholar-link');
+  if (detail.scholar_url) {
+    scholarLink.href = detail.scholar_url;
+    scholarLink.textContent = '🎓 Google Scholar profile';
+    scholarLink.title = 'Google Scholar';
+    scholarLink.style.display = '';
+  } else if (detail.scholar_checked) {
+    scholarLink.removeAttribute('href');
+    scholarLink.textContent = 'No confirmed Google Scholar profile';
+    scholarLink.style.color = 'var(--muted)';
+    scholarLink.style.cursor = 'default';
+    scholarLink.style.display = '';
+  } else {
+    scholarLink.style.display = 'none';
+  }
+
+  // ORCID (via Semantic Scholar, see fetch_orcids.py) -- only shown when
+  // actually found, same "silence over a placeholder" rule as Scholar above.
+  const orcidLink = document.getElementById('orcid-link');
+  if (detail.orcid) {
+    orcidLink.href = `https://orcid.org/${detail.orcid}`;
+    orcidLink.textContent = `🆔 ORCID ${detail.orcid}`;
+    orcidLink.style.display = '';
+  } else {
+    orcidLink.style.display = 'none';
+  }
+
+  const grid = document.getElementById('stat-grid');
+  grid.appendChild(stat(papers.length, 'AV papers in corpus'));
+  grid.appendChild(stat(totalCitations, 'Total citations'));
+  grid.appendChild(stat(avg == null ? '—' : avg, 'Citations / paper', { decimals: 1 }));
+  // Not itself an AV paper count -- computed server-side (aggregate.py) from
+  // the full corpus, not from all_papers (core-only) here, since
+  // stats_adjacent.json deliberately carries no author field to search
+  // client-side (see non_av_paper_counts' own comment in aggregate.py).
+  const nonAvCount = (stats.non_av_paper_counts || {})[name] || 0;
+  grid.appendChild(stat(nonAvCount, 'Other papers (not AV-relevant)'));
+
+  const yearAgg = {};
+  papers.forEach(p => {
+    if (!p.year) return;
+    yearAgg[p.year] = yearAgg[p.year] || { papers: 0, citations: 0 };
+    yearAgg[p.year].papers += 1;
+    yearAgg[p.year].citations += p.citations || 0;
+  });
+  const years = Object.keys(yearAgg).sort();
+  const chart = document.getElementById('year-chart');
+  const maxC = Math.max(1, ...years.map(y => yearAgg[y].citations));
+  years.forEach(y => {
+    const v = yearAgg[y];
+    const wrap = document.createElement('div');
+    wrap.className = 'bar-wrap';
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.style.height = Math.max(3, (v.citations / maxC) * 100) + '%';
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = `${y}: ${v.citations} citations, ${v.papers} paper${v.papers === 1 ? '' : 's'}`;
+    wrap.appendChild(tooltip);
+    wrap.appendChild(bar);
+    const label = document.createElement('div');
+    label.className = 'xlabel';
+    label.textContent = y;
+    wrap.appendChild(label);
+    chart.appendChild(wrap);
+  });
+  if (!years.length) chart.textContent = 'No dated papers for this author.';
+
+  // Top coauthors: every other author who shares a byline with this author
+  // on at least one of their AV papers, ranked by how many papers they
+  // coauthored together. "Show" defaults to 10 (user-requested), persisted
+  // the same way as every other small show-N control on this site.
+  const coauthorCounts = {};
+  papers.forEach(p => (p.authors || []).forEach(a => {
+    if (a === name) return;
+    coauthorCounts[a] = (coauthorCounts[a] || 0) + 1;
+  }));
+  const authorDetail = stats.author_detail || {};
+  const coauthors = Object.entries(coauthorCounts)
+    .map(([coName, count]) => {
+      const coDetail = authorDetail[coName] || {};
+      // "Latest" institution -- the list is already chronological (earliest
+      // first_year first, same as the tags row above), so the last entry is
+      // the most recent one on record. Country isn't tied to a year at all
+      // in author_detail (a flat, unordered list) -- same best-effort "last
+      // entry" reading, not a real claim of recency for that field.
+      const insts = coDetail.institutions || [];
+      const countries = coDetail.countries || [];
+      return {
+        name: coName, papers: count,
+        institution: insts.length ? insts[insts.length - 1].name : null,
+        country: countries.length ? countries[countries.length - 1] : null,
+      };
+    })
+    .sort((a, b) => b.papers - a.papers);
+
+  const coauthorsBody = document.getElementById('coauthors-body');
+  function renderCoauthorsBody(rows) {
+    coauthorsBody.innerHTML = '';
+    rows.forEach(c => {
+      const link = document.createElement('a');
+      link.href = `author.html?name=${encodeURIComponent(c.name)}`;
+      link.textContent = c.name;
+      let instCell = '—';
+      if (c.institution) {
+        const instLink = document.createElement('a');
+        instLink.href = `institution.html?name=${encodeURIComponent(c.institution)}`;
+        instLink.textContent = c.institution;
+        instCell = instLink;
+      }
+      coauthorsBody.appendChild(row([link, c.papers, c.country || '—', instCell]));
+    });
+    if (!rows.length) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 4;
+      td.style.color = 'var(--muted)';
+      td.textContent = 'No coauthors found.';
+      tr.appendChild(td);
+      coauthorsBody.appendChild(tr);
+    }
+  }
+  function renderCoauthors() {
+    const limitSel = document.getElementById('coauthors-limit');
+    let limit = parseInt(limitSel.value, 10) || 10;
+    const shown = coauthors.slice(0, limit);
+    makeSortableSafe(coauthorsBody.closest('table'), shown, [
+      { accessor: c => c.name, numeric: false },
+      { accessor: c => c.papers, numeric: true },
+      { accessor: c => c.country || '', numeric: false },
+      { accessor: c => c.institution || '', numeric: false },
+    ], renderCoauthorsBody);
+  }
+  const coauthorsLimitSel = document.getElementById('coauthors-limit');
+  try {
+    const stored = sessionStorage.getItem('author-coauthors-limit');
+    if (stored && [...coauthorsLimitSel.options].some(o => o.value === stored)) coauthorsLimitSel.value = stored;
+  } catch (e) { /* ignore */ }
+  coauthorsLimitSel.addEventListener('change', () => {
+    try { sessionStorage.setItem('author-coauthors-limit', coauthorsLimitSel.value); } catch (e) { /* ignore */ }
+    renderCoauthors();
+  });
+  renderCoauthors();
+
+  const sortedPapers = [...papers].sort((a, b) => (b.citations ?? -Infinity) - (a.citations ?? -Infinity));
+  const papersBody = document.getElementById('papers-body');
+  function renderBody(rows) {
+    papersBody.innerHTML = '';
+    rows.forEach(p => papersBody.appendChild(row([
+      titleLink(p), p.year || '', p.venue || '', categoryLabel(p.category) || '', p.citations ?? '',
+    ])));
+  }
+  makeSortableSafe(document.getElementById('papers-body').closest('table'), sortedPapers, [
+    { accessor: p => p.title, numeric: false },
+    { accessor: p => p.year, numeric: true },
+    { accessor: p => p.venue, numeric: false },
+    { accessor: p => p.category, numeric: false },
+    { accessor: p => p.citations, numeric: true },
+  ], renderBody);
+
+  const exportContainer = document.getElementById('export-container');
+  exportContainer.innerHTML = '';
+  exportContainer.appendChild(renderExportButton(document.getElementById('papers-body').closest('table'), `${name}-papers.csv`));
+}
+</script>
+<script src="nav.js"></script>
+<script src="sortable.js"></script>
+</body>
+</html>

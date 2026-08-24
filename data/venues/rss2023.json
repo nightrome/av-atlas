@@ -1,0 +1,786 @@
+[
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Follow my Advice: Assume-Guarantee Approach to Task Planning with Human in the Loop",
+    "authors": "Georg Friedrich Schuppe, Ilaria Torre 0001, Iolanda Leite, Jana Tumova",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Autonomous Justification for Enabling Explainable Decision Support in Human-Robot Teaming",
+    "authors": "Matthew B. Luebbers, Aaquib Tabrez, Kyler Ruvane, Bradley Hayes",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Enabling Team of Teams: A Trust Inference and Propagation (TIP) Model in Multi-Human Multi-Robot Teams",
+    "authors": "Yaohui Guo, X. Jessie Yang, Cong Shi 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Investigating the Impact of Experience on a User's Ability to Perform Hierarchical Abstraction",
+    "authors": "Nina M. Moorman, Nakul Gopalan, Aman Singh, Erin Botti, Mariah Schrum, Chuxuan Yang, Lakshmi Seelam, Matthew C. Gombolay",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Robot Learning on the Job: Human-in-the-Loop Autonomy and Learning During Deployment",
+    "authors": "Huihan Liu, Soroush Nasiriany, Lance Zhang, Zhiyao Bao, Yuke Zhu",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Robotic Table Tennis: A Case Study into a High Speed Learning System",
+    "authors": "David B. D'Ambrosio, Navdeep Jaitly, Vikas Sindhwani, Ken Oslund, Peng Xu 0010, Nevena Lazic, Anish Shankar, Tianli Ding, Jonathan Abelian, Erwin Coumans, Gus Kouretas, Thinh Nguyen, Justin Boyd, Atil Iscen, Reza Mahjourian, Vincent Vanhoucke, Alex Bewley, Yuheng Kuang, Michael Ahn, Deepali Jain, Satoshi Kataoka, Omar E. Cortes, Pierre Sermanet, Corey Lynch, Pannag R. Sanketi, Krzysztof Choromanski, Wenbo Gao, Juhana Kangaspunta, Krista Reymann, Grace Vesom, Sherry Q. Moore, Avi Singh, Saminda Wishwajith Abeyruwan, Laura Graesser",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "SAR: Generalization of Physiological Dexterity via Synergistic Action Representation",
+    "authors": "Cameron H. Berg, Vittorio Caggiano, Vikash Kumar",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "One Policy to Dress Them All: Learning to Dress People with Diverse Poses and Garments",
+    "authors": "Yufei Wang 0007, Zhanyi Sun, Zackory Erickson, David Held",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Teach a Robot to FISH: Versatile Imitation from One Minute of Demonstrations",
+    "authors": "Siddhant Haldar, Jyothish Pari, Anant Rai, Lerrel Pinto",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "GenAug: Retargeting behaviors to unseen situations via Generative Augmentation",
+    "authors": "Zoey Qiuyu Chen, Shosuke C. Kiami, Abhishek Gupta 0004, Vikash Kumar",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Behavior Retrieval: Few-Shot Imitation Learning by Querying Unlabeled Datasets",
+    "authors": "Maximilian Du, Suraj Nair 0003, Dorsa Sadigh, Chelsea Finn",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Structured World Models from Human Videos",
+    "authors": "Russell Mendonca, Shikhar Bahl, Deepak Pathak",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "PATO: Policy Assisted TeleOperation for Scalable Robot Data Collection",
+    "authors": "Shivin Dass, Karl Pertsch, Hejia Zhang, Youngwoon Lee, Joseph J. Lim, Stefanos Nikolaidis",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "To the Noise and Back: Diffusion for Shared Autonomy",
+    "authors": "Takuma Yoneda, Luzhe Sun, Ge Yang 0003, Bradly C. Stadie, Matthew R. Walter",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "AnyTeleop: A General Vision-Based Dexterous Robot Arm-Hand Teleoperation System",
+    "authors": "Yuzhe Qin, Wei Yang 0019, Binghao Huang, Karl Van Wyk, Hao Su 0001, Xiaolong Wang 0004, Yu-Wei Chao, Dieter Fox",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware",
+    "authors": "Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Self-Supervised Unseen Object Instance Segmentation via Long-Term Robot Interaction",
+    "authors": "Yangxiao Lu, Ninad A. Khargonkar, Zesheng Xu, Charles Averill, Kamalesh Palanisamy, Kaiyu Hang, Yunhui Guo, Nicholas Ruozzi, Yu Xiang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Self-Supervised Visuo-Tactile Pretraining to Locate and Follow Garment Features",
+    "authors": "Justin Kerr, Huang Huang, Albert Wilcox, Ryan Hoque, Jeffrey Ichnowski, Roberto Calandra, Ken Goldberg",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Pre-Training for Robots: Offline RL Enables Learning New Tasks in a Handful of Trials",
+    "authors": "Aviral Kumar, Anikait Singh, Frederik D. Ebert, Mitsuhiko Nakamoto, Yanlai Yang, Chelsea Finn, Sergey Levine",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Sampling-based Exploration for Reinforcement Learning of Dexterous Manipulation",
+    "authors": "Gagan Khandate, Siqi Shang, Eric T. Chang, Tristan Luca Saidi, Johnson Adams, Matei T. Ciocarlie",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Cherry-Picking with Reinforcement Learning",
+    "authors": "Yunchu Zhang, Liyiming Ke, Abhay Deshpande, Abhishek Gupta 0004, Siddhartha S. Srinivasa",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Deep RL at Scale: Sorting Waste in Office Buildings with a Fleet of Mobile Manipulators",
+    "authors": "Alexander Herzog, Kanishka Rao, Karol Hausman, Yao Lu 0006, Paul Wohlhart, Mengyuan Yan, Jessica Lin, Montserrat Gonzalez Arenas, Ted Xiao, Daniel Kappler, Daniel Ho, Jarek Rettinghouse, Yevgen Chebotar, Kuang-Huei Lee, Keerthana Gopalakrishnan, Ryan Julian, Adrian Li, Chuyuan Fu, Bob Wei, Sangeetha Ramesh, Khem Holden, Kim Kleiven, David J. Rendleman, Sean Kirmani, Jeffrey T. Bingham, Jonathan Weisz, Ying Xu, Wenlong Lu, Matthew Bennice, Cody Fong, David Do, Jessica Lam, Yunfei Bai, Benjie Holson, Michael Quinlan, Noah Brown, Mrinal Kalakrishnan, Julian Ibarz, Peter Pastor, Sergey Levine",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Demonstrating Large-Scale Package Manipulation via Learned Metrics of Pick Success",
+    "authors": "Shuai Li, Azarakhsh Keipour, Kevin Jamieson 0001, Nicolas Hudson, Charles Swan, Kostas E. Bekris",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Demonstrating Large Language Models on Robots",
+    "authors": "Andy Zeng 0001, Brian Ichter, Fei Xia 0002, Ted Xiao, Vikas Sindhwani",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "RT-1: Robotics Transformer for Real-World Control at Scale",
+    "authors": "Anthony Brohan, Noah Brown, Justice Carbajal, Yevgen Chebotar, Joseph Dabis, Chelsea Finn, Keerthana Gopalakrishnan, Karol Hausman, Alexander Herzog, Jasmine Hsu, Julian Ibarz, Brian Ichter, Alex Irpan, Tomas Jackson, Sally Jesmonth, Nikhil J. Joshi, Ryan Julian, Dmitry Kalashnikov, Yuheng Kuang, Isabel Leal, Kuang-Huei Lee, Sergey Levine, Yao Lu 0006, Utsav Malla, Deeksha Manjunath, Igor Mordatch, Ofir Nachum, Carolina Parada, Jodilyn Peralta, Emily Perez, Karl Pertsch, Jornell Quiambao, Kanishka Rao, Michael S. Ryoo, Grecia Salazar, Pannag R. Sanketi, Kevin Sayed, Jaspiar Singh, Sumedh Sontakke, Austin Stone, Clayton Tan, Huong T. Tran, Vincent Vanhoucke, Steve Vega, Quan Vuong, Fei Xia 0002, Ted Xiao, Peng Xu 0010, Sichun Xu, Tianhe Yu, Brianna Zitkovich",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion",
+    "authors": "Cheng Chi 0001, Siyuan Feng 0003, Yilun Du, Zhenjia Xu, Eric Cousineau, Benjamin Burchfiel, Shuran Song",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Scaling Robot Learning with Semantically Imagined Experience",
+    "authors": "Tianhe Yu, Ted Xiao, Jonathan Tompson, Austin Stone, Su Wang, Anthony Brohan, Jaspiar Singh, Clayton Tan, Dee M, Jodilyn Peralta, Karol Hausman, Brian Ichter, Fei Xia 0002",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Goal-Conditioned Imitation Learning using Score-based Diffusion Policies",
+    "authors": "Moritz Reuss, Maximilian Xiling Li, Xiaogang Jia, Rudolf Lioutikov",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Robotic Skill Acquisition via Instruction Augmentation with Vision-Language Models",
+    "authors": "Ted Xiao, Harris Chan, Pierre Sermanet, Ayzaan Wahid, Anthony Brohan, Karol Hausman, Sergey Levine, Jonathan Tompson",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Energy-based Models are Zero-Shot Planners for Compositional Scene Rearrangement",
+    "authors": "Nikolaos Gkanatsios, Ayush Jain, Zhou Xian, Yunchu Zhang, Christopher G. Atkeson, Katerina Fragkiadaki",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "StructDiffusion: Language-Guided Creation of Physically-Valid Structures using Unseen Objects",
+    "authors": "Weiyu Liu, Yilun Du, Tucker Hermans, Sonia Chernova, Chris Paxton 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Language-Driven Representation Learning for Robotics",
+    "authors": "Siddharth Karamcheti, Suraj Nair 0003, Annie S. Chen, Thomas Kollar, Chelsea Finn, Dorsa Sadigh, Percy Liang",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Local object crop collision network for efficient simulation of non-convex objects in GPU-based simulators",
+    "authors": "Dongwon Son, Beomjoon Kim",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "GranularGym: High Performance Simulation for Robotic Tasks with Granular Materials",
+    "authors": "David Millard 0001, Daniel Pastor 0001, Joseph Bowkett, Paul Backes, Gaurav S. Sukhatme",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Beyond Flat GelSight Sensors: Simulation of Optical Tactile Sensors of Complex Morphologies for Sim2Real Learning",
+    "authors": "Daniel Fernandes Gomes, Shan Luo 0001, Paolo Paoletti",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Rotating without Seeing: Towards In-hand Dexterity through Touch",
+    "authors": "Zhao-Heng Yin, Binghao Huang, Yuzhe Qin, Qifeng Chen 0001, Xiaolong Wang 0004",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "DexPBT: Scaling up Dexterous Manipulation for Hand-Arm Systems with Population Based Training",
+    "authors": "Aleksei Petrenko, Arthur Allshire, Gavriel State, Ankur Handa, Viktor Makoviychuk",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Hindsight States: Blending Sim & Real Task Elements for Efficient Reinforcement Learning",
+    "authors": "Simon Guist, Jan Schneider 0007, Vincent Berenz, Alexander Dittrich, Bernhard Schölkopf, Dieter Büchler",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "IndustReal: Transferring Contact-Rich Assembly Tasks from Simulation to Reality",
+    "authors": "Bingjie Tang, Michael A. Lin, Iretiayo Akinola, Ankur Handa, Gaurav S. Sukhatme, Fabio Ramos 0001, Dieter Fox, Yashraj Narang",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "SAM-RL: Sensing-Aware Model-Based Reinforcement Learning via Differentiable Physics-Based Simulation and Rendering",
+    "authors": "Jun Lv, Yunhai Feng, Cheng Zhang, Shuang Zhao, Lin Shao 0002, Cewu Lu",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "FurnitureBench: Reproducible Real-World Benchmark for Long-Horizon Complex Manipulation",
+    "authors": "Minho Heo, Youngwoon Lee, Doohyun Lee, Joseph J. Lim",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Learning-Free Grasping of Unknown Objects Using Hidden Superquadrics",
+    "authors": "Yuwei Wu 0002, Weixiao Liu, Zhiyang Liu, Gregory S. Chirikjian",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Uncertain Pose Estimation during Contact Tasks using Differentiable Contact Features",
+    "authors": "Dongjun Lee, Jeongmin Lee 0002, Minji Lee",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Simultaneous Trajectory Optimization and Contact Selection for Multi-Modal Manipulation Planning",
+    "authors": "Mengchao Zhang, Devesh K. Jha, Arvind U. Raghunathan, Kris Hauser",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Precise Object Sliding with Top Contact via Asymmetric Dual Limit Surfaces",
+    "authors": "Xili Yi, Nima Fazeli",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "RoboNinja: Learning an Adaptive Cutting Policy for Multi-Material Objects",
+    "authors": "Zhenjia Xu, Zhou Xian, Xingyu Lin, Cheng Chi 0001, Zhiao Huang, Chuang Gan 0001, Shuran Song",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Dynamic-Resolution Model Learning for Object Pile Manipulation",
+    "authors": "Yixuan Wang 0003, Yunzhu Li, Katherine Driggs-Campbell, Li Fei-Fei 0001, Jiajun Wu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Few-shot Adaptation for Manipulating Granular Materials Under Domain Shift",
+    "authors": "Yifan Zhu 0020, Pranay Thangeda, Melkior Ornik, Kris Hauser",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Causal Policy Gradient for Whole-Body Mobile Manipulation",
+    "authors": "Jiaheng Hu, Peter Stone 0001, Roberto Martín-Martín",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Centralized Model Predictive Control for Collaborative Loco-Manipulation",
+    "authors": "Flavio De Vincenti, Stelian Coros",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Learning and Adapting Agile Locomotion Skills by Transferring Experience",
+    "authors": "Laura Smith 0001, J. Chase Kew, Tianyu Li 0005, Linda Luu, Xue Bin Peng, Sehoon Ha, Jie Tan 0001, Sergey Levine",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Robust and Versatile Bipedal Jumping Control through Reinforcement Learning",
+    "authors": "Zhongyu Li 0003, Xue Bin Peng, Pieter Abbeel, Sergey Levine, Glen Berseth, Koushil Sreenath",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "On discrete symmetries of robotics systems: A group-theoretic and data-driven analysis",
+    "authors": "Daniel Felipe Ordoñez Apraez, Mario Martín, Antonio Agudo, Francesc Moreno",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Fast Traversability Estimation for Wild Visual Navigation",
+    "authors": "Jonas Frey, Matías Mattamala, Nived Chebrolu, Cesar Cadena 0001, Maurice F. Fallon, Marco Hutter 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Demonstrating Mobile Manipulation in the Wild: A Metrics-Driven Approach",
+    "authors": "Max Bajracharya, James Borders, Richard Cheng, Daniel M. Helmick, Lukas Kaul, Dan Kruse, John Leichty, Jeremy Ma, Carolyn Matl, Frank Michel 0002, Chavdar Papazov, Josh Petersen, Krishna Shankar, Mark Tjersland",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Demonstrating A Walk in the Park: Learning to Walk in 20 Minutes With Model-Free Reinforcement Learning",
+    "authors": "Ilya Kostrikov, Laura Smith 0001, Sergey Levine",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Non-Euclidean Motion Planning with Graphs of Geodesically-Convex Sets",
+    "authors": "Thomas Cohn, Mark Petersen, Max Simchowitz, Russ Tedrake",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Convex Geometric Motion Planning on Lie Groups via Moment Relaxation",
+    "authors": "Sangli Teng, Ashkan Jasour, Ram Vasudevan, Maani Ghaffari Jadidi",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "G*: A New Approach to Bounding Curvature Constrained Shortest Paths through Dubins Gates",
+    "authors": "Satyanarayana Gupta Manyam, Abhishek Nayak, Sivakumar Rathinam",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Motion Planning (In)feasibility Detection using a Prior Roadmap via Path and Cut Search",
+    "authors": "Yoonchang Sung, Peter Stone 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Sequence-Based Plan Feasibility Prediction for Efficient Task and Motion Planning",
+    "authors": "Zhutian Yang, Caelan Reed Garrett, Tomás Lozano-Pérez, Leslie Pack Kaelbling, Dieter Fox",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Reachability-based Trajectory Design with Neural Implicit Safety Constraints",
+    "authors": "Jonathan B. Michaux, Yongseok Kwon, Qingyi Chen, Ram Vasudevan",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Progressive Learning for Physics-informed Neural Motion Planning",
+    "authors": "Ruiqi Ni, Ahmed H. Qureshi",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "iPlanner: Imperative Path Planning",
+    "authors": "Fan Yang 0092, Chen Wang 0033, Cesar Cadena 0001, Marco Hutter 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Efficient volumetric mapping of multi-scale environments using wavelet-based compression",
+    "authors": "Victor Reijgwart, Cesar Cadena 0001, Roland Siegwart, Lionel Ott",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "ConceptFusion: Open-set multimodal 3D mapping",
+    "authors": "Krishna Murthy Jatavallabhula, Alihusein Kuwajerwala, Qiao Gu, Mohd. Omama, Ganesh Iyer, Soroush Saryazdi, Tao Chen 0046, Alaa Maalouf, Shuang Li 0013, Nikhil Varma Keetha, Ayush Tewari, Joshua B. Tenenbaum, Celso Miguel de Melo, K. Madhava Krishna, Liam Paull, Florian Shkurti, Antonio Torralba 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "ERASOR2: Instance-Aware Robust 3D Mapping of the Static World in Dynamic Scenes",
+    "authors": "Hyungtae Lim, Lucas Nunes, Benedikt Mersch, Xieyuanli Chen, Jens Behley, Hyun Myung, Cyrill Stachniss",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "NeuSE: Neural SE(3)-Equivariant Embedding for Consistent Spatial Understanding with Objects",
+    "authors": "Jiahui Fu 0002, Yilun Du, Kurran Singh, Joshua B. Tenenbaum, John J. Leonard",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "POV-SLAM: Probabilistic Object-Aware Variational SLAM in Semi-Static Environments",
+    "authors": "Jingxing Qian, Veronica Chatrath, James Servos, Aaron Mavrinac, Wolfram Burgard, Steven L. Waslander, Angela P. Schoellig",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "InstaLoc: One-shot Global Lidar Localisation in Indoor Environments through Instance Learning",
+    "authors": "Lintong Zhang, Sundara Tejaswi Digumarti, Georgi Tinchev, Maurice F. Fallon",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "HDVIO: Improving Localization and Disturbance Estimation with Hybrid Dynamics VIO",
+    "authors": "Giovanni Cioffi, Leonard Bauersfeld, Davide Scaramuzza 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Fast Monocular Visual-Inertial Initialization Leveraging Learned Single-View Depth",
+    "authors": "Nathaniel W. Merrill, Patrick Geneva, Saimouli Katragadda, Chuchu Chen, Guoquan Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "CoDEPS: Online Continual Learning for Depth Estimation and Panoptic Segmentation",
+    "authors": "Niclas Vödisch, Kürsat Petek, Wolfram Burgard, Abhinav Valada",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory",
+    "authors": "Nur Muhammad (Mahi) Shafiullah, Chris Paxton 0001, Lerrel Pinto, Soumith Chintala, Arthur Szlam",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "How To Not Train Your Dragon: Training-free Embodied Object Goal Navigation with Semantic Frontiers",
+    "authors": "Junting Chen, Guohao Li 0001, Suryansh Kumar 0001, Bernard Ghanem, Fisher Yu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "A Correct-and-Certify Approach to Self-Supervise Object Pose Estimators via Ensemble Self-Training",
+    "authors": "Jingnan Shi, Rajat Talak, Dominic Maggio, Luca Carlone",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "CHSEL: Producing Diverse Plausible Pose Estimates from Contact and Free Space Data",
+    "authors": "Sheng Zhong 0004, Dmitry Berenson, Nima Fazeli",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "MultiSCOPE: Disambiguating In-Hand Object Poses with Proprioception and Tactile Feedback",
+    "authors": "Andrea Sipos, Nima Fazeli",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Tactile-Filter: Interactive Tactile Perception for Part Mating",
+    "authors": "Kei Ota, Devesh K. Jha, Hsiao-Yu Tung, Joshua B. Tenenbaum",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Integrated Object Deformation and Contact Patch Estimation from Visuo-Tactile Feedback",
+    "authors": "Mark J. Van der Merwe, Youngsun Wi, Dmitry Berenson, Nima Fazeli",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Incremental Nonlinear Dynamic Inversion based Optical Flow Control for Flying Robots: An Efficient Data-driven Approach",
+    "authors": "Hann Woei Ho, Ye Zhou",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Time Optimal Ergodic Search",
+    "authors": "Dayi E. Dong, Henry P. Berger, Ian Abraham",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "RADIUS: Risk-Aware, Real-Time, Reachability-Based Motion Planning",
+    "authors": "Challen Enninful Adu, Jinsun Liu, Lucas Lymburner, Vishrut Kaushik, Lena Trang, Ram Vasudevan",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Robust Safety under Stochastic Uncertainty with Discrete-Time Control Barrier Functions",
+    "authors": "Ryan K. Cosner, Preston Culbertson, Andrew J. Taylor, Aaron D. Ames",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Solving Stabilize-Avoid via Epigraph Form Optimal Control using Deep Reinforcement Learning",
+    "authors": "Oswin So, Chuchu Fan",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Bridging Active Exploration and Uncertainty-Aware Deployment Using Probabilistic Ensemble Neural Network Dynamics",
+    "authors": "Taekyung Kim 0003, Jungwi Mun, Junwon Seo, Beomsu Kim, Seongil Hong",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Demonstrating RFUniverse: A Multiphysics Simulation Platform for Embodied AI",
+    "authors": "Haoyuan Fu, Wenqiang Xu, Ruolin Ye, Han Xue, Zhenjun Yu, Tutian Tang, Yutong Li 0004, Wenxin Du, Jieyi Zhang 0001, Cewu Lu",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Demonstrating Arena-Web: A Web-based Development and Benchmarking Platform for Autonomous Navigation Approaches",
+    "authors": "Linh Kästner, Reyk Carstens, Lena Nahrwold, Christopher Liebig, Volodymyr Shcherbyna, Subhin Lee, Jens Lambrecht",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "LEAP Hand: Low-Cost, Efficient, and Anthropomorphic Hand for Robot Learning",
+    "authors": "Kenneth Shaw, Ananye Agarwal, Deepak Pathak",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "ROSE: Rotation-based Squeezing Robotic Gripper toward Universal Handling of Objects",
+    "authors": "Son Tien Bui, Shinya Kawano, Van Anh Ho",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots",
+    "authors": "Ke Qiu, Jingyu Zhang, Danying Sun, Rong Xiong, Haojian Lu, Yue Wang 0020",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Predefined-Time Convergent Motion Control for Heterogeneous Continuum Robots",
+    "authors": "Ning Tan 0003, Peng Yu 0003, Kai Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Adaptive Tracking Control of Dielectric Elastomer Soft Actuators with Viscoelastic Hysteresis Compensation",
+    "authors": "Yunhua Zhao, Li Wen",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Gait design for limbless obstacle aided locomotion using geometric mechanics",
+    "authors": "Baxi Chong, Tianyu Wang 0010, Daniel Irvine, Velin Kojouharov, Bo Lin 0006, Howie Choset, Daniel I. Goldman, Grigoriy Blekherman",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Reconfigurable Robot Control Using Flexible Coupling Mechanisms",
+    "authors": "Sha Yi, Katia P. Sycara, Fatma Zeynep Temel",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Co-optimization of Morphology and Behavior of Modular Robots via Hierarchical Deep Reinforcement Learning",
+    "authors": "Jieqiang Sun, Meibao Yao, Xueming Xiao, Zhibing Xie, Bo Zheng",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Active Velocity Estimation using Light Curtains via Self-Supervised Multi-Armed Bandits",
+    "authors": "Siddharth Ancha, Gaurav Pathak, Ji Zhang, Srinivasa G. Narasimhan, David Held",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Self-Supervised Lidar Place Recognition in Overhead Imagery Using Unpaired Data",
+    "authors": "Tim Y. Tang, Daniele De Martini, Paul M. Newman",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Metric-Free Exploration for Topological Mapping by Task and Motion Imitation in Feature Space",
+    "authors": "Yuhang He, Irving Fang, Yiming Li 0003, Rushi Bhavesh Shah, Chen Feng 0002",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Task-Aware Risk Estimation of Perception Failures for Autonomous Vehicles",
+    "authors": "Pasquale Antonante, Sushant Veer, Karen Leung, Xinshuo Weng, Luca Carlone, Marco Pavone 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "CCIL: Context-conditioned imitation learning for urban driving",
+    "authors": "Ke Guo, Wei Jing, Junbo Chen, Jia Pan 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Efficient Reinforcement Learning for Autonomous Driving with Parameterized Skills and Priors",
+    "authors": "Letian Wang, Jie Liu 0047, Hao Shao, Wenshuo Wang, Ruobing Chen 0005, Yu Liu 0015, Steven L. Waslander",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "TerrainNet: Visual Modeling of Complex Terrain for High-speed, Off-road Navigation",
+    "authors": "Xiangyun Meng, Nathan Hatch, Alexander Lambert, Anqi Li 0001, Nolan Wagener, Matthew Schmittle, Joonho Lee, Wentao Yuan, Zoey Qiuyu Chen, Samuel Deng, Greg Okopal, Dieter Fox, Byron Boots, Amirreza Shaban",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Autonomous Navigation, Mapping and Exploration with Gaussian Processes",
+    "authors": "Mahmoud Ali, Hassan Jardali, Nicholas Roy, Lantao Liu",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Graph Attention Multi-Agent Fleet Autonomy for Advanced Air Mobility",
+    "authors": "Malintha Fernando, Ransalu Senanayake, Heeyoul Choi, Martin Swany",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Path Planning for Multiple Tethered Robots Using Topological Braids",
+    "authors": "Muqing Cao, Kun Cao 0002, Shenghai Yuan 0001, Kangcheng Liu, Yan Loi Wong, Lihua Xie 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "A Sampling-Based Approach for Heterogeneous Coalition Scheduling with Temporal Uncertainty",
+    "authors": "Andrew Messing, Jacopo Banfi, Martina Stadler, Ethan Stump, Harish Ravichandar, Nicholas Roy, Seth Hutchinson 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Concurrent Constrained Optimization of Unknown Rewards for Multi-Robot Task Allocation",
+    "authors": "Sukriti Singh, Anusha Srikanthan, Vivek Mallampati, Harish Ravichandar",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Bandit Submodular Maximization for Multi-Robot Coordination in Unpredictable and Partially Observable Environments",
+    "authors": "Zirui Xu, Xiaofeng Lin 0004, Vasileios Tzoumas",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Distributed Hierarchical Distribution Control for Very-Large-Scale Clustered Multi-Agent Systems",
+    "authors": "Augustinos D. Saravanos, Yihui Li, Evangelos A. Theodorou",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Decentralization and Acceleration Enables Large-Scale Bundle Adjustment",
+    "authors": "Taosha Fan, Joseph Ortiz, Ming Hsiao, Maurizio Monge, Jing Dong 0002, Todd D. Murphey, Mustafa Mukadam",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2023,
+    "title": "Active Collaborative Localization in Heterogeneous Robot Teams",
+    "authors": "Igor Spasojevic, Xu Liu 0007, Alejandro Ribeiro, George J. Pappas, Vijay Kumar 0001",
+    "abstract": null
+  }
+]

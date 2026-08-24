@@ -1,0 +1,4328 @@
+[
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Improved Regret Bounds for Thompson Sampling in Linear Quadratic Control Problems",
+    "authors": "Marc Abeille, Alessandro Lazaric",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "State Abstractions for Lifelong Reinforcement Learning",
+    "authors": "David Abel, Dilip Arumugam, Lucas Lehnert, Michael L. Littman",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Policy and Value Transfer in Lifelong Reinforcement Learning",
+    "authors": "David Abel, Yuu Jinnai, Yue (Sophie) Guo, George Dimitri Konidaris, Michael L. Littman",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "INSPECTRE: Privately Estimating the Unseen",
+    "authors": "Jayadev Acharya, Gautam Kamath 0001, Ziteng Sun, Huanyu Zhang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Representations and Generative Models for 3D Point Clouds",
+    "authors": "Panos Achlioptas, Olga Diamanti, Ioannis Mitliagkas, Leonidas J. Guibas",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Discovering Interpretable Representations for Both Deep Generative and Discriminative Models",
+    "authors": "Tameem Adel, Zoubin Ghahramani, Adrian Weller",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Reductions Approach to Fair Classification",
+    "authors": "Alekh Agarwal, Alina Beygelzimer, Miroslav Dud&#237;k, John Langford 0001, Hanna M. Wallach",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Accelerated Spectral Ranking",
+    "authors": "Arpit Agarwal 0001, Prathamesh Patil, Shivani Agarwal 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "MISSION: Ultra Large-Scale Feature Selection using Count-Sketches",
+    "authors": "Amirali Aghazadeh, Ryan Spring, Daniel LeJeune, Gautam Dasarathy, Anshumali Shrivastava, Richard G. Baraniuk",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Minimal I-MAP MCMC for Scalable Structure Discovery in Causal DAG Models",
+    "authors": "Raj Agrawal, Caroline Uhler, Tamara Broderick",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Proportional Allocation: Simple, Distributed, and Diverse Matching with High Entropy",
+    "authors": "Shipra Agrawal 0001, Morteza Zadimoghaddam, Vahab S. Mirrokni",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bucket Renormalization for Approximate Inference",
+    "authors": "Sungsoo Ahn, Michael Chertkov, Adrian Weller, Jinwoo Shin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "oi-VAE: Output Interpretable VAEs for Nonlinear Group Factor Analysis",
+    "authors": "Samuel K. Ainsworth, Nicholas J. Foti, Adrian K. C. Lee, Emily B. Fox",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Limits of Estimating Heterogeneous Treatment Effects: Guidelines for Practical Algorithm Design",
+    "authors": "Ahmed M. Alaa, Mihaela van der Schaar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "AutoPrognosis: Automated Clinical Prognostic Modeling via Bayesian Optimization with Structured Kernel Learning",
+    "authors": "Ahmed M. Alaa, Mihaela van der Schaar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Information Theoretic Guarantees for Empirical Risk Minimization with Applications to Model Selection and Large-Scale Optimization",
+    "authors": "Ibrahim M. Alabdulmohsin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fixing a Broken ELBO",
+    "authors": "Alexander A. Alemi, Ben Poole, Ian Fischer, Joshua V. Dillon, Rif A. Saurous, Kevin Murphy 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Differentially Private Identity and Equivalence Testing of Discrete Distributions",
+    "authors": "Maryam Aliakbarpour, Ilias Diakonikolas, Ronitt Rubinfeld",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Katyusha X: Practical Momentum Method for Stochastic Sum-of-Nonconvex Optimization",
+    "authors": "Zeyuan Allen-Zhu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Make the Minority Great Again: First-Order Regret Bound for Contextual Bandits",
+    "authors": "Zeyuan Allen-Zhu, S&#233;bastien Bubeck, Yuanzhi Li",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Augmented CycleGAN: Learning Many-to-Many Mappings from Unpaired Data",
+    "authors": "Amjad Almahairi, Sai Rajeswar, Alessandro Sordoni, Philip Bachman, Aaron C. Courville",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Meta-Learning by Adjusting Priors Based on Extended PAC-Bayes Theory",
+    "authors": "Ron Amit, Ron Meir",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "MAGAN: Aligning Biological Manifolds",
+    "authors": "Matthew Amodio, Smita Krishnaswamy",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Subspace Embedding and Linear Regression with Orlicz Norm",
+    "authors": "Alexandr Andoni, Chengyu Lin 0001, Ying Sheng 0004, Peilin Zhong, Ruiqi Zhong",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Efficient Gradient-Free Variational Inference using Policy Search",
+    "authors": "Oleg Arenz, Mingjun Zhong, Gerhard Neumann",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On the Optimization of Deep Networks: Implicit Acceleration by Overparameterization",
+    "authors": "Sanjeev Arora, Nadav Cohen, Elad Hazan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stronger Generalization Bounds for Deep Nets via a Compression Approach",
+    "authors": "Sanjeev Arora, Rong Ge 0001, Behnam Neyshabur, Yi Zhang 0074",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Lipschitz Continuity in Model-based Reinforcement Learning",
+    "authors": "Kavosh Asadi, Dipendra Misra, Michael L. Littman",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Obfuscated Gradients Give a False Sense of Security: Circumventing Defenses to Adversarial Examples",
+    "authors": "Anish Athalye, Nicholas Carlini, David A. Wagner 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Synthesizing Robust Adversarial Examples",
+    "authors": "Anish Athalye, Logan Engstrom, Andrew Ilyas, Kevin Kwok",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Clustering Semi-Random Mixtures of Gaussians",
+    "authors": "Pranjal Awasthi, Aravindan Vijayaraghavan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Contextual Graph Markov Model: A Deep and Generative Approach to Graph Processing",
+    "authors": "Davide Bacciu, Federico Errica, Alessio Micheli",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Greed is Still Good: Maximizing Monotone Submodular+Supermodular (BP) Functions",
+    "authors": "Wenruo Bai, Jeffrey A. Bilmes",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Comparing Dynamics: Deep Neural Networks versus Glassy Systems",
+    "authors": "Marco Baity-Jesi, Levent Sagun, Mario Geiger, Stefano Spigler, G&#233;rard Ben Arous, Chiara Cammarota, Yann LeCun, Matthieu Wyart, Giulio Biroli",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "SMAC: Simultaneous Mapping and Clustering Using Spectral Decompositions",
+    "authors": "Chandrajit Bajaj, Tingran Gao, Zihang He, Qixing Huang, Zhenxiao Liang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Boo(n) for Evaluating Architecture Performance",
+    "authors": "Ondrej Bajgar, Rudolf Kadlec, Jan Kleindienst",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning to Branch",
+    "authors": "Maria-Florina Balcan, Travis Dick, Tuomas Sandholm, Ellen Vitercik",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Mechanics of n-Player Differentiable Games",
+    "authors": "David Balduzzi, S&#233;bastien Racani&#232;re, James Martens, Jakob N. Foerster, Karl Tuyls, Thore Graepel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Spline Filters For End-to-End Deep Learning",
+    "authors": "Randall Balestriero, Romain Cosentino, Herv&#233; Glotin, Richard G. Baraniuk",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Spline Theory of Deep Networks",
+    "authors": "Randall Balestriero, Richard G. Baraniuk",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Approximation Guarantees for Adaptive Sampling",
+    "authors": "Eric Balkanski, Yaron Singer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Improving the Gaussian Mechanism for Differential Privacy: Analytical Calibration and Optimal Denoising",
+    "authors": "Borja Balle, Yu-Xiang Wang 0003",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Dissecting Adam: The Sign, Magnitude and Variance of Stochastic Gradients",
+    "authors": "Lukas Balles, Philipp Hennig",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Differentially Private Database Release via Kernel Mean Embeddings",
+    "authors": "Matej Balog, Ilya O. Tolstikhin, Bernhard Sch&#246;lkopf",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Improving Optimization in Models With Continuous Symmetry Breaking",
+    "authors": "Robert Bamler, Stephan Mandt",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Improved Training of Generative Adversarial Networks using Representative Features",
+    "authors": "Duhyeon Bang, Hyunjung Shim",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Using Inherent Structures to design Lean 2-layer RBMs",
+    "authors": "Abhishek Bansal 0004, Abhinav Anand, Chiranjib Bhattacharyya",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Classification from Pairwise Similarity and Unlabeled Data",
+    "authors": "Han Bao 0002, Gang Niu 0001, Masashi Sugiyama",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bayesian Optimization of Combinatorial Structures",
+    "authors": "Ricardo Baptista, Matthias Poloczek",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Geodesic Convolutional Shape Optimization",
+    "authors": "Pierre Baqu&#233;, Edoardo Remelli, Fran&#231;ois Fleuret, Pascal Fua",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning to Coordinate with Coordination Graphs in Repeated Single-Stage Multi-Agent Decision Problems",
+    "authors": "Eugenio Bargiacchi, Timothy Verstraeten, Diederik M. Roijers, Ann Now&#233;, Hado van Hasselt",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Testing Sparsity over Known and Unknown Bases",
+    "authors": "Siddharth Barman, Arnab Bhattacharyya 0001, Suprovat Ghoshal",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Transfer in Deep Reinforcement Learning Using Successor Features and Generalised Policy Improvement",
+    "authors": "Andr&#233; Barreto 0001, Diana Borsa, John Quan, Tom Schaul, David Silver 0001, Matteo Hessel, Daniel J. Mankowitz, Augustin Z&#237;dek, R&#233;mi Munos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Gradient descent with identity initialization efficiently learns positive definite linear transformations",
+    "authors": "Peter L. Bartlett, David P. Helmbold, Philip M. Long",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Mutual Information Neural Estimation",
+    "authors": "Mohamed Ishmael Belghazi, Aristide Baratin, Sai Rajeswar, Sherjil Ozair, Yoshua Bengio, R. Devon Hjelm, Aaron C. Courville",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "To Understand Deep Learning We Need to Understand Kernel Learning",
+    "authors": "Mikhail Belkin, Siyuan Ma, Soumik Mandal",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Understanding and Simplifying One-Shot Architecture Search",
+    "authors": "Gabriel Bender, Pieter-Jan Kindermans, Barret Zoph, Vijay Vasudevan, Quoc V. Le",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "SIGNSGD: Compressed Optimisation for Non-Convex Problems",
+    "authors": "Jeremy Bernstein, Yu-Xiang Wang 0003, Kamyar Azizzadenesheli, Animashree Anandkumar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Distributed Clustering via LSH Based Data Partitioning",
+    "authors": "Aditya Bhaskara, Maheshakya Wijewardena",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Autoregressive Convolutional Neural Networks for Asynchronous Time Series",
+    "authors": "Mikolaj Binkowski, Gautier Marti, Philippe Donnat",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adaptive Sampled Softmax with Kernel Based Sampling",
+    "authors": "Guy Blanc, Steffen Rendle",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Optimizing the Latent Space of Generative Networks",
+    "authors": "Piotr Bojanowski, Armand Joulin, David Lopez-Paz, Arthur Szlam",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "NetGAN: Generating Graphs via Random Walks",
+    "authors": "Aleksandar Bojchevski, Oleksandr Shchur, Daniel Z&#252;gner, Stephan G&#252;nnemann",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Progressive Batching L-BFGS Method for Machine Learning",
+    "authors": "Raghu Bollapragada, Dheevatsa Mudigere, Jorge Nocedal, Hao-Jun Michael Shi, Ping Tak Peter Tang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Prediction Rule Reshaping",
+    "authors": "Matt Bonakdarpour, Sabyasachi Chatterjee, Rina Foygel Barber, John Lafferty",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "QuantTree: Histograms for Change Detection in Multivariate Data Streams",
+    "authors": "Giacomo Boracchi, Diego Carrera, Cristiano Cervellera, Danilo Macci&#242;",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Matrix Norms in Data Streams: Faster, Multi-Pass and Row-Order",
+    "authors": "Vladimir Braverman, Stephen R. Chestnut, Robert Krauthgamer, Yi Li 0002, David P. Woodruff, Lin F. Yang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Predict and Constrain: Modeling Cardinality in Deep Structured Prediction",
+    "authors": "Nataly Brukhim, Amir Globerson",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Quasi-Monte Carlo Variational Inference",
+    "authors": "Alexander Buchholz, Florian Wenzel, Stephan Mandt",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Path-Level Network Transformation for Efficient Architecture Search",
+    "authors": "Han Cai, Jiacheng Yang, Weinan Zhang 0001, Song Han 0003, Yong Yu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Improved Large-Scale Graph Learning through Ridge Spectral Sparsification",
+    "authors": "Daniele Calandriello, Ioannis Koutis, Alessandro Lazaric, Michal Valko",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bayesian Coreset Construction via Greedy Iterative Geodesic Ascent",
+    "authors": "Trevor Campbell, Tamara Broderick",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adversarial Learning with Local Coordinate Coding",
+    "authors": "Jiezhang Cao, Yong Guo, Qingyao Wu, Chunhua Shen, Junzhou Huang, Mingkui Tan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fair and Diverse DPP-Based Data Summarization",
+    "authors": "L. Elisa Celis, Vijay Keswani, Damian Straszak, Amit Deshpande 0001, Tarun Kathuria, Nisheeth K. Vishnoi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Conditional Noise-Contrastive Estimation of Unnormalised Models",
+    "authors": "Ciwan Ceylan, Michael U. Gutmann",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adversarial Time-to-Event Modeling",
+    "authors": "Paidamoyo Chapfuwa, Chenyang Tao, Chunyuan Li, Courtney Page, Benjamin Alan Goldstein, Lawrence Carin, Ricardo Henao",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stability and Generalization of Learning Algorithms that Converge to Global Optima",
+    "authors": "Zachary Charles, Dimitris S. Papailiopoulos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning and Memorization",
+    "authors": "Satrajit Chatterjee",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On the Theory of Variance Reduction for Stochastic Gradient Monte Carlo",
+    "authors": "Niladri S. Chatterji, Nicolas Flammarion, Yi-An Ma, Peter L. Bartlett, Michael I. Jordan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Hierarchical Clustering with Structural Constraints",
+    "authors": "Vaggos Chatziafratis, Rad Niazadeh, Moses Charikar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Hierarchical Deep Generative Models for Multi-Rate Multivariate Time Series",
+    "authors": "Zhengping Che, Sanjay Purushotham, Max Guangyu Li, Bo Jiang 0001, Yan Liu 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "GradNorm: Gradient Normalization for Adaptive Loss Balancing in Deep Multitask Networks",
+    "authors": "Zhao Chen 0006, Vijay Badrinarayanan, Chen-Yu Lee, Andrew Rabinovich",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Weakly Submodular Maximization Beyond Cardinality Constraints: Does Randomization Help Greedy?",
+    "authors": "Lin Chen 0003, Moran Feldman, Amin Karbasi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Projection-Free Online Optimization with Stochastic Gradient: From Convexity to Submodularity",
+    "authors": "Lin Chen 0003, Christopher Harshaw, Hamed Hassani, Amin Karbasi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Continuous-Time Flows for Efficient Inference and Density Estimation",
+    "authors": "Changyou Chen, Chunyuan Li, Liquan Chen, Wenlin Wang, Yunchen Pu, Lawrence Carin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Scalable Bilinear Learning Using State and Action Features",
+    "authors": "Yichen Chen, Lihong Li 0001, Mengdi Wang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stein Points",
+    "authors": "Wilson Ye Chen, Lester W. Mackey, Jackson Gorham, Fran&#231;ois-Xavier Briol, Chris J. Oates",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning K-way D-dimensional Discrete Codes for Compact Embedding Representations",
+    "authors": "Ting Chen 0007, Martin Renqiang Min, Yizhou Sun",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "PixelSNAIL: An Improved Autoregressive Generative Model",
+    "authors": "Xi Chen 0022, Nikhil Mishra, Mostafa Rohaninejad, Pieter Abbeel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Dynamical Isometry and a Mean Field Theory of RNNs: Gating Enables Signal Propagation in Recurrent Neural Networks",
+    "authors": "Minmin Chen, Jeffrey Pennington, Samuel S. Schoenholz",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning to Explain: An Information-Theoretic Perspective on Model Interpretation",
+    "authors": "Jianbo Chen, Le Song, Martin J. Wainwright, Michael I. Jordan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Variational Inference and Model Selection with Generalized Evidence Bounds",
+    "authors": "Liqun Chen 0001, Chenyang Tao, Ruiyi Zhang 0002, Ricardo Henao, Lawrence Carin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "DRACO: Byzantine-resilient Distributed Training via Redundant Gradients",
+    "authors": "Lingjiao Chen, Hongyi Wang 0001, Zachary Charles, Dimitris S. Papailiopoulos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "SADAGRAD: Strongly Adaptive Stochastic Gradient Methods",
+    "authors": "Zaiyi Chen, Yi Xu 0008, Enhong Chen, Tianbao Yang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Covariate Adjusted Precision Matrix Estimation via Nonconvex Optimization",
+    "authors": "Jinghui Chen, Pan Xu 0002, Lingxiao Wang 0001, Jian Ma 0004, Quanquan Gu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "End-to-End Learning for the Deep Multivariate Probit Model",
+    "authors": "Di Chen 0001, Yexiang Xue, Carla P. Gomes",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stochastic Training of Graph Convolutional Networks with Variance Reduction",
+    "authors": "Jianfei Chen 0001, Jun Zhu 0001, Le Song",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Extreme Learning to Rank via Low Rank Assumption",
+    "authors": "Minhao Cheng, Ian Davidson, Cho-Jui Hsieh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning a Mixture of Two Multinomial Logits",
+    "authors": "Flavio Chierichetti, Ravi Kumar 0001, Andrew Tomkins",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Structured Evolution with Compact Architectures for Scalable Policy Optimization",
+    "authors": "Krzysztof Choromanski, Mark Rowland 0001, Vikas Sindhwani, Richard E. Turner, Adrian Weller",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Path Consistency Learning in Tsallis Entropy Regularized MDPs",
+    "authors": "Yinlam Chow, Ofir Nachum, Mohammad Ghavamzadeh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "An Iterative, Sketching-based Framework for Ridge Regression",
+    "authors": "Agniva Chowdhury, Jiasen Yang, Petros Drineas",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stochastic Wasserstein Barycenters",
+    "authors": "Sebastian Claici, Edward Chien, Justin Solomon 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Self-Consistent Trajectory Autoencoder: Hierarchical Reinforcement Learning with Trajectory Embeddings",
+    "authors": "John D. Co-Reyes, Yuxuan Liu 0001, Abhishek Gupta 0004, Benjamin Eysenbach, Pieter Abbeel, Sergey Levine",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On Acceleration with Noise-Corrupted Gradients",
+    "authors": "Michael Cohen 0001, Jelena Diakonikolas, Lorenzo Orecchia",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Online Linear Quadratic Control",
+    "authors": "Alon Cohen, Avinatan Hassidim, Tomer Koren, Nevena Lazic, Yishay Mansour, Kunal Talwar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "GEP-PG: Decoupling Exploration and Exploitation in Deep Reinforcement Learning Algorithms",
+    "authors": "C&#233;dric Colas, Olivier Sigaud, Pierre-Yves Oudeyer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Leveraging Well-Conditioned Bases: Streaming and Distributed Summaries in Minkowski p-Norms",
+    "authors": "Graham Cormode, Charlie Dickens, David P. Woodruff",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Efficient ModelBased Deep Reinforcement Learning with Variational State Tabulation",
+    "authors": "Dane S. Corneil, Wulfram Gerstner, Johanni Brea",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Online Learning with Abstention",
+    "authors": "Corinna Cortes, Giulia DeSalvo, Claudio Gentile, Mehryar Mohri, Scott Yang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Constrained Interacting Submodular Groupings",
+    "authors": "Andrew Cotter, Mahdi Milani Fard, Seungil You, Maya R. Gupta, Jeff A. Bilmes",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Inference Suboptimality in Variational Autoencoders",
+    "authors": "Chris Cremer, Xuechen Li 0005, David Duvenaud",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Mix &#38; Match Agent Curricula for Reinforcement Learning",
+    "authors": "Wojciech Marian Czarnecki, Siddhant M. Jayakumar, Max Jaderberg, Leonard Hasenclever, Yee Whye Teh, Nicolas Heess, Simon Osindero, Razvan Pascanu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Implicit Quantile Networks for Distributional Reinforcement Learning",
+    "authors": "Will Dabney, Georg Ostrovski, David Silver 0001, R&#233;mi Munos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Steady-States of Iterative Algorithms over Graphs",
+    "authors": "Hanjun Dai, Zornitsa Kozareva, Bo Dai 0001, Alexander J. Smola, Le Song",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adversarial Attack on Graph Structured Data",
+    "authors": "Hanjun Dai, Hui Li, Tian Tian 0001, Xin Huang, Lin Wang, Jun Zhu 0001, Le Song",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "SBEED: Convergent Reinforcement Learning with Nonlinear Function Approximation",
+    "authors": "Bo Dai 0001, Albert E. Shaw, Lihong Li 0001, Lin Xiao, Niao He, Zhen Liu 0019, Jianshu Chen, Le Song",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Compressing Neural Networks using the Variational Information Bottleneck",
+    "authors": "Bin Dai 0008, Chen Zhu, Baining Guo, David P. Wipf",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Asynchronous Byzantine Machine Learning (the case of SGD)",
+    "authors": "Georgios Damaskinos, El Mahdi El Mhamdi, Rachid Guerraoui, Rhicheek Patra, Mahsa Taziki",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Escaping Saddles with Stochastic Gradients",
+    "authors": "Hadi Daneshmand, Jonas Moritz Kohler, Aur&#233;lien Lucchi, Thomas Hofmann 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Minibatch Gibbs Sampling on Large Graphical Models",
+    "authors": "Christopher De Sa, Vincent Chen, Wing Wong",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stochastic Video Generation with a Learned Prior",
+    "authors": "Emily Denton, Rob Fergus",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Decomposition of Uncertainty in Bayesian Deep Learning for Efficient and Risk-sensitive Learning",
+    "authors": "Stefan Depeweg, Jos&#233; Miguel Hern&#225;ndez-Lobato, Finale Doshi-Velez, Steffen Udluft",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Accurate Inference for Adaptive Linear Models",
+    "authors": "Yash Deshpande, Lester W. Mackey, Vasilis Syrgkanis, Matt Taddy",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Variational Network Inference: Strong and Stable with Concrete Support",
+    "authors": "Amir Dezfouli, Edwin V. Bonilla, Richard Nock",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Modeling Sparse Deviations for Compressed Sensing using Generative Models",
+    "authors": "Manik Dhar, Aditya Grover, Stefano Ermon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Alternating Randomized Block Coordinate Descent",
+    "authors": "Jelena Diakonikolas, Lorenzo Orecchia",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning to Act in Decentralized Partially Observable MDPs",
+    "authors": "Jilles Steeve Dibangoye, Olivier Buffet",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Noisin: Unbiased Regularization for Recurrent Neural Networks",
+    "authors": "Adji Bousso Dieng, Rajesh Ranganath, Jaan Altosaar, David M. Blei",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Discovering and Removing Exogenous State Variables and Rewards for Reinforcement Learning",
+    "authors": "Thomas G. Dietterich, George Trimponias, Zhitang Chen",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Coordinated Exploration in Concurrent Reinforcement Learning",
+    "authors": "Maria Dimakopoulou, Benjamin Van Roy",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Probabilistic Recurrent State-Space Models",
+    "authors": "Andreas Doerr, Christian Daniel, Martin Schiegg, Duy Nguyen-Tuong, Stefan Schaal, Marc Toussaint, Sebastian Trimpe",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Randomized Block Cubic Newton Method",
+    "authors": "Nikita Doikov, Peter Richt&#225;rik",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Low-Rank Riemannian Optimization on Positive Semidefinite Stochastic Matrices with Applications to Graph Clustering",
+    "authors": "Ahmed Douik, Babak Hassibi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Essentially No Barriers in Neural Network Energy Landscape",
+    "authors": "Felix Draxler, Kambis Veschgini, Manfred Salmhofer, Fred A. Hamprecht",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Weakly Consistent Optimal Pricing Algorithms in Repeated Posted-Price Auctions with Strategic Buyer",
+    "authors": "Alexey Drutsa",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On the Power of Over-parametrization in Neural Networks with Quadratic Activation",
+    "authors": "Simon S. Du, Jason D. Lee",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Gradient Descent Learns One-hidden-layer CNN: Don't be Afraid of Spurious Local Minima",
+    "authors": "Simon S. Du, Jason D. Lee, Yuandong Tian, Aarti Singh, Barnab&#225;s P&#243;czos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Investigating Human Priors for Playing Video Games",
+    "authors": "Rachit Dubey, Pulkit Agrawal 0001, Deepak Pathak, Tom Griffiths 0001, Alexei A. Efros",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Distributed Second-Order Algorithm You Can Trust",
+    "authors": "Celestine D&#252;nner, Aur&#233;lien Lucchi, Matilde Gargiani, An Bian, Thomas Hofmann 0001, Martin Jaggi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Computational Optimal Transport: Complexity by Accelerated Gradient Descent Is Better Than by Sinkhorn's Algorithm",
+    "authors": "Pavel E. Dvurechensky, Alexander V. Gasnikov, Alexey Kroshnin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Entropy-SGD optimizes the prior of a PAC-Bayes bound: Generalization properties of Entropy-SGD and data-dependent priors",
+    "authors": "Gintare Karolina Dziugaite, Daniel M. Roy 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Beyond the One-Step Greedy Approach in Reinforcement Learning",
+    "authors": "Yonathan Efroni, Gal Dalal, Bruno Scherrer, Shie Mannor",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Parallel and Streaming Algorithms for K-Core Decomposition",
+    "authors": "Hossein Esfandiari, Silvio Lattanzi, Vahab S. Mirrokni",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "IMPALA: Scalable Distributed Deep-RL with Importance Weighted Actor-Learner Architectures",
+    "authors": "Lasse Espeholt, Hubert Soyer, R&#233;mi Munos, Karen Simonyan, Volodymyr Mnih, Tom Ward, Yotam Doron, Vlad Firoiu, Tim Harley, Iain Dunning, Shane Legg, Koray Kavukcuoglu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Scalable Gaussian Processes with Grid-Structured Eigenfunctions (GP-GRIEF)",
+    "authors": "Trefor W. Evans, Prasanth B. Nair",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Limits of Maxing, Ranking, and Preference Learning",
+    "authors": "Moein Falahatgar, Ayush Jain 0001, Alon Orlitsky, Venkatadheeraj Pichapati, Vaishakh Ravindrakumar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "BOHB: Robust and Efficient Hyperparameter Optimization at Scale",
+    "authors": "Stefan Falkner, Aaron Klein, Frank Hutter",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "More Robust Doubly Robust Off-policy Evaluation",
+    "authors": "Mehrdad Farajtabar, Yinlam Chow, Mohammad Ghavamzadeh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Efficient and Consistent Adversarial Bipartite Matching",
+    "authors": "Rizal Fathony, Sima Behpour, Xinhua Zhang, Brian D. Ziebart",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Global Convergence of Policy Gradient Methods for the Linear Quadratic Regulator",
+    "authors": "Maryam Fazel, Rong Ge 0001, Sham M. Kakade, Mehran Mesbahi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "CRVI: Convex Relaxation for Variational Inference",
+    "authors": "Ghazal Fazelnia, John W. Paisley",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fourier Policy Gradients",
+    "authors": "Matthew Fellows, Kamil Ciosek, Shimon Whiteson",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Nonparametric variable importance using an augmented neural network with multi-task learning",
+    "authors": "Jean Feng, Brian D. Williamson, Marco Carone, Noah Simon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Closed-form Marginal Likelihood in Gamma-Poisson Matrix Factorization",
+    "authors": "Louis Filstroff, Alberto Lumbreras, C&#233;dric F&#233;votte",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Automatic Goal Generation for Reinforcement Learning Agents",
+    "authors": "Carlos Florensa, David Held, Xinyang Geng, Pieter Abbeel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "DiCE: The Infinitely Differentiable Monte Carlo Estimator",
+    "authors": "Jakob N. Foerster, Gregory Farquhar, Maruan Al-Shedivat, Tim Rockt&#228;schel, Eric P. Xing, Shimon Whiteson",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Practical Contextual Bandits with Regression Oracles",
+    "authors": "Dylan J. Foster, Alekh Agarwal, Miroslav Dud&#237;k, Haipeng Luo, Robert E. Schapire",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Generative Temporal Models with Spatial Memory for Partially Observed Environments",
+    "authors": "Marco Fraccaro, Danilo Jimenez Rezende, Yori Zwols, Alexander Pritzel, S. M. Ali Eslami, Fabio Viola",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "ADMM and Accelerated ADMM as Continuous Dynamical Systems",
+    "authors": "Guilherme Fran&#231;a, Daniel P. Robinson, Ren&#233; Vidal",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bilevel Programming for Hyperparameter Optimization and Meta-Learning",
+    "authors": "Luca Franceschi 0001, Paolo Frasconi, Saverio Salzo, Riccardo Grazzi, Massimiliano Pontil",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Efficient Bias-Span-Constrained Exploration-Exploitation in Reinforcement Learning",
+    "authors": "Ronan Fruit, Matteo Pirotta, Alessandro Lazaric, Ronald Ortner",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Addressing Function Approximation Error in Actor-Critic Methods",
+    "authors": "Scott Fujimoto, Herke van Hoof, David Meger",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Clipped Action Policy Gradient",
+    "authors": "Yasuhiro Fujita 0001, Shin-ichi Maeda",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Born-Again Neural Networks",
+    "authors": "Tommaso Furlanello, Zachary Chase Lipton, Michael Tschannen, Laurent Itti, Anima Anandkumar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Local Private Hypothesis Testing: Chi-Square Tests",
+    "authors": "Marco Gaboardi, Ryan Rogers 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Inductive Two-layer Modeling with Parametric Bregman Transfer",
+    "authors": "Vignesh Ganapathiraman, Zhan Shi, Xinhua Zhang, Yaoliang Yu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Hyperbolic Entailment Cones for Learning Hierarchical Embeddings",
+    "authors": "Octavian-Eugen Ganea, Gary B&#233;cigneul, Thomas Hofmann 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Parameterized Algorithms for the Matrix Completion Problem",
+    "authors": "Robert Ganian, Iyad A. Kanj, Sebastian Ordyniak, Stefan Szeider",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Synthesizing Programs for Images using Reinforced Adversarial Learning",
+    "authors": "Yaroslav Ganin, Tejas Kulkarni, Igor Babuschkin, S. M. Ali Eslami, Oriol Vinyals",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Spotlight: Optimizing Device Placement for Training Deep Neural Networks",
+    "authors": "Yuanxiang Gao, Li Chen 0019, Baochun Li",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Parallel Bayesian Network Structure Learning",
+    "authors": "Tian Gao, Dennis Wei",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Structured Output Learning with Abstention: Application to Accurate Opinion Prediction",
+    "authors": "Alexandre Garcia 0001, Chlo&#233; Clavel, Slim Essid, Florence d'Alch&#233;-Buc",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Conditional Neural Processes",
+    "authors": "Marta Garnelo, Dan Rosenbaum, Christopher Maddison, Tiago Ramalho, David Saxton, Murray Shanahan, Yee Whye Teh, Danilo Jimenez Rezende, S. M. Ali Eslami",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Temporal Poisson Square Root Graphical Models",
+    "authors": "Sinong Geng, Zhaobin Kuang, Peggy L. Peissig, David Page",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Generalization Error of Dictionary Learning with Moreau Envelopes",
+    "authors": "Alexandros Georgogiannis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Budgeted Experiment Design for Causal Structure Learning",
+    "authors": "AmirEmad Ghassami, Saber Salehkaleybar, Negar Kiyavash, Elias Bareinboim",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Linear Spectral Estimators and an Application to Phase Retrieval",
+    "authors": "Ramina Ghods, Andrew S. Lan, Tom Goldstein, Christoph Studer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Structured Variational Learning of Bayesian Neural Networks with Horseshoe Priors",
+    "authors": "Soumya Ghosh, Jiayu Yao, Finale Doshi-Velez",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Maximum-A-Posteriori Perturbation Models for Structured Prediction in Polynomial Time",
+    "authors": "Asish Ghoshal, Jean Honorio",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Robust and Scalable Models of Microbiome Dynamics",
+    "authors": "Travis E. Gibson, Georg K. Gerber",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Non-Linear Motor Control by Local Learning in Spiking Neural Networks",
+    "authors": "Aditya Gilra, Wulfram Gerstner",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning One Convolutional Layer with Overlapping Patches",
+    "authors": "Surbhi Goel, Adam R. Klivans, Raghu Meka",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Visualizing and Understanding Atari Agents",
+    "authors": "Samuel Greydanus, Anurag Koul, Jonathan Dodge, Alan Fern",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Policy Representations in Multiagent Systems",
+    "authors": "Aditya Grover, Maruan Al-Shedivat, Jayesh K. Gupta, Yuri Burda, Harrison Edwards",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Faster Derivative-Free Stochastic Algorithm for Shared Memory Machines",
+    "authors": "Bin Gu 0001, Zhouyuan Huo, Cheng Deng 0002, Heng Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning to Search with MCTSnets",
+    "authors": "Arthur Guez, Theophane Weber, Ioannis Antonoglou, Karen Simonyan, Oriol Vinyals, Daan Wierstra, R&#233;mi Munos, David Silver 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Characterizing Implicit Bias in Terms of Optimization Geometry",
+    "authors": "Suriya Gunasekar, Jason D. Lee, Daniel Soudry, Nathan Srebro",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Shampoo: Preconditioned Stochastic Tensor Optimization",
+    "authors": "Vineet Gupta 0001, Tomer Koren, Yoram Singer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Latent Space Policies for Hierarchical Reinforcement Learning",
+    "authors": "Tuomas Haarnoja, Kristian Hartikainen, Pieter Abbeel, Sergey Levine",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor",
+    "authors": "Tuomas Haarnoja, Aurick Zhou, Pieter Abbeel, Sergey Levine",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Comparison-Based Random Forests",
+    "authors": "Siavash Haghiri, Damien Garreau, Ulrike von Luxburg",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "K-Beam Minimax: Efficient Optimization for Deep Adversarial Learning",
+    "authors": "Jihun Hamm, Yung-Kyun Noh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Candidates vs. Noises Estimation for Large Multi-Class Classification Problem",
+    "authors": "Lei Han 0001, Yiheng Huang, Tong Zhang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stein Variational Gradient Descent Without Gradient",
+    "authors": "Jun Han 0002, Qiang Liu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Rectify Heterogeneous Models with Semantic Mapping",
+    "authors": "Han-Jia Ye, De-Chuan Zhan, Yuan Jiang 0001, Zhi-Hua Zhou",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep Models of Interactions Across Sets",
+    "authors": "Jason S. Hartford, Devon R. Graham, Kevin Leyton-Brown, Siamak Ravanbakhsh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Memory Access Patterns",
+    "authors": "Milad Hashemi, Kevin Swersky, Jamie A. Smith, Grant Ayers, Heiner Litz, Jichuan Chang, Christos Kozyrakis, Parthasarathy Ranganathan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fairness Without Demographics in Repeated Loss Minimization",
+    "authors": "Tatsunori B. Hashimoto, Megha Srivastava, Hongseok Namkoong, Percy Liang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Multicalibration: Calibration for the (Computationally-Identifiable) Masses",
+    "authors": "&#218;rsula H&#233;bert-Johnson, Michael P. Kim, Omer Reingold, Guy N. Rothblum",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Recurrent Predictive State Policy Networks",
+    "authors": "Ahmed Hefny, Zita Marinho, Wen Sun 0002, Siddhartha S. Srinivasa, Geoffrey J. Gordon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning unknown ODE models with Gaussian processes",
+    "authors": "Markus Heinonen, &#199;agatay Yildiz, Henrik Mannerstr&#246;m, Jukka Intosalmi, Harri L&#228;hdesm&#228;ki",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Orthogonal Recurrent Neural Networks with Scaled Cayley Transform",
+    "authors": "Kyle Helfrich, Devin Willmott, Qiang Ye 0003",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast Bellman Updates for Robust MDPs",
+    "authors": "Chin Pang Ho, Marek Petrik, Wolfram Wiesemann",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "CyCADA: Cycle-Consistent Adversarial Domain Adaptation",
+    "authors": "Judy Hoffman, Eric Tzeng, Taesung Park, Jun-Yan Zhu, Phillip Isola, Kate Saenko, Alexei A. Efros, Trevor Darrell",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Sound Abstraction and Decomposition of Probabilistic Programs",
+    "authors": "Steven Holtzen, Guy Van den Broeck, Todd D. Millstein",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Gradient Primal-Dual Algorithm Converges to Second-Order Stationary Solution for Nonconvex Distributed Optimization Over Networks",
+    "authors": "Mingyi Hong 0001, Meisam Razaviyayn, Jason D. Lee",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Variational Bayesian dropout: pitfalls and fixes",
+    "authors": "Jiri Hron, Alexander G. de G. Matthews, Zoubin Ghahramani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Does Distributionally Robust Supervised Learning Give Robust Classifiers?",
+    "authors": "Weihua Hu, Gang Niu 0001, Issei Sato, Masashi Sugiyama",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Dissipativity Theory for Accelerating Stochastic Variance Reduction: A Unified Analysis of SVRG and Katyusha Using Semidefinite Programs",
+    "authors": "Bin Hu 0002, Stephen J. Wright 0001, Laurent Lessard",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Near Optimal Frequent Directions for Sketching Dense and Sparse Matrices",
+    "authors": "Zengfeng Huang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Deep ResNet Blocks Sequentially using Boosting Theory",
+    "authors": "Furong Huang, Jordan T. Ash, John Langford 0001, Robert E. Schapire",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Hidden Markov Models from Pairwise Co-occurrences with Application to Topic Modeling",
+    "authors": "Kejun Huang, Xiao Fu 0001, Nicholas D. Sidiropoulos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Neural Autoregressive Flows",
+    "authors": "Chin-Wei Huang, David Krueger 0001, Alexandre Lacoste, Aaron C. Courville",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Topological Mixture Estimation",
+    "authors": "Steve Huntsman",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Decoupled Parallel Backpropagation with Convergence Guarantee",
+    "authors": "Zhouyuan Huo, Bin Gu 0001, Qian Yang 0003, Heng Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Using Reward Machines for High-Level Task Specification and Decomposition in Reinforcement Learning",
+    "authors": "Rodrigo Toro Icarte, Toryn Q. Klassen, Richard Anthony Valenzano, Sheila A. McIlraith",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep Variational Reinforcement Learning for POMDPs",
+    "authors": "Maximilian Igl, Luisa M. Zintgraf, Tuan Anh Le 0001, Frank Wood, Shimon Whiteson",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Attention-based Deep Multiple Instance Learning",
+    "authors": "Maximilian Ilse, Jakub M. Tomczak, Max Welling",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Black-box Adversarial Attacks with Limited Queries and Information",
+    "authors": "Andrew Ilyas, Logan Engstrom, Anish Athalye, Jessy Lin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Analysis of Minimax Error Rate for Crowdsourcing and Its Application to Worker Clustering Model",
+    "authors": "Hideaki Imamura, Issei Sato, Masashi Sugiyama",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Improving Regression Performance with Distributional Losses",
+    "authors": "Ehsan Imani, Martha White",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep Density Destructors",
+    "authors": "David I. Inouye, Pradeep Ravikumar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Unbiased Objective Estimation in Predictive Optimization",
+    "authors": "Shinji Ito, Akihiro Yabe, Ryohei Fujimaki",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Anonymous Walk Embeddings",
+    "authors": "Sergey Ivanov, Evgeny Burnaev",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Binary Latent Variable Models: A Tensor Eigenpair Approach",
+    "authors": "Ariel Jaffe, Roi Weiss, Shai Carmi, Yuval Kluger, Boaz Nadler",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Firing Bandits: Optimizing Crowdfunding",
+    "authors": "Lalit Jain, Kevin Jamieson 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Differentially Private Matrix Completion Revisited",
+    "authors": "Prateek Jain 0002, Om Dipakbhai Thakkar, Abhradeep Thakurta",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Video Prediction with Appearance and Motion Conditions",
+    "authors": "Yunseok Jang 0001, Gunhee Kim, Yale Song",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Pathwise Derivatives Beyond the Reparameterization Trick",
+    "authors": "Martin Jankowiak, Fritz Obermeyer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Detecting non-causal artifacts in multivariate linear regression models",
+    "authors": "Dominik Janzing, Bernhard Sch&#246;lkopf",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Unified Framework for Structured Low-rank Matrix Learning",
+    "authors": "Pratik Jawanpuria, Bamdev Mishra",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Efficient end-to-end learning for quantizable representations",
+    "authors": "Yeonwoo Jeong, Hyun Oh Song",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Exploring Hidden Dimensions in Parallelizing Convolutional Neural Networks",
+    "authors": "Zhihao Jia, Sina Lin, Charles R. Qi, Alex Aiken",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Feedback-Based Tree Search for Reinforcement Learning",
+    "authors": "Daniel R. Jiang, Emmanuel Ekwedike, Han Liu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Quickshift++: Provably Good Initializations for Sample-Based Mean Shift",
+    "authors": "Heinrich Jiang, Jennifer Jang, Samory Kpotufe",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "MentorNet: Learning Data-Driven Curriculum for Very Deep Neural Networks on Corrupted Labels",
+    "authors": "Lu Jiang 0004, Zhengyuan Zhou, Thomas Leung, Li-Jia Li 0001, Li Fei-Fei 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Weighted Kendall and High-order Kernels for Permutations",
+    "authors": "Yunlong Jiao, Jean-Philippe Vert",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Junction Tree Variational Autoencoder for Molecular Graph Generation",
+    "authors": "Wengong Jin, Regina Barzilay, Tommi S. Jaakkola",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Network Global Testing by Counting Graphlets",
+    "authors": "Jiashun Jin, Zheng Tracy Ke, Shengming Luo",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Regret Minimization for Partially Observable Deep Reinforcement Learning",
+    "authors": "Peter H. Jin, Kurt Keutzer, Sergey Levine",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "WSNet: Compact and Efficient Networks Through Weight Sampling",
+    "authors": "Xiaojie Jin 0004, Yingzhen Yang, Ning Xu 0001, Jianchao Yang, Nebojsa Jojic, Jiashi Feng, Shuicheng Yan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Large-Scale Cox Process Inference using Variational Fourier Features",
+    "authors": "S. T. John, James Hensman",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Composite Functional Gradient Learning of Generative Adversarial Models",
+    "authors": "Rie Johnson, Tong Zhang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Kronecker Recurrent Units",
+    "authors": "Cijo Jose, Moustapha Ciss&#233;, Fran&#231;ois Fleuret",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast Decoding in Sequence Models Using Discrete Latent Variables",
+    "authors": "Lukasz Kaiser, Samy Bengio, Aurko Roy, Ashish Vaswani, Niki Parmar, Jakob Uszkoreit, Noam Shazeer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Kernel Recursive ABC: Point Estimation with Intractable Likelihood",
+    "authors": "Takafumi Kajihara, Motonobu Kanagawa, Keisuke Yamazaki, Kenji Fukumizu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Efficient Neural Audio Synthesis",
+    "authors": "Nal Kalchbrenner, Erich Elsen, Karen Simonyan, Seb Noury, Norman Casagrande, Edward Lockhart, Florian Stimberg, A&#228;ron van den Oord, Sander Dieleman, Koray Kavukcuoglu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Diffusion using Hyperparameters",
+    "authors": "Dimitris Kalimeris, Yaron Singer, Karthik Subbian, Udi Weinsberg",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Signal and Noise Statistics Oblivious Orthogonal Matching Pursuit",
+    "authors": "Sreejith Kallummil, Sheetal Kalyani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Residual Unfairness in Fair Machine Learning from Prejudiced Data",
+    "authors": "Nathan Kallus, Angela Zhou",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learn from Your Neighbor: Learning Multi-modal Mappings from Sparse Annotations",
+    "authors": "Ashwin Kalyan, Stefan Lee, Anitha Kannan, Dhruv Batra",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Semi-Supervised Learning via Compact Latent Space Clustering",
+    "authors": "Konstantinos Kamnitsas, Daniel Coelho de Castro, Lo&#239;c Le Folgoc, Ian Walker, Ryutaro Tanno, Daniel Rueckert, Ben Glocker, Antonio Criminisi, Aditya V. Nori",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Policy Optimization with Demonstrations",
+    "authors": "Bingyi Kang, Zequn Jie, Jiashi Feng",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Improving Sign Random Projections With Additional Information",
+    "authors": "Keegan Kang, Wong Wei Pin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Let's be Honest: An Optimal No-Regret Framework for Zero-Sum Games",
+    "authors": "Ehsan Asadi Kangarshahi, Ya-Ping Hsieh, Mehmet Fatih Sahin, Volkan Cevher",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Continual Reinforcement Learning with Complex Synapses",
+    "authors": "Christos Kaplanis, Murray Shanahan, Claudia Clopath",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "LaVAN: Localized and Visible Adversarial Noise",
+    "authors": "Danny Karmon, Daniel Zoran, Yoav Goldberg",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Riemannian Stochastic Recursive Gradient Algorithm with Retraction and Vector Transport and Its Convergence Analysis",
+    "authors": "Hiroyuki Kasai, Hiroyuki Sato, Bamdev Mishra",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Not All Samples Are Created Equal: Deep Learning with Importance Sampling",
+    "authors": "Angelos Katharopoulos, Fran&#231;ois Fleuret",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Feasible Arm Identification",
+    "authors": "Julian Katz-Samuels, Clayton Scott",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Scalable Deletion-Robust Submodular Maximization: Data Summarization with Privacy and Fairness Constraints",
+    "authors": "Ehsan Kazemi 0001, Morteza Zadimoghaddam, Amin Karbasi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Focused Hierarchical RNNs for Conditional Sequence Processing",
+    "authors": "Nan Rosemary Ke, Konrad Zolna, Alessandro Sordoni, Zhouhan Lin, Adam Trischler, Yoshua Bengio, Joelle Pineau, Laurent Charlin, Christopher J. Pal",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Preventing Fairness Gerrymandering: Auditing and Learning for Subgroup Fairness",
+    "authors": "Michael J. Kearns, Seth Neel, Aaron Roth 0001, Zhiwei Steven Wu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Improved nearest neighbor search using auxiliary information and priority functions",
+    "authors": "Omid Keivani, Kaushik Sinha",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "ContextNet: Deep learning for Star Galaxy Classification",
+    "authors": "Noble Kennamer, David Kirkby, Alexander Ihler, Francisco Javier Sanchez-Lopez",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Frank-Wolfe with Subsampling Oracle",
+    "authors": "Thomas Kerdreux, Fabian Pedregosa, Alexandre d'Aspremont",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Convergence guarantees for a class of non-convex and non-smooth optimization problems",
+    "authors": "Koulik Khamaru, Martin J. Wainwright",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast and Scalable Bayesian Deep Learning by Weight-Perturbation in Adam",
+    "authors": "Mohammad Emtiyaz Khan, Didrik Nielsen, Voot Tangkaratt, Wu Lin, Yarin Gal, Akash Srivastava",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Geometry Score: A Method For Comparing Generative Adversarial Networks",
+    "authors": "Valentin Khrulkov, Ivan V. Oseledets",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Blind Justice: Fairness with Encrypted Sensitive Attributes",
+    "authors": "Niki Kilbertus, Adri&#224; Gasc&#243;n, Matt J. Kusner, Michael Veale, Krishna P. Gummadi, Adrian Weller",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Markov Modulated Gaussian Cox Processes for Semi-Stationary Intensity Modeling of Events Data",
+    "authors": "Minyoung Kim 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Disentangling by Factorising",
+    "authors": "Hyunjik Kim, Andriy Mnih",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Self-Bounded Prediction Suffix Tree via Approximate String Matching",
+    "authors": "Dongwoo Kim 0002, Christian J. Walder",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Interpretability Beyond Feature Attribution: Quantitative Testing with Concept Activation Vectors (TCAV)",
+    "authors": "Been Kim, Martin Wattenberg, Justin Gilmer, Carrie J. Cai, James Wexler, Fernanda B. Vi&#233;gas, Rory Sayres",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Semi-Amortized Variational Autoencoders",
+    "authors": "Yoon Kim, Sam Wiseman, Andrew C. Miller, David A. Sontag, Alexander M. Rush",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Neural Relational Inference for Interacting Systems",
+    "authors": "Thomas N. Kipf, Ethan Fetaya, Kuan-Chieh Wang, Max Welling, Richard S. Zemel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "An Alternative View: When Does SGD Escape Local Minima?",
+    "authors": "Robert Kleinberg, Yuanzhi Li, Yang Yuan 0010",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Crowdsourcing with Arbitrary Adversaries",
+    "authors": "Matth&#228;us Kleindessner, Pranjal Awasthi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Spatio-temporal Bayesian On-line Changepoint Detection with Model Selection",
+    "authors": "Jeremias Knoblauch, Theodoros Damoulas",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast Gradient-Based Methods with Exponential Rate: A Hybrid Control Framework",
+    "authors": "Arman Sharifi Kolarijani, Peyman Mohajerin Esfahani, Tam&#225;s Keviczky",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Nonconvex Optimization for Regression with Fairness Constraints",
+    "authors": "Junpei Komiyama, Akiko Takeda, Junya Honda, Hajime Shimao",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On the Generalization of Equivariance and Convolution in Neural Networks to the Action of Compact Groups",
+    "authors": "Risi Kondor, Shubhendu Trivedi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Compiling Combinatorial Prediction Games",
+    "authors": "Fr&#233;d&#233;ric Koriche",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Dynamic Evaluation of Neural Sequence Models",
+    "authors": "Ben Krause, Emmanuel Kahembwe, Iain Murray 0001, Steve Renals",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Semiparametric Contextual Bandits",
+    "authors": "Akshay Krishnamurthy, Zhiwei Steven Wu, Vasilis Syrgkanis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast Maximization of Non-Submodular, Monotonic Functions on the Integer Lattice",
+    "authors": "Alan Kuhnle, J. David Smith, Victoria G. Crawford, My T. Thai",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Accurate Uncertainties for Deep Learning Using Calibrated Regression",
+    "authors": "Volodymyr Kuleshov, Nathan Fenner, Stefano Ermon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Trainable Calibration Measures For Neural Networks From Kernel Mean Embeddings",
+    "authors": "Aviral Kumar, Sunita Sarawagi, Ujjwal Jain",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Data-Dependent Stability of Stochastic Gradient Descent",
+    "authors": "Ilja Kuzborskij, Christoph H. Lampert",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Explicit Inductive Bias for Transfer Learning with Convolutional Networks",
+    "authors": "Xuhong Li 0002, Yves Grandvalet, Franck Davoine",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Understanding the Loss Surface of Neural Networks for Binary Classification",
+    "authors": "Shiyu Liang, Ruoyu Sun 0001, Yixuan Li 0001, Rayadurgam Srikant",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Mixed batches and symmetric discriminators for GAN training",
+    "authors": "Thomas Lucas 0002, Corentin Tallec, Yann Ollivier, Jakob Verbeek",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Binary Partitions with Approximate Minimum Impurity",
+    "authors": "Eduardo Sany Laber, Marco Molinaro 0001, Felipe de A. Mello Pereira",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Canonical Tensor Decomposition for Knowledge Base Completion",
+    "authors": "Timoth&#233;e Lacroix, Nicolas Usunier, Guillaume Obozinski",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Generalization without Systematicity: On the Compositional Skills of Sequence-to-Sequence Recurrent Networks",
+    "authors": "Brenden M. Lake, Marco Baroni",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "An Estimation and Analysis Framework for the Rasch Model",
+    "authors": "Andrew S. Lan, Mung Chiang, Christoph Studer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Partial Optimality and Fast Lower Bounds for Weighted Correlation Clustering",
+    "authors": "Jan-Hendrik Lange, Andreas Karrenbauer, Bjoern Andres",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep Linear Networks with Arbitrary Loss: All Local Minima Are Global",
+    "authors": "Thomas Laurent 0001, James von Brecht",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Multilinear Structure of ReLU Networks",
+    "authors": "Thomas Laurent 0001, James von Brecht",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Hierarchical Imitation and Reinforcement Learning",
+    "authors": "Hoang Minh Le 0002, Nan Jiang 0008, Alekh Agarwal, Miroslav Dud&#237;k, Yisong Yue, Hal Daum&#233; III",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Gradient-Based Meta-Learning with Learned Layerwise Metric and Subspace",
+    "authors": "Yoonho Lee 0001, Seungjin Choi 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep Reinforcement Learning in Continuous Action Spaces: a Case Study in the Game of Simulated Curling",
+    "authors": "Kyowoon Lee, Sol-A. Kim, Jaesik Choi, Seong-Whan Lee",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Gated Path Planning Networks",
+    "authors": "Lisa Lee, Emilio Parisotto, Devendra Singh Chaplot, Eric P. Xing, Ruslan Salakhutdinov",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep Asymmetric Multi-task Feature Learning",
+    "authors": "Haebeom Lee, Eunho Yang, Sung Ju Hwang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Noise2Noise: Learning Image Restoration without Clean Data",
+    "authors": "Jaakko Lehtinen, Jacob Munkberg, Jon Hasselgren, Samuli Laine, Tero Karras, Miika Aittala, Timo Aila",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Out-of-sample extension of graph adjacency spectral embedding",
+    "authors": "Keith D. Levin, Farbod Roosta-Khorasani, Michael W. Mahoney, Carey E. Priebe",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "An Optimal Control Approach to Deep Learning and Applications to Discrete-Weight Neural Networks",
+    "authors": "Qianxiao Li, Shuji Hao",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Towards Binary-Valued Gates for Robust LSTM Training",
+    "authors": "Zhuohan Li 0001, Di He 0001, Fei Tian, Wei Chen 0034, Tao Qin 0001, Liwei Wang 0001, Tie-Yan Liu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On the Limitations of First-Order Approximation in GAN Dynamics",
+    "authors": "Jerry Li 0001, Aleksander Madry, John Peebles, Ludwig Schmidt",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Submodular Hypergraphs: p-Laplacians, Cheeger Inequalities and Spectral Clustering",
+    "authors": "Pan Li 0005, Olgica Milenkovic",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Well-Tempered Lasso",
+    "authors": "Yuanzhi Li, Yoram Singer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Estimation of Markov Chain via Rank-constrained Likelihood",
+    "authors": "Xudong Li 0004, Mengdi Wang 0001, Anru Zhang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Asynchronous Decentralized Parallel Stochastic Gradient Descent",
+    "authors": "Xiangru Lian, Wei Zhang 0022, Ce Zhang 0001, Ji Liu 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "RLlib: Abstractions for Distributed Reinforcement Learning",
+    "authors": "Eric Liang, Richard Liaw, Robert Nishihara, Philipp Moritz, Roy Fox, Ken Goldberg, Joseph Gonzalez 0001, Michael I. Jordan, Ion Stoica",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On the Spectrum of Random Features Maps of High Dimensional Data",
+    "authors": "Zhenyu Liao 0001, Romain Couillet",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Dynamics of Learning: A Random Matrix Approach",
+    "authors": "Zhenyu Liao 0001, Romain Couillet",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Reviving and Improving Recurrent Back-Propagation",
+    "authors": "Renjie Liao 0001, Yuwen Xiong, Ethan Fetaya, Lisa Zhang 0003, KiJung Yoon, Xaq Pitkow, Raquel Urtasun, Richard S. Zemel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Optimal Distributed Learning with Multi-pass Stochastic Gradient Methods",
+    "authors": "Junhong Lin 0003, Volkan Cevher",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Optimal Rates of Sketched-regularized Algorithms for Least-Squares Regression over Hilbert Spaces",
+    "authors": "Junhong Lin 0003, Volkan Cevher",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Level-Set Methods for Finite-Sum Constrained Convex Optimization",
+    "authors": "Qihang Lin, Runchao Ma, Tianbao Yang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Detecting and Correcting for Label Shift with Black Box Predictors",
+    "authors": "Zachary C. Lipton, Yu-Xiang Wang 0003, Alexander J. Smola",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Generalized Robust Bayesian Committee Machine for Large-scale Gaussian Process Regression",
+    "authors": "Haitao Liu 0002, Jianfei Cai 0001, Yi Wang 0006, Yew-Soon Ong",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Towards Black-box Iterative Machine Teaching",
+    "authors": "Weiyang Liu, Bo Dai 0001, Xingguo Li, Zhen Liu 0019, James M. Rehg, Le Song",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Delayed Impact of Fair Machine Learning",
+    "authors": "Lydia T. Liu, Sarah Dean, Esther Rolf, Max Simchowitz, Moritz Hardt",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Two-Step Computation of the Exact GAN Wasserstein Distance",
+    "authors": "Huidong Liu, Xianfeng Gu, Dimitris Samaras",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Open Category Detection with PAC Guarantees",
+    "authors": "Si Liu, Risheek Garrepalli, Thomas G. Dietterich, Alan Fern, Dan Hendrycks",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast Variance Reduction Method with Stochastic Batch Size",
+    "authors": "Xuanqing Liu, Cho-Jui Hsieh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast Stochastic AUC Maximization with O(1/n)-Convergence Rate",
+    "authors": "Mingrui Liu, Xiaoxuan Zhang, Zaiyi Chen, Xiaoyu Wang, Tianbao Yang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On Matching Pursuit and Coordinate Descent",
+    "authors": "Francesco Locatello, Anant Raj, Sai Praneeth Karimireddy, Gunnar R&#228;tsch, Bernhard Sch&#246;lkopf, Sebastian U. Stich, Martin Jaggi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "PDE-Net: Learning PDEs from Data",
+    "authors": "Zichao Long, Yiping Lu 0001, Xianzhong Ma, Bin Dong 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Error Estimation for Randomized Least-Squares Algorithms via the Bootstrap",
+    "authors": "Miles E. Lopes, Shusen Wang, Michael W. Mahoney",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Constraining the Dynamics of Deep Probabilistic Models",
+    "authors": "Marco Lorenzi, Maurizio Filippone",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Spectrally Approximating Large Graphs with Smaller Graphs",
+    "authors": "Andreas Loukas, Pierre Vandergheynst",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Edge Density Barrier: Computational-Statistical Tradeoffs in Combinatorial Inference",
+    "authors": "Hao Lu, Yuan Cao 0006, Junwei Lu, Han Liu 0001, Zhaoran Wang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Accelerating Greedy Coordinate Descent Methods",
+    "authors": "Haihao Lu, Robert M. Freund, Vahab S. Mirrokni",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Structured Variationally Auto-encoded Optimization",
+    "authors": "Xiaoyu Lu, Javier Gonz&#225;lez 0002, Zhenwen Dai, Neil D. Lawrence",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Beyond Finite Layer Neural Networks: Bridging Deep Architectures and Numerical Differential Equations",
+    "authors": "Yiping Lu 0001, Aoxiao Zhong, Quanzheng Li, Bin Dong 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "End-to-end Active Object Tracking via Reinforcement Learning",
+    "authors": "Wenhan Luo, Peng Sun 0011, Fangwei Zhong, Wei Liu 0005, Tong Zhang 0001, Yizhou Wang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Competitive Caching with Machine Learned Advice",
+    "authors": "Thodoris Lykouris, Sergei Vassilvitskii",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Batch Bayesian Optimization via Multi-objective Acquisition Ensemble for Automated Analog Circuit Design",
+    "authors": "Wenlong Lyu, Fan Yang 0001, Changhao Yan, Dian Zhou, Xuan Zeng 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Celer: a Fast Solver for the Lasso with Dual Extrapolation",
+    "authors": "Mathurin Massias, Joseph Salmon, Alexandre Gramfort",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Power of Interpolation: Understanding the Effectiveness of SGD in Modern Over-parametrized Learning",
+    "authors": "Siyuan Ma, Raef Bassily, Mikhail Belkin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Gradient Descent for Sparse Rank-One Matrix Completion for Crowd-Sourced Aggregation of Sparsely Interacting Workers",
+    "authors": "Yao Ma, Alexander Olshevsky, Csaba Szepesv&#225;ri, Venkatesh Saligrama",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Implicit Regularization in Nonconvex Statistical Estimation: Gradient Descent Converges Linearly for Phase Retrieval and Matrix Completion",
+    "authors": "Cong Ma 0001, Kaizheng Wang, Yuejie Chi, Yuxin Chen 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Dimensionality-Driven Learning with Noisy Labels",
+    "authors": "Xingjun Ma, Yisen Wang 0001, Michael E. Houle, Shuo Zhou 0001, Sarah M. Erfani, Shu-Tao Xia, Sudanthi N. R. Wijewickrema, James Bailey 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Approximate message passing for amplitude based optimization",
+    "authors": "Junjie Ma 0001, Ji Xu 0003, Arian Maleki",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Adversarially Fair and Transferable Representations",
+    "authors": "David Madras, Elliot Creager, Toniann Pitassi, Richard S. Zemel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "An Efficient, Generalized Bellman Update For Cooperative Inverse Reinforcement Learning",
+    "authors": "Dhruv Malik, Malayandi Palaniappan, Jaime F. Fisac, Dylan Hadfield-Menell, Stuart Russell 0001, Anca D. Dragan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Iterative Amortized Inference",
+    "authors": "Joseph Marino, Yisong Yue, Stephan Mandt",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Streaming Principal Component Analysis in Noisy Settings",
+    "authors": "Teodor Vanislavov Marinov, Poorya Mianjy, Raman Arora",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast Approximate Spectral Clustering for Dynamic Networks",
+    "authors": "Lionel Martin, Andreas Loukas, Pierre Vandergheynst",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bayesian Model Selection for Change Point Detection and Clustering",
+    "authors": "Othmane Mazhar, Cristian R. Rojas, Carlo Fischione, Mohammad Reza Hesamzadeh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Optimization, Fast and Slow: Optimally Switching between Local and Bayesian Optimization",
+    "authors": "Mark McLeod, Stephen J. Roberts, Michael A. Osborne",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bounds on the Approximation Power of Feedforward Neural Networks",
+    "authors": "Mohammad Mehrabi, Aslan Tchamkerten, Mansoor I. Yousefi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Differentiable Dynamic Programming for Structured Prediction and Attention",
+    "authors": "Arthur Mensch, Mathieu Blondel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Ranking Distributions based on Noisy Sorting",
+    "authors": "Adil El Mesaoudi-Paul, Eyke H&#252;llermeier, R&#243;bert Busa-Fekete",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Which Training Methods for GANs do actually Converge?",
+    "authors": "Lars M. Mescheder, Andreas Geiger 0001, Sebastian Nowozin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Configurable Markov Decision Processes",
+    "authors": "Alberto Maria Metelli, Mirco Mutti, Marcello Restelli",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "prDeep: Robust Phase Retrieval with a Flexible Deep Network",
+    "authors": "Christopher A. Metzler, Philip Schniter, Ashok Veeraraghavan, Richard G. Baraniuk",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Pseudo-task Augmentation: From Deep Multitask Learning to Intratask Sharing-and Back",
+    "authors": "Elliot Meyerson, Risto Miikkulainen",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Hidden Vulnerability of Distributed Learning in Byzantium",
+    "authors": "El Mahdi El Mhamdi, Rachid Guerraoui, S&#233;bastien Rouault",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On the Implicit Bias of Dropout",
+    "authors": "Poorya Mianjy, Raman Arora, Ren&#233; Vidal",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "One-Shot Segmentation in Clutter",
+    "authors": "Claudio Michaelis, Matthias Bethge, Alexander S. Ecker",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Differentiable plasticity: training plastic neural networks with backpropagation",
+    "authors": "Thomas Miconi, Kenneth O. Stanley, Jeff Clune",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Training Neural Machines with Trace-Based Supervision",
+    "authors": "Matthew Mirman, Dimitar Dimitrov 0004, Pavle Djordjevic, Timon Gehr, Martin T. Vechev",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Differentiable Abstract Interpretation for Provably Robust Neural Networks",
+    "authors": "Matthew Mirman, Timon Gehr, Martin T. Vechev",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Delay-tolerant Proximal-Gradient Algorithm for Distributed Learning",
+    "authors": "Konstantin Mishchenko, Franck Iutzeler, J&#233;r&#244;me Malick, Massih-Reza Amini",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Data Summarization at Scale: A Two-Stage Submodular Approach",
+    "authors": "Marko Mitrovic, Ehsan Kazemi 0001, Morteza Zadimoghaddam, Amin Karbasi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Hierarchical Adaptive Forgetting Variational Filter",
+    "authors": "Vincent Moens",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Decentralized Submodular Maximization: Bridging Discrete and Continuous Settings",
+    "authors": "Aryan Mokhtari, Hamed Hassani, Amin Karbasi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "DICOD: Distributed Convolutional Coordinate Descent for Convolutional Sparse Coding",
+    "authors": "Thomas Moreau 0001, Laurent Oudre, Nicolas Vayatis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "WHInter: A Working set algorithm for High-dimensional sparse second order Interaction models",
+    "authors": "Marine Le Morvan, Jean-Philippe Vert",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Dropout Training, Data-dependent Regularization, and Generalization Bounds",
+    "authors": "Wenlong Mou, Yuchen Zhou, Jun Gao 0004, Liwei Wang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Kernelized Synaptic Weight Matrices",
+    "authors": "Lorenz K. M&#252;ller, Julien N. P. Martel, Giacomo Indiveri",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Rapid Adaptation with Conditionally Shifted Neurons",
+    "authors": "Tsendsuren Munkhdalai, Xingdi Yuan, Soroush Mehri, Adam Trischler",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On the Relationship between Data Efficiency and Error for Uncertainty Sampling",
+    "authors": "Stephen Mussmann, Percy Liang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fitting New Speakers Based on a Short Untranscribed Sample",
+    "authors": "Eliya Nachmani, Adam Polyak, Yaniv Taigman, Lior Wolf",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Smoothed Action Value Functions for Learning Gaussian Policies",
+    "authors": "Ofir Nachum, Mohammad Norouzi 0002, George Tucker, Dale Schuurmans",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Nearly Optimal Robust Subspace Tracking",
+    "authors": "Praneeth Narayanamurthy, Namrata Vaswani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stochastic Proximal Algorithms for AUC Maximization",
+    "authors": "Michael Natole, Yiming Ying, Siwei Lyu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Mitigating Bias in Adaptive Data Gathering via Differential Privacy",
+    "authors": "Seth Neel, Aaron Roth 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Optimization Landscape and Expressivity of Deep CNNs",
+    "authors": "Quynh Nguyen 0001, Matthias Hein 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Neural Networks Should Be Wide Enough to Learn Disconnected Decision Regions",
+    "authors": "Quynh Nguyen 0001, Mahesh Chandra Mukkamala, Matthias Hein 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "SGD and Hogwild! Convergence Without the Bounded Gradients Assumption",
+    "authors": "Lam M. Nguyen, Phuong Ha Nguyen, Marten van Dijk, Peter Richt&#225;rik, Katya Scheinberg, Martin Tak&#225;c 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Active Testing: An Efficient and Robust Framework for Estimating Accuracy",
+    "authors": "Phuc Xuan Nguyen, Deva Ramanan, Charless C. Fowlkes",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On Learning Sparsely Used Dictionaries from Incomplete Samples",
+    "authors": "Thanh Van Nguyen, Akshay Soni, Chinmay Hegde",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Continuous Hierarchies in the Lorentz Model of Hyperbolic Geometry",
+    "authors": "Maximilian Nickel, Douwe Kiela",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "State Space Gaussian Processes with Non-Gaussian Likelihood",
+    "authors": "Hannes Nickisch, Arno Solin, Alexander Grigorevskiy",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "SparseMAP: Differentiable Sparse Structured Inference",
+    "authors": "Vlad Niculae, Andr&#233; F. T. Martins, Mathieu Blondel, Claire Cardie",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Theoretical Explanation for Perplexing Behaviors of Backpropagation-based Visualizations",
+    "authors": "Weili Nie, Yang Zhang, Ankit Patel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Functional Gradient Boosting based on Residual Network Perception",
+    "authors": "Atsushi Nitanda, Taiji Suzuki",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Beyond 1/2-Approximation for Submodular Maximization on Massive Data Streams",
+    "authors": "Ashkan Norouzi-Fard, Jakub Tarnawski, Slobodan Mitrovic, Amir Zandieh, Aidasadat Mousavifar, Ola Svensson",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Uncertainty Bellman Equation and Exploration",
+    "authors": "Brendan O'Donoghue, Ian Osband, R&#233;mi Munos, Volodymyr Mnih",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Is Generator Conditioning Causally Related to GAN Performance?",
+    "authors": "Augustus Odena, Jacob Buckman, Catherine Olsson, Tom B. Brown, Christopher Olah, Colin Raffel, Ian J. Goodfellow",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning in Reproducing Kernel Krein Spaces",
+    "authors": "Dino Oglic, Thomas G&#228;rtner 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "BOCK : Bayesian Optimization with Cylindrical Kernels",
+    "authors": "ChangYong Oh, Efstratios Gavves, Max Welling",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Self-Imitation Learning",
+    "authors": "Junhyuk Oh, Yijie Guo, Satinder Singh 0001, Honglak Lee",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A probabilistic framework for multi-view feature learning with many-to-many associations via neural networks",
+    "authors": "Akifumi Okuno, Tetsuya Hada, Hidetoshi Shimodaira",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Transformation Autoregressive Networks",
+    "authors": "Junier B. Oliva, Avinava Dubey, Manzil Zaheer, Barnab&#225;s P&#243;czos, Ruslan Salakhutdinov, Eric P. Xing, Jeff Schneider 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Design of Experiments for Model Discrimination Hybridising Analytical and Data-Driven Approaches",
+    "authors": "Simon Olofsson, Marc Peter Deisenroth, Ruth Misener",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Parallel WaveNet: Fast High-Fidelity Speech Synthesis",
+    "authors": "A&#228;ron van den Oord, Yazhe Li, Igor Babuschkin, Karen Simonyan, Oriol Vinyals, Koray Kavukcuoglu, George van den Driessche 0002, Edward Lockhart, Luis C. Cobo, Florian Stimberg, Norman Casagrande, Dominik Grewe, Seb Noury, Sander Dieleman, Erich Elsen, Nal Kalchbrenner, Heiga Zen, Alex Graves, Helen King, Tom Walters, Dan Belov, Demis Hassabis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Localized Spatio-Temporal Models From Streaming Data",
+    "authors": "Muhammad Osama 0001, Dave Zachariah, Thomas B. Sch&#246;n",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Autoregressive Quantile Networks for Generative Modeling",
+    "authors": "Georg Ostrovski, Will Dabney, R&#233;mi Munos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Efficient First-Order Algorithms for Adaptive Signal Denoising",
+    "authors": "Dmitrii Ostrovskii, Za&#239;d Harchaoui",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Analyzing Uncertainty in Neural Machine Translation",
+    "authors": "Myle Ott, Michael Auli, David Grangier, Marc'Aurelio Ranzato",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Compact Neural Networks with Regularization",
+    "authors": "Samet Oymak",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Tree Edit Distance Learning via Adaptive Symbol Embeddings",
+    "authors": "Benjamin Paa&#223;en, Claudio Gallicchio, Alessio Micheli, Barbara Hammer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Reinforcement Learning with Function-Valued Action Spaces for Partial Differential Equation Control",
+    "authors": "Yangchen Pan, Amir-massoud Farahmand, Martha White, Saleh Nabi, Piyush Grover, Daniel Nikovski",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning to Speed Up Structured Output Prediction",
+    "authors": "Xingyuan Pan, Vivek Srikumar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Theoretical Analysis of Image-to-Image Translation with Adversarial Learning",
+    "authors": "Xudong Pan, Mi Zhang 0001, Daizong Ding",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Max-Mahalanobis Linear Discriminant Analysis Networks",
+    "authors": "Tianyu Pang, Chao Du, Jun Zhu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stochastic Variance-Reduced Policy Gradient",
+    "authors": "Matteo Papini, Damiano Binaghi, Giuseppe Canonaco, Matteo Pirotta, Marcello Restelli",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Independent Causal Mechanisms",
+    "authors": "Giambattista Parascandolo, Niki Kilbertus, Mateo Rojas-Carulla, Bernhard Sch&#246;lkopf",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Time Limits in Reinforcement Learning",
+    "authors": "Fabio Pardo, Arash Tavakoli, Vitaly Levdik, Petar Kormushev",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Image Transformer",
+    "authors": "Niki Parmar, Ashish Vaswani, Jakob Uszkoreit, Lukasz Kaiser, Noam Shazeer, Alexander Ku, Dustin Tran",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "PIPPS: Flexible Model-Based Policy Search Robust to the Curse of Chaos",
+    "authors": "Paavo Parmas, Carl Edward Rasmussen, Jan Peters 0001, Kenji Doya",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "High-Quality Prediction Intervals for Deep Learning: A Distribution-Free, Ensembled Approach",
+    "authors": "Tim Pearce, Alexandra Brintrup, Mohamed Zaki, Andy Neely",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adaptive Three Operator Splitting",
+    "authors": "Fabian Pedregosa, Gauthier Gidel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Efficient Neural Architecture Search via Parameter Sharing",
+    "authors": "Hieu Pham 0001, Melody Y. Guan, Barret Zoph, Quoc V. Le, Jeff Dean",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bandits with Delayed, Aggregated Anonymous Feedback",
+    "authors": "Ciara Pike-Burke, Shipra Agrawal 0001, Csaba Szepesv&#225;ri, Steffen Gr&#252;new&#228;lder",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Constant-Time Predictive Distributions for Gaussian Processes",
+    "authors": "Geoff Pleiss, Jacob R. Gardner, Kilian Q. Weinberger, Andrew Gordon Wilson",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Local Convergence Properties of SAGA/Prox-SVRG and Acceleration",
+    "authors": "Clarice Poon, Jingwei Liang, Carola-Bibiane Schoenlieb",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Equivalence of Multicategory SVM and Simplex Cone SVM: Fast Computations and Statistical Theory",
+    "authors": "Guillaume Pouliot",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Dynamics of Linear Denoising Autoencoders",
+    "authors": "Arnu Pretorius, Steve Kroon, Herman Kamper",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "JointGAN: Multi-Domain Joint Distribution Learning with Generative Adversarial Nets",
+    "authors": "Yunchen Pu, Shuyang Dai, Zhe Gan, Weiyao Wang 0002, Guoyin Wang 0002, Yizhe Zhang 0002, Ricardo Henao, Lawrence Carin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Selecting Representative Examples for Program Synthesis",
+    "authors": "Yewen Pu, Zachery Miranda, Armando Solar-Lezama, Leslie Pack Kaelbling",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Generalized Earley Parser: Bridging Symbolic Grammars and Sequence Data for Future Prediction",
+    "authors": "Siyuan Qi, Baoxiong Jia, Song-Chun Zhu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Do Outliers Ruin Collaboration?",
+    "authors": "Mingda Qiao",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Gradually Updated Neural Networks for Large-Scale Image Recognition",
+    "authors": "Siyuan Qiao, Zhishuai Zhang, Wei Shen 0002, Bo Wang 0044, Alan L. Yuille",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "DCFNet: Deep Neural Network with Decomposed Convolutional Filters",
+    "authors": "Qiang Qiu 0001, Xiuyuan Cheng, A. Robert Calderbank, Guillermo Sapiro",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Non-convex Conditional Gradient Sliding",
+    "authors": "Chao Qu, Yan Li, Huan Xu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Machine Theory of Mind",
+    "authors": "Neil C. Rabinowitz, Frank Perbet, H. Francis Song, Chiyuan Zhang, S. M. Ali Eslami, Matthew M. Botvinick",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast Parametric Learning with Activation Memorization",
+    "authors": "Jack W. Rae, Chris Dyer, Peter Dayan, Timothy P. Lillicrap",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Can Deep Reinforcement Learning Solve Erdos-Selfridge-Spencer Games?",
+    "authors": "Maithra Raghu, Alex Irpan, Jacob Andreas, Robert Kleinberg, Quoc V. Le, Jon M. Kleinberg",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Cut-Pursuit Algorithm for Regularizing Nonsmooth Functionals with Graph Total Variation",
+    "authors": "Hugo Raguet, Lo&#239;c Landrieu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Modeling Others using Oneself in Multi-Agent Reinforcement Learning",
+    "authors": "Roberta Raileanu, Emily Denton, Arthur Szlam, Rob Fergus",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "On Nesting Monte Carlo Estimators",
+    "authors": "Tom Rainforth, Robert Cornish, Hongseok Yang, Andrew Warrington",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Tighter Variational Bounds are Not Necessarily Better",
+    "authors": "Tom Rainforth, Adam R. Kosiorek, Tuan Anh Le 0001, Chris J. Maddison, Maximilian Igl, Frank Wood, Yee Whye Teh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "SAFFRON: an Adaptive Algorithm for Online Control of the False Discovery Rate",
+    "authors": "Aaditya Ramdas, Tijana Zrnic, Martin J. Wainwright, Michael I. Jordan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "QMIX: Monotonic Value Function Factorisation for Deep Multi-Agent Reinforcement Learning",
+    "authors": "Tabish Rashid, Mikayel Samvelyan, Christian Schr&#246;der de Witt, Gregory Farquhar, Jakob N. Foerster, Shimon Whiteson",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Gradient Coding from Cyclic MDS Codes and Expander Graphs",
+    "authors": "Netanel Raviv, Rashish Tandon, Alex Dimakis, Itzhak Tamo",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Implicit Generative Models with the Method of Learned Moments",
+    "authors": "Suman V. Ravuri, Shakir Mohamed, Mihaela Rosca, Oriol Vinyals",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Weightless: Lossy weight encoding for deep neural network compression",
+    "authors": "Brandon Reagen, Udit Gupta 0001, Bob Adolf, Michael Mitzenmacher, Alexander M. Rush, Gu-Yeon Wei, David Brooks 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning to Reweight Examples for Robust Deep Learning",
+    "authors": "Mengye Ren, Wenyuan Zeng, Bin Yang 0021, Raquel Urtasun",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning by Playing Solving Sparse Reward Tasks from Scratch",
+    "authors": "Martin A. Riedmiller, Roland Hafner, Thomas Lampe, Michael Neunert, Jonas Degrave, Tom Van de Wiele, Vlad Mnih, Nicolas Heess, Jost Tobias Springenberg",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Been There, Done That: Meta-Learning with Episodic Recall",
+    "authors": "Samuel Ritter, Jane X. Wang, Zeb Kurth-Nelson, Siddhant M. Jayakumar, Charles Blundell, Razvan Pascanu, Matthew M. Botvinick",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Hierarchical Latent Vector Model for Learning Long-Term Structure in Music",
+    "authors": "Adam Roberts, Jesse H. Engel, Colin Raffel, Curtis Hawthorne, Douglas Eck",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning to Optimize Combinatorial Functions",
+    "authors": "Nir Rosenfeld, Eric Balkanski, Amir Globerson, Yaron Singer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast Information-theoretic Bayesian Optimisation",
+    "authors": "Bin Xin Ru, Mark McLeod, Diego Granziol, Michael A. Osborne",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep One-Class Classification",
+    "authors": "Lukas Ruff, Nico G&#246;rnitz, Lucas Deecke, Shoaib Ahmed Siddiqui, Robert A. Vandermeulen, Alexander Binder, Emmanuel M&#252;ller, Marius Kloft",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Augment and Reduce: Stochastic Inference for Large Categorical Distributions",
+    "authors": "Francisco J. R. Ruiz, Michalis K. Titsias, Adji B. Dieng, David M. Blei",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Probabilistic Boolean Tensor Decomposition",
+    "authors": "Tammo Rukat, Christopher C. Holmes, Christopher Yau",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Black-Box Variational Inference for Stochastic Differential Equations",
+    "authors": "Thomas Ryder, Andrew Golightly, A. Stephen McGough, Dennis Prangle",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Spurious Local Minima are Common in Two-Layer ReLU Neural Networks",
+    "authors": "Itay Safran, Ohad Shamir",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Equations for Extrapolation and Control",
+    "authors": "Subham S. Sahoo, Christoph H. Lampert, Georg Martius",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Tempered Adversarial Networks",
+    "authors": "Mehdi S. M. Sajjadi, Giambattista Parascandolo, Arash Mehrjou, Bernhard Sch&#246;lkopf",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Representation Tradeoffs for Hyperbolic Embeddings",
+    "authors": "Frederic Sala, Christopher De Sa, Albert Gu, Christopher R&#233;",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Graph Networks as Learnable Physics Engines for Inference and Control",
+    "authors": "Alvaro Sanchez-Gonzalez, Nicolas Heess, Jost Tobias Springenberg, Josh Merel, Martin A. Riedmiller, Raia Hadsell, Peter W. Battaglia",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Measuring abstract reasoning in neural networks",
+    "authors": "Adam Santoro, Felix Hill, David G. T. Barrett, Ari S. Morcos, Timothy P. Lillicrap",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Classification-Based Study of Covariate Shift in GAN Distributions",
+    "authors": "Shibani Santurkar, Ludwig Schmidt, Aleksander Madry",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "TAPAS: Tricks to Accelerate (encrypted) Prediction As a Service",
+    "authors": "Amartya Sanyal, Matt J. Kusner, Adri&#224; Gasc&#243;n, Varun Kanade",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Tight Regret Bounds for Bayesian Optimization in One Dimension",
+    "authors": "Jonathan Scarlett",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning with Abandonment",
+    "authors": "Sven Schmit, Ramesh Johari",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Not to Cry Wolf: Distantly Supervised Multitask Learning in Critical Care",
+    "authors": "Patrick Schwab, Emanuela Keller, Carl Muroi, David J. Mack, Christian Str&#228;ssle, Walter Karlen",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Progress &#38; Compress: A scalable framework for continual learning",
+    "authors": "Jonathan Schwarz, Wojciech Czarnecki 0001, Jelena Luketina, Agnieszka Grabska-Barwinska, Yee Whye Teh, Razvan Pascanu, Raia Hadsell",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Multi-Fidelity Black-Box Optimization with Hierarchical Partitions",
+    "authors": "Rajat Sen, Kirthevasan Kandasamy, Sanjay Shakkottai",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Overcoming Catastrophic Forgetting with Hard Attention to the Task",
+    "authors": "Joan Serr&#224;, Didac Suris, Marius Miron, Alexandros Karatzoglou",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bounding and Counting Linear Regions of Deep Neural Networks",
+    "authors": "Thiago Serra, Christian Tjandraatmadja, Srikumar Ramalingam",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "First Order Generative Adversarial Networks",
+    "authors": "Calvin Seward, Thomas Unterthiner, Urs Bergmann, Nikolay Jetchev, Sepp Hochreiter",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Finding Influential Training Samples for Gradient Boosted Decision Trees",
+    "authors": "Boris Sharchilev, Yury Ustinovskiy, Pavel Serdyukov, Maarten de Rijke",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Solving Partial Assignment Problems using Random Clique Complexes",
+    "authors": "Charu Sharma, Deepak Nathani, Manohar Kaul",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adafactor: Adaptive Learning Rates with Sublinear Memory Cost",
+    "authors": "Noam Shazeer, Mitchell Stern",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Locally Private Hypothesis Testing",
+    "authors": "Or Sheffet",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning in Integer Latent Variable Models with Nested Automatic Differentiation",
+    "authors": "Daniel Sheldon, Kevin Winner, Debora Sujono",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Towards More Efficient Stochastic Decentralized Learning: Faster Convergence and Sparse Communication",
+    "authors": "Zebang Shen, Aryan Mokhtari, Tengfei Zhou, Peilin Zhao, Hui Qian 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "An Algorithmic Framework of Variable Metric Over-Relaxed Hybrid Proximal Extra-Gradient Method",
+    "authors": "Li Shen 0005, Peng Sun 0011, Yitong Wang, Wei Liu 0005, Tong Zhang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Spectral Approach to Gradient Estimation for Implicit Distributions",
+    "authors": "Jiaxin Shi, Shengyang Sun, Jun Zhu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "TACO: Learning Task Decomposition via Temporal Alignment for Control",
+    "authors": "Kyriacos Shiarlis, Markus Wulfmeier, Sasha Salter, Shimon Whiteson, Ingmar Posner",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "CRAFTML, an Efficient Clustering-based Random Forest for Extreme Multi-label Learning",
+    "authors": "Wissam Siblini, Frank Meyer, Pascale Kuntz",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Asynchronous Stochastic Quasi-Newton MCMC for Non-Convex Optimization",
+    "authors": "Umut Simsekli, &#199;agatay Yildiz, Thanh Huy Nguyen 0001, A. Taylan Cemgil, Ga&#235;l Richard",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "K-means clustering using random matrix sparsification",
+    "authors": "Kaushik Sinha",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Towards End-to-End Prosody Transfer for Expressive Speech Synthesis with Tacotron",
+    "authors": "R. J. Skerry-Ryan, Eric Battenberg, Ying Xiao, Yuxuan Wang 0002, Daisy Stanton, Joel Shor, Ron J. Weiss, Rob Clark, Rif A. Saurous",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "An Inference-Based Policy Gradient Method for Learning Options",
+    "authors": "Matthew J. A. Smith, Herke van Hoof, Joelle Pineau",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Accelerating Natural Gradient with Higher-Order Invariance",
+    "authors": "Yang Song 0011, Jiaming Song, Stefano Ermon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Knowledge Transfer with Jacobian Matching",
+    "authors": "Suraj Srinivas, Fran&#231;ois Fleuret",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Universal Planning Networks: Learning Generalizable Representations for Visuomotor Control",
+    "authors": "Aravind Srinivas, Allan Jabri, Pieter Abbeel, Sergey Levine, Chelsea Finn",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Structured Control Nets for Deep Reinforcement Learning",
+    "authors": "Mario Srouji, Jian Zhang 0050, Ruslan Salakhutdinov",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Approximation Algorithms for Cascading Prediction Models",
+    "authors": "Matthew Streeter",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Low-Dimensional Temporal Representations",
+    "authors": "Bing Su 0001, Ying Wu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Exploiting the Potential of Standard Convolutional Autoencoders for Image Restoration by Evolutionary Search",
+    "authors": "Masanori Suganuma, Mete Ozay, Takayuki Okatani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stagewise Safe Bayesian Optimization with Gaussian Processes",
+    "authors": "Yanan Sui, Vincent Zhuang, Joel W. Burdick, Yisong Yue",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Neural Program Synthesis from Diverse Demonstration Videos",
+    "authors": "Shao-Hua Sun, Hyeonwoo Noh, Sriram Somasundaram, Joseph J. Lim",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Scalable Approximate Bayesian Inference for Particle Tracking Data",
+    "authors": "Ruoxi Sun 0006, Liam Paninski",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Graphical Nonconvex Optimization via an Adaptive Convex Relaxation",
+    "authors": "Qiang Sun, Kean Ming Tan, Han Liu 0001, Tong Zhang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Convolutional Imputation of Matrix Networks",
+    "authors": "Qingyun Sun, Mengyuan Yan, David L. Donoho, Stephen P. Boyd",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Differentiable Compositional Kernel Learning for Gaussian Processes",
+    "authors": "Shengyang Sun, Guodong Zhang 0006, Chaoqi Wang, Wenyuan Zeng, Jiaman Li, Roger B. Grosse",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning the Reward Function for a Misspecified Model",
+    "authors": "Erik Talvitie",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Neural Inverse Rendering for General Reflectance Photometric Stereo",
+    "authors": "Tatsunori Taniai, Takanori Maehara",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Black Box FDR",
+    "authors": "Wesley Tansey, Yixin Wang 0002, David M. Blei, Raul Rabadan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Best Arm Identification in Linear Bandits with Linear Dimension Dependency",
+    "authors": "Chao Tao 0003, Sa&#250;l A. Blanco, Yuan Zhou 0007",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Chi-square Generative Adversarial Network",
+    "authors": "Chenyang Tao, Liqun Chen 0001, Ricardo Henao, Jianfeng Feng, Lawrence Carin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Lyapunov Functions for First-Order Methods: Tight Automated Convergence Guarantees",
+    "authors": "Adrien B. Taylor, Bryan Van Scoy, Laurent Lessard",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bayesian Uncertainty Estimation for Batch Normalized Deep Networks",
+    "authors": "Mattias Teye, Hossein Azizpour, Kevin Smith 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Decoupling Gradient-Like Learning Rules from Representations",
+    "authors": "Philip S. Thomas, Christoph Dann, Emma Brunskill",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "CoVeR: Learning Covariate-Specific Vector Representations with Tensor Decompositions",
+    "authors": "Kevin Tian, Teng Zhang, James Zou 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Importance Weighted Transfer of Samples in Reinforcement Learning",
+    "authors": "Andrea Tirinzoni, Andrea Sessa, Matteo Pirotta, Marcello Restelli",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adversarial Regression with Multiple Learners",
+    "authors": "Liang Tong, Sixie Yu, Scott Alfeld, Yevgeniy Vorobeychik",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Convergent TREE BACKUP and RETRACE with Function Approximation",
+    "authors": "Ahmed Touati, Pierre-Luc Bacon, Doina Precup, Pascal Vincent",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Longer-term Dependencies in RNNs with Auxiliary Losses",
+    "authors": "Trieu H. Trinh, Andrew M. Dai, Thang Luong, Quoc V. Le",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Theoretical Analysis of Sparse Subspace Clustering with Missing Entries",
+    "authors": "Manolis C. Tsakiris, Ren&#233; Vidal",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "StrassenNets: Deep Learning with a Multiplication Budget",
+    "authors": "Michael Tschannen, Aran Khanna, Animashree Anandkumar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Invariance of Weight Distributions in Rectified MLPs",
+    "authors": "Russell Tsuchida, Farbod Roosta-Khorasani, Marcus Gallagher",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Least-Squares Temporal Difference Learning for the Linear Quadratic Regulator",
+    "authors": "Stephen Tu, Benjamin Recht",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "The Mirage of Action-Dependent Baselines in Reinforcement Learning",
+    "authors": "George Tucker, Surya Bhupatiraju, Shixiang Gu, Richard E. Turner, Zoubin Ghahramani, Sergey Levine",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adversarial Risk and the Dangers of Evaluating Against Weak Attacks",
+    "authors": "Jonathan Uesato, Brendan O'Donoghue, Pushmeet Kohli, A&#228;ron van den Oord",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "DVAE++: Discrete Variational Autoencoders with Overlapping Transformations",
+    "authors": "Arash Vahdat, William G. Macready, Zhengbing Bian, Amir Khoshaman, Evgeny Andriyash",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Programmatically Interpretable Reinforcement Learning",
+    "authors": "Abhinav Verma 0001, Vijayaraghavan Murali, Rishabh Singh, Pushmeet Kohli, Swarat Chaudhuri",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Probabilistic Theory of Supervised Similarity Learning for Pointwise ROC Curve Optimization",
+    "authors": "Robin Vogel, Aur&#233;lien Bellet, St&#233;phan Cl&#233;men&#231;on",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Transfer Learning via Learning to Transfer",
+    "authors": "Ying Wei 0001, Yu Zhang 0006, Junzhou Huang, Qiang Yang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Semi-Supervised Learning on Data Streams via Temporal Label Propagation",
+    "authors": "Tal Wagner, Sudipto Guha, Shiva Prasad Kasiviswanathan, Nina Mishra",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Neural Dynamic Programming for Musical Self Similarity",
+    "authors": "Christian J. Walder, Dongwoo Kim 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Thompson Sampling for Combinatorial Semi-Bandits",
+    "authors": "Siwei Wang 0002, Wei Chen 0013",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "PredRNN++: Towards A Resolution of the Deep-in-Time Dilemma in Spatiotemporal Predictive Learning",
+    "authors": "Yunbo Wang, Zhifeng Gao, Mingsheng Long, Jianmin Wang 0001, Philip S. Yu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Analyzing the Robustness of Nearest Neighbors to Adversarial Examples",
+    "authors": "Yizhen Wang, Somesh Jha, Kamalika Chaudhuri",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Competitive Multi-agent Inverse Reinforcement Learning with Sub-optimal Demonstrations",
+    "authors": "Xingyu Wang 0003, Diego Klabjan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Coded Sparse Matrix Multiplication",
+    "authors": "Sinong Wang, Jiashang Liu, Ness B. Shroff",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Fast and Scalable Joint Estimator for Integrating Additional Knowledge in Learning Multiple Related Sparse Gaussian Graphical Models",
+    "authors": "Beilun Wang, Arshdeep Sekhon, Yanjun Qi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Provable Variable Selection for Streaming Features",
+    "authors": "Jing Wang 0021, Jie Shen 0005, Ping Li 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Style Tokens: Unsupervised Style Modeling, Control and Transfer in End-to-End Speech Synthesis",
+    "authors": "Yuxuan Wang 0002, Daisy Stanton, Yu Zhang 0033, R. J. Skerry-Ryan, Eric Battenberg, Joel Shor, Ying Xiao, Ye Jia, Fei Ren, Rif A. Saurous",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adversarial Distillation of Bayesian Neural Network Posteriors",
+    "authors": "Kuan-Chieh Wang, Paul Vicol, James Lucas, Li Gu, Roger B. Grosse, Richard S. Zemel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Minimax Concave Penalized Multi-Armed Bandit Model with High-Dimensional Convariates",
+    "authors": "Xue Wang, Mike Mingcheng Wei, Tao Yao",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Online Convolutional Sparse Coding with Sample-Dependent Dictionary",
+    "authors": "Yaqing Wang 0002, Quanming Yao, James Tin-Yau Kwok, Lionel M. Ni",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stein Variational Message Passing for Continuous Graphical Models",
+    "authors": "Dilin Wang, Zhe Zeng 0001, Qiang Liu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Approximate Leave-One-Out for Fast Parameter Tuning in High Dimensions",
+    "authors": "Shuaiwen Wang, Wenda Zhou, Haihao Lu, Arian Maleki, Vahab S. Mirrokni",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Hierarchical Multi-Label Classification Networks",
+    "authors": "Jonatas Wehrmann, Ricardo Cerri, Rodrigo C. Barros",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Curriculum Learning by Transfer Learning: Theory and Experiments with Deep Networks",
+    "authors": "Daphna Weinshall, Gad Cohen, Dan Amir",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Extracting Automata from Recurrent Neural Networks Using Queries and Counterexamples",
+    "authors": "Gail Weiss, Yoav Goldberg, Eran Yahav",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "LEAPSANDBOUNDS: A Method for Approximately Optimal Algorithm Configuration",
+    "authors": "Gell&#233;rt Weisz, Andr&#225;s Gy&#246;rgy 0001, Csaba Szepesv&#225;ri",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep Predictive Coding Network for Object Recognition",
+    "authors": "Haiguang Wen, Kuan Han, Junxing Shi, Yizhen Zhang 0004, Eugenio Culurciello, Zhongming Liu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Towards Fast Computation of Certified Robustness for ReLU Networks",
+    "authors": "Tsui-Wei Weng, Huan Zhang 0001, Hongge Chen, Zhao Song 0002, Cho-Jui Hsieh, Luca Daniel, Duane S. Boning, Inderjit S. Dhillon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Provable Defenses against Adversarial Examples via the Convex Outer Adversarial Polytope",
+    "authors": "Eric Wong 0001, J. Zico Kolter",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Local Density Estimation in High Dimensions",
+    "authors": "Xian Wu 0009, Moses Charikar, Vishnu Natchu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adaptive Exploration-Exploitation Tradeoff for Opportunistic Bandits",
+    "authors": "Huasen Wu, Xueying Guo, Xin Liu 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "SQL-Rank: A Listwise Approach to Collaborative Ranking",
+    "authors": "Liwei Wu 0001, Cho-Jui Hsieh, James Sharpnack",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Error Compensated Quantized SGD and its Applications to Large-scale Distributed Optimization",
+    "authors": "Jiaxiang Wu 0001, Weidong Huang 0005, Junzhou Huang, Tong Zhang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Reinforcing Adversarial Robustness using Model Confidence Induced by Adversarial Training",
+    "authors": "Xi Wu 0001, Uyeong Jang, Jiefeng Chen 0001, Lingjiao Chen, Somesh Jha",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Discrete-Continuous Mixtures in Probabilistic Programming: Generalized Semantics and Inference Algorithms",
+    "authors": "Yi Wu 0013, Siddharth Srivastava 0001, Nicholas Hay, Simon S. Du, Stuart Russell 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Variance Regularized Counterfactual Risk Minimization via Variational Divergence Minimization",
+    "authors": "Hang Wu, May D. Wang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep k-Means: Re-Training and Parameter Sharing with Harder Cluster Assignments for Compressing Deep Convolutions",
+    "authors": "Junru Wu, Yue Wang 0036, Zhenyu Wu 0002, Zhangyang Wang, Ashok Veeraraghavan, Yingyan Lin 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Bayesian Quadrature for Multiple Related Integrals",
+    "authors": "Xiaoyue Xi, Fran&#231;ois-Xavier Briol, Mark A. Girolami",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Model-Level Dual Learning",
+    "authors": "Yingce Xia, Xu Tan 0003, Fei Tian, Tao Qin 0001, Nenghai Yu, Tie-Yan Liu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Dynamical Isometry and a Mean Field Theory of CNNs: How to Train 10, 000-Layer Vanilla Convolutional Neural Networks",
+    "authors": "Lechao Xiao, Yasaman Bahri, Jascha Sohl-Dickstein, Samuel S. Schoenholz, Jeffrey Pennington",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Orthogonality-Promoting Distance Metric Learning: Convex Relaxation and Theoretical Analysis",
+    "authors": "Pengtao Xie, Wei Wu 0023, Yichen Zhu, Eric P. Xing",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Nonoverlap-Promoting Variable Selection",
+    "authors": "Pengtao Xie, Hongbao Zhang, Yichen Zhu, Eric P. Xing",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Semantic Representations for Unsupervised Domain Adaptation",
+    "authors": "Shaoan Xie, Zibin Zheng, Liang Chen 0001, Chuan Chen 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Rates of Convergence of Spectral Methods for Graphon Estimation",
+    "authors": "Jiaming Xu 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Registered Point Processes from Idiosyncratic Observations",
+    "authors": "Hongteng Xu, Lawrence Carin, Hongyuan Zha",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Representation Learning on Graphs with Jumping Knowledge Networks",
+    "authors": "Keyulu Xu, Chengtao Li, Yonglong Tian, Tomohiro Sonobe, Ken-ichi Kawarabayashi, Stefanie Jegelka",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning to Explore via Meta-Policy Gradient",
+    "authors": "Tianbing Xu, Qiang Liu 0001, Liang Zhao 0006, Jian Peng 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Nonparametric Regression with Comparisons: Escaping the Curse of Dimensionality with Ordinal Information",
+    "authors": "Yichong Xu, Hariank Muthakana, Sivaraman Balakrishnan, Aarti Singh, Artur Dubrawski",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Optimal Tuning for Divide-and-conquer Kernel Ridge Regression with Massive Data",
+    "authors": "Ganggang Xu, Zuofeng Shang, Guang Cheng 0003",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Continuous and Discrete-time Accelerated Stochastic Mirror Descent for Strongly Convex Functions",
+    "authors": "Pan Xu 0002, Tianhao Wang 0002, Quanquan Gu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Semantic Loss Function for Deep Learning with Symbolic Knowledge",
+    "authors": "Jingyi Xu, Zilu Zhang, Tal Friedman, Yitao Liang, Guy Van den Broeck",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Causal Bandits with Propagating Inference",
+    "authors": "Akihiro Yabe, Daisuke Hatano, Hanna Sumita, Shinji Ito, Naonori Kakimura, Takuro Fukunaga, Ken-ichi Kawarabayashi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Active Learning with Logged Data",
+    "authors": "Songbai Yan, Kamalika Chaudhuri, Tara Javidi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Binary Classification with Karmic, Threshold-Quasi-Concave Metrics",
+    "authors": "Bowei Yan, Oluwasanmi Koyejo, Kai Zhong, Pradeep Ravikumar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Characterizing and Learning Equivalence Classes of Causal DAGs under Interventions",
+    "authors": "Karren D. Yang, Abigail Katoff, Caroline Uhler",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Dependent Relational Gamma Process Models for Longitudinal Networks",
+    "authors": "Sikun Yang, Heinz Koeppl",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Goodness-of-fit Testing for Discrete Distributions via Stein Discrepancy",
+    "authors": "Jiasen Yang, Qiang Liu, Vinayak A. Rao, Jennifer Neville",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Mean Field Multi-Agent Reinforcement Learning",
+    "authors": "Yaodong Yang 0001, Rui Luo 0001, Minne Li, Ming Zhou 0006, Weinan Zhang 0001, Jun Wang 0012",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Yes, but Did It Work?: Evaluating Variational Inference",
+    "authors": "Yuling Yao, Aki Vehtari, Daniel Simpson, Andrew Gelman",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Hierarchical Text Generation and Planning for Strategic Dialogue",
+    "authors": "Denis Yarats, Mike Lewis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Communication-Computation Efficient Gradient Coding",
+    "authors": "Min Ye 0005, Emmanuel Abbe",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Variable Selection via Penalized Neural Network: a Drop-Out-One Loss Approach",
+    "authors": "Mao Ye, Yan Sun 0011",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Loss Decomposition for Fast Learning in Large Output Spaces",
+    "authors": "Ian En-Hsu Yen, Satyen Kale, Felix X. Yu, Daniel Niels Holtmann-Rice, Sanjiv Kumar, Pradeep Ravikumar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Byzantine-Robust Distributed Learning: Towards Optimal Statistical Rates",
+    "authors": "Dong Yin, Yudong Chen 0001, Kannan Ramchandran, Peter L. Bartlett",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Semi-Implicit Variational Inference",
+    "authors": "Mingzhang Yin, Mingyuan Zhou",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Disentangled Sequential Autoencoder",
+    "authors": "Yingzhen Li, Stephan Mandt",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Probably Approximately Metric-Fair Learning",
+    "authors": "Gal Yona, Guy N. Rothblum",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "GAIN: Missing Data Imputation using Generative Adversarial Nets",
+    "authors": "Jinsung Yoon, James Jordon, Mihaela van der Schaar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "RadialGAN: Leveraging multiple datasets to improve target-specific predictive models using Generative Adversarial Networks",
+    "authors": "Jinsung Yoon, James Jordon, Mihaela van der Schaar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "GraphRNN: Generating Realistic Graphs with Deep Auto-regressive Models",
+    "authors": "Jiaxuan You, Rex Ying, Xiang Ren 0001, William L. Hamilton, Jure Leskovec",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "An Efficient Semismooth Newton Based Algorithm for Convex Clustering",
+    "authors": "Yancheng Yuan, Defeng Sun, Kim-Chuan Toh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Conditional Gradient Framework for Composite Convex Minimization with Applications to Semidefinite Programming",
+    "authors": "Alp Yurtsever, Olivier Fercoq, Francesco Locatello, Volkan Cevher",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Orthogonal Machine Learning: Power and Limitations",
+    "authors": "Ilias Zadik, Lester W. Mackey, Vasilis Syrgkanis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Problem Dependent Reinforcement Learning Bounds Which Can Identify Bandit Structure in MDPs",
+    "authors": "Andrea Zanette, Emma Brunskill",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Policy Optimization as Wasserstein Gradient Flows",
+    "authors": "Ruiyi Zhang 0002, Changyou Chen, Chunyuan Li, Lawrence Carin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fast and Sample Efficient Inductive Matrix Completion via Multi-Phase Procrustes Flow",
+    "authors": "Xiao Zhang 0016, Simon S. Du, Quanquan Gu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Large-Scale Sparse Inverse Covariance Estimation via Thresholding and Max-Det Matrix Completion",
+    "authors": "Richard Y. Zhang 0001, Salar Fattahi, Somayeh Sojoudi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "High Performance Zero-Memory Overhead Direct Convolutions",
+    "authors": "Jiyuan Zhang 0002, Franz Franchetti, Tze Meng Low",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Safe Element Screening for Submodular Function Minimization",
+    "authors": "Weizhong Zhang, Bin Hong, Lin Ma 0002, Wei Liu 0005, Tong Zhang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Improving the Privacy and Accuracy of ADMM-Based Distributed Algorithms",
+    "authors": "Xueru Zhang, Mohammad Mahdi Khalili, Mingyan Liu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stabilizing Gradients for Deep Neural Networks via Efficient SVD Parameterization",
+    "authors": "Jiong Zhang 0001, Qi Lei, Inderjit S. Dhillon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Learning Long Term Dependencies via Fourier Recurrent Units",
+    "authors": "Jiong Zhang 0001, Yibo Lin, Zhao Song 0002, Inderjit S. Dhillon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Tropical Geometry of Deep Neural Networks",
+    "authors": "Liwen Zhang, Gregory Naitzat, Lek-Heng Lim",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Deep Bayesian Nonparametric Tracking",
+    "authors": "Aonan Zhang, John W. Paisley",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Composable Planning with Attributes",
+    "authors": "Amy Zhang 0001, Sainbayar Sukhbaatar, Adam Lerer, Arthur Szlam, Rob Fergus",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Noisy Natural Gradient as Variational Inference",
+    "authors": "Guodong Zhang 0006, Shengyang Sun, David Duvenaud, Roger B. Grosse",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Primal-Dual Analysis of Global Optimality in Nonconvex Low-Rank Matrix Recovery",
+    "authors": "Xiao Zhang 0016, Lingxiao Wang 0001, Yaodong Yu, Quanquan Gu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Fully Decentralized Multi-Agent Reinforcement Learning with Networked Agents",
+    "authors": "Kaiqing Zhang, Zhuoran Yang, Han Liu 0001, Tong Zhang 0001, Tamer Basar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Dynamic Regret of Strongly Adaptive Methods",
+    "authors": "Lijun Zhang 0005, Tianbao Yang, Rong Jin 0001, Zhi-Hua Zhou",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Inter and Intra Topic Structure Learning with Word Embeddings",
+    "authors": "He Zhao 0001, Lan Du 0002, Wray L. Buntine, Mingyuan Zhou",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Adversarially Regularized Autoencoders",
+    "authors": "Junbo Jake Zhao, Yoon Kim, Kelly Zhang, Alexander M. Rush, Yann LeCun",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "MSplit LBI: Realizing Feature Selection and Dense Estimation Simultaneously in Few-shot and Zero-shot Learning",
+    "authors": "Bo Zhao 0015, Xinwei Sun 0001, Yanwei Fu 0001, Yuan Yao 0011, Yizhou Wang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Composite Marginal Likelihood Methods for Random Utility Models",
+    "authors": "Zhibing Zhao, Lirong Xia",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Lightweight Stochastic Optimization for Minimizing Finite Sums with Infinite Data",
+    "authors": "Shuai Zheng 0004, James Tin-Yau Kwok",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Robust Approach to Sequential Information Theoretic Planning",
+    "authors": "Sue Zheng, Jason Pacheco, John W. Fisher III",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Revealing Common Statistical Behaviors in Heterogeneous Populations",
+    "authors": "Andrey Zhitnikov, Rotem Mulayoff, Tomer Michaeli",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Understanding Generalization and Optimization Performance of Deep CNNs",
+    "authors": "Pan Zhou 0002, Jiashi Feng",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Distributed Asynchronous Optimization with Unbounded Delays: How Slow Can You Go?",
+    "authors": "Zhengyuan Zhou, Panayotis Mertikopoulos, Nicholas Bambos, Peter W. Glynn, Yinyu Ye 0001, Li-Jia Li 0001, Li Fei-Fei 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "A Simple Stochastic Variance Reduced Algorithm with Fast Convergence Rates",
+    "authors": "Kaiwen Zhou 0001, Fanhua Shang, James Cheng",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stochastic Variance-Reduced Cubic Regularized Newton Method",
+    "authors": "Dongruo Zhou, Pan Xu 0002, Quanquan Gu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Racing Thompson: an Efficient Algorithm for Thompson Sampling with Non-conjugate Priors",
+    "authors": "Yichi Zhou, Jun Zhu 0001, Jingwei Zhuo",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Distributed Nonparametric Regression under Communication Constraints",
+    "authors": "Yuancheng Zhu, John Lafferty",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Message Passing Stein Variational Gradient Descent",
+    "authors": "Jingwei Zhuo, Chang Liu 0030, Jiaxin Shi, Jun Zhu 0001, Ning Chen 0002, Bo Zhang 0010",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Stochastic Variance-Reduced Hamilton Monte Carlo Methods",
+    "authors": "Difan Zou, Pan Xu 0002, Quanquan Gu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2018,
+    "title": "Hierarchical Long-term Video Prediction without Supervision",
+    "authors": "Nevan Wichers, Ruben Villegas, Dumitru Erhan, Honglak Lee",
+    "abstract": null
+  }
+]

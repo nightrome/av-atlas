@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas — About</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme-light.css">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .page-title { margin: 0 0 4px; font-size: 1.5em; }
+  h2 { font-size: 1.15em; margin: 32px 0 10px; }
+  h3 { font-size: 1em; margin: 20px 0 8px; }
+  p { line-height: 1.6; }
+  section { margin-bottom: 8px; }
+  ul { line-height: 1.7; }
+  .freshness-note { color: var(--muted); font-size: 0.85em; margin-top: -8px; }
+  table.data-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.92em; }
+  table.data-table th, table.data-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+  table.data-table th { color: var(--muted); font-weight: 600; }
+  table.data-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* TL;DR panel -- the "everyone should read this much" summary at the top,
+     visually set apart from the detailed reference sections below it. */
+  .tldr-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin: 16px 0 28px; }
+  .tldr-panel h2 { margin: 0 0 10px; font-size: 1.05em; }
+  .tldr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 14px; }
+  .tldr-item { display: flex; gap: 10px; align-items: flex-start; }
+  .tldr-item .icon { font-size: 1.3em; line-height: 1.3; flex-shrink: 0; }
+  .tldr-item .label { font-weight: 600; font-size: 0.92em; }
+  .tldr-item .desc { color: var(--muted); font-size: 0.85em; margin-top: 1px; }
+
+  /* Collapsed-by-default detail sections -- the reader who only wanted the
+     TL;DR never has to scroll past a wall of fine print to reach "Known
+     gaps" or the back link; the reader who wants the detail opens exactly
+     the section they care about. */
+  details.detail-section { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 4px 22px; margin: 14px 0; }
+  details.detail-section > summary { cursor: pointer; padding: 14px 0; font-size: 1.1em; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details.detail-section > summary::-webkit-details-marker { display: none; }
+  details.detail-section > summary::before { content: '▸'; color: var(--muted); transition: transform 0.15s; font-size: 0.8em; }
+  details.detail-section[open] > summary::before { transform: rotate(90deg); }
+  details.detail-section > summary:hover { color: var(--accent); }
+  .detail-body { padding-bottom: 18px; }
+
+  /* Pipeline figure */
+  .pipeline-wrap { overflow-x: auto; margin: 8px 0 4px; }
+  .pipeline-wrap svg { display: block; min-width: 760px; }
+  .pl-stage rect { fill: var(--panel2); stroke: var(--border); stroke-width: 1.5; }
+  .pl-stage.feedback rect { stroke: var(--accent); stroke-dasharray: 4 3; }
+  .pl-stage text.pl-title { font-weight: 700; font-size: 13px; fill: var(--text); }
+  .pl-arrow { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+  .pl-arrow.feedback { stroke: var(--accent); stroke-dasharray: 4 3; }
+  .pl-caption { font-size: 10px; fill: var(--muted); }
+
+  /* Validation figures (confusion matrix + precision/recall) */
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 14px 0; }
+  .metric-tile { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .metric-tile .metric-value { font-size: 1.5em; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .metric-tile .metric-label { color: var(--muted); font-size: 0.82em; margin-top: 2px; }
+  .caveat-box { border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 10px 14px; margin: 14px 0; font-size: 0.9em; background: var(--panel2); }
+
+  /* Scholar comparison scatter chart */
+  .chart-panel { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 14px 0; }
+  .line-chart-wrap { position: relative; }
+  .line-chart-wrap svg { width: 100%; height: auto; display: block; }
+  .axis-line { stroke: var(--border); }
+  .axis-label { fill: var(--muted); font-size: 10.5px; }
+  .tooltip-box { position: absolute; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 0.8em; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25); min-width: 140px; display: none; z-index: 10; }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<p class="freshness-note" id="freshness-note"></p>
+
+<div class="tldr-panel">
+  <h2>Summary</h2>
+  <p style="margin:0;">
+    This site indexes autonomous vehicle (AV) research papers from major computer vision and
+    robotics venues and reports who is publishing, which institutions and countries are active,
+    how research topics have shifted over time, and which papers are most cited <em>within AV
+    research specifically</em>. Every classification on this site, whether a paper is AV-relevant,
+    which topic it belongs to, who wrote it, or who cites it, is produced by an automated pipeline,
+    not manual review. Figures should be read as a well-informed estimate, not a verified count.
+  </p>
+  <div class="tldr-grid">
+    <div class="tldr-item">
+      <span class="icon">📥</span>
+      <div><div class="label">Complete venue proceedings</div>
+      <div class="desc">Every paper from a covered venue and year is collected. No keyword filter decides what goes in.</div></div>
+    </div>
+    <div class="tldr-item">
+      <span class="icon">🤖</span>
+      <div><div class="label">Automated relevance &amp; topic</div>
+      <div class="desc">Keyword rules plus a language-model second opinion decide AV-relevance and topic. See Validation below.</div></div>
+    </div>
+    <div class="tldr-item">
+      <span class="icon">🔗</span>
+      <div><div class="label">In-corpus citations only</div>
+      <div class="desc">Citation counts are computed from papers in this corpus, not sourced from an external provider.</div></div>
+    </div>
+  </div>
+</div>
+
+<details class="detail-section" open>
+<summary>Paper discovery pipeline</summary>
+<div class="detail-body">
+<p>
+  Five stages, run roughly in order, with one feedback loop. Discovering who cites an existing
+  paper can surface a title none of the venue listings had yet, which re-enters as a normal entry
+  and is processed the same way as everything else.
+</p>
+<div class="pipeline-wrap">
+<svg viewBox="0 0 1160 170" role="img" aria-label="Five-stage pipeline: Collect, Merge and classify, Enrich, Citation graph, Aggregate, with a feedback arrow from Citation graph back to Collect.">
+  <defs>
+    <marker id="pl-arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="var(--muted)"></path>
+    </marker>
+    <marker id="pl-arrowhead-accent" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"></path>
+    </marker>
+  </defs>
+
+  <g class="pl-stage">
+    <rect x="20" y="20" width="190" height="60" rx="8"></rect>
+    <text class="pl-title" x="115" y="55" text-anchor="middle">1. Collect</text>
+  </g>
+  <path class="pl-arrow" d="M210,50 L246,50" marker-end="url(#pl-arrowhead)"></path>
+
+  <g class="pl-stage">
+    <rect x="250" y="20" width="190" height="60" rx="8"></rect>
+    <text class="pl-title" x="345" y="55" text-anchor="middle">2. Merge &amp; classify</text>
+  </g>
+  <path class="pl-arrow" d="M440,50 L476,50" marker-end="url(#pl-arrowhead)"></path>
+
+  <g class="pl-stage">
+    <rect x="480" y="20" width="190" height="60" rx="8"></rect>
+    <text class="pl-title" x="575" y="55" text-anchor="middle">3. Enrich</text>
+  </g>
+  <path class="pl-arrow" d="M670,50 L706,50" marker-end="url(#pl-arrowhead)"></path>
+
+  <g class="pl-stage">
+    <rect x="710" y="20" width="200" height="60" rx="8"></rect>
+    <text class="pl-title" x="810" y="55" text-anchor="middle">4. Citation graph</text>
+  </g>
+  <path class="pl-arrow" d="M910,50 L946,50" marker-end="url(#pl-arrowhead)"></path>
+
+  <g class="pl-stage">
+    <rect x="950" y="20" width="190" height="60" rx="8"></rect>
+    <text class="pl-title" x="1045" y="55" text-anchor="middle">5. Aggregate</text>
+  </g>
+
+  <!-- Feedback loop: Citation graph's reverse-citation discovery surfaces
+       new titles the venue listings never had, which re-enter at Collect. -->
+  <path class="pl-arrow feedback" d="M810,80 L810,120 L115,120 L115,80" marker-end="url(#pl-arrowhead-accent)"></path>
+  <text class="pl-caption" x="462" y="136" text-anchor="middle">
+    Feedback: a paper found only because it cites a known seed paper is a new title. It re-enters at step 1.
+  </text>
+</svg>
+</div>
+<ul>
+  <li><strong>1. Collect.</strong> Full proceedings from each venue's own source: CVF, DBLP,
+      OpenAlex, the arXiv API. No keyword filter. Every paper from a covered venue and year is
+      included.</li>
+  <li><strong>2. Merge &amp; classify.</strong> Dedupe across sources by normalized title. Assign
+      a category and an AV-relevance label from keyword rules and a language-model second opinion.</li>
+  <li><strong>3. Enrich.</strong> For AV-relevant papers only: author affiliations (from a CVF PDF
+      or an arXiv preprint's HTML rendering), ORCID and Semantic Scholar author identifiers, and
+      profile photos for top-ranked authors.</li>
+  <li><strong>4. Citation graph.</strong> Reference lists parsed from CVF PDFs and arXiv HTML
+      build in-corpus citation edges. A separate query against Semantic Scholar's citation graph
+      finds who else cites a seed paper (the feedback loop above).</li>
+  <li><strong>5. Aggregate.</strong> Leaderboards, per-author/institution/country rollups, and
+      category breakdowns are computed and published to every page on this site.</li>
+</ul>
+</div>
+</details>
+
+<details class="detail-section" open>
+<summary>Data sources</summary>
+<div class="detail-body">
+<p>
+  The corpus is built from the complete, unfiltered proceedings of each venue below, for every
+  year its source makes available. Only after collection is each paper labeled AV-relevant or
+  not; collection itself never filters on topic.
+</p>
+<table class="data-table">
+  <thead>
+    <tr><th>Venue</th><th>Years covered</th><th>Coverage</th></tr>
+  </thead>
+  <tbody id="coverage-body">
+    <tr><td>NeurIPS</td><td>2012–2025</td><td>Complete</td></tr>
+    <tr><td>CVPR</td><td>2012–2026</td><td>Complete (2012, 2018–2020 title/authors only, no abstract)</td></tr>
+    <tr><td>ICCV</td><td>2013, 2015, 2017, 2019, 2021, 2023, 2025</td><td>Complete (biennial venue, no 2012 edition)</td></tr>
+    <tr><td>ECCV</td><td>2012, 2014, 2016, 2018, 2020, 2022, 2024</td><td>Complete (biennial venue; 2012–2016 title/authors only, no abstract)</td></tr>
+    <tr><td>WACV</td><td>2012–2026</td><td>Complete (2012–2019 title/authors only, no abstract)</td></tr>
+    <tr><td>CoRL</td><td>2017–2025</td><td>Complete (no CoRL before 2017)</td></tr>
+    <tr><td>ICRA</td><td>2019–2025</td><td>Complete for 2019–2025 (title/authors only, no abstract); 2013–2018 and 2026 not yet covered, see Known limitations</td></tr>
+    <tr><td>IROS</td><td>2019–2025</td><td>Complete for 2019–2025 (title/authors only, no abstract); 2013–2018 and 2026 not yet covered, see Known limitations</td></tr>
+    <tr><td>RSS</td><td>2012–2024</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>ICLR</td><td>2013–2025</td><td>Complete (title/authors only, no abstract; no ICLR before 2013)</td></tr>
+    <tr><td>AAAI</td><td>2012–2026</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>IEEE IV</td><td>2013–2025</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>ITSC</td><td>2012–2025</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>GCPR</td><td>2012–2025, except 2023</td><td>Complete except 2023 (no proceedings listed that year); title/authors only, no abstract</td></tr>
+    <tr><td>ICML</td><td>2012–2024</td><td>Complete for 2012–2024 (title/authors only, no abstract); 2025–2026 not yet fetched</td></tr>
+    <tr><td>BMVC</td><td>2012–2024</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>ACCV</td><td>2012 only</td><td>In progress, see Known limitations</td></tr>
+    <tr><td>IJCV</td><td>2012–2025</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>RA-L</td><td>2016–2025 (journal started 2016)</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>T-RO</td><td>2012–2025</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>TPAMI</td><td>2012–2025</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>IJRR</td><td>2012–2025</td><td>Complete (title/authors only, no abstract)</td></tr>
+    <tr><td>T-ITS</td><td>2012–2025</td><td>Complete (title/authors only, no abstract)</td></tr>
+  </tbody>
+</table>
+<p style="color: var(--muted); font-size: 0.88em;">
+  Papers with no abstract (marked above) are classified from title text alone, a weaker signal
+  than everywhere else on this site. Per-venue paper counts aren't repeated here; see the
+  <a href="venues.html" style="color: var(--accent);">Venues page</a> for those.
+</p>
+<p style="color: var(--muted); font-size: 0.88em;">
+  ICRA and IROS 2019–2025 are sourced from community-maintained paper lists on GitHub rather
+  than each conference's own proceedings platform, which isn't accessible through any source
+  this site currently uses. Every paper from these years links to the exact list it came from
+  on its own page.
+</p>
+</div>
+</details>
+
+<details class="detail-section" open>
+<summary>AV relevance classification &amp; validation</summary>
+<div class="detail-body">
+<h3 style="margin-top:0;">Method</h3>
+<ul>
+  <li><strong>Category</strong> is a topic label (object detection, tracking, planning and
+      control, etc.) from a living, extensible taxonomy, assigned by matching title and abstract
+      text against each category's keyword list. These keywords are broad computer-vision/robotics
+      terms that also match plenty of non-AV papers once the corpus is full venue proceedings, so
+      category alone is <em>not</em> used to decide AV-relevance.</li>
+  <li><strong>AV-relevance</strong> (relevant or not) is decided independently of category. A
+      paper counts as AV-relevant if its title or abstract contains an explicit AV-specific phrase
+      (e.g. "autonomous driving", "self-driving", or a well-known AV dataset name such as nuScenes
+      or KITTI), or if a language model, reading the title and abstract, judges that the paper's
+      technology is directly applied to autonomous vehicles rather than merely being potentially
+      useful for them: a paper that lists "autonomous driving" only as one of several possible
+      downstream applications does not qualify. There is no partial credit: a paper is either
+      AV-relevant or it isn't, and only relevant papers appear in this site's rankings. Papers
+      about vehicle dynamics or chassis control in isolation (mechanical/hardware engineering, no
+      learning-based or software component) are explicitly excluded, even when "vehicle" or
+      "drive" appears in the title.</li>
+</ul>
+<h3>Validation</h3>
+<p>
+  65 papers were hand-labeled by a human reviewer (not a language model), a mix of clear
+  AV-relevant papers, clear non-AV papers, and deliberately borderline cases (adjacent computer
+  vision/robotics work that mentions autonomous driving without being about it). This is genuine
+  outside ground truth, not one automated method checked against another. Comparing it against
+  this site's actual classification (the keyword rule OR'd with the language model, exactly
+  what decides <code>av_relevance</code> for every paper shown on the site, not just the language
+  model in isolation):
+</p>
+<div class="metric-grid">
+  <div class="metric-tile"><div class="metric-value">96.8%</div><div class="metric-label">Accuracy</div></div>
+  <div class="metric-tile"><div class="metric-value">100%</div><div class="metric-label">Precision</div></div>
+  <div class="metric-tile"><div class="metric-value">95.1%</div><div class="metric-label">Recall</div></div>
+  <div class="metric-tile"><div class="metric-value">63 / 65</div><div class="metric-label">Sample size</div></div>
+</div>
+<p style="color: var(--muted); font-size: 0.88em;">
+  (2 of the 65 hand-labeled titles didn't match a title currently in the corpus, most likely an
+  apostrophe-encoding mismatch in the automated title comparison rather than the papers actually
+  being absent; not chased down further since it's 2 papers either way.) Zero false positives:
+  every paper the site calls AV-relevant, a human agreed was AV-relevant. The 2 false negatives
+  (labeled AV-relevant by the human, missed by the site) were both borderline computer-vision
+  papers that mention autonomous driving as one of several possible applications rather than
+  being about it, which is consistent with how the language model is instructed to judge relevance.
+</p>
+<p>
+  Separately, the language model's judgment alone (not combined with the keyword rule) scores
+  <strong>78.5% accuracy</strong> against the same 65 labels, lower, because on its own it
+  misses some genuinely AV-relevant papers that the keyword rule alone catches (67.4% recall by
+  itself vs. 95.1% once combined). This is exactly why the site ORs the two signals together
+  rather than relying on the language model alone.
+</p>
+<p>
+  A second, larger-scale check compares the keyword rule against the language model directly
+  (not against human labels) over a held-out sample of 63 papers, to see how often the
+  high-recall keyword pass agrees with the more careful per-paper reading:
+</p>
+<table class="data-table" style="max-width: 420px;">
+  <thead><tr><th></th><th class="num">LM: core</th><th class="num">LM: not core</th></tr></thead>
+  <tbody>
+    <tr><td>Keyword rule: core</td><td class="num">25</td><td class="num">11</td></tr>
+    <tr><td>Keyword rule: not core</td><td class="num">2</td><td class="num">25</td></tr>
+  </tbody>
+</table>
+<p style="color: var(--muted); font-size: 0.88em;">
+  Recall is high (the keyword rule rarely misses a paper the language model considers
+  AV-relevant) and precision is lower (the keyword rule flags some papers the language model
+  would not), consistent with its design as a high-recall first pass, meant to be checked by
+  the second, more careful signal rather than used alone.
+</p>
+</div>
+</details>
+
+<details class="detail-section">
+<summary>Citation counts</summary>
+<div class="detail-body">
+<p>
+  Every citation count on this site is <strong>internal</strong>: how many other papers already in
+  this corpus cite a given paper. This is computed entirely from data collected for this site, so
+  it measures something specific (impact within AV research, not research in general) and can
+  be shown and redistributed freely. It is necessarily a much smaller number than a global
+  citation count, since it only counts citations from papers that have themselves been collected
+  here. External citation databases frequently disagree with each other and generally cannot be
+  redistributed, so this site does not use them as a citation source; see Crawler status below
+  for how much of the corpus has had its citations computed so far.
+</p>
+<p>
+  A "no citation data" paper is not necessarily a paper with zero citations. It may be a paper no
+  other paper in this corpus cites yet, or one whose own reference list has not yet been
+  processed. There is no way to tell "genuinely uncited" apart from "not yet processed" from the
+  citation count alone.
+</p>
+<h3>How far off is the internal count from Google Scholar?</h3>
+<p>
+  52 papers were sampled at random, stratified across the citation-count distribution (so the
+  sample isn't just top-cited outliers), and looked up individually on Google Scholar.
+</p>
+<div class="metric-grid">
+  <div class="metric-tile"><div class="metric-value">13.4×</div><div class="metric-label">Geometric mean ratio</div></div>
+  <div class="metric-tile"><div class="metric-value">11.6×</div><div class="metric-label">Median ratio</div></div>
+  <div class="metric-tile"><div class="metric-value">1.9× – 166×</div><div class="metric-label">Range</div></div>
+  <div class="metric-tile"><div class="metric-value">52</div><div class="metric-label">Sample size</div></div>
+</div>
+<div class="chart-panel">
+  <div class="line-chart-wrap">
+    <svg id="scholar-chart" viewBox="0 0 640 460" role="img" aria-label="Scatter plot comparing this site's internal citation counts against Google Scholar citation counts for 52 sampled papers, both on a log scale"></svg>
+    <div class="tooltip-box" id="scholar-chart-tooltip"></div>
+  </div>
+</div>
+<p style="color: var(--muted); font-size: 0.88em;">
+  Every point sits above the dashed y=x line: Scholar's count is higher for every single paper in
+  the sample, never lower. This makes sense, since Scholar counts citations from anywhere on the
+  internet, while this site only counts citations from other papers already in its own ~19k-paper
+  corpus. The gap is fairly consistent on a log scale (most points cluster near the solid "13×"
+  reference line) rather than growing or shrinking with paper popularity, which is why a single
+  multiplier is a reasonable rough mental model at all: "roughly an order of magnitude higher on
+  Scholar," while still being just that, rough. The actual ratio for any one paper ranged from
+  under 2× to over 160× in this sample.
+</p>
+</div>
+</details>
+
+<details class="detail-section">
+<summary>Institution / country / researcher data</summary>
+<div class="detail-body">
+<p>
+  Author affiliations (institution and country) are looked up separately for AV-relevant papers;
+  coverage is not yet complete for the full corpus (see Crawler status below), and the
+  Institutions/Countries pages always reflect current coverage. Because sample sizes can be small
+  relative to the full corpus, both a total and a per-paper average citation figure are shown for
+  every institution/country/researcher; neither is a substitute for the underlying paper count,
+  which is also always shown.
+</p>
+<p>
+  Affiliation text is sometimes noisy or incorrect on the source's end. Obviously broken entries
+  (bare country/city names, stray addresses, a department name with no parent institution
+  attached, sentence fragments from a failed parse) are filtered out of what is displayed. A
+  generic lab or department name is rejected even when its parent institution is real and appears
+  separately for the same author (e.g. Carnegie Mellon University's Robotics Institute drops the
+  redundant fragment; the author still shows up under Carnegie Mellon University itself). An
+  institution is shown under its highest-level parent (e.g. "University of Oxford", not one of
+  its individual colleges), and known corporate-lab variants are folded into one canonical name
+  (e.g. every Bosch research-lab spelling shows as "Bosch"). This cleanup is ongoing, not
+  exhaustive.
+</p>
+<p>
+  Researchers are matched by name text alone. There is no author disambiguation (no ORCID lookup
+  for most authors, no institution-based clustering). Two different people who happen to share a
+  name are shown as one "researcher" with both people's papers merged together; a person who
+  publishes under slightly different name spellings is shown as two separate researchers.
+</p>
+</div>
+</details>
+
+<details class="detail-section">
+<summary>Network page</summary>
+<div class="detail-body">
+<p>
+  Each node is an author (sized by paper count); an edge connects two
+  authors who have co-authored at least one AV-relevant paper in this corpus. Color groups
+  authors into collaboration clusters, found by label propagation over the co-authorship graph
+  itself, not by institution or category, so a cluster is a group who mostly publish with each
+  other, not a group who happen to share an employer. The metrics table's "Centrality" is a
+  weighted PageRank score over that graph: it accounts for multi-hop reach, not just direct
+  collaborator count.
+</p>
+</div>
+</details>
+
+<details class="detail-section">
+<summary>Dataset adoption chart (Insights)</summary>
+<div class="detail-body">
+<p>
+  "Cited by" means a paper's own reference list, as parsed from its CVF or arXiv source (the
+  same mechanism behind every paper's Citations panel), names the dataset's paper. It is not a
+  keyword match against an abstract mentioning the dataset's name. Reference-list parsing has not
+  yet reached the full corpus (see Crawler status below), so a low count can mean "not yet
+  processed" as easily as "genuinely unused". Treat these figures as a floor, not a final tally.
+</p>
+</div>
+</details>
+
+<details class="detail-section" id="crawler-status-section" open>
+<summary>Crawler status</summary>
+<div class="detail-body">
+<p>
+  This site's data-collection processes run on an ongoing basis. The table below is the current,
+  official status of each one at the time of the last data update.
+</p>
+<table class="data-table">
+  <thead>
+    <tr><th>Process</th><th class="num">Processed</th><th class="num">Total</th><th class="num">Coverage</th></tr>
+  </thead>
+  <tbody id="crawler-status-body"></tbody>
+</table>
+<p id="crawler-status-date" style="color: var(--muted); font-size: 0.85em;"></p>
+</div>
+</details>
+
+<details class="detail-section" id="known-gaps-section">
+<summary>Known limitations</summary>
+<div class="detail-body">
+<ul>
+  <li><strong>ICRA and IROS coverage is 2019–2025 only</strong> (title/authors, no abstract). Neither
+      conference's own proceedings platform is accessible through any source this site currently
+      uses; 2019–2025 is instead pulled from community-maintained paper lists (see Data sources).
+      2013–2018 and 2026 aren't covered by any of those and stay missing until a source for those
+      years turns up.</li>
+  <li><strong>RSS, ICLR, AAAI, ICML, and BMVC have no abstracts.</strong> Their listing source
+      provides titles and authors but not abstracts, so AV-relevance and category for these
+      venues rest on title text alone, a weaker signal than the rest of the corpus.</li>
+  <li><strong>ICPR, ICASSP, ICIP, ACCV (2013 onward), and ACM Transactions on Graphics are not
+      covered yet.</strong> These general ML/CV venues (found by checking which venues this
+      site's own papers cite most often) are queued to be added the same way ICML and BMVC
+      were, but the listing source began rate-limiting mid-fetch and further requests are
+      paused until that clears rather than retried immediately.</li>
+  <li><strong>A meaningful share of papers are labeled "Uncategorized."</strong> The topic
+      taxonomy is still being extended to cover them; not all of these are miscategorized, some
+      simply fall outside the current category list.</li>
+  <li><strong>No author disambiguation.</strong> Name-only matching merges distinct people who
+      share a name and splits one person across name-spelling variants. See Institution/country/
+      researcher data above.</li>
+</ul>
+</div>
+</details>
+
+<details class="detail-section" id="privacy-section">
+<summary>Privacy</summary>
+<div class="detail-body">
+<p>
+  This site indexes bibliographic metadata (titles, author names, affiliations, venues, years,
+  and citation relationships) about published academic papers. It does not collect any
+  information about visitors to the site.
+</p>
+<p>
+  If you are an author and believe your information is displayed inaccurately, or you would like
+  your name, affiliation, or photo removed or corrected, use the <strong>"Report an error on this
+  page"</strong> button (🚩) in the navigation bar at the top of any page, or
+  <a href="#" id="methodology-report-link">click here</a>. It opens a pre-addressed email to the
+  site's maintainer with the current page's URL included, no account or sign-up is required, and
+  this applies equally to a data correction request and a privacy takedown request.
+</p>
+</div>
+</details>
+
+<details class="detail-section" id="license-section">
+<summary>License</summary>
+<div class="detail-body">
+<p>
+  The code that builds and runs this site is released under the MIT License. This covers the
+  collection, classification, and display logic. It does <strong>not</strong> extend to the
+  underlying paper metadata (titles, abstracts, author names, and similar), which remains the
+  property of its original publishers and authors and is reproduced here for research and
+  reference purposes.
+</p>
+</div>
+</details>
+
+<script src="filters.js"></script>
+<script>
+fetch('stats.json').then(r => r.json()).then(stats => {
+  if (stats.generated_at) {
+    document.getElementById('freshness-note').textContent =
+      `Data last updated ${stats.generated_at}. Citation counts may be out of date since then.`;
+  }
+
+  const cov = (stats.corpus_stats || {}).citation_graph_coverage || {};
+  const verif = stats.verification || {};
+  const coreTotal = stats.core_relevant || 0;
+
+  function pct(num, den) { return den ? Math.round((num / den) * 100) + '%' : '—'; }
+  function addRow(tbody, name, processed, total) {
+    const tr = document.createElement('tr');
+    const cells = [name, processed.toLocaleString(), total.toLocaleString(), pct(processed, total)];
+    cells.forEach((c, i) => {
+      const td = document.createElement('td');
+      if (i > 0) td.className = 'num';
+      td.textContent = c;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+
+  const statusBody = document.getElementById('crawler-status-body');
+  if (statusBody) {
+    // One sequential answer to "how many papers are where in the pipeline"
+    // (user-requested) -- every core paper is discovered then classified
+    // (always 1:1, by construction, so not shown as its own row) before
+    // picking up an abstract, author detail, and a citation count on its
+    // own schedule. Shown first, ahead of the finer-grained rows below.
+    const stages = (stats.corpus_stats || {}).pipeline_stages || {};
+    addRow(statusBody, 'Papers discovered (AV-relevant core)', stages['1_discovered'] || 0, coreTotal);
+    addRow(statusBody, 'Abstract fetched', stages['3_abstract'] || 0, coreTotal);
+    addRow(statusBody, 'Citation count known', stages['5_citations_known'] || 0, coreTotal);
+    addRow(statusBody, 'Citation graph: CVPR/ICCV/WACV reference lists', cov.cvf_scanned || 0, cov.cvf_core_total || 0);
+    addRow(statusBody, 'Citation graph: arXiv preprint reference lists', cov.arxiv_scanned || 0, coreTotal);
+    addRow(statusBody, 'Author affiliation lookup', verif.papers_with_author_detail || 0, coreTotal);
+    document.getElementById('crawler-status-date').textContent =
+      `As of ${cov.generated_at || stats.generated_at || 'the last data update'}. These processes continue running as the corpus grows, so coverage only increases over time.`;
+  }
+}).catch(() => {});
+
+// Google Scholar citation-count comparison study, hand-collected in-session
+// (Google Scholar's own robots.txt/ToS don't permit automated scraping, so
+// this was 27 individual manual lookups, not a repeatable script) --
+// hardcoded here as a one-time empirical result, same as the classifier
+// validation numbers above, not something aggregate.py recomputes.
+const SCHOLAR_STUDY = [
+  ["Pseudo-LiDAR++: Accurate Depth for 3D Object Detection in Autonomous Driving", 77, 607],
+  ["Objects Are Different: Flexible Monocular 3D Object Detection", 68, 466],
+  ["Urban Driving with Conditional Imitation Learning", 43, 264],
+  ["Sparse4D v3: Advancing End-to-End 3D Detection and Tracking", 27, 98],
+  ["SNE-RoadSeg: Surface Normal Info. for Freespace Detection", 21, 292],
+  ["DeSiRe-GS: 4D Street Gaussians for Urban Driving Scenes", 17, 76],
+  ["Multi-Agent Connected Autonomous Driving using Deep RL", 15, 237],
+  ["Learning 3D Semantic Segmentation with only 2D Image Supervision", 13, 116],
+  ["GaussianFusion: Multi-Sensor Fusion for End-to-End AD", 10, 19],
+  ["Exploring Adversarial Robustness of Multi-sensor Perception", 9, 138],
+  ["SF-UDA3D: Source-Free Unsupervised Domain Adaptation for LiDAR 3D Detection", 8, 106],
+  ["The Role of the Hercules AV During the COVID-19 Pandemic", 7, 68],
+  ["TorchSparse++: Training/Inference Framework for Sparse Convolution", 7, 81],
+  ["CooPre: Cooperative Pretraining for V2X Cooperative Perception", 6, 26],
+  ["PLADE-Net: Self-Supervised Single-View Depth Estimation", 5, 45],
+  ["Pedestrian Models for AD Part II: High-Level Models of Human Behavior", 5, 218],
+  ["Feature Learning for Scene Flow Estimation from LIDAR", 4, 25],
+  ["Reward Finetuning for Unsupervised Object Discovery", 4, 23],
+  ["SimpleLLM4AD: End-to-End VLM with Graph VQA for AD", 4, 29],
+  ["Unifying F1TENTH Autonomous Racing: Survey, Methods and Benchmarks", 4, 36],
+  ["Efficient Game-Theoretic Planning for Socially-Compliant AD", 3, 47],
+  ["A lane change detection approach using feature ranking", 3, 174],
+  ["A Point-Based Approach to Efficient LiDAR Multi-Task Perception", 3, 12],
+  ["Language-Driven Active Learning for Open-Set 3D Object Detection", 3, 35],
+  ["Real-time End-to-End Federated Learning: An Automotive Case Study", 3, 91],
+  ["R-LiViT: LiDAR-Visual-Thermal Dataset for Roadside Perception", 2, 18],
+  ["Safe and Rule-Aware Deep RL for AD at Intersections", 2, 27],
+  ["DriveIRL: Drive in Real Life with Inverse Reinforcement Learning", 4, 96],
+  ["Improved Consensus ADMM for Cooperative Motion Planning of Large-Scale Connected AVs With Limited Communication", 2, 28],
+  ["Bridging Language and Geometric Primitives for Zero-shot Point Cloud Segmentation", 1, 15],
+  ["SoK: How Sensor Attacks Disrupt Autonomous Vehicles", 1, 5],
+  ["Driver Behavior Classification at Intersections and Validation on Large Naturalistic Data Set", 2, 332],
+  ["SPG: Unsupervised Domain Adaptation for 3D Object Detection via Semantic Point Generation", 29, 243],
+  ["Chance-Constrained Trajectory Planning With Multimodal Environmental Uncertainty", 1, 51],
+  ["Vehicle as a Service (VaaS): Leverage Vehicles to Build Service Networks", 3, 140],
+  ["Traffic Scene Prediction via Deep Learning: Multi-Channel Occupancy Grid Map", 2, 39],
+  ["Drivers' avoidance patterns in near-collision intersection conflicts", 1, 12],
+  ["Hidden Biases of End-to-End Driving Datasets", 16, 30],
+  ["Structuring Cooperative Behavior Planning Implementations for Automated Driving", 1, 33],
+  ["Can LLMs Understand Social Norms in Autonomous Driving Games?", 1, 14],
+  ["MetaBEV: Solving Sensor Failures for BEV Detection and Map Segmentation", 3, 32],
+  ["Pushing the Limits of Deep CNNs for Pedestrian Detection", 1, 106],
+  ["Explainable AI for Safe and Trustworthy Autonomous Driving: A Systematic Review", 17, 240],
+  ["BLVD - Building a Large-Scale 5D Semantics Benchmark for Autonomous Driving", 8, 82],
+  ["Reasoning in Computer Vision: Taxonomy, Models, Tasks, and Methodologies", 1, 39],
+  ["Time-Conditioned Action Anticipation in One Shot", 1, 163],
+  ["Drive Analysis Using Vehicle Dynamics and Vision-Based Lane Semantics", 3, 103],
+  ["Evolutionary Decision-Making and Planning for AD: A Hybrid Augmented Intelligence Framework", 1, 45],
+  ["STGlow: A Flow-Based Generative Framework With Dual-Graphormer for Pedestrian Trajectory Prediction", 6, 61],
+  ["Probabilistic Terrain Estimation for Autonomous Off-Road Driving", 2, 15],
+  ["RMS-FlowNet: Efficient and Robust Multi-Scale Scene Flow Estimation for Large-Scale Point Clouds", 3, 29],
+  ["Adversarial jaywalker modeling for simulation-based testing of AV Systems", 1, 6],
+];
+
+function renderScholarChart() {
+  const svg = document.getElementById('scholar-chart');
+  const tooltip = document.getElementById('scholar-chart-tooltip');
+  if (!svg) return;
+  const ns = svg.namespaceURI;
+  const W = 640, H = 460, PAD_L = 56, PAD_R = 16, PAD_T = 16, PAD_B = 44;
+  const DOMAIN_MIN = 1, DOMAIN_MAX = 1000; // log scale, covers 1..1000 on both axes
+  const logMin = Math.log10(DOMAIN_MIN), logMax = Math.log10(DOMAIN_MAX);
+  const xPix = v => PAD_L + ((Math.log10(v) - logMin) / (logMax - logMin)) * (W - PAD_L - PAD_R);
+  const yPix = v => H - PAD_B - ((Math.log10(v) - logMin) / (logMax - logMin)) * (H - PAD_T - PAD_B);
+
+  // Gridlines + axis labels at each power of ten.
+  for (let p = 0; p <= 3; p++) {
+    const v = Math.pow(10, p);
+    const gx = xPix(v), gy = yPix(v);
+    const vline = document.createElementNS(ns, 'line');
+    vline.setAttribute('x1', gx); vline.setAttribute('x2', gx);
+    vline.setAttribute('y1', PAD_T); vline.setAttribute('y2', H - PAD_B);
+    vline.setAttribute('class', 'axis-line'); vline.setAttribute('stroke-opacity', '0.25');
+    svg.appendChild(vline);
+    const hline = document.createElementNS(ns, 'line');
+    hline.setAttribute('x1', PAD_L); hline.setAttribute('x2', W - PAD_R);
+    hline.setAttribute('y1', gy); hline.setAttribute('y2', gy);
+    hline.setAttribute('class', 'axis-line'); hline.setAttribute('stroke-opacity', '0.25');
+    svg.appendChild(hline);
+    const xLabel = document.createElementNS(ns, 'text');
+    xLabel.setAttribute('x', gx); xLabel.setAttribute('y', H - PAD_B + 16);
+    xLabel.setAttribute('text-anchor', 'middle'); xLabel.setAttribute('class', 'axis-label');
+    xLabel.textContent = v;
+    svg.appendChild(xLabel);
+    const yLabel = document.createElementNS(ns, 'text');
+    yLabel.setAttribute('x', PAD_L - 8); yLabel.setAttribute('y', gy + 3);
+    yLabel.setAttribute('text-anchor', 'end'); yLabel.setAttribute('class', 'axis-label');
+    yLabel.textContent = v;
+    svg.appendChild(yLabel);
+  }
+  const xAxisLabel = document.createElementNS(ns, 'text');
+  xAxisLabel.setAttribute('x', (PAD_L + W - PAD_R) / 2); xAxisLabel.setAttribute('y', H - 6);
+  xAxisLabel.setAttribute('text-anchor', 'middle'); xAxisLabel.setAttribute('class', 'axis-label');
+  xAxisLabel.textContent = 'This site’s internal citation count (log scale)';
+  svg.appendChild(xAxisLabel);
+  const yAxisLabel = document.createElementNS(ns, 'text');
+  yAxisLabel.setAttribute('x', 14); yAxisLabel.setAttribute('y', (PAD_T + H - PAD_B) / 2);
+  yAxisLabel.setAttribute('text-anchor', 'middle'); yAxisLabel.setAttribute('class', 'axis-label');
+  yAxisLabel.setAttribute('transform', `rotate(-90, 14, ${(PAD_T + H - PAD_B) / 2})`);
+  yAxisLabel.textContent = 'Google Scholar citation count (log scale)';
+  svg.appendChild(yAxisLabel);
+
+  // y = x reference (Scholar count equal to internal count) -- every real
+  // point sits above this, since Scholar can only see a superset.
+  const yEqX = document.createElementNS(ns, 'path');
+  yEqX.setAttribute('d', `M ${xPix(1)},${yPix(1)} L ${xPix(1000)},${yPix(1000)}`);
+  yEqX.setAttribute('stroke', 'var(--muted)'); yEqX.setAttribute('stroke-dasharray', '4 4');
+  yEqX.setAttribute('fill', 'none'); yEqX.setAttribute('stroke-width', '1.5');
+  svg.appendChild(yEqX);
+  // y = 13x reference (this sample's geometric mean ratio, rounded).
+  const yEq9x = document.createElementNS(ns, 'path');
+  yEq9x.setAttribute('d', `M ${xPix(1)},${yPix(13)} L ${xPix(77)},${yPix(1000)}`);
+  yEq9x.setAttribute('stroke', 'var(--accent)'); yEq9x.setAttribute('stroke-width', '1.5');
+  yEq9x.setAttribute('fill', 'none'); yEq9x.setAttribute('stroke-opacity', '0.5');
+  svg.appendChild(yEq9x);
+
+  SCHOLAR_STUDY.forEach(([title, internal, scholar]) => {
+    const c = document.createElementNS(ns, 'circle');
+    c.setAttribute('cx', xPix(internal)); c.setAttribute('cy', yPix(scholar));
+    c.setAttribute('r', 5); c.setAttribute('fill', 'var(--accent)'); c.setAttribute('fill-opacity', '0.75');
+    c.setAttribute('stroke', 'var(--panel)'); c.style.cursor = 'pointer';
+    c.addEventListener('mouseenter', ev => {
+      tooltip.textContent = '';
+      const t = document.createElement('div');
+      t.style.fontWeight = '600'; t.style.marginBottom = '4px'; t.style.maxWidth = '220px';
+      t.textContent = title;
+      const v = document.createElement('div');
+      v.textContent = `Internal: ${internal} · Scholar: ${scholar} (${(scholar / internal).toFixed(1)}×)`;
+      tooltip.appendChild(t); tooltip.appendChild(v);
+      tooltip.style.display = 'block';
+      tooltip.style.left = Math.min(W - 240, Math.max(0, xPix(internal) - 100)) / W * 100 + '%';
+      tooltip.style.top = Math.max(0, yPix(scholar) - 60) + 'px';
+    });
+    c.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+    svg.appendChild(c);
+  });
+}
+renderScholarChart();
+</script>
+<script src="nav.js"></script>
+<script>
+  document.getElementById('methodology-report-link').addEventListener('click', ev => {
+    ev.preventDefault();
+    document.getElementById('reportIssueBtn').click();
+  });
+</script>
+</body>
+</html>

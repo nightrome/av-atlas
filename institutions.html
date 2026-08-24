@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas — Institutions</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme-light.css">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .page-title { margin: 0 0 16px; font-size: 1.5em; }
+  h2 { font-size: 1.1em; margin: 28px 0 16px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px; display: flex; flex-direction: column; align-items: center; text-align: center;
+    text-decoration: none; color: var(--text); transition: transform 0.15s, border-color 0.15s;
+    position: relative;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .inst-avatar {
+    width: 56px; height: 56px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.1em; color: #fff; margin-bottom: 12px; flex-shrink: 0; overflow: hidden;
+    background: var(--panel2);
+  }
+  .inst-avatar img { width: 100%; height: 100%; object-fit: contain; }
+  .card .name { font-weight: 600; font-size: 0.95em; margin-bottom: 4px; }
+  .card .meta { color: var(--muted); font-size: 0.82em; }
+  .rank { position: absolute; top: 10px; left: 12px; font-size: 0.75em; color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover { background: var(--panel2); }
+  td a { color: var(--text); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+
+  .line-chart-wrap { position: relative; }
+  .line-chart-wrap svg { width: 100%; height: auto; display: block; }
+  .series-line { fill: none; stroke-width: 2.5; opacity: 0.9; }
+  .series-dot { cursor: pointer; }
+  .axis-line { stroke: var(--border); }
+  .axis-label { fill: var(--muted); font-size: 10.5px; }
+  .crosshair { stroke: var(--muted); stroke-dasharray: 3 3; pointer-events: none; }
+  .legend-row { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 12px 0 4px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.82em; color: var(--text); cursor: pointer; user-select: none; padding: 2px 4px; border-radius: 5px; }
+  .legend-item:hover { background: var(--panel2); }
+  .legend-item.off { color: var(--muted); text-decoration: line-through; opacity: 0.6; }
+  .legend-item .swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .tooltip-box { position: absolute; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 0.8em; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25); min-width: 140px; display: none; z-index: 10; }
+  .tooltip-box .tt-year { font-weight: 700; margin-bottom: 4px; }
+  .tooltip-box .tt-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .tooltip-box .tt-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .tooltip-box .tt-val { margin-left: auto; font-variant-numeric: tabular-nums; padding-left: 10px; }
+  .timeline-controls-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: -4px 0 4px; font-size: 0.85em; color: var(--muted); }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<div id="filter-bar-container"></div>
+
+<div class="panel" id="timeline-panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Institutions over time</h2>
+  </div>
+  <div class="timeline-controls-row">
+    <label style="display:flex;align-items:center;gap:4px;">
+      <input type="checkbox" id="timeline-normalize">
+      Normalize by total papers that year
+    </label>
+    <span style="color:var(--muted);">Click a legend entry to toggle it on/off.</span>
+  </div>
+  <div class="line-chart-wrap" id="timeline-chart-wrap">
+    <svg id="timeline-chart"></svg>
+    <div class="tooltip-box" id="timeline-tooltip"></div>
+  </div>
+  <div class="legend-row" id="timeline-legend"></div>
+</div>
+
+<div id="pagination-container"></div>
+<div class="card-grid" id="institutions-grid"></div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">All institutions</h2>
+    <div id="export-container"></div>
+  </div>
+  <p id="institutions-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
+  <table><thead><tr><th>#</th><th>Institution</th><th class="num">Papers</th><th class="num" title="How many other papers in this corpus cite a paper from this institution. Counted only within this corpus, never from an external database.">Total citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th></tr></thead>
+  <tbody id="institutions-body"></tbody></table>
+</div>
+
+<script src="filters.js"></script>
+<script>
+function hashString(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+function colorFor(name) { return `hsl(${hashString(name) % 360}, 60%, 45%)`; }
+function initials(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  return parts.length <= 1 ? name.slice(0, 3) : parts.map(p => p[0]).join('').slice(0, 3);
+}
+
+function institutionCard(x, rank, imageUrl) {
+  const card = document.createElement('a');
+  card.className = 'card';
+  card.href = `institution.html?name=${encodeURIComponent(x.name)}`;
+
+  const rankEl = document.createElement('span');
+  rankEl.className = 'rank';
+  rankEl.textContent = `#${rank}`;
+  card.appendChild(rankEl);
+
+  const avatar = document.createElement('div');
+  avatar.className = 'inst-avatar';
+  if (imageUrl) {
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = x.name;
+    img.referrerPolicy = 'no-referrer';
+    avatar.appendChild(img);
+  } else {
+    avatar.style.background = colorFor(x.name);
+    avatar.textContent = initials(x.name);
+  }
+  card.appendChild(avatar);
+
+  const name = document.createElement('div');
+  name.className = 'name';
+  name.textContent = x.name;
+  card.appendChild(name);
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  meta.textContent = `${x.citations} citations · ${x.papers} paper${x.papers === 1 ? '' : 's'} (avg ${fmtAvg(x.avg_citations)})`;
+  card.appendChild(meta);
+
+  return card;
+}
+
+// null means no paper from that institution has a citation count at all (as
+// opposed to a real average of 0) -- show "—", not a misleading number.
+function fmtAvg(v) { return v == null ? '—' : v; }
+
+function row(cells) {
+  const tr = document.createElement('tr');
+  cells.forEach((c, i) => {
+    const td = document.createElement('td');
+    if (i > 0 && typeof c === 'number') td.className = 'num';
+    if (c instanceof Node) td.appendChild(c);
+    else td.textContent = c;
+    tr.appendChild(td);
+  });
+  return tr;
+}
+
+let currentStats = null, currentFilters = null;
+let currentQuery = new URLSearchParams(location.search).get('q') || '';
+// Reassigned by render() every time it runs (initial load, search, topN,
+// Prev/Next) -- the "Show top" field below is created once, outside render(),
+// so its onChange needs a live reference to whichever draw() render() most
+// recently built, not the one that existed when the field was created.
+let currentTimelineDraw = null;
+const relevance = new URLSearchParams(location.search).get('relevance') || '';
+fetchStatsWithRelevance(relevance).then(stats => {
+  currentStats = stats;
+  currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'institutions.html', {
+    search: { placeholder: 'Search institution names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
+    relevance: true,
+    metrics: [
+      { key: 'avg', label: 'Citations / paper' },
+      { key: 'total', label: 'Total citations' },
+      { key: 'papers', label: 'Paper count' },
+    ],
+    minPapers: { default: 10 },
+    topN: {
+      default: 10, storageKey: 'institutions-timeline-topn',
+      onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); render(); },
+    },
+  });
+  render();
+}).catch(err => {
+  document.getElementById('institutions-grid').textContent = 'Could not load stats.json: ' + err;
+});
+
+function render() {
+  const stats = currentStats, filters = currentFilters;
+  const papers = filterPapers(stats.all_papers || [], filters);
+  const minPapersThreshold = filters.minPapers;
+  // Both thresholds dropped to 0 while searching -- same fix as
+  // authors.html, for the same reason: an institution with fewer papers
+  // than the Min. filter currently allows would otherwise never enter
+  // `institutions` for the query to search at all.
+  const query = currentQuery.trim().toLowerCase();
+  let institutions = query
+    ? aggregateByDimension(papers, p => p.institutions, { minPapers: 0, minCitedForAvg: 0 })
+    : aggregateByDimension(papers, p => p.institutions, { minPapers: minPapersThreshold - 1, minCitedForAvg: 3 });
+  if (query) institutions = institutions.filter(x => x.name.toLowerCase().includes(query));
+
+  const metric = getMetric('avg');
+  const byAvg = (a, b) => (b.avg_citations ?? -Infinity) - (a.avg_citations ?? -Infinity);
+  const sorters = {
+    total: (a, b) => b.citations - a.citations,
+    avg: byAvg,
+    papers: (a, b) => b.papers - a.papers,
+  };
+  institutions.sort(sorters[metric] || byAvg);
+
+  // "Show top N" caps the list/table the same way it caps the timeline
+  // chart above -- previously it only affected the chart.
+  const topN = filters.topN || 10;
+  const matchCount = institutions.length;
+  institutions = institutions.slice(0, topN);
+
+  document.getElementById('result-count').textContent = matchCount > topN
+    ? `${institutions.length} of ${matchCount} institutions (top ${topN})`
+    : `${institutions.length} institutions`;
+  document.getElementById('institutions-summary-stat').textContent =
+    `${(stats.corpus_stats || {}).total_institutions || 0} institutions identified across the corpus`;
+
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'institutions.html', institutions.length, { onChange: render });
+  const grid = document.getElementById('institutions-grid');
+  const shown = institutions.slice(pagination.offset, pagination.offset + pagination.pageSize);
+  if (!institutions.length) {
+    renderEmptyState(grid, 'institutions.html', 'No institutions match the current filters. Try lowering "Min." or clearing a filter.');
+  } else {
+    grid.innerHTML = '';
+    const images = stats.institution_images || {};
+    shown.forEach((x, i) => grid.appendChild(institutionCard(x, pagination.offset + i + 1, images[x.name])));
+  }
+
+  const tbody = document.getElementById('institutions-body');
+  function renderBody(data) {
+    tbody.innerHTML = '';
+    data.forEach((x, i) => {
+      const nameLink = document.createElement('a');
+      nameLink.href = `institution.html?name=${encodeURIComponent(x.name)}`;
+      nameLink.textContent = x.name;
+      tbody.appendChild(row([i + 1, nameLink, x.papers, x.citations, fmtAvg(x.avg_citations)]));
+    });
+    appendSumRow(tbody, data, [null, null, x => x.papers, x => x.citations, null]);
+  }
+  makeSortableSafe(tbody.closest('table'), institutions, [
+    null,
+    { accessor: x => x.name, numeric: false },
+    { accessor: x => x.papers, numeric: true },
+    { accessor: x => x.citations, numeric: true },
+    { accessor: x => x.avg_citations ?? -Infinity, numeric: true },
+  ], renderBody);
+
+  const exportContainer = document.getElementById('export-container');
+  exportContainer.innerHTML = '';
+  exportContainer.appendChild(renderExportButton(tbody.closest('table'), 'av-atlas-institutions.csv'));
+
+  currentTimelineDraw = renderDimensionTimeline({
+    papers, dimensionFn: p => p.institutions, labelFor: v => v,
+    rankedNames: institutions.map(x => x.name),
+    elIds: {
+      legend: 'timeline-legend', chart: 'timeline-chart',
+      tooltip: 'timeline-tooltip', normalize: 'timeline-normalize',
+    },
+  });
+  currentTimelineDraw(filters.topN || 10);
+}
+</script>
+<script src="nav.js"></script>
+<script src="sortable.js"></script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme-light.css">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .page-title { margin: 0 0 16px; font-size: 1.5em; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 0 0 16px; }
+  .stat-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .stat-tile .value { font-size: 1.6em; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stat-tile .label { color: var(--muted); font-size: 0.82em; margin-top: 2px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+  .panel h2 { margin-top: 0; font-size: 1.1em; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover { background: var(--panel2); }
+  /* Without this, plain <a> tags fall back to the browser's default blue/
+     purple link color -- theme.css sets no global `a` rule, so every table
+     needs its own override. */
+  td a { color: var(--text); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  .badge { display: inline-block; font-size: 0.7em; padding: 1px 6px; border-radius: 8px; margin-left: 6px; flex-shrink: 0; }
+  .badge.verified { background: #1f6f43; color: #fff; }
+  .title-cell { display: flex; align-items: center; gap: 6px; max-width: 480px; }
+  .title-cell .title-text {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+  }
+  .title-cell .title-text:hover { text-decoration: underline !important; }
+  .paper-links { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+  .paper-links a { color: var(--accent); text-decoration: none; font-size: 0.85em; display: inline-flex; align-items: center; }
+  .ieee-badge {
+    font-size: 0.62em; font-weight: 700; letter-spacing: 0.02em; color: #fff;
+    background: #00629B; border-radius: 3px; padding: 1px 4px; line-height: 1.4;
+  }
+
+  .line-chart-wrap { position: relative; }
+  .line-chart-wrap svg { width: 100%; height: auto; display: block; }
+  .series-line { fill: none; stroke-width: 2.5; opacity: 0.9; }
+  .series-dot { cursor: pointer; }
+  .axis-line { stroke: var(--border); }
+  .axis-label { fill: var(--muted); font-size: 10.5px; }
+  .crosshair { stroke: var(--muted); stroke-dasharray: 3 3; pointer-events: none; }
+  .legend-row { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 12px 0 4px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.82em; color: var(--text); cursor: pointer; user-select: none; padding: 2px 4px; border-radius: 5px; }
+  .legend-item:hover { background: var(--panel2); }
+  .legend-item.off { color: var(--muted); text-decoration: line-through; opacity: 0.6; }
+  .legend-item .swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .tooltip-box { position: absolute; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 0.8em; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25); min-width: 140px; display: none; z-index: 10; }
+  .tooltip-box .tt-year { font-weight: 700; margin-bottom: 4px; }
+  .tooltip-box .tt-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .tooltip-box .tt-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .tooltip-box .tt-val { margin-left: auto; font-variant-numeric: tabular-nums; padding-left: 10px; }
+  .category-chip {
+    display: inline-block; font-size: 0.78em; color: var(--muted); background: var(--panel2);
+    border: 1px solid var(--border); border-radius: 10px; padding: 1px 8px; max-width: 160px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle;
+  }
+  .panel-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .export-buttons { display: flex; gap: 8px; }
+  .export-buttons button {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+    padding: 5px 10px; font-size: 0.82em; cursor: pointer;
+  }
+  .export-buttons button:hover { border-color: var(--accent); color: var(--accent); }
+
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<div class="stat-grid" id="stat-grid"></div>
+<div id="filter-bar-container"></div>
+<div id="pagination-container"></div>
+
+<div class="panel" id="timeline-panel">
+  <div class="panel-title-row">
+    <h2>Papers over time</h2>
+  </div>
+  <div class="line-chart-wrap" id="timeline-chart-wrap">
+    <svg id="timeline-chart"></svg>
+    <div class="tooltip-box" id="timeline-tooltip"></div>
+  </div>
+  <div class="legend-row" id="timeline-legend"></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2>Top Papers</h2>
+    <div class="export-buttons">
+      <button id="export-csv" type="button">Export CSV</button>
+      <button id="export-bibtex" type="button">Export BibTeX</button>
+    </div>
+  </div>
+  <div class="table-scroll">
+  <table><thead><tr><th>#</th><th>Title</th><th>Category</th><th>Year</th><th>Venue</th><th>Source</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th></tr></thead>
+  <tbody id="papers-body"></tbody></table>
+  </div>
+</div>
+
+<script src="filters.js"></script>
+<script>
+function row(cells) {
+  const tr = document.createElement('tr');
+  cells.forEach((c, i) => {
+    const td = document.createElement('td');
+    if (i > 0 && typeof c === 'number') td.className = 'num';
+    if (c instanceof Node) td.appendChild(c);
+    else td.textContent = c;
+    tr.appendChild(td);
+  });
+  return tr;
+}
+
+const VERIFICATION_LABELS = {
+  verified_arxiv: 'author list verified vs arXiv',
+  verified_crossref: 'author list verified vs Crossref',
+};
+
+// arXiv's own logo (the stylized "X", the middle letter of "arXiv") --
+// inlined as a data URI rather than a separate static file so it works
+// identically in dev and the published build without touching
+// build_public_site.py's asset-copying list.
+const ARXIV_ICON_SRC = 'data:image/webp;base64,UklGRhIBAABXRUJQVlA4IAYBAABwBgCdASogACAAPtE+tFooIigoFAEAGglsAMUHgB8vfHVYE6KFjlab99Uvl0brBZl5+ymS34mDHNA04AAA/vYT9liZaUUFUuYkFkZArzUgZ6OEVoANOAD8VtFzrFiHZK9C4jV5hV3PMmSLLBsp+Iz1nNCJmiPg3Wl8Xma+mkKyutSY6ZfeRIOyn6Elrr5Y/wd5PjHwnLXBEbFv7Va1PMc7paXECLUTJg2zvyzKOP/XUhD8DEHQEtW2HJmTdBdj7Bf5Oc6uZIfWDxWDoQr3lfgvlZKNSV3maujawQyTRBmWLN+xciGiJTlbD7gP3XHwCLKE5F/Q6QbGMtKjsrencFnF1TcI+4AA';
+function arxivIcon() {
+  const img = document.createElement('img');
+  img.src = ARXIV_ICON_SRC;
+  img.alt = 'arXiv';
+  img.style.cssText = 'width:13px;height:13px;vertical-align:middle;';
+  return img;
+}
+
+function titleCell(p) {
+  const wrap = document.createElement('div');
+  wrap.className = 'title-cell';
+  // Adjacent (not core-AV-relevant) papers have no paper.html detail page
+  // generated for them at all (user-requested: "too many" to build one
+  // per paper the way core papers get) -- plain text, not a dead link.
+  const span = document.createElement(p.av_relevance === 'core' ? 'a' : 'span');
+  span.className = 'title-text';
+  if (p.av_relevance === 'core') {
+    span.href = `paper.html?title=${encodeURIComponent(p.title)}`;
+    span.style.color = 'inherit';
+    span.style.textDecoration = 'none';
+  }
+  span.textContent = p.title;
+  span.title = p.title;
+  wrap.appendChild(span);
+
+  const label = VERIFICATION_LABELS[p.author_verification];
+  if (label) {
+    const b = document.createElement('span');
+    b.className = 'badge verified';
+    b.textContent = '✓';
+    b.title = label;
+    wrap.appendChild(b);
+  }
+  return wrap;
+}
+
+function sourceCell(p) {
+  const links = document.createElement('div');
+  links.className = 'paper-links';
+  if (p.doi) {
+    const a = document.createElement('a');
+    a.href = p.doi.startsWith('http') ? p.doi : `https://doi.org/${p.doi}`;
+    a.target = '_blank'; a.rel = 'noopener';
+    // Every DOI currently in the corpus resolves through IEEE Xplore
+    // (ICRA/IROS, via OpenAlex) -- labeled accordingly rather than as a
+    // generic "DOI". IEEE's own favicon 403s when hotlinked (CloudFront
+    // blocks it, confirmed via curl -- not a bug in this code), so this is a
+    // small text badge in their brand color instead of an image.
+    const isIeee = p.doi.includes('10.1109') || p.venue === 'ICRA' || p.venue === 'IROS';
+    if (isIeee) {
+      const icon = document.createElement('span');
+      icon.className = 'ieee-badge';
+      icon.textContent = 'IEEE';
+      a.appendChild(icon);
+      a.title = 'IEEE Xplore';
+    } else {
+      a.textContent = '🔗';
+      a.title = 'DOI';
+    }
+    links.appendChild(a);
+  }
+  // A direct link whenever we actually know this paper's arXiv URL --
+  // regardless of its real venue, since most conference papers have an
+  // arXiv preprint too (see merge_corpus.py/fetch_arxiv_links.py). Falls
+  // back to a title search only for the (shrinking, as that crawl runs)
+  // set of papers whose primary source IS arXiv but arxiv_url somehow
+  // isn't set yet.
+  if (p.arxiv_url) {
+    const a = document.createElement('a');
+    a.href = p.arxiv_url;
+    a.target = '_blank'; a.rel = 'noopener';
+    a.appendChild(arxivIcon());
+    a.title = 'arXiv';
+    links.appendChild(a);
+  } else if (p.venue === 'arXiv') {
+    const a = document.createElement('a');
+    a.href = `https://arxiv.org/search/?searchtype=title&query=${encodeURIComponent(p.title)}`;
+    a.target = '_blank'; a.rel = 'noopener';
+    a.appendChild(arxivIcon());
+    a.title = 'arXiv (exact link not yet resolved)';
+    links.appendChild(a);
+  }
+  const scholar = document.createElement('a');
+  scholar.href = `https://scholar.google.com/scholar?q=${encodeURIComponent(p.title)}`;
+  scholar.target = '_blank'; scholar.rel = 'noopener';
+  scholar.textContent = '🎓';
+  scholar.title = 'Google Scholar';
+  links.appendChild(scholar);
+  return links;
+}
+
+// Citation counts are always whole numbers -- only an average may carry one
+// decimal place (see Methodology).
+// '—' (not a blank cell, not "0") for "no citation data yet" -- same
+// missing-data convention as fmtAvg elsewhere on the site. A blank cell
+// reads as an oversight; a bare 0 reads as "confirmed zero citations",
+// neither of which is true for a paper the citation graph hasn't reached
+// yet (e.g. FlexDrive, user-flagged: citations is null, not 0).
+function fmtCitations(n) { return n == null ? '—' : Math.round(n); }
+
+function citationsCell(p) {
+  const wrap = document.createElement('div');
+  wrap.style.textAlign = 'right';
+  wrap.style.fontVariantNumeric = 'tabular-nums';
+  wrap.textContent = fmtCitations(p.citations);
+  return wrap;
+}
+
+function categoryCell(p) {
+  const span = document.createElement('span');
+  span.className = 'category-chip';
+  span.textContent = categoryLabel(p.category || 'uncategorized');
+  span.title = p.category || 'uncategorized';
+  return span;
+}
+
+let currentStats = null;
+let currentExportPapers = [];
+
+// A stable, collision-free BibTeX key needs no external ID scheme here --
+// firstAuthorSurname + year + a short slug of the title is unique enough
+// for a corpus this size and matches the convention most reference
+// managers generate on import anyway.
+function bibtexKey(p, seen) {
+  const surname = ((p.authors || [])[0] || 'anon').trim().split(/\s+/).pop().replace(/[^a-zA-Z]/g, '') || 'anon';
+  const firstWord = (p.title || '').split(/\s+/).find(w => /[a-zA-Z]{3,}/.test(w)) || '';
+  let key = `${surname}${p.year || ''}${firstWord.replace(/[^a-zA-Z0-9]/g, '')}`;
+  let unique = key, n = 2;
+  while (seen.has(unique)) { unique = key + n; n += 1; }
+  seen.add(unique);
+  return unique;
+}
+
+function bibtexField(v) { return String(v == null ? '' : v).replace(/[{}]/g, ''); }
+
+function papersToBibtex(papers) {
+  const seenKeys = new Set();
+  return papers.map(p => {
+    const key = bibtexKey(p, seenKeys);
+    const fields = [
+      ['title', bibtexField(p.title)],
+      ['author', (p.authors || []).join(' and ')],
+      ['year', p.year || ''],
+      ['booktitle', p.venue || ''],
+    ];
+    if (p.doi) fields.push(['doi', p.doi]);
+    const body = fields.filter(([, v]) => v).map(([k, v]) => `  ${k} = {${v}}`).join(',\n');
+    return `@inproceedings{${key},\n${body}\n}`;
+  }).join('\n\n');
+}
+
+document.getElementById('export-csv').addEventListener('click', () => {
+  exportTableToCsv(document.getElementById('papers-body').closest('table'), 'av-atlas-papers.csv');
+});
+document.getElementById('export-bibtex').addEventListener('click', () => {
+  downloadText('av-atlas-papers.bib', papersToBibtex(currentExportPapers), 'application/x-bibtex;charset=utf-8');
+});
+let currentFilters = null;
+let currentTimelineDraw = null;
+
+const relevance = new URLSearchParams(location.search).get('relevance') || '';
+fetchStatsWithRelevance(relevance).then(stats => {
+  currentStats = stats;
+  renderStatGrid(stats);
+  // The filter bar (incl. the search input) is built once per page load --
+  // category/venue/year selects navigate to a new URL on change anyway, and
+  // rebuilding the search <input> on every keystroke (as a full render(stats)
+  // would) recreates the DOM node mid-typing and throws focus/cursor away.
+  currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'index.html', {
+    search: { placeholder: 'Search paper titles…', param: 'q', onInput: v => { currentQuery = v; renderResults(); } },
+    relevance: true,
+    topN: {
+      default: 10, storageKey: 'papers-timeline-topn', row: 1,
+      onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); renderResults(); },
+    },
+  });
+  renderResults();
+}).catch(err => {
+  document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
+});
+
+// Rendered once, on initial load only -- render() below reruns on every
+// search keystroke and filter/sort change, and appending fresh stat tiles
+// into the same #stat-grid on every one of those reruns (without ever
+// clearing it) is what caused the whole stat banner to visibly repeat
+// itself after a few keystrokes in the title search box.
+function renderStatGrid(stats) {
+  const cs = stats.corpus_stats || {};
+  const stat = (value, label) => {
+    const tile = document.createElement('div');
+    tile.className = 'stat-tile';
+    tile.innerHTML = `<div class="value">${value}</div><div class="label">${label}</div>`;
+    return tile;
+  };
+  const grid = document.getElementById('stat-grid');
+  grid.innerHTML = '';
+  grid.appendChild(stat((stats.generated_from || 0).toLocaleString(), 'Papers indexed (total)'));
+  grid.appendChild(stat((stats.core_relevant || 0).toLocaleString(), 'AV-relevant (core)'));
+}
+
+// Live, client-side title search -- re-renders results on every keystroke
+// without a page reload or rebuilding the filter bar (unlike the
+// category/venue/year/sort filters, which navigate to a new URL).
+let currentQuery = new URLSearchParams(location.search).get('q') || '';
+
+// Unlike every other page's timeline (which groups many papers into a
+// dimension and counts papers-per-year), the Papers page's own timeline is
+// about individual papers: each of the top N papers by citation count gets
+// its own marker, plotted at the year it was published, sized by how many
+// citations it has. Only papers with citations != null are eligible at all
+// (top papers are ranked by citation count, so a paper with no citation
+// data wouldn't rank anyway).
+//
+// This used to plot when OTHER papers cited each one (via each paper's
+// citing_papers array), grouped by the citing paper's year -- but
+// citing_papers is only populated for papers the citation-graph crawl has
+// actually reached, which is a much smaller set than "has a citation count
+// at all" (in particular, adjacent/not-AV-relevant papers never get
+// citing_papers populated), so switching the Show dropdown away from "AV
+// relevant" reliably produced "No data for the current filters" even though
+// the table right below it was full of cited papers (user-reported). Now
+// only depends on each paper's own year and citation count, both always
+// present whenever citations is non-null, so there's always something to
+// plot as long as the current filters match any cited paper.
+//
+// Written directly against the shared lineChart primitive (not
+// renderDimensionTimeline, which is grouping-shaped) since "one marker per
+// specific paper" doesn't fit that helper's dimension model. The topN it
+// draws with comes from the filter bar's Show top field (see the
+// currentTimelineDraw wiring below), not a control of its own.
+// A full paper title is too long for a legend/line label -- use the
+// well-known short name where one exists (nuScenes, KITTI, ..., taken from
+// the same curated dataset list Datasets.html uses), otherwise fall back to
+// the "SurnameYY" convention every AV researcher already reads papers by
+// (e.g. "Wang26" for a 2026 paper whose first author's surname is Wang).
+function buildDatasetNameByTitle(stats) {
+  const map = {};
+  (stats.datasets || []).forEach(d => {
+    map[d.paper_title] = d.name;
+    (d.also_introduced_in || []).forEach(extra => { map[extra.title] = d.name; });
+  });
+  return map;
+}
+function shortPaperName(p, datasetNameByTitle) {
+  if (datasetNameByTitle[p.title]) return datasetNameByTitle[p.title];
+  // p.short_name is computed server-side (aggregate.py's paper_short_name())
+  // from the paper's own title structure (text before a colon, more rarely
+  // a dash) before falling back to SurnameYY -- only recompute the bare
+  // SurnameYY fallback here if for some reason it's missing.
+  if (p.short_name) return p.short_name;
+  const first = (p.authors && p.authors[0]) || '';
+  const parts = first.trim().split(/\s+/).filter(Boolean);
+  const surname = parts.length ? parts[parts.length - 1] : 'Unknown';
+  const yy = p.year ? String(p.year).slice(-2).padStart(2, '0') : '';
+  return surname + yy;
+}
+
+function renderPapersCitationTimeline(papers, datasetNameByTitle) {
+  // In memory only for this pageview, not persisted -- a refresh always
+  // starts with every series visible.
+  const hidden = new Set();
+
+  function draw(topN) {
+    const topPapers = [...papers]
+      .filter(p => p.citations != null && p.year)
+      .sort((a, b) => (b.citations || 0) - (a.citations || 0))
+      .slice(0, topN);
+
+    const allYears = [...new Set(topPapers.map(p => p.year))].sort();
+
+    const legend = document.getElementById('timeline-legend');
+    legend.innerHTML = '';
+    renderLegendToggleAll(legend, hidden, topPapers.map(p => p.title), () => draw(topN));
+    topPapers.forEach((p, i) => {
+      const item = document.createElement('div');
+      item.className = 'legend-item' + (hidden.has(p.title) ? ' off' : '');
+      renderSwatchLabel(item, TIMELINE_PALETTE[i % TIMELINE_PALETTE.length], `${shortPaperName(p, datasetNameByTitle)} (${p.citations})`);
+      item.title = p.title;
+      item.addEventListener('click', () => {
+        if (hidden.has(p.title)) hidden.delete(p.title); else hidden.add(p.title);
+        item.classList.toggle('off');
+        drawSeries();
+      });
+      legend.appendChild(item);
+    });
+
+    function drawSeries() {
+      const series = topPapers
+        .filter(p => !hidden.has(p.title))
+        .map(p => {
+          const values = {};
+          allYears.forEach(yr => { values[yr] = yr === p.year ? p.citations : 0; });
+          return { name: shortPaperName(p, datasetNameByTitle), color: TIMELINE_PALETTE[topPapers.indexOf(p) % TIMELINE_PALETTE.length], values };
+        });
+      lineChart(document.getElementById('timeline-chart'), document.getElementById('timeline-tooltip'),
+        series, allYears, v => `${v} citation${v === 1 ? '' : 's'}`, { yLabel: 'Citations, at publication year' });
+    }
+    drawSeries();
+  }
+
+  return draw;
+}
+
+function renderResults() {
+  const stats = currentStats, filters = currentFilters;
+  currentTimelineDraw = renderPapersCitationTimeline(filterPapers(stats.all_papers || [], filters), buildDatasetNameByTitle(stats));
+  currentTimelineDraw(filters.topN || 10);
+  const query = currentQuery.trim().toLowerCase();
+  const anyFilter = filters.category || filters.venue || filters.year || filters.country || filters.institution || filters.author || query;
+  // Always the full set, not the server's precomputed top_papers -- that's
+  // capped at 50, which would silently cap "Show top 100/250" below its own
+  // requested size. Client-side sort/slice over ~19k core papers is cheap
+  // enough that the server-side shortcut isn't worth the conflict.
+  let papers = filterPapers(stats.all_papers || [], filters);
+  if (query) papers = papers.filter(p => (p.title || '').toLowerCase().includes(query));
+
+  // Default sort; the table header cells (via makeSortable below) are the
+  // only way to re-rank from here -- no separate "Rank by" dropdown.
+  papers = [...papers].sort((a, b) => (b.citations ?? -Infinity) - (a.citations ?? -Infinity));
+
+  // "Show top N" caps the table the same way it caps the chart above --
+  // previously it only affected the chart, so choosing "Show top 10" still
+  // left the full (paginated) list showing below it (user-flagged). Applies
+  // on top of any active filter/search too, not just the unfiltered
+  // default view -- "top 10" should mean the top 10 of whatever's currently
+  // shown, filtered or not.
+  const topN = filters.topN || 10;
+  const matchCount = papers.length;
+  papers = papers.slice(0, topN);
+
+  document.getElementById('result-count').textContent = anyFilter
+    ? (matchCount > topN ? `${papers.length} of ${matchCount} paper${matchCount === 1 ? '' : 's'} match (top ${topN})` : `${papers.length} paper${papers.length === 1 ? '' : 's'} match`)
+    : `${papers.length} shown`;
+  currentExportPapers = papers;
+
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'index.html', papers.length, { onChange: renderResults });
+
+  const papersTable = document.querySelector('#papers-body').closest('table');
+  const papersBody = document.getElementById('papers-body');
+  const shown = papers.slice(pagination.offset, pagination.offset + pagination.pageSize);
+  function renderPapersBody(rows) {
+    papersBody.innerHTML = '';
+    rows.forEach((p, i) => papersBody.appendChild(row([
+      pagination.offset + i + 1, titleCell(p), categoryCell(p), p.year || '', p.venue || '', sourceCell(p), citationsCell(p),
+    ])));
+    appendSumRow(papersBody, rows, [null, null, null, null, null, null, p => p.citations]);
+  }
+  makeSortableSafe(papersTable, shown, [
+    { accessor: (p, i) => pagination.offset + shown.indexOf(p) + 1, numeric: true },
+    { accessor: p => p.title, numeric: false },
+    { accessor: p => p.category || '', numeric: false },
+    { accessor: p => p.year, numeric: true },
+    { accessor: p => p.venue, numeric: false },
+    null,
+    { accessor: p => p.citations, numeric: true },
+  ], renderPapersBody);
+
+}
+</script>
+<script src="nav.js"></script>
+<script src="sortable.js"></script>
+</body>
+</html>

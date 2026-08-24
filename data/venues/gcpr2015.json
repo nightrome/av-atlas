@@ -1,0 +1,324 @@
+[
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Road Condition Estimation Based on Spatio-Temporal Reflection Models",
+    "authors": "Manuel Amthor, Bernd Hartmann, Joachim Denzler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Discrete Optimization for Optical Flow",
+    "authors": "Moritz Menze, Christian Heipke, Andreas Geiger 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Multi-Camera Structure from Motion with Eye-to-Eye Calibration",
+    "authors": "Sandro Esquivel, Reinhard Koch",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Estimating Vehicle Ego-Motion and Piecewise Planar Scene Structure from Optical Flow in a Continuous Framework",
+    "authors": "Andreas Neufeld, Johannes Berger, Florian Becker, Frank Lenzen, Christoph Schn&#246;rr",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Efficient Two-View Geometry Classification",
+    "authors": "Johannes L. Sch&#246;nberger, Alexander C. Berg, Jan-Michael Frahm",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "A Convex Relaxation Approach to the Affine Subspace Clustering Problem",
+    "authors": "Francesco Silvestri 0002, Gerhard Reinelt, Christoph Schn&#246;rr",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Introducing Maximal Anisotropy into Second Order Coupling Models",
+    "authors": "David Hafner, Christopher Schroers, Joachim Weickert",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Binarization Driven Blind Deconvolution for Document Image Restoration",
+    "authors": "Thomas K&#246;hler 0004, Andreas K. Maier, Vincent Christlein",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Unsupervised and Accurate Extraction of Primitive Unit Cells from Crystal Images",
+    "authors": "Niklas Mevenkamp, Benjamin Berkels",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Copula Archetypal Analysis",
+    "authors": "Dinu Kaufmann, Sebastian Keller 0001, Volker Roth 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Interactive Image Retrieval for Biodiversity Research",
+    "authors": "Alexander Freytag, Alena Schadt, Joachim Denzler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Temporal Acoustic Words for Online Acoustic Event Detection",
+    "authors": "Rene Grzeszick, Axel Plinge, Gernot A. Fink",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Biternion Nets: Continuous Head Pose Regression from Discrete Training Labels",
+    "authors": "Lucas Beyer, Alexander Hermans, Bastian Leibe",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "A Physics-Based Statistical Model for Human Gait Analysis",
+    "authors": "Petrissa Zell, Bodo Rosenhahn",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Joint 3D Object and Layout Inference from a Single RGB-D Image",
+    "authors": "Andreas Geiger 0001, Chaohui Wang",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Object Proposals Estimation in Depth Image Using Compact 3D Shape Manifolds",
+    "authors": "Shuai Zheng 0001, Victor Adrian Prisacariu, Melinos Averkiou, Ming-Ming Cheng, Niloy J. Mitra, Jamie Shotton, Philip H. S. Torr, Carsten Rother",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "The Long-Short Story of Movie Description",
+    "authors": "Anna Rohrbach, Marcus Rohrbach, Bernt Schiele",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Graph-Based Deformable 3D Object Matching",
+    "authors": "Bertram Drost, Slobodan Ilic",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Line3D: Efficient 3D Scene Abstraction for the Built Environment",
+    "authors": "Manuel Hofer, Michael Maurer, Horst Bischof",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "An Efficient Linearisation Approach for Variational Perspective Shape from Shading",
+    "authors": "Daniel Maurer 0002, Yong Chul Ju, Michael Breu&#223;, Andr&#233;s Bruhn",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "TomoGC: Binary Tomography by Constrained GraphCuts",
+    "authors": "J&#246;rg Hendrik Kappes, Stefania Petra, Christoph Schn&#246;rr, Matthias Zisler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "An Improved Eikonal Method for Surface Normal Integration",
+    "authors": "Martin B&#228;hr, Michael Breu&#223;",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "GraphFlow - 6D Large Displacement Scene Flow via Graph Matching",
+    "authors": "Hassan Abu Alhaija, Anita Sellent, Daniel Kondermann, Carsten Rother",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Fast Techniques for Monocular Visual Odometry",
+    "authors": "Mohammad Hossein Mirabdollah, B&#228;rbel Mertsching",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Iterative Automated Foreground Segmentation in Video Sequences Using Graph Cuts",
+    "authors": "Tomislav Hrkac, Karla Brkic",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "A Novel Tree Block-Coordinate Method for MAP Inference",
+    "authors": "Christopher Zach",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "A Parametric Spectral Model for Texture-Based Salience",
+    "authors": "Kasim Terzic, Sai Krishna, J. M. Hans du Buf",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "High Speed Lossless Image Compression",
+    "authors": "Hendrik Siedelmann, Alexander Wender, Martin Fuchs 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Learning Reaction-Diffusion Models for Image Inpainting",
+    "authors": "Wei Yu 0014, Stefan Heber, Thomas Pock",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Image Orientation Estimation with Convolutional Networks",
+    "authors": "Philipp Fischer 0001, Alexey Dosovitskiy, Thomas Brox",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Semi-Automatic Basket Catheter Reconstruction from Two X-Ray Views",
+    "authors": "Xia Zhong, Matthias Hoffmann, Norbert Strobel, Andreas K. Maier",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Fast Brain MRI Registration with Automatic Landmark Detection Using a Single Template Image",
+    "authors": "Olga V. Senyukova, Denis S. Zobnin",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Photorealistic Face Transfer in 2D and 3D Video",
+    "authors": "Daniel Merget, Philipp Tiefenbacher, Mohammadreza Babaee, Nikola Mitov, Gerhard Rigoll",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "FlowCap: 2D Human Pose from Optical Flow",
+    "authors": "Javier Romero 0002, Matthew Loper, Michael J. Black",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "3D Facial Landmark Detection: How to Deal with Head Rotations?",
+    "authors": "Anke Schwarz, Esther-Sabrina Wacker, Manuel Martin, M. Saquib Sarfraz, Rainer Stiefelhagen",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Enhanced GPT Correlation for 2D Projection Transformation Invariant Template Matching",
+    "authors": "Toru Wakahara, Yukihiko Yamashita",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Semantic Segmentation Based Traffic Light Detection at Day and at Night",
+    "authors": "Vladimir Haltakov, Jakob Mayr, Christian Unger, Slobodan Ilic",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Pose Estimation and Shape Retrieval with Hough Voting in a Continuous Voting Space",
+    "authors": "Viktor Seib, Norman Link, Dietrich Paulus",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Fast Approximate GMM Soft-Assign for Fine-Grained Image Classification with Large Fisher Vectors",
+    "authors": "Josip Krapac, Sinisa Segvic",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Regressor Based Estimation of the Eye Pupil Center",
+    "authors": "Necmeddin Said Karakoc, Samil Karahan, Yusuf Sinan Akgul",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Patch-Level Spatial Layout for Classification and Weakly Supervised Localization",
+    "authors": "Valentina Zadrija, Josip Krapac, Jakob Verbeek, Sinisa Segvic",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "A Deeper Look at Dataset Bias",
+    "authors": "Tatiana Tommasi, Novi Patricia, Barbara Caputo, Tinne Tuytelaars",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "What Is Holding Back Convnets for Detection?",
+    "authors": "Bojan Pepik, Rodrigo Benenson, Tobias Ritschel 0001, Bernt Schiele",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "A Modified Isomap Approach to Manifold Learning in Word Spotting",
+    "authors": "Sebastian Sudholt, Gernot A. Fink",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Offline Writer Identification Using Convolutional Neural Network Activation Features",
+    "authors": "Vincent Christlein, David Bernecker, Andreas K. Maier, Elli Angelopoulou",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2015,
+    "title": "Superpixel Segmentation: An Evaluation",
+    "authors": "David Stutz",
+    "abstract": null
+  }
+]

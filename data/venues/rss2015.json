@@ -1,0 +1,345 @@
+[
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "ElasticFusion: Dense SLAM Without A Pose Graph",
+    "authors": "Thomas Whelan, Stefan Leutenegger, Renato F. Salas-Moreno, Ben Glocker, Andrew J. Davison",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Hilbert maps: scalable continuous occupancy mapping with stochastic gradient descent",
+    "authors": "Fabio Tozeto Ramos, Lionel Ott",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Information-Theoretic Planning with Trajectory Optimization for Dense 3D Mapping",
+    "authors": "Benjamin Charrow, Gregory Kahn, Sachin Patil, Sikang Liu 0002, Ken Goldberg, Pieter Abbeel, Nathan Michael, Vijay Kumar 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Two-Stage Focused Inference for Resource-Constrained Collision-Free Navigation",
+    "authors": "Beipeng Mu, Ali-akbar Agha-mohammadi, Liam Paull, Matthew C. Graham, Jonathan P. How, John J. Leonard",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Theoretical Limits of Speed and Resolution for Kinodynamic Planning in a Poisson Forest",
+    "authors": "Sanjiban Choudhury, Sebastian A. Scherer, J. Andrew Bagnell",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "IMU Preintegration on Manifold for Efficient Visual-Inertial Maximum-a-Posteriori Estimation",
+    "authors": "Christian Forster, Luca Carlone, Frank Dellaert, Davide Scaramuzza 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Policy Search for Multi-Robot Coordination under Uncertainty",
+    "authors": "Christopher Amato, George Dimitri Konidaris, Ariel Anders, Gabriel Cruz, Jonathan P. How, Leslie Pack Kaelbling",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "A Square Root Inverse Filter for Efficient Vision-aided Inertial Navigation on Mobile Devices",
+    "authors": "Kejian Wu, Ahmed M. Ahmed 0002, Georgios A. Georgiou, Stergios I. Roumeliotis",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Decoupled Representation of the Error and Trajectory Estimates for Ef_cient Pose Estimation",
+    "authors": "Xing Zheng, Mingyang Li 0001, Anastasios I. Mourikis",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Long-horizon Robotic Search and Classification using Sampling-based Motion Planning",
+    "authors": "Geoffrey A. Hollinger",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Motion Planning for Unlabeled Discs with Optimality Guarantees",
+    "authors": "Kiril Solovey, Jingjin Yu, Or Zamir, Dan Halperin",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "DeepMPC: Learning Deep Latent Features for Model Predictive Control",
+    "authors": "Ian Lenz, Ross A. Knepper, Ashutosh Saxena",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Direct Loss Minimization Inverse Optimal Control",
+    "authors": "Andreas Doerr, Nathan D. Ratliff, Jeannette Bohg, Marc Toussaint, Stefan Schaal",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Robust Trajectory Optimization Under Frictional Contact with Iterative Learning",
+    "authors": "Jingru Luo, Kris K. Hauser",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Efficient High-Dimensional Stochastic Optimal Motion Control using Tensor-Train Decomposition",
+    "authors": "Alex A. Gorodetsky, Sertac Karaman, Youssef M. Marzouk",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "A New Perspective and Extension of the Gaussian Filter",
+    "authors": "Manuel Wüthrich, Sebastian Trimpe, Daniel Kappler, Stefan Schaal",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Guidance and Navigation for UAV Airborne Docking",
+    "authors": "Daniel B. Wilson 0001, Ali Göktogan, Salah Sukkarieh",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Grounding English Commands to Reward Functions",
+    "authors": "James MacGlashan, Monica Babes-Vroman, Marie desJardins, Michael L. Littman, Smaranda Muresan, Shawn Squire, Stefanie Tellex, Dilip Arumugam, Lei Yang 0003",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Material Recognition from Heat Transfer given Varying Initial Conditions and Short-Duration Contact",
+    "authors": "Tapomayukh Bhattacharjee, Joshua Wade, Charles C. Kemp",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Guaranteeing Spoof-Resilient Multi-Robot Networks",
+    "authors": "Stephanie Gil, Swarun Kumar, Mark Mazumder, Dina Katabi, Daniela Rus",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Tracking Attracting Lagrangian Coherent Structures in Flows",
+    "authors": "Dhanushka Kularatne, M. Ani Hsieh",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Place Recognition with ConvNet Landmarks: Viewpoint-Robust, Condition-Robust, Training-Free",
+    "authors": "Niko Sünderhauf, Sareh Shirazi, Adam Jacobson, Feras Dayoub, Edward Pepperell, Ben Upcroft, Michael Milford",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Exploiting the Separable Structure of SLAM",
+    "authors": "Kasra Khosoussi, Shoudong Huang, Gamini Dissanayake",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "rCRF: Recursive Belief Estimation over CRFs in RGB-D Activity Videos",
+    "authors": "Ozan Sener, Ashutosh Saxena",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Layered Interpretation of Street View Images",
+    "authors": "Ming-Yu Liu 0001, Shuoxin Lin, Srikumar Ramalingam, Oncel Tuzel",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Quantitative Measures of a Robot's Ability to Balance",
+    "authors": "Roy Featherstone",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Addressing Constraint Robustness to Torque Errors in Task-Space Inverse Dynamics",
+    "authors": "Andrea Del Prete, Nicolas Mansard",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Leveraging Cone Double Description for Multi-contact Stability of Humanoids with Applications to Statics and Dynamics",
+    "authors": "Stéphane Caron, Quang-Cuong Pham, Yoshihiko Nakamura",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Robust Trajectory Optimization: A Cooperative Stochastic Game Theoretic Approach",
+    "authors": "Yunpeng Pan, Evangelos A. Theodorou, Kaivalya Bakshi",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "The dynamics of legged locomotion in heterogeneous terrain: universality in scattering and sensitivity to initial conditions",
+    "authors": "Feifei Qian, Daniel I. Goldman",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Adaptive Coordination Strategies for Human-Robot Handovers",
+    "authors": "Chien-Ming Huang 0001, Maya Cakmak, Bilge Mutlu",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Shared Autonomy via Hindsight Optimization",
+    "authors": "Shervin Javdani, Siddhartha S. Srinivasa, J. Andrew Bagnell",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Three's company, or a crowd?: The effects of robot number and behavior on HRI in Japan and the USA",
+    "authors": "Marlena R. Fraune, Satoru Kawakami, Selma Sabanovic, P. Ravindra S. De Silva, Michio Okada",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Monocular SLAM Supported Object Recognition",
+    "authors": "Sudeep Pillai, John J. Leonard",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Voting for Voting in Online Point Cloud Object Detection",
+    "authors": "Dominic Zeng Wang, Ingmar Posner",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Continuous-Time Trajectory Estimation for Event-based Vision Sensors",
+    "authors": "Elias Mueggler, Guillermo Gallego 0002, Davide Scaramuzza 0001",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Get Out of My Lab: Large-scale, Real-Time Visual-Inertial Localization",
+    "authors": "Simon Lynen, Torsten Sattler, Michael Bosse, Joel A. Hesch, Marc Pollefeys, Roland Siegwart",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "A Spatiotemporal Optimal Stopping Problem for Mission Monitoring with Stationary Viewpoints",
+    "authors": "Graeme Best, Wolfram Martens, Robert Fitch",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Autonomy Infused Teleoperation with Application to BCI Manipulation",
+    "authors": "Katharina Mülling, Arun Venkatraman, Jean-Sebastien Valois, John Downey, Jeffrey M. Weiss, Shervin Javdani, Martial Hebert, Andrew B. Schwartz, Jennifer L. Collinger, J. Andrew Bagnell",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Chisel: Real Time Large Scale 3D Reconstruction Onboard a Mobile Device using Spatially Hashed Signed Distance Fields",
+    "authors": "Matthew Klingensmith, Ivan Dryanovski, Siddhartha S. Srinivasa, Jizhong Xiao",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Probabilistic Semi-Dense Mapping from Highly Accurate Feature-Based Monocular SLAM",
+    "authors": "Raul Mur-Artal, Juan D. Tardós",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Online Localization of Radio-Tagged Wildlife with an Autonomous Aerial Robot System",
+    "authors": "Oliver M. Cliff, Robert Fitch, Salah Sukkarieh, Debbie Saunders, Robert Heinsohn",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Multipolicy Decision-Making for Autonomous Driving via Changepoint-based Behavior Prediction",
+    "authors": "Enric Galceran, Alexander G. Cunningham, Ryan M. Eustice, Edwin Olson",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Data-Driven Online Decision Making for Autonomous Manipulation",
+    "authors": "Daniel Kappler, Peter Pastor, Mrinal Kalakrishnan, Manuel Wüthrich, Stefan Schaal",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Dealing with Difficult Instances of Object Rearrangement",
+    "authors": "Athanasios Krontiris, Kostas E. Bekris",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "On the hardness of unlabeled multi-robot motion planning",
+    "authors": "Kiril Solovey, Dan Halperin",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Online Planning for Autonomous Running Jumps Over Obstacles in High-Speed Quadrupeds",
+    "authors": "Hae-Won Park 0002, Patrick M. Wensing, Sangbae Kim",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Optimal Robust Control for Bipedal Robots through Control Lyapunov Function based Quadratic Programs",
+    "authors": "Quan Nguyen 0004, Koushil Sreenath",
+    "abstract": null
+  },
+  {
+    "conference": "RSS",
+    "year": 2015,
+    "title": "Data-Driven Topological Motion Planning with Persistent Cohomology",
+    "authors": "Florian T. Pokorny, Danica Kragic",
+    "abstract": null
+  }
+]

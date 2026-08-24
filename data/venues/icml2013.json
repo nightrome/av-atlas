@@ -1,0 +1,1983 @@
+[
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "An Optimal Policy for Target Localization with Application to Electron Microscopy",
+    "authors": "Raphael Sznitman, Aur&#233;lien Lucchi, Peter I. Frazier, Bruno Jedynak, Pascal Fua",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Domain Generalization via Invariant Feature Representation",
+    "authors": "Krikamol Muandet, David Balduzzi, Bernhard Sch&#246;lkopf",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Spectral Learning Approach to Range-Only SLAM",
+    "authors": "Byron Boots, Geoffrey J. Gordon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Near-Optimal Bounds for Cross-Validation via Loss Stability",
+    "authors": "Ravi Kumar 0001, Daniel Lokshtanov, Sergei Vassilvitskii, Andrea Vattani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Sparsity-Based Generalization Bounds for Predictive Sparse Coding",
+    "authors": "Nishant Ajay Mehta, Alexander G. Gray",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Sparse Uncorrelated Linear Discriminant Analysis",
+    "authors": "Xiaowei Zhang 0002, Delin Chu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Block-Coordinate Frank-Wolfe Optimization for Structural SVMs",
+    "authors": "Simon Lacoste-Julien, Martin Jaggi, Mark Schmidt 0001, Patrick Pletscher",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fast Probabilistic Optimization from Noisy Gradients",
+    "authors": "Philipp Hennig",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Stochastic Gradient Descent for Non-smooth Optimization: Convergence Results and Optimal Averaging Schemes",
+    "authors": "Ohad Shamir, Tong Zhang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Stochastic Alternating Direction Method of Multipliers",
+    "authors": "Hua Ouyang, Niao He, Long Q. Tran, Alexander G. Gray",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Noisy Sparse Subspace Clustering",
+    "authors": "Yu-Xiang Wang 0003, Huan Xu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Parallel Markov Chain Monte Carlo for Nonparametric Mixture Models",
+    "authors": "Sinead Williamson, Avinava Dubey, Eric P. Xing",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Risk Bounds and Learning Algorithms for the Regression Approach to Structured Output Prediction",
+    "authors": "S&#233;bastien Gigu&#232;re, Fran&#231;ois Laviolette, Mario Marchand, Khadidja Sylla",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Making a Science of Model Search: Hyperparameter Optimization in Hundreds of Dimensions for Vision Architectures",
+    "authors": "James Bergstra, Daniel Yamins, David D. Cox",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Gibbs Max-Margin Topic Models with Fast Sampling Algorithms",
+    "authors": "Jun Zhu 0001, Ning Chen 0002, Hugh Perkins, Bo Zhang 0010",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Cost-Sensitive Tree of Classifiers",
+    "authors": "Zhixiang Eddie Xu, Matt J. Kusner, Kilian Q. Weinberger, Minmin Chen",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Hash Functions Using Column Generation",
+    "authors": "Xi Li 0001, Guosheng Lin, Chunhua Shen, Anton van den Hengel, Anthony R. Dick",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Combinatorial Multi-Armed Bandit: General Framework and Applications",
+    "authors": "Wei Chen 0013, Yajun Wang 0001, Yang Yuan 0010",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Near-optimal Batch Mode Active Learning and Adaptive Submodular Optimization",
+    "authors": "Yuxin Chen 0001, Andreas Krause 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Convex formulations of radius-margin based Support Vector Machines",
+    "authors": "Huyen Do, Alexandros Kalousis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Modelling Sparse Dynamical Systems with Compressed Predictive State Representations",
+    "authors": "William L. Hamilton, Mahdi Milani Fard, Joelle Pineau",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Machine Learning Framework for Programming by Example",
+    "authors": "Aditya Krishna Menon, Omer Tamuz, Sumit Gulwani, Butler W. Lampson, Adam Kalai",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Discriminatively Activated Sparselets",
+    "authors": "Ross B. Girshick, Hyun Oh Song, Trevor Darrell",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "The Pairwise Piecewise-Linear Embedding for Efficient Non-Linear Classification",
+    "authors": "Ofir Pele, Ben Taskar, Amir Globerson, Michael Werman",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fixed-Point Model For Structured Labeling",
+    "authors": "Quannan Li, Jingdong Wang 0001, David P. Wipf, Zhuowen Tu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Connecting the Dots with Landmarks: Discriminatively Learning Domain-Invariant Features for Unsupervised Domain Adaptation",
+    "authors": "Boqing Gong, Kristen Grauman, Fei Sha",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fast Conical Hull Algorithms for Near-separable Non-negative Matrix Factorization",
+    "authors": "Abhishek Kumar 0001, Vikas Sindhwani, Prabhanjan Kambadur",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Principal Component Analysis on non-Gaussian Dependent Data",
+    "authors": "Fang Han, Han Liu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Linear Bayesian Networks with Latent Variables",
+    "authors": "Animashree Anandkumar, Daniel J. Hsu, Adel Javanmard, Sham M. Kakade",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Multiple Identifications in Multi-Armed Bandits",
+    "authors": "S&#233;bastien Bubeck, Tengyao Wang, Nitin Viswanathan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Optimally Sparse Support Vector Machines",
+    "authors": "Andrew Cotter, Shai Shalev-Shwartz, Nati Srebro",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Dynamic Probabilistic Models for Latent Feature Propagation in Social Networks",
+    "authors": "Creighton Heaukulani, Zoubin Ghahramani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Efficient Sparse Group Feature Selection via Nonconvex Optimization",
+    "authors": "Shuo Xiang, Xiaoshen Tong, Jieping Ye",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Domain Adaptation for Sequence Labeling Tasks with a Probabilistic Language Adaptation Model",
+    "authors": "Min Xiao 0004, Yuhong Guo",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Maximum Variance Correction with Application to A* Search",
+    "authors": "Wenlin Chen, Kilian Q. Weinberger, Yixin Chen 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Adaptive Sparsity in Gaussian Graphical Models",
+    "authors": "Eleanor Wong, Suyash P. Awate, P. Thomas Fletcher",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Average Reward Optimization Objective In Partially Observable Domains",
+    "authors": "Yuri Grinberg, Doina Precup",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Feature Selection in High-Dimensional Classification",
+    "authors": "Mladen Kolar, Han Liu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Human Boosting",
+    "authors": "Harsh H. Pareek, Pradeep Ravikumar",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Efficient Dimensionality Reduction for Canonical Correlation Analysis",
+    "authors": "Haim Avron, Christos Boutsidis, Sivan Toledo, Anastasios Zouzias",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Parsing epileptic events using a Markov switching process model for correlated time series",
+    "authors": "Drausin Wulsin, Emily B. Fox, Brian Litt",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Optimal rates for stochastic convex optimization under Tsybakov noise condition",
+    "authors": "Aaditya Ramdas, Aarti Singh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Randomized Mirror Descent Algorithm for Large Scale Multiple Kernel Learning",
+    "authors": "Arash Afkanpour, Andr&#225;s Gy&#246;rgy 0001, Csaba Szepesv&#225;ri, Michael Bowling",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Noisy and Missing Data Regression: Distribution-Oblivious Support Recovery",
+    "authors": "Yudong Chen 0001, Constantine Caramanis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Dual Averaging and Proximal Gradient Descent for Online Alternating Direction Multiplier Method",
+    "authors": "Taiji Suzuki",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A New Frontier of Kernel Design for Structured Data",
+    "authors": "Kilho Shin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning with Marginalized Corrupted Features",
+    "authors": "Laurens van der Maaten, Minmin Chen, Stephen Tyree, Kilian Q. Weinberger",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Approximation properties of DBNs with binary hidden units and real-valued visible units",
+    "authors": "Oswin Krause, Asja Fischer, Tobias Glasmachers, Christian Igel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Revisiting Frank-Wolfe: Projection-Free Sparse Convex Optimization",
+    "authors": "Martin Jaggi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "General Functional Matrix Factorization Using Gradient Boosting",
+    "authors": "Tianqi Chen 0001, Hang Li 0001, Qiang Yang 0001, Yong Yu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Iterative Learning and Denoising in Convolutional Neural Associative Memories",
+    "authors": "Amin Karbasi, Amir Hesam Salavati, Amin Shokrollahi 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Scaling Multidimensional Gaussian Processes using Projected Additive Approximations",
+    "authors": "Elad Gilboa, Yunus Saat&#231;i, John P. Cunningham",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Active Learning for Multi-Objective Optimization",
+    "authors": "Marcela Zuluaga, Guillaume Sergent, Andreas Krause 0001, Markus P&#252;schel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Generalized Kernel Approach to Structured Output Learning",
+    "authors": "Hachem Kadri, Mohammad Ghavamzadeh, Philippe Preux",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Efficient Active Learning of Halfspaces: an Aggressive Approach",
+    "authors": "Alon Gonen, Sivan Sabato, Shai Shalev-Shwartz",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Enhanced statistical rankings via targeted data collection",
+    "authors": "Braxton Osting, Christoph Brune, Stanley J. Osher",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Online Feature Selection for Model-based Reinforcement Learning",
+    "authors": "Trung Thanh Nguyen 0005, Zhuoru Li, Tomi Silander, Tze-Yun Leong",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "ELLA: An Efficient Lifelong Learning Algorithm",
+    "authors": "Paul Ruvolo, Eric Eaton",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Structural SVM Based Approach for Optimizing Partial AUC",
+    "authors": "Harikrishna Narasimhan, Shivani Agarwal 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Convex Relaxations for Learning Bounded-Treewidth Decomposable Graphs",
+    "authors": "K. S. Sesh Kumar, Francis R. Bach",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Adaptive Task Assignment for Crowdsourced Classification",
+    "authors": "Chien-Ju Ho, Shahin Jabbari, Jennifer Wortman Vaughan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Optimal Regret Bounds for Selecting the State Representation in Reinforcement Learning",
+    "authors": "Odalric-Ambrym Maillard, Phuong Nguyen, Ronald Ortner, Daniil Ryabko",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Better Mixing via Deep Representations",
+    "authors": "Yoshua Bengio, Gr&#233;goire Mesnil, Yann N. Dauphin, Salah Rifai",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Online Latent Dirichlet Allocation with Infinite Vocabulary",
+    "authors": "Ke Zhai 0001, Jordan L. Boyd-Graber",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Characterizing the Representer Theorem",
+    "authors": "Yaoliang Yu, Hao Cheng 0002, Dale Schuurmans, Csaba Szepesv&#225;ri",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Dynamical Models and tracking regret in online convex programming",
+    "authors": "Eric C. Hall, Rebecca Willett",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Large-Scale Bandit Problems and KWIK Learning",
+    "authors": "Jacob D. Abernethy, Kareem Amin 0002, Michael J. Kearns, Moez Draief",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Vanishing Component Analysis",
+    "authors": "Roi Livni, David Lehavi, Sagi Schein, Hila Nachlieli, Shai Shalev-Shwartz, Amir Globerson",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning an Internal Dynamics Model from Control Demonstration",
+    "authors": "Matthew D. Golub, Steven M. Chase, Byron M. Yu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Robust Structural Metric Learning",
+    "authors": "Daryl Lim, Gert R. G. Lanckriet, Brian McFee",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Constrained fractional set programs and their application in local clustering and community detection",
+    "authors": "Thomas B&#252;hler, Syama Sundar Rangapuram, Simon Setzer, Matthias Hein 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Efficient Semi-supervised and Active Learning of Disjunctions",
+    "authors": "Nina Balcan, Christopher Berlind, Steven Ehrlich, Yingyu Liang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Convex Adversarial Collective Classification",
+    "authors": "MohamadAli Torkamani, Daniel Lowd",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Rounding Methods for Discrete Linear Classification",
+    "authors": "Yann Chevaleyre, Fr&#233;d&#233;ric Koriche, Jean-Daniel Zucker",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Mixture of Mutually Exciting Processes for Viral Diffusion",
+    "authors": "Shuang-Hong Yang, Hongyuan Zha",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Gaussian Process Vine Copulas for Multivariate Dependence",
+    "authors": "David Lopez-Paz, Jos&#233; Miguel Hern&#225;ndez-Lobato, Zoubin Ghahramani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Stochastic Simultaneous Optimistic Optimization",
+    "authors": "Michal Valko, Alexandra Carpentier, R&#233;mi Munos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Toward Optimal Stratification for Stratified Monte-Carlo Integration",
+    "authors": "Alexandra Carpentier, R&#233;mi Munos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A General Iterative Shrinkage and Thresholding Algorithm for Non-convex Regularized Optimization Problems",
+    "authors": "Pinghua Gong, Changshui Zhang, Zhaosong Lu, Jianhua Huang, Jieping Ye",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Thurstonian Boltzmann Machines: Learning from Multiple Inequalities",
+    "authors": "Truyen Tran 0001, Dinh Q. Phung, Svetha Venkatesh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Variational Approximation for Topic Modeling of Hierarchical Corpora",
+    "authors": "Do-kyum Kim, Geoffrey M. Voelker, Lawrence K. Saul",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Forecastable Component Analysis",
+    "authors": "Georg M. Goerg",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Ellipsoidal Multiple Instance Learning",
+    "authors": "Gabriel Krummenacher, Cheng Soon Ong, Joachim M. Buhmann",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Local Low-Rank Matrix Approximation",
+    "authors": "Joonseok Lee, Seungyeon Kim 0001, Guy Lebanon, Yoram Singer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Generic Exploration and K-armed Voting Bandits",
+    "authors": "Tanguy Urvoy, Fabrice Cl&#233;rot, Rapha&#235;l F&#233;raud, Sami Naamane",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A unifying framework for vector-valued manifold regularization and multi-view learning",
+    "authors": "Ha Quang Minh, Loris Bazzani, Vittorio Murino",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Connections in Financial Time Series",
+    "authors": "Gartheeban Ganeshapillai, John V. Guttag, Andrew Lo",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fast dropout training",
+    "authors": "Sida Wang 0001, Christopher D. Manning",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Scalable Optimization of Neighbor Embedding for Visualization",
+    "authors": "Zhirong Yang, Jaakko Peltonen, Samuel Kaski",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Precision-recall space to correct external indices for biclustering",
+    "authors": "Blaise Hanczar, Mohamed Nadif",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Monochromatic Bi-Clustering",
+    "authors": "Sharon Wulff, Ruth Urner, Shai Ben-David",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Gated Autoencoders with Tied Input Weights",
+    "authors": "Alain Droniou, Olivier Sigaud",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Strict Monotonicity of Sum of Squares Error and Normalized Cut in the Lattice of Clusterings",
+    "authors": "Nicola Rebagliati",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Transition Matrix Estimation in High Dimensional Time Series",
+    "authors": "Fang Han, Han Liu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Label Partitioning For Sublinear Ranking",
+    "authors": "Jason Weston, Ameesh Makadia, Hector Yee",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Subproblem-Tree Calibration: A Unified Approach to Max-Product Message Passing",
+    "authors": "Huayan Wang, Daphne Koller",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Collaborative hyperparameter tuning",
+    "authors": "R&#233;mi Bardenet, M&#225;ty&#225;s Brendel, Bal&#225;zs K&#233;gl, Mich&#232;le Sebag",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "SADA: A General Framework to Support Robust Causation Discovery",
+    "authors": "Ruichu Cai, Zhenjie Zhang, Zhifeng Hao",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning and Selecting Features Jointly with Point-wise Gated Boltzmann Machines",
+    "authors": "Kihyuk Sohn, Guanyu Zhou, Chansoo Lee, Honglak Lee",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Sequential Bayesian Search",
+    "authors": "Zheng Wen, Branislav Kveton, Brian Eriksson, Sandilya Bhamidipati",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Sparse projections onto the simplex",
+    "authors": "Anastasios Kyrillidis, Stephen Becker, Volkan Cevher, Christoph Koch 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Modeling Musical Influence with Topic Models",
+    "authors": "Uri Shalit, Daphna Weinshall, Gal Chechik",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Subtle Topic Models and Discovering Subtly Manifested Software Concerns Automatically",
+    "authors": "Mrinal Kanti Das, Suparna Bhattacharya, Chiranjib Bhattacharyya, Kanchi Gopinath",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Exploring the Mind: Integrating Questionnaires and fMRI",
+    "authors": "Esther Salazar, Ryan Bogdan, Adam Gorka, Ahmad Hariri, Lawrence Carin",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A proximal Newton framework for composite minimization: Graph learning without Cholesky decompositions and matrix inversions",
+    "authors": "Quoc Tran-Dinh, Anastasios Kyrillidis, Volkan Cevher",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Practical Algorithm for Topic Modeling with Provable Guarantees",
+    "authors": "Sanjeev Arora, Rong Ge 0001, Yonatan Halpern, David M. Mimno, Ankur Moitra, David A. Sontag, Yichen Wu, Michael Zhu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Distributed training of Large-scale Logistic models",
+    "authors": "Siddharth Gopal, Yiming Yang 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "An Adaptive Learning Rate for Stochastic Variational Inference",
+    "authors": "Rajesh Ranganath, Chong Wang 0002, David M. Blei, Eric P. Xing",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Margins, Shrinkage, and Boosting",
+    "authors": "Matus Telgarsky",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Canonical Correlation Analysis based on Hilbert-Schmidt Independence Criterion and Centered Kernel Target Alignment",
+    "authors": "Billy Chang, Uwe Kr&#252;ger 0001, Rafal Kustra, Junping Zhang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Large-Scale Learning with Less RAM via Randomization",
+    "authors": "Daniel Golovin, D. Sculley, H. Brendan McMahan, Michael Young",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Taming the Curse of Dimensionality: Discrete Integration by Hashing and Optimization",
+    "authors": "Stefano Ermon, Carla P. Gomes, Ashish Sabharwal, Bart Selman",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Sparse coding for multitask and transfer learning",
+    "authors": "Andreas Maurer, Massimiliano Pontil, Bernardino Romera-Paredes",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Direct Modeling of Complex Invariances for Visual Object Features",
+    "authors": "Ka Yu Hui",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Hierarchically-coupled hidden Markov models for learning kinetic rates from single-molecule data",
+    "authors": "Jan-Willem van de Meent, Jonathan E. Bronson, Frank D. Wood, Ruben L. Gonzalez, Chris Wiggins 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Activized Learning with Uniform Classification Noise",
+    "authors": "Liu Yang 0001, Steve Hanneke",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Guided Policy Search",
+    "authors": "Sergey Levine, Vladlen Koltun",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Squared-loss Mutual Information Regularization: A Novel Information-theoretic Approach to Semi-supervised Learning",
+    "authors": "Gang Niu 0001, Wittawat Jitkrittum, Bo Dai 0001, Hirotaka Hachiya, Masashi Sugiyama",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Gossip-based distributed stochastic bandit algorithms",
+    "authors": "Bal&#225;zs Sz&#246;r&#233;nyi, R&#243;bert Busa-Fekete, Istv&#225;n Heged&#252;s, R&#243;bert Orm&#225;ndi, M&#225;rk Jelasity, Bal&#225;zs K&#233;gl",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "The Sample-Complexity of General Reinforcement Learning",
+    "authors": "Tor Lattimore, Marcus Hutter, Peter Sunehag",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Hierarchical Regularization Cascade for Joint Learning",
+    "authors": "Alon Zweig, Daphna Weinshall",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Multi-Class Classification with Maximum Margin Multiple Kernel",
+    "authors": "Corinna Cortes, Mehryar Mohri, Afshin Rostamizadeh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Bayesian Games for Adversarial Regression Problems",
+    "authors": "Michael Gro&#223;hans, Christoph Sawade, Michael Br&#252;ckner, Tobias Scheffer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Optimistic Knowledge Gradient Policy for Optimal Budget Allocation in Crowdsourcing",
+    "authors": "Xi Chen, Qihang Lin, Dengyong Zhou",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Markov Network Estimation From Multi-attribute Data",
+    "authors": "Mladen Kolar, Han Liu 0001, Eric P. Xing",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "MILEAGE: Multiple Instance LEArning with Global Embedding",
+    "authors": "Dan Zhang 0007, Jingrui He, Luo Si, Richard D. Lawrence",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Guaranteed Sparse Recovery under Linear Transformation",
+    "authors": "Ji Liu 0002, Lei Yuan 0001, Jieping Ye",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning invariant features by harnessing the aperture problem",
+    "authors": "Roland Memisevic, Georgios Exarchakis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Efficient Ranking from Pairwise Comparisons",
+    "authors": "Fabian L. Wauthier, Michael I. Jordan, Nebojsa Jojic",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Differentially Private Learning with Kernels",
+    "authors": "Prateek Jain 0002, Abhradeep Thakurta",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Thompson Sampling for Contextual Bandits with Linear Payoffs",
+    "authors": "Shipra Agrawal 0001, Navin Goyal",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Multiple Behaviors from Unlabeled Demonstrations in a Latent Controller Space",
+    "authors": "Javier Almingol, Luis Montesano, Manuel Lopes 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Inference algorithms for pattern-based CRFs on sequence data",
+    "authors": "Rustem Takhanov, Vladimir Kolmogorov",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "One-Bit Compressed Sensing: Provable Support and Vector Recovery",
+    "authors": "Sivakanth Gopi, Praneeth Netrapalli, Prateek Jain 0002, Aditya V. Nori",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Tensor Analyzers",
+    "authors": "Yichuan Tang, Ruslan Salakhutdinov, Geoffrey E. Hinton",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Sparse Penalties for Change-point Detection using Max Margin Interval Regression",
+    "authors": "Toby Hocking, Guillem Rigaill, Jean-Philippe Vert, Francis R. Bach",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning from Human-Generated Lists",
+    "authors": "Kwang-Sung Jun, Xiaojin (Jerry) Zhu, Burr Settles, Timothy T. Rogers",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Fast and Exact Energy Minimization Algorithm for Cycle MRFs",
+    "authors": "Huayan Wang, Daphne Koller",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Stochastic k-Neighborhood Selection for Supervised and Unsupervised Learning",
+    "authors": "Daniel Tarlow, Kevin Swersky, Laurent Charlin, Ilya Sutskever, Richard S. Zemel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "An Efficient Posterior Regularized Latent Variable Model for Interactive Sound Source Separation",
+    "authors": "Nicholas J. Bryan, Gautham J. Mysore",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Estimating Unknown Sparsity in Compressed Sensing",
+    "authors": "Miles Lopes",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "MAD-Bayes: MAP-based Asymptotic Derivations from Bayes",
+    "authors": "Tamara Broderick, Brian Kulis, Michael I. Jordan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "The Most Generative Maximum Margin Bayesian Networks",
+    "authors": "Robert Peharz, Sebastian Tschiatschek, Franz Pernkopf",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fastfood - Computing Hilbert Space Expansions in loglinear time",
+    "authors": "Quoc V. Le, Tam&#225;s Sarl&#243;s, Alexander J. Smola",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Joint Transfer and Batch-mode Active Learning",
+    "authors": "Rita Chattopadhyay, Wei Fan 0001, Ian Davidson, Sethuraman Panchanathan, Jieping Ye",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Message passing with l1 penalized KL minimization",
+    "authors": "Yuan Qi, Yandong Guo",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Mean Reversion with a Variance Threshold",
+    "authors": "Marco Cuturi, Alexandre d'Aspremont",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Top-down particle filtering for Bayesian decision trees",
+    "authors": "Balaji Lakshminarayanan, Daniel M. Roy 0001, Yee Whye Teh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Smooth Sparse Coding via Marginal Regression for Learning Sparse Representations",
+    "authors": "Krishnakumar Balasubramanian 0002, Kai Yu 0001, Guy Lebanon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Robust and Discriminative Self-Taught Learning",
+    "authors": "Hua Wang 0007, Feiping Nie 0001, Heng Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Safe Policy Iteration",
+    "authors": "Matteo Pirotta, Marcello Restelli, Alessio Pecorino, Daniele Calandriello",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Unfolding Latent Tree Structures using 4th Order Tensors",
+    "authors": "Mariya Ishteva, Haesun Park, Le Song",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Fair Representations",
+    "authors": "Richard S. Zemel, Yu Wu, Kevin Swersky, Toniann Pitassi, Cynthia Dwork",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Hierarchical Tensor Decomposition of Latent Tree Graphical Models",
+    "authors": "Le Song, Mariya Ishteva, Ankur P. Parikh, Eric P. Xing, Haesun Park",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "No more pesky learning rates",
+    "authors": "Tom Schaul, Sixin Zhang, Yann LeCun",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Multi-View Clustering and Feature Learning via Structured Sparsity",
+    "authors": "Hua Wang 0007, Feiping Nie 0001, Heng Huang 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Planning by Prioritized Sweeping with Small Backups",
+    "authors": "Harm van Seijen, Richard S. Sutton",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Solving Continuous POMDPs: Value Iteration with Incremental Learning of an Efficient Space Representation",
+    "authors": "Sebastian Brechtel, Tobias Gindele, R&#252;diger Dillmann",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Heteroscedastic Models by Convex Programming under Group Sparsity",
+    "authors": "Arnak S. Dalalyan, Mohamed Hebiri, Katia Meziani, Joseph Salmon",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Covariate Shift in Hilbert Space: A Solution via Sorrogate Kernels",
+    "authors": "Kai Zhang 0001, Vincent Wenchen Zheng, Qiaojun Wang, James Tin-Yau Kwok, Qiang Yang 0001, Ivan Marsic",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Local Algorithm for Finding Well-Connected Clusters",
+    "authors": "Zeyuan Allen Zhu, Silvio Lattanzi, Vahab S. Mirrokni",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Efficient Multi-label Classification with Many Labels",
+    "authors": "Wei Bi, James Tin-Yau Kwok",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Spectral Compressed Sensing via Structured Matrix Completion",
+    "authors": "Yuxin Chen 0002, Yuejie Chi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Multi-Task Learning with Gaussian Matrix Generalized Inverse Gaussian Model",
+    "authors": "Ming Yang 0012, Yingming Li, Zhongfei Zhang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Simple Sparsification Improves Sparse Denoising Autoencoders in Denoising Highly Corrupted Images",
+    "authors": "Kyunghyun Cho",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "On the Generalization Ability of Online Learning Algorithms for Pairwise Loss Functions",
+    "authors": "Purushottam Kar, Bharath K. Sriperumbudur, Prateek Jain 0002, Harish Karnick",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Non-Linear Stationary Subspace Analysis with Application to Video Classification",
+    "authors": "Mahsa Baktashmotlagh, Mehrtash Tafazzoli Harandi, Abbas Bigdeli, Brian C. Lovell, Mathieu Salzmann",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Two-Sided Exponential Concentration Bounds for Bayes Error Rate and Shannon Entropy",
+    "authors": "Jean Honorio, Tommi S. Jaakkola",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "That was fast! Speeding up NN search of high dimensional distributions",
+    "authors": "Emanuele Coviello, Adeel Mumtaz, Antoni B. Chan, Gert R. G. Lanckriet",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Entropic Affinities: Properties and Efficient Numerical Computation",
+    "authors": "Max Vladymyrov, Miguel &#193;. Carreira-Perpi&#241;&#225;n",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Local Deep Kernel Learning for Efficient Non-linear SVM Prediction",
+    "authors": "Cijo Jose, Prasoon Goyal, Parv Aggrwal, Manik Varma",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Temporal Difference Methods for the Variance of the Reward To Go",
+    "authors": "Aviv Tamar, Dotan Di Castro, Shie Mannor",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "\\(\\propto\\)SVM for Learning with Label Proportions",
+    "authors": "Felix X. Yu, Dong Liu 0001, Sanjiv Kumar, Tony Jebara, Shih-Fu Chang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Parameter Learning and Convergent Inference for Dense Random Fields",
+    "authors": "Philipp Kr&#228;henb&#252;hl, Vladlen Koltun",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Loss-Proportional Subsampling for Subsequent ERM",
+    "authors": "Paul Mineiro, Nikos Karampatziakis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Scalable Simple Random Sampling and Stratified Sampling",
+    "authors": "Xiangrui Meng",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Riemannian Similarity Learning",
+    "authors": "Li Cheng",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "On Compact Codes for Spatially Pooled Features",
+    "authors": "Yangqing Jia, Oriol Vinyals, Trevor Darrell",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Dynamic Covariance Models for Multivariate Financial Time Series",
+    "authors": "Yue Wu, Jos&#233; Miguel Hern&#225;ndez-Lobato, Zoubin Ghahramani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Revisiting the Nystrom method for improved large-scale machine learning",
+    "authors": "Alex Gittens, Michael W. Mahoney",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Infinite Positive Semidefinite Tensor Factorization for Source Separation of Mixture Signals",
+    "authors": "Kazuyoshi Yoshii, Ryota Tomioka, Daichi Mochihashi, Masataka Goto",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A Unified Robust Regression Model for Lasso-like Algorithms",
+    "authors": "Wenzhuo Yang, Huan Xu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Quickly Boosting Decision Trees - Pruning Underachieving Features Early",
+    "authors": "Ron Appel, Thomas J. Fuchs, Piotr Doll&#225;r, Pietro Perona",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "On the Statistical Consistency of Algorithms for Binary Classification under Class Imbalance",
+    "authors": "Aditya Krishna Menon, Harikrishna Narasimhan, Shivani Agarwal 0001, Sanjay Chawla",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Topic Model Diagnostics: Assessing Domain Relevance via Topical Alignment",
+    "authors": "Jason Chuang, Sonal Gupta, Christopher D. Manning, Jeffrey Heer",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Online Kernel Learning with a Near Optimal Sparsity Bound",
+    "authors": "Lijun Zhang 0005, Jinfeng Yi, Rong Jin 0001, Ming Lin 0002, Xiaofei He 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Spectral Learning of Hidden Markov Models from Dynamic and Static Data",
+    "authors": "Tzu-Kuo Huang, Jeff G. Schneider",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Analogy-preserving Semantic Embedding for Visual Object Categorization",
+    "authors": "Sung Ju Hwang, Kristen Grauman, Fei Sha",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Algebraic classifiers: a generic approach to fast cross-validation, online training, and parallel training",
+    "authors": "Michael Izbicki",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Factorial Multi-Task Learning : A Bayesian Nonparametric Approach",
+    "authors": "Sunil Kumar Gupta 0001, Dinh Q. Phung, Svetha Venkatesh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Modeling Information Propagation with Survival Theory",
+    "authors": "Manuel Gomez-Rodriguez, Jure Leskovec, Bernhard Sch&#246;lkopf",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Better Rates for Any Adversarial Deterministic MDP",
+    "authors": "Ofer Dekel, Elad Hazan",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "ABC Reinforcement Learning",
+    "authors": "Christos Dimitrakakis, Nikolaos Tziortziotis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Sharp Generalization Error Bounds for Randomly-projected Classifiers",
+    "authors": "Robert J. Durrant, Ata Kab&#225;n",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "On learning parametric-output HMMs",
+    "authors": "Aryeh Kontorovich, Boaz Nadler, Roi Weiss",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "LDA Topic Model with Soft Assignment of Descriptors to Words",
+    "authors": "Daphna Weinshall, Gal Levi, Dmitri Hanukaev",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "On autoencoder scoring",
+    "authors": "Hanna Kamyshanska, Roland Memisevic",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Infinite Markov-Switching Maximum Entropy Discrimination Machines",
+    "authors": "Sotirios Chatzis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A PAC-Bayesian Approach for Domain Adaptation with Specialization to Linear Classifiers",
+    "authors": "Pascal Germain, Amaury Habrard, Fran&#231;ois Laviolette, Emilie Morvant",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Sparse PCA through Low-rank Approximations",
+    "authors": "Dimitris S. Papailiopoulos, Alexandros G. Dimakis, Stavros Korokythakis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Computation-Risk Tradeoffs for Covariance-Thresholded Regression",
+    "authors": "Dinah Shender, John D. Lafferty",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Exact Rule Learning via Boolean Compressed Sensing",
+    "authors": "Dmitry M. Malioutov, Kush R. Varshney",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Robust Sparse Regression under Adversarial Corruption",
+    "authors": "Yudong Chen 0001, Constantine Caramanis, Shie Mannor",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Optimization with First-Order Surrogate Functions",
+    "authors": "Julien Mairal",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Spatio-Temporal Structure from RGB-D Videos for Human Activity Detection and Anticipation",
+    "authors": "Hema Swetha Koppula, Ashutosh Saxena",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Consistency versus Realizable H-Consistency for Multiclass Classification",
+    "authors": "Philip M. Long, Rocco A. Servedio",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Feature Multi-Selection among Subjective Features",
+    "authors": "Sivan Sabato, Adam Kalai",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Domain Adaptation under Target and Conditional Shift",
+    "authors": "Kun Zhang 0001, Bernhard Sch&#246;lkopf, Krikamol Muandet, Zhikun Wang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Collective Stability in Structured Prediction: Generalization from One Example",
+    "authors": "Ben London 0001, Bert Huang, Ben Taskar, Lise Getoor",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Stable Coactive Learning via Perturbation",
+    "authors": "Karthik Raman 0001, Thorsten Joachims, Pannaga Shivaswamy, Tobias Schnabel",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Max-Margin Multiple-Instance Dictionary Learning",
+    "authors": "Xinggang Wang, Baoyuan Wang, Xiang Bai, Wenyu Liu 0001, Zhuowen Tu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fast Semidifferential-based Submodular Function Optimization",
+    "authors": "Rishabh K. Iyer, Stefanie Jegelka, Jeff A. Bilmes",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Kernelized Bayesian Matrix Factorization",
+    "authors": "Mehmet G&#246;nen, Suleiman A. Khan, Samuel Kaski",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning the Structure of Sum-Product Networks",
+    "authors": "Robert Gens, Pedro M. Domingos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Quantile Regression for Large-scale Applications",
+    "authors": "Jiyan Yang, Xiangrui Meng, Michael W. Mahoney",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Robust Regression on MapReduce",
+    "authors": "Xiangrui Meng, Michael W. Mahoney",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Infinitesimal Annealing for Training Semi-Supervised Support Vector Machines",
+    "authors": "Kohei Ogawa, Motoki Imamura, Ichiro Takeuchi, Masashi Sugiyama",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "One-Pass AUC Optimization",
+    "authors": "Wei Gao 0008, Rong Jin 0001, Shenghuo Zhu, Zhi-Hua Zhou",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Convex QP Relaxations for Structured Prediction",
+    "authors": "Jeremy Jancsary, Sebastian Nowozin, Carsten Rother",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Concurrent Reinforcement Learning from Customer Interactions",
+    "authors": "David Silver 0001, Leonard Newnham, David Barker, Suzanne Weller, Jason McFall",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Saving Evaluation Time for the Decision Function in Boosting: Representation and Reordering Base Learner",
+    "authors": "Peng Sun 0011, Jie Zhou 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Stability and Hypothesis Transfer Learning",
+    "authors": "Ilja Kuzborskij, Francesco Orabona",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fast Dual Variational Inference for Non-Conjugate Latent Gaussian Models",
+    "authors": "Mohammad Emtiyaz Khan, Aleksandr Y. Aravkin, Michael P. Friedlander, Matthias W. Seeger",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Modeling Temporal Evolution and Multiscale Structure in Networks",
+    "authors": "Tue Herlau, Morten M&#248;rup, Mikkel N. Schmidt",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Dependent Normalized Random Measures",
+    "authors": "Changyou Chen, Vinayak A. Rao, Wray L. Buntine, Yee Whye Teh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fast Max-Margin Matrix Factorization with Data Augmentation",
+    "authors": "Minjie Xu, Jun Zhu 0001, Bo Zhang 0010",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Natural Image Bases to Represent Neuroimaging Data",
+    "authors": "Ashish Gupta, Murat Ayhan, Anthony Maida",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Breaking the Small Cluster Barrier of Graph Clustering",
+    "authors": "Nir Ailon, Yudong Chen 0001, Huan Xu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Approximate Inference in Collective Graphical Models",
+    "authors": "Daniel Sheldon, Tao Sun 0008, Akshat Kumar, Thomas G. Dietterich",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Scaling the Indian Buffet Process via Submodular Maximization",
+    "authors": "Colorado Reed, Zoubin Ghahramani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Mini-Batch Primal and Dual Methods for SVMs",
+    "authors": "Martin Tak&#225;c 0001, Avleen Singh Bijral, Peter Richt&#225;rik, Nati Srebro",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "The lasso, persistence, and cross-validation",
+    "authors": "Darren Homrighausen, Daniel J. McDonald",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Spectral Experts for Estimating Mixtures of Linear Regressions",
+    "authors": "Arun Tejasvi Chaganty, Percy Liang",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Distribution to Distribution Regression",
+    "authors": "Junier B. Oliva, Barnab&#225;s P&#243;czos, Jeff G. Schneider",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Regularization of Neural Networks using DropConnect",
+    "authors": "Li Wan 0002, Matthew D. Zeiler, Sixin Zhang, Yann LeCun, Rob Fergus",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Gaussian Process Kernels for Pattern Discovery and Extrapolation",
+    "authors": "Andrew Gordon Wilson, Ryan Prescott Adams",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Anytime Representation Learning",
+    "authors": "Zhixiang Eddie Xu, Matt J. Kusner, Gao Huang 0001, Kilian Q. Weinberger",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Algorithms for Direct 0-1 Loss Optimization in Binary Classification",
+    "authors": "Tan Nguyen, Scott Sanner",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Top-k Selection based on Adaptive Sampling of Noisy Preferences",
+    "authors": "R&#243;bert Busa-Fekete, Bal&#225;zs Sz&#246;r&#233;nyi, Weiwei Cheng, Paul Weng, Eyke H&#252;llermeier",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "The Extended Parameter Filter",
+    "authors": "Yusuf Erol, Lei Li 0005, Bharath Ramsundar, Stuart Russell 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Exploiting Ontology Structures and Unlabeled Data for Learning",
+    "authors": "Nina Balcan, Avrim Blum, Yishay Mansour",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "O(logT) Projections for Stochastic Optimization of Smooth and Strongly Convex Functions",
+    "authors": "Lijun Zhang 0005, Tianbao Yang, Rong Jin 0001, Xiaofei He 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Optimizing the F-Measure in Multi-Label Classification: Plug-in Rule Approach versus Structured Loss Minimization",
+    "authors": "Krzysztof Dembczynski, Arkadiusz Jachnik, Wojciech Kotlowski, Willem Waegeman, Eyke H&#252;llermeier",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "On the importance of initialization and momentum in deep learning",
+    "authors": "Ilya Sutskever, James Martens, George E. Dahl, Geoffrey E. Hinton",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "A non-IID Framework for Collaborative Filtering with Restricted Boltzmann Machines",
+    "authors": "Kostadin Georgiev, Preslav Nakov",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Intersecting singularities for multi-structured estimation",
+    "authors": "Emile Richard, Francis R. Bach, Jean-Philippe Vert",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Structure Discovery in Nonparametric Regression through Compositional Kernel Search",
+    "authors": "David Duvenaud, James Robert Lloyd, Roger B. Grosse, Joshua B. Tenenbaum, Zoubin Ghahramani",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Copy or Coincidence? A Model for Detecting Social Influence and Duplication Events",
+    "authors": "Lisa Friedland, David D. Jensen, Michael Lavine",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Smooth Operators",
+    "authors": "Steffen Gr&#252;new&#228;lder, Arthur Gretton, John Shawe-Taylor",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "The Cross-Entropy Method Optimizes for Quantiles",
+    "authors": "Sergiu Goschin, Ari Weinstein, Michael L. Littman",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Topic Discovery through Data Dependent and Random Projections",
+    "authors": "Weicong Ding, Mohammad Hossein Rohban, Prakash Ishwar, Venkatesh Saligrama",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Bayesian Learning of Recursively Factored Environments",
+    "authors": "Marc G. Bellemare, Joel Veness, Michael Bowling",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Selective sampling algorithms for cost-sensitive multiclass prediction",
+    "authors": "Alekh Agarwal",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "The Bigraphical Lasso",
+    "authors": "Alfredo A. Kalaitzis, John D. Lafferty, Neil D. Lawrence, Shuheng Zhou 0002",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Almost Optimal Exploration in Multi-Armed Bandits",
+    "authors": "Zohar Shay Karnin, Tomer Koren, Oren Somekh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Deep Canonical Correlation Analysis",
+    "authors": "Galen Andrew, Raman Arora, Jeff A. Bilmes, Karen Livescu",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Consistency of Online Random Forests",
+    "authors": "Misha Denil, David Matheson, Nando de Freitas",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Sparse Gaussian Conditional Random Fields: Algorithms, Theory, and Application to Energy Forecasting",
+    "authors": "Matt Wytock, J. Zico Kolter",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fast Image Tagging",
+    "authors": "Minmin Chen, Alice X. Zheng, Kilian Q. Weinberger",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Expensive Function Optimization with Stochastic Binary Outcomes",
+    "authors": "Matthew Tesch, Jeff G. Schneider, Howie Choset",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Multiple-source cross-validation",
+    "authors": "Krzysztof J. Geras, Charles Sutton",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Triggering Kernels for Multi-dimensional Hawkes Processes",
+    "authors": "Ke Zhou 0002, Hongyuan Zha, Le Song",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "On the difficulty of training recurrent neural networks",
+    "authors": "Razvan Pascanu, Tom&#225;s Mikolov, Yoshua Bengio",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Maxout Networks",
+    "authors": "Ian J. Goodfellow, David Warde-Farley, Mehdi Mirza, Aaron C. Courville, Yoshua Bengio",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Predictable Dual-View Hashing",
+    "authors": "Mohammad Rastegari, Jonghyun Choi, Shobeir Fakhraei, Hal Daum&#233; III, Larry S. Davis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Deep learning with COTS HPC systems",
+    "authors": "Adam Coates 0002, Brody Huval, Tao Wang, David J. Wu 0001, Bryan Catanzaro, Andrew Y. Ng",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Nonparametric Mixture of Gaussian Processes with Constraints",
+    "authors": "James C. Ross, Jennifer G. Dy",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Scale Invariant Conditional Dependence Measures",
+    "authors": "Sashank J. Reddi, Barnab&#225;s P&#243;czos",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning Policies for Contextual Submodular Prediction",
+    "authors": "St&#233;phane Ross, Jiaji Zhou, Yisong Yue, Debadeepta Dey, Drew Bagnell",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Manifold Preserving Hierarchical Topic Models for Quantization and Approximation",
+    "authors": "Minje Kim 0001, Paris Smaragdis",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Safe Screening of Non-Support Vectors in Pathwise SVM Computation",
+    "authors": "Kohei Ogawa, Yoshiki Suzuki, Ichiro Takeuchi",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Cost-sensitive Multiclass Classification Risk Bounds",
+    "authors": "Bernardo &#193;vila Pires, Csaba Szepesv&#225;ri, Mohammad Ghavamzadeh",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Semi-supervised Clustering by Input Pattern Assisted Pairwise Similarity Matrix Completion",
+    "authors": "Jinfeng Yi, Lijun Zhang 0005, Rong Jin 0001, Qi Qian 0001, Anil K. Jain 0001",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Learning the beta-Divergence in Tweedie Compound Poisson Matrix Factorization Models",
+    "authors": "Umut Simsekli, Ali Taylan Cemgil, Yusuf Kenan Yilmaz",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Fast algorithms for sparse principal component analysis based on Rayleigh quotient iteration",
+    "authors": "Volodymyr Kuleshov",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Nested Chinese Restaurant Franchise Process: Applications to User Tracking and Document Modeling",
+    "authors": "Amr Ahmed 0001, Liangjie Hong, Alexander J. Smola",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Tree-Independent Dual-Tree Algorithms",
+    "authors": "Ryan R. Curtin, William B. March, Parikshit Ram, David V. Anderson, Alexander G. Gray, Charles L. Isbell Jr.",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Multilinear Multitask Learning",
+    "authors": "Bernardino Romera-Paredes, Hane Aung, Nadia Bianchi-Berthouze, Massimiliano Pontil",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Online Learning under Delayed Feedback",
+    "authors": "Pooria Joulani, Andr&#225;s Gy&#246;rgy 0001, Csaba Szepesv&#225;ri",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Adaptive Hamiltonian and Riemann Manifold Monte Carlo",
+    "authors": "Ziyu Wang 0001, Shakir Mohamed, Nando de Freitas",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Coco-Q: Learning in Stochastic Games with Side Payments",
+    "authors": "Eric Sodomka, Elizabeth Hilliard, Michael L. Littman, Amy Greenwald",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "On A Nonlinear Generalization of Sparse Coding and Dictionary Learning",
+    "authors": "Jeffrey Ho, Yuchen Xie, Baba C. Vemuri",
+    "abstract": null
+  },
+  {
+    "conference": "ICML",
+    "year": 2013,
+    "title": "Estimation of Causal Peer Influence Effects",
+    "authors": "Panos Toulis, Edward K. Kao",
+    "abstract": null
+  }
+]

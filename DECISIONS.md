@@ -1,0 +1,458 @@
+# AV Atlas — design decisions and why
+
+This is the "why", not the "how" — `PIPELINE.md` documents which script pulled
+which venue; this file documents the reasoning behind choices that aren't
+obvious from reading the code, so a future change doesn't accidentally undo
+something that was deliberate. Internal notes, not shown on any published page.
+
+## Repo / context-window hygiene
+
+- **Never `Read` a large data JSON directly.** `papers_full.json` (~100MB) and
+  `stats.json` (~2MB) are queried with `python -c` one-liners or `grep`, never
+  loaded wholesale into an editing session's context. This is a *practice*,
+  not something a file-layout change can substitute for — reorganizing files
+  doesn't help if the habit is "open the whole file to look at one thing".
+- **`data/stats.json` is gitignored**, same as `data/papers_full.json` already
+  was. Both are fully regenerable (`merge_corpus.py` then `aggregate.py`) —
+  tracking a ~2MB derived leaderboard dump in git just bloats every diff and
+  commit with numbers that change on every corpus update, none of which is
+  reviewable as a diff anyway. `build_public_site.py` still copies whatever's
+  currently on disk into the published output, so this only affects what git
+  tracks, not what deploys — always regenerate `stats.json` locally before
+  publishing (`python scripts/aggregate.py`).
+- Per-page JS (`nav.js`, `filters.js`, `sortable.js`) is already split out of
+  the HTML files specifically so a change to shared logic touches one file,
+  not eight. Each page's *own* inline `<script>` stays inline deliberately —
+  it's page-specific, already small, and there's no build step to bundle
+  further splits, so more files would mean more requests for no benefit.
+
+## AV-relevance weighting (`classify.py`'s `av_weight`)
+
+A binary core/adjacent split isn't enough: a paper titled "... for Autonomous
+Driving" and a general-purpose paper that lists "autonomous driving" as one of
+several downstream applications in its abstract both pass the core check, but
+crediting them equally lets the second kind (huge citation counts earned for
+something else entirely) outrank genuinely AV-focused work on every
+leaderboard. This was caught concretely: "Depth Anything" (a general
+depth-estimation foundation model, one abstract mention of AV as an example
+application) was ranked #1 overall on raw citations.
+
+The fix is a continuous weight (0–1) instead of a second binary flag:
+
+- **Title match → 1.0.** A CVPR/ICCV/etc. paper that puts an AV-specific term,
+  or the word "drive"/"driving"/"driver" (word-boundary matched, so
+  "data-driven" never false-positives), in its own title is essentially never
+  about something else. This is deliberately more lenient in the title than
+  the phrase list used for abstracts — title real estate is scarce and
+  authors don't waste it on tangential mentions.
+- **Abstract-only match → 0.08 to 0.5, scaled by how many *distinct* AV
+  concepts appear**, not how many times one repeats. One passing mention
+  ("...applicable to robotics, autonomous driving, and AR...") scores low;
+  several different AV-specific ideas discussed throughout scores higher,
+  capped at 0.5 — an abstract-only signal should never outweigh a paper whose
+  title is actually about AVs.
+- **No match at all → 0.0**, and `av_relevance` becomes `adjacent` (same
+  behavior as before this change).
+
+Every ranking on the site — Top Papers, best-by-year/venue, and every
+Researchers/Institutions/Countries/Categories/Venues leaderboard — sorts by
+`citations_weighted = citations * av_weight`, not the raw count. The real
+citation count is still shown (with an "AV %" column) so nothing is hidden,
+it just can't dominate a ranking on borrowed citations.
+
+**Numeric precision rule, because this bit us once:** citation counts —
+including `citations_weighted` and `avg_citations` — are always rounded to
+whole numbers, everywhere they're computed (`aggregate.py`, `filters.js`,
+`timelines.html`). A figure like "213.68" or "4.3 cit./paper" reads as
+falsely precise for what is, at bottom, a keyword heuristic; showing "214" or
+"4" instead doesn't overstate its precision the same way. (`avg_citations`
+briefly kept one decimal place after this rule was first introduced, but that
+was inconsistent with the rest of the rule and was cut too.)
+
+## `merge_corpus.py`'s authors_detail carry-over
+
+`merge_corpus.py` rebuilds `papers_full.json` from scratch from
+`data/venues/*.json` + `enriched.json` every time it runs. `enrich_core_authors.py`
+(a separate, slow, OpenAlex-budget-limited script) patches `authors_detail`
+(institution/country data) directly onto `papers_full.json` in place, not onto
+either of those two sources. The first time these two facts collided, a
+routine re-run of `merge_corpus.py` silently discarded hours of enrichment
+progress — nothing errored, the output just quietly had less data than
+before.
+
+Fix: `merge_corpus.py` now reads the *previous* `papers_full.json` (if one
+exists) before rebuilding, and re-applies any `authors_detail` it finds there
+to matching papers that don't already have richer detail from `enriched.json`.
+This makes reruns self-healing instead of a trap — the invariant "rerunning a
+script should never make the data worse" now actually holds. A regression test
+(`test_merge_corpus.py`) covers exactly this scenario.
+
+## Background scripts: small batches, re-read before each one
+
+`enrich_core_authors.py` originally loaded `papers_full.json` once into memory
+and saved its own copy every 100 papers. That's what let the carry-over bug
+above actually happen in practice: while one run sat in memory for hours, a
+`merge_corpus.py` rerun updated the file on disk, and the next 100-paper save
+overwrote those newer changes with the stale in-memory snapshot — observed as
+`core_relevant` flip-flopping between two counts across consecutive
+`aggregate.py` runs with no code changes in between.
+
+Fix, and the pattern to follow for any future long-running script that
+patches this file: re-read `papers_full.json` from disk at the start of every
+small batch (`BATCH_SIZE = 20`), process just that batch, write immediately
+after. The window in which this process's view of the file can go stale is
+now one batch, not one run. Also tracks consecutive lookup failures and exits
+early past a threshold (`MAX_CONSECUTIVE_FAILURES = 30`) instead of grinding
+through thousands of doomed requests once OpenAlex's rate/daily budget is
+exhausted — a long streak of failures is a budget signal, not evidence this
+particular batch of papers is unusually hard to find.
+
+## Two concurrent backfills, one shared file: side files + a single merge step
+
+Wanted `fetch_citations_openalex.py` and `build_citation_graph.py` to run at
+the same time (one is OpenAlex-rate-limited, the other isn't, so running both
+keeps total progress moving instead of sitting idle waiting on a budget). The
+first version had both directly read-batch-write `papers_full.json`, same
+pattern as `enrich_core_authors.py`. That's safe for *one* long-running
+writer (each batch re-reads fresh, see the section above) but not two at
+once: each only re-reads at the start of its own batch, so if both happen to
+flush within the same few-second window, one silently clobbers the other's
+just-written batch. Caught this before it caused real damage — both were
+launched, stopped again within seconds once the race was noticed, and
+neither had reached its first write yet.
+
+Fix: each backfill writes only to its own exclusively-owned side file
+(`data/citations_openalex.json`, `data/citation_graph.json`) and never
+touches `papers_full.json`. `apply_citation_sources.py` is the only script
+that writes citation data onto `papers_full.json`, and it's a single,
+short-lived process — safe to run anytime, including while either backfill
+is still going, since it only *reads* their side files. General pattern for
+any future pair of scripts that might run concurrently: never have two
+long-running processes both own writes to the same shared file, even with a
+"re-read before each batch" safeguard — give each its own output and merge
+in one place instead.
+
+## Removing the citation-crawl pilot silently emptied the world map
+
+Not caught until the user noticed the Countries map had "lost all color."
+Root cause: the citation-crawl pilot (`data/enriched.json`, excluded from
+the corpus in an earlier change -- see the pilot-exclusion section above)
+was, until then, the *only* part of the corpus where a paper could have both
+country data (from its from-the-start author/institution detail) and a
+citation count (Scholar-sourced) at the same time. Every other citation
+source added since then (`enrich_core_authors.py` for affiliations,
+`fetch_citations_openalex.py` / `build_citation_graph.py` for citations)
+fills in one or the other, not both together for the same papers -- so
+removing the pilot dropped the countries-with-a-citation-count overlap to
+*zero*, and every country tile rendered at the same flat "0 citations" color.
+
+Two lessons: (1) a page can look broken even when every individual data
+source and script is working exactly as designed, if the *combination* they
+depend on stops existing -- worth actually checking cross-field overlap
+(`sum(1 for p in papers if p['countries'] and p['citations_weighted'] is not
+None)`) after a change that touches either author or citation enrichment, not
+just checking each field's coverage in isolation. (2) `apply_citation_sources.py`
++ `aggregate.py` need to actually be rerun for a citation backfill's progress
+to reach the live site -- the backfill scripts writing their side files isn't
+enough on its own, and it's easy to forget this step exists since the two
+backfills run unattended in the background.
+
+## In-corpus citations: fetching and matching are two separate phases
+
+`build_citation_graph.py` originally fetched a PDF, matched its references
+against the corpus, and kept only the matches — a reference to a paper not
+yet in the corpus was silently discarded. That's real information loss: the
+corpus keeps growing (more venues, more years), so a reference that doesn't
+match today plausibly will once the paper it points to gets pulled later —
+but the discard-on-no-match design meant recovering that edge required
+re-downloading and re-parsing the same PDF from scratch.
+
+Fixed by splitting fetching from matching. Fetching (`fetch_phase`, and
+`fetch_affiliations_arxiv.py`'s own ar5iv fetch) saves every extracted raw
+reference entry to its own file, matched or not, and is skipped on future
+runs once a paper's raw list is saved. Matching (`match_phase`) is pure
+local string comparison against the current corpus and reruns in full every
+single time this script is invoked, fetch or no fetch — cheap enough to
+always redo, and it means a corpus expansion is picked up automatically by
+the next scheduled run, with zero new network requests for papers already
+scanned. `data/citation_graph.json` is now purely the *output* of the match
+phase (fully overwritten each run), not something matches are appended to
+incrementally.
+
+Same reasoning extends to using ar5iv's bibliography (see
+`fetch_affiliations_arxiv.py`) as a second raw-reference source alongside
+the CVF-PDF one: it's a strictly better source where it's available (real
+`<li>`-per-entry structure vs. PDF-layout-dependent text splitting) and,
+since that page is already being downloaded for affiliations, adding it
+cost no extra network traffic at all.
+
+## Improving av_weight: a learned classifier, not an LLM
+
+The abstract-only tier of `av_weight_and_relevance` (0.08 / 0.2 / 0.5 by
+distinct AV-term count) is the weakest part of the classifier -- those
+numbers were hand-picked, not derived from anything. Considered an LLM pass
+over each abstract instead; rejected for this project specifically: no paid
+API (a standing preference, see [[feedback_no_paid_apis]] in memory), and a
+local model on this machine (8-core CPU, no discrete GPU) would take
+1.5-4 days for the full ~66k-paper corpus -- only a bounded subset (the
+~2,340 abstract-only-matched papers the tier logic actually applies to)
+is realistically feasible, and even then loses the auditability every other
+part of this pipeline has: `classify.py` can be read top to bottom and you
+know exactly why any paper scored what it did, which isn't true of an LLM's
+per-paper judgment at scale.
+
+Landed on a small linear classifier instead, trained on hand-labeled
+examples: `select_labeling_candidates.py` draws a stratified sample (even
+counts across the three current tiers, not a flat random sample, so the
+label set actually covers the range) from those 2,340 papers;
+`build_labeling_tool.py` stamps them into a self-contained HTML tool
+(`label_relevance.html`, gitignored -- generated, not source) for a human to
+label Core/Adjacent one at a time, no server needed. Once labeled, the plan
+is to train on scikit-learn locally (instant on this hardware for a dataset
+this size) but bake the resulting coefficients back into `classify.py` as a
+plain weighted-term dict rather than shipping a pickled model -- same
+"grep-able, no black box" property the keyword list already has, just with
+weights that came from real labeled examples instead of guesses. Title-match
+(-> weight 1.0) is untouched; this only targets the abstract-only path.
+
+## Second opinion: a local LLM, graded against hand labels, not trusted blind
+
+After the first classifier attempt (see above) turned up 15 of 28 AV terms
+with zero training examples, decided to also try a local LLM as an
+independent second opinion rather than only gathering more hand labels one
+at a time. Installed Ollama + `qwen2.5:7b-instruct` (~4.7GB, one-time
+download) specifically because it runs locally, at no per-call cost, on
+this machine's CPU (~8s/paper warm -- no discrete GPU, see the earlier
+hardware check this session) -- consistent with the standing no-paid-API
+preference. `fetch_llm_relevance_labels.py` labels four pools in priority
+order (the 65-paper hand-labeled eval set first, then the abstract-only
+tier pool this whole effort is about, then bounded zero-match and
+title-match samples), so an interrupted run still produced the most useful
+work first.
+
+Two things kept deliberately separate: `data/relevance_labels.json` (human
+ground truth) is never written by the LLM script, and
+`data/relevance_labels_llm.json` (LLM output, tagged per-record with model
+name/pool/timestamp) is never read by anything that treats it as ground
+truth. `evaluate_llm_relevance.py` grades the LLM only on the
+"eval_groundtruth" pool -- the exact 65 papers a human already labeled -- so
+the accuracy number is a real comparison, not the LLM grading its own
+homework on papers nobody has independently checked. The LLM's labels on
+the other three pools are a candidate training set, not assumed-correct
+data, until/unless the eval-pool accuracy says they're trustworthy.
+
+Prompt criteria came directly from the user, not invented: a paper is
+"core" only if AV technology is DIRECTLY APPLIED, not merely
+potentially-applicable (a generic object-detection paper doesn't count just
+because AV systems use object detection); using an AV-specific dataset
+(nuScenes/KITTI/Waymo/Argoverse/BDD100K/CARLA) is strong evidence; the bare
+phrase "autonomous vehicle" appearing once is a hint, not sufficient alone.
+Spot-checked against MonoDepth2 (a general depth-estimation paper that lists
+autonomous driving as one of several applications) before the full run --
+correctly labeled "adjacent" with that exact reasoning.
+
+## Client-side citation-source switch, not a server rebuild
+
+Wanted a way to pick a single citation source (OpenAlex only, in-corpus
+only) and see it applied consistently everywhere, without regenerating
+`stats.json` per choice -- that would mean re-running `aggregate.py` (and
+redeploying) for every reader who wants a different view, which doesn't
+scale and isn't even meaningful for a personal display preference.
+
+Instead: `stats.json` already carries every paper's full `citations_by_source`
+(one count per source, not just the blended pick) -- so the source can be
+chosen entirely client-side. `filters.js`'s `applyCitationSource(stats)`
+mutates `p.citations`/`p.citations_weighted` on every paper in place,
+right after `stats.json` is fetched and before anything renders. Every page
+already reads those two fields directly off `all_papers` (see "Filters
+compute client-side" above) rather than a server-precomputed leaderboard, so
+this one function is the only change most pages needed -- one extra
+`.then(applyCitationSource)` in the fetch chain.
+
+Two real gaps caught while wiring this up, not by inspection alone:
+- **`top_papers`** is a server-side slice of the same list as `all_papers`,
+  but after `JSON.parse` a paper appearing in both is two independent JS
+  objects, not shared references -- mutating one array left the other
+  showing stale numbers. `applyCitationSource` mutates both.
+- **`best_by_year`** (shown on the Papers page) was a server-precomputed
+  field using the server's blended priority, which wouldn't move when the
+  client-side source changed. Replaced with a client-side recomputation
+  from `all_papers`, mirroring `aggregate.py`'s own logic (skip papers with
+  no citation data, pick the highest `citations_weighted` per year).
+- **ICRA/IROS's citation counts** (~379 papers, from `fetch_ieee_openalex.py`)
+  predate `citations_by_source` and only ever lived in the old flat
+  `citations` field -- that data IS OpenAlex's `cited_by_count`, just
+  untagged. Without migrating it, picking "OpenAlex only" would have
+  silently shown zero data for most of what OpenAlex actually covers.
+  `citations_by_source_for_client()` folds it in at the point `stats.json`
+  is written (`papers_full.json` itself is left alone).
+
+The preference is saved to `localStorage` (a personal display setting, not
+part of any shareable URL) and set from a picker on the Methodology page.
+`nav.js` shows a small badge when a non-default source is active, reading
+`localStorage` directly rather than depending on `filters.js`'s exports --
+`nav.js` loads before `filters.js` on every page, and duplicating one lookup
+was simpler than reordering every page's script tags.
+
+## Citations: `None` vs `0`
+
+`citation_count()` returns `None`, not `0`, when no source reported a citation
+figure for a paper. This distinction is load-bearing everywhere a citation
+count is aggregated: treating "unknown" as "definitely zero" silently drags
+every average toward zero for whichever years/venues/authors happen to have
+sparse citation-data coverage (most of 2013–2020, for instance, since
+CVF/DBLP/PMLR proceedings pages don't expose citation counts at all). Fixed
+end-to-end: `aggregate.py`'s sort keys, `best_by_year`/`best_by_venue`
+selection (a paper with no citation data can't be crowned "best"), and
+`filters.js`'s `aggregateByDimension` (an uncited paper counts toward a
+group's paper count but not its average's denominator) all treat `None`
+distinctly from a real `0`. Frontend display falls back to "—", never a
+misleading "0".
+
+## Venue name aliasing and merging
+
+Different sources report the same venue under different names (OpenAlex says
+"Advances in Neural Information Processing Systems", the CVF/PMLR pulls say
+"NeurIPS"). `VENUE_ALIASES` in `aggregate.py` normalizes these at the source
+so the same venue doesn't silently split into two rows on every venue-grouped
+view. Separately, `venues.html` merges a handful of one-off IEEE journal
+placements (TPAMI, IEEE RA-L, IEEE T-IV, IEEE Comm. Surveys — a few papers
+each, picked up incidentally by the citation-crawl pilot, not part of the 8
+full-proceedings pulls this corpus is built around) into a single "IEEE
+(other journals)" row specifically on that page, so a handful of near-empty
+rows don't clutter the primary venue comparison. This merge is display-only —
+the underlying `venue` field on each paper is untouched, so filtering by the
+real venue name elsewhere still works.
+
+## Why the IEEE source badge is text, not a hotlinked logo
+
+Tried hotlinking IEEE Xplore's own favicon first (same pattern already used
+for Google Scholar author photos — reference the source's own asset, don't
+copy it). Confirmed via `curl` that IEEE's CloudFront blocks it outright
+(403), and public favicon-proxy services (Google's `s2/favicons`, DuckDuckGo's
+icon proxy) both fail to resolve `ieeexplore.ieee.org` to anything but a
+generic fallback icon — so there's no reliable image to hotlink. Landed on a
+small text badge in IEEE's own brand blue (`#00629B`) instead: no network
+dependency, nothing to silently break again, and it doesn't claim to be their
+logo asset.
+
+## Scholar profile/photo lookups: confirm-or-skip, no guessing
+
+Only ~50% of the top-50-researchers pass was completed by hand — for the
+rest, a Scholar search either didn't surface a dedicated profile card or
+surfaced multiple same-named candidates with no way to confirm which one
+co-authored the actual paper in this corpus. In every case, the profile was
+cross-checked against a real signal (the co-author list of a specific paper
+they wrote, or a matching institution/field in their Scholar bio) before being
+saved to `data/scholar_profiles.json`. Ambiguous matches were left unresolved
+rather than guessed — a wrong photo/profile linked to the wrong person is
+worse than a missing one, especially for a site whose whole premise is being
+defensible about what it claims.
+
+## ICRA/IROS re-included after cleaning stray HTML markup
+
+Previously excluded from the published corpus (`EXCLUDED_VENUES` in
+`merge_corpus.py`) over "data quality concerns on the OpenAlex-sourced pull."
+On close review the actual defect was narrow and fixable: a handful of
+titles/abstracts (icra2022: 3, iros2021: 2, iros2022: 4) carried raw HTML
+markup straight from OpenAlex's own metadata (e.g. `R<sup>3</sup>LIVE`)
+instead of plain text. Fixed by stripping tags both in the already-fetched
+`data/venues/icra*.json`/`iros*.json` files and in `fetch_ieee_openalex.py`
+itself (`strip_html()`, applied to title and reconstructed abstract) so future
+pulls come out clean. The handful of entries genuinely missing an abstract
+(~1% of each file) are dropped automatically by `aggregate.py`'s
+`is_fully_processed()` gate like any other incomplete paper, no special
+handling needed. `EXCLUDED_VENUES` removed from `merge_corpus.py`.
+
+Coverage stays sparse (only ICRA2022, IROS2021/2022 — see PIPELINE.md) since
+that's a property of OpenAlex's per-year source cataloging, not the markup
+bug; widening it further would mean OpenAlex API calls for more years, which
+is a real ask given citations were dropped as an OpenAlex dependency (below) —
+worth doing only if the extra years' coverage justifies keeping the API
+integration around for it.
+
+## Citation counts: dropped OpenAlex as a source entirely, not just from the UI
+
+The citation-source picker was removed from the UI earlier (see "Citation
+source: default to X" section) in favor of in-corpus-only citations, but
+`fetch_citations_openalex.py` kept running and `apply_citation_sources.py`
+kept merging its output into `citations_by_source.openalex` on every paper —
+data fetched from OpenAlex's rate-limited API that nothing on the site ever
+reads anymore. Deleted `fetch_citations_openalex.py` outright and simplified
+`apply_citation_sources.py` to only merge the in-corpus citation graph.
+OpenAlex is still used elsewhere for two things with no replacement source:
+`enrich_core_authors.py`'s author/institution backfill, and the ICRA/IROS
+venue-listing pull itself (IEEE Xplore blocks direct scraping — see
+PIPELINE.md) — neither of those is a citation-count dependency, so removing
+the citation one doesn't touch them.
+
+## Citation counts: the ICRA/IROS OpenAlex exception was still there, and shipped a real bug
+
+The entry above said OpenAlex was dropped "as a source entirely" — untrue for one path.
+`fetch_ieee_openalex.py` (ICRA/IROS's only source, see PIPELINE.md) wrote OpenAlex's
+`cited_by_count` onto a flat `citations` field, and `citation_count()` (`aggregate.py`) still
+had it as a fallback after `citations_by_source.in_corpus`. That fallback fed the *ranking*
+(`top_papers`, author/institution leaderboards, `best_by_year`/`best_by_venue`) while every
+page's display always showed the in-corpus count only (`filters.js`'s `applyCitationSource`) —
+so a paper could rank in the top 50 on an external number while displaying 0 citations.
+User-reported: "top papers 38-50 all have no citations... they clearly are not top papers."
+
+Fixed end-to-end, not just in the ranking function: `citation_count()` and
+`citations_by_source_for_client()` now read only `citations_by_source.in_corpus`, no fallback
+chain at all. `fetch_ieee_openalex.py` no longer captures `cited_by_count`. `enrich.py`'s
+citation-crawl-pilot output (`data/enriched.json`, unread by the site, kept only for reference —
+see PIPELINE.md) no longer captures its OpenAlex lookup's citation count either, though its
+Scholar-scraped count (`citations_scholar`, a different provider, not OpenAlex) was left alone.
+The flat `citations`/`citations_updated` fields already on disk were stripped from
+`papers_full.json`, the three cached ICRA/IROS venue-listing files, and `enriched.json` — the
+site only ever ranks and displays its own in-corpus citation graph now, with nothing left in
+the data that could feed a repeat of this bug.
+
+## OpenAlex dropped from future venue expansion (paid API, not just paid citations)
+
+While investigating widening ICRA/IROS coverage and pulling WACV/ECCV's pre-2020 years (also
+OpenAlex-only, per the earlier decision above), a plain OpenAlex API call returned
+`{"error":"Rate limit exceeded","message":"Insufficient budget...","dailyRemainingUsd":0}` —
+OpenAlex has moved to a paid/budget-limited API since this app was built, and today's free
+allotment was already spent by `enrich_core_authors.py` earlier in the session. Per this
+project's no-paid-APIs rule, decided not to return to OpenAlex at all rather than wait for a
+daily reset and hit the same wall repeatedly. ICRA/IROS stay at their current two years; WACV
+pre-2020 and ECCV pre-2018 (also not on their primary sites — see PIPELINE.md) are not pursued.
+
+## RSS/ICLR/AAAI added via DBLP, no abstracts, `is_fully_processed` relaxed
+
+Wanted 2013-present coverage for these three (RSS, ICLR, AAAI), each hitting a source-specific
+scraping block on its own primary site:
+- **RSS** (roboticsproceedings.org): title/authors/PDF per paper exist, but the site's own pages
+  give no reliable way to resolve a volume number (e.g. "rss10") to a publication year — tried
+  inferring it from a global `grep` over the page (wrong: sorts/dedupes hrefs, destroying the
+  volume-to-external-site pairing) before catching the mistake and switching to DBLP.
+- **ICLR** (OpenReview): the bulk notes API now returns `403 ChallengeRequiredError` — a
+  browser-solvable CAPTCHA-style challenge, not scriptable.
+- **AAAI** (ojs.aaai.org): the archive page is JS-rendered (5.9KB of shell HTML with no content),
+  not scrapable via a plain HTTP fetch.
+
+DBLP indexes all three with the exact same per-year HTML structure already handled by
+`fetch_dblp_cvpr_gaps.py` (the CVPR-2018-2020-gap fallback) — confirmed by testing its regex
+against a live DBLP page for each venue before writing anything. Renamed that script to
+`fetch_dblp_listing.py` and generalized it (year ranges, more conferences) rather than writing
+three near-duplicate scripts.
+
+DBLP has never had abstracts for anything, at any venue — so `aggregate.py`'s
+`is_fully_processed()` gate (added earlier this session, previously required title + abstract +
+year) had to be relaxed to just title + year, or these ~26,000 papers would classify fine but get
+silently dropped at the very last step. `classify.py` already falls back to title-only keyword
+matching when `abstract` is `None` (`abstract_l = abstract or ""`), so nothing else needed to
+change — these papers just carry a weaker relevance/category signal than the rest of the corpus,
+documented as such in Methodology's "Known gaps."
+
+## Filters compute client-side from `all_papers`, not precomputed leaderboards
+
+Early versions had `aggregate.py` precompute `top_authors`/`top_institutions`/
+etc. as fixed top-N lists. That made every filter (category, venue, country,
+institution) a dead end on any page except Overview, since a country/institution
+filter can't re-slice a leaderboard that was already truncated server-side.
+`filters.js`'s `aggregateByDimension` now recomputes rankings client-side from
+the full `all_papers` array for whatever subset the active filters leave
+behind — every page's filters compose with every other page's, uniformly,
+instead of each page needing its own bespoke precomputed slice.

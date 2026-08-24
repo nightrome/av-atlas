@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; worker-src 'self'">
+<title>AV Atlas — Authors (SQLite prototype)</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme-light.css">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+  .proto-banner {
+    background: var(--panel2); border: 1px dashed var(--border); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 16px; font-size: 0.88em; color: var(--muted);
+  }
+  .proto-banner strong { color: var(--text); }
+  .stats-row { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.85em; color: var(--muted); margin-top: 8px; }
+  .stats-row b { color: var(--accent); font-variant-numeric: tabular-nums; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover { background: var(--panel2); }
+  td a { color: var(--accent); text-decoration: none; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field-label { font-size: 0.74em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 600; }
+  .filter-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; margin-bottom: 10px; }
+  .filter-bar select, .filter-bar input {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 8px; font-size: 0.88em; min-height: 32px;
+  }
+  .pagination-row { display: flex; align-items: center; gap: 8px; font-size: 0.85em; color: var(--muted); margin-top: 10px; }
+  .pagination-row button {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+    padding: 4px 10px; font-size: 0.95em; cursor: pointer;
+  }
+  .pagination-row button:disabled { opacity: 0.4; cursor: default; }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+
+<div class="proto-banner">
+  <strong>Prototype, not linked from the site nav.</strong> Same Authors leaderboard as
+  <a href="authors.html">authors.html</a>, but instead of fetching the ~19MB
+  <code>stats.json</code> up front, this queries a SQLite file (<code>av_research_prototype.db</code>)
+  over HTTP range requests via <a href="https://github.com/phiresky/sql.js-httpvfs" target="_blank" rel="noopener">sql.js-httpvfs</a> --
+  the browser only downloads the specific database pages a query actually touches.
+  Byte counters below are real, measured this session.
+</div>
+
+<h2>Authors <span style="color:var(--muted); font-weight:400; font-size:0.7em;">(SQLite prototype)</span></h2>
+
+<div class="panel">
+  <div class="filter-bar">
+    <div class="field">
+      <span class="field-label">Search</span>
+      <input type="search" id="search-input" placeholder="Search author names…" autocomplete="off">
+    </div>
+    <div class="field">
+      <span class="field-label">Show</span>
+      <select id="relevance-select">
+        <option value="core">AV relevant</option>
+        <option value="adjacent">Not AV relevant</option>
+      </select>
+    </div>
+    <div class="field">
+      <span class="field-label">Category</span>
+      <select id="category-select"><option value="">All categories</option></select>
+    </div>
+    <div class="field">
+      <span class="field-label">Venue</span>
+      <select id="venue-select"><option value="">All venues</option></select>
+    </div>
+    <div class="field">
+      <span class="field-label">Sort by</span>
+      <select id="sort-select">
+        <option value="total">Total citations</option>
+        <option value="avg">Citations / paper</option>
+        <option value="papers">Paper count</option>
+      </select>
+    </div>
+    <div class="field">
+      <span class="field-label">Min.</span>
+      <select id="min-select">
+        <option value="1">All (incl. 1 paper)</option>
+        <option value="2">2+ papers</option>
+        <option value="10" selected>10+ papers</option>
+        <option value="100">100+ papers</option>
+      </select>
+    </div>
+  </div>
+  <div id="result-count" style="color:var(--muted); font-size:0.85em;"></div>
+</div>
+
+<div class="panel">
+  <table>
+    <thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num">Total citations</th><th class="num">Citations / paper</th></tr></thead>
+    <tbody id="authors-body"></tbody>
+  </table>
+  <div class="pagination-row" id="pagination-row"></div>
+</div>
+
+<div class="panel">
+  <h2 style="margin-top:0;">Measured transfer this session</h2>
+  <div class="stats-row" id="db-stats">Loading database worker…</div>
+</div>
+
+<script src="filters.js"></script>
+<script src="vendor/sqljs-httpvfs/sqljs-httpvfs.js"></script>
+<script>
+let dbWorker = null, worker = null;
+let page = 1;
+const PAGE_SIZE = 50;
+
+async function initDb() {
+  const { createDbWorker } = window;
+  const config = [{
+    from: "inline",
+    config: {
+      serverMode: "full",
+      // Also resolved inside the worker (vendor/sqljs-httpvfs/), same
+      // reasoning as the wasmUrl fix below -- the .db file actually lives
+      // two directories up, next to this page.
+      url: "../../av_research_prototype.db",
+      requestChunkSize: 4096,
+    },
+  }];
+  const result = await createDbWorker(
+    config,
+    "vendor/sqljs-httpvfs/sqlite.worker.js",
+    // Resolved INSIDE the worker, relative to the worker script's own
+    // location (vendor/sqljs-httpvfs/), not this page's -- a full
+    // "vendor/sqljs-httpvfs/sql-wasm.wasm" here 404s by resolving to a
+    // doubled-up vendor/sqljs-httpvfs/vendor/sqljs-httpvfs/... path.
+    "sql-wasm.wasm",
+  );
+  dbWorker = result.db;
+  worker = result.worker;
+}
+
+function fmtBytes(n) {
+  if (n == null) return '—';
+  if (n < 1024) return n + ' B';
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+  return (n / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
+async function refreshDbStats() {
+  const el = document.getElementById('db-stats');
+  try {
+    const stats = await worker.getStats();
+    if (!stats) { el.textContent = 'No requests yet.'; return; }
+    el.innerHTML = '';
+    const items = [
+      ['Database file size', fmtBytes(stats.totalBytes)],
+      ['Actually downloaded so far', fmtBytes(stats.totalFetchedBytes)],
+      ['HTTP range requests made', stats.totalRequests],
+    ];
+    items.forEach(([label, val]) => {
+      const span = document.createElement('span');
+      const b = document.createElement('b');
+      b.textContent = String(val);
+      span.appendChild(document.createTextNode(label + ': '));
+      span.appendChild(b);
+      el.appendChild(span);
+    });
+  } catch (e) {
+    el.textContent = 'Stats unavailable: ' + e.message;
+  }
+}
+
+function currentFilters() {
+  return {
+    relevance: document.getElementById('relevance-select').value,
+    category: document.getElementById('category-select').value || null,
+    venue: document.getElementById('venue-select').value || null,
+    sort: document.getElementById('sort-select').value,
+    minPapers: parseInt(document.getElementById('min-select').value, 10),
+    query: document.getElementById('search-input').value.trim(),
+  };
+}
+
+function buildWhere(f) {
+  const clauses = ['p.av_relevance = ?'];
+  const params = [f.relevance];
+  if (f.category) { clauses.push('p.category = ?'); params.push(f.category); }
+  if (f.venue) { clauses.push('p.venue = ?'); params.push(f.venue); }
+  if (f.query) { clauses.push('au.name LIKE ?'); params.push('%' + f.query + '%'); }
+  return { where: clauses.join(' AND '), params };
+}
+
+// A `SELECT DISTINCT ... ORDER BY` skip-scan over an httpvfs-backed index
+// turned out to be surprisingly expensive here (measured: ~12MB just to
+// list ~23 categories + ~24 venues) -- lots of small scattered range
+// requests for what should be a handful of known values. Categories and
+// venues are a small, effectively-static set that doesn't need a database
+// round trip to populate a dropdown at all; CATEGORY_LABELS already lists
+// every real category (from filters.js), and the venue list mirrors what
+// every other page's filter bar already hardcodes.
+const KNOWN_VENUES = [
+  'AAAI', 'ACCV', 'BMVC', 'CVPR', 'CoRL', 'ECCV', 'GCPR', 'ICCV', 'ICLR',
+  'ICML', 'ICRA', 'IJCV', 'IJRR', 'IROS', 'ITSC', 'IV', 'NeurIPS', 'RA-L',
+  'RSS', 'T-ITS', 'T-RO', 'TPAMI', 'WACV', 'arXiv',
+];
+
+function populateCategoryVenueOptions() {
+  const catSel = document.getElementById('category-select');
+  Object.keys(window.CATEGORY_LABELS || {}).sort().forEach(cat => {
+    const opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = window.categoryLabel(cat);
+    catSel.appendChild(opt);
+  });
+  const venSel = document.getElementById('venue-select');
+  KNOWN_VENUES.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = v;
+    venSel.appendChild(opt);
+  });
+  return Promise.resolve();
+}
+
+async function render() {
+  const f = currentFilters();
+  const minPapersClause = f.query ? '' : `HAVING papers > ${f.minPapers - 1}`;
+  const orderCol = { total: 'citations', avg: 'avg_citations', papers: 'papers' }[f.sort] || 'citations';
+  // No category/venue/year filter and no search -- the common case, and the
+  // one query shape SQLite's planner handles badly over the raw join
+  // (confirmed: it drives from the 255k-row authors table regardless of
+  // indexes, touching ~45MB of an ~90MB file for what should be a top-50
+  // lookup). author_stats is a build-time-precomputed (author, relevance)
+  // aggregate specifically for this shape -- same query, ~420KB touched
+  // instead. A category/venue/year filter or a search term is rare and much
+  // more selective, so it falls back to the live per-paper join below,
+  // uncached, which is fine.
+  const fastPath = !f.category && !f.venue && !f.query;
+
+  let listSql, countSql, params;
+  if (fastPath) {
+    params = [f.relevance];
+    // author_stats already stores one row per (author, relevance) with
+    // `papers` as a plain aggregated column -- a plain WHERE, not HAVING
+    // (HAVING requires an actual GROUP BY in this query; there isn't one,
+    // the grouping already happened at build time).
+    const minPapersWhere = f.query ? '' : `AND s.papers > ${f.minPapers - 1}`;
+    listSql = `
+      SELECT au.name AS name, s.papers AS papers, s.citations AS citations,
+             CASE WHEN s.cited_papers > 0 THEN CAST(s.citations AS REAL) / s.cited_papers ELSE NULL END AS avg_citations
+      FROM author_stats s
+      JOIN authors au ON au.id = s.author_id
+      WHERE s.av_relevance = ? ${minPapersWhere}
+      ORDER BY ${orderCol} DESC NULLS LAST
+      LIMIT ${PAGE_SIZE} OFFSET ${(page - 1) * PAGE_SIZE}
+    `;
+    countSql = `SELECT COUNT(*) AS n FROM author_stats s WHERE s.av_relevance = ? ${minPapersWhere}`;
+  } else {
+    const { where, params: whereParams } = buildWhere(f);
+    params = whereParams;
+    listSql = `
+      SELECT au.name AS name,
+             COUNT(DISTINCT pa.paper_id) AS papers,
+             COALESCE(SUM(p.citations), 0) AS citations,
+             CASE WHEN SUM(CASE WHEN p.citations IS NOT NULL THEN 1 ELSE 0 END) > 0
+                  THEN CAST(SUM(p.citations) AS REAL) / SUM(CASE WHEN p.citations IS NOT NULL THEN 1 ELSE 0 END)
+                  ELSE NULL END AS avg_citations
+      FROM papers p
+      CROSS JOIN paper_authors pa ON pa.paper_id = p.id
+      CROSS JOIN authors au ON au.id = pa.author_id
+      WHERE ${where}
+      GROUP BY au.id
+      ${minPapersClause}
+      ORDER BY ${orderCol} DESC NULLS LAST
+      LIMIT ${PAGE_SIZE} OFFSET ${(page - 1) * PAGE_SIZE}
+    `;
+    countSql = `
+      SELECT COUNT(*) AS n FROM (
+        SELECT au.id, COUNT(DISTINCT pa.paper_id) AS papers
+        FROM papers p
+        CROSS JOIN paper_authors pa ON pa.paper_id = p.id
+        CROSS JOIN authors au ON au.id = pa.author_id
+        WHERE ${where}
+        GROUP BY au.id
+        ${minPapersClause}
+      )
+    `;
+  }
+
+  const [rows, countRows] = await Promise.all([
+    // Despite the .d.ts signature suggesting variadic (...params), the
+    // actual RPC call over the Comlink worker boundary only binds correctly
+    // when params is passed as a single array argument -- spreading them
+    // (dbWorker.query(sql, ...params)) silently binds nothing and the WHERE
+    // clause matches zero rows instead of erroring (confirmed directly:
+    // db.query(sql, 'core') -> 0 rows, db.query(sql, ['core']) -> 18989).
+    dbWorker.query(listSql, params),
+    dbWorker.query(countSql, params),
+  ]);
+  const total = countRows[0] ? countRows[0].n : 0;
+
+  document.getElementById('result-count').textContent = `${total.toLocaleString()} authors`;
+
+  const tbody = document.getElementById('authors-body');
+  tbody.innerHTML = '';
+  rows.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    const rank = document.createElement('td');
+    rank.textContent = (page - 1) * PAGE_SIZE + i + 1;
+    const name = document.createElement('td');
+    name.textContent = r.name;
+    const papers = document.createElement('td');
+    papers.className = 'num';
+    papers.textContent = r.papers;
+    const cit = document.createElement('td');
+    cit.className = 'num';
+    cit.textContent = r.citations;
+    const avg = document.createElement('td');
+    avg.className = 'num';
+    avg.textContent = r.avg_citations == null ? '—' : Math.round(r.avg_citations);
+    tr.append(rank, name, papers, cit, avg);
+    tbody.appendChild(tr);
+  });
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const pagRow = document.getElementById('pagination-row');
+  pagRow.innerHTML = '';
+  const prev = document.createElement('button');
+  prev.textContent = '‹ Prev';
+  prev.disabled = page <= 1;
+  prev.addEventListener('click', () => { page--; render(); });
+  const label = document.createElement('span');
+  label.textContent = `Page ${page} of ${totalPages}`;
+  const next = document.createElement('button');
+  next.textContent = 'Next ›';
+  next.disabled = page >= totalPages;
+  next.addEventListener('click', () => { page++; render(); });
+  pagRow.append(prev, label, next);
+
+  refreshDbStats();
+}
+
+['relevance-select', 'category-select', 'venue-select', 'sort-select', 'min-select'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => { page = 1; render(); });
+});
+let searchDebounce = null;
+document.getElementById('search-input').addEventListener('input', () => {
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(() => { page = 1; render(); }, 200);
+});
+
+initDb()
+  .then(() => populateCategoryVenueOptions())
+  .then(() => render())
+  .catch(err => {
+    document.getElementById('authors-body').textContent = '';
+    document.getElementById('result-count').textContent = 'Could not load database: ' + err.message;
+    console.error(err);
+  });
+</script>
+<script src="nav.js"></script>
+</body>
+</html>

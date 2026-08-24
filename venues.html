@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas — Venues</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme-light.css">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .page-title { margin: 0 0 16px; font-size: 1.5em; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover { background: var(--panel2); }
+  td a { color: var(--text); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  .best-paper-cell {
+    /* A fixed width, not just max-width -- under a table's default "auto"
+       column-sizing, an inline-block child sized only by max-width can still
+       let the column (and this text) grow to fit the content instead of
+       clipping it. A hard width forces the column itself to that size. */
+    display: block; width: 280px; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .line-chart-wrap { position: relative; }
+  .line-chart-wrap svg { width: 100%; height: auto; display: block; }
+  .series-line { fill: none; stroke-width: 2.5; opacity: 0.9; }
+  .series-dot { cursor: pointer; }
+  .axis-line { stroke: var(--border); }
+  .axis-label { fill: var(--muted); font-size: 10.5px; }
+  .crosshair { stroke: var(--muted); stroke-dasharray: 3 3; pointer-events: none; }
+  .legend-row { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 12px 0 4px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.82em; color: var(--text); cursor: pointer; user-select: none; padding: 2px 4px; border-radius: 5px; }
+  .legend-item:hover { background: var(--panel2); }
+  .legend-item.off { color: var(--muted); text-decoration: line-through; opacity: 0.6; }
+  .legend-item .swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .tooltip-box { position: absolute; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 0.8em; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25); min-width: 140px; display: none; z-index: 10; }
+  .tooltip-box .tt-year { font-weight: 700; margin-bottom: 4px; }
+  .tooltip-box .tt-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .tooltip-box .tt-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .tooltip-box .tt-val { margin-left: auto; font-variant-numeric: tabular-nums; padding-left: 10px; }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<div id="filter-bar-container"></div>
+
+<div class="panel" id="timeline-panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Venues over time</h2>
+  </div>
+  <div class="line-chart-wrap" id="timeline-chart-wrap">
+    <svg id="timeline-chart"></svg>
+    <div class="tooltip-box" id="timeline-tooltip"></div>
+  </div>
+  <div class="legend-row" id="timeline-legend"></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">All venues</h2>
+    <div id="export-container"></div>
+  </div>
+  <p id="venues-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
+  <div id="pagination-container"></div>
+  <table><thead><tr><th>Venue</th><th>Years covered</th><th class="num">Papers</th><th class="num">AV papers</th><th class="num" title="Share of this venue's total published papers that were classified AV-relevant.">AV paper ratio</th><th class="num" title="How many other papers in this corpus cite a paper from this venue. Counted only within this corpus, never from an external database.">Total citations</th><th class="num" title="Total citations divided by AV paper count -- counted only over papers with a known citation count.">Citations / paper</th><th>Best paper</th></tr></thead>
+  <tbody id="venues-body"></tbody></table>
+</div>
+
+<script src="filters.js"></script>
+<script>
+let currentStats = null, currentFilters = null;
+let currentQuery = new URLSearchParams(location.search).get('q') || '';
+let currentTimelineDraw = null;
+const relevance = new URLSearchParams(location.search).get('relevance') || '';
+fetchStatsWithRelevance(relevance).then(stats => {
+  currentStats = stats;
+  currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'venues.html', {
+    showVenue: false,
+    showYear: true,
+    search: { placeholder: 'Search venue names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
+    relevance: true,
+    checkbox: {
+      id: 'exclude-preprints', label: 'Exclude preprints',
+      storageKey: 'venues-exclude-preprints', onChange: () => render(),
+    },
+    metrics: [
+      { key: 'avg', label: 'Citations / paper' },
+      { key: 'papers', label: 'Paper count' },
+      { key: 'best', label: "Best paper's citations" },
+    ],
+    // Which venues are actually about AV research (vs. a general venue that
+    // happens to publish the occasional AV-relevant paper) is a paper-count
+    // judgment call, so it's an adjustable filter like every other Min.
+    // control, not a fixed cutoff -- was a fixed >25-papers-or-bucketed-as-
+    // "Other" rule (still true for the Venue filter dropdown elsewhere,
+    // which is a very different use case: picking one specific venue to
+    // filter TO, not judging which venues count as real AV venues).
+    minPapers: {
+      default: 80,
+      options: [
+        { value: 1, label: 'All (incl. 1 paper)' },
+        { value: 10, label: '10+ AV papers' },
+        { value: 25, label: '25+ AV papers' },
+        { value: 80, label: '80+ AV papers' },
+        { value: 200, label: '200+ AV papers' },
+      ],
+    },
+    topN: {
+      default: 100, storageKey: 'venues-timeline-topn',
+      onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); render(); },
+    },
+  });
+  render();
+}).catch(err => {
+  document.getElementById('venues-body').textContent = 'Could not load stats.json: ' + err;
+});
+
+// numCols: column indices that are always right-aligned regardless of value
+// type -- needed for columns whose "no data" placeholder ('N/A', '—') is a
+// string, not a number, so the typeof-number inference below would
+// otherwise left-align just that one row's cell in an otherwise-numeric
+// column.
+function row(cells, numCols) {
+  const tr = document.createElement('tr');
+  cells.forEach((c, i) => {
+    const td = document.createElement('td');
+    if (i > 0 && (typeof c === 'number' || (numCols || []).includes(i))) td.className = 'num';
+    if (c instanceof Node) td.appendChild(c);
+    else td.textContent = c;
+    tr.appendChild(td);
+  });
+  return tr;
+}
+
+// null means no paper from that venue has a citation count at all (as
+// opposed to a real average of 0) -- show "—", not a misleading number.
+function fmtAvg(v) { return v == null ? '—' : v; }
+
+function bestPaperCell(best) {
+  if (!best) return '—';
+  const link = document.createElement('a');
+  link.className = 'best-paper-cell';
+  link.href = `paper.html?title=${encodeURIComponent(best.title)}`;
+  link.textContent = best.title;
+  link.title = best.title;
+  return link;
+}
+
+// null when total is 0 -- avoid a divide-by-zero showing as "—" vs a real 0%.
+function fmtRatio(papers, total) { return total ? `${((papers / total) * 100).toFixed(1)}%` : '—'; }
+
+function render() {
+  const stats = currentStats, filters = currentFilters;
+  let papers = filterPapers(stats.all_papers || [], filters);
+  const excludePreprints = document.getElementById('exclude-preprints');
+  if (excludePreprints && excludePreprints.checked) papers = papers.filter(p => p.venue !== 'arXiv');
+
+  const totalIndexed = (stats.corpus_stats || {}).by_venue || {};
+  // filters.minPapers is inclusive ("80+ AV papers"), aggregateByDimension's
+  // own minPapers is exclusive (> N) -- same -1 adjustment as every other
+  // page with a Min. control (see institutions.html).
+  const rows = aggregateByDimension(papers, p => [p.venue], { minPapers: (filters.minPapers || 1) - 1, minCitedForAvg: 3 });
+  const bestByVenue = {};
+  const yearRangeByVenue = {};
+  papers.forEach(p => {
+    if (!p.venue) return;
+    if (!bestByVenue[p.venue] || (p.citations || 0) > (bestByVenue[p.venue].citations || 0)) {
+      bestByVenue[p.venue] = p;
+    }
+    if (p.year) {
+      const r = yearRangeByVenue[p.venue] || [p.year, p.year];
+      yearRangeByVenue[p.venue] = [Math.min(r[0], p.year), Math.max(r[1], p.year)];
+    }
+  });
+  // Coverage starts wherever the corpus itself starts (its full scrape
+  // range), not the year of a venue's first AV-relevant paper -- a venue
+  // has been indexed since then even if AV papers only appear later.
+  const corpusStartYear = (stats.corpus_stats || {}).year_range ? stats.corpus_stats.year_range[0] : null;
+  rows.forEach(r => {
+    r.best = bestByVenue[r.name]; r.total = totalIndexed[r.name] || 0;
+    const yr = yearRangeByVenue[r.name];
+    const startYear = corpusStartYear != null ? corpusStartYear : (yr ? yr[0] : null);
+    const endYear = yr ? yr[1] : null;
+    r.yearRange = endYear == null ? '—' : (startYear === endYear ? `${endYear}` : `${startYear}–${endYear}`);
+  });
+
+  const query = currentQuery.trim().toLowerCase();
+  let shownRows0 = query ? rows.filter(r => r.name.toLowerCase().includes(query)) : rows;
+
+  const metric = getMetric('avg');
+  const sorters = {
+    avg: (a, b) => (b.avg_citations ?? -Infinity) - (a.avg_citations ?? -Infinity),
+    best: (a, b) => (b.best ? b.best.citations || 0 : 0) - (a.best ? a.best.citations || 0 : 0),
+    papers: (a, b) => b.papers - a.papers,
+  };
+  shownRows0.sort(sorters[metric] || sorters.avg);
+
+  // "Show top N" caps the list/table the same way it caps the timeline
+  // chart above -- previously it only affected the chart.
+  const topN = filters.topN || 100;
+  const matchCount = shownRows0.length;
+  shownRows0 = shownRows0.slice(0, topN);
+
+  document.getElementById('result-count').textContent = matchCount > topN
+    ? `${shownRows0.length} of ${matchCount} venues (top ${topN})`
+    : `${shownRows0.length} venues`;
+  const cs = stats.corpus_stats || {};
+  document.getElementById('venues-summary-stat').textContent =
+    `${cs.venues_covered || 0} venues covered` +
+    (cs.year_range ? `, spanning ${cs.year_range[0]}–${cs.year_range[1]}` : '');
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'venues.html', shownRows0.length, { onChange: render });
+  const shownRows = shownRows0.slice(pagination.offset, pagination.offset + pagination.pageSize);
+
+  const tbody = document.getElementById('venues-body');
+  function renderBody(data) {
+    tbody.innerHTML = '';
+    data.forEach(r => {
+      const nameCell = document.createElement('a');
+      nameCell.href = `venue.html?name=${encodeURIComponent(r.name)}`;
+      nameCell.textContent = r.name;
+      tbody.appendChild(row([
+        nameCell, r.yearRange, r.total, r.papers, fmtRatio(r.papers, r.total), r.citations, fmtAvg(r.avg_citations),
+        bestPaperCell(r.best),
+      ], [4, 6]));
+    });
+    appendSumRow(tbody, data, [
+      null, null, r => r.total, r => r.papers, null, r => r.citations, null, null,
+    ]);
+  }
+  makeSortableSafe(tbody.closest('table'), shownRows, [
+    { accessor: r => r.name, numeric: false },
+    { accessor: r => r.yearRange, numeric: false },
+    { accessor: r => r.total, numeric: true },
+    { accessor: r => r.papers, numeric: true },
+    { accessor: r => r.total ? r.papers / r.total : -1, numeric: true },
+    { accessor: r => r.citations, numeric: true },
+    { accessor: r => r.avg_citations ?? -Infinity, numeric: true },
+    { accessor: r => r.best ? r.best.title : '', numeric: false },
+  ], renderBody);
+
+  const exportContainer = document.getElementById('export-container');
+  exportContainer.innerHTML = '';
+  exportContainer.appendChild(renderExportButton(tbody.closest('table'), 'av-atlas-venues.csv'));
+
+  currentTimelineDraw = renderDimensionTimeline({
+    // arXiv preprint isn't a venue in the peer-reviewed sense -- it's the
+    // catch-all bucket for every not-yet-published paper the corpus tracks,
+    // so it dwarfs every real venue's line and isn't a meaningful series
+    // to compare against CVPR/ICCV/etc. here.
+    papers: papers.filter(p => p.venue !== 'arXiv'),
+    dimensionFn: p => [p.venue], labelFor: v => v,
+    rankedNames: shownRows0.map(r => r.name),
+    elIds: { legend: 'timeline-legend', chart: 'timeline-chart', tooltip: 'timeline-tooltip' },
+    yLabel: 'Papers published per year',
+  });
+  currentTimelineDraw(filters.topN || 10);
+}
+</script>
+<script src="nav.js"></script>
+<script src="sortable.js"></script>
+</body>
+</html>

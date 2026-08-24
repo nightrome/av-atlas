@@ -1,0 +1,22 @@
+[
+  {"title": "A survey on 3d gaussian splatting", "authors": "G Chen, W Wang", "year": 2026, "venue": "ACM Computing Surveys", "citations": 510},
+  {"title": "Path planning algorithms in the autonomous driving system: A comprehensive review", "authors": "M Reda, A Onsy, AY Haikal, A Ghanbari", "year": 2024, "venue": "Robotics and Autonomous Systems", "citations": 414},
+  {"title": "Cambrian-1: A fully open, vision-centric exploration of multimodal llms", "authors": "S Tong, E Brown, P Wu, S Woo", "year": 2024, "venue": "Advances in Neural Information Processing Systems", "citations": 1017},
+  {"title": "Depth pro: Sharp monocular metric depth in less than a second", "authors": "A Bochkovskiy, A Delaunoy, H Germain", "year": 2025, "venue": "International Conference on Learning Representations", "citations": 631},
+  {"title": "Octo: An open-source generalist robot policy", "authors": "OM Team, D Ghosh, H Walke, K Pertsch", "year": 2024, "venue": "arXiv preprint", "citations": 1992},
+  {"title": "Point transformer v3: Simpler, faster, stronger", "authors": "X Wu, L Jiang, PS Wang, Z Liu, X Liu", "year": 2024, "venue": "CVPR", "citations": 1388},
+  {"title": "Droid: A large-scale in-the-wild robot manipulation dataset", "authors": "A Khazatsky, K Pertsch, S Nair, A Balakrishna", "year": 2024, "venue": "arXiv preprint", "citations": 1000},
+  {"title": "Diffusiondrive: Truncated diffusion model for end-to-end autonomous driving", "authors": "B Liao, S Chen, H Yin, B Jiang, C Wang", "year": 2025, "venue": "CVPR", "citations": 451},
+  {"title": "Spatialrgpt: Grounded spatial reasoning in vision-language models", "authors": "AC Cheng, H Yin, Y Fu, Q Guo", "year": 2024, "venue": "Advances in Neural Information Processing Systems", "citations": 534},
+  {"title": "Drivelm: Driving with graph visual question answering", "authors": "C Sima, K Renz, K Chitta, L Chen, H Zhang", "year": 2024, "venue": "European Conference on Computer Vision", "citations": 887},
+  {"title": "Drivevlm: The convergence of autonomous driving and large vision-language models", "authors": "X Tian, J Gu, B Li, Y Liu, Y Wang, Z Zhao", "year": 2024, "venue": "arXiv preprint", "citations": 746},
+  {"title": "Futuresightdrive: Thinking visually with spatio-temporal cot for autonomous driving", "authors": "S Zeng, X Chang, M Xie, X Liu, Y Bai", "year": 2026, "venue": "Advances in Neural Information Processing Systems", "citations": 240},
+  {"title": "Drivegpt4: Interpretable end-to-end autonomous driving via large language model", "authors": "Z Xu, Y Zhang, E Xie, Z Zhao, Y Guo", "year": 2024, "venue": "IEEE Robotics and Automation Letters", "citations": 971},
+  {"title": "End-to-end autonomous driving: Challenges and frontiers", "authors": "L Chen, P Wu, K Chitta, B Jaeger", "year": 2024, "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence", "citations": 1203},
+  {"title": "Unidepth: Universal monocular metric depth estimation", "authors": "L Piccinelli, YH Yang, C Sakaridis", "year": 2024, "venue": "CVPR", "citations": 555},
+  {"title": "Navsim: Data-driven non-reactive autonomous vehicle simulation and benchmarking", "authors": "D Dauner, M Hallgarten, T Li, X Weng", "year": 2024, "venue": "Advances in Neural Information Processing Systems", "citations": 396},
+  {"title": "Vista: A generalizable driving world model with high fidelity and versatile controllability", "authors": "S Gao, J Yang, L Chen, K Chitta", "year": 2024, "venue": "Advances in Neural Information Processing Systems", "citations": 392},
+  {"title": "Planning-oriented autonomous driving", "authors": "Y Hu, J Yang, L Chen, K Li, C Sima", "year": 2023, "venue": "CVPR", "citations": 1930},
+  {"title": "A survey on multimodal large language models for autonomous driving", "authors": "C Cui, Y Ma, X Cao, W Ye, Y Zhou", "year": 2024, "venue": "CVPR Workshops", "citations": 788},
+  {"title": "Bench2drive: Towards multi-ability benchmarking of closed-loop end-to-end autonomous driving", "authors": "X Jia, Z Yang, Q Li, Z Zhang", "year": 2024, "venue": "Advances in Neural Information Processing Systems", "citations": 348}
+]

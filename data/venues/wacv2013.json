@@ -1,0 +1,513 @@
+[
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "3D free form object recognition using rotational projection statistics",
+    "authors": "Yulan Guo, Mohammed Bennamoun, Ferdous Ahmed Sohel, Jianwei Wan, Min Lu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Are you using the right approximate nearest neighbor algorithm?",
+    "authors": "Stephen O'Hara, Bruce A. Draper",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Large-scale web video event classification by use of Fisher Vectors",
+    "authors": "Chen Sun 0002, Ram Nevatia",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Nonuniform image patch exemplars for low level vision",
+    "authors": "Vincent De Smet, Luc Van Gool, Vinay P. Namboodiri",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Towards a practical PTZ face detection and tracking system",
+    "authors": "Yinghao Cai, Gérard G. Medioni, Thang Ba Dinh",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Image segmentation for large-scale subcategory flower recognition",
+    "authors": "Anelia Angelova, Shenghuo Zhu, Yuanqing Lin",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Heteroscedastic probabilistic linear discriminant analysis for manifold learning in video-based face recognition",
+    "authors": "Moh Edi Wibowo, Dian Tjondronegoro, Ligang Zhang, Ivan Himawan",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Berkeley MHAD: A comprehensive Multimodal Human Action Database",
+    "authors": "Ferda Ofli, Rizwan Chaudhry, Gregorij Kurillo, René Vidal, Ruzena Bajcsy",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Human behavior segmentation and recognition using Continuous Linear Dynamic System",
+    "authors": "Jinjun Wang, Jing Xiao 0006",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Statistical angular error-based triangulation for efficient and accurate multi-view scene reconstruction",
+    "authors": "Shawn Recker, Mauricio Hess-Flores, Kenneth I. Joy",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Automatic region-of-interest detection and prioritisation for visually optimised coding of low bit rate videos",
+    "authors": "Ivan Himawan, Wei Song 0007, Dian Tjondronegoro",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Clustering of video-patches on Grassmannian manifold for facial expression recognition from 3D videos",
+    "authors": "Munawar Hayat, Mohammed Bennamoun, Amar A. El-Sallam",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Classification of Human Epithelial type 2 cell indirect immunofluoresence images via codebook based descriptors",
+    "authors": "Arnold Wiliem, Yongkang Wong, Conrad Sanderson, Peter Hobson, Shaokang Chen, Brian C. Lovell",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Spatio-temporal covariance descriptors for action and gesture recognition",
+    "authors": "Andres Sanin, Conrad Sanderson, Mehrtash Tafazzoli Harandi, Brian C. Lovell",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Relational divergence based classification on Riemannian manifolds",
+    "authors": "Azadeh Alavi, Mehrtash Tafazzoli Harandi, Conrad Sanderson",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Relative ranking of facial attractiveness",
+    "authors": "Hani Altwaijry, Serge J. Belongie",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Robust classification system with reliability prediction for semi-automatic traffic-sign inventory systems",
+    "authors": "Lykele B. Hazelhoff, Ivo M. Creusen, Peter H. N. de With",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "A relational kernel-based approach to scene classification",
+    "authors": "Laura Antanas, McElory Hoffmann, Paolo Frasconi, Tinne Tuytelaars, Luc De Raedt",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Scene image categorization and video event detection using Naive Bayes Nearest Neighbor",
+    "authors": "Shiv Naga Prasad Vitaladevuni, Pradeep Natarajan, Shuang Wu 0003, Xiaodan Zhuang, Rohit Prasad, Premkumar Natarajan",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Accurate motion deblurring using camera motion tracking and scene depth",
+    "authors": "Hyeoungho Bae, Charless C. Fowlkes, Pai H. Chou",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "DIRSAC: A directed sampling and consensus approach to quasi-degenerate data fitting",
+    "authors": "Chris L. Baker, William A. Hoff",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Automatic scallop detection in benthic environments",
+    "authors": "Matthew Dawkins, Charles V. Stewart, Scott Gallager, Amber York",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "What is the space of spectral sensitivity functions for digital color cameras?",
+    "authors": "Jun Jiang, Dengyu Liu, Jinwei Gu, Sabine Süsstrunk",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Robust rank-4 affine factorization for structure from motion",
+    "authors": "Guanghui Wang 0001, John S. Zelek, Q. M. Jonathan Wu, Ruzena Bajcsy",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Using Kinect for face recognition under varying poses, expressions, illumination and disguise",
+    "authors": "Billy Y. L. Li, Ajmal S. Mian, Wanquan Liu, Aneesh Krishna",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Expanding gait identification methods from straight to curved trajectories",
+    "authors": "Yumi Iwashita, Ryo Kurazume, Koichi Ogawara",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Wildfire smoke detection using spatiotemporal bag-of-features of smoke",
+    "authors": "JunOh Park, ByoungChul Ko, Jae-Yeal Nam, Soo Yeong Kwak",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Animal recognition in the Mojave Desert: Vision tools for field biologists",
+    "authors": "Michael J. Wilber, Walter J. Scheirer, Phil Leitner, Brian Heflin, James Zott, Daniel Reinke, David K. Delaney, Terrance E. Boult",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Webcam2Satellite: Estimating cloud maps from webcam imagery",
+    "authors": "Calvin Murdock, Nathan Jacobs, Robert Pless",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "A low cost 3D markerless system for the reconstruction of athletic techniques",
+    "authors": "Amar A. El-Sallam, Mohammed Bennamoun, Ferdous Ahmed Sohel, Jacqueline A. Alderson, Andrew Lyttle, M. Rossi",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "HotSpotter - Patterned species instance recognition",
+    "authors": "Jonathan P. Crall, Charles V. Stewart, Tanya Y. Berger-Wolf, Daniel I. Rubenstein, Siva R. Sundaresan",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Reconstructing a fragmented face from a cryptographic identification protocol",
+    "authors": "Andy Luong, Michael Gerbush, Brent Waters, Kristen Grauman",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Periocular biometric recognition using image sets",
+    "authors": "Muhammad Uzair, Arif Mahmood, Ajmal S. Mian, Chris McDonald",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "An experimental study of pupil constriction for liveness detection",
+    "authors": "Xinyu Huang 0001, Changpeng Ti, Qi-zhen Hou, Alade Tokuta, Ruigang Yang",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Automatic content-based temporal alignment of image sequences with varying spatio-temporal resolution",
+    "authors": "Samuel R. Ogden, Bryan S. Morse",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Ridge Regression based classifiers for large scale class imbalanced datasets",
+    "authors": "Devansh Arpit, Shuang Wu 0003, Pradeep Natarajan, Rohit Prasad, Premkumar Natarajan",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "A lip extraction algorithm using region-based ACM with automatic contour initialization",
+    "authors": "Chao Sui, Mohammed Bennamoun, Roberto Togneri, Serajul Haque",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Person re-identification using semantic color names and RankBoost",
+    "authors": "Cheng-Hao Kuo, Sameh Khamis, Vinay D. Shet",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "OpenVL: A task-based abstraction for developer-friendly computer vision",
+    "authors": "Gregor Miller, Sidney S. Fels",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Image quality quantification for fingerprints using quality-impairment assessment",
+    "authors": "Anurag Awasthi, Krithika Venkataramani, Avani Nandini",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Shape and image retrieval by organizing instances using population cues",
+    "authors": "Andrew Temlyakov, Pahal Dalal, Jarrell W. Waggoner, Dhaval Salvi, Song Wang 0002",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "\"RegionCut\" - Interactive multi-label segmentation utilizing cellular automaton",
+    "authors": "Oliver Jakob Arndt, Björn Scheuermann 0002, Bodo Rosenhahn",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "A high resolution 3D tire and footprint impression acquisition for forensics applications",
+    "authors": "Ruwan Egoda Gamage, Abhishek Joshi, Jiang Yu Zheng, Mihran Tuceryan",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Domain adaptive object detection",
+    "authors": "Fatemeh Mirrashed, Vlad I. Morariu, Behjat Siddiquie, Rogério Schmidt Feris, Larry S. Davis",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "A weakly supervised approach for object detection based on Soft-Label Boosting",
+    "authors": "Weihong Wang, Yang Wang 0002, Fang Chen 0001, Arcot Sowmya",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Video event recognition using concept attributes",
+    "authors": "Jingen Liu, Qian Yu, Omar Javed, Saad Ali, Amir Tamrakar, Ajay Divakaran, Hui Cheng, Harpreet S. Sawhney",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Single view pose estimation of mobile devices in urban environments",
+    "authors": "Aaron Hallquist, Avideh Zakhor",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "A full-spherical device for simultaneous geometry and reflectance acquisition",
+    "authors": "Johannes Köhler 0002, Tobias Nöll, Gerd Reis, Didier Stricker",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Depth SEEDS: Recovering incomplete depth data using superpixels",
+    "authors": "Michael Van den Bergh, Daniel Carton, Luc Van Gool",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Unwrapping the eye for visible-spectrum gaze tracking on wearable devices",
+    "authors": "Bernardo Rodrigues Pires, Michael Devyver, Akihiro Tsukada, Takeo Kanade",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Semantic tie points",
+    "authors": "Javier A. Montoya-Zegarra, Christian Leistner, Konrad Schindler",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Multi-pose multi-target tracking for activity understanding",
+    "authors": "Hamid Izadinia, Varun Ramakrishna, Kris M. Kitani, Daniel Huber",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Estimation of camera pose with respect to terrestrial LiDAR data",
+    "authors": "Wei Guan 0005, Suya You, Guan Pang",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Fusing appearance and geometric constraints for estimating the epipolar geometry",
+    "authors": "Miguel Lourenço, Nuno Gonçalves 0001",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Illumination invariant Mean-shift tracking",
+    "authors": "Gargi S. Phadke, Rajbabu Velmurugan",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Image to LIDAR matching for geotagging in urban environments",
+    "authors": "Bogdan C. Matei, Nick Vander Valk, Zhiwei Zhu, Hui Cheng, Harpreet S. Sawhney",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Improving pollen classification with less training effort",
+    "authors": "Nhat Rich Nguyen, Matina Donalson-Matasci, Min C. Shin",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Boosting object detection performance in crowded surveillance videos",
+    "authors": "Rogério Schmidt Feris, Ankur Datta, Sharath Pankanti, Ming-Ting Sun",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Robust autocalibration for a surveillance camera network",
+    "authors": "Jingchen Liu, Robert T. Collins, Yanxi Liu 0001",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Real-time tracking of low-resolution vehicles for wide-area persistent surveillance",
+    "authors": "Mark Keck, Luis Galup, Chris Stauffer",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Laparoscopic instrument localization using a 3-D Time-of-Flight/RGB endoscope",
+    "authors": "Sven Haase, Jakob Wasza, Thomas Kilgus, Joachim Hornegger",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Automatic curve selection for lens distortion correction using Hough transform energy",
+    "authors": "Jinhai Cai, Stan Miklavcic",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Gender classification using 2-D ear images and sparse representation",
+    "authors": "Rahman Khorsandi, Mohamed Abdel-Mottaleb",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Geometric calibration for a multi-camera-projector system",
+    "authors": "Ricardo R. Garcia, Avideh Zakhor",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "SAGE: An approach and implementation empowering quick and reliable quantitative analysis of segmentation quality",
+    "authors": "Danna Gurari, Suele Ki Kim, Eugene Yang, Brett Isenberg, Tuan A. Pham 0002, Alberto Purwada, Patricia Solski, Matthew L. Walker, Joyce Y. Wong, Margrit Betke",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "A Bayesian non-parametric viewpoint to visual tracking",
+    "authors": "Yi Wang 0041, Zhidong Li, Yang Wang 0002, Fang Chen 0001",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "A graph-based algorithm for multi-target tracking with occlusion",
+    "authors": "Dhaval Salvi, Jarrell W. Waggoner, Andrew Temlyakov, Song Wang 0002",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "The Gixel array descriptor (GAD) for multimodal image matching",
+    "authors": "Guan Pang, Ulrich Neumann",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Handwritten text segmentation using average longest path algorithm",
+    "authors": "Dhaval Salvi, Jun Zhou, Jarrell W. Waggoner, Song Wang 0002",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Spatial-temporal structural and dynamics features for Video Fire Detection",
+    "authors": "Hongcheng Wang, Alan Finn, Ozgur Erdinc, Antonio Vincitore",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Whale blow detection in infrared video using fractal analysis as tool for representing dynamic shape variation",
+    "authors": "Varun Santhaseelan, Vijayan K. Asari",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Mass anomaly depth estimation from Full Tensor Gradient gravity data",
+    "authors": "Daniel Wedge",
+    "abstract": null
+  },
+  {
+    "conference": "WACV",
+    "year": 2013,
+    "title": "Tracking multiple ants in a colony",
+    "authors": "Thomas Fasciano, Hoan Nguyen, Anna R. Dornhaus, Min C. Shin",
+    "abstract": null
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {"title": "A survey on 3d gaussian splatting", "authors": "G Chen, W Wang", "year": 2026, "venue": "ACM Computing Surveys", "citations": 510},
+  {"title": "Motion planning for autonomous driving: The state of the art and future perspectives", "authors": "S Teng, X Hu, P Deng, B Li, Y Li, Y Ai", "year": 2023, "venue": "IEEE Transactions on Intelligent Vehicles", "citations": 787},
+  {"title": "Grounding image matching in 3d with mast3r", "authors": "V Leroy, Y Cabon, J Revaud", "year": 2024, "venue": "European Conference on Computer Vision", "citations": 1017},
+  {"title": "Dust3r: Geometric 3d vision made easy", "authors": "S Wang, V Leroy, Y Cabon", "year": 2024, "venue": "CVPR", "citations": 1852},
+  {"title": "Continuous 3d perception model with persistent state", "authors": "Q Wang, Y Zhang, A Holynski, AA Efros", "year": 2025, "venue": "CVPR", "citations": 482},
+  {"title": "Octo: An open-source generalist robot policy", "authors": "OM Team, D Ghosh, H Walke, K Pertsch", "year": 2024, "venue": "arXiv preprint", "citations": 1992},
+  {"title": "Point transformer v3: Simpler, faster, stronger", "authors": "X Wu, L Jiang, PS Wang, Z Liu, X Liu", "year": 2024, "venue": "CVPR", "citations": 1388},
+  {"title": "Monst3r: A simple approach for estimating geometry in the presence of motion", "authors": "J Zhang, C Herrmann, J Hur, V Jampani", "year": 2025, "venue": "International Conference on Learning Representations", "citations": 433},
+  {"title": "Drivelm: Driving with graph visual question answering", "authors": "C Sima, K Renz, K Chitta, L Chen, H Zhang", "year": 2024, "venue": "European Conference on Computer Vision", "citations": 887},
+  {"title": "End-to-end autonomous driving: Challenges and frontiers", "authors": "L Chen, P Wu, K Chitta, B Jaeger", "year": 2024, "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence", "citations": 1203},
+  {"title": "Unidepth: Universal monocular metric depth estimation", "authors": "L Piccinelli, YH Yang, C Sakaridis", "year": 2024, "venue": "CVPR", "citations": 555},
+  {"title": "Vista: A generalizable driving world model with high fidelity and versatile controllability", "authors": "S Gao, J Yang, L Chen, K Chitta", "year": 2024, "venue": "Advances in Neural Information Processing Systems", "citations": 392},
+  {"title": "A survey on multimodal large language models for autonomous driving", "authors": "C Cui, Y Ma, X Cao, W Ye, Y Zhou", "year": 2024, "venue": "CVPR Workshops", "citations": 788},
+  {"title": "Gen3c: 3d-informed world-consistent video generation with precise camera control", "authors": "X Ren, T Shen, J Huang, H Ling, Y Lu", "year": 2025, "venue": "CVPR", "citations": 270},
+  {"title": "Anysplat: Feed-forward 3d gaussian splatting from unconstrained views", "authors": "L Jiang, Y Mao, L Xu, T Lu, K Ren, Y Jin, X Xu", "year": 2025, "venue": "ACM Transactions on Graphics", "citations": 215},
+  {"title": "Depth anything 3: Recovering the visual space from any views", "authors": "H Lin, S Chen, J Liew, DY Chen, Z Li, G Shi", "year": 2025, "venue": "arXiv preprint", "citations": 457},
+  {"title": "Moge: Unlocking accurate monocular geometry estimation for open-domain images with optimal training supervision", "authors": "R Wang, S Xu, C Dai, J Xiang, Y Deng", "year": 2025, "venue": "CVPR", "citations": 304},
+  {"title": "Bench2drive: Towards multi-ability benchmarking of closed-loop end-to-end autonomous driving", "authors": "X Jia, Z Yang, Q Li, Z Zhang", "year": 2024, "venue": "Advances in Neural Information Processing Systems", "citations": 348},
+  {"title": "Moge-2: Accurate monocular geometry with metric scale and sharp details", "authors": "R Wang, S Xu, Y Dong, Y Deng", "year": 2026, "venue": "Advances in Neural Information Processing Systems", "citations": 211},
+  {"title": "Scaling vision transformers to 22 billion parameters", "authors": "M Dehghani, J Djolonga, B Mustafa", "year": 2023, "venue": "International Conference on Machine Learning", "citations": 1070}
+]

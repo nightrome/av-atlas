@@ -1,0 +1,310 @@
+[
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "PARMESAN: Parameter-Free Memory Search and Transduction for Dense Prediction Tasks",
+    "authors": "Philip Matthias Winter, Maria Wimmer 0002, Astrid Berg, David Major, Dimitrios Lenis, Theresa Neubauer, Gaia Romana De Paolis, Johannes Novotny, Sophia Ulonska, Katja B&#252;hler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "A State-of-the-Art Cutting Plane Algorithm for Clique Partitioning",
+    "authors": "Jannik Irmai, Bjoern Andres",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Self-supervised Semantic Segmentation from Audio-Visual Data",
+    "authors": "Apostolos Panagiotopoulos, Mandy Toh, Triantafyllos Afouras, Yuki M. Asano",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "BTSeg: Barlow Twins Regularization for Domain Adaptation in Semantic Segmentation",
+    "authors": "Johannes K&#252;nzel, Anna Hilsmann, Peter Eisert",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "FullCert: Deterministic End-to-End Certification for Training and Inference of Neural Networks",
+    "authors": "Tobias Lorenz 0002, Marta Kwiatkowska, Mario Fritz",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Self-masking Networks for Unsupervised Adaptation",
+    "authors": "Alfonso Taboada Warmerdam, Mathilde Caron, Yuki M. Asano",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "A Theoretical Formulation on the Use of Multiple Positive Views in Contrastive Learning",
+    "authors": "Zhehao Liang, Yanqing Luo, Marvin Beese, Patrik Reiske",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Decoupling of Neural Network Calibration Measures",
+    "authors": "Dominik Werner Wolf, Prasannavenkatesh Balaji, Alexander Braun 0001, Markus Ulrich",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Examining Common Paradigms in Multi-task Learning",
+    "authors": "Cathrin Elich, Lukas Kirchdorfer, Jan Mathias K&#246;hler, Lukas Schott",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "DIAGen: Semantically Diverse Image Augmentation with Generative Models for Few-Shot Learning",
+    "authors": "Tobias Lingenberg, Markus Reuter, Gopika Sudhakaran, Dominik Gojny, Stefan Roth 0001, Simone Schaub-Meyer",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Efficient and Discriminative Image Feature Extraction for Universal Image Retrieval",
+    "authors": "Morris Florek, David Tschirschwitz, Bj&#246;rn Barz, Volker Rodehorst",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Anomaly Detection with Conditioned Denoising Diffusion Models",
+    "authors": "Arian Mousakhan, Thomas Brox, Jawad Tayyub",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "SurgeoNet: Realtime 3D Pose Estimation of Articulated Surgical Instruments from Stereo Images Using a Synthetically-Trained Network",
+    "authors": "Ahmed Tawfik Aboukhadra, Nadia Robertini, Jameel Malik, Ahmed Elhayek, Gerd Reis, Didier Stricker",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Foundation Models Permit Retinal Layer Segmentation Across OCT Devices",
+    "authors": "Olivier Morelle, Thomas Schultz 0001",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Correlation Clustering of Organoid Images",
+    "authors": "Jannik Presberger, Rashmiparvathi Keshara, David Stein 0001, Yung Hae Kim, Anne Grapin-Botton, Bjoern Andres",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Animal Identification with Independent Foreground and Background Modeling",
+    "authors": "Luk&#225;s Picek, Luk&#225;s Neumann, Jir&#237; Matas",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Robust Tumor Segmentation with Hyperspectral Imaging and Graph Neural Networks",
+    "authors": "Mayar Lotfy, Anna Alperovich, Tommaso Giannantonio, Bj&#246;rn Barz, Xiaohan Zhang, Felix Holm, Nassir Navab, Felix Boehm, Carolin Schwamborn, Thomas K. Hoffmann, Patrick J. Schuler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Bigger Isn't Always Better: Towards a General Prior for Medical Image Reconstruction",
+    "authors": "Lukas Glaszner, Martin Zach",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Latent Diffusion Counterfactual Explanations",
+    "authors": "Simon Schrodi, Karim Farid, Max Argus, Thomas Brox",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Enhancing Surface Neural Implicits with Curvature-Guided Sampling and Uncertainty-Augmented Representations",
+    "authors": "Lu Sang, Abhishek Saroha, Maolin Gao, Daniel Cremers",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Uncertainty Voting Ensemble for Imbalanced Deep Regression",
+    "authors": "Yuchang Jiang, Vivien Sainte Fare Garnot, Konrad Schindler, Jan Dirk Wegner",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Analytical Uncertainty-Based Loss Weighting in Multi-task Learning",
+    "authors": "Lukas Kirchdorfer, Cathrin Elich, Simon Kutsche, Heiner Stuckenschmidt, Lukas Schott, Jan Mathias K&#246;hler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "$360^{\\circ }$ Volumetric Portrait Avatar",
+    "authors": "Jalees Nehvi, Berna Kabadayi, Julien Valentin, Justus Thies",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "How Do You Perceive My Face? Recognizing Facial Expressions in Multi-modal Context by Modeling Mental Representations",
+    "authors": "Florian Blume, Runfeng Qu, Pia Bideau, Martin Maier, Rasha Abdel Rahman, Olaf Hellwich",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "A Latent Implicit 3D Shape Model for Multiple Levels of Detail",
+    "authors": "Beno&#238;t Guillard, Marc Habermann, Christian Theobalt, Pascal Fua",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Coloring the Past: Neural Historical Monuments Reconstruction from Archival Photography",
+    "authors": "D&#225;vid Komorowicz, Lu Sang, Ferdinand Maiwald, Daniel Cremers",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Expanding the Image Embedding Space for Language-Free Text-to-Face Image Generation",
+    "authors": "Joakim Jensen, Sukalpa Chanda, Narayanan C. Krishnan, David S. Doermann",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Towards Synthetic Generation of Realistic Wooden Logs",
+    "authors": "Fedor Zolotarev, Borek Reich, Tuomas Eerola, Tomi Kauppi, Pavel Zemc&#237;k",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "G3DST: Generalizing 3D Style Transfer with Neural Radiance Fields Across Scenes and Styles",
+    "authors": "Adil Meric, Umut Kocasari, Matthias Nie&#223;ner, Barbara Roessle",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "LiFCal: Online Light Field Camera Calibration via Bundle Adjustment",
+    "authors": "Aymeric Fleith, Doaa Ahmed, Daniel Cremers, Niclas Zeller",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "CARLA Drone: Monocular 3D Object Detection from a Different Perspective",
+    "authors": "Johannes Meier, Luca Scalerandi, Oussema Dhaouadi, Jacques Kaiser, Nikita Araslanov, Daniel Cremers",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Robust 3D Gaussian Splatting for Novel View Synthesis in Presence of Distractors",
+    "authors": "Paul Ungermann, Armin Ettenhofer, Matthias Nie&#223;ner, Barbara Roessle",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "DynaPix SLAM: A Pixel-Based Dynamic Visual SLAM Approach",
+    "authors": "Chenghao Xu, Elia Bonetto, Aamir Ahmad",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Leveraging Image Matching Toward End-to-End Relative Camera Pose Regression",
+    "authors": "Fadi Khatib, Yuval Margalit, Meirav Galun, Ronen Basri",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Erasing the Ephemeral: Joint Camera Refinement and Transient Object Removal for Street View Synthesis",
+    "authors": "Mreenav Shyam Deka, Lu Sang, Daniel Cremers",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Physically Plausible Object Pose Refinement in Cluttered Scenes",
+    "authors": "Michael Strecke, Joerg Stueckler",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Gaussian Splatting in Style",
+    "authors": "Abhishek Saroha, Mariia Gladkova, Cecilia Curreli, Dominik Muhle, Tarun Yenamandra, Daniel Cremers",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Bounding Boxes and Probabilistic Graphical Models: Video Anomaly Detection Simplified",
+    "authors": "Mia Sandra Nicole Siemon, Thomas B. Moeslund, Barry Norton, Kamal Nasrollahi",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "STAR: Screen Time and Actor Recognition in Video Content",
+    "authors": "Tom&#225;s Kerepeck&#253;, Filip Sroubek, Barbara Zitov&#225;, Jan Flusser",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Exploring Seasonal Variability in the Context of Neural Radiance Fields for 3D Reconstruction on Satellite Imagery",
+    "authors": "Liv K&#229;reborn, Erica Ingerstad, Amanda Berg, Justus Karlsson, Leif Haglund",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Worldwide High-Fidelity Road Extraction from Aerial and Satellite Imagery Enabled by Low-Fidelity OpenStreetMap Labels",
+    "authors": "Corentin Henry, Friedrich Fraundorfer",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "SenPa-MAE: Sensor Parameter Aware Masked Autoencoder for Multi-satellite Self-supervised Pretraining",
+    "authors": "Jonathan Prexl, Michael Schmitt 0003",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "PuzzleBoard: A New Camera Calibration Pattern with Position Encoding",
+    "authors": "Peer Stelldinger, Nils Sch&#246;nherr, Justus Biermann",
+    "abstract": null
+  },
+  {
+    "conference": "GCPR",
+    "year": 2024,
+    "title": "Efficient Multi-task Uncertainties for Joint Semantic Segmentation and Monocular Depth Estimation",
+    "authors": "Steven Landgraf, Markus Hillemann, Theodor Kapler, Markus Ulrich",
+    "abstract": null
+  }
+]
