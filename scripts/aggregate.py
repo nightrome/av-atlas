@@ -2007,12 +2007,54 @@ def main():
             if name and is_full_name(name):
                 non_av_paper_counts[name] += 1
 
+    # Per-venue collection completeness for the About page's Data coverage
+    # table -- computed from the actual corpus (all_entries, not just
+    # av_relevance=="core", since this is about how completely each venue's
+    # proceedings were collected, not which papers turned out AV-relevant),
+    # so it can never drift out of sync the way a hand-typed table would.
+    # arXiv is excluded: it's a keyword search against arXiv's own API, not
+    # a complete-proceedings pull like every venue below, so "years covered"
+    # doesn't mean the same thing for it (same reasoning insights.html's
+    # venue-relevance list already excludes it for).
+    # 500 papers cleanly separates the ~24 venues this site actually does a
+    # complete-proceedings pull from (all in the thousands) from citation-
+    # graph-discovered incidental venues (a handful of papers each, a steep
+    # cliff below ~500) -- confirmed against the real distribution, not a
+    # guess. Below the cliff isn't "wrong," just not one of this corpus's
+    # target venues, and would make an unreadable 2,800+-row table if shown.
+    VENUE_COVERAGE_MIN_PAPERS = 500
+    venue_coverage_acc = defaultdict(lambda: {"years": set(), "with_abstract": 0, "total": 0})
+    for e in all_entries:
+        v = e.get("venue")
+        if not v or v == "arXiv":
+            continue
+        rec = venue_coverage_acc[v]
+        rec["total"] += 1
+        if e.get("year"):
+            rec["years"].add(e["year"])
+        if e.get("abstract"):
+            rec["with_abstract"] += 1
+    venue_coverage = {
+        v: {
+            "years": sorted(rec["years"]),
+            "papers": rec["total"],
+            "abstract_coverage": (
+                "full" if rec["with_abstract"] == rec["total"]
+                else "none" if rec["with_abstract"] == 0
+                else "partial"
+            ),
+        }
+        for v, rec in sorted(venue_coverage_acc.items(), key=lambda kv: -kv[1]["total"])
+        if rec["total"] >= VENUE_COVERAGE_MIN_PAPERS
+    }
+
     stats = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "generated_from": len(all_entries),
         "core_relevant": len(entries),
         "corpus_stats": {
             "by_venue": dict(sorted(venue_counts.items(), key=lambda kv: -kv[1])),
+            "venue_coverage": venue_coverage,
             "big_venues": big_venues,
             "by_year": {str(y): n for y, n in sorted(year_counts.items())},
             "venues_covered": len(venue_counts),

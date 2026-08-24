@@ -11,7 +11,7 @@
     { href: 'categories.html', label: 'Categories' },
     { href: 'network.html', label: 'Network' },
     { href: 'insights.html', label: 'Insights' },
-    { href: 'methodology.html', label: 'About' },
+    { href: 'about.html', label: 'About' },
   ];
 
   const style = document.createElement('style');

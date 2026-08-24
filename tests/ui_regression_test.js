@@ -59,7 +59,7 @@ const TOPN_PAGES = {
 };
 
 // Pages with a "Show" AV-relevance dropdown -- every listing page except
-// Insights, About (methodology.html), and Categories, by long-standing user
+// Insights, About (about.html), and Categories, by long-standing user
 // instruction. Categories dropped it (user-requested): a non-AV-relevant
 // paper isn't meaningfully categorized in the first place, so browsing the
 // adjacent set by category never answered a real question the way it does

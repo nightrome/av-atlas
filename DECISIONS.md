@@ -288,7 +288,7 @@ Two real gaps caught while wiring this up, not by inspection alone:
   is written (`papers_full.json` itself is left alone).
 
 The preference is saved to `localStorage` (a personal display setting, not
-part of any shareable URL) and set from a picker on the Methodology page.
+part of any shareable URL) and set from a picker on the About page.
 `nav.js` shows a small badge when a non-default source is active, reading
 `localStorage` directly rather than depending on `filters.js`'s exports --
 `nav.js` loads before `filters.js` on every page, and duplicating one lookup

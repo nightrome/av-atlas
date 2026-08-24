@@ -98,7 +98,7 @@ recur: the field is stripped from `papers_full.json` and no longer fetched.
   `papers_full.json`; run it after any of the backfills (or several in
   parallel) make progress, before `aggregate.py`.
 
-## Known data-quality caveats (see also the Methodology page in the UI)
+## Known data-quality caveats (see also the About page in the UI)
 
 - OpenAlex's author→institution linking is occasionally wrong on its own data,
   independent of anything here — e.g. "InternetLab" (a Shanghai AI Lab

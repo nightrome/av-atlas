@@ -5,7 +5,7 @@ Mines missing abstracts from arXiv for core papers that don't have one --
 mostly venue-listing sources (ICRA, IROS, RSS, ICLR, AAAI, IV, ITSC, GCPR,
 ICML, BMVC, IJCV, RA-L, T-RO, TPAMI, IJRR, T-ITS) that only ever carried
 title+authors, no abstract, so classification for those has always run on
-title text alone -- a known, documented limitation (see methodology.html).
+title text alone -- a known, documented limitation (see about.html).
 Most AV/ML papers at these venues have an arXiv preprint even when the venue
 itself is print-only, so this is a real, addressable gap, not a dead end.
 

@@ -9,8 +9,8 @@ tracks autonomous-vehicle research: who's publishing, which institutions/countri
 active, how topics have shifted over time, and which papers are most cited *within AV
 research specifically*. Built from the complete, unfiltered proceedings of ~20 major
 computer vision/robotics venues, not a keyword-filtered subset. See
-[README.md](README.md) for the pipeline overview and [methodology.html](methodology.html)
-(or the live Methodology page) for exactly how papers are found, classified, and scored.
+[README.md](README.md) for the pipeline overview and [about.html](about.html)
+(or the live About page) for exactly how papers are found, classified, and scored.
 
 It used to live as a sub-app inside a private family monorepo (`family-portal`); it was
 split out into this standalone repo so it can be developed and linked to independently.
@@ -57,7 +57,7 @@ the fresh merge.
 ## Architecture
 
 - `index.html`, `authors.html`, `institutions.html`, `venues.html`, `countries.html`,
-  `categories.html`, `network.html`, `insights.html`, `methodology.html`, `author.html`,
+  `categories.html`, `network.html`, `insights.html`, `about.html`, `author.html`,
   `institution.html`, `venue.html`, `paper.html` -- the site's pages. Each reads
   `data/stats.json` (or `data/stats_adjacent.json` for the "include adjacent/non-core
   papers" view) at runtime; there's no build step for the pages themselves, just for the

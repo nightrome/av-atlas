@@ -4,8 +4,8 @@ A dashboard of autonomous vehicle (AV) research: who's publishing, which
 institutions and countries are active, how topics have shifted over time, and
 which papers matter most *within AV research specifically*. Built from the
 complete proceedings of major computer vision/robotics venues, not a
-keyword-filtered subset — see [methodology.html](methodology.html) (or the
-live Methodology page) for exactly how papers are found, classified, and
+keyword-filtered subset — see [about.html](about.html) (or the
+live About page) for exactly how papers are found, classified, and
 scored.
 
 This directory is licensed under the MIT License (see [LICENSE](LICENSE)) —
@@ -38,7 +38,7 @@ branch. Live at https://nightrome.github.io/av-atlas/.
 
 ## The pipeline
 
-Five stages, run roughly in order (see the Methodology page for the full
+Five stages, run roughly in order (see the About page for the full
 diagram and detail):
 
 1. **Collect** — `fetch_cvf.py`, `fetch_neurips.py`, `fetch_dblp_listing.py`,
