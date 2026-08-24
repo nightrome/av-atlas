@@ -109,7 +109,7 @@
 </div>
 
 <script src="filters.js"></script>
-<script src="vendor/sqljs-httpvfs/sqljs-httpvfs.js"></script>
+<script src="scripts/vendor/sqljs-httpvfs/sqljs-httpvfs.js"></script>
 <script>
 let dbWorker = null, worker = null;
 let page = 1;
@@ -121,20 +121,20 @@ async function initDb() {
     from: "inline",
     config: {
       serverMode: "full",
-      // Also resolved inside the worker (vendor/sqljs-httpvfs/), same
-      // reasoning as the wasmUrl fix below -- the .db file actually lives
-      // two directories up, next to this page.
-      url: "../../av_research_prototype.db",
+      // Also resolved inside the worker (scripts/vendor/sqljs-httpvfs/),
+      // same reasoning as the wasmUrl fix below -- the .db file actually
+      // lives three directories up, next to this page.
+      url: "../../../av_research_prototype.db",
       requestChunkSize: 4096,
     },
   }];
   const result = await createDbWorker(
     config,
-    "vendor/sqljs-httpvfs/sqlite.worker.js",
+    "scripts/vendor/sqljs-httpvfs/sqlite.worker.js",
     // Resolved INSIDE the worker, relative to the worker script's own
-    // location (vendor/sqljs-httpvfs/), not this page's -- a full
-    // "vendor/sqljs-httpvfs/sql-wasm.wasm" here 404s by resolving to a
-    // doubled-up vendor/sqljs-httpvfs/vendor/sqljs-httpvfs/... path.
+    // location (scripts/vendor/sqljs-httpvfs/), not this page's -- a full
+    // "scripts/vendor/sqljs-httpvfs/sql-wasm.wasm" here 404s by resolving
+    // to a doubled-up scripts/vendor/sqljs-httpvfs/scripts/vendor/... path.
     "sql-wasm.wasm",
   );
   dbWorker = result.db;

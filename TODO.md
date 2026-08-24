@@ -22,7 +22,7 @@ stats.json up front" model with a queryable SQLite file fetched over HTTP
 range requests (`scripts/build_sqlite.py` builds it,
 `researchers_sql_prototype.html` is the pilot page -- not linked from nav,
 not deployed, local-only spike). Vendored `sql.js-httpvfs` under
-`vendor/sqljs-httpvfs/` (self-hosted, required by the CSP).
+`scripts/vendor/sqljs-httpvfs/` (self-hosted, required by the CSP).
 
 **Confirmed working end to end**, with real measured numbers (Chrome, this
 corpus, this schema):
