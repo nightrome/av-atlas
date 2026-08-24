@@ -47,7 +47,11 @@ ROBOTS_TXT = "User-agent: *\nAllow: /\n"
 # label_relevance.html embeds candidate paper data for hand-labeling and has
 # no business being reachable from a live URL, guessable slug or not. This
 # was caught after it briefly WAS published (see DECISIONS.md).
-EXCLUDED_HTML = {"label_relevance.html"}
+# authors_sql_prototype.html is a local-only spike (see TODO.md) that was
+# published anyway by this same glob -- broken if actually visited live,
+# since its scripts/vendor/sqljs-httpvfs/ dependencies and the .db file it
+# queries are never copied into the published output below.
+EXCLUDED_HTML = {"label_relevance.html", "authors_sql_prototype.html"}
 
 
 def html_pages():
