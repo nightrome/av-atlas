@@ -52,13 +52,19 @@ def build():
 
 
 def commit_sources(msg):
+    branch = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                            cwd=BASE, capture_output=True, text=True).stdout.strip()
+    run(["git", "add", "-A"])
+    # Check staged changes *after* `git add`, not before -- otherwise stale
+    # line-ending-only diffs (or any other change `git add`'s clean filters
+    # would normalize away) can make `git status` claim there's something to
+    # commit when `git add` actually stages nothing, and `git commit` then
+    # fails outright with no clear error. See family-portal's deploy.py for
+    # the concrete case this was found in.
     result = subprocess.run(["git", "status", "--porcelain"], cwd=BASE, capture_output=True, text=True)
     if not result.stdout.strip():
         print("Sources: nothing to commit.")
         return False
-    branch = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"],
-                            cwd=BASE, capture_output=True, text=True).stdout.strip()
-    run(["git", "add", "-A"])
     run(["git", "commit", "-m", msg])
     push = run(["git", "push", "origin", f"HEAD:{branch}"], check=False)
     if push.returncode != 0:
