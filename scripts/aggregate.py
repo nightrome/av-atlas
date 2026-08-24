@@ -653,6 +653,21 @@ INSTITUTION_ALIASES = {
     "École Polytechnique Fédérale de Lausanne": "EPFL",
     "École Polytechnique Fédérale de Lausanne (EPFL)": "EPFL",
     "EPFL VITA lab": "EPFL", "EPFL VITA Lab": "EPFL",
+    # User-requested: fold every spelling of a given Max Planck Institute
+    # together. The Max Planck Society runs several genuinely distinct
+    # institutes (different cities, different research focus) -- these stay
+    # SEPARATE canonical names, only same-institute spelling/abbreviation
+    # variants are merged, same principle as the Huawei/Bosch groups above.
+    "MPI Informatics": "Max Planck Institute for Informatics",
+    "MPI for Informatics": "Max Planck Institute for Informatics",
+    "Max Planck Institute for Informatics Saarland Informatics Campus": "Max Planck Institute for Informatics",
+    "MPI for Intelligent Systems Tübingen": "Max Planck Institute for Intelligent Systems",
+    "MPI for Intelligent Systems T�bingen": "Max Planck Institute for Intelligent Systems",
+    # A Max Planck/university joint PhD program, run out of and staffed by
+    # the Institute itself -- treated as the same institute for a
+    # paper-affiliation count rather than kept as its own separate row.
+    "Max Planck Research School for Intelligent Systems": "Max Planck Institute for Intelligent Systems",
+    "MPI-SWS": "Max Planck Institute for Software Systems",
     # A bare company domain leaking in as the affiliation string instead of
     # the company's actual name.
     "valeo.ai": "Valeo",
@@ -1786,7 +1801,8 @@ def main():
     # (confirmed on real data: Dragomir Anguelov, who only ever appears with
     # a Waymo affiliation himself, was showing as a top author of Google
     # solely because a co-author on some shared papers is Google-affiliated).
-    institution_authors = defaultdict(lambda: defaultdict(lambda: {"papers": 0, "citations": 0}))
+    institution_authors = defaultdict(lambda: defaultdict(
+        lambda: {"papers": 0, "citations": 0, "first_year": None, "last_year": None}))
     country_citations = defaultdict(int)
     country_papers = defaultdict(int)
 
@@ -1824,6 +1840,11 @@ def main():
                 inst_authors_entry = institution_authors[aff][name]
                 inst_authors_entry["papers"] += 1
                 inst_authors_entry["citations"] += c
+                if year is not None:
+                    inst_authors_entry["first_year"] = year if inst_authors_entry["first_year"] is None \
+                        else min(inst_authors_entry["first_year"], year)
+                    inst_authors_entry["last_year"] = year if inst_authors_entry["last_year"] is None \
+                        else max(inst_authors_entry["last_year"], year)
             codes = author_country_codes(a)
             for code in codes:
                 author_countries[name].add(COUNTRY_NAMES.get(code, code))
@@ -1881,9 +1902,17 @@ def main():
     # Google's own hosted image URL). Not attempted for the full author list;
     # only worth the manual effort for names that actually surface on a
     # leaderboard. Missing entries are expected and fine.
-    scholar_profiles = {}
+    scholar_profiles_raw = {}
     if SCHOLAR_PROFILES_FILE.exists():
-        scholar_profiles = json.loads(SCHOLAR_PROFILES_FILE.read_text(encoding="utf-8"))
+        scholar_profiles_raw = json.loads(SCHOLAR_PROFILES_FILE.read_text(encoding="utf-8"))
+    # Keyed by clean_author_name(), not the raw JSON key, so a
+    # scholar_profiles.json entry added under an old/uncleaned spelling
+    # (e.g. "J. Marius Zöllner", from before that name was folded into
+    # "Marius Zöllner" via KNOWN_NAME_FIXES) still lands on the one
+    # canonical author instead of creating a second, stale-keyed entry.
+    scholar_profiles = {}
+    for raw_name, prof in scholar_profiles_raw.items():
+        scholar_profiles.setdefault(clean_author_name(raw_name), prof)
 
     # ORCIDs (fetch_s2_author_ids.py + fetch_orcids.py, via Semantic
     # Scholar) are keyed by a letters-only normalized name rather than the
@@ -1910,7 +1939,13 @@ def main():
     # which covers their full paper set, not just the affiliation-enriched
     # subset -- this dict only supplies what can't be derived that way.
     author_detail = {}
-    for name in author_names_enriched:
+    # Union with scholar_profiles's own keys, not just author_names_enriched
+    # -- a manually-curated Scholar profile/photo is worth showing even for
+    # an author whose papers all come from venues with no affiliation crawl
+    # at all (title/authors-only venues, see About > Data sources), who
+    # would otherwise never enter this loop and so could never pick up a
+    # hand-added profile no matter what scholar_profiles.json says.
+    for name in author_names_enriched | set(scholar_profiles.keys()):
         profile = scholar_profiles.get(name, {})
         # Chronological, not alphabetical -- earliest first_year first, so an
         # author who changed institutions reads as a timeline ("Google
@@ -2094,7 +2129,8 @@ def main():
         # from the paper-level `institutions` field on each paper.
         "institution_authors": {
             inst: [
-                {"name": name, "papers": v["papers"], "citations": v["citations"]}
+                {"name": name, "papers": v["papers"], "citations": v["citations"],
+                 "first_year": v["first_year"], "last_year": v["last_year"]}
                 for name, v in sorted(authors.items(), key=lambda kv: -kv[1]["papers"])
             ]
             for inst, authors in institution_authors.items()

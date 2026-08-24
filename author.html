@@ -321,10 +321,13 @@ function render(stats) {
       // in author_detail (a flat, unordered list) -- same best-effort "last
       // entry" reading, not a real claim of recency for that field.
       const insts = coDetail.institutions || [];
+      const lastInst = insts.length ? insts[insts.length - 1] : null;
       const countries = coDetail.countries || [];
       return {
         name: coName, papers: count,
-        institution: insts.length ? insts[insts.length - 1].name : null,
+        institution: lastInst ? lastInst.name : null,
+        institutionFirstYear: lastInst ? lastInst.first_year : null,
+        institutionLastYear: lastInst ? lastInst.last_year : null,
         country: countries.length ? countries[countries.length - 1] : null,
       };
     })
@@ -341,7 +344,11 @@ function render(stats) {
       if (c.institution) {
         const instLink = document.createElement('a');
         instLink.href = `institution.html?name=${encodeURIComponent(c.institution)}`;
-        instLink.textContent = c.institution;
+        // Years shown only when known, same as the tags row above.
+        const yr = c.institutionFirstYear == null ? ''
+          : c.institutionFirstYear === c.institutionLastYear ? ` (${c.institutionFirstYear})`
+          : ` (${c.institutionFirstYear}–${c.institutionLastYear})`;
+        instLink.textContent = c.institution + yr;
         instCell = instLink;
       }
       coauthorsBody.appendChild(row([link, c.papers, c.country || '—', instCell]));

@@ -67,7 +67,7 @@
 <div class="cols">
   <div class="panel">
     <h2>Top authors here</h2>
-    <table><thead><tr><th>Author</th><th class="num">Papers</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th></tr></thead>
+    <table><thead><tr><th>Author</th><th>Years</th><th class="num">Papers</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th></tr></thead>
     <tbody id="authors-body"></tbody></table>
   </div>
   <div class="panel">
@@ -221,7 +221,10 @@ function render(stats) {
   // rather than an empty table.
   const preciseAuthors = (stats.institution_authors || {})[name];
   const authors = preciseAuthors
-    ? preciseAuthors.map(a => ({ name: a.name, papers: a.papers, citations: a.citations }))
+    ? preciseAuthors.map(a => ({
+        name: a.name, papers: a.papers, citations: a.citations,
+        first_year: a.first_year, last_year: a.last_year,
+      }))
     : aggregateByDimension(papers, p => p.authors, { minPapers: 0 });
   // By citations, not paper count -- sorting by papers alone buried
   // single-paper authors with a genuinely high-impact paper below dozens of
@@ -232,17 +235,25 @@ function render(stats) {
   authors.sort((a, b) => b.citations - a.citations);
   const authorsTop15 = authors.slice(0, 15);
   const authorsBody = document.getElementById('authors-body');
+  // Years shown only when known -- the precise per-author path
+  // (stats.institution_authors) always has them, the paper-level fallback
+  // (institutions with no authors_detail coverage at all) never does.
+  function fmtYears(a) {
+    if (a.first_year == null) return '—';
+    return a.first_year === a.last_year ? String(a.first_year) : `${a.first_year}–${a.last_year}`;
+  }
   function renderAuthorsBody(rows) {
     authorsBody.innerHTML = '';
     rows.forEach(a => {
       const link = document.createElement('a');
       link.href = `author.html?name=${encodeURIComponent(a.name)}`;
       link.textContent = a.name;
-      authorsBody.appendChild(row([link, a.papers, a.citations]));
+      authorsBody.appendChild(row([link, fmtYears(a), a.papers, a.citations]));
     });
   }
   makeSortableSafe(authorsBody.closest('table'), authorsTop15, [
     { accessor: a => a.name, numeric: false },
+    { accessor: a => a.first_year ?? -1, numeric: true },
     { accessor: a => a.papers, numeric: true },
     { accessor: a => a.citations, numeric: true },
   ], renderAuthorsBody);
