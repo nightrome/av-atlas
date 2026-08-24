@@ -9,17 +9,14 @@ Merges the venue-listing pulls into one corpus:
     arXiv entries are only ever used to fill a title the other venues don't
     already have -- see the venue_files/arxiv_files split below.
 
-Deliberately does NOT include av-atlas/data/enriched.json (the original
-citation-crawl pilot, seeded from nuScenes/KITTI/Waymo via Google Scholar's
-"Cited by" lists). That was a different, non-uniform sampling method -- a
-paper's presence in the corpus depended on whether it happened to cite one of
-~100 seed dataset papers, not on having been published at one of the eight
-venues everything else is drawn from. Mixing the two made "how was this
-paper found" an invisible, unstated variable across the whole corpus. The
-pilot's ~43 papers still live in data/enriched.json on disk for reference
-(it has the only real author/institution/Scholar-citation data collected
-from the start) but are excluded from papers_full.json and therefore from
-every page on the site.
+An earlier citation-crawl pilot (seeded from nuScenes/KITTI/Waymo via Google
+Scholar's "Cited by" lists, data/seeds.json -> data/raw/*.json ->
+enrich.py -> data/enriched.json) was deliberately never folded in here and
+has since been removed entirely. It used a different, non-uniform sampling
+method -- a paper's presence depended on whether it happened to cite one of
+~100 seed dataset papers, not on having been published at one of the venues
+everything else is drawn from -- which would have made "how was this paper
+found" an invisible, unstated variable across the whole corpus.
 
 Dedupes by normalized title within the venue pulls.
 

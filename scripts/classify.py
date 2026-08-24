@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 Assigns a category (from the living taxonomy in av-atlas/data/categories.json)
-and an av_relevance tag to each paper in av-atlas/data/enriched.json, writing
-the result back in place.
+and an av_relevance tag to a paper. A module, not a standalone script --
+merge_corpus.py imports classify_paper() and applies it to every paper in
+papers_full.json; nothing here reads or writes a file of its own.
 
 This is a keyword-matching first pass, not real semantic classification --
 title+abstract text is scored against each category's keyword list and the
@@ -25,15 +26,12 @@ Papers can be "core" and "uncategorized" (topic didn't match any category
 but the paper is clearly about AVs) or "adjacent" with a category (a
 general CV method paper that happens to be about e.g. segmentation but
 isn't about driving).
-
-Usage: python classify.py
 """
 import json
 import re
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
-ENRICHED_FILE = BASE / "data" / "enriched.json"
 CATEGORIES_FILE = BASE / "data" / "categories.json"
 LLM_LABELS_FILE = BASE / "data" / "relevance_labels_llm.json"
 
@@ -216,28 +214,3 @@ def classify_paper(title, abstract, categories, llm_core_titles=frozenset(), kno
     llm_says_core = normalize_title(title) in llm_core_titles
     relevance = classify_relevance(title, abstract, llm_says_core)
     return category, relevance
-
-
-def main():
-    taxonomy = json.loads(CATEGORIES_FILE.read_text(encoding="utf-8"))
-    categories = taxonomy["categories"]
-    known_dataset_titles = frozenset(normalize_title(t) for t in taxonomy.get("known_dataset_papers", []))
-    entries = json.loads(ENRICHED_FILE.read_text(encoding="utf-8"))
-    llm_core_titles = load_llm_core_titles()
-
-    counts = {}
-    for e in entries:
-        category, relevance = classify_paper(
-            e.get("title", ""), e.get("abstract"), categories, llm_core_titles, known_dataset_titles)
-        e["category"] = category
-        e["av_relevance"] = relevance
-        counts[category] = counts.get(category, 0) + 1
-
-    ENRICHED_FILE.write_text(json.dumps(entries, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
-    print(f"Classified {len(entries)} papers")
-    for cat_id, n in sorted(counts.items(), key=lambda kv: -kv[1]):
-        print(f"  {n:>3}  {cat_id}")
-
-
-if __name__ == "__main__":
-    main()

@@ -457,6 +457,18 @@
 </div>
 </details>
 
+<details class="detail-section" id="contact-section">
+<summary>Contact</summary>
+<div class="detail-body">
+<p>
+  This site was created and is maintained by Holger Caesar. Use the <strong>"Report an error on
+  this page"</strong> button (🚩) in the navigation bar at the top of any page, or
+  <a href="#" id="methodology-contact-link">click here</a>, to get in touch. The same form covers
+  a data correction, a privacy request, or any other question.
+</p>
+</div>
+</details>
+
 <details class="detail-section" id="privacy-section">
 <summary>Privacy</summary>
 <div class="detail-body">
@@ -681,6 +693,10 @@ renderScholarChart();
 <script src="nav.js"></script>
 <script>
   document.getElementById('methodology-report-link').addEventListener('click', ev => {
+    ev.preventDefault();
+    document.getElementById('reportIssueBtn').click();
+  });
+  document.getElementById('methodology-contact-link').addEventListener('click', ev => {
     ev.preventDefault();
     document.getElementById('reportIssueBtn').click();
   });

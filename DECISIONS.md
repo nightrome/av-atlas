@@ -399,14 +399,13 @@ User-reported: "top papers 38-50 all have no citations... they clearly are not t
 
 Fixed end-to-end, not just in the ranking function: `citation_count()` and
 `citations_by_source_for_client()` now read only `citations_by_source.in_corpus`, no fallback
-chain at all. `fetch_ieee_openalex.py` no longer captures `cited_by_count`. `enrich.py`'s
-citation-crawl-pilot output (`data/enriched.json`, unread by the site, kept only for reference —
-see PIPELINE.md) no longer captures its OpenAlex lookup's citation count either, though its
-Scholar-scraped count (`citations_scholar`, a different provider, not OpenAlex) was left alone.
-The flat `citations`/`citations_updated` fields already on disk were stripped from
-`papers_full.json`, the three cached ICRA/IROS venue-listing files, and `enriched.json` — the
-site only ever ranks and displays its own in-corpus citation graph now, with nothing left in
-the data that could feed a repeat of this bug.
+chain at all. `fetch_ieee_openalex.py` no longer captures `cited_by_count`. The flat
+`citations`/`citations_updated` fields already on disk were stripped from `papers_full.json` and
+the three cached ICRA/IROS venue-listing files — the site only ever ranks and displays its own
+in-corpus citation graph now, with nothing left in the data that could feed a repeat of this bug.
+(The citation-crawl pilot mentioned in earlier entries below, `enrich.py`/`data/enriched.json`,
+has since been removed entirely rather than just excluded — see "Citation-crawl pilot workflow
+removed" further down.)
 
 ## OpenAlex dropped from future venue expansion (paid API, not just paid citations)
 
@@ -445,6 +444,52 @@ silently dropped at the very last step. `classify.py` already falls back to titl
 matching when `abstract` is `None` (`abstract_l = abstract or ""`), so nothing else needed to
 change — these papers just carry a weaker relevance/category signal than the rest of the corpus,
 documented as such in Methodology's "Known gaps."
+
+## Citation-crawl pilot workflow removed entirely
+
+The pilot (`data/seeds.json` -> `data/raw/*.json` -> `enrich.py` ->
+`data/enriched.json`) had already been excluded from `papers_full.json` for
+a while (see "Removing the citation-crawl pilot silently emptied the world
+map" above) but was kept on disk "for reference." Nothing ever read that
+reference again, so it was just dead weight: a script, three data-quality
+caveats' worth of comments explaining files a future reader would never
+otherwise encounter, and a real risk of someone rerunning `enrich.py` by
+habit and wondering why its output never shows up anywhere. Deleted
+`data/seeds.json`, `data/raw/`, `scripts/enrich.py`, and `data/enriched.json`
+outright, and removed `classify.py`'s now-orphaned standalone entry point
+(it used to run directly against `data/enriched.json`; the only path that
+matters now is `merge_corpus.py` importing `classify_paper()` and applying
+it to `papers_full.json`).
+
+## sql.js-httpvfs prototype: real numbers, mixed verdict
+
+Prototyped replacing the Authors page's "download the whole stats.json up
+front" model with a queryable SQLite file fetched over HTTP range requests
+(`scripts/build_sqlite.py` builds it, `authors_sql_prototype.html` was the
+pilot page, never linked from nav or deployed). Vendored `sql.js-httpvfs`
+under `scripts/vendor/sqljs-httpvfs/` (self-hosted, required by the CSP).
+
+**Confirmed working end to end**, with real measured numbers (Chrome, this
+corpus, this schema): GitHub Pages' CDN genuinely supports HTTP range
+requests; a narrow, indexed query cost ~420KB for the top-50 leaderboard
+versus the full gzip transfer for the same rendered result, a real ~45x
+reduction; second interactions were close to free (page 2 of the same query
+cost 0 additional bytes, already cached).
+
+**The catch:** SQLite's query planner did not handle the raw 3-way join
+(paper_authors + papers + authors, grouped/ordered/limited) well at all, so
+a genuine win needed a precomputed summary table that only covers the
+unfiltered default view; a category/venue filter fell back to the expensive
+live join. Net result for a full first render was a real but much more
+modest ~5x improvement, not the ~45x the narrow-query number suggested.
+
+**Bottom line:** the mechanism is real and GitHub-Pages-compatible, but a
+genuine win needs schema/query engineering per query shape, not a drop-in
+replacement. Every page with its own aggregate shape (Institutions, Venues,
+Countries, Network) would need its own tuned summary table the same way
+Authors did. Left as a local-only prototype rather than pursued further;
+worth revisiting only if the stats.json transfer size becomes an active
+problem, not because the idea is inherently better.
 
 ## Filters compute client-side from `all_papers`, not precomputed leaderboards
 

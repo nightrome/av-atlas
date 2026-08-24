@@ -114,7 +114,19 @@
 </div>
 
 <div class="panel">
-  <h2>Topics: rising and declining</h2>
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Topics: rising and declining</h2>
+    <div class="limit-row">
+      Compared to
+      <select id="trend-years-back">
+        <option value="1">1 year earlier</option>
+        <option value="2">2 years earlier</option>
+        <option value="3" selected>3 years earlier</option>
+        <option value="5">5 years earlier</option>
+        <option value="10">10 years earlier</option>
+      </select>
+    </div>
+  </div>
   <p class="section-intro" id="trend-window-note"></p>
   <div class="move-cols">
     <div>
@@ -164,22 +176,20 @@
     in this corpus -- not their real age or whole career.
   </p>
   <h3 style="margin-top:0;">Where researchers are in their career</h3>
-  <p class="section-intro" style="margin-bottom:4px;">Researchers per lifetime, in years (14+ grouped into one bucket).</p>
+  <p class="section-intro" style="margin-bottom:4px;">Researchers per lifetime, in years.</p>
   <div class="line-chart-wrap" id="lifetime-dist-chart-wrap">
     <svg id="lifetime-dist-chart"></svg>
   </div>
   <h3>Citations by career lifetime</h3>
   <p class="section-intro" style="margin-bottom:4px;">
-    Mean total citations per researcher at each lifetime, ±1 standard deviation. Lifetimes with
-    fewer than 5 researchers with citation data are omitted.
+    Mean total citations per researcher at each lifetime, ±1 standard deviation.
   </p>
   <div class="line-chart-wrap" id="lifetime-citations-chart-wrap">
     <svg id="lifetime-citations-chart"></svg>
   </div>
   <h3>Most promising young researchers</h3>
   <p class="section-intro" style="margin-bottom:4px;">
-    Lifetime ≤3 years, at least 3 papers (≥2 with a real citation count), still active in the last
-    two complete years -- ranked by average citations per paper.
+    Lifetime ≤3 years, at least 5 papers, ranked by average citations per paper.
   </p>
   <table class="data-table" id="young-researchers-table">
     <thead>
@@ -223,9 +233,7 @@
   </div>
   <p class="section-intro">
     Share of each venue's total output judged AV-relevant. Venues below the threshold above are
-    excluded as too small to be meaningful. arXiv is excluded too -- its population in this corpus
-    isn't a complete, unbiased sample (see About), so its ratio isn't comparable to a venue whose
-    full proceedings were actually collected.
+    excluded as too small to be meaningful.
   </p>
   <div class="move-cols">
     <div>
@@ -286,6 +294,87 @@ function moveRow(list, item, up) {
   delta.textContent = `${item.point_change > 0 ? '+' : ''}${item.point_change} pt`;
   li.appendChild(delta);
   list.appendChild(li);
+}
+
+// A category needs a minimally real presence in both years being compared --
+// otherwise a category with a couple of papers swinging from 1 to 3 reads as
+// a 200% "rise" that means nothing.
+const TREND_MIN_PAPERS_PER_YEAR = 8;
+
+function computeCategoryTrends(allPapers, yearsBack) {
+  const years = [...new Set(allPapers.map(p => p.year).filter(Boolean))].sort((a, b) => a - b);
+  if (!years.length) return null;
+  // Every corpus's newest year is still partial (papers keep getting added
+  // to it after publication), so it's excluded the same way every other
+  // "complete years only" figure on this site excludes it.
+  const latestYear = years[years.length - 1];
+  const completeYears = years.filter(y => y !== latestYear);
+  if (!completeYears.length) return null;
+  const recentYear = completeYears[completeYears.length - 1];
+  const priorYear = recentYear - yearsBack;
+  if (!completeYears.includes(priorYear)) return null;
+
+  const recentPapers = allPapers.filter(p => p.year === recentYear);
+  const priorPapers = allPapers.filter(p => p.year === priorYear);
+  if (!recentPapers.length || !priorPapers.length) return null;
+
+  const countByCategory = papers => {
+    const counts = {};
+    papers.forEach(p => {
+      const cat = p.category || 'uncategorized';
+      counts[cat] = (counts[cat] || 0) + 1;
+    });
+    return counts;
+  };
+  const catRecent = countByCategory(recentPapers), catPrior = countByCategory(priorPapers);
+  const trends = [];
+  new Set([...Object.keys(catRecent), ...Object.keys(catPrior)]).forEach(cat => {
+    if (cat === 'uncategorized') return;
+    const rc = catRecent[cat] || 0, pc = catPrior[cat] || 0;
+    if (rc < TREND_MIN_PAPERS_PER_YEAR && pc < TREND_MIN_PAPERS_PER_YEAR) return;
+    const recentShare = rc / recentPapers.length, priorShare = pc / priorPapers.length;
+    trends.push({ category: cat, point_change: Math.round((recentShare - priorShare) * 10000) / 100 });
+  });
+  trends.sort((a, b) => b.point_change - a.point_change);
+  return { trends, recentYear, priorYear };
+}
+
+function renderCategoryTrends(stats) {
+  const sel = document.getElementById('trend-years-back');
+  const noteEl = document.getElementById('trend-window-note');
+  const risingList = document.getElementById('rising-list');
+  const decliningList = document.getElementById('declining-list');
+
+  function draw() {
+    const yearsBack = parseInt(sel.value, 10) || 3;
+    const result = computeCategoryTrends(stats.all_papers || [], yearsBack);
+    risingList.innerHTML = '';
+    decliningList.innerHTML = '';
+    if (!result) {
+      noteEl.textContent = 'Not enough complete years yet for this comparison.';
+      risingList.innerHTML = '<li>Not enough complete years yet.</li>';
+      decliningList.innerHTML = '<li>Not enough complete years yet.</li>';
+      return;
+    }
+    noteEl.textContent = `Comparing each category's share of papers, ${result.priorYear} vs. ${result.recentYear}.`;
+    result.trends.slice(0, 5).forEach(c => moveRow(risingList, c, true));
+    [...result.trends].slice(-5).reverse().forEach(c => moveRow(decliningList, c, false));
+    if (!result.trends.length) {
+      risingList.innerHTML = '<li>No category has enough papers in both years.</li>';
+      decliningList.innerHTML = '<li>No category has enough papers in both years.</li>';
+    }
+  }
+  if (sel) {
+    try {
+      const stored = sessionStorage.getItem('insights-trend-years-back');
+      if (stored && [...sel.options].some(o => o.value === stored)) sel.value = stored;
+    } catch (e) { /* ignore */ }
+    sel.addEventListener('change', () => {
+      try { sessionStorage.setItem('insights-trend-years-back', sel.value); } catch (e) { /* ignore */ }
+      draw();
+    });
+  }
+  draw();
 }
 
 const CATEGORY_LABELS = {
@@ -433,7 +522,7 @@ function render(ins, stats) {
   }
   if (years.length) {
     const series = [
-      { name: 'AV-relevant (core)', color: PALETTE[0], values: Object.fromEntries(years.map((y, i) => [y, growth.core_papers[i]])) },
+      { name: 'AV-relevant', color: PALETTE[0], values: Object.fromEntries(years.map((y, i) => [y, growth.core_papers[i]])) },
       { name: 'Total indexed', color: PALETTE[1], values: Object.fromEntries(years.map((y, i) => [y, growth.total_papers[i]])) },
     ];
     const legend = document.getElementById('growth-legend');
@@ -474,20 +563,10 @@ function render(ins, stats) {
       `paper.html?title=${encodeURIComponent(p.title)}`);
   }
 
-  // -- Rising / declining categories --
-  if (ins.trend_window) {
-    document.getElementById('trend-window-note').textContent =
-      `Comparing each category's share of papers, ${ins.trend_window.prior_years[0]}–` +
-      `${ins.trend_window.prior_years[ins.trend_window.prior_years.length - 1]} vs. ` +
-      `${ins.trend_window.recent_years[0]}–${ins.trend_window.recent_years[ins.trend_window.recent_years.length - 1]}, ` +
-      `not a single noisy year.`;
-  }
-  const risingList = document.getElementById('rising-list');
-  const decliningList = document.getElementById('declining-list');
-  (ins.rising_categories || []).forEach(c => moveRow(risingList, c, true));
-  (ins.declining_categories || []).forEach(c => moveRow(decliningList, c, false));
-  if (!(ins.rising_categories || []).length) risingList.innerHTML = '<li>Not enough complete years yet.</li>';
-  if (!(ins.declining_categories || []).length) decliningList.innerHTML = '<li>Not enough complete years yet.</li>';
+  // -- Rising / declining categories -- computed client-side (not a stats.json
+  // field) so the "compared to N years earlier" dropdown can recompute
+  // instantly instead of needing a fixed set of server-precomputed windows.
+  renderCategoryTrends(stats);
 
   // -- Collaboration -- (link to the paper, but no title text -- the point
   // here is the number, and a long title crowds the card; click through if
@@ -495,20 +574,18 @@ function render(ins, stats) {
   const cf = document.getElementById('collab-facts');
   if (ins.most_collaborative_paper) {
     const p = ins.most_collaborative_paper;
-    statTile(cf, p.institution_count, 'Most institutions on one paper', `${p.year}. Click to view the paper.`,
+    statTile(cf, p.institution_count, 'Most institutions on one paper', null,
       `paper.html?title=${encodeURIComponent(p.title)}`);
   }
   if (ins.most_international_paper) {
     const p = ins.most_international_paper;
-    statTile(cf, p.country_count, 'Most countries on one paper',
-      `${p.year}: ${p.countries.slice(0, 6).join(', ')}${p.countries.length > 6 ? ', ...' : ''}`,
+    statTile(cf, p.country_count, 'Most countries on one paper', null,
       `paper.html?title=${encodeURIComponent(p.title)}`);
   }
   const teamSizes = ins.avg_team_size_by_year || [];
   if (teamSizes.length >= 2) {
     const first = teamSizes[0], last = teamSizes[teamSizes.length - 1];
-    statTile(cf, `${first.avg_authors} → ${last.avg_authors}`, 'Average authors per paper',
-      `${first.year} to ${last.year}. Teams have gotten ${last.avg_authors > first.avg_authors ? 'larger' : 'smaller'} over time.`);
+    statTile(cf, `${first.avg_authors} → ${last.avg_authors}`, 'Average authors per paper');
   }
   if (teamSizes.length) {
     const series = [{ name: 'Average authors per paper', color: PALETTE[3],
@@ -521,11 +598,11 @@ function render(ins, stats) {
   const dist = ins.researcher_lifetime_distribution || [];
   if (dist.length) {
     barChart(document.getElementById('lifetime-dist-chart'), dist.map(d => d.lifetime === 14 ? '14+' : String(d.lifetime)),
-      dist.map(d => d.researchers), v => `${v.toLocaleString()} researchers`, { yLabel: 'Researchers' });
+      dist.map(d => d.researchers), v => `${v.toLocaleString()} researchers`, { yLabel: 'Researchers (log-scale)', log: true });
   }
   const byLifetime = ins.citations_by_researcher_lifetime || [];
   if (byLifetime.length) {
-    errorBarChart(document.getElementById('lifetime-citations-chart'), byLifetime, { yLabel: 'Mean total citations' });
+    errorBarChart(document.getElementById('lifetime-citations-chart'), byLifetime, { yLabel: 'Mean total citations (log-scale)', log: true });
   }
   const youngBody = document.getElementById('young-researchers-body');
   const young = ins.most_promising_young_researchers || [];
@@ -562,15 +639,12 @@ function render(ins, stats) {
   // -- Citation patterns --
   const cif = document.getElementById('citation-facts');
   if (ins.self_citation_rate_pct != null) {
-    statTile(cif, `${ins.self_citation_rate_pct}%`, 'of raw citation edges are self-citations',
-      `${(ins.self_citation_counts.self_edges || 0).toLocaleString()} of ${(ins.self_citation_counts.total_edges || 0).toLocaleString()} edges. Included in every total citation count; see each author's Self-citation % for their own share.`);
+    statTile(cif, `${ins.self_citation_rate_pct}%`, 'of raw citation edges are self-citations');
   }
   if (ins.citation_concentration) {
     const c = ins.citation_concentration;
-    statTile(cif, `${c.top1pct_share_pct}%`, 'of all citations go to the top 1% of cited papers',
-      `Out of ${c.cited_papers.toLocaleString()} papers with at least one in-corpus citation.`);
-    statTile(cif, `${c.top10pct_share_pct}%`, 'of all citations go to the top 10% of cited papers',
-      'The same power-law pattern seen in most citation networks.');
+    statTile(cif, `${c.top1pct_share_pct}%`, 'of all citations go to the top 1% of cited papers');
+    statTile(cif, `${c.top10pct_share_pct}%`, 'of all citations go to the top 10% of cited papers');
   }
 
   // -- Venue relevance --
@@ -743,6 +817,18 @@ function lineChart(svgEl, tooltipEl, series, years, formatValue, opts) {
   svgEl.appendChild(crosshair);
 }
 
+// Shared by every log-scale chart below. Values are floored at 1 for
+// positioning (log10(0) is -Infinity) -- a 0-count bucket just draws at the
+// same baseline a count-of-1 bucket would, the standard way to handle a log
+// axis whose data includes zero.
+function log10Floored(v) { return Math.log10(Math.max(v, 1)); }
+function logGridlineValues(maxV) {
+  const topExp = Math.max(1, Math.ceil(log10Floored(maxV)));
+  const vals = [];
+  for (let e = 0; e <= topExp; e++) vals.push(Math.pow(10, e));
+  return vals;
+}
+
 // A plain vertical bar chart -- one bar per category label (not a year
 // axis, so it doesn't reuse lineChart's x(i) time-series assumptions), used
 // for the researcher-lifetime distribution. Hovering a bar shows its exact
@@ -769,9 +855,13 @@ function barChart(svgEl, labels, values, formatValue, opts) {
   const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
   const colW = plotW / labels.length;
   const barW = colW * 0.62;
-  for (let i = 0; i <= 4; i++) {
-    const v = (maxV / 4) * i;
-    const gy = H - PAD_B - (v / maxV) * plotH;
+  const logMax = log10Floored(maxV);
+  const yFor = v => opts.log
+    ? (H - PAD_B) - (log10Floored(v) / (logMax || 1)) * plotH
+    : (H - PAD_B) - (v / maxV) * plotH;
+  const gridValues = opts.log ? logGridlineValues(maxV) : [0, 1, 2, 3, 4].map(i => (maxV / 4) * i);
+  gridValues.forEach((v, i) => {
+    const gy = yFor(v);
     const line = document.createElementNS(ns, 'line');
     line.setAttribute('x1', PAD_L); line.setAttribute('x2', W - PAD_R);
     line.setAttribute('y1', gy); line.setAttribute('y2', gy);
@@ -782,14 +872,15 @@ function barChart(svgEl, labels, values, formatValue, opts) {
     label.setAttribute('text-anchor', 'end'); label.setAttribute('class', 'axis-label');
     label.textContent = Math.round(v).toLocaleString();
     svgEl.appendChild(label);
-  }
+  });
   labels.forEach((lab, i) => {
     const cx = PAD_L + colW * i + colW / 2;
     const v = values[i] || 0;
-    const barH = (v / maxV) * plotH;
+    const barTop = yFor(v);
+    const barH = (H - PAD_B) - barTop;
     const rect = document.createElementNS(ns, 'rect');
-    rect.setAttribute('x', cx - barW / 2); rect.setAttribute('y', H - PAD_B - barH);
-    rect.setAttribute('width', barW); rect.setAttribute('height', barH);
+    rect.setAttribute('x', cx - barW / 2); rect.setAttribute('y', barTop);
+    rect.setAttribute('width', barW); rect.setAttribute('height', Math.max(0, barH));
     rect.setAttribute('fill', PALETTE[1]); rect.setAttribute('opacity', '0.85');
     rect.setAttribute('rx', '2');
     const title = document.createElementNS(ns, 'title');
@@ -828,9 +919,12 @@ function errorBarChart(svgEl, rows, opts) {
   const maxV = Math.max(1e-9, ...rows.map(r => r.mean_citations + r.stdev_citations));
   const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
   const x = i => rows.length <= 1 ? PAD_L + plotW / 2 : PAD_L + (i / (rows.length - 1)) * plotW;
-  const y = v => H - PAD_B - (Math.max(0, v) / maxV) * plotH;
-  for (let i = 0; i <= 4; i++) {
-    const v = (maxV / 4) * i;
+  const logMax = log10Floored(maxV);
+  const y = opts.log
+    ? (v => (H - PAD_B) - (log10Floored(Math.max(0, v)) / (logMax || 1)) * plotH)
+    : (v => H - PAD_B - (Math.max(0, v) / maxV) * plotH);
+  const gridValues = opts.log ? logGridlineValues(maxV) : [0, 1, 2, 3, 4].map(i => (maxV / 4) * i);
+  gridValues.forEach((v, i) => {
     const gy = y(v);
     const line = document.createElementNS(ns, 'line');
     line.setAttribute('x1', PAD_L); line.setAttribute('x2', W - PAD_R);
@@ -842,7 +936,7 @@ function errorBarChart(svgEl, rows, opts) {
     label.setAttribute('text-anchor', 'end'); label.setAttribute('class', 'axis-label');
     label.textContent = Math.round(v).toLocaleString();
     svgEl.appendChild(label);
-  }
+  });
   // Shaded stdev band, drawn as one filled path so it reads as a continuous
   // region rather than a stack of separate per-point rectangles.
   let bandD = rows.map((r, i) => `${i === 0 ? 'M' : 'L'}${x(i)},${y(r.mean_citations + r.stdev_citations)}`).join(' ');

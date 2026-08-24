@@ -17,37 +17,21 @@ load-bearing, without losing the record of how each venue was pulled.
 | ICML / BMVC / ACCV / ICPR / ICASSP / ICIP | `fetch_dblp_listing.py` | DBLP | Found not by a coverage gap in the venue list itself, but by mining `data/reference_lists_cvf.json`/`reference_lists_arxiv.json` (raw extracted reference text from this corpus's own papers) for parenthetical venue codes cited often but not yet covered (user-requested) -- ICML alone showed 207 raw citations. Same generic DBLP path as RSS/ICLR/AAAI; ACCV/ICPR are DBLP multi-part years (`accv2024-1.html` .. `-N.html`), already handled by the existing ECCV-style pagination fallback in `fetch_year()`. ICML and BMVC are fully fetched (2012-2024); ACCV only reached 2012 and ICPR/ICASSP/ICIP haven't started -- DBLP began returning `RemoteDisconnected` mid-fetch (confirmed via a direct connection test, not something retries could paper over) after this session's cumulative request volume, so the remaining fetches are paused rather than retried immediately. `fetch_common.py`'s `fetch()` now also retries on a bare `ConnectionError`, not just `HTTPError`, after this was caught losing an in-progress 15-year ICML fetch on year 14. |
 | TOG (ACM Trans. on Graphics) | `fetch_dblp_listing.py --journal` | DBLP | Same reference-mining discovery as above; not yet fetched (see the note above). |
 
-## Citation-crawl pilot (kept separate, not part of the corpus)
-
-`enrich.py` + `fetch_abstracts.py` built `data/enriched.json`: ~43 papers found by
-following citations *out* of nuScenes/KITTI/Waymo (`data/seeds.json`, `data/raw/`)
-via Google Scholar, then enriched with OpenAlex authorship + arXiv/Crossref author-
-list verification.
-
-**No longer merged into `papers_full.json`.** It was a different, non-uniform
-sampling method — a paper's presence depended on whether it happened to cite one
-of ~100 seed dataset papers, not on being published at one of the eight venues
-everything else is drawn from. Mixing the two made "how was this paper found" an
-invisible variable across the corpus. `data/enriched.json` still exists on disk
-for reference (it has the only real institution/country/Scholar-citation data
-collected from the start) but nothing on the site reads it anymore.
-
 ## Merge, classify, enrich, aggregate
 
 - `merge_corpus.py` — dedupes by normalized title across every `data/venues/*.json`
-  file (not `enriched.json`, see above), classifies each paper's `category` (topic)
-  and `av_relevance` (`core`/`adjacent`) via `classify.py`, writes `data/papers_full.json`.
+  file, classifies each paper's `category` (topic) and `av_relevance`
+  (`core`/`adjacent`) via `classify.py`, writes `data/papers_full.json`.
 - `classify.py` — keyword-matching category assignment (`data/categories.json`,
   a living taxonomy, not fixed) + AV-relevance decided by an explicit
   AV-specific phrase list (`AV_RELEVANCE_TERMS`), independent of category —
   category keywords are generic CV/robotics terms that also match plenty of
   non-AV papers, so category membership alone was never a valid relevance signal.
 - `enrich_core_authors.py` — the venue-listing pulls only ever captured a plain
-  author-name string, not affiliations, so institution/country stats were built
-  from just the ~15 citation-crawl-pilot papers that happened to have real
-  author detail. This backfills OpenAlex author/institution/country data for
-  every `av_relevance == "core"` paper (not the full ~66k corpus — no reason to
-  spend OpenAlex's rate budget on papers that were never going to be ranked).
+  author-name string, not affiliations. This backfills OpenAlex author/
+  institution/country data for every `av_relevance == "core"` paper (not the
+  full corpus — no reason to spend OpenAlex's rate budget on papers that were
+  never going to be ranked).
 - `fetch_affiliations_arxiv.py` — a second, independent source for the same
   `authors_detail` field, for core papers OpenAlex hasn't reached yet.
   Resolves each paper's arXiv ID via arXiv's own search API, then parses
@@ -137,4 +121,9 @@ recur: the field is stripped from `papers_full.json` and no longer fetched.
   otherwise, a leftover from an early version — the import was already unused).
 - `fetch_abstracts.py` — a one-off patch that backfilled abstracts into an
   already-collected `enriched.json` from before `enrich.py` captured them
-  natively; not needed for any run going forward, `enrich.py` does this itself now.
+  natively.
+- `data/seeds.json` -> `data/raw/*.json` -> `enrich.py` -> `data/enriched.json`
+  — the original citation-crawl pilot (a different, non-uniform sampling
+  method; see DECISIONS.md's "Citation-crawl pilot workflow removed
+  entirely"). Excluded from `papers_full.json` for a while before being
+  deleted outright, since nothing ever read it once excluded.

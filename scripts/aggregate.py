@@ -17,11 +17,13 @@ this filter is defensible rather than a content-based inclusion filter --
 every paper in papers_full.json is present regardless of relevance, only
 the *label* is used to choose what these leaderboards rank.
 
-Author/institution/country data is only available for papers pulled via
-the citation-crawl pilot (data/enriched.json, ~43 papers) -- the venue-listing
-pulls only captured plain author-name strings, not affiliations. This means
-institution/country leaderboards reflect a small subset of the corpus, not
-its full breadth; that's a known, disclosed limitation, not a bug.
+Author/institution/country data is only available for av_relevance=="core"
+papers that have been through affiliation enrichment (enrich_core_authors.py
+via OpenAlex, or the CVF/arXiv alternatives for papers OpenAlex misses --
+fetch_cvf_affiliations.py, fetch_affiliations_arxiv.py). The venue-listing
+pulls themselves only capture plain author-name strings, not affiliations.
+This means institution/country leaderboards reflect a subset of the corpus,
+not its full breadth; that's a known, disclosed limitation, not a bug.
 
 Usage: python aggregate.py
 """
@@ -1001,15 +1003,6 @@ def is_fully_processed(e):
     return bool((e.get("title") or "").strip()) and e.get("year") is not None
 
 
-# Two consecutive years of a category's share of that year's papers, or two
-# consecutive years of a per-year metric in general, is noise -- one prolific
-# lab's batch submission can swing a category's share several points in a
-# single year with no underlying trend at all. RISING/DECLINING_TREND_YEARS
-# controls how many trailing complete years get averaged into "recent" vs.
-# "prior" before comparing, so a real multi-year shift is what actually
-# surfaces, not a one-year blip.
-TREND_YEARS = 3
-
 
 def compute_insights(papers, all_entries, citation_graph, category_stats,
                       top_authors_avg, top_authors_total, top_institutions, datasets=None,
@@ -1147,41 +1140,12 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
     if top_institutions:
         insights["leading_institution"] = top_institutions[0]
 
-    # -- Topics: rising vs declining, by comparing each category's share of
-    # TREND_YEARS-worth of papers, recent block vs. the block before it --
-    # not a single-year swing, which (see affiliation_coverage_by_year
-    # above) is exactly the kind of noise a single year can't be trusted to
-    # show on its own. --
-    trend_source_years = [y for y in complete_years if y >= (complete_years[-1] - 2 * TREND_YEARS + 1)] \
-        if len(complete_years) >= 2 * TREND_YEARS else []
-    category_trends = []
-    if trend_source_years:
-        recent_years = set(trend_source_years[-TREND_YEARS:])
-        prior_years = set(trend_source_years[:TREND_YEARS])
-        recent_total = sum(1 for p in papers if p.get("year") in recent_years)
-        prior_total = sum(1 for p in papers if p.get("year") in prior_years)
-        if recent_total and prior_total:
-            cat_recent = Counter(p["category"] or "uncategorized" for p in papers if p.get("year") in recent_years)
-            cat_prior = Counter(p["category"] or "uncategorized" for p in papers if p.get("year") in prior_years)
-            for cat in set(cat_recent) | set(cat_prior):
-                if cat == "uncategorized":
-                    continue
-                recent_share = cat_recent.get(cat, 0) / recent_total
-                prior_share = cat_prior.get(cat, 0) / prior_total
-                # Needs a minimally real presence in both windows -- a
-                # category with 2 papers total swinging from 0.1% to 0.3%
-                # share is a 200% "rise" that means nothing.
-                if cat_recent.get(cat, 0) < 15 and cat_prior.get(cat, 0) < 15:
-                    continue
-                category_trends.append({
-                    "category": cat, "recent_share_pct": round(recent_share * 100, 2),
-                    "prior_share_pct": round(prior_share * 100, 2),
-                    "point_change": round((recent_share - prior_share) * 100, 2),
-                })
-        category_trends.sort(key=lambda c: c["point_change"], reverse=True)
-        insights["rising_categories"] = category_trends[:5]
-        insights["declining_categories"] = list(reversed(category_trends[-5:])) if len(category_trends) >= 5 else []
-        insights["trend_window"] = {"recent_years": sorted(recent_years), "prior_years": sorted(prior_years)}
+    # Topics: rising vs declining used to be precomputed here (a fixed
+    # multi-year window average); it's now computed client-side in
+    # insights.html instead, from a single recent year against a single
+    # prior year, N years back where N is a reader-adjustable dropdown --
+    # nothing here can offer that without either baking in a fixed set of
+    # windows or bloating stats.json with every possible N.
 
     # -- Team size over time: has AV research become more or less
     # collaborative, in terms of raw author-list length. Latest (partial)
@@ -1244,10 +1208,9 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
         # authors with at least one cited paper (an author with zero known
         # citation data isn't a real 0, see the None-vs-0 convention used
         # everywhere else on this site), and only for lifetime buckets with
-        # enough authors to make a stdev meaningful (a bucket with 1-2
-        # people isn't a distribution, see TREND_YEARS's same reasoning
-        # above for why a small-N figure is suppressed rather than shown
-        # misleadingly precise). --
+        # enough authors to make a stdev meaningful -- a bucket with 1-2
+        # people isn't a distribution, so a small-N figure is suppressed
+        # rather than shown misleadingly precise.
         MIN_AUTHORS_FOR_LIFETIME_STATS = 5
         citations_by_lifetime = defaultdict(list)
         for a in author_lifetimes.values():
@@ -1262,26 +1225,21 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
         ]
 
         # -- Most promising young researchers: short lifetime (early career,
-        # within this corpus), but already publishing at a real clip with
-        # real impact -- not a single lucky hit (minPapers/minCitedPapers
-        # floors, same reasoning as top_authors_by_avg's own floor above)
-        # and still actually active (last publication within the last 2
-        # complete years), not someone who published a few papers years ago
-        # and stopped. Ranked by average citations per paper, same "impact"
-        # definition used everywhere else on this site (highest_impact_author
-        # above), not raw paper count. --
+        # within this corpus) but already publishing at a real clip. Ranked
+        # by average citations per paper, same definition used everywhere
+        # else on this site (highest_impact_author above), not raw paper
+        # count. cited_papers > 0 is a technical floor, not a business rule
+        # (avoids a division by zero below), not the old, now-removed
+        # "at least 2 cited papers" requirement.
         YOUNG_MAX_LIFETIME = 3
-        YOUNG_MIN_PAPERS = 3
-        YOUNG_MIN_CITED_PAPERS = 2
-        recent_cutoff = (complete_years[-1] - 2) if complete_years else None
+        YOUNG_MIN_PAPERS = 5
         young = [
             {"name": name, "papers": a["papers"], "citations": a["citations"],
              "avg_citations": round(a["citations"] / a["cited_papers"]),
              "lifetime": a["lifetime"], "first_year": a["first_year"], "last_year": a["last_year"]}
             for name, a in author_lifetimes.items()
             if a["lifetime"] <= YOUNG_MAX_LIFETIME and a["papers"] >= YOUNG_MIN_PAPERS
-            and a["cited_papers"] >= YOUNG_MIN_CITED_PAPERS
-            and (recent_cutoff is None or (a["last_year"] or 0) >= recent_cutoff)
+            and a["cited_papers"] > 0
         ]
         young.sort(key=lambda a: a["avg_citations"], reverse=True)
         insights["most_promising_young_researchers"] = young[:5]
@@ -1341,8 +1299,7 @@ def main():
     # isn't implausible on count alone, so that bug kept resurfacing paper
     # by paper as each individual mismatch got reported and fixed one at a
     # time. Checking whether the two lists are even about the SAME PEOPLE
-    # (surname overlap, same threshold/reasoning as enrich.py's
-    # AUTHOR_MATCH_THRESHOLD) catches both: a real enrichment has most
+    # (surname overlap against a threshold) catches both: a real enrichment has most
     # authors_detail names' surnames present in the raw string; a wrong-paper
     # match has none. No authors_detail_source or author_verification tag
     # exists on this legacy-enriched data to catch it directly, so this

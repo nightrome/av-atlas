@@ -778,28 +778,22 @@ class TestComputeInsights(unittest.TestCase):
 
     def test_most_promising_young_researchers_filters_and_ranks_by_avg_citations(self):
         author_lifetimes = {
-            # Short career, well-cited, still active -- should be selected.
+            # Short career, well-cited, enough papers -- should be selected.
             "Rising Star": {"first_year": 2023, "last_year": 2025, "lifetime": 2,
-                             "papers": 4, "citations": 400, "cited_papers": 4},
+                             "papers": 5, "citations": 500, "cited_papers": 5},
             # Long career -- not "young", excluded regardless of impact.
             "Veteran": {"first_year": 2005, "last_year": 2025, "lifetime": 20,
                         "papers": 50, "citations": 5000, "cited_papers": 50},
-            # Short career but too few papers -- excluded (one lucky hit).
-            "One Hit Wonder": {"first_year": 2024, "last_year": 2025, "lifetime": 1,
-                                "papers": 1, "citations": 1000, "cited_papers": 1},
-            # Short career, active a while ago but not recently -- excluded
-            # (early-career-and-stopped isn't "promising" going forward).
-            "Stopped Publishing": {"first_year": 2013, "last_year": 2014, "lifetime": 1,
-                                    "papers": 4, "citations": 400, "cited_papers": 4},
+            # Short career but below the min-papers floor -- excluded.
+            "Too Few Papers": {"first_year": 2024, "last_year": 2025, "lifetime": 1,
+                                "papers": 4, "citations": 1000, "cited_papers": 4},
+            # Short career, enough papers, but zero citation data -- excluded
+            # (cited_papers > 0 is a technical floor against a division by
+            # zero when computing avg_citations, not a business rule).
+            "No Citation Data": {"first_year": 2024, "last_year": 2025, "lifetime": 1,
+                                  "papers": 6, "citations": 0, "cited_papers": 0},
         }
-        # Two distinct years so complete_years (which excludes the single
-        # latest, still-partial year) is non-empty and the recency cutoff
-        # below is actually computed, not skipped.
-        papers = [
-            self._paper("Anchor 2024", 2024, citations=1, authors=["Someone"]),
-            self._paper("Anchor 2025", 2025, citations=1, authors=["Someone Else"]),
-        ]
-        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [], author_lifetimes=author_lifetimes)
+        insights = ag.compute_insights([], [], {"edges": {}}, {}, [], [], [], author_lifetimes=author_lifetimes)
         names = [a["name"] for a in insights["most_promising_young_researchers"]]
         self.assertEqual(names, ["Rising Star"])
 
