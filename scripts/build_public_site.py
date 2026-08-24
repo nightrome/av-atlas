@@ -47,7 +47,8 @@ ROBOTS_TXT = "User-agent: *\nAllow: /\n"
 # label_relevance.html embeds candidate paper data for hand-labeling and has
 # no business being reachable from a live URL, guessable slug or not. This
 # was caught after it briefly WAS published (see DECISIONS.md).
-# authors_sql_prototype.html is a local-only spike (see TODO.md) that was
+# authors_sql_prototype.html is a local-only spike (see DECISIONS.md's
+# "sql.js-httpvfs prototype" entry) that was
 # published anyway by this same glob -- broken if actually visited live,
 # since its scripts/vendor/sqljs-httpvfs/ dependencies and the .db file it
 # queries are never copied into the published output below.

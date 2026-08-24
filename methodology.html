@@ -461,10 +461,10 @@
 <summary>Contact</summary>
 <div class="detail-body">
 <p>
-  This site was created and is maintained by Holger Caesar. Use the <strong>"Report an error on
-  this page"</strong> button (🚩) in the navigation bar at the top of any page, or
-  <a href="#" id="methodology-contact-link">click here</a>, to get in touch. The same form covers
-  a data correction, a privacy request, or any other question.
+  This site was created and is maintained by Holger Caesar.
+  <a href="#" id="methodology-contact-link">Click here</a> to get in touch. For a data correction
+  or a privacy request specifically, use the <strong>"Report an error on this page"</strong>
+  button (🚩) in the navigation bar instead (see Privacy below).
 </p>
 </div>
 </details>
@@ -500,6 +500,21 @@
 </p>
 </div>
 </details>
+
+<div class="report-issue-overlay" id="contact-overlay">
+  <div class="report-issue-modal" role="dialog" aria-label="Contact">
+    <h3>Contact</h3>
+    <p>This opens your email client with a message pre-filled to the site's maintainer, nothing is sent from here.</p>
+    <label for="contact-message">Message</label>
+    <textarea id="contact-message" placeholder="What's on your mind?"></textarea>
+    <label for="contact-email">Your email (optional, if you'd like a reply)</label>
+    <input type="email" id="contact-email" placeholder="you@example.com">
+    <div class="report-issue-actions">
+      <button type="button" class="cancel-btn" id="contact-cancel-btn">Cancel</button>
+      <button type="button" class="send-btn" id="contact-send-btn">Open email</button>
+    </div>
+  </div>
+</div>
 
 <script src="filters.js"></script>
 <script>
@@ -696,9 +711,35 @@ renderScholarChart();
     ev.preventDefault();
     document.getElementById('reportIssueBtn').click();
   });
+
+  // Contact -- deliberately its own modal, not a reuse of the "Report an
+  // error" one above: that one is framed entirely around a data problem
+  // ("What's wrong?"), which reads oddly for someone who just wants to say
+  // hello or ask a general question (user-flagged: needs its own window
+  // that doesn't talk about privacy/errors). Same mailto-based, nothing-
+  // sent-from-here mechanism, just distinct copy and its own overlay.
+  const contactOverlay = document.getElementById('contact-overlay');
+  const contactMessage = document.getElementById('contact-message');
+  const contactEmail = document.getElementById('contact-email');
+  function closeContactModal() {
+    contactOverlay.classList.remove('open');
+    contactMessage.value = '';
+    contactEmail.value = '';
+  }
   document.getElementById('methodology-contact-link').addEventListener('click', ev => {
     ev.preventDefault();
-    document.getElementById('reportIssueBtn').click();
+    contactOverlay.classList.add('open');
+  });
+  document.getElementById('contact-cancel-btn').addEventListener('click', closeContactModal);
+  contactOverlay.addEventListener('click', ev => { if (ev.target === contactOverlay) closeContactModal(); });
+  document.getElementById('contact-send-btn').addEventListener('click', () => {
+    const message = contactMessage.value.trim();
+    const replyTo = contactEmail.value.trim();
+    const subject = 'AV Atlas: message from a reader';
+    const bodyLines = [message || '(no message entered)'];
+    if (replyTo) bodyLines.push('', `Reply-to: ${replyTo}`);
+    window.location.href = `mailto:h.caesar@tudelft.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+    closeContactModal();
   });
 </script>
 </body>

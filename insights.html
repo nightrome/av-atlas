@@ -172,30 +172,30 @@
 <div class="panel">
   <h2>Researcher careers</h2>
   <p class="section-intro">
-    An author's "lifetime" here is the span between their first and last AV-relevant publication
+    An author's "career span" here is the span between their first and last AV-relevant publication
     in this corpus -- not their real age or whole career.
   </p>
   <h3 style="margin-top:0;">Where researchers are in their career</h3>
-  <p class="section-intro" style="margin-bottom:4px;">Researchers per lifetime, in years.</p>
+  <p class="section-intro" style="margin-bottom:4px;">Researchers per career span, in years.</p>
   <div class="line-chart-wrap" id="lifetime-dist-chart-wrap">
     <svg id="lifetime-dist-chart"></svg>
   </div>
-  <h3>Citations by career lifetime</h3>
+  <h3>Citations by career span</h3>
   <p class="section-intro" style="margin-bottom:4px;">
-    Mean total citations per researcher at each lifetime, ±1 standard deviation.
+    Mean total citations per researcher at each career span, ±1 standard deviation.
   </p>
   <div class="line-chart-wrap" id="lifetime-citations-chart-wrap">
     <svg id="lifetime-citations-chart"></svg>
   </div>
   <h3>Most promising young researchers</h3>
-  <p class="section-intro" style="margin-bottom:4px;">
-    Lifetime ≤3 years, at least 5 papers, ranked by average citations per paper.
+  <p class="section-intro" style="margin-bottom:4px;" id="young-researchers-note">
+    Career span ≤3 years, at least 5 papers, ranked by average citations per paper.
   </p>
   <table class="data-table" id="young-researchers-table">
     <thead>
       <tr>
         <th>Author</th><th class="num">First year</th><th class="num">Last year</th>
-        <th class="num">Lifetime</th><th class="num">Papers</th><th class="num">Citations</th>
+        <th class="num">Career span</th><th class="num">Papers</th><th class="num">Citations</th>
         <th class="num">Citations / paper</th>
       </tr>
     </thead>
@@ -291,7 +291,7 @@ function moveRow(list, item, up) {
   li.appendChild(name);
   const delta = document.createElement('span');
   delta.className = 'delta ' + (up ? 'up' : 'down');
-  delta.textContent = `${item.point_change > 0 ? '+' : ''}${item.point_change} pt`;
+  delta.textContent = `${item.point_change > 0 ? '+' : ''}${item.point_change.toFixed(1)} pt`;
   li.appendChild(delta);
   list.appendChild(li);
 }
@@ -333,7 +333,9 @@ function computeCategoryTrends(allPapers, yearsBack) {
     const rc = catRecent[cat] || 0, pc = catPrior[cat] || 0;
     if (rc < TREND_MIN_PAPERS_PER_YEAR && pc < TREND_MIN_PAPERS_PER_YEAR) return;
     const recentShare = rc / recentPapers.length, priorShare = pc / priorPapers.length;
-    trends.push({ category: cat, point_change: Math.round((recentShare - priorShare) * 10000) / 100 });
+    // Not rounded here -- moveRow() formats to exactly 1 decimal place for
+    // display (toFixed(1)), so the stored value just needs to be accurate.
+    trends.push({ category: cat, point_change: (recentShare - priorShare) * 100 });
   });
   trends.sort((a, b) => b.point_change - a.point_change);
   return { trends, recentYear, priorYear };
@@ -517,7 +519,7 @@ function render(ins, stats) {
   const years = growth.years || [];
   if (ins.avg_annual_growth) {
     const g = ins.avg_annual_growth;
-    statTile(gf, `${g.pct > 0 ? '+' : ''}${g.pct}%`, 'Average annual growth, AV-relevant papers',
+    statTile(gf, `${g.pct > 0 ? '+' : ''}${g.pct.toFixed(1)}%`, 'Average annual growth, AV-relevant papers',
       `Compound annual growth rate, ${g.from_year} to ${g.to_year} (complete years only).`);
   }
   if (years.length) {
@@ -604,6 +606,11 @@ function render(ins, stats) {
   if (byLifetime.length) {
     errorBarChart(document.getElementById('lifetime-citations-chart'), byLifetime, { yLabel: 'Mean total citations (log-scale)', log: true });
   }
+  if (ins.young_researchers_cutoff_year) {
+    document.getElementById('young-researchers-note').textContent =
+      `Career span ≤3 years, at least 5 papers, still active in ${ins.young_researchers_cutoff_year} ` +
+      `(the last complete year), ranked by average citations per paper.`;
+  }
   const youngBody = document.getElementById('young-researchers-body');
   const young = ins.most_promising_young_researchers || [];
   function renderYoungBody(rows) {
@@ -639,12 +646,12 @@ function render(ins, stats) {
   // -- Citation patterns --
   const cif = document.getElementById('citation-facts');
   if (ins.self_citation_rate_pct != null) {
-    statTile(cif, `${ins.self_citation_rate_pct}%`, 'of raw citation edges are self-citations');
+    statTile(cif, `${ins.self_citation_rate_pct.toFixed(1)}%`, 'of raw citation edges are self-citations');
   }
   if (ins.citation_concentration) {
     const c = ins.citation_concentration;
-    statTile(cif, `${c.top1pct_share_pct}%`, 'of all citations go to the top 1% of cited papers');
-    statTile(cif, `${c.top10pct_share_pct}%`, 'of all citations go to the top 10% of cited papers');
+    statTile(cif, `${c.top1pct_share_pct.toFixed(1)}%`, 'of all citations go to the top 1% of cited papers');
+    statTile(cif, `${c.top10pct_share_pct.toFixed(1)}%`, 'of all citations go to the top 10% of cited papers');
   }
 
   // -- Venue relevance --
@@ -655,7 +662,7 @@ function render(ins, stats) {
     li.appendChild(name);
     const pct = document.createElement('span');
     pct.className = 'pct';
-    pct.textContent = `${v.av_relevance_pct}%`;
+    pct.textContent = `${v.av_relevance_pct.toFixed(1)}%`;
     li.appendChild(pct);
     list.appendChild(li);
   }
@@ -959,7 +966,7 @@ function errorBarChart(svgEl, rows, opts) {
     dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(r.mean_citations)); dot.setAttribute('r', 3.5);
     dot.setAttribute('fill', PALETTE[2]);
     const title = document.createElementNS(ns, 'title');
-    title.textContent = `Lifetime ${r.lifetime}: mean ${r.mean_citations} ± ${r.stdev_citations} citations (${r.researchers} researchers)`;
+    title.textContent = `Career span ${r.lifetime}: mean ${r.mean_citations} ± ${r.stdev_citations} citations (${r.researchers} researchers)`;
     dot.appendChild(title);
     svgEl.appendChild(dot);
     const xLabel = document.createElementNS(ns, 'text');

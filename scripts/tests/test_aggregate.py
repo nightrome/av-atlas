@@ -778,7 +778,8 @@ class TestComputeInsights(unittest.TestCase):
 
     def test_most_promising_young_researchers_filters_and_ranks_by_avg_citations(self):
         author_lifetimes = {
-            # Short career, well-cited, enough papers -- should be selected.
+            # Short career, well-cited, enough papers, active in the last
+            # complete year -- should be selected.
             "Rising Star": {"first_year": 2023, "last_year": 2025, "lifetime": 2,
                              "papers": 5, "citations": 500, "cited_papers": 5},
             # Long career -- not "young", excluded regardless of impact.
@@ -792,10 +793,23 @@ class TestComputeInsights(unittest.TestCase):
             # zero when computing avg_citations, not a business rule).
             "No Citation Data": {"first_year": 2024, "last_year": 2025, "lifetime": 1,
                                   "papers": 6, "citations": 0, "cited_papers": 0},
+            # Short career, well-cited, enough papers, but not active in the
+            # last complete year -- excluded (user-requested: only list
+            # people still active in the most recent complete year).
+            "Stopped Publishing": {"first_year": 2021, "last_year": 2023, "lifetime": 2,
+                                    "papers": 5, "citations": 500, "cited_papers": 5},
         }
-        insights = ag.compute_insights([], [], {"edges": {}}, {}, [], [], [], author_lifetimes=author_lifetimes)
+        # Two distinct years so complete_years (which excludes the single
+        # latest, still-partial year, 2026) is non-empty and its last entry,
+        # 2025, is the recency cutoff the filter above checks against.
+        papers = [
+            self._paper("Anchor 2025", 2025, citations=1, authors=["Someone"]),
+            self._paper("Anchor 2026", 2026, citations=1, authors=["Someone Else"]),
+        ]
+        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [], author_lifetimes=author_lifetimes)
         names = [a["name"] for a in insights["most_promising_young_researchers"]]
         self.assertEqual(names, ["Rising Star"])
+        self.assertEqual(insights["young_researchers_cutoff_year"], 2025)
 
     def test_most_cited_paper_uses_the_known_dataset_short_name_when_one_exists(self):
         papers = [self._paper("nuScenes: A Multimodal Dataset for Autonomous Driving", 2020, citations=300,

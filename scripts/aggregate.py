@@ -1224,15 +1224,17 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
             if len(vals) >= MIN_AUTHORS_FOR_LIFETIME_STATS
         ]
 
-        # -- Most promising young researchers: short lifetime (early career,
-        # within this corpus) but already publishing at a real clip. Ranked
-        # by average citations per paper, same definition used everywhere
-        # else on this site (highest_impact_author above), not raw paper
-        # count. cited_papers > 0 is a technical floor, not a business rule
-        # (avoids a division by zero below), not the old, now-removed
-        # "at least 2 cited papers" requirement.
+        # -- Most promising young researchers: short career span (early
+        # career, within this corpus) but already publishing at a real clip,
+        # and still active -- last publication in the last complete year,
+        # not someone who published a burst of papers years ago and stopped.
+        # Ranked by average citations per paper, same definition used
+        # everywhere else on this site (highest_impact_author above), not
+        # raw paper count. cited_papers > 0 is a technical floor, not a
+        # business rule (avoids a division by zero below).
         YOUNG_MAX_LIFETIME = 3
         YOUNG_MIN_PAPERS = 5
+        last_complete_year = complete_years[-1] if complete_years else None
         young = [
             {"name": name, "papers": a["papers"], "citations": a["citations"],
              "avg_citations": round(a["citations"] / a["cited_papers"]),
@@ -1240,9 +1242,11 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
             for name, a in author_lifetimes.items()
             if a["lifetime"] <= YOUNG_MAX_LIFETIME and a["papers"] >= YOUNG_MIN_PAPERS
             and a["cited_papers"] > 0
+            and (last_complete_year is None or a["last_year"] == last_complete_year)
         ]
         young.sort(key=lambda a: a["avg_citations"], reverse=True)
         insights["most_promising_young_researchers"] = young[:5]
+        insights["young_researchers_cutoff_year"] = last_complete_year
 
     return insights
 
