@@ -595,6 +595,14 @@ INSTITUTION_ALIASES = {
     "Google Research": "Google",
     "Uber Advanced Technologies Group": "Uber ATG",
     "Advanced Technologies Group": "Uber ATG",  # bare form seen with the "Uber" prefix dropped (e.g. affiliation just says "Advanced Technologies Group (United States)")
+    # nuTonomy was acquired by Aptiv in 2017; Aptiv's automated-driving unit
+    # (which absorbed nuTonomy) was spun off and merged with Hyundai's ADAS
+    # arm to form Motional in 2020 -- same corporate lineage, one canonical
+    # name. User-requested: two different capitalizations of the nuTonomy
+    # byline seen in the raw affiliation data, plus the bare "Aptiv" form.
+    "nuTonomy: an APTIV company": "Motional",
+    "nuTonomy: an Aptiv Company": "Motional",
+    "Aptiv": "Motional",
     "The Chinese University of Hong Kong (Shenzhen)": "The Chinese University of Hong Kong",
     "Chinese University of Hong Kong": "The Chinese University of Hong Kong",
     "Shanghai Jiaotong": "Shanghai Jiao Tong University",

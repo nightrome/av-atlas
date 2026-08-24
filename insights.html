@@ -104,41 +104,13 @@
 
 <div class="panel">
   <h2>Growth</h2>
-  <p class="section-intro">How much the corpus (and AV research within it) has actually grown, averaged over several complete years rather than one noisy year-over-year jump.</p>
+  <p class="section-intro">Average annual growth, computed over complete years only.</p>
   <div class="fact-grid" id="growth-facts"></div>
   <div class="line-chart-wrap" id="growth-chart-wrap">
     <svg id="growth-chart"></svg>
     <div class="tooltip-box" id="growth-tooltip"></div>
   </div>
   <div class="legend-row" id="growth-legend"></div>
-</div>
-
-<div class="panel">
-  <div class="panel-title-row">
-    <h2 style="margin-top:0;">Dataset adoption over time</h2>
-    <div id="dataset-topn-container"></div>
-  </div>
-  <p class="section-intro">How many papers per year cite each dataset. Moved here from the retired Datasets page (user-requested).</p>
-  <div class="line-chart-wrap" id="dataset-chart-wrap">
-    <svg id="dataset-chart"></svg>
-    <div class="tooltip-box" id="dataset-tooltip"></div>
-  </div>
-  <div class="legend-row" id="dataset-legend"></div>
-</div>
-
-<div class="panel">
-  <h2>Best paper by year</h2>
-  <p class="section-intro">The highest-cited paper published each year, in-corpus citations only. Moved here from Papers (user-requested).</p>
-  <table class="data-table" id="best-by-year-table">
-    <thead><tr><th>Year</th><th>Title</th><th>Venue</th><th class="num">Citations</th></tr></thead>
-    <tbody id="best-by-year-body"></tbody>
-  </table>
-</div>
-
-<div class="panel">
-  <h2>People &amp; institutions</h2>
-  <p class="section-intro">Leading by three different, genuinely different definitions of "leading".</p>
-  <div class="fact-grid" id="people-facts"></div>
 </div>
 
 <div class="panel">
@@ -157,8 +129,27 @@
 </div>
 
 <div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Dataset adoption over time</h2>
+    <div id="dataset-topn-container"></div>
+  </div>
+  <p class="section-intro">How many papers per year cite each dataset.</p>
+  <div class="line-chart-wrap" id="dataset-chart-wrap">
+    <svg id="dataset-chart"></svg>
+    <div class="tooltip-box" id="dataset-tooltip"></div>
+  </div>
+  <div class="legend-row" id="dataset-legend"></div>
+</div>
+
+<div class="panel">
+  <h2>People &amp; institutions</h2>
+  <p class="section-intro">By different definitions of "leading".</p>
+  <div class="fact-grid" id="people-facts"></div>
+</div>
+
+<div class="panel">
   <h2>Collaboration</h2>
-  <p class="section-intro">How papers get written: how many people, how many institutions, how many countries.</p>
+  <p class="section-intro">How many people, institutions, and countries collaborate on a typical paper.</p>
   <div class="fact-grid" id="collab-facts"></div>
   <div class="line-chart-wrap" id="team-chart-wrap">
     <svg id="team-chart"></svg>
@@ -170,25 +161,25 @@
   <h2>Researcher careers</h2>
   <p class="section-intro">
     An author's "lifetime" here is the span between their first and last AV-relevant publication
-    found in this corpus specifically -- not a real age, and not necessarily their whole career.
+    in this corpus -- not their real age or whole career.
   </p>
   <h3 style="margin-top:0;">Where researchers are in their career</h3>
-  <p class="section-intro" style="margin-bottom:4px;">Number of researchers at each lifetime, in years (14+ grouped into one bucket).</p>
+  <p class="section-intro" style="margin-bottom:4px;">Researchers per lifetime, in years (14+ grouped into one bucket).</p>
   <div class="line-chart-wrap" id="lifetime-dist-chart-wrap">
     <svg id="lifetime-dist-chart"></svg>
   </div>
-  <h3>Citation impact by career lifetime</h3>
+  <h3>Citations by career lifetime</h3>
   <p class="section-intro" style="margin-bottom:4px;">
-    Mean total citations per researcher at each lifetime, with one standard deviation shown as a
-    band. Only lifetimes with at least 5 researchers with citation data are shown.
+    Mean total citations per researcher at each lifetime, ±1 standard deviation. Lifetimes with
+    fewer than 5 researchers with citation data are omitted.
   </p>
   <div class="line-chart-wrap" id="lifetime-citations-chart-wrap">
     <svg id="lifetime-citations-chart"></svg>
   </div>
   <h3>Most promising young researchers</h3>
   <p class="section-intro" style="margin-bottom:4px;">
-    Lifetime of 3 years or less, at least 3 papers with at least 2 carrying a real citation count,
-    and still active in the last two complete years -- ranked by average citations per paper.
+    Lifetime ≤3 years, at least 3 papers (≥2 with a real citation count), still active in the last
+    two complete years -- ranked by average citations per paper.
   </p>
   <table class="data-table" id="young-researchers-table">
     <thead>
@@ -204,8 +195,17 @@
 
 <div class="panel">
   <h2>Citation patterns</h2>
-  <p class="section-intro">How impact is actually distributed across the corpus. Citation counts include self-citations; see the Authors table's Self-citation % column for how much of any one author's count is their own.</p>
+  <p class="section-intro">How citations are distributed across the corpus.</p>
   <div class="fact-grid" id="citation-facts"></div>
+</div>
+
+<div class="panel">
+  <h2>Best paper by year</h2>
+  <p class="section-intro">The highest-cited paper published each year, in-corpus citations only.</p>
+  <table class="data-table" id="best-by-year-table">
+    <thead><tr><th>Year</th><th>Title</th><th>Venue</th><th class="num">Citations</th></tr></thead>
+    <tbody id="best-by-year-body"></tbody>
+  </table>
 </div>
 
 <div class="panel">
@@ -222,10 +222,10 @@
     </div>
   </div>
   <p class="section-intro">
-    Share of each venue's total (unfiltered) output that's judged AV-relevant. Venues below the papers
-    threshold above are excluded as too small to give a meaningful ratio. arXiv is excluded too -- unlike
-    every other venue here, its population in this corpus isn't a complete, unbiased sample (see About), so
-    its ratio isn't comparable to a venue whose full proceedings were actually collected.
+    Share of each venue's total output judged AV-relevant. Venues below the threshold above are
+    excluded as too small to be meaningful. arXiv is excluded too -- its population in this corpus
+    isn't a complete, unbiased sample (see About), so its ratio isn't comparable to a venue whose
+    full proceedings were actually collected.
   </p>
   <div class="move-cols">
     <div>
@@ -431,11 +431,6 @@ function render(ins, stats) {
     statTile(gf, `${g.pct > 0 ? '+' : ''}${g.pct}%`, 'Average annual growth, AV-relevant papers',
       `Compound annual growth rate, ${g.from_year} to ${g.to_year} (complete years only).`);
   }
-  if (ins.self_citation_rate_pct != null) {
-    statTile(gf, `${ins.self_citation_rate_pct}%`, 'of raw citation edges are self-citations',
-      `${(ins.self_citation_counts.self_edges || 0).toLocaleString()} of ${(ins.self_citation_counts.total_edges || 0).toLocaleString()} edges. Included in every total citation count; see each author's Self-citation % for their own share.`);
-  }
-
   if (years.length) {
     const series = [
       { name: 'AV-relevant (core)', color: PALETTE[0], values: Object.fromEntries(years.map((y, i) => [y, growth.core_papers[i]])) },
@@ -465,7 +460,7 @@ function render(ins, stats) {
   }
   if (ins.highest_impact_author) {
     const a = ins.highest_impact_author;
-    statTile(pf, a.name, 'Highest average impact', `${a.avg_citations} citations/paper across ${a.papers} papers.`,
+    statTile(pf, a.name, 'Highest citations per paper', `${a.avg_citations} citations/paper across ${a.papers} papers.`,
       `author.html?name=${encodeURIComponent(a.name)}`);
   }
   if (ins.leading_institution) {
@@ -566,12 +561,16 @@ function render(ins, stats) {
 
   // -- Citation patterns --
   const cif = document.getElementById('citation-facts');
+  if (ins.self_citation_rate_pct != null) {
+    statTile(cif, `${ins.self_citation_rate_pct}%`, 'of raw citation edges are self-citations',
+      `${(ins.self_citation_counts.self_edges || 0).toLocaleString()} of ${(ins.self_citation_counts.total_edges || 0).toLocaleString()} edges. Included in every total citation count; see each author's Self-citation % for their own share.`);
+  }
   if (ins.citation_concentration) {
     const c = ins.citation_concentration;
     statTile(cif, `${c.top1pct_share_pct}%`, 'of all citations go to the top 1% of cited papers',
       `Out of ${c.cited_papers.toLocaleString()} papers with at least one in-corpus citation.`);
     statTile(cif, `${c.top10pct_share_pct}%`, 'of all citations go to the top 10% of cited papers',
-      'Impact is heavily concentrated, the same power-law pattern seen in most citation networks.');
+      'The same power-law pattern seen in most citation networks.');
   }
 
   // -- Venue relevance --
@@ -601,8 +600,8 @@ function render(ins, stats) {
     // shown on Venues."
     const filtered = venueRelevanceAll.filter(v => v.core_papers >= minPapers);
     vh.innerHTML = ''; vl.innerHTML = '';
-    filtered.slice(0, 3).forEach(v => venueRow(vh, v));
-    [...filtered].slice(-3).reverse().forEach(v => venueRow(vl, v));
+    filtered.slice(0, 5).forEach(v => venueRow(vh, v));
+    [...filtered].slice(-5).reverse().forEach(v => venueRow(vl, v));
     if (!filtered.length) {
       vh.innerHTML = '<li style="color:var(--muted);">No venues meet this threshold.</li>';
     }

@@ -191,10 +191,20 @@ function renderCategoryTimeline(stats, filters) {
   const normalizeCheckbox = document.getElementById('category-normalize');
 
   function rebuild(topN) {
-    const topCategories = Object.entries(byCategory)
+    let topCategories = Object.entries(byCategory)
       .sort((a, b) => b[1].length - a[1].length)
       .slice(0, topN)
       .map(kv => kv[0]);
+    // "Datasets" is rare by paper count (a handful of landmark dataset
+    // papers), so it normally falls out of the top-N-by-count cut on its
+    // own -- indistinguishable from having been excluded by the checkbox
+    // above. If the reader has chosen to include dataset papers, they
+    // should actually see the category here, not have it silently vanish
+    // the same way it would if excluded (user-reported).
+    if (byCategory['dataset-benchmark-paper'] && !topCategories.includes('dataset-benchmark-paper')) {
+      topCategories = topCategories.slice(0, Math.max(0, topN - 1));
+      topCategories.push('dataset-benchmark-paper');
+    }
 
     const legend = document.getElementById('category-legend');
     legend.innerHTML = '';

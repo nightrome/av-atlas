@@ -56,7 +56,7 @@
 <div id="filter-bar-container"></div>
 
 <div class="panel">
-  <h2 style="margin-top:0;">Papers vs. impact</h2>
+  <h2 style="margin-top:0;">Papers vs. citations / paper</h2>
   <div class="chart-wrap" id="scatter"></div>
 </div>
 
@@ -130,7 +130,7 @@ function authorCard(a, rank, detail) {
 function fmtAvg(v) { return v == null ? '—' : v; }
 function fmtPct(v) { return v == null ? '—' : v + '%'; }
 
-// Papers-vs-impact scatter: paper count (x) against avg citations/paper (y),
+// Papers-vs-citations/paper scatter: paper count (x) against avg citations/paper (y),
 // bubble radius by total citations -- the "graphs of papers and people" view.
 function renderScatter(container, authors) {
   container.innerHTML = '';
