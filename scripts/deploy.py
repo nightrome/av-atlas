@@ -81,8 +81,12 @@ def deploy_gh_pages():
     try:
         added = run(["git", "worktree", "add", "--detach", str(worktree), "origin/gh-pages"], check=False)
         if added.returncode != 0:
-            # No gh-pages branch yet -- first-ever deploy.
-            run(["git", "worktree", "add", "--detach", "-B", "gh-pages", str(worktree)])
+            # No gh-pages branch yet -- first-ever deploy. Check out an
+            # orphan branch (no shared history with main) at the worktree,
+            # matching the conventional gh-pages setup.
+            run(["git", "worktree", "add", "--detach", str(worktree)])
+            run(["git", "checkout", "--orphan", "gh-pages"], cwd=worktree)
+            run(["git", "rm", "-rf", "--quiet", "."], cwd=worktree, check=False)
 
         for item in worktree.iterdir():
             if item.name == ".git":
