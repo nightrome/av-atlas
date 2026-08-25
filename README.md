@@ -10,7 +10,8 @@ scored.
 
 This directory is licensed under the MIT License (see [LICENSE](LICENSE)) —
 that covers the code (scripts, site pages, styling), not the collected paper
-metadata itself, which comes from third-party sources under their own terms.
+metadata itself, which is CC BY-NC 4.0 (non-commercial research and reference
+use only) and remains subject to its original third-party sources' own terms.
 
 ## Running the site locally
 

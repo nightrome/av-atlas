@@ -22,9 +22,20 @@ SOFTWARE.
 
 ---
 
-This license covers the code in this directory (scripts, site pages, styling).
-It does not cover the collected paper metadata (titles, authors, abstracts,
-affiliations) in data/, which is drawn from third-party sources (conference
-proceedings, DBLP, OpenAlex, arXiv, Semantic Scholar) under their own
-respective terms -- see Methodology (methodology.html) for source-by-source
-details.
+The above MIT License covers the code in this directory (scripts, site pages,
+styling) only.
+
+The collected paper metadata in data/ (titles, authors, venues, years,
+categories, citation relationships, institutional and country affiliations,
+and other paper metadata) is made available under CC BY-NC 4.0
+(https://creativecommons.org/licenses/by-nc/4.0/): non-commercial research
+and reference use is welcome, commercial use is not. This metadata draws on
+CVF, DBLP, OpenAlex, arXiv, Semantic Scholar, ecva.net, the NeurIPS
+proceedings, PMLR, and community-maintained venue listings, and remains
+subject to those sources' own terms and to the rights of the papers'
+original authors and publishers. For anything beyond non-commercial research
+or reference use, go to the original source directly.
+
+AV Atlas is an independent project, created and maintained by Holger Caesar
+as an individual. It is not operated by, affiliated with, or endorsed by TU
+Delft or any of the institutions, venues, or platforms named above.
