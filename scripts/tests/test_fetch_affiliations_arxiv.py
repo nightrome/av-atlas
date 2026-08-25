@@ -97,5 +97,38 @@ class TestParseAr5ivReferences(unittest.TestCase):
         self.assertEqual(fa.parse_ar5iv_references(soup), [])
 
 
+class TestDetectCodeLink(unittest.TestCase):
+    def test_github_link_in_abstract_detected(self):
+        soup = BeautifulSoup(
+            '<div class="ltx_abstract">Code available at '
+            '<a href="https://github.com/nvlabs/example">github.com/nvlabs/example</a>.</div>',
+            "html.parser")
+        self.assertTrue(fa.detect_code_link(soup))
+
+    def test_gitlab_and_bitbucket_also_detected(self):
+        for host in ("https://gitlab.com/team/repo", "https://bitbucket.org/team/repo"):
+            soup = BeautifulSoup(f'<p><a href="{host}">code</a></p>', "html.parser")
+            self.assertTrue(fa.detect_code_link(soup), host)
+
+    def test_no_code_link_returns_false(self):
+        soup = BeautifulSoup('<p><a href="https://arxiv.org/abs/1234.5678">related work</a></p>', "html.parser")
+        self.assertFalse(fa.detect_code_link(soup))
+
+    def test_github_link_only_in_bibliography_not_counted(self):
+        # A cited work's own repo link isn't a signal about THIS paper.
+        soup = BeautifulSoup(
+            '<li class="ltx_bibitem">Some Prior Work. Code: '
+            '<a href="https://github.com/other/prior-work">link</a></li>',
+            "html.parser")
+        self.assertFalse(fa.detect_code_link(soup))
+
+    def test_github_link_outside_bibliography_counted_even_with_bibliography_present(self):
+        soup = BeautifulSoup(
+            '<div class="ltx_abstract">Code: <a href="https://github.com/us/our-repo">link</a></div>'
+            '<li class="ltx_bibitem">Prior Work. <a href="https://github.com/other/prior-work">link</a></li>',
+            "html.parser")
+        self.assertTrue(fa.detect_code_link(soup))
+
+
 if __name__ == "__main__":
     unittest.main()

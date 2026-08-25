@@ -79,6 +79,44 @@ class TestMergeCorpusEndToEnd(unittest.TestCase):
         papers = self._run(venue_papers, prior_papers_full=prior)
         self.assertEqual(papers[0]["citations_by_source"]["openalex"]["count"], 40)
 
+    def test_carries_over_authors_detail_source_from_prior_run(self):
+        # A real bug, not hypothetical: authors_detail_source was missing
+        # from CARRY_OVER_FIELDS, so it got silently dropped on every rebuild
+        # even though authors_detail itself survived -- confirmed on real
+        # data, every paper with authors_detail showed
+        # authors_detail_source=None.
+        prior = [{
+            "title": "Some Paper",
+            "authors_detail": [{"name": "Carried Name"}],
+            "authors_detail_source": "openalex",
+        }]
+        venue_papers = [{"title": "Some Paper", "authors": "S Name", "conference": "CVPR", "year": 2023}]
+        papers = self._run(venue_papers, prior_papers_full=prior)
+        self.assertEqual(papers[0]["authors_detail_source"], "openalex")
+
+    def test_carries_over_a_confirmed_false_has_code_link(self):
+        # has_code_link is a real 3-state field (True/False/never-checked) --
+        # a bare truthy carry-over check would silently drop every confirmed
+        # False (checked, no code link found), making it indistinguishable
+        # from "never checked" on the very next rebuild. Regression test for
+        # exactly that bug, caught before it shipped.
+        prior = [{"title": "Checked, No Code", "has_code_link": False}]
+        venue_papers = [{"title": "Checked, No Code", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        papers = self._run(venue_papers, prior_papers_full=prior)
+        self.assertIn("has_code_link", papers[0])
+        self.assertFalse(papers[0]["has_code_link"])
+
+    def test_carries_over_abstract_search_exhausted_from_prior_run(self):
+        # mine_abstracts.py sets this when a clean arXiv search confirms no
+        # match exists, so a rerun of this script (which rebuilds the file
+        # from venues/*.json alone) must not silently discard that -- the
+        # same class of bug the authors_detail carry-over above already
+        # guards against.
+        prior = [{"title": "No Match Paper", "abstract_search_exhausted": True}]
+        venue_papers = [{"title": "No Match Paper", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        papers = self._run(venue_papers, prior_papers_full=prior)
+        self.assertTrue(papers[0]["abstract_search_exhausted"])
+
     def test_carried_over_detail_is_kept_when_no_fresher_source_exists(self):
         prior = [{"title": "Some Paper", "authors_detail": [{"name": "Carried Name"}]}]
         venue_papers = [{"title": "Some Paper", "authors": "S Name", "conference": "CVPR", "year": 2023}]

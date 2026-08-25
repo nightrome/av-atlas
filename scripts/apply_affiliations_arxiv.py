@@ -11,7 +11,12 @@ country codes directly, arXiv-sourced data doesn't).
 Also folds arxiv_id (when found) into arxiv_url on EVERY matching paper,
 independent of whether affiliations were found -- fetch_arxiv_links.py
 reuses this same side file so a paper this script already resolved an
-arXiv ID for never needs a second, separate arXiv search.
+arXiv ID for never needs a second, separate arXiv search. has_code_link is
+applied the same unconditional way, on every paper with a resolved
+arxiv_id, regardless of whether affiliations were found OR whether the
+paper already has richer OpenAlex-sourced authors_detail -- it isn't an
+"affiliation richness" question the same way authors_detail is, so it
+shouldn't be skipped just because a richer source got there first.
 
 Two on-disk shapes coexist in affiliations_arxiv.json: older entries are a
 plain author list (from before arxiv_id was tracked alongside them), newer
@@ -61,19 +66,30 @@ def main():
 
     n_applied = 0
     n_linked = 0
+    n_code_link = 0
     for p in papers:
         key = normalize_title(p.get("title"))
         entry = arxiv_affs.get(key)
         if entry is None:
             continue
         # Old shape: entry IS the author list. New shape: entry is
-        # {"authors": [...], "arxiv_id": ...}.
+        # {"authors": [...], "arxiv_id": ..., "has_code_link": ...}.
         authors = entry if isinstance(entry, list) else entry.get("authors")
         arxiv_id = None if isinstance(entry, list) else entry.get("arxiv_id")
+        has_code_link = None if isinstance(entry, list) else entry.get("has_code_link")
 
         if arxiv_id and not p.get("arxiv_url"):
             p["arxiv_url"] = f"https://arxiv.org/abs/{arxiv_id}"
             n_linked += 1
+
+        # Unconditional -- see this script's own docstring for why
+        # has_code_link isn't gated by authors_detail richness the way the
+        # block below is. Only ever set when a page was actually checked
+        # (has_code_link is None, not False, when arxiv_id never resolved).
+        if has_code_link is not None and p.get("has_code_link") is None:
+            p["has_code_link"] = has_code_link
+            if has_code_link:
+                n_code_link += 1
 
         if p.get("authors_detail") or not authors or not any(a.get("affiliations") for a in authors):
             continue  # OpenAlex data already there is richer -- don't overwrite it
@@ -87,7 +103,8 @@ def main():
         n_applied += 1
 
     PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
-    print(f"Applied arXiv-sourced authors_detail to {n_applied} papers, arxiv_url to {n_linked} papers")
+    print(f"Applied arXiv-sourced authors_detail to {n_applied} papers, arxiv_url to {n_linked} papers, "
+          f"has_code_link=true to {n_code_link} papers")
 
 
 if __name__ == "__main__":

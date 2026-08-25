@@ -37,6 +37,7 @@ import json
 import random
 import re
 import time
+import urllib.error
 from pathlib import Path
 
 import pdfplumber
@@ -163,15 +164,22 @@ def main():
     processed = 0
     got_affiliations = 0
     consecutive_failures = 0
+    # Same fix as build_citation_graph.py's identical loop shape -- without
+    # this, a paper that fails once (a permanent 404 in particular, which
+    # will never succeed on retry) gets re-selected into every subsequent
+    # batch for the rest of THIS run, wasting most of the run re-hammering
+    # the same already-known-dead URLs instead of reaching new papers.
+    attempted_this_run = set()
 
     while pending:
         data = load_out()
         succeeded = set(data["succeeded"])
-        batch = [k for k in pending if k not in succeeded][:BATCH_SIZE]
+        batch = [k for k in pending if k not in succeeded and k not in attempted_this_run][:BATCH_SIZE]
         if not batch:
             break
 
         for key in batch:
+            attempted_this_run.add(key)
             url = pdf_url_index[key]
             try:
                 text = fetch_page1_text(url)
@@ -184,8 +192,12 @@ def main():
                 consecutive_failures = 0
             except Exception as e:
                 print(f"  failed on {url}: {e}", flush=True)
-                data["failed"][key] = {"error": str(e)}
-                consecutive_failures += 1
+                # A 404 is permanent and won't count toward consecutive_failures
+                # -- it's a conclusive, expected outcome, not evidence this
+                # script or the connection is broken (see build_citation_graph.py).
+                permanent = isinstance(e, urllib.error.HTTPError) and e.code == 404
+                data["failed"][key] = {"error": str(e), "permanent": permanent}
+                consecutive_failures = 0 if permanent else consecutive_failures + 1
             processed += 1
             time.sleep(0.3)
 

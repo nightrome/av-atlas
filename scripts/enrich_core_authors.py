@@ -115,15 +115,28 @@ def main():
     done = 0
     processed = 0
     consecutive_failures = 0
+    # load_pending() rebuilds pending_titles purely from "still missing
+    # authors_detail" every iteration -- a genuine OpenAlex non-match never
+    # sets that field, so without this a paper OpenAlex simply doesn't have
+    # gets re-queried in every subsequent batch for the rest of THIS run.
+    # Beyond the wasted requests, it also corrupts the one signal
+    # consecutive_failures exists to give: a real cluster of "not on
+    # OpenAlex" papers would look identical to "budget exhausted" and could
+    # trip the early-stop even when the budget is fine (same bug class as
+    # build_citation_graph.py's; see that file for the confirmed-in-practice
+    # version of this).
+    attempted_this_run = set()
 
     while True:
         papers, pending_titles, _ = load_pending()
+        pending_titles = [t for t in pending_titles if t not in attempted_this_run]
         if not pending_titles:
             break
         batch = pending_titles[:BATCH_SIZE]
         by_title = {p["title"]: p for p in papers if p.get("title") in batch}
 
         for title in batch:
+            attempted_this_run.add(title)
             detail = openalex_authors(title)
             time.sleep(0.15)
             processed += 1

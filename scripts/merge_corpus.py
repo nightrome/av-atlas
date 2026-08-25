@@ -76,7 +76,16 @@ def main():
     # carry forward any of these fields found on the previous papers_full.json,
     # keyed by normalized title, to matching records that don't already have
     # them from this rebuild. Self-healing reruns instead of a trap.
-    CARRY_OVER_FIELDS = ("authors_detail", "citations_by_source", "arxiv_url", "abstract")
+    # authors_detail_source travels with authors_detail (it records which of
+    # the three enrichment scripts -- openalex/arxiv/cvf-pdf -- produced it)
+    # but was missing from this list, so it got silently dropped on every
+    # rebuild even though authors_detail itself survived: confirmed on real
+    # data, every paper with authors_detail currently shows
+    # authors_detail_source=None. Once dropped there's no way to reconstruct
+    # which source a given paper's data came from after the fact -- fixing
+    # the carry-over only stops new data from losing it going forward.
+    CARRY_OVER_FIELDS = ("authors_detail", "authors_detail_source", "citations_by_source",
+                         "arxiv_url", "abstract", "abstract_search_exhausted", "has_code_link")
     prior_by_field = {field: {} for field in CARRY_OVER_FIELDS}
     if OUT_FILE.exists():
         try:
@@ -86,7 +95,14 @@ def main():
                 if not key:
                     continue
                 for field in CARRY_OVER_FIELDS:
-                    if p.get(field):
+                    # "field in p and not None", not the truthy check this
+                    # used to be -- has_code_link is a real 3-state field
+                    # (True/False/never-checked), and a bare truthy check
+                    # would silently drop every confirmed-False value (a
+                    # paper actually checked and found to have no code
+                    # link), making it indistinguishable from "never
+                    # checked" on the very next rebuild.
+                    if field in p and p[field] is not None:
                         prior_by_field[field][key] = p[field]
         except Exception as e:
             print(f"  could not read prior {OUT_FILE.name} for carry-over: {e}")

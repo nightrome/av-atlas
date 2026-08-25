@@ -33,13 +33,19 @@ reference_lists_arxiv.json, for build_citation_graph.py's match phase to
 read (read-only from here -- see that script for why raw references and
 corpus-matching are kept as two separate steps).
 
+Same free-byproduct reasoning for has_code_link (see detect_code_link): a
+link to a github.com/gitlab.com/bitbucket.org repo found anywhere on the
+page outside the bibliography (a cited work's own repo link doesn't count
+as THIS paper's code release). Feeds Insights' open-source-adoption panel.
+
 Writes to its own side files, never touching papers_full.json or anything
 build_citation_graph.py owns directly -- same reasoning as
 fetch_citations_openalex.py (avoids a concurrent-writer race if run
 alongside those):
   av-atlas/data/affiliations_arxiv.json:
     {normalizedTitle: {"authors": [{"name": "...", "affiliations": ["..."]}],
-                        "arxiv_id": "..." or null}}
+                        "arxiv_id": "..." or null,
+                        "has_code_link": true/false/null}}
   av-atlas/data/reference_lists_arxiv.json:
     {normalizedTitle: ["<raw reference text>", ...]}
 
@@ -201,6 +207,24 @@ def parse_ar5iv_references(soup):
     return entries
 
 
+CODE_HOST_RE = re.compile(r"(github\.com|gitlab\.com|bitbucket\.org)/", re.I)
+
+
+def detect_code_link(soup):
+    # A link to the paper's OWN code release, not a citation that happens to
+    # reference one -- links inside the bibliography are excluded, since a
+    # bibitem's own rendered metadata sometimes carries a github.com URL for
+    # the CITED work, which isn't a signal about THIS paper. Same soup ar5iv
+    # page already fetched for affiliations/references, so this costs no
+    # extra network request.
+    bibitem_links = {a["href"] for item in soup.select("li.ltx_bibitem") for a in item.select("a[href]")}
+    for a in soup.select("a[href]"):
+        href = a.get("href") or ""
+        if href not in bibitem_links and CODE_HOST_RE.search(href):
+            return True
+    return False
+
+
 def fetch_ar5iv_page(arxiv_id):
     html = fetch_with_retries(f"https://ar5iv.labs.arxiv.org/html/{arxiv_id}", timeout=30).decode("utf-8", errors="replace")
     return BeautifulSoup(html, "html.parser")
@@ -240,16 +264,25 @@ def main():
     done_with_affs = 0
     done_no_match = 0
     total_refs_found = 0
+    with_code_link = 0
     processed = 0
     consecutive_failures = 0
+    # A clean result (even an empty one -- no arxiv_id, no affiliations)
+    # already marks affs[key], so the batch filter below skips it on its
+    # own. Only an exception (an ar5iv 404, a timeout, ...) leaves nothing
+    # recorded -- without this, that paper gets re-selected into every
+    # subsequent batch for the rest of THIS run (same bug as
+    # build_citation_graph.py's identical loop shape; see that file).
+    attempted_this_run = set()
 
     while pending:
         affs = load_json(AFFS_FILE, {})
-        batch = [t for t in pending if normalize_title(t) not in affs][:BATCH_SIZE]
+        batch = [t for t in pending if normalize_title(t) not in affs and t not in attempted_this_run][:BATCH_SIZE]
         if not batch:
             break
 
         for title in batch:
+            attempted_this_run.add(title)
             key = normalize_title(title)
             try:
                 arxiv_id = find_arxiv_id(title)
@@ -257,13 +290,17 @@ def main():
                     soup = fetch_ar5iv_page(arxiv_id)
                     authors = parse_ar5iv_affiliations(soup)
                     references = parse_ar5iv_references(soup)
+                    has_code_link = detect_code_link(soup)
                 else:
-                    authors, references = [], []
+                    authors, references, has_code_link = [], [], False
                 # arxiv_id was previously resolved here and then discarded --
                 # now kept alongside the affiliations so fetch_arxiv_links.py
                 # doesn't have to re-resolve (a fresh arXiv search) for every
-                # paper this script has already checked.
-                affs[key] = {"authors": authors, "arxiv_id": arxiv_id}
+                # paper this script has already checked. has_code_link is a
+                # free byproduct of the same already-fetched ar5iv page (see
+                # detect_code_link) -- only meaningful when arxiv_id resolved
+                # at all, since with none there was no page to check.
+                affs[key] = {"authors": authors, "arxiv_id": arxiv_id, "has_code_link": has_code_link if arxiv_id else None}
                 if references:
                     refs[key] = references
                     total_refs_found += len(references)
@@ -271,6 +308,8 @@ def main():
                     done_with_affs += 1
                 else:
                     done_no_match += 1
+                if has_code_link:
+                    with_code_link += 1
                 consecutive_failures = 0
             except Exception as e:
                 print(f"  failed on {title[:60]!r}: {e}", flush=True)
@@ -286,7 +325,8 @@ def main():
         save_json(REFS_FILE, refs)
         print(f"  [{processed}/{len(pending)}] progress saved "
               f"({done_with_affs} got affiliations, {done_no_match} no arXiv/no affiliation data, "
-              f"{total_refs_found} references collected across {len(refs)} papers)", flush=True)
+              f"{total_refs_found} references collected across {len(refs)} papers, "
+              f"{with_code_link} with a detected code link)", flush=True)
 
         if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
             print(f"Stopping early: {consecutive_failures} consecutive failures. Resume later by rerunning.", flush=True)

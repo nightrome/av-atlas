@@ -275,6 +275,22 @@ function render(stats) {
   grid.appendChild(stat(paper.citations ?? '—', 'Cited by (external source)'));
   grid.appendChild(stat((paper.citing_papers || []).length, 'Cited by (within this corpus)'));
   grid.appendChild(stat(paper.authors ? paper.authors.length : '—', 'Authors'));
+  if (paper.cd_index != null) {
+    // CD index (Funk & Owen-Smith 2017): +1 = every in-corpus citer engages
+    // with this paper but not its own references (disruptive -- treated as
+    // having superseded them); -1 = every citer cites this paper alongside
+    // the same references it built on (consolidating). Only shown once
+    // enough in-corpus citers exist for the score to mean something (see
+    // aggregate.py's DISRUPTION_MIN_CITERS).
+    const cdTile = stat(
+      (paper.cd_index > 0 ? '+' : '') + paper.cd_index.toFixed(2),
+      'Disruption index (CD)',
+    );
+    cdTile.title = 'How later work engages with this paper: +1 means citers cite it instead of its own '
+      + 'references (disruptive); -1 means citers cite it alongside those references (consolidating). '
+      + 'See About for the method.';
+    grid.appendChild(cdTile);
+  }
 
   loadAbstract(paper.title);
 

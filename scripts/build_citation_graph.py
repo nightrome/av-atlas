@@ -244,15 +244,29 @@ def fetch_phase(core_cvf_titles, pdf_url_index):
 
     processed = 0
     consecutive_failures = 0
+    # A key only ever leaves `pending` (the static list built above) by
+    # entering `succeeded` -- a failure, permanent or transient, never did,
+    # so without this a paper that fails once got re-selected into every
+    # subsequent batch for the rest of THIS run, forever, until fetch_with_
+    # retries' 404 (which never changes) or a real outage inflated
+    # consecutive_failures past the threshold. Confirmed in practice: a
+    # cluster of permanently-404 ICCV 2017 papers got retried every single
+    # batch, tripping the "likely blocked or network down" early-stop after
+    # burning through several batches on a handful of already-known-dead
+    # URLs instead of ever reaching the rest of the queue. Cross-run retry
+    # (next invocation) is unaffected -- `pending` is rebuilt from `failed`
+    # again at the top of the next run.
+    attempted_this_run = set()
 
     while pending:
         refs = load_refs_cvf()
         succeeded = set(refs["succeeded"])
-        batch = [k for k in pending if k not in succeeded][:BATCH_SIZE]
+        batch = [k for k in pending if k not in succeeded and k not in attempted_this_run][:BATCH_SIZE]
         if not batch:
             break
 
         for key in batch:
+            attempted_this_run.add(key)
             url = pdf_url_index[key]
             try:
                 text = fetch_pdf_text(url)
@@ -262,8 +276,17 @@ def fetch_phase(core_cvf_titles, pdf_url_index):
                 consecutive_failures = 0
             except Exception as e:
                 print(f"  failed on {url}: {e}", flush=True)
-                refs["failed"][key] = {"error": str(e), "last_attempt": TODAY}
-                consecutive_failures += 1
+                # A 404 is permanent (fetch_with_retries never retries one) --
+                # the paper simply isn't there, not "not yet fetched". Tagged
+                # explicitly so match_phase/aggregate.py can count it as done
+                # (nothing more this script could ever do) rather than pending.
+                # Doesn't count toward consecutive_failures either -- a 404 is
+                # a conclusive, expected outcome, not evidence the connection
+                # or this script is broken (which is what that counter exists
+                # to detect).
+                permanent = isinstance(e, urllib.error.HTTPError) and e.code == 404
+                refs["failed"][key] = {"error": str(e), "last_attempt": TODAY, "permanent": permanent}
+                consecutive_failures = 0 if permanent else consecutive_failures + 1
             processed += 1
             time.sleep(0.3)
 
@@ -284,8 +307,13 @@ def match_phase(word_index):
     # whatever the corpus looks like right now. This is what lets a later
     # corpus expansion surface new edges for a paper scanned long ago,
     # without re-fetching anything.
-    cvf_refs = load_refs_cvf()["references"]
+    cvf_all_refs = load_refs_cvf()
+    cvf_refs = cvf_all_refs["references"]
     arxiv_refs = load_json(REFS_ARXIV_FILE, {})
+    # Confirmed-404 papers can never be fetched no matter how many times this
+    # reruns -- counted as "done" (nothing left to do), not "still pending",
+    # by aggregate.py's coverage stat.
+    cvf_permanent_failures = sum(1 for v in cvf_all_refs["failed"].values() if v.get("permanent"))
 
     edges = {}
     total_edges = 0
@@ -298,6 +326,7 @@ def match_phase(word_index):
     graph = {
         "generated_at": TODAY,
         "sources_scanned": {"cvf": len(cvf_refs), "arxiv": len(arxiv_refs)},
+        "cvf_permanent_failures": cvf_permanent_failures,
         "edges": edges,
     }
     save_json(GRAPH_FILE, graph)

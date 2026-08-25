@@ -425,6 +425,55 @@ def _abstract_short_name(abstract):
     return None
 
 
+DISRUPTION_MIN_CITERS = 3
+# How many years after publication counts as "early" for the early-citation-
+# velocity signal on index.html -- 2 full calendar years (publication year
+# + the next 2) is long enough for a paper to plausibly have been read and
+# cited by other AV-corpus work, short enough that the window closes for
+# most of the corpus rather than only its oldest papers.
+EARLY_CITATION_WINDOW_YEARS = 2
+
+
+def compute_disruption_index(edges):
+    """CD index (Funk & Owen-Smith 2017, "A Dynamic Network Measure of
+    Technological Change", Management Science) -- a citation-graph measure
+    of whether later work treats a paper as having SUPERSEDED its own
+    references (disruptive, citers engage with the paper but not its
+    intellectual predecessors) or as EXTENDING them (consolidating, citers
+    cite the paper alongside the same references it built on).
+
+    For a focal paper P with citers C: for each citer c in C, c is a
+    "disruptive vote" (+1) if c does NOT also cite any of P's own
+    (in-corpus) references, or a "consolidating vote" (-1) if it does.
+    CD(P) = mean of these votes, in [-1, 1].
+
+    `edges` is citer_key -> [cited_key, ...] (a paper's own in-corpus
+    reference list, exactly what build_citation_graph.py's match_phase
+    produces). A citer only ever appears here BECAUSE its own reference
+    list was scanned (that's the only way this pipeline discovers "X cites
+    Y" at all) -- so unlike the general CD-index literature, there's no
+    "citer with unknown outgoing citations" case to guard against here;
+    every citer's own edges[citer_key] is already fully known. Returns
+    {target_key: {"cd_index": float, "n_citers": int}}, only for papers
+    with at least DISRUPTION_MIN_CITERS citers -- below that a +1/-1
+    average is too coarse to mean anything (3 citers can only ever land on
+    -1, -0.33, 0.33, or 1).
+    """
+    citers_of = defaultdict(list)
+    for citer_key, cited_keys in edges.items():
+        for cited_key in cited_keys:
+            citers_of[cited_key].append(citer_key)
+
+    result = {}
+    for target_key, citer_keys in citers_of.items():
+        if len(citer_keys) < DISRUPTION_MIN_CITERS:
+            continue
+        target_refs = set(edges.get(target_key, ()))
+        votes = sum(-1 if (set(edges.get(c, ())) & target_refs) else 1 for c in citer_keys)
+        result[target_key] = {"cd_index": round(votes / len(citer_keys), 3), "n_citers": len(citer_keys)}
+    return result
+
+
 def shard_index(title, num_shards=ABSTRACT_SHARD_COUNT):
     """djb2 string hash mod num_shards -- picks which abstracts/shard-NN.json
     a paper's abstract lives in. paper.html re-implements this exact
@@ -909,6 +958,89 @@ def normalize_institution(name):
     return INSTITUTION_ALIASES.get(name, name)
 
 
+# A keyword strongly indicating a degree-granting or public-research
+# institution -- deliberately does NOT include the bare word "Institute" on
+# its own, since plenty of corporate R&D arms use it too (Toyota Research
+# Institute, Bosch Center for Artificial Intelligence's sibling labs, ...);
+# those are handled by the explicit override lists below instead of a
+# keyword that would misclassify them.
+ACADEMIC_KEYWORD_RE = re.compile(
+    r"\b(Universit|College|Institute of Technology|Technical University|"
+    r"Ecole|École|Politecnico|Polytechnic|ETH |EPFL|CNRS|Academy of Sciences|"
+    r"Hochschule|Universitat)\b", re.I,
+)
+# Named research institutes/labs that are academic or nonprofit despite not
+# matching the keyword regex above (no "University" in the name, and some
+# use "Institute" the way a company R&D arm would).
+ACADEMIC_INSTITUTION_OVERRIDES = {
+    "max planck institute", "max planck society", "allen institute for ai",
+    "allen institute for artificial intelligence", "ai2", "vector institute",
+    "mila", "mila - quebec ai institute", "idiap research institute", "idiap",
+    "inria", "riken", "nict", "kist", "csiro", "nrc", "national research council",
+    "dfki", "german research center for artificial intelligence",
+    "toyota technological institute at chicago", "ttic",
+    "weizmann institute of science", "italian institute of technology", "iit",
+    "chinese academy of sciences", "korea advanced institute of science and technology",
+    "kaist", "indian institute of technology", "indian institute of science", "iisc",
+    "tata institute of fundamental research", "broad institute", "flatiron institute",
+    "fraunhofer", "fraunhofer institute", "helmholtz association",
+    "shanghai ai laboratory", "shanghai artificial intelligence laboratory",
+    "korea institute of science and technology",
+}
+# Company/industry R&D names, including ones that would otherwise misread
+# as academic under the keyword regex ("Toyota Research Institute") or that
+# don't match it at all. Not exhaustive -- covers the AV/robotics/CV
+# industry players that actually show up repeatedly in this corpus's own
+# institution leaderboard; a real, checkable methodology limit, not hidden
+# (see about.html). An institution matching neither this nor the academic
+# side is left unclassified rather than guessed at.
+INDUSTRY_INSTITUTION_OVERRIDES = {
+    "waymo", "tesla", "nvidia", "nvidia research", "baidu", "huawei",
+    "mercedes-benz", "mercedes-benz ag", "bmw", "bmw group", "motional",
+    "nutonomy", "aptiv", "amazon", "google", "google research", "google deepmind",
+    "deepmind", "microsoft", "microsoft research", "apple", "qualcomm", "uber",
+    "uber atg", "uber advanced technologies group", "cruise", "cruise llc",
+    "zoox", "nuro", "aurora", "aurora innovation", "argo ai", "valeo",
+    "continental", "denso", "hyundai", "hyundai motor group", "samsung",
+    "samsung research", "intel", "intel labs", "meta", "meta ai", "facebook",
+    "facebook ai research", "fair", "sony", "sony ai", "honda",
+    "honda research institute", "ford", "ford motor company", "general motors",
+    "gm", "nio", "xpeng", "didi", "didi chuxing", "tusimple", "pony.ai",
+    "wayve", "five ai", "horizon robotics", "sensetime", "megvii", "momenta",
+    "plus.ai", "bosch", "bosch center for artificial intelligence", "toyota",
+    "toyota research institute", "volkswagen", "audi", "porsche", "stellantis",
+    "renault", "nissan", "jaguar land rover", "great wall motors", "byd",
+    "geely", "faraday future", "rivian", "lucid motors", "ibm", "ibm research",
+    "adobe", "adobe research", "alibaba", "tencent", "jd.com", "oppo",
+    "xiaomi", "lyft", "here technologies", "mapbox", "luminar", "innoviz",
+    "mobileye", "zf friedrichshafen", "magna international", "hitachi",
+    "panasonic", "lg electronics", "lg ai research", "airbus", "boeing",
+    "siemens", "abb", "kuka", "anthropic", "openai", "salesforce",
+    "salesforce research", "criteo", "naver", "naver labs", "kakao", "line",
+    "yandex", "preferred networks", "flir", "flir systems", "avl", "hexagon",
+    "trimble", "cepton", "innovusion", "hesai", "quanergy", "velodyne",
+    "ouster", "aeva", "aeye",
+}
+
+
+def classify_institution_sector(name):
+    """"academic" / "industry" / None (unclassified). A heuristic, not a
+    verified ground truth -- an explicit override list settles the cases the
+    keyword regex would get wrong in either direction (a company R&D arm
+    named "... Institute", a nonprofit research institute with no
+    "University" in its name), but plenty of real institutions match
+    neither and are deliberately left unclassified rather than guessed at.
+    See categories.html's Industry column for where this is used."""
+    key = (name or "").strip().lower()
+    if key in INDUSTRY_INSTITUTION_OVERRIDES:
+        return "industry"
+    if key in ACADEMIC_INSTITUTION_OVERRIDES:
+        return "academic"
+    if ACADEMIC_KEYWORD_RE.search(name or ""):
+        return "academic"
+    return None
+
+
 def is_valid_institution(name):
     if not name or name in INVALID_INSTITUTIONS:
         return False
@@ -1148,6 +1280,66 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
             "country_count": len(p["countries"]), "countries": sorted(p["countries"]),
             "year": p.get("year"),
         }
+
+    # -- Disruption/consolidation: does later work treat this paper as
+    # superseding its own references (disruptive) or as extending them
+    # alongside those references (consolidating)? See compute_disruption_
+    # index()'s own docstring for the method (Funk & Owen-Smith 2017) and
+    # the min-informative-citers guard -- p["cd_index"] is already set on
+    # `papers` by main() before this function runs, only for papers with
+    # enough scored citers to be meaningful.
+    scored = [p for p in papers if p.get("cd_index") is not None]
+    if scored:
+        def disruption_entry(p):
+            return {
+                "title": p["title"], "short_title": short_paper_name(p),
+                "year": p.get("year"), "venue": p.get("venue"), "cd_index": p["cd_index"],
+            }
+        ranked = sorted(scored, key=lambda p: p["cd_index"], reverse=True)
+        insights["disruption_index"] = {
+            "scored_papers": len(scored),
+            "mean_cd_index": round(sum(p["cd_index"] for p in scored) / len(scored), 3),
+            "most_disruptive": [disruption_entry(p) for p in ranked[:5]],
+            "most_consolidating": [disruption_entry(p) for p in ranked[-5:][::-1]],
+        }
+
+    # -- Open-source signal: does releasing code correlate with citation
+    # impact, and has doing so become more common over time? Restricted
+    # throughout to CHECKED papers (has_code_link is not None) -- comparing
+    # "has code" against "everyone else" would silently include papers this
+    # site never even looked at, biasing the comparison in an unknowable
+    # direction. See fetch_affiliations_arxiv.py's detect_code_link for how
+    # this is found (a free byproduct of the same ar5iv page fetched for
+    # affiliations/references, arXiv-sourced papers only).
+    checked = [p for p in papers if p.get("has_code_link") is not None]
+    OPEN_SOURCE_MIN_CHECKED = 20
+    if len(checked) >= OPEN_SOURCE_MIN_CHECKED:
+        with_code = [p for p in checked if p["has_code_link"]]
+
+        def avg_citations(group):
+            cited = [p["citations"] for p in group if p.get("citations") is not None]
+            return round(sum(cited) / len(cited), 1) if cited else None
+
+        open_source = {
+            "checked_papers": len(checked),
+            "with_code_pct": round(100 * len(with_code) / len(checked), 1),
+            "avg_citations_with_code": avg_citations(with_code),
+            "avg_citations_without_code": avg_citations([p for p in checked if not p["has_code_link"]]),
+        }
+        # By year -- only years with enough checked papers to say anything;
+        # the latest (partial) year is excluded, same reasoning as
+        # avg_team_size_by_year below.
+        by_year = defaultdict(lambda: {"checked": 0, "with_code": 0})
+        for p in checked:
+            if p.get("year") and p["year"] != latest_year:
+                by_year[p["year"]]["checked"] += 1
+                if p["has_code_link"]:
+                    by_year[p["year"]]["with_code"] += 1
+        open_source["with_code_pct_by_year"] = [
+            {"year": y, "pct": round(100 * v["with_code"] / v["checked"], 1)}
+            for y, v in sorted(by_year.items()) if v["checked"] >= OPEN_SOURCE_MIN_CHECKED
+        ]
+        insights["open_source"] = open_source
 
     # -- People: reuse the same rankings already computed for the
     # leaderboards (top_authors_by_avg / top by total), just the first
@@ -1478,6 +1670,14 @@ def main():
             # on paper.html so a reader can check the original listing.
             "source_url": e.get("source_url"),
         })
+        # Only included when actually checked (see fetch_affiliations_arxiv.py's
+        # detect_code_link) -- omitted, not null, for the majority of papers
+        # this hasn't reached yet, same convention as self_citations/cd_index
+        # below (a present-but-null field on every one of ~20k papers would
+        # bloat stats.json for no reason -- see DECISIONS.md's stats.json
+        # size history).
+        if e.get("has_code_link") is not None:
+            papers[-1]["has_code_link"] = e["has_code_link"]
     # Unknown-citation papers sort after every known-citation paper, regardless
     # of magnitude -- "no data" must never look like "definitely fewer than 1".
     papers.sort(key=lambda p: (p["citations"] is not None, p["citations"] or 0), reverse=True)
@@ -1515,6 +1715,8 @@ def main():
                 "venue": citer.get("venue"), "category": citer.get("category"),
                 "authors": citer.get("authors") or [],
             })
+    disruption_by_key = compute_disruption_index(citation_graph.get("edges") or {})
+    current_year = datetime.now(timezone.utc).year
     for p in papers:
         key = normalize_title(p["title"])
         citers = citing_by_target.get(key)
@@ -1522,6 +1724,21 @@ def main():
             p["citing_papers"] = sorted(citers, key=lambda c: c["year"] or 0)
         if self_citing_count.get(key):
             p["self_citations"] = self_citing_count[key]
+        d = disruption_by_key.get(key)
+        if d:
+            p["cd_index"] = d["cd_index"]
+        # Early-citation velocity: in-corpus citations received within
+        # EARLY_CITATION_WINDOW_YEARS of publication -- a leading indicator,
+        # tested against eventual standing rather than assumed. Only set
+        # once the window has actually closed (current_year - p.year >=
+        # window); a paper published last year hasn't had the chance to
+        # accumulate its "early" citations yet, and 0 so far would read as
+        # "never got any" rather than "too soon to tell".
+        if p.get("year") and (current_year - p["year"]) >= EARLY_CITATION_WINDOW_YEARS:
+            cutoff = p["year"] + EARLY_CITATION_WINDOW_YEARS
+            p["early_citations"] = sum(
+                1 for c in (citers or []) if c.get("year") is not None and c["year"] <= cutoff
+            )
 
     # Datasets page: "does this paper use dataset X" is only checkable at all
     # for the papers whose reference list was actually scanned by
@@ -1677,18 +1894,25 @@ def main():
     # knowable and honest to show: how much of the corpus has actually had
     # its own reference list extracted and scanned for in-corpus citations
     # -- build_citation_graph.py's sources_scanned count, against the
-    # denominator of papers that source could ever reach (CVF-hosted core
-    # papers for the PDF path; every core paper for the arXiv path, since
-    # not all have a preprint). Surfaced on Methodology so "no citation
-    # data" reads as "not yet verifiable" rather than "confirmed zero."
+    # denominator of papers that source could ever reach: CVF-hosted core
+    # papers for the PDF path (cvf_done also counts a confirmed-404 paper as
+    # done -- it will never be fetchable, so it shouldn't read as pending
+    # forever), and only core papers with a known arXiv preprint for the
+    # arXiv path (arxiv_eligible_total) -- a paper with no preprint at all
+    # could never be reached this way, so counting it in the denominator
+    # made 100% structurally unreachable even once every real preprint was
+    # scanned. Surfaced on About so "no citation data" reads as "not yet
+    # verifiable" rather than "confirmed zero."
     cvf_core_total = sum(1 for e in entries if (e.get("venue") or "") in CVF_CITATION_GRAPH_VENUES)
+    arxiv_eligible_total = sum(1 for e in entries if e.get("arxiv_url"))
     sources_scanned = citation_graph.get("sources_scanned") or {}
     citation_graph_coverage = {
         "cvf_scanned": sources_scanned.get("cvf", 0),
+        "cvf_permanent_failures": citation_graph.get("cvf_permanent_failures", 0),
         "cvf_core_total": cvf_core_total,
         "arxiv_scanned": sources_scanned.get("arxiv", 0),
+        "arxiv_eligible_total": arxiv_eligible_total,
         "core_total": len(entries),
-        "generated_at": citation_graph.get("generated_at"),
     }
 
     # Corpus-wide counts (unfiltered by av_relevance) for the overview banner --
@@ -2107,7 +2331,11 @@ def main():
             "pipeline_stages": {
                 "1_discovered": len(entries),
                 "2_classified": len(entries),  # classify.py runs on every entry at merge time
-                "3_abstract": sum(1 for e in entries if e.get("abstract")),
+                # Done once an abstract is found OR mine_abstracts.py has
+                # confirmed (via a clean arXiv search that came back empty)
+                # there isn't one to find -- both are a completed attempt,
+                # only "never searched yet" should read as still pending.
+                "3_abstract": sum(1 for e in entries if e.get("abstract") or e.get("abstract_search_exhausted")),
                 "4_author_detail": n_with_author_detail,
                 "5_citations_known": sum(1 for p in papers if p["citations"] is not None),
             },
@@ -2146,6 +2374,15 @@ def main():
                 json.loads(VENUE_LOGOS_FILE.read_text(encoding="utf-8"))
                 if VENUE_LOGOS_FILE.exists() else {}
             ).items() if v.get("logo_url")
+        },
+        # "academic" / "industry" per institution, see classify_institution_
+        # sector's docstring for the method and its limits. Only classified
+        # institutions are included -- categories.html looks this up per
+        # paper's institutions[] to tally an Industry % column, treating an
+        # institution absent here as simply not counted either way.
+        "institution_sector": {
+            inst: sector for inst in inst_citations
+            for sector in [classify_institution_sector(inst)] if sector
         },
         "category_breakdown": [{"category": cat, **vals}
                                 for cat, vals in sorted(category_stats.items(), key=lambda kv: -kv[1]["citations"])],

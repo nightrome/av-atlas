@@ -220,6 +220,41 @@
   <div class="fact-grid" id="citation-facts"></div>
 </div>
 
+<div class="panel" id="disruption-panel">
+  <h2>Disruption vs. consolidation</h2>
+  <p class="section-intro">
+    The CD index (Funk &amp; Owen-Smith, 2017): does later work engage with a paper as having
+    <em>superseded</em> its own references (disruptive), or does it cite the paper alongside those
+    same references, as one more contribution to an ongoing line of work (consolidating)? Computed
+    from papers with enough in-corpus citers for the score to mean something; most of the corpus
+    isn't cited enough yet to qualify (<span id="disruption-scored-note"></span>).
+  </p>
+  <div class="fact-grid" id="disruption-facts"></div>
+  <div class="move-cols" style="margin-top:16px;">
+    <div>
+      <h3 style="margin-top:0; color:#3fae6a;">▲ Most disruptive</h3>
+      <ul class="move-list" id="disruptive-list"></ul>
+    </div>
+    <div>
+      <h3 style="margin-top:0; color:#e6614f;">▼ Most consolidating</h3>
+      <ul class="move-list" id="consolidating-list"></ul>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="open-source-panel">
+  <h2>Open-source code</h2>
+  <p class="section-intro">
+    Whether a paper links to its own code release (github.com/gitlab.com/bitbucket.org, found on its
+    arXiv preprint's page), and whether that correlates with citation impact. Restricted to papers this
+    site has actually checked for a code link -- arXiv-sourced papers only, and only some of those so
+    far (see About).
+  </p>
+  <div class="fact-grid" id="open-source-facts"></div>
+  <h3>Share of checked papers with a code link, by year</h3>
+  <ul class="venue-list" id="open-source-by-year-list"></ul>
+</div>
+
 <div class="panel">
   <h2>Best paper by year</h2>
   <p class="section-intro">The highest-cited paper published each year, in-corpus citations only.</p>
@@ -663,6 +698,73 @@ function render(ins, stats) {
     const c = ins.citation_concentration;
     statTile(cif, `${c.top1pct_share_pct.toFixed(1)}%`, 'of all citations go to the top 1% of cited papers');
     statTile(cif, `${c.top10pct_share_pct.toFixed(1)}%`, 'of all citations go to the top 10% of cited papers');
+  }
+
+  // -- Disruption vs. consolidation --
+  const disruption = ins.disruption_index;
+  const disruptionPanel = document.getElementById('disruption-panel');
+  if (disruption && disruption.scored_papers) {
+    document.getElementById('disruption-scored-note').textContent =
+      `${disruption.scored_papers.toLocaleString()} papers currently have a computable score`;
+    const dif = document.getElementById('disruption-facts');
+    const meanLabel = disruption.mean_cd_index >= 0
+      ? 'average paper leans disruptive' : 'average paper leans consolidating';
+    statTile(dif, (disruption.mean_cd_index > 0 ? '+' : '') + disruption.mean_cd_index.toFixed(2), meanLabel);
+    statTile(dif, disruption.scored_papers.toLocaleString(), 'papers with a computable score');
+
+    function disruptionRow(list, item, up) {
+      const li = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = `paper.html?title=${encodeURIComponent(item.title)}`;
+      link.textContent = `${item.short_title}${item.year ? ` (${item.year})` : ''}`;
+      link.style.color = 'inherit';
+      li.appendChild(link);
+      const delta = document.createElement('span');
+      delta.className = 'delta ' + (up ? 'up' : 'down');
+      delta.textContent = (item.cd_index > 0 ? '+' : '') + item.cd_index.toFixed(2);
+      li.appendChild(delta);
+      list.appendChild(li);
+    }
+    const disruptiveList = document.getElementById('disruptive-list');
+    const consolidatingList = document.getElementById('consolidating-list');
+    (disruption.most_disruptive || []).forEach(p => disruptionRow(disruptiveList, p, true));
+    (disruption.most_consolidating || []).forEach(p => disruptionRow(consolidatingList, p, false));
+    if (!disruption.most_disruptive || !disruption.most_disruptive.length) {
+      disruptiveList.innerHTML = '<li>Not enough data yet.</li>';
+      consolidatingList.innerHTML = '<li>Not enough data yet.</li>';
+    }
+  } else if (disruptionPanel) {
+    disruptionPanel.style.display = 'none';
+  }
+
+  // -- Open-source code --
+  const openSource = ins.open_source;
+  const openSourcePanel = document.getElementById('open-source-panel');
+  if (openSource) {
+    const osf = document.getElementById('open-source-facts');
+    statTile(osf, `${openSource.with_code_pct.toFixed(1)}%`, 'of checked papers link to their own code');
+    statTile(osf, openSource.checked_papers.toLocaleString(), 'papers checked for a code link');
+    if (openSource.avg_citations_with_code != null && openSource.avg_citations_without_code != null) {
+      statTile(osf, openSource.avg_citations_with_code, 'avg. citations, papers with code');
+      statTile(osf, openSource.avg_citations_without_code, 'avg. citations, papers without code');
+    }
+    const yearList = document.getElementById('open-source-by-year-list');
+    (openSource.with_code_pct_by_year || []).forEach(row => {
+      const li = document.createElement('li');
+      const name = document.createElement('span');
+      name.textContent = row.year;
+      li.appendChild(name);
+      const pct = document.createElement('span');
+      pct.className = 'pct';
+      pct.textContent = `${row.pct.toFixed(1)}%`;
+      li.appendChild(pct);
+      yearList.appendChild(li);
+    });
+    if (!(openSource.with_code_pct_by_year || []).length) {
+      yearList.innerHTML = '<li>Not enough checked papers in any single year yet.</li>';
+    }
+  } else if (openSourcePanel) {
+    openSourcePanel.style.display = 'none';
   }
 
   // -- Venue relevance --

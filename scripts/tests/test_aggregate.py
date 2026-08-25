@@ -12,6 +12,7 @@ import json
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -283,6 +284,70 @@ class TestPaperShortName(unittest.TestCase):
     def test_no_abstract_falls_through_to_surname_year(self):
         name = ag.paper_short_name("A Study of Perception Systems", ["Jane Doe"], 2023, None)
         self.assertEqual(name, "Doe23")
+
+
+class TestClassifyInstitutionSector(unittest.TestCase):
+    def test_university_keyword_is_academic(self):
+        self.assertEqual(ag.classify_institution_sector("Technical University of Munich"), "academic")
+
+    def test_known_industry_lab_matches_override_despite_institute_in_name(self):
+        # "Institute" alone would otherwise read as academic -- the override
+        # exists specifically because this is a corporate R&D arm, not a
+        # degree-granting or public-research institution.
+        self.assertEqual(ag.classify_institution_sector("Toyota Research Institute"), "industry")
+
+    def test_known_research_institute_without_university_in_name_is_academic(self):
+        self.assertEqual(ag.classify_institution_sector("Max Planck Institute"), "academic")
+
+    def test_case_insensitive(self):
+        self.assertEqual(ag.classify_institution_sector("waymo"), "industry")
+        self.assertEqual(ag.classify_institution_sector("WAYMO"), "industry")
+
+    def test_unrecognized_institution_is_unclassified(self):
+        self.assertIsNone(ag.classify_institution_sector("Some Regional Robotics Lab"))
+
+
+class TestComputeDisruptionIndex(unittest.TestCase):
+    def test_mixed_disruptive_and_consolidating_citers(self):
+        # A cites R. citer1/citer2 cite only A (disruptive votes); citer3
+        # cites A AND R (a consolidating vote). All citers' own reference
+        # lists are themselves in `edges` (informative).
+        edges = {
+            "a": ["r"],
+            "citer1": ["a"],
+            "citer2": ["a"],
+            "citer3": ["a", "r"],
+        }
+        result = ag.compute_disruption_index(edges)
+        self.assertEqual(result["a"]["n_citers"], 3)
+        self.assertAlmostEqual(result["a"]["cd_index"], 1 / 3, places=3)
+
+    def test_all_disruptive_citers_score_1(self):
+        edges = {"a": [], "c1": ["a"], "c2": ["a"], "c3": ["a"]}
+        result = ag.compute_disruption_index(edges)
+        self.assertEqual(result["a"]["cd_index"], 1.0)
+
+    def test_all_consolidating_citers_score_negative_1(self):
+        edges = {"a": ["r"], "c1": ["a", "r"], "c2": ["a", "r"], "c3": ["a", "r"]}
+        result = ag.compute_disruption_index(edges)
+        self.assertEqual(result["a"]["cd_index"], -1.0)
+
+    def test_below_min_citers_threshold_excluded(self):
+        # Only 2 informative citers -- below DISRUPTION_MIN_CITERS (3), a
+        # +1/-1 average that coarse isn't meaningful.
+        edges = {"a": [], "c1": ["a"], "c2": ["a"]}
+        result = ag.compute_disruption_index(edges)
+        self.assertNotIn("a", result)
+
+    def test_target_with_no_scanned_references_still_scores(self):
+        # A's own reference list was never scanned (not a key in edges) --
+        # target_refs is then just empty, so every citer reads as
+        # disruptive (there's nothing for them to also cite). Correct
+        # behavior, not a bug: with no known references to compare against,
+        # "didn't cite any of them" is vacuously true.
+        edges = {"c1": ["a"], "c2": ["a"], "c3": ["a"]}
+        result = ag.compute_disruption_index(edges)
+        self.assertEqual(result["a"]["cd_index"], 1.0)
 
 
 class TestShardIndex(unittest.TestCase):
@@ -604,6 +669,81 @@ class TestAggregateEndToEnd(unittest.TestCase):
         )
         self.assertNotIn("citing_papers", stats["all_papers"][0])
 
+    def test_cvf_permanent_failures_counted_as_done_not_pending(self):
+        # A confirmed-404 CVF paper can never be fetched no matter how many
+        # times build_citation_graph.py reruns -- the coverage stat should
+        # count it as done (nothing left to do), not still-pending, or the
+        # "Citation graph: CVPR/ICCV/WACV reference lists" row on About can
+        # never reach 100% even once every real paper has been scanned.
+        stats = self._run(
+            [{"title": "A", "year": 2024, "venue": "CVPR", "av_relevance": "core"},
+             {"title": "B", "year": 2024, "venue": "CVPR", "av_relevance": "core"}],
+            citation_graph={"edges": {}, "sources_scanned": {"cvf": 1, "arxiv": 0},
+                             "cvf_permanent_failures": 1},
+        )
+        cov = stats["corpus_stats"]["citation_graph_coverage"]
+        self.assertEqual(cov["cvf_scanned"], 1)
+        self.assertEqual(cov["cvf_permanent_failures"], 1)
+        self.assertEqual(cov["cvf_core_total"], 2)
+
+    def test_arxiv_eligible_total_only_counts_papers_with_a_known_preprint(self):
+        # A paper with no arXiv preprint at all could never be reached by
+        # the arXiv reference-list path -- the denominator this row shows on
+        # About must exclude it, or 100% is structurally unreachable even
+        # once every real preprint has been scanned.
+        stats = self._run([
+            {"title": "Has Preprint", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+             "arxiv_url": "https://arxiv.org/abs/2401.00001"},
+            {"title": "No Preprint", "year": 2024, "venue": "CVPR", "av_relevance": "core"},
+        ])
+        cov = stats["corpus_stats"]["citation_graph_coverage"]
+        self.assertEqual(cov["arxiv_eligible_total"], 1)
+
+    def test_abstract_stage_counts_a_confirmed_no_match_as_done(self):
+        # mine_abstracts.py sets abstract_search_exhausted when a clean
+        # arXiv search confirms no match exists -- that's a completed
+        # attempt, same as finding one, and must count as done on the
+        # "Abstract search complete" row so a genuinely-unavailable abstract
+        # doesn't read as still pending forever.
+        stats = self._run([
+            {"title": "Has Abstract", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+             "abstract": "Some abstract text."},
+            {"title": "Confirmed No Match", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+             "abstract": "", "abstract_search_exhausted": True},
+            # Explicit "" defeats _run's own placeholder-abstract default
+            # (see _run's setdefault comment) -- this fixture needs a real
+            # "genuinely has neither" case, not the auto-filled one.
+            {"title": "Not Yet Searched", "year": 2024, "venue": "CVPR", "av_relevance": "core", "abstract": ""},
+        ])
+        self.assertEqual(stats["corpus_stats"]["pipeline_stages"]["3_abstract"], 2)
+
+    def test_early_citations_counts_only_citers_within_the_window(self):
+        # Paper published 2015 (long-closed window). Citers at 2015 and
+        # 2017 (year + EARLY_CITATION_WINDOW_YEARS=2) count; 2018 doesn't.
+        stats = self._run(
+            [
+                {"title": "Old Paper", "year": 2015, "venue": "CVPR", "av_relevance": "core"},
+                {"title": "Same Year Citer", "year": 2015, "venue": "CVPR", "av_relevance": "core"},
+                {"title": "Within Window Citer", "year": 2017, "venue": "CVPR", "av_relevance": "core"},
+                {"title": "Outside Window Citer", "year": 2018, "venue": "CVPR", "av_relevance": "core"},
+            ],
+            citation_graph={"edges": {
+                "sameyearciter": ["oldpaper"],
+                "withinwindowciter": ["oldpaper"],
+                "outsidewindowciter": ["oldpaper"],
+            }},
+        )
+        by_title = {p["title"]: p for p in stats["all_papers"]}
+        self.assertEqual(by_title["Old Paper"]["early_citations"], 2)
+
+    def test_early_citations_omitted_when_window_not_yet_closed(self):
+        # A paper from the current year hasn't had 2 years to accumulate
+        # early citations yet -- must not show 0 (which would read as
+        # "confirmed no early citations" rather than "too soon to tell").
+        current_year = datetime.now(timezone.utc).year
+        stats = self._run([{"title": "Brand New Paper", "year": current_year, "venue": "CVPR", "av_relevance": "core"}])
+        self.assertNotIn("early_citations", stats["all_papers"][0])
+
     def test_bare_surname_authors_excluded_from_researcher_stats(self):
         # OpenAlex occasionally returns a bare surname ("Wang", "Li", ...)
         # instead of a full name -- seen on real data attached to 20-100+
@@ -877,6 +1017,66 @@ class TestComputeInsights(unittest.TestCase):
         self.assertIn("CVPR", venues_seen)
         self.assertNotIn("TinyWorkshop", venues_seen)
         self.assertNotIn("arXiv", venues_seen)
+
+    def test_disruption_index_summary_ranks_and_averages_scored_papers(self):
+        papers = [self._paper("Disruptive Paper", 2020), self._paper("Consolidating Paper", 2020)]
+        papers[0]["cd_index"] = 1.0
+        papers[1]["cd_index"] = -1.0
+        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [])
+        d = insights["disruption_index"]
+        self.assertEqual(d["scored_papers"], 2)
+        self.assertEqual(d["mean_cd_index"], 0.0)
+        self.assertEqual(d["most_disruptive"][0]["title"], "Disruptive Paper")
+        self.assertEqual(d["most_consolidating"][0]["title"], "Consolidating Paper")
+
+    def test_disruption_index_absent_when_no_papers_scored(self):
+        papers = [self._paper("Unscored Paper", 2020)]
+        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [])
+        self.assertNotIn("disruption_index", insights)
+
+    def test_open_source_compares_citations_between_checked_groups_only(self):
+        papers = []
+        for i in range(15):
+            p = self._paper(f"With code {i}", 2021, citations=10)
+            p["has_code_link"] = True
+            papers.append(p)
+        for i in range(10):
+            p = self._paper(f"Without code {i}", 2021, citations=2)
+            p["has_code_link"] = False
+            papers.append(p)
+        # Never checked at all -- must not be pulled into either group or
+        # the checked_papers count.
+        papers.append(self._paper("Never checked", 2021, citations=1000))
+        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [])
+        o = insights["open_source"]
+        self.assertEqual(o["checked_papers"], 25)
+        self.assertEqual(o["with_code_pct"], 60.0)
+        self.assertEqual(o["avg_citations_with_code"], 10.0)
+        self.assertEqual(o["avg_citations_without_code"], 2.0)
+
+    def test_open_source_absent_below_min_checked_threshold(self):
+        papers = []
+        for i in range(5):
+            p = self._paper(f"Paper {i}", 2021, citations=1)
+            p["has_code_link"] = True
+            papers.append(p)
+        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [])
+        self.assertNotIn("open_source", insights)
+
+    def test_open_source_by_year_excludes_the_latest_partial_year(self):
+        papers = []
+        for i in range(20):
+            p = self._paper(f"2022 Paper {i}", 2022)
+            p["has_code_link"] = i < 10
+            papers.append(p)
+        for i in range(20):
+            p = self._paper(f"2023 Paper {i}", 2023)  # latest year -- partial, excluded
+            p["has_code_link"] = True
+            papers.append(p)
+        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [])
+        years = {row["year"] for row in insights["open_source"]["with_code_pct_by_year"]}
+        self.assertIn(2022, years)
+        self.assertNotIn(2023, years)
 
 
 if __name__ == "__main__":

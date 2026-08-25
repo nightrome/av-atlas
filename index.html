@@ -110,7 +110,7 @@
     </div>
   </div>
   <div class="table-scroll">
-  <table><thead><tr><th>#</th><th>Title</th><th>Category</th><th>Year</th><th>Venue</th><th>Source</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Title</th><th>Category</th><th>Year</th><th>Venue</th><th>Source</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="In-corpus citations received within 2 years of publication -- a leading indicator, not a substitute for the total. Blank for papers not yet 2 years old.">Early citations</th></tr></thead>
   <tbody id="papers-body"></tbody></table>
   </div>
 </div>
@@ -244,6 +244,17 @@ function citationsCell(p) {
   wrap.style.textAlign = 'right';
   wrap.style.fontVariantNumeric = 'tabular-nums';
   wrap.textContent = fmtCitations(p.citations);
+  return wrap;
+}
+
+// early_citations is only set once the window has actually closed (see
+// aggregate.py) -- a paper too recent to judge shows "—", not a 0 that
+// would misread as "confirmed no early citations".
+function earlyCitationsCell(p) {
+  const wrap = document.createElement('div');
+  wrap.style.textAlign = 'right';
+  wrap.style.fontVariantNumeric = 'tabular-nums';
+  wrap.textContent = p.early_citations == null ? '—' : p.early_citations;
   return wrap;
 }
 
@@ -482,9 +493,9 @@ function renderResults() {
   function renderPapersBody(rows) {
     papersBody.innerHTML = '';
     rows.forEach((p, i) => papersBody.appendChild(row([
-      pagination.offset + i + 1, titleCell(p), categoryCell(p), p.year || '', p.venue || '', sourceCell(p), citationsCell(p),
+      pagination.offset + i + 1, titleCell(p), categoryCell(p), p.year || '', p.venue || '', sourceCell(p), citationsCell(p), earlyCitationsCell(p),
     ])));
-    appendSumRow(papersBody, rows, [null, null, null, null, null, null, p => p.citations]);
+    appendSumRow(papersBody, rows, [null, null, null, null, null, null, p => p.citations, p => p.early_citations]);
   }
   makeSortableSafe(papersTable, shown, [
     { accessor: (p, i) => pagination.offset + shown.indexOf(p) + 1, numeric: true },
@@ -494,6 +505,7 @@ function renderResults() {
     { accessor: p => p.venue, numeric: false },
     null,
     { accessor: p => p.citations, numeric: true },
+    { accessor: p => p.early_citations, numeric: true },
   ], renderPapersBody);
 
 }

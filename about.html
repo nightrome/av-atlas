@@ -231,6 +231,47 @@
 </details>
 
 <details class="detail-section">
+<summary>Beyond the leaderboards</summary>
+<div class="detail-body">
+<p class="section-intro">
+  Four analyses that go past simple counting, each with a real methodology and a real limitation.
+</p>
+<h3 style="margin-top:0;">Disruption index (Insights, individual paper pages)</h3>
+<p>
+  The CD index (Funk &amp; Owen-Smith, 2017, <em>Management Science</em>): for a paper's in-corpus
+  citers, does each one cite the paper alone (treating it as having superseded its own references,
+  a disruptive vote) or cite the paper alongside those same references (a consolidating vote)? The
+  score is the average of these votes, from -1 (every citer consolidates) to +1 (every citer treats
+  it as disruptive). Only computed for papers with enough in-corpus citers for the average to mean
+  something; most of the corpus isn't cited enough yet to qualify.
+</p>
+<h3>Industry vs. academia (Categories)</h3>
+<p>
+  Each paper's author affiliations are classified as industry or academic (a keyword match plus a
+  hand-curated list for the common exceptions, like a corporate lab whose name contains "Institute"),
+  and each affiliation counts as one vote toward its category's Industry % column. A heuristic, not a
+  verified ground truth: an institution this can't confidently classify either way is left out of
+  the count rather than guessed at.
+</p>
+<h3>Early-citation velocity (Papers)</h3>
+<p>
+  How many in-corpus citations a paper received within 2 years of publication -- a leading indicator
+  shown alongside its total, not a replacement for it. Only shown once that 2-year window has
+  actually closed; a paper published last year hasn't had the chance yet, and showing 0 would read
+  as "never got any" rather than "too soon to tell".
+</p>
+<h3>Open-source code (Insights)</h3>
+<p>
+  Whether a paper links to its own code (github.com/gitlab.com/bitbucket.org), detected from the
+  same arXiv preprint page already fetched for author affiliations and references, so it costs
+  nothing extra to check. Only covers arXiv-sourced papers, and only the ones this site has reached
+  so far -- every comparison (citation impact, share over time) is restricted to papers actually
+  checked, never silently padded out with papers nobody looked at.
+</p>
+</div>
+</details>
+
+<details class="detail-section">
 <summary>Data coverage</summary>
 <div class="detail-body">
 <p class="section-intro">
@@ -261,7 +302,6 @@
   </thead>
   <tbody id="crawler-status-body"></tbody>
 </table>
-<p id="crawler-status-date" style="color: var(--muted); font-size: 0.85em;"></p>
 <ul>
   <li><strong>Several general ML/CV venues aren't covered yet:</strong> ICPR, ICASSP, ICIP, and
       ACM Transactions on Graphics, found by checking which venues this corpus's own papers cite
@@ -335,9 +375,9 @@
 </p>
 <h3>License</h3>
 <p>
-  The code that builds and runs this site (collection, classification, and display logic) is
-  released under the <a href="https://opensource.org/licenses/MIT" style="color: var(--accent);">MIT
-  License</a>.
+  <a href="https://github.com/nightrome/av-atlas" style="color: var(--accent);">The code that builds
+  and runs this site</a> (collection, classification, and display logic) is released under the
+  <a href="https://opensource.org/licenses/MIT" style="color: var(--accent);">MIT License</a>.
 </p>
 <p>
   The data shown here (paper titles, authors, venues, years, categories, citation relationships,
@@ -446,13 +486,16 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   if (statusBody) {
     const stages = cs.pipeline_stages || {};
     addRow(statusBody, 'Papers discovered (AV-relevant)', stages['1_discovered'] || 0, coreTotal);
-    addRow(statusBody, 'Abstract fetched', stages['3_abstract'] || 0, coreTotal);
+    addRow(statusBody, 'Abstract search complete', stages['3_abstract'] || 0, coreTotal);
     addRow(statusBody, 'Citation count known', stages['5_citations_known'] || 0, coreTotal);
-    addRow(statusBody, 'Citation graph: CVPR/ICCV/WACV reference lists', cov.cvf_scanned || 0, cov.cvf_core_total || 0);
-    addRow(statusBody, 'Citation graph: arXiv preprint reference lists', cov.arxiv_scanned || 0, coreTotal);
+    // A confirmed-404 paper counts as done (nothing more to fetch), not
+    // pending -- see aggregate.py's citation_graph_coverage comment.
+    addRow(statusBody, 'Citation graph: CVPR/ICCV/WACV reference lists',
+      (cov.cvf_scanned || 0) + (cov.cvf_permanent_failures || 0), cov.cvf_core_total || 0);
+    // Denominator is papers with a known arXiv preprint, not every core
+    // paper -- a paper with no preprint could never be reached this way.
+    addRow(statusBody, 'Citation graph: arXiv preprint reference lists', cov.arxiv_scanned || 0, cov.arxiv_eligible_total || 0);
     addRow(statusBody, 'Author affiliation lookup', verif.papers_with_author_detail || 0, coreTotal);
-    document.getElementById('crawler-status-date').textContent =
-      `As of ${cov.generated_at || stats.generated_at || 'the last data update'}.`;
   }
 }).catch(() => {});
 

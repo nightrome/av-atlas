@@ -23,7 +23,7 @@
   body { max-width: 1100px; margin: 0 auto; padding: 24px; }
   .page-title { margin: 0 0 16px; font-size: 1.5em; }
   .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
-  .bar-row, .bar-header { display: grid; grid-template-columns: 190px 1fr 80px 70px 80px; align-items: center; gap: 10px; padding: 6px 0; }
+  .bar-row, .bar-header { display: grid; grid-template-columns: 190px 1fr 80px 70px 80px 90px; align-items: center; gap: 10px; padding: 6px 0; }
   .bar-row a { color: var(--text); text-decoration: none; font-size: 0.92em; }
   .bar-row a:hover { text-decoration: underline; }
   .bar-track { background: var(--panel2); border-radius: 4px; height: 18px; overflow: hidden; }
@@ -266,10 +266,37 @@ function renderCategoryTimeline(stats, filters) {
 // opposed to a real average of 0) -- show "—", not a misleading number.
 function fmtAvg(v) { return v == null ? '—' : v; }
 
+// Each paper's institutions (not each paper) counts as 1 vote toward its
+// category's industry/academic tally (user-requested) -- a 3-institution
+// collaboration contributes 3 votes, not 1, since the question is "how much
+// of the WORK behind this category is industry vs. academic", not "how many
+// papers have at least one industry co-author". Institutions not in
+// stats.institution_sector (aggregate.py's classify_institution_sector --
+// a heuristic, not exhaustive) are simply not counted either way.
+function computeSectorTally(papers, institutionSector) {
+  const tally = {};
+  papers.forEach(p => {
+    const cat = p.category || 'uncategorized';
+    (p.institutions || []).forEach(inst => {
+      const sector = institutionSector[inst];
+      if (!sector) return;
+      const t = tally[cat] || (tally[cat] = { industry: 0, academic: 0 });
+      t[sector] += 1;
+    });
+  });
+  return tally;
+}
+
 function render() {
   const stats = currentStats, filters = currentFilters;
   const papers = withoutDatasetsIfExcluded(filterPapers(stats.all_papers || [], filters));
   const cats = aggregateByDimension(papers, p => [p.category || 'uncategorized'], { minPapers: 0 });
+  const sectorTally = computeSectorTally(papers, stats.institution_sector || {});
+  cats.forEach(c => {
+    const t = sectorTally[c.name];
+    const total = t ? t.industry + t.academic : 0;
+    c.industry_pct = total > 0 ? Math.round(100 * t.industry / total) : null;
+  });
 
   const metric = getMetric('avg');
   const byAvg = (a, b) => (b.avg_citations ?? -Infinity) - (a.avg_citations ?? -Infinity);
@@ -312,6 +339,13 @@ function render() {
     cell.addEventListener('click', () => { location.href = withParam('categories.html', 'metric', key); });
     header.appendChild(cell);
   });
+  const industryHead = document.createElement('div');
+  industryHead.className = 'bar-num';
+  industryHead.textContent = 'Industry';
+  industryHead.title = 'Share of this category\'s author affiliations that are industry rather than '
+    + 'academic (each paper\'s institutions each count as one vote). Institutions this site can\'t '
+    + 'confidently classify either way aren\'t counted.';
+  header.appendChild(industryHead);
   bars.appendChild(header);
 
   cats.forEach(c => {
@@ -352,6 +386,11 @@ function render() {
     avgNum.className = 'bar-num' + (metric === 'avg' ? ' active-metric' : '');
     avgNum.textContent = fmtAvg(c.avg_citations);
     row.appendChild(avgNum);
+
+    const industryNum = document.createElement('div');
+    industryNum.className = 'bar-num';
+    industryNum.textContent = c.industry_pct == null ? '—' : `${c.industry_pct}% ind.`;
+    row.appendChild(industryNum);
 
     bars.appendChild(row);
   });

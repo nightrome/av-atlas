@@ -16,6 +16,13 @@ Two passes:
      exact-normalized-title-match standard as fetch_affiliations_arxiv.py's
      find_arxiv_id, to avoid a same-topic-different-paper false match),
      3s/request per arXiv's own etiquette guidance. This is the slow pass.
+     A clean search that finds no match sets abstract_search_exhausted on
+     the paper -- distinguishes "we looked, there's genuinely nothing on
+     arXiv" from "haven't searched yet" (aggregate.py's coverage stat counts
+     both a found abstract and a confirmed miss as done), and means a later
+     run skips straight past it instead of re-searching the same paper
+     forever. A network/API exception does NOT set it, so a transient
+     failure still gets retried next run.
 
 Writes directly to papers_full.json (single writer for this field, no
 separate side file -- unlike affiliations/institutions there's no
@@ -114,9 +121,15 @@ def main():
     print(f"{len(core)} core papers, {len(missing)} missing an abstract")
 
     with_url = [e for e in missing if e.get("arxiv_url")]
-    without_url = [e for e in missing if not e.get("arxiv_url")]
+    # Skip papers a previous run already searched and confirmed have no
+    # arXiv match -- re-searching them every run is pure wasted work (the
+    # answer can't change unless the paper somehow gains an arxiv_url later,
+    # which is handled by the with_url branch above, not this one).
+    without_url = [e for e in missing if not e.get("arxiv_url") and not e.get("abstract_search_exhausted")]
+    already_exhausted = sum(1 for e in missing if not e.get("arxiv_url") and e.get("abstract_search_exhausted"))
     print(f"  {len(with_url)} already have an arxiv_url (fast pass), "
-          f"{len(without_url)} need a title search (slow pass)")
+          f"{len(without_url)} need a title search (slow pass), "
+          f"{already_exhausted} previously confirmed no arXiv match (skipped)")
 
     # -- Pass 1: batch ID lookup for papers with a known arxiv_url --
     filled = 0
@@ -144,6 +157,7 @@ def main():
 
     # -- Pass 2: title search for papers with no arxiv_url at all --
     consecutive_failures = 0
+    exhausted = 0
     for j, e in enumerate(without_url):
         try:
             abstract = fetch_by_title(e["title"])
@@ -159,13 +173,17 @@ def main():
         if abstract:
             e["abstract"] = abstract
             filled += 1
+        else:
+            e["abstract_search_exhausted"] = True
+            exhausted += 1
         if (j + 1) % 25 == 0:
             save(papers)
-            print(f"  pass 2: {j + 1}/{len(without_url)} processed, {filled} filled so far (total)", flush=True)
+            print(f"  pass 2: {j + 1}/{len(without_url)} processed, {filled} filled, "
+                  f"{exhausted} confirmed no match so far (total)", flush=True)
         time.sleep(REQUEST_DELAY)
 
     save(papers)
-    print(f"Done. {filled} abstracts filled in total.")
+    print(f"Done. {filled} abstracts filled, {exhausted} confirmed no arXiv match, in total.")
 
 
 if __name__ == "__main__":
