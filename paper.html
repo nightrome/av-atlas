@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
 <title>AV Atlas — Paper</title>
+<meta name="description" content="A paper's details within AV Atlas: authors, venue, citations, and where it fits in autonomous vehicle research.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AV Atlas">
+<meta property="og:title" content="AV Atlas — Paper">
+<meta property="og:description" content="A paper's details within AV Atlas: authors, venue, citations, and where it fits in autonomous vehicle research.">
+<meta property="og:url" content="https://nightrome.github.io/av-atlas/paper.html">
+<meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AV Atlas — Paper">
+<meta name="twitter:description" content="A paper's details within AV Atlas: authors, venue, citations, and where it fits in autonomous vehicle research.">
+<meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="theme-light.css">
@@ -154,6 +165,35 @@ function row(cells) {
   return tr;
 }
 
+// Same djb2-hash-mod-N as aggregate.py's shard_index() -- must stay in sync
+// by construction, not convention. Picks which abstracts/shard-NN.json this
+// paper's abstract (if any) lives in, so this page fetches ~1/64th of the
+// site's abstract text instead of stats.json bundling all of it for every
+// page's every visitor (see aggregate.py's ABSTRACTS_DIR comment).
+const ABSTRACT_SHARD_COUNT = 64;
+function shardIndex(t, numShards = ABSTRACT_SHARD_COUNT) {
+  let h = 5381;
+  for (let i = 0; i < t.length; i++) {
+    h = ((h * 33) + t.charCodeAt(i)) >>> 0;
+  }
+  return h % numShards;
+}
+
+function loadAbstract(paperTitle) {
+  // Hidden until the shard resolves, rather than showing an empty "Abstract"
+  // panel that may or may not fill in a moment later.
+  const abstractPanel = document.getElementById('abstract-panel');
+  abstractPanel.style.display = 'none';
+  const shard = String(shardIndex(paperTitle)).padStart(2, '0');
+  fetch(`abstracts/shard-${shard}.json`).then(r => r.json()).then(shardData => {
+    const abstract = shardData[paperTitle];
+    if (abstract) {
+      linkify(document.getElementById('abstract-text'), abstract);
+      abstractPanel.style.display = '';
+    }
+  }).catch(() => {});
+}
+
 const params = new URLSearchParams(location.search);
 const title = params.get('title') || '';
 document.getElementById('title').textContent = title || 'Unknown paper';
@@ -236,12 +276,7 @@ function render(stats) {
   grid.appendChild(stat((paper.citing_papers || []).length, 'Cited by (within this corpus)'));
   grid.appendChild(stat(paper.authors ? paper.authors.length : '—', 'Authors'));
 
-  const abstractPanel = document.getElementById('abstract-panel');
-  if (paper.abstract) {
-    linkify(document.getElementById('abstract-text'), paper.abstract);
-  } else {
-    abstractPanel.style.display = 'none';
-  }
+  loadAbstract(paper.title);
 
   const authorDetail = stats.author_detail || {};
   const authorGrid = document.getElementById('author-grid');

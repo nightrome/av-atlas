@@ -501,3 +501,27 @@ filter can't re-slice a leaderboard that was already truncated server-side.
 the full `all_papers` array for whatever subset the active filters leave
 behind — every page's filters compose with every other page's, uniformly,
 instead of each page needing its own bespoke precomputed slice.
+
+## Abstracts sharded out of `stats.json`, not bundled in
+
+Every page fetches `stats.json` on load, but only `paper.html` ever reads
+`paper.abstract` — one paper's abstract at a time. Bundling all ~19k
+abstracts into the shared payload anyway cost every page ~7MB of gzip
+transfer (measured: 19.2MB → 13.0MB after removing them) for a field almost
+nobody's page ever touches, discovered while auditing what a first-time
+visitor (e.g. from a social share) actually has to download before anything
+renders.
+
+Moved to `data/abstracts/shard-NN.json` (`aggregate.py`'s `ABSTRACTS_DIR`,
+64 shards, ~125KB gzip each at the largest) instead of one `abstracts.json`
+side file, since a single shared blob would still make `paper.html` pay the
+full ~13MB weight to show one paper's text. `shard_index()` (a plain
+djb2-hash-mod-64) picks a paper's shard from its title alone — no index
+file to keep in sync, just the same hash computed on both ends.
+`paper.html` re-implements the identical algorithm in JS (there's no shared
+module between Python and JS in this app to put it in once); the two copies
+must stay byte-for-byte identical or a shard mismatch silently makes every
+abstract "not found". `scripts/tests/test_aggregate.py`'s `TestShardIndex`
+pins the Python side's output against values cross-checked against a real
+Node run of the JS copy — if that test ever needs updating, the JS copy in
+`paper.html` needs the same update, not either one alone.

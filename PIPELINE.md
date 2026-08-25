@@ -48,7 +48,9 @@ load-bearing, without losing the record of how each venue was pulled.
   writer onto `papers_full.json`, and only applies to papers OpenAlex
   hasn't already enriched (OpenAlex's data is richer, never overwritten).
 - `aggregate.py` — reads `data/papers_full.json`, writes `data/stats.json`
-  (what the UI actually consumes). Leaderboards rank `core`-only.
+  (what the UI actually consumes). Leaderboards rank `core`-only. Also writes
+  `data/abstracts/shard-NN.json` — abstracts sharded out of `stats.json`
+  itself so only `paper.html` pays for them (see DECISIONS.md).
 
 ## Citation counts
 

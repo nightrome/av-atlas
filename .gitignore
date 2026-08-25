@@ -16,6 +16,9 @@ data/stats.json
 # Same reasoning as stats.json above -- regenerable, not reviewable as a
 # diff.
 data/stats_adjacent.json
+# Sharded abstract text split out of stats.json (regenerate with
+# scripts/aggregate.py) -- same reasoning as stats.json above.
+data/abstracts/
 # sql.js-httpvfs prototype's SQLite file (build with scripts/build_sqlite.py)
 # -- regenerable, ~90MB, and authors_sql_prototype.html is a local-only
 # spike (not linked from nav, not deployed) so this never needs to ship.

@@ -285,6 +285,34 @@ class TestPaperShortName(unittest.TestCase):
         self.assertEqual(name, "Doe23")
 
 
+class TestShardIndex(unittest.TestCase):
+    # paper.html re-implements this exact djb2-hash-mod-N algorithm in JS
+    # (no shared module between Python and JS in this app) to pick the same
+    # abstracts/shard-NN.json file client-side, with no index file needed.
+    # These values were cross-checked against a real Node run of the JS copy
+    # -- if this test ever needs updating, the JS copy in paper.html must be
+    # updated to match, or every paper's abstract silently stops resolving.
+    def test_matches_the_js_implementation_in_paper_html(self):
+        cases = {
+            "nuScenes: A multimodal dataset for autonomous driving": 54,
+            "BEVFormer": 45,
+            "End-to-End Object Detection with Transformers": 40,
+            "": 5,
+            "A": 38,
+        }
+        for title, expected_shard in cases.items():
+            self.assertEqual(ag.shard_index(title), expected_shard, title)
+
+    def test_stable_for_the_same_title(self):
+        title = "Planning-Oriented Autonomous Driving"
+        self.assertEqual(ag.shard_index(title), ag.shard_index(title))
+
+    def test_in_range(self):
+        for title in ("", "A", "A fairly long paper title about perception and planning"):
+            self.assertGreaterEqual(ag.shard_index(title), 0)
+            self.assertLess(ag.shard_index(title), ag.ABSTRACT_SHARD_COUNT)
+
+
 class TestCitationCount(unittest.TestCase):
     def test_no_source_returns_none_not_zero(self):
         # This is the load-bearing distinction: "no data" must never become a
@@ -380,8 +408,9 @@ class TestAggregateEndToEnd(unittest.TestCase):
         if citation_graph is not None:
             graph_file.write_text(json.dumps(citation_graph), encoding="utf-8")
 
-        orig_in, orig_out, orig_adjacent, orig_profiles, orig_graph = (
-            ag.IN_FILE, ag.OUT_FILE, ag.ADJACENT_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, ag.CITATION_GRAPH_FILE)
+        orig_in, orig_out, orig_adjacent, orig_profiles, orig_graph, orig_abstracts = (
+            ag.IN_FILE, ag.OUT_FILE, ag.ADJACENT_OUT_FILE, ag.SCHOLAR_PROFILES_FILE,
+            ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR)
         ag.IN_FILE, ag.OUT_FILE = in_file, out_file
         # Patched to a tmp path same as OUT_FILE -- without this, every test
         # run would silently overwrite the real ~34MB data/stats_adjacent.json
@@ -389,12 +418,16 @@ class TestAggregateEndToEnd(unittest.TestCase):
         ag.ADJACENT_OUT_FILE = Path(tmpdir.name) / "stats_adjacent.json"
         ag.SCHOLAR_PROFILES_FILE = Path(tmpdir.name) / "scholar_profiles.json"  # deliberately absent
         ag.CITATION_GRAPH_FILE = graph_file  # absent unless citation_graph was passed
+        # Same reasoning as ADJACENT_OUT_FILE above -- without this, every
+        # test run would rmtree+rewrite the real data/abstracts/ directory.
+        ag.ABSTRACTS_DIR = Path(tmpdir.name) / "abstracts"
         try:
             ag.main()
             self.last_adjacent_papers = json.loads(ag.ADJACENT_OUT_FILE.read_text(encoding="utf-8"))
         finally:
-            ag.IN_FILE, ag.OUT_FILE, ag.ADJACENT_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, ag.CITATION_GRAPH_FILE = (
-                orig_in, orig_out, orig_adjacent, orig_profiles, orig_graph)
+            ag.IN_FILE, ag.OUT_FILE, ag.ADJACENT_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, \
+                ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR = (
+                orig_in, orig_out, orig_adjacent, orig_profiles, orig_graph, orig_abstracts)
 
         return json.loads(out_file.read_text(encoding="utf-8"))
 

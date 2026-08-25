@@ -72,13 +72,19 @@ the fresh merge.
   `#4f46e5` + amber `#f59e0b`).
 - `logo.svg` -- the site mark (car + LiDAR dome + scan), used as the favicon and in the
   nav bar brand.
+- `og-image.png` -- static 1200x630 social share card (same mark/palette as logo.svg),
+  referenced by every page's Open Graph/Twitter Card meta tags. Hand-generated, not
+  rebuilt by any script -- regenerate only if the brand mark changes.
 - `scripts/` -- the whole data pipeline (see README.md) plus `build_public_site.py` and
   `deploy.py`.
 - `data/` -- the crawled/derived corpus. The large derived files (`papers_full.json`,
-  `stats.json`, `stats_adjacent.json`, citation-graph side files, reference-list dumps)
-  are gitignored -- regenerable from the smaller tracked source files
-  (`data/venues/*.json`, `scholar_profiles.json`, `orcids.json`, ...), not worth the
-  repo bloat or unreviewable diffs.
+  `stats.json`, `stats_adjacent.json`, `abstracts/shard-NN.json`, citation-graph side
+  files, reference-list dumps) are gitignored -- regenerable from the smaller tracked
+  source files (`data/venues/*.json`, `scholar_profiles.json`, `orcids.json`, ...), not
+  worth the repo bloat or unreviewable diffs. `data/abstracts/` is sharded out of
+  `stats.json` (see DECISIONS.md's "Abstracts sharded out of stats.json" entry) --
+  `paper.html` is the only page that fetches one, computing which shard from the
+  paper's title via the same hash `aggregate.py`'s `shard_index()` uses.
 - `tests/` -- pure-JS logic tests (`*.test.js`, plain Node) plus a smoke test
   (`qa_smoke_test.js`) and a structural UI regression test (`ui_regression_test.js`),
   both run via `dom_stub.js` against real page scripts and real data.

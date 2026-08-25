@@ -59,17 +59,6 @@ def html_pages():
     return [p for p in BASE.glob("*.html") if p.name not in EXCLUDED_HTML]
 
 
-def rmtree_retry(path, attempts=5, delay=0.5):
-    for i in range(attempts):
-        try:
-            shutil.rmtree(path)
-            return
-        except PermissionError:
-            if i == attempts - 1:
-                raise
-            time.sleep(delay)
-
-
 def build_public_site():
     index_path = BASE / "index.html"
     stats_path = BASE / "data" / "stats.json"
@@ -107,6 +96,18 @@ def build_public_site():
         (page_dir / html_path.name).write_text(html, encoding="utf-8", newline="\n")
 
     shutil.copy2(stats_path, page_dir / "stats.json")
+    # Sharded abstract files (see aggregate.py's ABSTRACTS_DIR comment) --
+    # paper.html fetches one shard at a time, not stats.json's whole payload.
+    # The shard set is fixed (always exactly ABSTRACT_SHARD_COUNT files,
+    # fixed names), so this copies each file over rather than rmtree+
+    # copytree-ing the whole directory -- avoids a real OneDrive
+    # directory-lock PermissionError rmtree hit in practice here.
+    abstracts_src = BASE / "data" / "abstracts"
+    abstracts_dst = page_dir / "abstracts"
+    if abstracts_src.exists():
+        abstracts_dst.mkdir(parents=True, exist_ok=True)
+        for shard_path in abstracts_src.glob("*.json"):
+            shutil.copy2(shard_path, abstracts_dst / shard_path.name)
     # Lazily fetched by index.html only when its AV-relevance filter is
     # switched away from the default -- not every deploy necessarily has
     # one yet (aggregate.py writes it, but an older stats.json could still
@@ -120,6 +121,7 @@ def build_public_site():
     # see theme-light.css's own header comment.
     shutil.copy2(BASE / "theme-light.css", page_dir / "theme-light.css")
     shutil.copy2(BASE / "logo.svg", page_dir / "logo.svg")
+    shutil.copy2(BASE / "og-image.png", page_dir / "og-image.png")
 
     # Shared static assets referenced by the HTML pages (e.g. nav.js) but not
     # matched by the *.html glob above.
@@ -135,7 +137,7 @@ def build_public_site():
     # part of the current expected output. Caught in practice: label_relevance.html
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in BASE.glob("*.js")} \
-        | {"stats.json", "stats_adjacent.json", "theme.css", "theme-light.css", "logo.svg"}
+        | {"stats.json", "stats_adjacent.json", "theme.css", "theme-light.css", "logo.svg", "og-image.png"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()
@@ -149,6 +151,8 @@ def build_public_site():
     for js_path in BASE.glob("*.js"):
         print(f"  {js_path.name}")
     print(f"  stats.json")
+    if abstracts_dst.exists():
+        print(f"  abstracts/ ({len(list(abstracts_dst.iterdir()))} shards)")
     print(f"  robots.txt (allow all)")
 
 

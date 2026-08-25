@@ -47,6 +47,16 @@ OUT_FILE = BASE / "data" / "stats.json"
 # papers"). Fetched lazily by index.html only when its AV-relevance filter
 # is switched away from the "AV relevant" default.
 ADJACENT_OUT_FILE = BASE / "data" / "stats_adjacent.json"
+# Abstracts are ~20MB of the ~70MB stats.json (raw), but only paper.html
+# ever reads one, one paper at a time -- every other page pays that weight
+# on every load for a field it never touches. Sharded into ABSTRACT_SHARD_COUNT
+# small files instead of one shared blob so paper.html fetches roughly
+# 1/64th of the abstract text, not all of it, to show a single paper's
+# abstract. paper.html picks the shard with the same djb2-hash-mod-N used
+# here (see shard_index below); the two must stay in sync by construction,
+# not by convention -- change one, change both.
+ABSTRACTS_DIR = BASE / "data" / "abstracts"
+ABSTRACT_SHARD_COUNT = 64
 SCHOLAR_PROFILES_FILE = BASE / "data" / "scholar_profiles.json"
 ORCIDS_FILE = BASE / "data" / "orcids.json"
 INSTITUTION_LOGOS_FILE = BASE / "data" / "institution_logos.json"
@@ -413,6 +423,19 @@ def _abstract_short_name(abstract):
         if abstract.count(c) >= 2:
             return c
     return None
+
+
+def shard_index(title, num_shards=ABSTRACT_SHARD_COUNT):
+    """djb2 string hash mod num_shards -- picks which abstracts/shard-NN.json
+    a paper's abstract lives in. paper.html re-implements this exact
+    algorithm in JS to compute the same shard client-side from a title
+    alone, with no index file needed. Only stable for BMP characters
+    (ord() vs JS's charCodeAt() diverge above U+FFFF), which every real
+    paper title in this corpus is well within."""
+    h = 5381
+    for ch in title:
+        h = ((h * 33) + ord(ch)) & 0xFFFFFFFF
+    return h % num_shards
 
 
 def paper_short_name(title, authors, year, abstract=None):
@@ -1430,7 +1453,8 @@ def main():
         papers.append({
             "title": e.get("title"), "year": e.get("year"), "venue": e.get("venue"),
             "short_name": paper_short_name(e.get("title"), authors, e.get("year"), e.get("abstract")),
-            "abstract": e.get("abstract"),
+            # Not "abstract" -- see ABSTRACTS_DIR above, sharded out to its
+            # own files so every page but paper.html skips this weight.
             "citations_by_source": citations_by_source_for_client(e),
             "citations": citations,
             "citations_updated": e.get("citations_updated"),
@@ -2146,6 +2170,27 @@ def main():
     print(f"  {len(papers)} ranked papers, {len(author_citations)} authors, "
           f"{len(inst_citations)} institutions, {len(country_citations)} countries")
     print(f"  papers_with_author_detail={n_with_author_detail} verified={n_verified} excluded_mismatch={n_excluded}")
+
+    # Sharded abstracts -- see ABSTRACTS_DIR's comment above. The shard set
+    # is fixed (always exactly ABSTRACT_SHARD_COUNT files, fixed names) and
+    # every shard is fully overwritten below, so there's no stale-file risk
+    # from a paper that's since been dropped/retitled -- no need to rmtree
+    # the directory first. That's not just tidiness: an rmtree here hit a
+    # real OneDrive directory-lock PermissionError in practice (this repo
+    # lives in a synced OneDrive folder), so avoiding it outright is safer
+    # than a retry loop.
+    ABSTRACTS_DIR.mkdir(parents=True, exist_ok=True)
+    shards = [{} for _ in range(ABSTRACT_SHARD_COUNT)]
+    n_abstracts = 0
+    for e in entries:
+        title, abstract = e.get("title"), e.get("abstract")
+        if title and abstract:
+            shards[shard_index(title)][title] = abstract
+            n_abstracts += 1
+    for i, shard in enumerate(shards):
+        shard_path = ABSTRACTS_DIR / f"shard-{i:02d}.json"
+        shard_path.write_text(json.dumps(shard, ensure_ascii=False), encoding="utf-8", newline="\n")
+    print(f"Wrote {ABSTRACTS_DIR}: {n_abstracts} abstracts across {ABSTRACT_SHARD_COUNT} shards")
 
     # Separate, lazily-fetched file for adjacent (not core-AV-relevant)
     # papers -- see ADJACENT_OUT_FILE's own comment for why this isn't part
