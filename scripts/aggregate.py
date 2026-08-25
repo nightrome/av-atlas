@@ -235,7 +235,14 @@ def normalize_venue(v):
 # author affiliated with InternetLab comes back with countries ["BR", "CN"],
 # where only CN is real. Documented in Methodology; corrected here rather
 # than left for readers to puzzle over ("why is Brazil #1?").
-COUNTRY_MISLABELS = {("InternetLab", "BR")}
+COUNTRY_MISLABELS = {
+    ("InternetLab", "BR"),
+    # Same OpenAlex mis-link as the Nutrasource->Motional institution alias
+    # above -- the wrong "CA" (Canada) country code came along with the
+    # wrong institution name, keyed on the raw pre-alias name since that's
+    # what's actually stored in a.get("affiliations") at lookup time.
+    ("Nutrasource", "CA"),
+}
 
 
 # OpenAlex occasionally returns a bare surname instead of a full name for an
@@ -282,6 +289,31 @@ KNOWN_NAME_FIXES = {
     "J. Zollner": "Marius Zöllner",
     "J. Zoellner": "Marius Zöllner",
     "J. Marius Zoellner": "Marius Zöllner",
+    # Mojibake: a straight ASCII apostrophe standing in for í, same class of
+    # already-lossy-upstream-decode issue as the Zöllner entry above (the
+    # correctly-accented spelling is confirmed from this same person's other
+    # papers' authors_detail).
+    "Santiago Montiel-Mar'in": "Santiago Montiel-Marín",
+    # User-requested: consolidate every spelling of this one person found
+    # across the corpus into the fully-written-out form (per the site's
+    # general preference for full names over abbreviations) -- the
+    # abbreviated "Julian F. P. Kooij" is far more common in the raw data
+    # (39 papers) than the fully spelled-out form (4 papers), but the full
+    # form is what should be canonical, not the more common one.
+    "Julian F. P. Kooij": "Julian Francisco Pieter Kooij",
+    "Julian Kooij": "Julian Francisco Pieter Kooij",
+    # User-requested: merge every Gavrila spelling into the canonical form
+    # already used on the large majority of his papers. Deliberately keyed
+    # on the exact abbreviated/bare forms only, not a surname-only match --
+    # "Gavrila" alone is ambiguous key material that could collide with
+    # future data, so only the specific confirmed variants are listed.
+    "D. Gavrila": "Dariu M. Gavrila",
+    "Dariu Gavrila": "Dariu M. Gavrila",
+    # "Lastname, Firstname" raw format, broken by a naive comma-split
+    # upstream into two separate name-list entries ("Gavrila" and "Dariu"/
+    # "Dariu M.") -- caught here as a targeted fix for the two confirmed
+    # papers with this exact formatting, not a general comma-order fix.
+    "Gavrila": "Dariu M. Gavrila",
 }
 
 # PDF/font text extraction occasionally renders a hyphenated name's hyphen
@@ -677,6 +709,22 @@ INSTITUTION_ALIASES = {
     "nuTonomy: an APTIV company": "Motional",
     "nuTonomy: an Aptiv Company": "Motional",
     "Aptiv": "Motional",
+    "Aptiv (Ireland)": "Motional",
+    # User-flagged: OpenAlex mis-linked "nuTonomy" to an unrelated Canadian
+    # nutraceutical-research company of a similar-sounding name on at least
+    # the CoverNet paper -- same class of error as InternetLab/Brazil below
+    # (see COUNTRY_MISLABELS), just on the institution-name side instead of
+    # the country-code side.
+    "Nutrasource": "Motional",
+    # User-requested: every KIT spelling variant found in the raw data
+    # (parenthetical abbreviation, hyphenated "KIT -", bare "KIT" prefix)
+    # collapsed to one canonical name. Leaked-footnote-sentence variants
+    # ("Authors are with the Karlsruhe Institute of Technology", "Eric Sax
+    # is with...") are handled by the corresponding-author/footnote strip in
+    # normalize_institution() instead, not listed here individually.
+    "Karlsruhe Institute of Technology (KIT)": "Karlsruhe Institute of Technology",
+    "KIT Karlsruhe Institute of Technology": "Karlsruhe Institute of Technology",
+    "KIT - Karlsruhe Institute of Technology": "Karlsruhe Institute of Technology",
     "The Chinese University of Hong Kong (Shenzhen)": "The Chinese University of Hong Kong",
     "Chinese University of Hong Kong": "The Chinese University of Hong Kong",
     "Shanghai Jiaotong": "Shanghai Jiao Tong University",
@@ -775,6 +823,20 @@ LATEX_SPACING_SUFFIX_RE = re.compile(r"\s*\[-?(\d+(\.\d+)?|\.\d+)(mm|cm|pt|ex|in
 # codepoints from a plain "*" and show up from the same LaTeX footnote
 # convention, just a different symbol/font choice.
 FOOTNOTE_MARKER_RE = re.compile(r"^[†‡*§¶✉⋆∗]+\s*")
+# A "Corresponding author(s)" footnote, or a raw LaTeX \footnotetext/\dagger
+# command, or the U+FFFD replacement character an already-lossy upstream
+# decode leaves behind -- glued onto the END of a real institution name with
+# no separator ("Tsinghua University Corresponding author",
+# "NVIDIA ResearchCorresponding authors:", "Nankai University. �\dagger:
+# Corresponding authors: Diange Yang"). Confirmed on real data as a
+# systemic pattern (225+ authors_detail entries), not a one-off. No leading
+# \b -- the contamination is sometimes glued directly onto the institution
+# name with no space ("ResearchCorresponding"), so a word-boundary
+# requirement would miss exactly the cases that most need it.
+TRAILING_FOOTNOTE_ARTIFACT_RE = re.compile(r"(?:correspond(?:ing|ence)|�|\\dagger\b|\d*footnotetext\b).*", re.I | re.S)
+# Minimum length of what's left after stripping the artifact above for the
+# strip to actually be applied -- see strip_trailing_footnote_junk().
+MIN_STRIPPED_INSTITUTION_LENGTH = 10
 
 # A LaTeX \NEXTAFF affiliation-macro name leaking through unrendered (e.g.
 # "\NEXTAFFStanford University") -- the real institution name follows
@@ -942,11 +1004,29 @@ def is_concatenated_multi_institution(name):
     return len(DOUBLE_UNIVERSITY_RE.findall(name)) >= 2
 
 
+def strip_trailing_footnote_junk(name):
+    """Removes a "Corresponding author"/\\dagger/� footnote glued onto
+    the end of a real institution name -- but only when what's left looks
+    substantial enough to plausibly BE one (see
+    MIN_STRIPPED_INSTITUTION_LENGTH). Below that length, returns `name`
+    UNCHANGED rather than the short leftover fragment -- "Indicates
+    corresponding author" must still reach is_valid_institution() with the
+    word "correspond" intact so CREDIT_LINE_RE there can reject the whole
+    thing, not arrive as a bare "Indicates" that no longer matches anything
+    and would otherwise slip through as a fake institution."""
+    m = TRAILING_FOOTNOTE_ARTIFACT_RE.search(name)
+    if not m:
+        return name
+    prefix = name[:m.start()].strip().rstrip(".,;:").strip()
+    return prefix if len(prefix) >= MIN_STRIPPED_INSTITUTION_LENGTH else name
+
+
 def normalize_institution(name):
     name = html.unescape((name or "").strip()).strip().rstrip(".").strip()
     name = fix_mojibake_diacritics(name)
     name = TRAILING_COUNTRY_RE.sub("", name).strip()
     name = FOOTNOTE_MARKER_RE.sub("", name).strip()
+    name = strip_trailing_footnote_junk(name).strip()
     name = NEXTAFF_PREFIX_RE.sub("", name).strip()
     name = LATEX_SPACING_PREFIX_RE.sub("", name).strip()
     name = LATEX_SPACING_SUFFIX_RE.sub("", name).strip()

@@ -105,6 +105,16 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2>Papers</h2>
+    <div class="limit-row">
+      Show
+      <select id="papers-limit">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50" selected>50</option>
+        <option value="100">100</option>
+        <option value="all">All</option>
+      </select>
+    </div>
     <div id="export-container"></div>
   </div>
   <table><thead><tr><th>Title</th><th>Year</th><th>Venue</th><th>Category</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th></tr></thead>
@@ -274,14 +284,16 @@ function render(stats) {
 
   const grid = document.getElementById('stat-grid');
   grid.appendChild(stat(papers.length, 'AV papers in corpus'));
-  grid.appendChild(stat(totalCitations, 'Total citations'));
-  grid.appendChild(stat(avg == null ? '—' : avg, 'Citations / paper', { decimals: 1 }));
   // Not itself an AV paper count -- computed server-side (aggregate.py) from
   // the full corpus, not from all_papers (core-only) here, since
   // stats_adjacent.json deliberately carries no author field to search
   // client-side (see non_av_paper_counts' own comment in aggregate.py).
+  // Placed right after AV papers (user-requested) so the two paper-count
+  // tiles sit together, ahead of the two citation tiles.
   const nonAvCount = (stats.non_av_paper_counts || {})[name] || 0;
-  grid.appendChild(stat(nonAvCount, 'Other papers (not AV-relevant)'));
+  grid.appendChild(stat(nonAvCount, 'Non-AV papers'));
+  grid.appendChild(stat(totalCitations, 'Total citations'));
+  grid.appendChild(stat(avg == null ? '—' : avg, 'Citations / paper', { decimals: 1 }));
 
   const yearAgg = {};
   papers.forEach(p => {
@@ -404,13 +416,27 @@ function render(stats) {
       titleLink(p), p.year || '', p.venue || '', categoryLabel(p.category) || '', p.citations ?? '',
     ])));
   }
-  makeSortableSafe(document.getElementById('papers-body').closest('table'), sortedPapers, [
-    { accessor: p => p.title, numeric: false },
-    { accessor: p => p.year, numeric: true },
-    { accessor: p => p.venue, numeric: false },
-    { accessor: p => p.category, numeric: false },
-    { accessor: p => p.citations, numeric: true },
-  ], renderBody);
+  function renderPapers() {
+    const limitSel = document.getElementById('papers-limit');
+    const shown = limitSel.value === 'all' ? sortedPapers : sortedPapers.slice(0, parseInt(limitSel.value, 10) || 50);
+    makeSortableSafe(document.getElementById('papers-body').closest('table'), shown, [
+      { accessor: p => p.title, numeric: false },
+      { accessor: p => p.year, numeric: true },
+      { accessor: p => p.venue, numeric: false },
+      { accessor: p => p.category, numeric: false },
+      { accessor: p => p.citations, numeric: true },
+    ], renderBody);
+  }
+  const papersLimitSel = document.getElementById('papers-limit');
+  try {
+    const stored = sessionStorage.getItem('author-papers-limit');
+    if (stored && [...papersLimitSel.options].some(o => o.value === stored)) papersLimitSel.value = stored;
+  } catch (e) { /* ignore */ }
+  papersLimitSel.addEventListener('change', () => {
+    try { sessionStorage.setItem('author-papers-limit', papersLimitSel.value); } catch (e) { /* ignore */ }
+    renderPapers();
+  });
+  renderPapers();
 
   const exportContainer = document.getElementById('export-container');
   exportContainer.innerHTML = '';

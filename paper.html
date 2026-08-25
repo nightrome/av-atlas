@@ -273,7 +273,18 @@ function render(stats) {
   // so the two numbers don't read as contradictory.
   const grid = document.getElementById('stat-grid');
   grid.appendChild(stat(paper.citations ?? '—', 'Cited by (external source)'));
-  grid.appendChild(stat((paper.citing_papers || []).length, 'Cited by (within this corpus)'));
+  // A confirmed-zero-citers paper and a paper whose citing reference lists
+  // just haven't been scanned yet BOTH show 0 here -- this site's own
+  // citation-graph coverage is partial (see About's crawler-status table),
+  // so 0 means "no citers found so far", not "confirmed uncited". A tooltip
+  // rather than a separate "—" state, since there's no reliable per-paper
+  // signal for "definitely fully scanned" to switch on (user-requested:
+  // state missing citation data clearly, not indistinguishable from zero).
+  const withinCorpusTile = stat((paper.citing_papers || []).length, 'Cited by (within this corpus)');
+  withinCorpusTile.title = 'How many papers in this corpus have been found citing this one so far. This '
+    + "site's own citation-graph coverage is partial, so this number can only grow over time -- it is not "
+    + 'a confirmed final count, even when it reads 0.';
+  grid.appendChild(withinCorpusTile);
   grid.appendChild(stat(paper.authors ? paper.authors.length : '—', 'Authors'));
   if (paper.cd_index != null) {
     // CD index (Funk & Owen-Smith 2017): +1 = every in-corpus citer engages

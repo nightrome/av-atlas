@@ -123,6 +123,26 @@ class TestNormalizeInstitution(unittest.TestCase):
     def test_leaves_an_unrecognized_name_unchanged(self):
         self.assertEqual(ag.normalize_institution("University of Oxford"), "University of Oxford")
 
+    def test_strips_corresponding_author_footnote_glued_to_a_real_institution(self):
+        # User-flagged, confirmed as a systemic pattern (225+ entries): a
+        # "Corresponding author" footnote glued onto a real institution
+        # name with no separator, sometimes with no space at all.
+        self.assertEqual(ag.normalize_institution("Tsinghua University Corresponding author"), "Tsinghua University")
+        self.assertEqual(ag.normalize_institution("NVIDIA ResearchCorresponding authors:"), "NVIDIA Research")
+
+    def test_strips_dagger_and_replacement_char_footnote_junk(self):
+        self.assertEqual(
+            ag.normalize_institution("Nankai University. �\\dagger: Corresponding authors: Diange Yang"),
+            "Nankai University")
+
+    def test_does_not_strip_when_nothing_substantial_remains(self):
+        # "Indicates" alone (9 chars, below MIN_STRIPPED_INSTITUTION_LENGTH)
+        # isn't a real institution -- must stay unchanged so
+        # is_valid_institution()'s existing CREDIT_LINE_RE check still sees
+        # "corresponding" and rejects the whole string, rather than a
+        # stripped-down word that no longer matches anything.
+        self.assertFalse(ag.is_valid_institution(ag.normalize_institution("Indicates corresponding author")))
+
     def test_author_affiliations_dedupes_after_normalization(self):
         # Same author crediting two variant spellings of the same real
         # institution should count as one, not two.
