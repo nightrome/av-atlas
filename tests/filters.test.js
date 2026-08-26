@@ -169,6 +169,26 @@ test('computeSelfCitationStats: otherCitations subtracts self_citations back out
   assert.strictEqual(otherCitations, 11, '(10 - 4) + 5, not 10 + 5 -- citations already contains the self-citations');
 });
 
+test('computeAuthorPaperStats: sums papers and citations per author across the corpus', () => {
+  const { computeAuthorPaperStats } = loadFilters();
+  const allPapers = [
+    { authors: ['Alice', 'Bob'], citations: 10 },
+    { authors: ['Alice'], citations: 5 },
+    { authors: ['Alice'], citations: null }, // no citation data -- must not count as 0
+  ];
+  const result = computeAuthorPaperStats(allPapers);
+  // Individual property checks, not deepStrictEqual on the whole object --
+  // computeAuthorPaperStats runs inside loadFilters()'s vm sandbox, so its
+  // return value's objects are a different realm's Object than a plain
+  // {...} literal written here, and Node's assert.deepStrictEqual treats
+  // that as unequal even with identical own properties.
+  assert.strictEqual(result.Alice.papers, 3);
+  assert.strictEqual(result.Alice.citations, 15);
+  assert.strictEqual(result.Bob.papers, 1);
+  assert.strictEqual(result.Bob.citations, 10);
+  assert.strictEqual(result.Carol, undefined, 'an author with no papers must not appear at all');
+});
+
 test('a paper crediting the same dimension value twice only counts once', () => {
   // e.g. two authors from the same institution on one paper -- the paper
   // must not be double-counted for that institution.

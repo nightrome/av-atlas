@@ -192,6 +192,59 @@ class TestNormalizeInstitution(unittest.TestCase):
             self.assertFalse(ag.is_valid_institution(ag.normalize_institution(bad)), bad)
         self.assertTrue(ag.is_valid_institution("Technology and Research (A*STAR)"))
 
+    def test_strips_leading_the_article(self):
+        # user-flagged: institution.html?name=the%20Netherlands -- a
+        # comma-split address fragment survived as its own fake institution
+        # since the bare-country-name check only ever matched the exact
+        # "Netherlands" from COUNTRY_NAMES, never the article-prefixed form.
+        self.assertEqual(ag.normalize_institution("the Netherlands"), "Netherlands")
+        self.assertFalse(ag.is_valid_institution(ag.normalize_institution("The Netherlands")))
+        # A real institution whose own formal name happens to start with
+        # "The" -- dropping the article yields the more common short form,
+        # not a wrong one.
+        self.assertEqual(ag.normalize_institution("The University of Edinburgh"), "University of Edinburgh")
+
+    def test_strips_leading_footnote_number_but_not_real_digit_prefixed_names(self):
+        # user-flagged real example: "3Intelligent Vehicles Lab", a
+        # superscript footnote reference ("³Intelligent Vehicles Lab")
+        # that lost its superscript formatting during PDF extraction.
+        self.assertEqual(ag.normalize_institution("3Intelligent Vehicles Lab"), "Intelligent Vehicles Lab")
+        self.assertEqual(ag.normalize_institution("2Bosch Corporate Research"), "Bosch Corporate Research")
+        # Real digit-prefixed names in this corpus that must NOT be mangled:
+        # a company brand ("3M"), an ordinary "3D ..." lab name, and TU
+        # Delft's own "3mE" faculty short code (caught in testing before this
+        # regex was tightened -- an earlier, looser version turned "3M" into
+        # the nonsensical "M").
+        self.assertEqual(ag.normalize_institution("3M"), "3M")
+        self.assertEqual(ag.normalize_institution("3D Optical Metrology Unit"), "3D Optical Metrology Unit")
+        self.assertEqual(ag.normalize_institution("3mE Delft University of Technology"),
+                          "3mE Delft University of Technology")
+
+    def test_rejects_obfuscated_email_address(self):
+        # "X at Y.tld" instead of "X@Y.tld" -- a common anti-spam convention
+        # in PDF-extracted author blocks. EMAIL_LABEL_RE only catches an
+        # explicit "email:"/"e-mail:" label, not this unlabeled form.
+        self.assertFalse(ag.is_valid_institution("l.ferranti at tudelft.nl"))
+
+    def test_rejects_funding_credit_line(self):
+        # user-flagged real example, glued onto the end of a genuine
+        # institution+email fragment with no separator.
+        self.assertFalse(ag.is_valid_institution(ag.normalize_institution(
+            "The Netherlands l.ferranti at tudelft.nl. Her work is supported by the NWO VENI grant (n. 18165).")))
+
+    def test_rejects_abbreviated_person_name(self):
+        # user-flagged real example: a neighboring author's name-with-initial
+        # leaking into this author's affiliation field via a footnote-block
+        # parsing error.
+        for bad in ("E. Eaton", "L. Ferranti"):
+            self.assertFalse(ag.is_valid_institution(bad), bad)
+
+    def test_rejects_bare_fragment_word_from_a_split_division_name(self):
+        # user-flagged real example: KTH's "Division of Robotics,
+        # Perception, and Learning (RPL)" comma-split into unrecognizable
+        # fragments, one of which ("Perception") matched no other pattern.
+        self.assertFalse(ag.is_valid_institution("Perception"))
+
     def test_real_confirmed_junk_institutions_end_to_end(self):
         # A batch of actual institution strings pulled from the live corpus
         # (institution.html?name=Singapore%20%E2%80%A0 was the specific
@@ -938,6 +991,23 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertNotIn("Waymo Person", google_names)
         self.assertIn("Google Person", google_names)
         self.assertNotIn("Google Person", waymo_names)
+
+    def test_author_countries_are_chronological_not_alphabetical(self):
+        # user-flagged real case: Holger Caesar showed "United States" as
+        # his country on a co-author's page even though his most recent
+        # institution (2023-2025) is in the Netherlands -- "United States"
+        # only won because it sorts after "Netherlands" alphabetically, and
+        # every page that reads author_detail[name].countries picks the
+        # LAST array entry expecting it to mean "most recent" (matching how
+        # `institutions` already behaves).
+        stats = self._run([
+            {"title": "Earlier US Paper", "year": 2020, "venue": "CVPR", "av_relevance": "core",
+             "authors_detail": [{"name": "Chrono Author", "affiliations": ["Motional"], "countries": ["US"]}]},
+            {"title": "Later NL Paper", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+             "authors_detail": [{"name": "Chrono Author", "affiliations": ["TU Delft"], "countries": ["NL"]}]},
+        ])
+        self.assertEqual(stats["author_detail"]["Chrono Author"]["countries"],
+                          ["United States", "Netherlands"])
 
     def test_dataset_with_two_introducing_papers_merges_citations(self):
         # Real case: KITTI's citable contribution splits across two papers

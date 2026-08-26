@@ -960,6 +960,21 @@
     return { selfCitations, otherCitations };
   };
 
+  // Total paper count and total citations for every author in the corpus,
+  // computed in one pass over all_papers -- shared so a "Citing authors"
+  // table (author.html, paper.html) can show each citing author's own
+  // overall standing (papers/citations columns, user-requested) without
+  // each page re-scanning all_papers once per citing author found.
+  window.computeAuthorPaperStats = function (allPapers) {
+    const stats = {};
+    (allPapers || []).forEach(p => (p.authors || []).forEach(a => {
+      const rec = stats[a] || (stats[a] = { papers: 0, citations: 0 });
+      rec.papers += 1;
+      if (p.citations != null) rec.citations += p.citations;
+    }));
+    return stats;
+  };
+
   // A small "Export CSV" button, styled to match the rest of the site's
   // controls, meant to sit in a panel's title row next to its <h2>. Kept
   // here (not duplicated per page) so every table's export button looks

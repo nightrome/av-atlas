@@ -117,7 +117,10 @@
     </div>
   </div>
   <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Authors of other papers in this corpus that cite this author's work.</p>
-  <table><thead><tr><th>Author</th><th class="num">Citing instances</th><th>Country</th><th>Institution</th></tr></thead>
+  <table><thead><tr><th>Author</th><th class="num">Citing instances</th>
+  <th class="num" title="Total citations across this citing author's own papers in this corpus.">Citations</th>
+  <th class="num" title="Total papers by this citing author in this corpus.">Papers</th>
+  <th>Country</th><th>Institution</th></tr></thead>
   <tbody id="citing-authors-body"></tbody></table>
 </div>
 
@@ -450,17 +453,27 @@ function render(stats) {
       citingAuthorCounts[a] = (citingAuthorCounts[a] || 0) + 1;
     });
   }));
+  // Each citing author's own overall standing (total papers/citations in
+  // the corpus, user-requested) -- computed once here, not per-row, since
+  // it's the same underlying scan of all_papers regardless of how many
+  // citing authors there are.
+  const authorPaperStats = computeAuthorPaperStats(stats.all_papers);
   const citingAuthors = Object.entries(citingAuthorCounts)
     .map(([coName, count]) => {
       const coDetail = authorDetail[coName] || {};
       const insts = coDetail.institutions || [];
       const lastInst = insts.length ? insts[insts.length - 1] : null;
       const countries = coDetail.countries || [];
+      const paperStats = authorPaperStats[coName] || {};
       return {
         name: coName, count,
+        totalPapers: paperStats.papers || 0,
+        totalCitations: paperStats.citations || 0,
         institution: lastInst ? lastInst.name : null,
         institutionFirstYear: lastInst ? lastInst.first_year : null,
         institutionLastYear: lastInst ? lastInst.last_year : null,
+        // countries is chronological (earliest first, see aggregate.py) --
+        // the last entry is genuinely this author's most recent country.
         country: countries.length ? countries[countries.length - 1] : null,
       };
     })
@@ -483,12 +496,12 @@ function render(stats) {
         instLink.textContent = c.institution + yr;
         instCell = instLink;
       }
-      citingAuthorsBody.appendChild(row([link, c.count, c.country || '—', instCell]));
+      citingAuthorsBody.appendChild(row([link, c.count, c.totalCitations, c.totalPapers, c.country || '—', instCell]));
     });
     if (!rows.length) {
       const tr = document.createElement('tr');
       const td = document.createElement('td');
-      td.colSpan = 4;
+      td.colSpan = 6;
       td.style.color = 'var(--muted)';
       td.textContent = 'No citing authors found yet.';
       tr.appendChild(td);
@@ -502,6 +515,8 @@ function render(stats) {
     makeSortableSafe(citingAuthorsBody.closest('table'), shown, [
       { accessor: c => c.name, numeric: false },
       { accessor: c => c.count, numeric: true },
+      { accessor: c => c.totalCitations, numeric: true },
+      { accessor: c => c.totalPapers, numeric: true },
       { accessor: c => c.country || '', numeric: false },
       { accessor: c => c.institution || '', numeric: false },
     ], renderCitingAuthorsBody);

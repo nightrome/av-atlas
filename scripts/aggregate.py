@@ -644,7 +644,7 @@ INVALID_INSTITUTIONS = {
     "Cary", "Brookline", "Minneapolis", "Sunnyvale", "Mountain View", "Santa Clara",
     "San Antonio", "San Diego", "San Francisco", "El Paso", "Dearborn", "Tacoma",
     "Parkville", "Pasadena", "Charlottesville", "Wuhan", "Ningbo", "Hillsboro",
-    "Kronach", "Renningen", "Sindelfingen",
+    "Kronach", "Renningen", "Sindelfingen", "Delft",
     # A generic lab/institute name with a qualifier BEFORE the generic noun
     # (e.g. "Robotics Institute", "Multimedia Laboratory") -- SUBUNIT_PREFIX_RE
     # above only catches the noun-first form ("Institute for...", "Laboratory
@@ -664,6 +664,14 @@ INVALID_INSTITUTIONS = {
     "Bunkyo-ku", "Jacom Building",
     "Three Pillars improving Vision Foundation Model Distillation for Lidar",
     "Peking University MPI Tübingen TTI Chicago",
+    # A bare fragment word left behind when "Division of Robotics,
+    # Perception, and Learning (RPL)" -- KTH's real division name -- gets
+    # comma-split into pieces (user-flagged, real example: Qingwen Zhang's
+    # affiliations list). "and Learning (RPL)" is separately caught by
+    # LEADING_AND_RE; "Perception" alone matches no other pattern, since
+    # it's an ordinary English word with no institutional keyword to key a
+    # general regex off of.
+    "Perception",
 }
 
 
@@ -904,6 +912,56 @@ def fix_mojibake_diacritics(name):
     return name
 
 
+# A leading "the"/"The" article -- never part of a real institution's own
+# name in the sense that matters here (even for the handful of institutions
+# whose FORMAL name does start with "The", e.g. "The University of
+# Edinburgh", dropping it just yields the more common short form, not a
+# wrong one). Confirmed real bug: "the Netherlands"/"The Netherlands"
+# (comma-split off a full address string) survived as its own fake
+# institution because the bare-country-name check further down only ever
+# matched the exact "Netherlands" from COUNTRY_NAMES, never the
+# article-prefixed form.
+LEADING_ARTICLE_RE = re.compile(r"^the\s+", re.I)
+
+# A footnote/affiliation-marker NUMBER glued directly onto the front with no
+# space ("3Intelligent Vehicles Lab", from a superscript footnote reference
+# like "³Intelligent Vehicles Lab" that lost its superscript formatting) --
+# same cause and shape as FOOTNOTE_MARKER_RE's symbol markers above, just a
+# digit instead of a dagger/asterisk/etc. Requires the digit to be followed
+# by a capital letter and then at least 2 lowercase letters -- i.e. the
+# start of an ordinary word ("Intelligent...") -- not just any capital.
+# Deliberately narrow: this corpus has real institution names/abbreviations
+# that legitimately start with a digit ("3D Optical Metrology Unit", TU
+# Delft's own "3mE" faculty short code, and real companies like "3M" or
+# "4Paradigm" elsewhere) -- a plain "digit then capital letter" rule would
+# have mangled "3D..." to "D..." and "3mE" to "mE...", and did mangle "3M"
+# to "M" before this got tightened (caught in testing, not live).
+LEADING_FOOTNOTE_NUMBER_RE = re.compile(r"^\d+(?=[A-Z][a-z]{2,})")
+
+# An obfuscated email address ("l.ferranti at tudelft.nl" instead of
+# "l.ferranti@tudelft.nl", a common anti-spam convention in PDF-extracted
+# author blocks) -- EMAIL_LABEL_RE above only catches an explicit
+# "email:"/"e-mail:" label, not this "X at Y.tld" form with no label at all.
+OBFUSCATED_EMAIL_RE = re.compile(
+    r"\b[\w.+-]+\s+at\s+[\w.-]+\.(nl|com|edu|org|net|de|uk|co\.uk|fr|se|dk|no|fi|ch|it|es|jp|cn|kr|ca|au|io)\b",
+    re.I)
+
+# A funding/acknowledgment credit line ("Her work is supported by the NWO
+# VENI grant (n. 18165)"), the same class of footnote content as
+# CREDIT_LINE_RE's "equal contributions"/"corresponding author" but for
+# funding acknowledgments specifically -- confirmed real: glued onto the end
+# of a genuine institution+email fragment with no separator that survived to
+# be split off as (part of) its own "institution" entry.
+FUNDING_CREDIT_RE = re.compile(r"\b(is |was )?supported by\b|\bfunded by\b|\bgrant\s*\(?\s*(no\.|n\.|#)", re.I)
+
+# An abbreviated person name used as an "institution" ("E. Eaton", "L.
+# Ferranti") -- confirmed real: a neighboring author's name-with-initial
+# leaking into this author's affiliation field via a footnote-block parsing
+# error. No real institution is named in this exact "single initial + period
+# + one capitalized surname-like word" shape.
+PERSON_INITIAL_NAME_RE = re.compile(r"^[A-Z]\.\s?[A-Z][a-z'\-]+$")
+
+
 # A legal-entity suffix (LLC, Inc, GmbH) trailing an otherwise-real company
 # name -- user-flagged, and the branding a company actually goes by never
 # includes it (nobody writes "I work at Waymo LLC" in conversation), so it
@@ -1095,6 +1153,8 @@ def normalize_institution(name):
     # separate pass. Re-strip a trailing period afterward ("Nankai
     # University. †" -> "Nankai University." -> "Nankai University").
     name = TRAILING_FOOTNOTE_MARKER_RE.sub("", name).strip().rstrip(".").strip()
+    name = LEADING_ARTICLE_RE.sub("", name).strip()
+    name = LEADING_FOOTNOTE_NUMBER_RE.sub("", name).strip()
     name = NEXTAFF_PREFIX_RE.sub("", name).strip()
     name = LATEX_SPACING_PREFIX_RE.sub("", name).strip()
     name = LATEX_SPACING_SUFFIX_RE.sub("", name).strip()
@@ -1197,6 +1257,12 @@ def is_valid_institution(name):
     if BARE_DOMAIN_RE.search(name):
         return False
     if EMAIL_LABEL_RE.search(name):
+        return False
+    if OBFUSCATED_EMAIL_RE.search(name):
+        return False
+    if FUNDING_CREDIT_RE.search(name):
+        return False
+    if PERSON_INITIAL_NAME_RE.match(name):
         return False
     if WORK_DONE_FOOTNOTE_RE.match(name):
         return False
@@ -2229,7 +2295,15 @@ def main():
     # of an unordered alphabetical list that can't distinguish "changed
     # employer" from "two simultaneous appointments."
     author_institutions = defaultdict(dict)
-    author_countries = defaultdict(set)
+    # dict, not set -- needs first_year/last_year tracked per country the
+    # same way author_institutions tracks it per institution (see below),
+    # so "which country is this author's CURRENT one" can be answered by
+    # chronological order instead of alphabetical order. Confirmed real bug
+    # (user-flagged): Holger Caesar shows "United States" as his country on
+    # a co-author's page even though his latest (2023-2025) institution is
+    # TU Delft/Netherlands -- "United States" only won because it sorts
+    # after "Netherlands" alphabetically, not because it's more recent.
+    author_countries = defaultdict(dict)
     inst_citations = defaultdict(int)
     inst_papers = defaultdict(int)
     # institution -> author name -> {"papers", "citations"} -- ONLY from that
@@ -2288,7 +2362,11 @@ def main():
                         else max(inst_authors_entry["last_year"], year)
             codes = author_country_codes(a)
             for code in codes:
-                author_countries[name].add(COUNTRY_NAMES.get(code, code))
+                cname = COUNTRY_NAMES.get(code, code)
+                rec = author_countries[name].setdefault(cname, {"first_year": year, "last_year": year})
+                if year is not None:
+                    rec["first_year"] = year if rec["first_year"] is None else min(rec["first_year"], year)
+                    rec["last_year"] = year if rec["last_year"] is None else max(rec["last_year"], year)
             paper_institutions.update(own_affs)
             paper_countries.update(codes)
         # Same institution-name fallback as paper_countries_institutions()
@@ -2397,7 +2475,17 @@ def main():
             for inst, rec in sorted(author_institutions[name].items(),
                                      key=lambda kv: (kv[1]["first_year"] is None, kv[1]["first_year"]))
         ]
-        countries = sorted(author_countries[name])
+        # Chronological, not alphabetical, same reasoning and shape as
+        # institutions above -- countries stays a plain array of names (not
+        # {name, first_year, last_year} objects like institutions) since
+        # several pages already consume it that way (e.g. `.join(' · ')`
+        # for the tags row); only the ORDER changes here, from alphabetical
+        # to earliest-first, so "the last entry" now actually means the most
+        # recent country instead of whichever name happens to sort last.
+        countries = [
+            cname for cname, rec in sorted(author_countries[name].items(),
+                                            key=lambda kv: (kv[1]["first_year"] is None, kv[1]["first_year"]))
+        ]
         orcid = orcids.get(normalize_name_letters(name))
         if not institutions and not countries and not profile and not orcid:
             continue

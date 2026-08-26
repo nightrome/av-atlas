@@ -60,6 +60,11 @@ AV_RELEVANCE_TERMS = [
     "driving dataset", "v2x", "vehicle-to-vehicle", "vehicle-to-infrastructure",
     "roadside perception", "cooperative perception", "lane detection", "lane change",
     "nuscenes", "kitti", "waymo open dataset", "argoverse", "bdd100k", "carla simulator",
+    # User-flagged real miss: "A VT-HMM-Based Framework for Countdown Timer
+    # Traffic Light State Estimation" -- unambiguously about real-world
+    # driving infrastructure (unlike generic CV terms, a paper about traffic
+    # lights/signs is essentially never about anything else).
+    "traffic light", "traffic sign",
 ]
 
 # Word-boundary matched, not plain substring -- caught in practice once

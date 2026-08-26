@@ -67,6 +67,21 @@ class TestClassifyRelevance(unittest.TestCase):
     def test_missing_abstract_does_not_crash(self):
         self.assertEqual(cl.classify_relevance("Some Paper", None), "adjacent")
 
+    def test_traffic_light_and_sign_count_as_av_relevant(self):
+        # user-flagged real miss: "A VT-HMM-Based Framework for Countdown
+        # Timer Traffic Light State Estimation" had no abstract and no other
+        # AV-specific phrase in its title, so it fell through to "adjacent"
+        # despite being unambiguously about real-world driving
+        # infrastructure.
+        self.assertEqual(
+            cl.classify_relevance("Countdown Timer Traffic Light State Estimation", None),
+            "core",
+        )
+        self.assertEqual(
+            cl.classify_relevance("Robust Traffic Sign Recognition in Adverse Weather", None),
+            "core",
+        )
+
     def test_dataset_name_alone_counts_as_av_relevant(self):
         self.assertEqual(
             cl.classify_relevance("A New Benchmark", "We evaluate on nuScenes and compare to prior work."),
