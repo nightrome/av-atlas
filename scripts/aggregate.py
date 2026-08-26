@@ -1453,17 +1453,33 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
     # superseding its own references (disruptive) or as extending them
     # alongside those references (consolidating)? See compute_disruption_
     # index()'s own docstring for the method (Funk & Owen-Smith 2017) and
-    # the min-informative-citers guard -- p["cd_index"] is already set on
-    # `papers` by main() before this function runs, only for papers with
-    # enough scored citers to be meaningful.
+    # the min-informative-citers guard -- p["cd_index"]/p["cd_n_citers"] are
+    # already set on `papers` by main() before this function runs, only for
+    # papers with enough scored citers to be meaningful.
     scored = [p for p in papers if p.get("cd_index") is not None]
     if scored:
         def disruption_entry(p):
             return {
                 "title": p["title"], "short_title": short_paper_name(p),
                 "year": p.get("year"), "venue": p.get("venue"), "cd_index": p["cd_index"],
+                "n_citers": p.get("cd_n_citers"),
             }
-        ranked = sorted(scored, key=lambda p: p["cd_index"], reverse=True)
+        # cd_index is only ever one of a handful of exact fractions (n
+        # citers -> n+1 possible scores -- 3 citers can only ever land on
+        # -1, -0.33, 0.33, or 1), so a huge share of the corpus is tied at
+        # the exact extremes: confirmed on real data, 2,197 papers tied at
+        # exactly +1.0 and 1,669 at exactly -1.0 out of 5,249 scored papers
+        # (user-flagged: "probably thousands of works are equally
+        # irrelevant"). Sorting on cd_index alone left the tie order an
+        # accident of corpus insertion order -- effectively a random pick
+        # from a ~2,000-way tie, not a real "most disruptive" ranking.
+        # n_citers as the tiebreak fixes this: among papers that land on the
+        # same score, the one with MORE citers unanimously agreeing is
+        # stronger evidence, not an arbitrary pick -- confirmed this surfaces
+        # actual landmark papers (KITTI, CARLA, BEVFormer) for "most
+        # disruptive" instead of obscure ones nobody's heard of.
+        most_disruptive = sorted(scored, key=lambda p: (-p["cd_index"], -(p.get("cd_n_citers") or 0)))
+        most_consolidating = sorted(scored, key=lambda p: (p["cd_index"], -(p.get("cd_n_citers") or 0)))
         # Sends enough rows for the page's "Show" dropdown to slice from
         # client-side (same pattern as top_authors/top_institutions) rather
         # than being hardcoded to exactly 5 with no way to see more.
@@ -1471,8 +1487,8 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
         insights["disruption_index"] = {
             "scored_papers": len(scored),
             "mean_cd_index": round(sum(p["cd_index"] for p in scored) / len(scored), 3),
-            "most_disruptive": [disruption_entry(p) for p in ranked[:DISRUPTION_LIST_CAP]],
-            "most_consolidating": [disruption_entry(p) for p in ranked[-DISRUPTION_LIST_CAP:][::-1]],
+            "most_disruptive": [disruption_entry(p) for p in most_disruptive[:DISRUPTION_LIST_CAP]],
+            "most_consolidating": [disruption_entry(p) for p in most_consolidating[:DISRUPTION_LIST_CAP]],
         }
 
     # -- Open-source signal: does releasing code correlate with citation
@@ -1934,6 +1950,11 @@ def main():
         d = disruption_by_key.get(key)
         if d:
             p["cd_index"] = d["cd_index"]
+            # How many citers the score is averaged over -- needed to break
+            # ties among papers that land on the exact same cd_index (see
+            # compute_insights' disruption_index block for why that's the
+            # common case, not an edge case).
+            p["cd_n_citers"] = d["n_citers"]
         # Early-citation velocity: in-corpus citations received within
         # EARLY_CITATION_WINDOW_YEARS of publication -- a leading indicator,
         # tested against eventual standing rather than assumed. Only set

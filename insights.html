@@ -228,7 +228,10 @@
     <em>superseded</em> its own references (disruptive), or does it cite the paper alongside those
     same references, as one more contribution to an ongoing line of work (consolidating)? Computed
     from papers with enough in-corpus citers for the score to mean something; most of the corpus
-    isn't cited enough yet to qualify (<span id="disruption-scored-note"></span>).
+    isn't cited enough yet to qualify (<span id="disruption-scored-note"></span>). The score itself
+    only takes a handful of exact values, so many papers land on the same one &mdash; ranked below by
+    that score first, then by citer count, so the lists lead with the most robustly-agreed-on cases
+    rather than an arbitrary pick among ties.
   </p>
   <div class="fact-grid" id="disruption-facts"></div>
   <div class="limit-row" style="margin-top:16px;">
@@ -741,6 +744,13 @@ function render(ins, stats) {
       const delta = document.createElement('span');
       delta.className = 'delta ' + (up ? 'up' : 'down');
       delta.textContent = (item.cd_index > 0 ? '+' : '') + item.cd_index.toFixed(2);
+      // cd_index only takes a handful of exact fractions, so many papers
+      // tie at the same score (ties are broken server-side by citer count,
+      // see aggregate.py) -- showing the count here is what actually
+      // explains the ranking to a reader, not just the tied score itself.
+      if (item.n_citers) {
+        delta.title = `Based on ${item.n_citers.toLocaleString()} citer${item.n_citers === 1 ? '' : 's'}`;
+      }
       li.appendChild(delta);
       list.appendChild(li);
     }

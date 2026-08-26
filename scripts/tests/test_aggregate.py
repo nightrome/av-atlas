@@ -1173,6 +1173,28 @@ class TestComputeInsights(unittest.TestCase):
         self.assertEqual(d["most_disruptive"][0]["title"], "Disruptive Paper")
         self.assertEqual(d["most_consolidating"][0]["title"], "Consolidating Paper")
 
+    def test_disruption_index_ties_broken_by_citer_count(self):
+        # user-flagged: cd_index only takes a handful of exact fractions, so
+        # huge swaths of the corpus tie at the same score -- the paper with
+        # MORE citers unanimously agreeing is the stronger, more meaningful
+        # pick among ties, not an arbitrary one.
+        papers = [
+            self._paper("Weak Signal Disruptive", 2020),
+            self._paper("Strong Signal Disruptive", 2020),
+            self._paper("Weak Signal Consolidating", 2020),
+            self._paper("Strong Signal Consolidating", 2020),
+        ]
+        papers[0]["cd_index"], papers[0]["cd_n_citers"] = 1.0, 3
+        papers[1]["cd_index"], papers[1]["cd_n_citers"] = 1.0, 50
+        papers[2]["cd_index"], papers[2]["cd_n_citers"] = -1.0, 3
+        papers[3]["cd_index"], papers[3]["cd_n_citers"] = -1.0, 50
+        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [])
+        d = insights["disruption_index"]
+        self.assertEqual(d["most_disruptive"][0]["title"], "Strong Signal Disruptive")
+        self.assertEqual(d["most_disruptive"][1]["title"], "Weak Signal Disruptive")
+        self.assertEqual(d["most_consolidating"][0]["title"], "Strong Signal Consolidating")
+        self.assertEqual(d["most_consolidating"][1]["title"], "Weak Signal Consolidating")
+
     def test_disruption_index_absent_when_no_papers_scored(self):
         papers = [self._paper("Unscored Paper", 2020)]
         insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [])
