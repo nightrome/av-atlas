@@ -284,7 +284,7 @@ function render() {
   let authors = query
     ? aggregateByDimension(papers, p => p.authors, { minPapers: 0, minCitedPapers: 0 })
     : aggregateByDimension(papers, p => p.authors, { minPapers: minPapersThreshold - 1, minCitedPapers: 3 });
-  if (query) authors = authors.filter(a => a.name.toLowerCase().includes(query));
+  if (query) authors = authors.filter(a => matchesSearchQuery(a.name, query));
 
   // Self-citation %: how much of an author's own incoming in-corpus
   // citations come from their own later papers vs. an independent one.

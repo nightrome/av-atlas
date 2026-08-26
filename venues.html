@@ -203,7 +203,7 @@ function render() {
   });
 
   const query = currentQuery.trim().toLowerCase();
-  let shownRows0 = query ? rows.filter(r => r.name.toLowerCase().includes(query)) : rows;
+  let shownRows0 = query ? rows.filter(r => matchesSearchQuery(r.name, query)) : rows;
 
   const metric = getMetric('avg');
   const sorters = {

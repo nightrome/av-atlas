@@ -126,6 +126,11 @@
     <h2>Papers</h2>
     <div class="limit-row">
       Show
+      <select id="papers-relevance">
+        <option value="core" selected>AV relevant</option>
+        <option value="adjacent">Not AV relevant</option>
+        <option value="both">Both</option>
+      </select>
       <select id="papers-limit">
         <option value="10">10</option>
         <option value="25">25</option>
@@ -512,7 +517,22 @@ function render(stats) {
   });
   renderCitingAuthors();
 
-  const sortedPapers = [...papers].sort((a, b) => (b.citations ?? -Infinity) - (a.citations ?? -Infinity));
+  // Not-AV-relevant papers aren't in stats.all_papers at all (see
+  // aggregate.py's ADJACENT_OUT_FILE comment) -- fetched lazily, only once
+  // the reader actually switches away from the default "AV relevant" view,
+  // same reasoning as the shared filter bar's own relevance dropdown
+  // (fetchStatsWithRelevance in filters.js). Cached after the first fetch
+  // so switching back and forth doesn't refetch stats_adjacent.json (a
+  // large file) every time.
+  let adjacentPapersForAuthor = null;
+  function fetchAdjacentPapersForAuthor() {
+    if (adjacentPapersForAuthor) return Promise.resolve(adjacentPapersForAuthor);
+    return fetch('stats_adjacent.json').then(r => r.json()).then(all => {
+      adjacentPapersForAuthor = (all || []).filter(p => (p.authors || []).includes(name));
+      return adjacentPapersForAuthor;
+    });
+  }
+
   const papersBody = document.getElementById('papers-body');
   function renderBody(rows) {
     papersBody.innerHTML = '';
@@ -520,9 +540,10 @@ function render(stats) {
       titleLink(p), p.year || '', p.venue || '', categoryLabel(p.category) || '', p.citations ?? '',
     ])));
   }
-  function renderPapers() {
+  function drawPapersTable(basePapers) {
+    const sorted = [...basePapers].sort((a, b) => (b.citations ?? -Infinity) - (a.citations ?? -Infinity));
     const limitSel = document.getElementById('papers-limit');
-    const shown = limitSel.value === 'all' ? sortedPapers : sortedPapers.slice(0, parseInt(limitSel.value, 10) || 50);
+    const shown = limitSel.value === 'all' ? sorted : sorted.slice(0, parseInt(limitSel.value, 10) || 50);
     makeSortableSafe(document.getElementById('papers-body').closest('table'), shown, [
       { accessor: p => p.title, numeric: false },
       { accessor: p => p.year, numeric: true },
@@ -530,6 +551,23 @@ function render(stats) {
       { accessor: p => p.category, numeric: false },
       { accessor: p => p.citations, numeric: true },
     ], renderBody);
+    exportContainer.innerHTML = '';
+    exportContainer.appendChild(renderExportButton(document.getElementById('papers-body').closest('table'), `${name}-papers.csv`));
+  }
+  function renderPapers() {
+    // Defaults to 'core' for anything other than an explicit 'adjacent'/
+    // 'both' -- not just the empty string from a page load before the
+    // select's own HTML default has taken effect, but also (in the test
+    // harness's DOM stub) an id declared only in static markup, which comes
+    // back as a generic auto-vivified element with no real .value at all.
+    const relevance = document.getElementById('papers-relevance').value;
+    if (relevance === 'adjacent') {
+      fetchAdjacentPapersForAuthor().then(drawPapersTable);
+    } else if (relevance === 'both') {
+      fetchAdjacentPapersForAuthor().then(adjacent => drawPapersTable([...papers, ...adjacent]));
+    } else {
+      drawPapersTable(papers);
+    }
   }
   const papersLimitSel = document.getElementById('papers-limit');
   try {
@@ -540,11 +578,18 @@ function render(stats) {
     try { sessionStorage.setItem('author-papers-limit', papersLimitSel.value); } catch (e) { /* ignore */ }
     renderPapers();
   });
-  renderPapers();
+  const papersRelevanceSel = document.getElementById('papers-relevance');
+  try {
+    const stored = sessionStorage.getItem('author-papers-relevance');
+    if (stored && [...papersRelevanceSel.options].some(o => o.value === stored)) papersRelevanceSel.value = stored;
+  } catch (e) { /* ignore */ }
+  papersRelevanceSel.addEventListener('change', () => {
+    try { sessionStorage.setItem('author-papers-relevance', papersRelevanceSel.value); } catch (e) { /* ignore */ }
+    renderPapers();
+  });
 
   const exportContainer = document.getElementById('export-container');
-  exportContainer.innerHTML = '';
-  exportContainer.appendChild(renderExportButton(document.getElementById('papers-body').closest('table'), `${name}-papers.csv`));
+  renderPapers();
 }
 </script>
 <script src="nav.js"></script>

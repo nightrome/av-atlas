@@ -198,7 +198,7 @@ function render() {
   });
   countries.forEach(c => { c.authors = (authorsByCountry[c.name] || new Set()).size; });
   const query = currentQuery.trim().toLowerCase();
-  let tableRows = query ? countries.filter(c => c.name.toLowerCase().includes(query)) : countries;
+  let tableRows = query ? countries.filter(c => matchesSearchQuery(c.name, query)) : countries;
 
   const metric = getMetric('papers');
   const sorters = {
@@ -250,7 +250,7 @@ function render() {
     const step = Math.min(SEQ_RAMP.length - 1, Math.round(t * (SEQ_RAMP.length - 1)));
     tile.style.background = SEQ_RAMP[step];
     if (step <= 2) tile.style.color = '#0b0b0b';
-    if ((query && !name.toLowerCase().includes(query)) || !topNCountries.has(name)) tile.style.opacity = '0.25';
+    if ((query && !matchesSearchQuery(name, query)) || !topNCountries.has(name)) tile.style.opacity = '0.25';
     grid.appendChild(tile);
   });
 

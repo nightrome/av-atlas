@@ -304,12 +304,17 @@ function render() {
     total: (a, b) => b.citations - a.citations,
     avg: byAvg,
     papers: (a, b) => b.papers - a.papers,
+    // Unclassified (industry_pct == null) sorts last regardless of
+    // direction -- same "no data must never look like zero" rule used for
+    // citations elsewhere on this site (see index.html's citationsCell).
+    industry: (a, b) => (b.industry_pct ?? -1) - (a.industry_pct ?? -1),
   };
   cats.sort(sorters[metric] || byAvg);
 
   document.getElementById('result-count').textContent = `${cats.length} categories`;
 
-  const rankKey = metric === 'avg' ? 'avg_citations' : metric === 'papers' ? 'papers' : 'citations';
+  const rankKey = metric === 'avg' ? 'avg_citations' : metric === 'papers' ? 'papers'
+    : metric === 'industry' ? 'industry_pct' : 'citations';
   const max = Math.max(1, ...cats.map(c => c[rankKey] || 0));
   const bars = document.getElementById('bars');
   bars.innerHTML = '';
@@ -340,11 +345,13 @@ function render() {
     header.appendChild(cell);
   });
   const industryHead = document.createElement('div');
-  industryHead.className = 'bar-num';
+  industryHead.className = 'bar-num' + (metric === 'industry' ? ' active-metric' : '');
   industryHead.textContent = 'Industry';
   industryHead.title = 'Share of this category\'s author affiliations that are industry rather than '
     + 'academic (each paper\'s institutions each count as one vote). Institutions this site can\'t '
     + 'confidently classify either way aren\'t counted.';
+  industryHead.style.cursor = 'pointer';
+  industryHead.addEventListener('click', () => { location.href = withParam('categories.html', 'metric', 'industry'); });
   header.appendChild(industryHead);
   bars.appendChild(header);
 
@@ -388,8 +395,8 @@ function render() {
     row.appendChild(avgNum);
 
     const industryNum = document.createElement('div');
-    industryNum.className = 'bar-num';
-    industryNum.textContent = c.industry_pct == null ? '—' : `${c.industry_pct}% ind.`;
+    industryNum.className = 'bar-num' + (metric === 'industry' ? ' active-metric' : '');
+    industryNum.textContent = c.industry_pct == null ? '—' : `${c.industry_pct}%`;
     row.appendChild(industryNum);
 
     bars.appendChild(row);

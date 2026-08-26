@@ -340,7 +340,7 @@ function render() {
   papers.forEach(p => (p.authors || []).forEach(a => { paperCounts[a] = (paperCounts[a] || 0) + 1; }));
   const query = currentQuery.trim().toLowerCase();
   let candidateNames = Object.keys(paperCounts);
-  if (query) candidateNames = candidateNames.filter(a => a.toLowerCase().includes(query));
+  if (query) candidateNames = candidateNames.filter(a => matchesSearchQuery(a, query));
   const topAuthors = candidateNames.sort((a, b) => paperCounts[b] - paperCounts[a]).slice(0, topN);
   const topSet = new Set(topAuthors);
 

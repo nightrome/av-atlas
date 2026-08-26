@@ -224,6 +224,22 @@
     'driver-behavior-hmi': 'Driver Behavior & Human-Machine Interaction',
     'general-cv-ml-method': 'General CV/ML Method',
   };
+  // Matches if every word in the (already-lowercased) query appears
+  // somewhere in text, in any order -- not just as one contiguous
+  // substring. User-flagged: searching "Julian Kooij" found nothing for
+  // "Julian Francisco Pieter Kooij" (a real corpus name, after two prior
+  // name-spelling variants got merged into this canonical one) because a
+  // plain text.includes(query) requires the words to be adjacent with
+  // nothing in between. A multi-word name search should work the way a
+  // reader actually types a name they half-remember, not require they
+  // guess the exact on-file spelling.
+  window.matchesSearchQuery = function (text, query) {
+    if (!query) return true;
+    const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const haystack = (text || '').toLowerCase();
+    return words.every(w => haystack.includes(w));
+  };
+
   window.categoryLabel = function (cat) {
     if (!cat) return cat;
     return CATEGORY_LABELS[cat] || cat.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
@@ -263,16 +279,20 @@
     return Promise.all([statsFetch, adjacentFetch]).then(([stats, adjacent]) => {
       if (relevance === 'adjacent') {
         stats.all_papers = adjacent || [];
-        // renderResults()-style code on some pages reads stats.top_papers (a
-        // server-precomputed, core-only top-50) instead of stats.all_papers
-        // whenever no filter is active, as a size optimization -- recomputed
-        // the same way aggregate.py builds it (already-citation-sorted top
-        // 50) from whatever all_papers now actually is, so that shortcut
-        // doesn't silently keep showing core papers after the swap.
-        stats.top_papers = [...stats.all_papers]
-          .sort((a, b) => (b.citations != null) - (a.citations != null) || (b.citations || 0) - (a.citations || 0))
-          .slice(0, 50);
+      } else if (relevance === 'both') {
+        stats.all_papers = [...(stats.all_papers || []), ...(adjacent || [])];
+      } else {
+        return stats;
       }
+      // renderResults()-style code on some pages reads stats.top_papers (a
+      // server-precomputed, core-only top-50) instead of stats.all_papers
+      // whenever no filter is active, as a size optimization -- recomputed
+      // the same way aggregate.py builds it (already-citation-sorted top
+      // 50) from whatever all_papers now actually is, so that shortcut
+      // doesn't silently keep showing (only) core papers after the swap.
+      stats.top_papers = [...stats.all_papers]
+        .sort((a, b) => (b.citations != null) - (a.citations != null) || (b.citations || 0) - (a.citations || 0))
+        .slice(0, 50);
       return stats;
     });
   };
@@ -365,24 +385,27 @@
       bar.appendChild(wrap);
     }
 
-    // AV-relevance dropdown ("AV relevant" / "Not AV relevant"), the same
-    // control and behavior on every page that opts in -- previously only
-    // existed as a one-off hand-rolled dropdown at the very top of the
+    // AV-relevance dropdown ("AV relevant" / "Not AV relevant" / "Both"),
+    // the same control and behavior on every page that opts in -- previously
+    // only existed as a one-off hand-rolled dropdown at the very top of the
     // Papers page, above the whole filter bar including SEARCH (user-
     // requested: move it down into the filter bar, below SEARCH, and reuse
     // it on every listing page for a consistent place/behavior). Adjacent
     // (not core-AV-relevant) papers are shipped as a separate stats_adjacent.json
     // (see aggregate.py's ADJACENT_OUT_FILE comment for the size reasoning);
-    // fetchStatsWithRelevance below does the actual fetch-and-swap. No
-    // "Both" option (removed, user-requested) -- a reader wanting the full
-    // combined picture can still get it by fetching /both from either
-    // dataset individually; keeping just two options keeps every filter
-    // (category/venue/year counts, chart series, ...) unambiguous about
-    // which single set of papers it describes.
+    // fetchStatsWithRelevance below does the actual fetch-and-swap.
+    // "Both" (re-added, user-requested) unions the two sets -- category/venue/
+    // year counts and chart series computed client-side from the resulting
+    // all_papers describe that union same as any other selection; the one
+    // place that stays core-only regardless is the Category dropdown's own
+    // per-option counts below (stats.category_breakdown is a server-side
+    // precomputation over core papers only -- recomputing it for every
+    // possible relevance selection wasn't worth it for a count next to an
+    // option label, not a hard filter).
     if (opts.relevance) {
       const relValue = new URLSearchParams(location.search).get('relevance') || '';
       const sel = document.createElement('select');
-      [['', 'AV relevant'], ['adjacent', 'Not AV relevant']].forEach(([value, text]) => {
+      [['', 'AV relevant'], ['adjacent', 'Not AV relevant'], ['both', 'Both']].forEach(([value, text]) => {
         const opt = document.createElement('option');
         opt.value = value;
         opt.textContent = text;

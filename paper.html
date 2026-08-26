@@ -106,11 +106,22 @@
 <div class="panel" id="citing-panel">
   <div class="panel-title-row">
     <h2>Citations</h2>
+    <div class="limit-row">
+      Show
+      <select id="citing-limit">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50" selected>50</option>
+        <option value="100">100</option>
+        <option value="all">All</option>
+      </select>
+    </div>
     <div id="export-container"></div>
   </div>
   <div class="chart" id="citing-chart"></div>
   <table style="margin-top: 12px;"><thead><tr><th>Title</th><th>Venue</th><th class="num">Year</th><th>Category</th></tr></thead>
   <tbody id="citing-body"></tbody></table>
+  <div id="citing-pagination-container"></div>
 </div>
 
 <script src="filters.js"></script>
@@ -419,12 +430,39 @@ function render(stats) {
       citingBody.appendChild(row([link, c.venue || '', c.year || '', categoryLabel(c.category || 'uncategorized')]));
     });
   }
-  makeSortableSafe(citingBody.closest('table'), citingRows, [
-    { accessor: c => c.title, numeric: false },
-    { accessor: c => c.venue || '', numeric: false },
-    { accessor: c => c.year || 0, numeric: true },
-    { accessor: c => c.category || 'uncategorized', numeric: false },
-  ], renderCitingBody);
+  const citingLimitSel = document.getElementById('citing-limit');
+  const citingPaginationContainer = document.getElementById('citing-pagination-container');
+  function renderCitingTable() {
+    // Same fixed-page + Prev/Next pattern as index.html's Papers table
+    // (renderPagination), plus a "Show" dropdown for the page size itself --
+    // a citation list can run into the hundreds (see paper.html's own CD
+    // index tile: a paper with a large in-corpus citer count), and this was
+    // rendering every single one into one unpaginated table (user-flagged).
+    const limitVal = citingLimitSel.value;
+    const pageSize = limitVal === 'all' ? Math.max(1, citingRows.length) : (parseInt(limitVal, 10) || 50);
+    const pagination = renderPagination(citingPaginationContainer, 'paper.html', citingRows.length, { pageSize, onChange: renderCitingTable });
+    const shown = citingRows.slice(pagination.offset, pagination.offset + pagination.pageSize);
+    makeSortableSafe(citingBody.closest('table'), shown, [
+      { accessor: c => c.title, numeric: false },
+      { accessor: c => c.venue || '', numeric: false },
+      { accessor: c => c.year || 0, numeric: true },
+      { accessor: c => c.category || 'uncategorized', numeric: false },
+    ], renderCitingBody);
+  }
+  try {
+    const stored = sessionStorage.getItem('paper-citing-limit');
+    if (stored && [...citingLimitSel.options].some(o => o.value === stored)) citingLimitSel.value = stored;
+  } catch (e) { /* ignore */ }
+  citingLimitSel.addEventListener('change', () => {
+    try { sessionStorage.setItem('paper-citing-limit', citingLimitSel.value); } catch (e) { /* ignore */ }
+    // A page-size change starts back at page 1 -- same reasoning as any
+    // other filter/sort change resetting pagination (see renderPagination's
+    // own comment): a reader on page 3 of 50-per-page could otherwise land
+    // on an empty or wrong slice once the size changes.
+    history.replaceState(null, '', withParam('paper.html', 'page', null));
+    renderCitingTable();
+  });
+  renderCitingTable();
 
   const exportContainer = document.getElementById('export-container');
   exportContainer.innerHTML = '';

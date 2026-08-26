@@ -464,7 +464,7 @@ function renderResults() {
   // requested size. Client-side sort/slice over ~19k core papers is cheap
   // enough that the server-side shortcut isn't worth the conflict.
   let papers = filterPapers(stats.all_papers || [], filters);
-  if (query) papers = papers.filter(p => (p.title || '').toLowerCase().includes(query));
+  if (query) papers = papers.filter(p => matchesSearchQuery(p.title, query));
 
   // Default sort; the table header cells (via makeSortable below) are the
   // only way to re-rank from here -- no separate "Rank by" dropdown.
