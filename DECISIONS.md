@@ -532,3 +532,62 @@ abstract "not found". `scripts/tests/test_aggregate.py`'s `TestShardIndex`
 pins the Python side's output against values cross-checked against a real
 Node run of the JS copy — if that test ever needs updating, the JS copy in
 `paper.html` needs the same update, not either one alone.
+
+## Institution extraction switched from comma-split to local-LLM, registry-anchored
+
+`fetch_affiliations_arxiv.py` used to pull the raw affiliation-note text out
+of ar5iv's HTML and split it on commas (`clean_affiliations()`). Real
+affiliation notes are prose, not a flat comma-separated field list — "Authors
+are with the Division of Robotics, Perception, and Learning (RPL), KTH Royal
+Institute of Technology, Stockholm, Sweden" — so the split produced fragments
+no amount of downstream regex cleanup could fully recover (confirmed real
+cost: "Perception" surviving as its own fake institution on the leaderboard,
+plus a long tail of person-name/footnote/email/funding-credit fragments —
+see `aggregate.py`'s `INVALID_INSTITUTIONS`/`PERSON_INITIAL_NAME_RE`/
+`OBFUSCATED_EMAIL_RE`/`FUNDING_CREDIT_RE` for the patched-after-the-fact
+symptoms this was producing). User-flagged: "extract them in the right way"
+instead of extracting garbage and filtering it after.
+
+Replaced with `institution_extraction_llm.py`: the raw, unsplit text is
+handed to a local model (Ollama, same `qwen2.5:7b-instruct` setup already
+used for AV-relevance labeling — see `fetch_llm_relevance_labels.py` — no new
+infra, no per-call cost, consistent with the standing no-paid-API
+preference) and asked to extract the real institution name(s) directly.
+Verified against the actual real-world examples that motivated this: the
+KTH RPL sentence above now correctly extracts just "KTH Royal Institute of
+Technology"; "E. Eaton" (a neighboring author's name that leaked into an
+affiliation field) correctly extracts nothing; "Huawei † Corresponding
+author" correctly extracts just "Huawei".
+
+Registry-anchored to solve the obvious next problem an unconstrained LLM
+extraction would have (user-flagged): the same real institution getting
+re-invented as "KTH", "Royal Institute of Technology", and "KTH Royal
+Institute of Technology" across different papers, fragmenting one
+institution's leaderboard entry into three. `data/institution_registry.json`
+holds every canonical name already confirmed; each extraction call is shown
+a cheap token-overlap shortlist (`build_candidate_shortlist` — no LLM call,
+just set intersection, so the prompt never has to carry the whole
+multi-thousand-entry registry) of registry entries that might be what the
+raw text refers to, and the model is asked to either return one of those
+EXACTLY (including by acronym — "KTH" matching "KTH Royal Institute of
+Technology" is exactly the case token-overlap alone can't bridge, which is
+why the LLM sees the shortlist rather than this being purely a string-
+matching problem) or propose a new canonical name. Every result — matched or
+new — gets added back into the registry (`resolve_and_register`), so later
+extractions in the same run (and every future run) have a growing set to
+match against instead of compounding the duplication.
+
+Cached by exact raw text (`data/affiliations_llm_extracted.json`), not by
+paper — the same lab's boilerplate affiliation sentence repeats verbatim
+across many of that lab's papers, so this keeps the actual number of LLM
+calls bounded by vocabulary size, not occurrence count.
+
+Known limitation, accepted rather than solved: the existing ~7,000 papers
+already processed under the old comma-split never had their raw sentence
+preserved (`clean_affiliations()` discarded it immediately after splitting),
+so this only benefits newly-fetched papers until a deliberate re-crawl
+re-fetches ar5iv pages for the existing backlog specifically to recover
+their raw text. That re-crawl is real, comparable in size/duration to the
+has_code_link recheck, and deliberately not run in the same session this
+landed in (avoids a second writer racing the crawler already running against
+the same files) — queued as follow-up work, not forgotten.

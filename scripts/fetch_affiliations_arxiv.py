@@ -9,6 +9,19 @@ ar5iv.labs.arxiv.org's full-text HTML rendering of that paper (LaTeX -> HTML,
 ~490KB vs a 2.9MB PDF, no figures ever touched) and parses the
 "ltx_role_affiliation" spans next to each author's name.
 
+The actual institution name(s) inside that raw affiliation text are
+extracted by a local LLM (institution_extraction_llm.py), not by splitting
+the text on commas -- a real affiliation note is prose ("Authors are with
+the Division of Robotics, Perception, and Learning (RPL), KTH Royal
+Institute of Technology, Stockholm, Sweden"), not a flat list of
+independent fields, and a blind split produces unrecoverable garbage
+fragments (confirmed real cost, see aggregate.py's INVALID_INSTITUTIONS
+comment on "Perception"). The extraction is anchored against a growing
+registry of already-confirmed institution names (data/institution_registry.json)
+so the same real institution isn't re-invented under a slightly different
+name every time a paper phrases it differently -- see
+institution_extraction_llm.py's own docstring for the full design.
+
 Coverage tradeoff vs OpenAlex: only works for papers with an arXiv preprint
 that has affiliations in its LaTeX source (common but not universal -- some
 papers use anonymous/no-affiliation templates, some never get an arXiv
@@ -67,6 +80,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from bs4 import BeautifulSoup
+
+import institution_extraction_llm as iel
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
@@ -139,39 +154,27 @@ def find_arxiv_id(title):
     return m.group(1) if m else None
 
 
-def clean_affiliations(text):
-    # Real-data problems seen in practice, not hypothetical:
-    #  - Author-block footnotes often bundle several authors' institutions
-    #    plus their email addresses into ONE affiliation-note text run, e.g.
-    #    "NVIDIA Research, Technion, Stanford University{pkarkus,...}@nvidia.com"
-    #    or "Mercedes-Benz AG Ulm University{...}@daimler.com...@uni-ulm.de" --
-    #    LaTeX's \thanks/\IEEEauthorblockA footnote conventions don't map
-    #    cleanly to "one affiliation per author" the way ar5iv's markup implies.
-    # Fix: cut off at the first '{' (where affiliation text ends and contact
-    # info begins in the "{alice,bob}@domain.com" style), THEN separately
-    # strip any remaining bare email token. Order matters: a naive combined
-    # "\S+@\S+" regex run first would also eat the word immediately before an
-    # unspaced brace ("...University{pkarkus}@nvidia.com" -> loses
-    # "University" since there's no whitespace to stop at) -- cutting at '{'
-    # first avoids that, then the bare-email pass only needs to catch emails
-    # that appear with normal spacing, which don't have this problem.
-    text = text.split("{")[0]
-    text = re.sub(r"\S+@\S+", "", text)
-    # LaTeX vertical-spacing commands (\\[2mm], \\[1em], ...) sometimes leak
-    # through ar5iv's conversion as literal "[2mm]" text -- strip these,
-    # they're not part of the affiliation name (seen in real output: "[2mm]
-    # University of Science and Technology of China").
-    text = re.sub(r"\[\d+(?:mm|em|pt|cm|in)\]", "", text)
-    parts = [re.sub(r"\s+", " ", p).strip(" ,;") for p in text.split(",")]
-    return [p for p in parts if p and len(p) > 2]
-
-
-def parse_ar5iv_affiliations(soup):
+def parse_ar5iv_affiliations(soup, registry, cache):
     # ar5iv marks each author's name in an "ltx_personname" span and any
     # affiliation note in a following "ltx_role_affiliation" span, both
     # nested inside the same "ltx_creator ltx_role_author" block -- confirmed
     # against a real paper (UniAD, arXiv 2212.10156) before building this
     # parser, not a guess.
+    #
+    # Institution extraction itself is institution_extraction_llm's job, not
+    # this function's -- a real affiliation note is prose ("Authors are with
+    # the Division of Robotics, Perception, and Learning (RPL), KTH Royal
+    # Institute of Technology, Stockholm, Sweden"), not a flat comma-
+    # separated field list, and a naive split (this used to call a
+    # clean_affiliations() helper that did exactly that) produces
+    # unrecoverable garbage fragments no amount of downstream regex cleanup
+    # can fully undo (user-flagged, confirmed real cost: "Perception"
+    # surviving as its own fake institution -- see aggregate.py's
+    # INVALID_INSTITUTIONS comment). `registry` (a set) and `cache` (a dict,
+    # raw text -> extraction result) are threaded through from main() and
+    # mutated in place, so a genuinely new institution or an already-seen
+    # raw text is shared across every author and paper in the run instead of
+    # being re-extracted or re-invented each time.
     authors = []
     for block in soup.select("span.ltx_creator.ltx_role_author"):
         name_el = block.select_one(".ltx_personname")
@@ -189,7 +192,19 @@ def parse_ar5iv_affiliations(soup):
         affs = []
         for aff_el in block.select(".ltx_role_affiliation"):
             text = re.sub(r"^\s*Affiliation:\s*", "", aff_el.get_text())
-            affs.extend(clean_affiliations(text))
+            text = re.sub(r"\s+", " ", text).strip()
+            if not text:
+                continue
+            if text in cache:
+                extracted = cache[text]
+            else:
+                # Not caught here -- an Ollama failure (server down, bad
+                # response) propagates up to the caller, which treats it
+                # exactly like any other failed fetch (retry later, never
+                # fall back to guessing at a split).
+                extracted = iel.extract_institutions(text, list(registry))
+                cache[text] = extracted
+            affs.extend(iel.resolve_and_register(extracted, registry))
         authors.append({"name": name, "affiliations": affs})
     return authors
 
@@ -311,6 +326,15 @@ def load_pending(already_done):
 def main():
     affs = load_json(AFFS_FILE, {})
     refs = load_json(REFS_FILE, {})
+    # registry: canonical institution names, shared across this whole run
+    # (and future runs, via save_registry below) so the LLM extraction in
+    # parse_ar5iv_affiliations reuses an existing name instead of inventing
+    # a slightly different one for the same real institution every time.
+    # cache: raw affiliation text -> already-extracted result, so identical
+    # boilerplate seen on an earlier paper (or an earlier run) never costs a
+    # second Ollama call.
+    registry = set(iel.load_registry())
+    cache = iel.load_cache()
     pending, core_total = load_pending(affs)
     print(f"{len(pending)} core papers without authors_detail to try via arXiv (of {core_total} missing total)", flush=True)
 
@@ -341,7 +365,7 @@ def main():
                 arxiv_id = find_arxiv_id(title)
                 if arxiv_id:
                     soup = fetch_ar5iv_page(arxiv_id)
-                    authors = parse_ar5iv_affiliations(soup)
+                    authors = parse_ar5iv_affiliations(soup, registry, cache)
                     references = parse_ar5iv_references(soup)
                     has_code_link = detect_code_link(soup)
                 else:
@@ -376,6 +400,8 @@ def main():
 
         save_json(AFFS_FILE, affs)
         save_json(REFS_FILE, refs)
+        iel.save_registry(registry)
+        iel.save_cache(cache)
         print(f"  [{processed}/{len(pending)}] progress saved "
               f"({done_with_affs} got affiliations, {done_no_match} no arXiv/no affiliation data, "
               f"{total_refs_found} references collected across {len(refs)} papers, "

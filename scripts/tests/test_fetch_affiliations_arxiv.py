@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Regression tests for fetch_affiliations_arxiv.py's clean_affiliations() --
-ar5iv's affiliation-note text often bundles multiple institutions and email
-addresses into one run with no clean delimiter (real examples seen while
-building this script, not hypothetical).
+Regression tests for fetch_affiliations_arxiv.py's ar5iv-page parsing.
+Institution extraction itself (institution_extraction_llm.extract_institutions,
+which parse_ar5iv_affiliations calls) is tested separately in
+test_institution_extraction_llm.py -- the tests here mock that call, never a
+real network/Ollama call, so parse_ar5iv_affiliations's own logic (name
+extraction, cache/registry threading) can be tested without a live model.
 
 Usage: python -m unittest discover -s av-atlas/scripts/tests
    or: python av-atlas/scripts/tests/test_fetch_affiliations_arxiv.py
@@ -18,65 +20,87 @@ from bs4 import BeautifulSoup
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import fetch_affiliations_arxiv as fa
-
-
-class TestCleanAffiliations(unittest.TestCase):
-    def test_strips_trailing_email_block(self):
-        text = "NVIDIA Research, Technion, Stanford University{pkarkus,bivanovic}@nvidia.com"
-        self.assertEqual(fa.clean_affiliations(text), ["NVIDIA Research", "Technion", "Stanford University"])
-
-    def test_single_institution_no_junk(self):
-        self.assertEqual(fa.clean_affiliations("Massachusetts Institute of Technology"),
-                          ["Massachusetts Institute of Technology"])
-
-    def test_strips_leaked_latex_spacing_command(self):
-        # ar5iv occasionally lets a raw LaTeX vertical-spacing command
-        # (\[2mm], \[1em], ...) leak through as literal text -- seen on real
-        # data: "[2mm] University of Science and Technology of China".
-        self.assertEqual(fa.clean_affiliations("[2mm] University of Science and Technology of China"),
-                          ["University of Science and Technology of China"])
-
-    def test_strips_bare_email_without_braces(self):
-        text = "University of Washington, Robotics at Google yuxiangy@cs.washington.edu"
-        result = fa.clean_affiliations(text)
-        self.assertNotIn("yuxiangy@cs.washington.edu", " ".join(result))
-
-    def test_empty_and_whitespace_only_fragments_dropped(self):
-        self.assertEqual(fa.clean_affiliations("MIT, , Stanford"), ["MIT", "Stanford"])
-
-    def test_no_delimiter_between_institutions_stays_one_string(self):
-        # Known imperfect case: some LaTeX templates render two institutions
-        # with no separator at all ("Mercedes-Benz AG Ulm University"). Not
-        # splittable without a delimiter -- documenting the current (safe,
-        # non-harmful) behavior rather than pretending it's solved.
-        self.assertEqual(fa.clean_affiliations("Mercedes-Benz AG Ulm University"),
-                          ["Mercedes-Benz AG Ulm University"])
+import institution_extraction_llm as iel
 
 
 class TestParseAr5ivAffiliations(unittest.TestCase):
+    def setUp(self):
+        self._original_extract = iel.extract_institutions
+        self.addCleanup(setattr, iel, "extract_institutions", self._original_extract)
+
     def test_merged_multi_author_name_is_rejected(self):
         # IEEE-style \IEEEauthorblockN templates can render several authors'
         # names as one run -- a real person's name is essentially never more
         # than 4 words, so this must be dropped, not recorded as a garbled
-        # "person" with a made-up combined name.
+        # "person" with a made-up combined name. No affiliation span at all
+        # here, so extract_institutions must never even be called.
+        iel.extract_institutions = lambda text, registry: (_ for _ in ()).throw(
+            AssertionError("must not be called -- no real author to extract for"))
         soup = BeautifulSoup("""
         <span class="ltx_creator ltx_role_author">
           <span class="ltx_personname">Julian Wiederer Arij Bouazizi Marco Troina</span>
         </span>
         """, "html.parser")
-        self.assertEqual(fa.parse_ar5iv_affiliations(soup), [])
+        self.assertEqual(fa.parse_ar5iv_affiliations(soup, set(), {}), [])
 
     def test_normal_single_author_with_affiliation_is_kept(self):
+        iel.extract_institutions = lambda text, registry: [
+            {"name": "SenseTime Research", "matched_existing": False}]
         soup = BeautifulSoup("""
         <span class="ltx_creator ltx_role_author">
           <span class="ltx_personname">Xizhou Zhu</span>
           <span class="ltx_role_affiliation">Affiliation: SenseTime Research</span>
         </span>
         """, "html.parser")
-        result = fa.parse_ar5iv_affiliations(soup)
+        result = fa.parse_ar5iv_affiliations(soup, set(), {})
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]["name"], "Xizhou Zhu")
         self.assertEqual(result[0]["affiliations"], ["SenseTime Research"])
+
+    def test_extraction_result_is_cached_by_raw_text(self):
+        calls = []
+        iel.extract_institutions = lambda text, registry: calls.append(text) or [
+            {"name": "MIT", "matched_existing": False}]
+        soup = BeautifulSoup("""
+        <span class="ltx_creator ltx_role_author">
+          <span class="ltx_personname">Alice</span>
+          <span class="ltx_role_affiliation">Affiliation: MIT</span>
+        </span>
+        <span class="ltx_creator ltx_role_author">
+          <span class="ltx_personname">Bob</span>
+          <span class="ltx_role_affiliation">Affiliation: MIT</span>
+        </span>
+        """, "html.parser")
+        cache = {}
+        fa.parse_ar5iv_affiliations(soup, set(), cache)
+        self.assertEqual(len(calls), 1, "identical raw text across two authors must only call the LLM once")
+        self.assertIn("MIT", cache)
+
+    def test_new_institution_is_added_to_the_registry(self):
+        iel.extract_institutions = lambda text, registry: [
+            {"name": "Brand New University", "matched_existing": False}]
+        soup = BeautifulSoup("""
+        <span class="ltx_creator ltx_role_author">
+          <span class="ltx_personname">Alice</span>
+          <span class="ltx_role_affiliation">Affiliation: Brand New University</span>
+        </span>
+        """, "html.parser")
+        registry = set()
+        fa.parse_ar5iv_affiliations(soup, registry, {})
+        self.assertIn("Brand New University", registry)
+
+    def test_no_institution_found_yields_empty_affiliations(self):
+        # e.g. the raw text was a person's name, an email, a footnote --
+        # not a rejection, a real "this text names no institution" answer.
+        iel.extract_institutions = lambda text, registry: []
+        soup = BeautifulSoup("""
+        <span class="ltx_creator ltx_role_author">
+          <span class="ltx_personname">Alice</span>
+          <span class="ltx_role_affiliation">Affiliation: E. Eaton</span>
+        </span>
+        """, "html.parser")
+        result = fa.parse_ar5iv_affiliations(soup, set(), {})
+        self.assertEqual(result[0]["affiliations"], [])
 
 
 class TestParseAr5ivReferences(unittest.TestCase):
