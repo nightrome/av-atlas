@@ -61,6 +61,17 @@ SCHOLAR_PROFILES_FILE = BASE / "data" / "scholar_profiles.json"
 ORCIDS_FILE = BASE / "data" / "orcids.json"
 INSTITUTION_LOGOS_FILE = BASE / "data" / "institution_logos.json"
 INSTITUTION_COUNTRIES_FILE = BASE / "data" / "institution_countries.json"
+# Institution names an LLM review pass (Claude, reading the full institution
+# list one-by-one) flagged as not being real institution names -- a
+# genuinely scalable follow-on to the regex-pattern approach above (user-
+# flagged: "I believe you are extracting specific words from the papers and
+# then filtering them with LLMs... a more scalable solution to fixing
+# entries"). Regex only ever catches the SHAPES it was specifically written
+# for; this catches whatever those missed by using actual judgment on each
+# name. {name: reason}, loaded once and checked as a flat exclusion set in
+# is_valid_institution() below -- same mechanism as INVALID_INSTITUTIONS,
+# just sourced from a review pass instead of hand-typed.
+INSTITUTION_FLAGS_LLM_FILE = BASE / "data" / "institution_flags_llm.json"
 VENUE_LOGOS_FILE = BASE / "data" / "venue_logos.json"
 CITATION_GRAPH_FILE = BASE / "data" / "citation_graph.json"
 # Must match build_citation_graph.py's CVF_VENUES -- the set of venues its
@@ -674,6 +685,17 @@ INVALID_INSTITUTIONS = {
     "Perception",
 }
 
+# Loaded once at import time, same as the hand-typed INVALID_INSTITUTIONS
+# set above conceptually -- just sourced from institution_flags_llm.json
+# (an LLM review pass over the full institution list, see that file's own
+# generating comment) instead of being hand-typed one at a time. Defensive
+# against the file being absent (e.g. in a test environment that imports
+# this module directly) the same way INSTITUTION_COUNTRIES_FILE is below.
+INVALID_INSTITUTIONS_LLM = set(
+    json.loads(INSTITUTION_FLAGS_LLM_FILE.read_text(encoding="utf-8")).keys()
+    if INSTITUTION_FLAGS_LLM_FILE.exists() else ()
+)
+
 
 # A department/school/lab/center name with no parent institution attached
 # (e.g. "Department of Computer Science" with nothing after it -- contrast
@@ -1250,7 +1272,7 @@ def classify_institution_sector(name):
 
 
 def is_valid_institution(name):
-    if not name or name in INVALID_INSTITUTIONS:
+    if not name or name in INVALID_INSTITUTIONS or name in INVALID_INSTITUTIONS_LLM:
         return False
     if "http://" in name or "https://" in name:
         return False

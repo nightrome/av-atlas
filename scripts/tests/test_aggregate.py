@@ -48,6 +48,20 @@ class TestIsValidInstitution(unittest.TestCase):
                     "School of Computing", "Institute for AI Safety", "Lab for Perception"):
             self.assertFalse(ag.is_valid_institution(bad), bad)
 
+    def test_rejects_entries_flagged_by_the_llm_review_pass(self):
+        # institution_flags_llm.json (a full LLM read-through of the entire
+        # institution list, user-flagged: "a more scalable solution to
+        # fixing entries" than hand-typing regex/exact-match patterns one at
+        # a time) is loaded once at import time into
+        # INVALID_INSTITUTIONS_LLM and checked the same way as the
+        # hand-typed INVALID_INSTITUTIONS set above. This asserts against
+        # the real data file, not a fixture -- if that file is ever
+        # regenerated and no longer contains "Robotics", pick a different
+        # real entry from it rather than loosening this test.
+        self.assertGreater(len(ag.INVALID_INSTITUTIONS_LLM), 0, "the real data file should be present and non-empty")
+        self.assertIn("Robotics", ag.INVALID_INSTITUTIONS_LLM)
+        self.assertFalse(ag.is_valid_institution("Robotics"))
+
     def test_accepts_a_real_institution_name(self):
         self.assertTrue(ag.is_valid_institution("University of Oxford"))
         self.assertTrue(ag.is_valid_institution("Carnegie Mellon University"))
