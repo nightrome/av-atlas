@@ -349,6 +349,13 @@ rather than guessed — a wrong photo/profile linked to the wrong person is
 worse than a missing one, especially for a site whose whole premise is being
 defensible about what it claims.
 
+Lookups now run in periodic batches, working down the corpus by paper count
+so the most-referenced authors get covered first, rather than only in one-off
+passes. The confirm-or-skip rule above is unchanged — every save here still
+requires a real cross-check signal (a shared co-author, a matching
+institution), and a name with no confident match is left unresolved rather
+than guessed at.
+
 ## ICRA/IROS re-included after cleaning stray HTML markup
 
 Previously excluded from the published corpus (`EXCLUDED_VENUES` in
