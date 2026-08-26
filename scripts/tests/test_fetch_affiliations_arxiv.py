@@ -129,6 +129,30 @@ class TestDetectCodeLink(unittest.TestCase):
             "html.parser")
         self.assertTrue(fa.detect_code_link(soup))
 
+    def test_ar5iv_own_footer_github_link_not_counted(self):
+        # Every ar5iv page injects its own "Report an issue" link pointing
+        # at github.com/dginev/ar5iv -- site chrome, not a signal that THIS
+        # paper released code. Regression test for the bug that made
+        # detect_code_link() return True on nearly every paper.
+        soup = BeautifulSoup(
+            '<div class="ltx_abstract">No code release mentioned here.</div>'
+            '<div class="ar5iv-footer">'
+            '<a class="ar5iv-text-button" '
+            'href="https://github.com/dginev/ar5iv/issues/new?title=Improve+article">Report an issue</a>'
+            '</div>',
+            "html.parser")
+        self.assertFalse(fa.detect_code_link(soup))
+
+    def test_real_repo_link_still_counted_alongside_ar5iv_footer(self):
+        soup = BeautifulSoup(
+            '<div class="ltx_abstract">Code: <a href="https://github.com/us/our-repo">link</a></div>'
+            '<div class="ar5iv-footer">'
+            '<a class="ar5iv-text-button" '
+            'href="https://github.com/dginev/ar5iv/issues/new?title=Improve+article">Report an issue</a>'
+            '</div>',
+            "html.parser")
+        self.assertTrue(fa.detect_code_link(soup))
+
 
 if __name__ == "__main__":
     unittest.main()

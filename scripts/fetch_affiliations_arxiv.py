@@ -217,10 +217,25 @@ def detect_code_link(soup):
     # the CITED work, which isn't a signal about THIS paper. Same soup ar5iv
     # page already fetched for affiliations/references, so this costs no
     # extra network request.
+    #
+    # ar5iv itself also injects a github.com link into every single page it
+    # renders -- a "Report an issue" footer button pointing at
+    # github.com/dginev/ar5iv/issues/new -- which is site chrome, not paper
+    # content, and isn't inside a bibitem so the exclusion above doesn't
+    # catch it. Left unfixed this made detect_code_link() return True for
+    # nearly every paper regardless of whether it actually links code
+    # (caught when the resulting ~90% "has code" rate in Insights turned out
+    # to be this footer link, not real signal). Excluded the same way: any
+    # link inside the `.ar5iv-footer` chrome, or carrying an `ar5iv-*` class
+    # itself (the site's own nav/toggle buttons), doesn't count.
     bibitem_links = {a["href"] for item in soup.select("li.ltx_bibitem") for a in item.select("a[href]")}
+    chrome_links = {a["href"] for a in soup.select(".ar5iv-footer a[href]")}
+    chrome_links |= {a["href"] for a in soup.select('a[class*="ar5iv"][href]')}
     for a in soup.select("a[href]"):
         href = a.get("href") or ""
-        if href not in bibitem_links and CODE_HOST_RE.search(href):
+        if href in bibitem_links or href in chrome_links:
+            continue
+        if CODE_HOST_RE.search(href):
             return True
     return False
 
