@@ -69,6 +69,8 @@
   .move-list .delta { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
   .move-list .delta.up { color: #3fae6a; }
   .move-list .delta.down { color: #e6614f; }
+  .move-list a { text-decoration: none; }
+  .move-list a:hover { text-decoration: underline; }
   .move-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   @media (max-width: 640px) { .move-cols { grid-template-columns: 1fr; } }
 
@@ -111,7 +113,6 @@
 </head>
 <body>
 <nav id="topnav"></nav>
-<p class="section-intro" id="freshness-note"></p>
 
 <div class="panel">
   <h2>Growth</h2>
@@ -193,7 +194,7 @@
   </div>
   <h3>Citations by career span</h3>
   <p class="section-intro" style="margin-bottom:4px;">
-    Mean total citations per researcher at each career span, ±1 standard deviation.
+    Median total citations per researcher at each career span, shaded band is the 25th-75th percentile range.
   </p>
   <div class="line-chart-wrap" id="lifetime-citations-chart-wrap">
     <svg id="lifetime-citations-chart"></svg>
@@ -230,7 +231,16 @@
     isn't cited enough yet to qualify (<span id="disruption-scored-note"></span>).
   </p>
   <div class="fact-grid" id="disruption-facts"></div>
-  <div class="move-cols" style="margin-top:16px;">
+  <div class="limit-row" style="margin-top:16px;">
+    Show
+    <select id="disruption-limit">
+      <option value="5" selected>5</option>
+      <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">All</option>
+    </select>
+  </div>
+  <div class="move-cols" style="margin-top:8px;">
     <div>
       <h3 style="margin-top:0; color:#3fae6a;">▲ Most disruptive</h3>
       <ul class="move-list" id="disruptive-list"></ul>
@@ -442,9 +452,6 @@ function labelForCategory(cat) {
 }
 
 fetch('stats.json').then(r => r.json()).then(stats => {
-  if (stats.generated_at) {
-    document.getElementById('freshness-note').textContent = `Computed from data last updated ${stats.generated_at}.`;
-  }
   const ins = stats.insights || {};
   render(ins, stats);
 }).catch(err => {
@@ -662,7 +669,7 @@ function render(ins, stats) {
   }
   const byLifetime = ins.citations_by_researcher_lifetime || [];
   if (byLifetime.length) {
-    errorBarChart(document.getElementById('lifetime-citations-chart'), byLifetime, { yLabel: 'Mean total citations (log-scale)', log: true });
+    errorBarChart(document.getElementById('lifetime-citations-chart'), byLifetime, { yLabel: 'Median total citations (log-scale)', log: true });
   }
   if (ins.young_researchers_cutoff_year) {
     document.getElementById('young-researchers-note').textContent =
@@ -739,12 +746,25 @@ function render(ins, stats) {
     }
     const disruptiveList = document.getElementById('disruptive-list');
     const consolidatingList = document.getElementById('consolidating-list');
-    (disruption.most_disruptive || []).forEach(p => disruptionRow(disruptiveList, p, true));
-    (disruption.most_consolidating || []).forEach(p => disruptionRow(consolidatingList, p, false));
-    if (!disruption.most_disruptive || !disruption.most_disruptive.length) {
-      disruptiveList.innerHTML = '<li>Not enough data yet.</li>';
-      consolidatingList.innerHTML = '<li>Not enough data yet.</li>';
+    function renderDisruptionLists(limit) {
+      disruptiveList.innerHTML = '';
+      consolidatingList.innerHTML = '';
+      (disruption.most_disruptive || []).slice(0, limit).forEach(p => disruptionRow(disruptiveList, p, true));
+      (disruption.most_consolidating || []).slice(0, limit).forEach(p => disruptionRow(consolidatingList, p, false));
+      if (!disruption.most_disruptive || !disruption.most_disruptive.length) {
+        disruptiveList.innerHTML = '<li>Not enough data yet.</li>';
+        consolidatingList.innerHTML = '<li>Not enough data yet.</li>';
+      }
     }
+    const disruptionLimitSel = document.getElementById('disruption-limit');
+    let disruptionLimitStored = null;
+    try { disruptionLimitStored = sessionStorage.getItem('insights-disruption-limit'); } catch (e) { /* ignore */ }
+    if (disruptionLimitStored) disruptionLimitSel.value = disruptionLimitStored;
+    renderDisruptionLists(parseInt(disruptionLimitSel.value, 10));
+    disruptionLimitSel.addEventListener('change', () => {
+      try { sessionStorage.setItem('insights-disruption-limit', disruptionLimitSel.value); } catch (e) { /* ignore */ }
+      renderDisruptionLists(parseInt(disruptionLimitSel.value, 10));
+    });
   } else if (disruptionPanel) {
     disruptionPanel.style.display = 'none';
   }
@@ -1048,7 +1068,12 @@ function errorBarChart(svgEl, rows, opts) {
     yLabelEl.textContent = opts.yLabel;
     svgEl.appendChild(yLabelEl);
   }
-  const maxV = Math.max(1e-9, ...rows.map(r => r.mean_citations + r.stdev_citations));
+  // p25/p75 instead of mean+-stdev -- see aggregate.py's comment on
+  // citations_by_researcher_lifetime for why (mean-stdev routinely went
+  // negative for this heavily right-skewed data and got invisibly clamped
+  // to the axis; a percentile band can't do that, its edges are always real
+  // values present in the data).
+  const maxV = Math.max(1e-9, ...rows.map(r => r.p75_citations));
   const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
   const x = i => rows.length <= 1 ? PAD_L + plotW / 2 : PAD_L + (i / (rows.length - 1)) * plotW;
   const logMax = log10Floored(maxV);
@@ -1069,18 +1094,18 @@ function errorBarChart(svgEl, rows, opts) {
     label.textContent = Math.round(v).toLocaleString();
     svgEl.appendChild(label);
   });
-  // Shaded stdev band, drawn as one filled path so it reads as a continuous
-  // region rather than a stack of separate per-point rectangles.
-  let bandD = rows.map((r, i) => `${i === 0 ? 'M' : 'L'}${x(i)},${y(r.mean_citations + r.stdev_citations)}`).join(' ');
+  // Shaded p25-p75 band, drawn as one filled path so it reads as a
+  // continuous region rather than a stack of separate per-point rectangles.
+  let bandD = rows.map((r, i) => `${i === 0 ? 'M' : 'L'}${x(i)},${y(r.p75_citations)}`).join(' ');
   bandD += ' ' + rows.slice().reverse().map((r, j) => {
     const i = rows.length - 1 - j;
-    return `L${x(i)},${y(Math.max(0, r.mean_citations - r.stdev_citations))}`;
+    return `L${x(i)},${y(r.p25_citations)}`;
   }).join(' ') + ' Z';
   const band = document.createElementNS(ns, 'path');
   band.setAttribute('d', bandD);
   band.setAttribute('fill', PALETTE[2]); band.setAttribute('opacity', '0.15');
   svgEl.appendChild(band);
-  const lineD = rows.map((r, i) => `${i === 0 ? 'M' : 'L'}${x(i)},${y(r.mean_citations)}`).join(' ');
+  const lineD = rows.map((r, i) => `${i === 0 ? 'M' : 'L'}${x(i)},${y(r.median_citations)}`).join(' ');
   const line = document.createElementNS(ns, 'path');
   line.setAttribute('d', lineD);
   line.setAttribute('class', 'series-line');
@@ -1088,10 +1113,11 @@ function errorBarChart(svgEl, rows, opts) {
   svgEl.appendChild(line);
   rows.forEach((r, i) => {
     const dot = document.createElementNS(ns, 'circle');
-    dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(r.mean_citations)); dot.setAttribute('r', 3.5);
+    dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(r.median_citations)); dot.setAttribute('r', 3.5);
     dot.setAttribute('fill', PALETTE[2]);
     const title = document.createElementNS(ns, 'title');
-    title.textContent = `Career span ${r.lifetime}: mean ${r.mean_citations} ± ${r.stdev_citations} citations (${r.researchers} researchers)`;
+    title.textContent = `Career span ${r.lifetime}: median ${r.median_citations} citations, ` +
+      `IQR ${r.p25_citations}-${r.p75_citations} (${r.researchers} researchers)`;
     dot.appendChild(title);
     svgEl.appendChild(dot);
     const xLabel = document.createElementNS(ns, 'text');

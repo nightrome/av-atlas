@@ -53,6 +53,15 @@ def main():
         print("UI regression test exceeded its time budget and was killed.")
         failed = True
 
+    print("\n=== Detail page test (tests/detail_page_test.js, capped at 1 minute) ===")
+    detail_test = BASE / "tests" / "detail_page_test.js"
+    try:
+        result = subprocess.run(["node", str(detail_test)], cwd=BASE, timeout=75)
+        failed = failed or result.returncode != 0
+    except subprocess.TimeoutExpired:
+        print("Detail page test exceeded its time budget and was killed.")
+        failed = True
+
     if failed:
         print("\nSome tests failed.")
         sys.exit(1)

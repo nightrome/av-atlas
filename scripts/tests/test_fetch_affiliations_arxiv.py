@@ -153,6 +153,47 @@ class TestDetectCodeLink(unittest.TestCase):
             "html.parser")
         self.assertTrue(fa.detect_code_link(soup))
 
+    def test_huggingface_and_other_non_git_hosts_detected(self):
+        # user-flagged: "code cannot just be at github/gitlab".
+        for host in ("https://huggingface.co/us/our-model", "https://paperswithcode.com/paper/ours",
+                     "https://codeberg.org/us/our-repo", "https://gitee.com/us/our-repo"):
+            soup = BeautifulSoup(f'<p><a href="{host}">link</a></p>', "html.parser")
+            self.assertTrue(fa.detect_code_link(soup), host)
+
+    def test_text_statement_of_availability_detected_with_no_link_at_all(self):
+        soup = BeautifulSoup(
+            '<div class="ltx_abstract">Our code is available at our project page.</div>',
+            "html.parser")
+        self.assertTrue(fa.detect_code_link(soup))
+        soup2 = BeautifulSoup(
+            '<div class="ltx_abstract">We release our implementation to support future work.</div>',
+            "html.parser")
+        self.assertTrue(fa.detect_code_link(soup2))
+
+    def test_bare_mention_of_code_without_availability_verb_not_detected(self):
+        # Must not false-positive on ordinary methods text.
+        soup = BeautifulSoup(
+            '<div class="ltx_abstract">We implement our approach in code using PyTorch and evaluate on KITTI.</div>',
+            "html.parser")
+        self.assertFalse(fa.detect_code_link(soup))
+
+    def test_text_statement_inside_bibliography_not_counted(self):
+        soup = BeautifulSoup(
+            '<li class="ltx_bibitem">Some Prior Work. Code is available at their repository.</li>',
+            "html.parser")
+        self.assertFalse(fa.detect_code_link(soup))
+
+    def test_text_detection_does_not_mutate_the_caller_soup(self):
+        # detect_code_link must leave `soup` intact -- parse_ar5iv_references/
+        # parse_ar5iv_affiliations still read it afterward in the real
+        # fetch_affiliations_arxiv.py main() loop.
+        soup = BeautifulSoup(
+            '<li class="ltx_bibitem">Some Prior Work.</li>'
+            '<div class="ltx_abstract">Code is available at our page.</div>',
+            "html.parser")
+        fa.detect_code_link(soup)
+        self.assertIsNotNone(soup.select_one("li.ltx_bibitem"))
+
 
 if __name__ == "__main__":
     unittest.main()

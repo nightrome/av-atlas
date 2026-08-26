@@ -143,6 +143,95 @@ class TestNormalizeInstitution(unittest.TestCase):
         # stripped-down word that no longer matches anything.
         self.assertFalse(ag.is_valid_institution(ag.normalize_institution("Indicates corresponding author")))
 
+    def test_strips_bare_trailing_marker_with_no_footnote_text(self):
+        # User-flagged: "Singapore †" survived as its own fake institution.
+        # A bare marker (no accompanying footnote text) needs a separate
+        # strip from the sentence-level one above.
+        self.assertEqual(ag.normalize_institution("Pengcheng Laboratory †"), "Pengcheng Laboratory")
+        self.assertEqual(ag.normalize_institution("Yufeng Yue †"), "Yufeng Yue")
+        # A trailing period exposed after the marker is removed must also go.
+        self.assertEqual(ag.normalize_institution("Nankai University. †"), "Nankai University")
+
+    def test_bare_country_with_trailing_marker_is_still_rejected(self):
+        # The exact case reported: institution.html?name=Singapore%20%E2%80%A0
+        # -- a bare country name is invalid on its own (existing rule), but
+        # "Singapore †" wasn't catching it since the marker was never
+        # stripped in the first place.
+        self.assertFalse(ag.is_valid_institution(ag.normalize_institution("Singapore †")))
+        self.assertFalse(ag.is_valid_institution(ag.normalize_institution("Singapore*")))
+
+    def test_marker_delimited_strip_bypasses_the_length_gate(self):
+        # "Huawei"/"NVIDIA" are real institution names shorter than
+        # MIN_STRIPPED_INSTITUTION_LENGTH -- confirmed on real data, both
+        # survived as their own fake "institutions" (the whole junk string)
+        # before this bypass existed. A real marker character directly
+        # before the footnote text is strong enough evidence of a clean
+        # boundary that the length gate doesn't apply.
+        self.assertEqual(ag.normalize_institution("Huawei † Corresponding author"), "Huawei")
+        self.assertEqual(ag.normalize_institution("NVIDIA ✉ Correspondence Authors"), "NVIDIA")
+
+    def test_unrecoverable_replacement_character_is_rejected(self):
+        # U+FFFD means the original byte sequence was already discarded by
+        # an earlier lossy decode -- unlike MOJIBAKE_DIACRITIC_PAIRS'
+        # reversible double-encoding artifacts, there's no way to know which
+        # character it was, so the name is rejected rather than shown with a
+        # visibly mangled glyph. Confirmed on real data: "Universit� de
+        # Technologie de Compi�gne" (missing é/è).
+        self.assertFalse(ag.is_valid_institution(ag.normalize_institution(
+            "Universit� de Technologie de Compi�gne")))
+
+    def test_unmatched_parenthesis_is_rejected(self):
+        # A real institution's own name always balances any parenthetical it
+        # uses ("Technology and Research (A*STAR)") -- a lone "(" is what's
+        # left of a footnote/sentence fragment cut off mid-string, sometimes
+        # only exposed after an earlier strip removes what followed it
+        # ("Cleveland State University (*" -> "Cleveland State University ("
+        # once the trailing "*" is gone).
+        for bad in ("China. (Yu Pan* is the", "Cleveland State University (*",
+                    "Fraunhofer FOKUS (Berlin", "U.K. (Corresponding author:"):
+            self.assertFalse(ag.is_valid_institution(ag.normalize_institution(bad)), bad)
+        self.assertTrue(ag.is_valid_institution("Technology and Research (A*STAR)"))
+
+    def test_real_confirmed_junk_institutions_end_to_end(self):
+        # A batch of actual institution strings pulled from the live corpus
+        # (institution.html?name=Singapore%20%E2%80%A0 was the specific
+        # user-reported bug -- a country listed as its own "institution").
+        # Regression guard for the whole normalize_institution ->
+        # is_valid_institution pipeline together, not just one mechanism in
+        # isolation -- these are real inputs, not synthetic edge cases.
+        must_be_rejected = [
+            "USA; corresponding author email", "Italy. Corresponding authors: Other authors:",
+            "Singapore*", "Singapore †", "(Corresponding author: Zhigang Sun)", "Correspondence",
+            "USA ∗ Corresponding author", "China. Corresponding author: Jianru Xue",
+            "Corresponding authors", "FranceCorresponding", "China (Corresponding author",
+            "MITCorrespondance:", "MI 48824 Corresponding author:", "China *",
+            "USA Correspondence to", "Corresponding:", "China *Corresponding author",
+            "China. (Yu Pan* is the", "Cleveland State University (*",
+        ]
+        for bad in must_be_rejected:
+            self.assertFalse(ag.is_valid_institution(ag.normalize_institution(bad)), bad)
+
+        # Real institution + footnote junk -- must survive, cleanly stripped.
+        must_become = {
+            "Nankai University. †": "Nankai University",
+            "NVIDIA ✉ Correspondence Authors": "NVIDIA",
+            "Huawei † Corresponding author": "Huawei",
+            "Pengcheng Laboratory †": "Pengcheng Laboratory",
+        }
+        for raw, expected in must_become.items():
+            got = ag.normalize_institution(raw)
+            self.assertEqual(got, expected, raw)
+            self.assertTrue(ag.is_valid_institution(got), raw)
+
+    def test_credit_line_rejects_corresponding_author_prose_with_no_marker(self):
+        # No footnote marker to key a clean split off of -- confirmed real
+        # junk entries with no salvageable institution content, rejected
+        # wholesale rather than guessing at a prefix.
+        for bad in ("USA; corresponding author email", "Correspondence",
+                    "the USA (corresponding author)", "Corresponding authors:",
+                    "FranceCorresponding", "MITCorrespondance:"):
+            self.assertFalse(ag.is_valid_institution(ag.normalize_institution(bad)), bad)
+
     def test_author_affiliations_dedupes_after_normalization(self):
         # Same author crediting two variant spellings of the same real
         # institution should count as one, not two.
@@ -549,6 +638,35 @@ class TestAggregateEndToEnd(unittest.TestCase):
              "av_relevance": "core", "citations_by_source": {"in_corpus": {"count": 300}}},
         ])
         self.assertEqual(stats["best_by_year"]["2024"]["title"], "More citations")
+
+    def test_abstract_availability_phrase_upgrades_never_checked_to_true(self):
+        # user-flagged: "code cannot just be at github/gitlab. We should do
+        # a keyword search for things like 'code' in the abstract" -- covers
+        # papers has_code_link's ar5iv-based primary source never reaches.
+        stats = self._run([
+            {"title": "Code Released Paper", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+             "abstract": "We present a new method for 3D detection. Our code is available at "
+                          "our project page."},
+        ])
+        self.assertTrue(stats["all_papers"][0]["has_code_link"])
+
+    def test_bare_mention_of_code_in_abstract_does_not_set_false(self):
+        # A weak/absent signal must stay unset (never-checked), not be
+        # read as a confirmed absence -- only the ar5iv full-text check can
+        # supply a real False, see ABSTRACT_CODE_AVAILABILITY_RE's comment.
+        stats = self._run([
+            {"title": "No Signal Paper", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+             "abstract": "We implement our approach in code and evaluate on KITTI."},
+        ])
+        self.assertNotIn("has_code_link", stats["all_papers"][0])
+
+    def test_ar5iv_false_is_not_overridden_by_a_weak_abstract_mention(self):
+        stats = self._run([
+            {"title": "Checked No Code Paper", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+             "abstract": "We implement our approach in code and evaluate on KITTI.",
+             "has_code_link": False},
+        ])
+        self.assertFalse(stats["all_papers"][0]["has_code_link"])
 
     def test_venue_names_normalized_in_output(self):
         stats = self._run([
@@ -968,7 +1086,11 @@ class TestComputeInsights(unittest.TestCase):
         by_lifetime = {row["lifetime"]: row for row in insights["citations_by_researcher_lifetime"]}
         self.assertIn(1, by_lifetime)
         self.assertEqual(by_lifetime[1]["researchers"], 5, "the uncited author must not be counted in this bucket")
-        self.assertEqual(by_lifetime[1]["mean_citations"], 30.0)
+        # Percentiles, not mean+-stdev (see aggregate.py's comment) -- for
+        # [10, 20, 30, 40, 50], inclusive-method quartiles are 20/30/40.
+        self.assertEqual(by_lifetime[1]["p25_citations"], 20.0)
+        self.assertEqual(by_lifetime[1]["median_citations"], 30.0)
+        self.assertEqual(by_lifetime[1]["p75_citations"], 40.0)
         self.assertNotIn(5, by_lifetime, "a 2-author bucket is below the minimum sample size and must be omitted")
 
     def test_most_promising_young_researchers_filters_and_ranks_by_avg_citations(self):

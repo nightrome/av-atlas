@@ -55,6 +55,7 @@ the same pattern and why).
 
 Usage: python fetch_affiliations_arxiv.py
 """
+import copy
 import json
 import random
 import re
@@ -207,7 +208,33 @@ def parse_ar5iv_references(soup):
     return entries
 
 
-CODE_HOST_RE = re.compile(r"(github\.com|gitlab\.com|bitbucket\.org)/", re.I)
+# Not just github/gitlab/bitbucket (user-flagged: "code cannot just be at
+# github/gitlab") -- huggingface.co/paperswithcode.com/codeberg.org/gitee.com
+# are all real code/model-hosting destinations that show up in this corpus
+# too (a HuggingFace Space or model repo, a self-hosted Gitee mirror common
+# for Chinese institutions, ...).
+CODE_HOST_RE = re.compile(
+    r"(github\.com|gitlab\.com|bitbucket\.org|huggingface\.co|paperswithcode\.com|"
+    r"codeberg\.org|gitee\.com|sourceforge\.net)/", re.I)
+
+# A sentence-level statement that code is (or will be) released, independent
+# of whether a recognized code-host URL appears anywhere near it -- catches
+# a project page on the authors' own domain, a link the ar5iv HTML strips
+# during conversion, or a plain textual promise with no link at all yet.
+# Deliberately anchored on an explicit availability/release verb next to
+# "code"/"implementation", not the bare word "code" alone (which would
+# false-positive on ordinary methods text like "we implement our approach in
+# code using PyTorch"). Known limitation, same as any keyword heuristic: a
+# negated claim ("code is not yet available") reads as a positive match --
+# accepted as a rare case, since authors who have no code to offer almost
+# always just omit the sentence entirely rather than write a negation.
+CODE_AVAILABILITY_TEXT_RE = re.compile(
+    r"\b(?:code|codes|implementation|source\s*code)\b(?:[^.\n]{0,60})?\b"
+    r"(?:is|are|will\s+be|has\s+been)\s+(?:publicly\s+|freely\s+)?"
+    r"(?:available|released|open-?sourced?)\b"
+    r"|\bwe\s+(?:release|open-?source|publicly\s+release|will\s+release)\s+"
+    r"(?:the|our)?\s*(?:code|source\s*code|implementation)\b",
+    re.I)
 
 
 def detect_code_link(soup):
@@ -237,6 +264,17 @@ def detect_code_link(soup):
             continue
         if CODE_HOST_RE.search(href):
             return True
+    # Text-based fallback: not every code release is a recognized-host link
+    # (a project page, a link ar5iv's conversion dropped, ...) -- same
+    # bibliography/chrome exclusion as the link scan above, applied by
+    # removing those elements from a COPY of the soup before reading text
+    # (never mutate the caller's soup, which parse_ar5iv_references/
+    # parse_ar5iv_affiliations still need afterward).
+    text_soup = copy.deepcopy(soup)
+    for el in text_soup.select("li.ltx_bibitem, .ar5iv-footer"):
+        el.decompose()
+    if CODE_AVAILABILITY_TEXT_RE.search(text_soup.get_text(" ")):
+        return True
     return False
 
 

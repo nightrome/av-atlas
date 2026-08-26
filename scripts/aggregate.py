@@ -465,6 +465,30 @@ DISRUPTION_MIN_CITERS = 3
 # most of the corpus rather than only its oldest papers.
 EARLY_CITATION_WINDOW_YEARS = 2
 
+# Abstract-based supplementary code-availability signal (user-flagged: "code
+# cannot just be at github/gitlab. We should do a keyword search for things
+# like 'code' in the abstract"). has_code_link's primary source
+# (fetch_affiliations_arxiv.py's detect_code_link, see its own comment) only
+# ever reaches papers with a resolved arXiv ID and a successful ar5iv fetch
+# -- this runs over every core paper's ABSTRACT instead, which exists for
+# almost the whole corpus regardless of arXiv status, so it can upgrade a
+# paper straight from "never checked" to a confirmed release. Deliberately
+# one-directional -- an abstract that DOESN'T mention code says nothing
+# (most papers with real code releases don't say so in the abstract itself,
+# they put it in the paper body or just a repo README), so this only ever
+# sets has_code_link True, never False; a real False still only ever comes
+# from the ar5iv full-text check actually looking and not finding anything.
+# Same phrasing this project already uses in fetch_affiliations_arxiv.py's
+# CODE_AVAILABILITY_TEXT_RE, kept here as its own copy since the two run in
+# different scripts against different text (full paper vs. abstract only).
+ABSTRACT_CODE_AVAILABILITY_RE = re.compile(
+    r"\b(?:code|codes|implementation|source\s*code)\b(?:[^.\n]{0,60})?\b"
+    r"(?:is|are|will\s+be|has\s+been)\s+(?:publicly\s+|freely\s+)?"
+    r"(?:available|released|open-?sourced?)\b"
+    r"|\bwe\s+(?:release|open-?source|publicly\s+release|will\s+release)\s+"
+    r"(?:the|our)?\s*(?:code|source\s*code|implementation)\b",
+    re.I)
+
 
 def compute_disruption_index(edges):
     """CD index (Funk & Owen-Smith 2017, "A Dynamic Network Measure of
@@ -823,6 +847,18 @@ LATEX_SPACING_SUFFIX_RE = re.compile(r"\s*\[-?(\d+(\.\d+)?|\.\d+)(mm|cm|pt|ex|in
 # codepoints from a plain "*" and show up from the same LaTeX footnote
 # convention, just a different symbol/font choice.
 FOOTNOTE_MARKER_RE = re.compile(r"^[†‡*§¶✉⋆∗]+\s*")
+# The same marker glued onto the END instead, with nothing else following it
+# ("Singapore †", "Pengcheng Laboratory †", "Yingcong Chen†") -- unlike
+# TRAILING_FOOTNOTE_ARTIFACT_RE below, there's no accompanying footnote TEXT
+# here to key off of, just a bare marker. Safe to strip unconditionally
+# (no MIN_STRIPPED_INSTITUTION_LENGTH gate) since a real, standalone marker
+# character is itself strong evidence of "name, then a footnote reference"
+# -- unlike prose that merely happens to be short (see
+# strip_trailing_footnote_junk's docstring for why that case DOES need the
+# length gate). Confirmed on real data: "Singapore †" survived as its own
+# fake institution because a bare country name is only 9 characters, under
+# the length gate the sentence-level stripper uses.
+TRAILING_FOOTNOTE_MARKER_RE = re.compile(r"\s*[†‡*§¶✉⋆∗]+$")
 # A "Corresponding author(s)" footnote, or a raw LaTeX \footnotetext/\dagger
 # command, or the U+FFFD replacement character an already-lossy upstream
 # decode leaves behind -- glued onto the END of a real institution name with
@@ -962,7 +998,23 @@ AFFILIATION_SENTENCE_RE = re.compile(r"\b(are|is)\b(?:\s+\S+){0,3}\s+with\b", re
 # stayed paired with the institution name it followed, not survived alone as
 # its own entry.
 CORRESPONDING_AUTHOR_RE = re.compile(r"^corresponding author\b", re.I)
-CREDIT_LINE_RE = re.compile(r"\bequal contributions?\b|\bindicates?\s+(the\s+)?correspond|\bcorrespondence:", re.I)
+# Broadened to any remaining "correspond(ing/ence)" mention at all, not just
+# the "indicates ... correspond"/"correspondence:" phrasings -- by the time
+# this runs (after normalize_institution's strip passes), a real institution
+# name glued to corresponding-author text via a footnote MARKER has already
+# been cleanly separated by strip_trailing_footnote_junk's marker-delimited
+# case above ("Huawei † Corresponding author" -> "Huawei"). What's left
+# still containing "correspond" at this point is prose with no clean
+# boundary to split on -- confirmed on real data as pure junk with no
+# institution content worth keeping ("USA; corresponding author email",
+# "Correspondence", "the USA (corresponding author)", "Corresponding
+# authors:", "MITCorrespondance:") -- so the whole string is rejected
+# rather than guessing at which part might be a real name. No \b before
+# "correspond" -- same reasoning as TRAILING_FOOTNOTE_ARTIFACT_RE above,
+# the contamination is sometimes glued on with no space at all
+# ("FranceCorresponding", "MITCorrespondance:"), which a word-boundary
+# requirement would miss.
+CREDIT_LINE_RE = re.compile(r"\bequal contributions?\b|correspond", re.I)
 BARE_POSTAL_CODE_RE = re.compile(r"^\d{4,6}$")
 # A bare street NUMBER, not a postal code -- comma-split addresses leave
 # these behind the same way ("Korea Advanced Institute of Science and
@@ -1006,19 +1058,28 @@ def is_concatenated_multi_institution(name):
 
 def strip_trailing_footnote_junk(name):
     """Removes a "Corresponding author"/\\dagger/� footnote glued onto
-    the end of a real institution name -- but only when what's left looks
-    substantial enough to plausibly BE one (see
-    MIN_STRIPPED_INSTITUTION_LENGTH). Below that length, returns `name`
-    UNCHANGED rather than the short leftover fragment -- "Indicates
-    corresponding author" must still reach is_valid_institution() with the
-    word "correspond" intact so CREDIT_LINE_RE there can reject the whole
-    thing, not arrive as a bare "Indicates" that no longer matches anything
-    and would otherwise slip through as a fake institution."""
+    the end of a real institution name. Below MIN_STRIPPED_INSTITUTION_LENGTH,
+    returns `name` UNCHANGED rather than the short leftover fragment --
+    "Indicates corresponding author" must still reach is_valid_institution()
+    with the word "correspond" intact so CREDIT_LINE_RE there can reject the
+    whole thing, not arrive as a bare "Indicates" that no longer matches
+    anything and would otherwise slip through as a fake institution.
+
+    Exception: when a real footnote MARKER (†‡*§¶✉⋆∗) directly precedes the
+    matched text ("Huawei † Corresponding author", "NVIDIA ✉ Correspondence
+    Authors"), the length gate is skipped -- the marker itself is strong,
+    unambiguous evidence of a "name, then footnote" boundary, unlike prose
+    that merely happens to be short. Without this, "Huawei"/"NVIDIA" (6
+    characters) never passed the gate and the whole junk string survived as
+    its own fake institution (confirmed on real data)."""
     m = TRAILING_FOOTNOTE_ARTIFACT_RE.search(name)
     if not m:
         return name
     prefix = name[:m.start()].strip().rstrip(".,;:").strip()
-    return prefix if len(prefix) >= MIN_STRIPPED_INSTITUTION_LENGTH else name
+    marker_delimited = bool(re.search(r"[†‡*§¶✉⋆∗]\s*$", name[:m.start()]))
+    if marker_delimited:
+        prefix = re.sub(r"[†‡*§¶✉⋆∗]\s*$", "", prefix).strip()
+    return prefix if marker_delimited or len(prefix) >= MIN_STRIPPED_INSTITUTION_LENGTH else name
 
 
 def normalize_institution(name):
@@ -1027,6 +1088,13 @@ def normalize_institution(name):
     name = TRAILING_COUNTRY_RE.sub("", name).strip()
     name = FOOTNOTE_MARKER_RE.sub("", name).strip()
     name = strip_trailing_footnote_junk(name).strip()
+    # Bare trailing marker with no accompanying footnote text ("Singapore
+    # †", "Pengcheng Laboratory †") -- strip_trailing_footnote_junk above
+    # only fires when a trigger word (correspond/dagger/footnotetext/�)
+    # follows the marker; a marker with nothing after it needs this
+    # separate pass. Re-strip a trailing period afterward ("Nankai
+    # University. †" -> "Nankai University." -> "Nankai University").
+    name = TRAILING_FOOTNOTE_MARKER_RE.sub("", name).strip().rstrip(".").strip()
     name = NEXTAFF_PREFIX_RE.sub("", name).strip()
     name = LATEX_SPACING_PREFIX_RE.sub("", name).strip()
     name = LATEX_SPACING_SUFFIX_RE.sub("", name).strip()
@@ -1173,6 +1241,26 @@ def is_valid_institution(name):
     # INVALID_INSTITUTIONS above, just checked against the full country list
     # (COUNTRY_NAMES) instead of manually duplicating it here.
     if name in COUNTRY_NAMES.values():
+        return False
+    # The Unicode replacement character -- unlike MOJIBAKE_DIACRITIC_PAIRS'
+    # double-encoding artifacts (reversible, since the original bytes are
+    # still there just wrongly interpreted), U+FFFD means the original byte
+    # sequence was already discarded by an earlier lossy decode. There's no
+    # way to recover which character it was, so a name that still contains
+    # one after fix_mojibake_diacritics -- e.g. "Universit� de
+    # Technologie de Compi�gne" (should be "Université ... Compiègne")
+    # -- is rejected rather than shown with a visible mangled glyph in it.
+    if "�" in name:
+        return False
+    # An unmatched parenthesis -- a real institution's own name always opens
+    # and closes any parenthetical it uses ("Technology and Research
+    # (A*STAR)", "University at Buffalo (SUNY)"). A lone "(" with nothing to
+    # close it is what's left of a footnote/sentence fragment that got cut
+    # off mid-string by an earlier split or strip (confirmed on real data:
+    # "China. (Yu Pan* is the", "Cleveland State University (*" -- the
+    # latter only surfaces this way after FOOTNOTE_MARKER_RE above strips
+    # the trailing "*", exposing the dangling "(" it was attached to).
+    if name.count("(") != name.count(")"):
         return False
     return True
 
@@ -1376,11 +1464,15 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
                 "year": p.get("year"), "venue": p.get("venue"), "cd_index": p["cd_index"],
             }
         ranked = sorted(scored, key=lambda p: p["cd_index"], reverse=True)
+        # Sends enough rows for the page's "Show" dropdown to slice from
+        # client-side (same pattern as top_authors/top_institutions) rather
+        # than being hardcoded to exactly 5 with no way to see more.
+        DISRUPTION_LIST_CAP = 50
         insights["disruption_index"] = {
             "scored_papers": len(scored),
             "mean_cd_index": round(sum(p["cd_index"] for p in scored) / len(scored), 3),
-            "most_disruptive": [disruption_entry(p) for p in ranked[:5]],
-            "most_consolidating": [disruption_entry(p) for p in ranked[-5:][::-1]],
+            "most_disruptive": [disruption_entry(p) for p in ranked[:DISRUPTION_LIST_CAP]],
+            "most_consolidating": [disruption_entry(p) for p in ranked[-DISRUPTION_LIST_CAP:][::-1]],
         }
 
     # -- Open-source signal: does releasing code correlate with citation
@@ -1499,22 +1591,40 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
             for lt in range(MAX_LIFETIME_BUCKET + 1)
         ]
 
-        # -- Mean/stdev of total citations, grouped by lifetime -- only over
-        # authors with at least one cited paper (an author with zero known
-        # citation data isn't a real 0, see the None-vs-0 convention used
-        # everywhere else on this site), and only for lifetime buckets with
-        # enough authors to make a stdev meaningful -- a bucket with 1-2
-        # people isn't a distribution, so a small-N figure is suppressed
-        # rather than shown misleadingly precise.
+        # -- Citations by lifetime, as percentiles rather than mean+-stdev --
+        # only over authors with at least one cited paper (an author with
+        # zero known citation data isn't a real 0, see the None-vs-0
+        # convention used everywhere else on this site), and only for
+        # lifetime buckets with enough authors for the figure to mean
+        # anything -- a bucket with 1-2 people isn't a distribution, so a
+        # small-N figure is suppressed rather than shown misleadingly
+        # precise.
+        #
+        # Mean+-1stdev used to be shown here, but citation counts are
+        # heavily right-skewed (a handful of breakout papers inflate stdev
+        # far past the mean for almost every bucket) -- mean-stdev routinely
+        # went negative, got clamped to 0 for the chart's log scale, and the
+        # lower band edge ended up pinned to the axis for nearly every point
+        # (user-reported: "the lower end of the stdev is not visible").
+        # Percentiles don't have that failure mode -- p25/p75 are always
+        # real values actually present in the data, never a clamped
+        # artifact -- and are the more honest summary of a skewed
+        # distribution anyway (the median isn't dragged around by the same
+        # handful of outliers the mean is).
         MIN_AUTHORS_FOR_LIFETIME_STATS = 5
         citations_by_lifetime = defaultdict(list)
         for a in author_lifetimes.values():
             if a["lifetime"] <= MAX_LIFETIME_BUCKET and a["cited_papers"] > 0:
                 citations_by_lifetime[a["lifetime"]].append(a["citations"])
+
+        def quartiles(vals):
+            vals = sorted(vals)
+            q1, median, q3 = statistics.quantiles(vals, n=4, method="inclusive")
+            return round(q1, 1), round(median, 1), round(q3, 1)
+
         insights["citations_by_researcher_lifetime"] = [
-            {"lifetime": lt, "researchers": len(vals),
-             "mean_citations": round(statistics.mean(vals), 1),
-             "stdev_citations": round(statistics.stdev(vals), 1) if len(vals) > 1 else 0}
+            dict(zip(("lifetime", "researchers", "p25_citations", "median_citations", "p75_citations"),
+                     (lt, len(vals)) + quartiles(vals)))
             for lt, vals in sorted(citations_by_lifetime.items())
             if len(vals) >= MIN_AUTHORS_FOR_LIFETIME_STATS
         ]
@@ -1758,6 +1868,11 @@ def main():
         # size history).
         if e.get("has_code_link") is not None:
             papers[-1]["has_code_link"] = e["has_code_link"]
+        elif e.get("abstract") and ABSTRACT_CODE_AVAILABILITY_RE.search(e["abstract"]):
+            # Only ever upgrades a never-checked paper to True -- see
+            # ABSTRACT_CODE_AVAILABILITY_RE's comment for why this can't
+            # also supply a False.
+            papers[-1]["has_code_link"] = True
     # Unknown-citation papers sort after every known-citation paper, regardless
     # of magnitude -- "no data" must never look like "definitely fewer than 1".
     papers.sort(key=lambda p: (p["citations"] is not None, p["citations"] or 0), reverse=True)
