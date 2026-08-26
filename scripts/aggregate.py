@@ -1801,7 +1801,19 @@ def main():
         key = normalize_title(p["title"])
         citers = citing_by_target.get(key)
         if citers:
-            p["citing_papers"] = sorted(citers, key=lambda c: c["year"] or 0)
+            # Just the title, not the full {title, year, venue, category,
+            # authors} object citing_by_target builds above -- every citer
+            # is itself a top-level entry in `papers`/all_papers (that's
+            # what by_norm_title.get(citer_key) above already required), so
+            # embedding its venue/year/category/authors here duplicated data
+            # already present elsewhere in the same stats.json payload. At
+            # corpus scale this was ~29MB of stats.json's ~68MB (109,636
+            # edges x a denormalized object each, `authors` alone dead
+            # weight -- no page ever reads a citing entry's own author list)
+            # and was most of what pushed the file over GitHub's 100MB push
+            # limit. paper.html/insights.html now resolve each title against
+            # their own already-fetched all_papers array instead.
+            p["citing_papers"] = [c["title"] for c in sorted(citers, key=lambda c: c["year"] or 0)]
         if self_citing_count.get(key):
             p["self_citations"] = self_citing_count[key]
         d = disruption_by_key.get(key)
@@ -1962,7 +1974,11 @@ def main():
             "also_introduced_in": [
                 {"title": p["title"], "year": p["year"], "venue": p.get("venue")} for p in seed_papers[1:]
             ],
-            "citing_papers": citing_list,
+            # Titles only -- same reasoning as papers[]["citing_papers"]
+            # above, insights.html resolves each against its own
+            # already-fetched all_papers instead of getting a second
+            # denormalized copy of every citer's year/venue/category/authors.
+            "citing_papers": [c["title"] for c in citing_list],
             "citing_count": len(citing_list),
         })
     datasets.sort(key=lambda d: -d["citing_count"])
@@ -2481,7 +2497,11 @@ def main():
         },
         "insights": insights,
     }
-    OUT_FILE.write_text(json.dumps(stats, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    # No indent -- same reasoning as stats_adjacent.json/the abstract shards
+    # just below (indent=2's per-key newline+spacing roughly doubled this
+    # file's size at corpus scale, which is what pushed it over GitHub's
+    # 100MB file limit and got a gh-pages push rejected outright).
+    OUT_FILE.write_text(json.dumps(stats, ensure_ascii=False), encoding="utf-8", newline="\n")
     print(f"Wrote {OUT_FILE}")
     print(f"  {len(all_entries)} total papers, {len(entries)} core AV-relevant")
     print(f"  {len(papers)} ranked papers, {len(author_citations)} authors, "

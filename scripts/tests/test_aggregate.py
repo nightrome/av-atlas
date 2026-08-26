@@ -578,11 +578,13 @@ class TestAggregateEndToEnd(unittest.TestCase):
             }},
         )
         by_title = {p["title"]: p for p in stats["all_papers"]}
-        citers = {c["title"] for c in by_title["Cited Paper"]["citing_papers"]}
+        # Just a list of titles -- each citer is already its own top-level
+        # all_papers entry, see aggregate.py's citing_papers comment.
+        citers = set(by_title["Cited Paper"]["citing_papers"])
         self.assertEqual(citers, {"Citer One", "Citer Two"})
-        # Sorted oldest first, for a citation-timeline chart.
-        years = [c["year"] for c in by_title["Cited Paper"]["citing_papers"]]
-        self.assertEqual(years, sorted(years))
+        # Sorted oldest first, for a citation-timeline chart: Citer Two is
+        # 2021, Citer One is 2022.
+        self.assertEqual(by_title["Cited Paper"]["citing_papers"], ["Citer Two", "Citer One"])
 
     def test_insights_highest_impact_author_requires_more_than_10_papers(self):
         # User-requested: a two-paper lucky hit shouldn't win "highest
@@ -669,7 +671,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         )
         by_title = {p["title"]: p for p in stats["all_papers"]}
         cited = by_title["Cited Paper"]
-        citers = {c["title"] for c in cited["citing_papers"]}
+        citers = set(cited["citing_papers"])
         self.assertEqual(citers, {"Self Citer", "Independent Citer"})
         self.assertEqual(cited["self_citations"], 1)
 
@@ -841,7 +843,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         )
         kitti = next(d for d in stats["datasets"] if d["name"] == "KITTI")
         self.assertEqual(kitti["citing_count"], 2)
-        citer_titles = {c["title"] for c in kitti["citing_papers"]}
+        citer_titles = set(kitti["citing_papers"])
         self.assertEqual(citer_titles, {"Cites The 2012 Paper", "Cites The 2013 Paper"})
         self.assertEqual(
             [a["title"] for a in kitti["also_introduced_in"]], ["Vision meets robotics: The KITTI dataset"])

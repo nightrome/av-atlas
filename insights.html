@@ -471,12 +471,22 @@ function extraDatasetsFromCategory(stats, curatedTitles, need) {
     .slice(0, need);
 }
 
-function renderDatasetTimeline(allDatasets, topN) {
+// citing_papers (both on stats.datasets and on an all_papers entry) is just
+// a list of titles -- see aggregate.py -- so every consumer that needs a
+// citer's year resolves it against this map instead of the site shipping a
+// second denormalized copy of every citer's own fields.
+function resolveCitingYears(stats, citingTitles) {
+  const byTitle = resolveCitingYears._byTitle
+    || (resolveCitingYears._byTitle = new Map((stats.all_papers || []).map(p => [p.title, p])));
+  return (citingTitles || []).map(t => byTitle.get(t)).filter(Boolean);
+}
+
+function renderDatasetTimeline(stats, allDatasets, topN) {
   const topDatasets = [...allDatasets].sort((a, b) => b.citing_count - a.citing_count).slice(0, topN);
   const PALETTE = TIMELINE_PALETTE;
 
   const allYears = [...new Set(
-    topDatasets.flatMap(d => (d.citing_papers || []).map(c => c.year)).filter(Boolean)
+    topDatasets.flatMap(d => resolveCitingYears(stats, d.citing_papers).map(c => c.year)).filter(Boolean)
   )].sort();
 
   // In memory only for this pageview, not persisted -- a refresh always
@@ -502,7 +512,7 @@ function renderDatasetTimeline(allDatasets, topN) {
       .filter(d => !hidden.has(d.name))
       .map((d, i) => {
         const byYear = {};
-        (d.citing_papers || []).forEach(c => { if (c.year) byYear[c.year] = (byYear[c.year] || 0) + 1; });
+        resolveCitingYears(stats, d.citing_papers).forEach(c => { if (c.year) byYear[c.year] = (byYear[c.year] || 0) + 1; });
         const values = {};
         allYears.forEach(yr => { values[yr] = byYear[yr] || 0; });
         return { name: d.name, color: PALETTE[topDatasets.indexOf(d) % PALETTE.length], values };
@@ -521,11 +531,13 @@ function render(ins, stats) {
     const n = renderTopNControl(document.getElementById('dataset-topn-container'), 'insights-datasets-topn', {
       default: 10, min: 1, max: 40,
       onChange: (topN) => renderDatasetTimeline(
+        stats,
         [...curatedDatasets, ...(topN > curatedDatasets.length ? extraDatasetsFromCategory(stats, curatedTitles, topN - curatedDatasets.length) : [])],
         topN,
       ),
     });
     renderDatasetTimeline(
+      stats,
       [...curatedDatasets, ...(n > curatedDatasets.length ? extraDatasetsFromCategory(stats, curatedTitles, n - curatedDatasets.length) : [])],
       n,
     );

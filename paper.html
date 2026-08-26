@@ -370,7 +370,12 @@ function render(stats) {
   }
 
   const citingPanel = document.getElementById('citing-panel');
-  const citing = paper.citing_papers || [];
+  // citing_papers is just a list of titles (see aggregate.py) -- each
+  // citing paper is itself a full entry in all_papers already, so resolve
+  // against that instead of the site shipping a second, denormalized copy
+  // of every citer's venue/year/category.
+  const byTitle = new Map((stats.all_papers || []).map(p => [p.title, p]));
+  const citing = (paper.citing_papers || []).map(t => byTitle.get(t)).filter(Boolean);
   if (!citing.length) {
     citingPanel.querySelector('table').style.display = 'none';
     document.getElementById('citing-chart').textContent = 'None';
