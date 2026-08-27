@@ -80,19 +80,27 @@ def deploy_gh_pages():
     print("\n--- Deploying to gh-pages ---")
     if not PUBLIC_DIR.exists():
         raise SystemExit(f"{PUBLIC_DIR} not found -- build did not produce output")
-    run(["git", "fetch", "origin", "gh-pages"], check=False)
 
+    # Always publishes as a single fresh orphan commit, force-pushed --
+    # never builds on top of gh-pages' existing history. gh-pages is 100%
+    # generated build output (stats.json/stats_adjacent.json, mostly, ~140MB
+    # per snapshot) with no reviewable diffs and no reason anyone would ever
+    # want an old commit back; committing on top of history the normal way
+    # made every deploy add a genuinely new, largely non-delta-compressible
+    # multi-MB chunk to the repo forever (confirmed: `git verify-pack`
+    # showed only 17 of 315 objects in the pack had ANY delta chain -- 24
+    # accumulated deploys were purely additive, not shrinking via reuse).
+    # Squashing to one commit keeps gh-pages' contribution to repo size
+    # flat at ~one snapshot, regardless of how many more times the site
+    # gets deployed -- see DECISIONS.md's "Keep GitHub repo size small"
+    # entry. No `git fetch origin gh-pages` needed anymore either, since
+    # nothing here reads its prior content.
     worktree = Path(tempfile.mkdtemp(prefix="av-atlas-ghp-"))
     worktree.rmdir()
     try:
-        added = run(["git", "worktree", "add", "--detach", str(worktree), "origin/gh-pages"], check=False)
-        if added.returncode != 0:
-            # No gh-pages branch yet -- first-ever deploy. Check out an
-            # orphan branch (no shared history with main) at the worktree,
-            # matching the conventional gh-pages setup.
-            run(["git", "worktree", "add", "--detach", str(worktree)])
-            run(["git", "checkout", "--orphan", "gh-pages"], cwd=worktree)
-            run(["git", "rm", "-rf", "--quiet", "."], cwd=worktree, check=False)
+        run(["git", "worktree", "add", "--detach", str(worktree)])
+        run(["git", "checkout", "--orphan", "gh-pages-publish"], cwd=worktree)
+        run(["git", "rm", "-rf", "--quiet", "."], cwd=worktree, check=False)
 
         for item in worktree.iterdir():
             if item.name == ".git":
@@ -114,8 +122,8 @@ def deploy_gh_pages():
             print("gh-pages: nothing changed.")
             return
         run(["git", "commit", "-m", "Publish AV Atlas"], cwd=worktree)
-        run(["git", "push", "origin", "HEAD:gh-pages"], cwd=worktree)
-        print("gh-pages pushed.")
+        run(["git", "push", "--force", "origin", "HEAD:gh-pages"], cwd=worktree)
+        print("gh-pages pushed (squashed to a single commit).")
     finally:
         run(["git", "worktree", "remove", "--force", str(worktree)], check=False)
         rmtree_retry(worktree) if worktree.exists() else None

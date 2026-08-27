@@ -704,3 +704,38 @@ staying available and unchanged to be re-fetched from scratch -- genuinely
 regenerable in principle, but a real multi-day undertaking in practice, not
 instant. `data/venues/*.json` (the actual proceedings listings, tracked)
 remains the one dataset this whole pipeline cannot survive losing.
+
+## Keep GitHub repo size small: gh-pages squashed to one commit per deploy
+
+User-asked, after the reproducibility audit above surfaced how big `main`
+and `gh-pages` actually are (144.6MB / 141.3MB working-tree, 112MB packed
+`.git`): make the overall repo as small as possible going forward.
+
+`gh-pages` is 100% generated build output -- `stats.json`/
+`stats_adjacent.json` (the two biggest files by far, ~120MB combined) plus
+sharded abstracts and the HTML/CSS/JS, all reproducible from `main`'s
+tracked sources by rerunning the pipeline. Nobody has any reason to look at
+an old commit's diff of a generated leaderboard dump. `deploy.py`
+previously committed on top of `gh-pages`' existing history every deploy,
+the normal git workflow but wrong for this branch specifically: `git
+verify-pack` on the 24 accumulated deploy commits showed only 17 of 315
+objects had ANY delta chain, meaning each deploy was adding a genuinely new,
+largely non-delta-compressible multi-MB chunk to the repo forever, not
+reusing space via similarity to the last snapshot.
+
+Fixed: `deploy_gh_pages()` now always checks out a fresh orphan branch and
+force-pushes a single commit, discarding gh-pages' prior history every
+time, same practice `peaceiris/actions-gh-pages` and the `gh-pages` npm
+package both default to for exactly this reason. gh-pages' contribution to
+repo size is now flat at ~one snapshot regardless of future deploy count.
+Old commits become unreachable on the remote and get reclaimed by GitHub's
+own server-side maintenance (not instant, but not something this repo needs
+to manage).
+
+Not addressed here, left as a separate lever if repo size becomes a
+problem again: `main`'s own size (144.6MB) is almost entirely
+`data/venues/*.json`, genuinely-needed tracked source data, not build
+output -- shrinking that means either a more compact on-disk format
+(trades off the "reviewable as a diff" property these files are kept
+verbose JSON for) or accepting the size as the real cost of keeping the
+one dataset this whole pipeline can't regenerate.
