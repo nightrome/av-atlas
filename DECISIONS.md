@@ -705,7 +705,23 @@ regenerable in principle, but a real multi-day undertaking in practice, not
 instant. `data/venues/*.json` (the actual proceedings listings, tracked)
 remains the one dataset this whole pipeline cannot survive losing.
 
-## Keep GitHub repo size small: gh-pages squashed to one commit per deploy
+## Repair scripts wired into build_public_site.py, not left as a manual step
+
+Follow-up to the reproducibility audit above -- user asked whether a by-hand
+correction (an author merge, an institution-name fix) is "separated from
+crawled content such that in case of a crawled data loss I can recrawl,
+apply all my by hand corrections and get the same website again." Author
+fixes (`KNOWN_NAME_FIXES` in `aggregate.py`) and institution aliases
+(`data/institution_aliases_llm.json`) already qualified: both are tracked
+and re-applied automatically every `aggregate.py` run. `repair_garbled_
+authors_detail.py` and `repair_glued_institution_strings.py` did not --
+tracked and idempotent, yes, but nothing in the pipeline ever called them,
+so a `papers_full.json` rebuilt from scratch after data loss would silently
+come back without either fix until someone remembered to re-run both by
+hand. Closed by adding both as steps in `build_public_site.py`'s `main()`,
+right after `merge_corpus.py` and before `aggregate.py` (patches must land
+before stats are computed from the corpus). Safe to run on every build,
+data-loss or not: each is a no-op once its fix is already applied.
 
 User-asked, after the reproducibility audit above surfaced how big `main`
 and `gh-pages` actually are (144.6MB / 141.3MB working-tree, 112MB packed

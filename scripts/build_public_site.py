@@ -10,9 +10,15 @@ Runs, in order, and aborts (non-zero exit) if any step fails:
   1. merge_corpus.py -- rebuilds data/papers_full.json from data/venues/*.json
      plus arXiv, carrying over enrichment (author detail, citations,
      abstracts, ...) from the previous run, and reclassifies every paper.
-  2. aggregate.py -- rebuilds data/stats.json + data/stats_adjacent.json.
-  3. run_tests.py -- the full test suite (Python + JS + smoke + regression).
-  4. build_public_site() below -- publishes the built HTML/stats.
+  2. repair_garbled_authors_detail.py / repair_glued_institution_strings.py --
+     idempotent one-off fixes for real, already-shipped data bugs. Run here
+     (not left as a step to remember by hand) so a full recrawl-from-scratch
+     reproduces the same corpus: both patch papers_full.json directly, which
+     step 1 rebuilds from data/venues/*.json alone and would otherwise
+     silently drop them.
+  3. aggregate.py -- rebuilds data/stats.json + data/stats_adjacent.json.
+  4. run_tests.py -- the full test suite (Python + JS + smoke + regression).
+  5. build_public_site() below -- publishes the built HTML/stats.
 
 This exists because crawler scripts (mine_abstracts.py,
 backfill_citing_venues.py, enrich_core_authors.py, ...) write straight into
@@ -165,6 +171,15 @@ def run_step(label, script_name):
 
 def main():
     run_step("Rebuilding corpus (merge_corpus.py)", "merge_corpus.py")
+    # One-off data repairs, applied here (not just left as scripts to remember
+    # to run by hand) so a full recrawl-from-scratch reproduces the same
+    # corpus without a manual step: merge_corpus.py rebuilds papers_full.json
+    # from data/venues/*.json alone, which would otherwise silently drop
+    # these fixes since they patch papers_full.json directly rather than the
+    # tracked venue sources. Both are idempotent (a no-op once already
+    # applied), so re-running them on every build is safe and cheap.
+    run_step("Repairing garbled authors_detail", "repair_garbled_authors_detail.py")
+    run_step("Repairing glued institution strings", "repair_glued_institution_strings.py")
     run_step("Rebuilding stats (aggregate.py)", "aggregate.py")
     run_step("Running tests (run_tests.py)", "run_tests.py")
     print("\n--- Publishing public site ---")
