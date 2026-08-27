@@ -1,4907 +1,3505 @@
 [
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Target Detection Algorithm Based on MMW Radar and Camera Fusion",
     "authors": "Qiuyu Jiang, Lijun Zhang, Dejian Meng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "RGB and LiDAR fusion based 3D Semantic Segmentation for Autonomous Driving",
     "authors": "Khaled El Madawi, Hazem Rashed, Ahmad El Sallab, Omar Nasr, Hanan Kamel, Senthil Kumar Yogamani",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "DFuseNet: Deep Fusion of RGB and Sparse Depth Information for Image Guided Dense Depth Completion",
     "authors": "Shreyas S. Shivakumar, Ty Nguyen, Ian D. Miller, Steven W. Chen, Vijay Kumar 0001, Camillo J. Taylor",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Deep Convolutional Neural Network-based Fusion of RGB and IR Images in Marine Environment",
     "authors": "Fahimeh Farahnakian, Jussi Poikonen, Markus Laurinen, Jukka Heikkonen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Road scenes analysis in adverse weather conditions by polarization-encoded images and adapted deep learning",
     "authors": "Rachel Blin, Samia Ainouz 0001, St&#233;phane Canu, Fabrice M&#233;riaudeau",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Don't Worry About the Weather: Unsupervised Condition-Dependent Domain Adaptation",
     "authors": "Horia Porav, Tom Bruls, Paul Newman 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Simulating Photo-realistic Snow and Fog on Existing Images for Enhanced CNN Training and Evaluation",
     "authors": "Alexander von Bernuth, Georg Volk, Oliver Bringmann 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Deep Neural Network-Based Robust Ship Detection Under Different Weather Conditions",
     "authors": "Xin Nie, Meifang Yang, Ryan Wen Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Uncertainty Estimation in One-Stage Object Detection",
     "authors": "Florian Kraus, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "2D Car Detection in Radar Data with PointNets",
     "authors": "Andreas Danzer, Thomas Griebel, Martin Bach, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "SoilingNet: Soiling Detection on Automotive Surround-View Cameras",
     "authors": "Michal Uric&#225;r, Pavel Kr&#237;zek, Ganesh Sistu, Senthil Kumar Yogamani",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "CNN based Multi-View Object Detection and Association",
     "authors": "Michael Weber 0009, Lucas Volkert, Christian Hubschneider, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Research on Entropy based Corrective Maintenance Difficulty Estimation of Metro Signaling",
     "authors": "Xiaoxi Hu, Ru Niu, Tang Tao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evaluation Method of Passenger Pressure State in Metro Hub based on AFC Data",
     "authors": "Qiang Tu, Xiaodong Zhang, Yu Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Overflowing Passengers Transfer Model for Metro Congestion Relieving Using Customized Bus",
     "authors": "Tenglong Hao, Qi Zhang, Panyu Gao, Bailin Huang, Beiye Liang, Xiying Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Mesoscopic Modeling of Train Operations: Application to the MBTA Red Line",
     "authors": "Saeid Saidi, Nigel H. M. Wilson, Haris N. Koutsopoulos, Jinhua Zhao 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis of Driving Control Model of Normal Lane Change based on Naturalistic Driving Data",
     "authors": "Jiarui Zhang, Zhixiong Ma, Xichan Zhu, Yeting Lin",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Situational Awareness with Ubiquitous Sensing: Towards Real-time Event Detection &#38; Classification",
     "authors": "Michael L. Nuzzo, Thanuka L. Wickramarathne",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Exploring Spatial and Temporal Patterns of Large-scale Smartphone-based Dangerous Driving Event Data",
     "authors": "Di Yang 0006, Kun Xie 0002, Kaan Ozbay, Hong Yang 0004",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Spatial Analysis of Taxi Speeding Event Using GPS Trajectory Data",
     "authors": "Chuanyun Fu, Yue Zhou, Chuan Xu, Haipeng Cui",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Geographical Map Registration and Fusion of Lidar-Aerial Orthoimagery in GIS",
     "authors": "Siqi Yi, Stewart Worrall 0002, Eduardo M. Nebot",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "MAGIS - A Geographic Information System for Mobility Data Analysis",
     "authors": "Lennart Adenaw, Julian Kreibich, Michael Wittmann, Lukas Merkle, Adam Waclaw, Markus Lienkamp",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evaluating the Capability of OpenStreetMap for Estimating Vehicle Localization Error",
     "authors": "Kelvin Wong, Ehsan Javanmardi, Mahdi Javanmardi, Yanlei Gu, Shunsuke Kamijo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Open Source TrajAnalytics Software for Modeling, Transformation and Visualization of Urban Trajectory Data",
     "authors": "Shamal Al-Dohuki, Farah Kamw, Ye Zhao 0003, Xinyue Ye, Jing Yang 0001, Suphanut Jamonnak",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fallback Strategy for Level 4+ Automated Driving System",
     "authors": "Jing Yu, Feng Luo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Adaptive Stress Testing with Reward Augmentation for Autonomous Vehicle Validatio",
     "authors": "Anthony Corso 0001, Peter Du, Katherine Rose Driggs-Campbell, Mykel J. Kochenderfer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Defining Pass-/Fail-Criteria for Particular Tests of Automated Driving Functions",
     "authors": "Bj&#246;rn Klamann, Moritz Lippert, Christian Amersbach, Hermann Winner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Safety Evaluation of Responsibility-Sensitive Safety (RSS) on Autonomous Car-Following Maneuvers Based on Surrogate Safety Measurements",
     "authors": "Chen Chai, Xianming Zeng, Xiangbin Wu, Xuesong Wang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analytical Performance Evaluation of the Collective Perception Service in C-V2X Mode 4 Networks",
     "authors": "Florian Alexander Schiegg, Nadia Brahmi, Ignacio Llatser",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Performance Characteristics of Sensing-based SPS of PC5-based C-V2X Mode 4 in Crash Warning Application under Congestion",
     "authors": "Takeshi Hirai, Tutomu Murase",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Performance analysis of Vehicle-to-Vehicle communications for critical tasks in autonomous driving",
     "authors": "Ignacio Parra, H&#233;ctor Corrales S&#225;nchez, Noelia Hern&#225;ndez, S. Vigre, David Fern&#225;ndez Llorca, Miguel &#193;ngel Sotelo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Combining V2I with V2V Communications for Service Continuity in Vehicular Networks",
     "authors": "Bach Long Nguyen, Duy T. Ngo, Nguyen Hoang Tran, Hai L. Vu 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Ad-hocChain: Cooperative Sharing and Trading Infrastructure for Electric Vehicle Charging Networks",
     "authors": "Andrew Cullen, Pietro Ferraro, Giovanni Russo 0002, Robert Shorten",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Impact Assessment of Autonomous Electric Vehicles in Public Transportation System",
     "authors": "Ganesh Sethuraman, Sai Sagar Reddy Ragavareddy, Aybike Ongel, Markus Lienkamp, Pongsathorn Raksincharoensak",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Stationary Spatial Charging Demand Distribution for Commercial Electric Vehicles in Urban Area",
     "authors": "Xinwu Qian, Jiawei Xue 0001, Stanislav Sobolevsky, Chao Yang 0034, Satish V. Ukkusuri",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Online Charge Scheduling for Electric Vehicles in Autonomous Mobility on Demand Fleets",
     "authors": "Nathaniel Tucker, Berkay Turan, Mahnoosh Alizadeh",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Efficient Task Assignment for Crowd-Powered Rebalancing in Bike Sharing Systems",
     "authors": "Yifan Xu 0002, Guanghui Wang 0003, Jun Tao 0003, Jianping Pan 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Dynamic Shared Bikes Rebalancing Method Based on Demand Prediction",
     "authors": "Xiaojian Zhang, Hongtai Yang, Rong Zheng, Zhicheng Jin, Bowen Zhou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Smartphone-based Public Transport Guidance: An Investigation of Potential Benefits",
     "authors": "Tao Liu 0045, Yu Jiang 0002, Avishai (Avi) Ceder, Rachel Gasson, Lorraine Cheyne",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Utilizing Crowdsourced Data to Extract System-Wide Patterns of Rail Transit Delays",
     "authors": "Mehmet Baran Ulak, Anil Yazici, Yun Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fusion of Camera and Lidar Data for Large Scale Semantic Mapping",
     "authors": "Thomas Westfechtel, Kazunori Ohno, Ranulfo Plutarco Bezerra Neto, Shotaro Kojima, Satoshi Tadokoro",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "LATTE: Accelerating LiDAR Point Cloud Annotation via Sensor Fusion, One-Click Annotation, and Tracking",
     "authors": "Bernie Wang 0002, Virginia Wu, Bichen Wu, Kurt Keutzer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "LIDAR and Monocular Camera Fusion: On-road Depth Completion for Autonomous Driving",
     "authors": "Chen Fu, Christoph Mertz, John M. Dolan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "MLOD: A multi-view 3D object detection based on robust feature fusion method",
     "authors": "Jian Deng, Krzysztof Czarnecki 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Towards Robust CNN-based Object Detection through Augmentation with Synthetic Rain Variations",
     "authors": "Georg Volk, Stefan M&#252;ller, Alexander von Bernuth, Dennis Hospach, Oliver Bringmann 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vision-based Localization using a Monocular Camera in the Rain",
     "authors": "Makoto Yamada, Tomoya Sato, Hiroyuki Chishiro, Shinpei Kato",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Coarse-to-Fine Luminance Estimation for Low-Light Image Enhancement in Maritime Video Surveillance",
     "authors": "Meifang Yang, Xin Nie, Ryan Wen Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Rainfall Observation System using Automotive Radar Sensor for ADAS based Driving Safety",
     "authors": "Bong-Joo Jang, In Taek Jung, Kyu Soo Chong, Hong Ki Sung, Sanghun Lim",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vehicle Occupancy Detection for HOV/HOT Lanes Enforcement",
     "authors": "Bruno Silva, Pedro Martins 0004, Jorge Batista 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Collision Warning Oriented Brake Lights Detection and Classification Algorithm Based on a Mono Camera Sensor",
     "authors": "Dario Nava, Giulio Panzani, Sergio M. Savaresi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Investigating Low Level Features in CNN for Traffic Sign Detection and Recognition",
     "authors": "Ee Heng Chen, Philipp R&#246;thig, J&#246;ran Zeisler, Darius Burschka",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fast object detection in compressed JPEG Images",
     "authors": "Benjamin Deguerre, Cl&#233;ment Chatelain 0001, Gilles Gasso",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Heterogeneous Design for Feeder Services of Trunk Transit System",
     "authors": "Yue Su, Wenbo Fan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Intrusion Detection Method of Data Tampering Attack in Communication-Based Train Control System",
     "authors": "Wei Zhang 0128, Bing Bu 0002, Hongwei Wang 0008",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Feature Selection for Prediction of Railway Disruption Length",
     "authors": "Menglin Fan, Wei Zheng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Energy-efficient control for metros with dynamic losses of traction power system",
     "authors": "Zhuang Xiao, Baoxue Bai, Nankuang Chen, Qingyuan Wang 0001, Pengfei Sun 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Enhancing Crash Injury Severity Prediction on Imbalanced Crash Data by Sampling Technique with Variable Selection",
     "authors": "Mahama Yahaya, Xinguo Jiang, Chuanyun Fu, Kamal Bashir, Wenbo Fan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vehicle speed prediction with RNN and attention model under multiple scenarios",
     "authors": "Chi-Sheng Shih 0001, Pao-Wei Huang, E.-Ton Yen, Pei-Kuei Tsung",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Novel Methodology of Time Dependent Mean Field Based Multilayer Unsupervised Anomaly Detection Using Traffic Surveillance Videos",
     "authors": "Fan Zuo, Jingqin Gao, Di Yang 0006, Kaan Ozbay",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Traffic Monitoring and Anomaly Detection based on Simulation of Luxembourg Road Network",
     "authors": "Lin Zhu, Rajesh Krishnan, Aruna Sivakumar, Fangce Guo, John W. Polak",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "ParkingRank-D: A Spatial-temporal Ranking Model of Urban Parking Lots in City-wide Parking Guidance System",
     "authors": "Qinghao Lu, Zhiling Tang, Yan Nie, Lei Peng 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Fault Precaution Model based on Fault Sequential Patterns for Metro Overhead Contact System",
     "authors": "Yigu Liu, Long Yu, Kaiyi Qian",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Three-Dimensional Spatiotemporal Model Concepts and Its Application on Traffic Flow Analysis Using Trajectory Data",
     "authors": "Xueqi Che, Yanning Wei, Keping Li, Maolin Pan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "MMSE-based Optimized Transfer Strategy for Transfer Prediction of Parking Data",
     "authors": "Haoyan Chen, Guangxi Chen, Qinghao Lu, Lei Peng 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Speed Planning for an Autonomous Vehicle with Conflict Moving Objects",
     "authors": "Xiaowei Shi, Xiaopeng Li 0020",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Performance Boundary Identification for the Evaluation of Automated Vehicles using Gaussian Process Classification",
     "authors": "Felix Batsch, Alireza Daneshkhah, Madeline Cheah, Stratis Kanarachos, Anthony Baxendale",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Defining Required and Feasible Test Coverage for Scenario-Based Validation of Highly Automated Vehicles",
     "authors": "Christian Amersbach, Hermann Winner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Rapid and Precise Millimeter-wave Radar Simulation for ADAS Virtual Assessment",
     "authors": "Takashi Machida, Takashi Owaki",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Research on resource scheduling and allocation mechanism of computation and transmission under MEC framework",
     "authors": "Qingwen Han, Xiaoyuan Zhang, Junjun Zhang, Lingqiu Zeng, Lei Ye 0001, Jianmei Lei, Yang Jiang, Xuena Peng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Portable Implementation of the Real-Time Publish-Subscribe Protocol for Microcontrollers in Distributed Robotic Applications",
     "authors": "Alexandru Kampmann, Andreas W&#252;stenberg, Bassam Alrifaee, Stefan Kowalewski",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Scalable Modulation-based Multi-Service Multiplexing Transmission for Vehicular Communications",
     "authors": "Guo Wang, Gang Zhu, Siyu Lin, Wenjie Li, Shichao Li 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "TriP: Misbehavior Detection for Dynamic Platoons using Trust",
     "authors": "Keno Garlichs, Alexander Willecke, Martin Wegner, Lars C. Wolf",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Smart Charging Benefits in Autonomous Mobility on Demand Systems",
     "authors": "Berkay Turan, Nathaniel Tucker, Mahnoosh Alizadeh",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Combinatorial Optimal Location Design of Charging Stations based on Multi-agent Simulation",
     "authors": "Hideaki Uchida, Hideki Fujii, Shinobu Yoshimura",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis of Driving Behavior's Impact on Battery Discharge Rate for Electric Vehicles",
     "authors": "Yew Ming Yeap, Duong Tran",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A comparative study of the effect of Intelligent Control based Torque Vectoring Systems on EVs with different powertrain architectures",
     "authors": "Alberto Parra, Asier Zubizarreta, Joshu&#233; P&#233;rez",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Measurement and Prediction of Regional Traffic Volume in Holidays",
     "authors": "Zhenzhu Wang, Yishuai Chen, Jian Su, Yuchun Guo, Yongxiang Zhao, Weikang Tang, Chao Zeng, Jingwei Chen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fuel savings as an incentive for speed compliance in the informal public transport industry in South Africa",
     "authors": "N. A. Ebot Eno Akpa, Marthinus J. Booysen, Marion Sinclair",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Bayesian Spatiotemporal Approach for Bus Speed Modeling",
     "authors": "Bin Hu, Kun Xie 0002, Haipeng Cui, Hangfei Lin",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Seasonal Modelling Approach Capturing Spatio-Temporal Correlations for Dynamic Bus Travel Time Prediction",
     "authors": "B. Anil Kumar, Avinash Achar, Dhivya Bharathi, Lelitha Vanajakshi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "People Tracking by Cooperative Fusion of RADAR and Camera Sensors",
     "authors": "Martin D. Dimitrievski, Lennert Jacobs, Peter Veelaert, Wilfried Philips",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Pedestrian Classification Using Self-Training Algorithm",
     "authors": "Trongmun Jiralerspong",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Deep End-to-end 3D Person Detection from Camera and Lidar",
     "authors": "Markus Roth, Dominik Jargot, Dariu M. Gavrila",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Leverage of Limb Detection in Pose Estimation for Vulnerable Road Users",
     "authors": "Sijia Wang, Fabian B. Flohr, Hui Xiong 0006, Tuopu Wen, Baofeng Wang, Mengmeng Yang 0001, Diange Yang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A System for Image-Based Non-Line-Of-Sight Detection Using Convolutional Neural Networks",
     "authors": "Clarissa B&#246;ker, Joshua Niemeijer, Nicolai Wojke, Cyril Meurie, Yann Cocheril",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Long-Term Knowledge Distillation of Visual Place Classifiers",
     "authors": "Hiroki Tomoe, Tanaka Kanji 0003",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Texture Underfitting for Domain Adaptation",
     "authors": "Jan-Nico Zaech, Dengxin Dai, Martin Hahner, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Towards a Reference Data Generation Framework for Performance Assessment of Perception Systems",
     "authors": "R&#233;mi Defraiteur, Sergio Alberto Rodriguez F., Marie-Anne Mittet, Roger Reynaud, Nicole El Zoghby",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "FaultNet: Faulty Rail-Valves Detection using Deep Learning and Computer Vision",
     "authors": "Ramanpreet Singh Pahwa, Vijay Ramaseshan Chandrasekhar, Jin Chao, Jestine Paul, Yiqun Li, Ma Tin Lay Nwe, Shudong Xie, Ashish James, Arulmurugan Ambikapathi, Zeng Zeng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Performance Comparison of Deep Learning Methods for Real-time Localisation of Vehicle Lights in Video Frames",
     "authors": "Christopher J. Rapson, Boon-Chong Seet, Muhammad Asif Naeem, Jeong Eun Lee, Reinhard Klette",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "6DoF Vehicle Pose Estimation Using Segmentation-Based Part Correspondences",
     "authors": "Thomas Barowski, Magdalena Szczot, Sebastian Houben",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Simple yet efficient real-time pose-based action recognition",
     "authors": "Dennis Ludl, Thomas Gulde, Crist&#243;bal Curio",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fault Diagnosis of Railway Turnout Based on Fuzzy Cognitive Map",
     "authors": "Yao Liang, Shenghua Dai, Ziyuan Zheng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic Time Warping and Spectral Clustering Based Fault Detection and Diagnosis of Railway Point Machines",
     "authors": "Heng Du, Zhen Li, Ruijun Chen, Zhuo Yin, Zhe Fu, Qiang Zhang, Xiao Xiao, Ming Luo, Feng Bao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Study on the Evaluation Index System of China Intelligent High-speed Railway Based on Technical Characteristic",
     "authors": "Sai Shao, Ping Li, Jinzi Zhen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Intelligent Dispatching and Coordinated Control Method at Railway Stations for Virtually Coupled Train Sets",
     "authors": "Ling Liu, Ping Wang 0003, Wei Wei, Qing Li, Bo Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling of Incident-Induced Capacity Loss for Hurricane Evacuation Simulation",
     "authors": "Yuan Zhu 0003, Kaan Ozbay, Kun Xie 0002, Hong Yang 0004",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Public Concerns and Response Pattern toward Shared Mobility Security using Social Media Data",
     "authors": "Qian Ye, Xiaohong Chen, Hua Zhang, Kaan Ozbay, Fan Zuo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Anomaly Detection in Metro Passenger Flow Based on Random Matrix Theory",
     "authors": "Xiaoxu Chen, Chao Yang, Xiangdong Xu, Yubing Gong",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Do Simulated Traffic Conflicts Predict Crashes? An Investigation Using the Extreme Value Approach",
     "authors": "Lai Zheng, Tarek Sayed, Mohamed Essa, Yanyong Guo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An empirical model for the assessment of truck driver fuel economy",
     "authors": "Alwyn J. Hoffman, Marius van der Westhuizen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A road hazard state prediction method based on BP neutral network",
     "authors": "Lei Ye 0001, Yunyang Tang, Lingqiu Zeng, Zhoutao Yin, Qingwen Han, Sheng Cheng, Siru Chen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Quantifying the impact of freight transport performance on the total economic cost of cargo importers",
     "authors": "Alwyn J. Hoffman",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Computing an Upper Bound for Charging/Discharging Patterns of In-Vehicle Batteries towards Cooperative Transportation-Energy Management",
     "authors": "Shota Yumiki, Yoshihiko Susuki, Ryo Masegi, Akihiko Kawashima, Atsushi Ishigame, Shinkichi Inagaki, Tatsuya Suzuki 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Rapidly-exploring Random Trees for Testing Automated Vehicles",
     "authors": "Cumhur Erkan Tuncali, Georgios Fainekos",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Risk-index based Sampling Method to Generate Scenarios for the Evaluation of Automated Driving Vehicle Safety",
     "authors": "Yasuhiro Akagi, Ryosuke Kato, Sou Kitajima, Jacobo Antona-Makoshi, Nobuyuki Uchida",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Hybrid Physics-Based and Data-Driven Approach to Estimate the Radar Cross-Section of Vehicles",
     "authors": "Takashi Owaki, Takashi Machida",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Virtual safety performance assessment for automated driving in complex urban traffic scenarios",
     "authors": "Pascal Brunner, Florian Denk, Werner Huber, Ronald Kates",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Today Me, Tomorrow Thee: Efficient Resource Allocation in Competitive Settings using Karma Games",
     "authors": "Andrea Censi, Saverio Bolognani, Julian G. Zilly, Shima Sadat Mousavi, Emilio Frazzoli",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A cooperative framework for Universal Basic Mobility System: Mobility credits approach",
     "authors": "Milos N. Mladenovic, Montasir Abbas, Claudio Roncoli, Sanaz Bozorg Chenani",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling tradable credit scheme in managing bottleneck congestion with consideration of transaction cost",
     "authors": "Zhen Lian, Xiaobo Liu, Wenbo Fan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Integrating the management and design of urban road network to alleviate tide traffic",
     "authors": "G. M. Wang, Y. Q. Li, Meng Xu 0003",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modelling and Analytics of Driving-related Energy Performance of Electric Vehicles",
     "authors": "Yuan Rong Dexter Neo, Duong Tran, Yew Ming Yeap, Li Hong Idris Lim",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Energy Management Strategy for an Autonomous Electric Racecar using Optimal Control",
     "authors": "Thomas Herrmann, Fabian Christ, Johannes Betz, Markus Lienkamp",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Binary Controller to Ensure Engine Peak Efficiency for a Parallel Hybrid Electric Car",
     "authors": "Tong Liu 0017, Lei Feng 0002, Mikael Hellgren, Jan Wikander",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optimal Routing and Energy Management Strategies for Plug-in Hybrid Electric Vehicles",
     "authors": "Mauro Salazar, Arian Houshmand, Christos G. Cassandras, Marco Pavone 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Automatic Detection of Bus-stops and Bus-crowdedness using Crowdsourced Data",
     "authors": "Pruthvish Rajput, Manish Chaturvedi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Effects of Near-Side and Far-Side Bus Stops on NMFD of Bi-Modal Urban Network",
     "authors": "Mansour Johari, Mehdi Keyvan-Ekbatani, Dong Ngoduy, Hugo Badia",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Semi-buspool: Demand-driven Scheduling for Intercity Bus Based on Smart Card Data",
     "authors": "Yuyang Zhou, Qianyang Zhao, Yanyan Chen, Der-Horng Lee, Jiajun Pang, Guopeng Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evaluation service quality of crowding metros using structural equation modelling - A case study in Beijing",
     "authors": "Yingxiang Wang, Xinyue Xu, Haiying Li, Yi Lu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Person ReIDentification for Detection of Pedestrians in Blind Spots through V2V Communications",
     "authors": "Kou Asano, Naoko Enami, Tomio Kamada, Chikara Ohta",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Pedestrian Detection and Behavior Recognition Based on Vision",
     "authors": "Huiqin Zhan, Yuan Liu, Zhibin Cui, Hong Cheng 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Data-driven Markovian Framework for Multi-agent Pedestrian Collision Risk Prediction",
     "authors": "Angelos Toytziaridis, Paolo Falcone, Jonas Sj&#246;berg",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Generating 3D Person Trajectories from Sparse Image Annotations in an Intelligent Vehicles Setting",
     "authors": "Sebastian Krebs, Markus Braun 0003, Dariu M. Gavrila",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "From Comparison to Retrieval: Scalable Change Retrieval from Discriminatively Learned Deep Three-dimensional Neural Codes",
     "authors": "Kojima Yusuke, Tanaka Kanji 0003, Naiming Yang, Yuji Hirota, Yamaguchi Kousuke",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "NeurAll: Towards a Unified Visual Perception Model for Automated Driving",
     "authors": "Ganesh Sistu, Isabelle Leang, Sumanth Chennupati, Senthil Kumar Yogamani, Ciar&#225;n Hughes, Stefan Milz, Samir A. Rawashdeh",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Detecting floodwater on roadways from image data with handcrafted features and deep transfer learning",
     "authors": "Cem Sazara, Mecit Cetin, Khan M. Iftekharuddin",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Towards Complexity Level Classification of Driving Scenarios Using Environmental Information",
     "authors": "Yongkang Liu 0005, John H. L. Hansen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Spherical formulation of moving object geometric constraints for monocular fisheye cameras",
     "authors": "Letizia Mariotti, Ciar&#225;n Hughes",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Deep Learning based Geometric Features for Effective Truck Selection and Classification from Highway Videos",
     "authors": "Pan He, Aotian Wu, Xiaohui Huang 0004, Jerry Scott, Anand Rangarajan 0001, Sanjay Ranka",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Generating All the Roads to Rome: Road Layout Randomization for Improved Road Marking Segmentation",
     "authors": "Tom Bruls, Horia Porav, Lars Kunze, Paul Newman 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Road Detection for autonomous truck in mine environment",
     "authors": "Jianlin Tang, Xiaowei Lu, Yunfeng Ai, Bin Tian 0003, Long Chen 0005",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An approach for accurate stopping of high-speed train by using model predictive control",
     "authors": "Xiaoyu Liu, Jing Xun, Bin Ning, Lei Yuan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Continuum Approximation Model for Optimizing Phased Development of Scalable Transit Corridors",
     "authors": "Liang Xia, Xinguo Jiang, Wenbo Fan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic Dwell Time Determination and Optimization based on Motion Detection Algorithm",
     "authors": "Junguo Sun, Xiao Xiao, Ming Luo, Feng Bao, Nan Cao, Ruijun Chen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Mixed-Integer Linear Programming Models for Coordinated Train Timetabling with Dynamic Demand",
     "authors": "Jiateng Yin, Andrea D'Ariano, Yihui Wang 0001, Jing Xun, Shuai Su, Tao Tang 0004",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Extraction and Analysis of Risk Factors from Chinese Railway Accident Reports",
     "authors": "Lingling Hua, Wei Zheng, Shigen Gao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Location does not always determine sudden braking",
     "authors": "Takuya Kawatani, Eisuke Itoh, Sachio Hirokawa, Tsunenori Mine",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "The Costs of Traffic Accident Hotspots",
     "authors": "Bernhard Gahr, Katherine Caves, Junhan Wen, Kevin Koch 0001, Shu Liu, Felix Wortmann",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "In-depth Analysis of Autonomous Vehicle Collisions in California",
     "authors": "Shervin Hajinia Leilabadi, Stephan Schmidt",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Hybrid State Estimation Combining Artificial Neural Network and Physical Model",
     "authors": "Philipp Maximilian Sieberg, Sebastian Blume, Nele Harnack, Niko Maas, Dieter Schramm",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamical Interaction based Multi-objects Operation Simulation for Hub Airport APM System",
     "authors": "Yue Cao, Wei ShangGuan, Xinhang Shang, Weizhi Qiu, Yu Du 0014",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "The Prospects of on-demand Urban Air Mobility in Zurich, Switzerland",
     "authors": "Milos Balac, Raoul L. Rothfeld, Sebastian H&#246;rl",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Empirical model for truck route fuel economy",
     "authors": "Alwyn J. Hoffman, Marius van der Westhuizen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Panoramic Annular Localizer: Tackling the Variation Challenges of Outdoor Localization Using Panoramic Annular Images and Active Deep Descriptors",
     "authors": "Ruiqi Cheng, Kaiwei Wang, Shufei Lin, Weijian Hu, Kailun Yang 0001, Xiao Huang, Huabing Li, Dongming Sun, Jian Bai",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "DeepLocalization: Landmark-based Self-Localization with Deep Neural Networks",
     "authors": "Nico Engel, Stefan Hoermann 0002, Markus Horn, Vasileios Belagiannis, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "How to Match Tracks of Visual Features for Automotive Long-Term SLAM",
     "authors": "Stefan Luthardt, Christoph Ziegler, Volker Willert, J&#252;rgen Adamy",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Improving Map Re-localization with Deep 'Movable' Objects Segmentation on 3D LiDAR Point Clouds",
     "authors": "Victor Vaquero, Kai Fischer, Francesc Moreno-Noguer, Alberto Sanfeliu, Stefan Milz",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Controlling Congestion in a Neighborhood Center for Ring-Radial and Grid Networks",
     "authors": "Nicholas Fournier, Eric J. Gonzales, Eleni Christofa",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Improved Real Time Ride Sharing via Graph Coloring",
     "authors": "Saatvik Jain, Pravesh Biyani",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Using tradable credit scheme for morning commuting congestion Management with an activity-based approach",
     "authors": "Leilei Liang, Meng Xu 0003",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Trip Characteristics and Potential Higher Publicity of Bike-Sharing System in Tokyo",
     "authors": "Taka Kawamura, Tetsuo Yai",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Effects of Bus Platooning in an Urban Environment",
     "authors": "Ganesh Sethuraman, Xiaodong Liu 0016, Frederik R. Bachmann, Meng Xie, Aybike Ongel, Fritz Busch",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optimal Fleet Size for Kuwait Public Transport Company Based on Integer Linear Programming",
     "authors": "Sharaf AlKheder, Mehmet Savsar, Fahad AlRukaibi, A. Zaqzouq",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Multi-Vehicle Cooperative Routing Method Based on Evolutionary Game Theory",
     "authors": "Jiawei Lu, Jinglin Li, Quan Yuan 0004, Bo Chen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Study on Inter-region Flow Control of Urban Traffic: A Modification of the Greedy Control Strategy",
     "authors": "Sunghoon Kim 0004, Hwapyeong Yu, Hwasoo Yeo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis of Vehicle Trajectories for Determining Cross-Sectional Load Density Based on Computer Vision",
     "authors": "Jakub Spanhel, Roman Jur&#225;nek, Adam Herout, Jan Nov&#225;k, Pavel Havr&#225;nek",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Real-time Obstacle Detection Over Rails Using Deep Convolutional Neural Network",
     "authors": "Yuchuan Xu, Chunhai Gao, Lei Yuan, Simon Tang, Guodong Wei",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fault Diagnosis of the On-board Equipment in CTCS-3 Based on Timed Automata and Mutation Theoy",
     "authors": "Zhuolin Hu, Tao Tang 0004, Wanli Lu, Wei Zheng, Jidong Lv, Shigen Gao, Shuai Su",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "2FA Communication Protocol to Secure Metro Control Devices",
     "authors": "Huaqun Guo, Ezekiel Wei Ren Tan, Luying Zhou, Zhigang Zhao, Xingjie Yu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Interactive Prediction for Multiple, Heterogeneous Traffic Participants with Multi-Agent Hybrid Dynamic Bayesian Network",
     "authors": "Lingfeng Sun, Wei Zhan, Di Wang 0028, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Calibration of Controlled Markov Chains for Predicting Pedestrian Crossing Behavior Using Multi-objective Genetic Algorithms",
     "authors": "Jingyuan Wu, Johannes Ruenz, Matthias Althoff",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Survey on Path Prediction Techniques for Vulnerable Road Users: From Traditional to Deep-Learning Approaches",
     "authors": "Ariyan Bighashdel, Gijs Dubbelman",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Pedestrian Trajectory Prediction at Un-Signalized Intersection Using Probabilistic Reasoning and Sequence Learning",
     "authors": "Y. Li, J. Q. Wang, X. Y. Lu, T. Y. Shi, Q. Xu, K. Q. Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vulnerable Road User Detection Using Smartphone Sensors and Recurrence Quantification Analysis",
     "authors": "Huthaifa I. Ashqar, Mohammed Elhenawy, Mahmoud Masoud, Andry Rakotonirainy, Hesham A. Rakha",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Classifying Human Behaviors: Improving Training of Conventional Algorithms",
     "authors": "Qi Deng, Dirk S&#246;ffker",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Comparative Study of Estimating Road Surface Condition Using Support Vector Machine and Deep Neural Networ",
     "authors": "Dae Jung Kim, Jin Sung Kim, Seung-Hi Lee, Chung Choo Chung",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Separable Convolutional LSTMs for Faster Video Segmentation",
     "authors": "Andreas Pfeuffer, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Road Roughness Crowd-Sensing with Smartphone Apps",
     "authors": "Maxime Jean, Alexandre Chasse, William Beng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Spectral reflectance characterization of the road environment to optimize the choice of autonomous vehicle sensors",
     "authors": "Mich&#232;le Colomb, Pierre Duthon, Fr&#233;d&#233;ric Bernardin",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Method for Synthetic LiDAR Generation to Create Annotated Datasets for Autonomous Vehicles Perception",
     "authors": "Jorge Beltr&#225;n, Irene Cort&#233;s, Alejandro Barrera, Jes&#250;s Urdiales, Carlos Guindel, Fernando Garc&#237;a 0002, Arturo de la Escalera",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Automatic Generation of Training Data for Image Classification of Road Scenes",
     "authors": "Tilman K&#252;hner, Sascha Wirges, Martin Lauer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fast 3D Extended Target Tracking using NURBS Surfaces",
     "authors": "Benjamin Naujoks, Patrick Burger, Hans-Joachim Wuensche",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Object Tracking and Classification Using Millimeter-Wave Radar Based on LSTM",
     "authors": "Tokihiko Akita, Seiichi Mita",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Long/Short-Term Appearance Modeling and Two-Step Association for Multi-Object Tracking",
     "authors": "Yating Liu, Xuesong Li 0004, Kunfeng Wang, Yong Yan, Fei-Yue Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic Object Tracking and 3D Surface Estimation using Gaussian Processes and Extended Kalman Filter",
     "authors": "Felix Ebert, Hans-Joachim Wuensche",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Model-based Offline Vehicle Tracking in Automotive Applications Using a Precise 3D Model",
     "authors": "Egon Ye, Matthias Althoff",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vehicle Tracking for Heavy Road Vehicle Collision Avoidance with an Inexpensive Solid State Laser Sensor",
     "authors": "Vimal Kumar, Shankar C. Subramanian, Rajesh Rajamani",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Real-time Trust-Building Schemes for Mitigating Malicious Behaviors in Connected and Automated Vehicles",
     "authors": "Dajiang Suo, Sanjay E. Sarma",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Automatic Driver Identification from In-Vehicle Network Logs",
     "authors": "Mina Remeli, Szilvia Lesty&#225;n, Gergely &#193;cs, Gergely Bicz&#243;k",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "LEAP: A Lightweight Encryption and Authentication Protocol for In-Vehicle Communications",
     "authors": "Zhaojun Lu, Qian Wang 0022, Xi Chen 0118, Gang Qu 0001, Yongqiang Lyu 0001, Zhenglin Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Design of a Misbehavior Detection System for Objects Based Shared Perception V2X Applications",
     "authors": "Moreno Ambrosin, Lily L. Yang, Xiruo Liu, Manoj R. Sastry, Ignacio J. Alvarez",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Cyber-Physical-Social Motivated Collaborative Platoon Heads Selection for Intelligent and Connected Vehicles",
     "authors": "Siru Chen, Pengfei Zhu, Wenke Yan, Konglin Zhu, Lin Zhang 0013",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Geo-spatial Screening using Anomaly Detection for Efficient Security Analysis of V2X Sensor Data on C-ITS Service",
     "authors": "Keita Hasegawa, Takafumi Harada, Tomoaki Washio, Yoshihito Oshima",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Light Footprint Driving Behaviour Classification",
     "authors": "Aurel Pjetri, Matteo Simoncini, Francesco Sambo, Alessandro Lori, Fabio Schoen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Efficient Model for Driving Focus of Attention Prediction using Deep Learning",
     "authors": "Minghao Ning, Chao Lu 0006, Jianwei Gong",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Driver Detection from Objective Criteria Describing the Driving Style of Race Car Drivers",
     "authors": "Lukas W&#246;rle, Julian von Schleinitz, Michael Graf, Arno Eichberger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Classifying Ego-Vehicle Road Maneuvers from Dashcam Video",
     "authors": "Stephen A. Zekany, Ronald G. Dreslinski, Thomas F. Wenisch",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis and Modeling of Real World Car-Following Driving in Downtown Area Based on Variable Structured Piecewise Linear Model",
     "authors": "Jude Nwadiuto, Hyuntai Chin, Hiroyuki Okuda, Tatsuya Suzuki 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Machine learning method to ensure robust decision-making of AVs",
     "authors": "Ramdane Tami, Boussaad Soualmi, Abdelkrim Doufene, Javier Ib&#225;&#241;ez, Justin Dauwels",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Foresighted Driver Model derived from Integral Expected Risk",
     "authors": "Julian Eggert, Fabian M&#252;ller",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling the Combined Effect of Powertrain Options and Autonomous Technology on Vehicle Adoption and Utilization by Line-haul Fleets",
     "authors": "Ana Guerrero de la Pe&#241;a, Navindran Davendralingam, Ali K. Raz, Daniel DeLaurentis, Gregory M. Shaver, Vivek Sujan, Neera Jain",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "CoMASig: A Collaborative Multi-Agent Signal Control to Support Senior Drivers",
     "authors": "Jos&#233; Monreal Bailey, Fatemeh Golpayegani, Siobh&#225;n Clarke",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Simulating Multi-scaled Impacts of Automated Mobility-on-Demand Services",
     "authors": "Diem-Trinh Le, Pericles Christopher Zegras, Meng Zhou, Joseph Fereirra, Duy Quy Nguyen-Phuoc, Moshe E. Ben-Akiva, Simon Oh, Ravi Seshadri",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Influence of the Cooling System and Road Topology on Heavy Duty Truck Platooning",
     "authors": "C. M&#228;hrle, Sebastian Wolff 0002, S. Held, Georg Wachtmeister",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Map Matching for Vehicle Localization Based on Serial Lidar Sensors",
     "authors": "Alexander Schlichting, Fabio Zachert, Dariush Forouher",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vision based vehicle relocalization in 3D line-feature map using Perspective-n-Line with a known vertical direction",
     "authors": "Louis Lecrosnier, R&#233;mi Boutteau, Pascal Vasseur, Xavier Savatier, Friedrich Fraundorfer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "WiFi-based urban localisation using CNNs",
     "authors": "Noelia Hern&#225;ndez, H&#233;ctor Corrales S&#225;nchez, Ignacio Parra, M&#243;nica Rentero, David Fern&#225;ndez Llorca, Miguel &#193;ngel Sotelo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Unstructured Road SLAM using Map Predictive Road Tracking",
     "authors": "Patrick Burger, Benjamin Naujoks, Hans-Joachim Wuensche",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "CMRNet: Camera to LiDAR-Map Registration",
     "authors": "Daniele Cattaneo 0001, Matteo Vaghi, Augusto Luis Ballardini, Simone Fontana, Domenico G. Sorrenti, Wolfram Burgard",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Reliable Monocular Ego-Motion Estimation System in Rainy Urban Environments",
     "authors": "Huaiyang Huang, Yuxiang Sun 0002, Ming Liu 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Adaptive Sensor Fault Detection and Isolation using Unscented Kalman Filter for Vehicle Positioning",
     "authors": "Daiki Mori, Hideki Sugiura, Yoshikazu Hattori",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Approach for CNN-Based Feature Matching Towards Real-Time SLAM",
     "authors": "Marc Sons, Christian Kinzig, Dominic Zanker, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "InertialNet: Toward Robust SLAM via Visual Inertial Measurement",
     "authors": "Tse-An Liu, Huei-Yung Lin, Wei-Yang Lin",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Multisensor Data Fusion Approach for Simultaneous Localization and Mapping",
     "authors": "Zhekai Jin, Yifei Shao, Minjoon So, Carl Sable, Neveen Shlayan, Dirk Martin Luchtenburg",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "How Far Should Self-Driving Cars 'See'? Effect of Observation Range on Vehicle Self-Localization",
     "authors": "Mahdi Javanmardi, Ehsan Javanmardi, Shunsuke Kamijo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Urban Localization inside Cadastral Maps using a Likelihood Field Representation",
     "authors": "Ali Alharake, Guillaume Bresson, Pierre Merriaux, Vincent Vauchey, Xavier Savatier",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Deep Recurrent Neural Networks and Optimization Meta-Heuristics for Green Urban Route Planning with Dynamic Traffic Estimates",
     "authors": "Ismael Estalayo, Eneko Osaba, Ibai La&#241;a, Javier Del Ser",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Assessing the probability of arriving on time using historical travel time data in a road network",
     "authors": "Adam Samara, Felix Rempe, Ulrich Fastenrath, Simone G&#246;ttlich",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Driving Behavior Categorization and Models for Generation of Mission-based Driving Cycles",
     "authors": "Sogol Kharrazi, Erik Frisk, Lars Nielsen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Finding robust and consistent space-time delivery paths for multi-day vehicle routing problem",
     "authors": "Lijuan Zhuge, Lu Carol Tong, Hailong Wu, Yiheng Chen, Xuesong Zhou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Comparing and Contrasting NEMA-based Virtual Phase-Link control with Max Pressure Control in Arterial Signal Systems",
     "authors": "Qichao Wang, Montasir Abbas",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Back to the Future: Predicting Traffic Shockwave Formation and Propagation Using a Convolutional Encoder-Decoder Network",
     "authors": "Mohammadreza Khajeh-Hosseini, Alireza Talebpour",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Introducing the Effect of Bicyclist Stabilization Control in Microscopic Traffic Simulation",
     "authors": "Georgios Grigoropoulos, Heather Kaths, Fritz Busch",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Trajectory Reconstruction Using Automated Vehicles Motion Detection Data: A Hybrid Approach Integrating Wiedemann Model and Cellular Automation",
     "authors": "Lei Wei, Yunpeng Wang, Peng Chen 0021",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Q-learning Foresighted Approach to Ego-efficient Lane Changes of Connected and Automated Vehicles on Freeways",
     "authors": "Long Wang, Fangmin Ye, Yibing Wang, Jingqiu Guo, Ioannis Papamichail, Markos Papageorgiou, Simon Hu 0001, Lihui Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Traffic Assignment Based on Parsimonious Data: The Ideal Flow Network",
     "authors": "Kardi Teknomo, Roselle Wednesday Gardon",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Automated Lane Change Decision Making using Deep Reinforcement Learning in Dynamic and Uncertain Highway Environment",
     "authors": "Ali Alizadeh, Majid Moghadam, Yunus Bicer, Nazim Kemal Ure, Muharrem Ugur Yavas, Can Kurtulus",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Realtime 3D Object Detection for Automated Driving Using Stereo Vision and Semantic Information",
     "authors": "Hendrik K&#246;nigshof, Niels Ole Salscheider, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Traffic Sign Detection and 3D Localization via Deep Convolutional Neural Networks and Stereo Vision",
     "authors": "Gabriel Noya Doval, Abdulla Al-Kaff, Jorge Beltr&#225;n, Fernando Garc&#237;a Fernandez, Gerardo Fern&#225;ndez-L&#243;pez",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fusing Shape-from-Silhouette and the Sparsity Driven Detector for Camera-Based 3D Multi-Object Localization with Occlusions",
     "authors": "Matthias Michael, Daniela Horn, Sebastian Houben",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Integrating State-of-the-Art CNNs for Multi-Sensor 3D Vehicle Detection in Real Autonomous Driving Environments",
     "authors": "Rafael Barea, Luis Miguel Bergasa, Eduardo Romera, Elena L&#243;pez Guill&#233;n, &#211;scar P&#233;rez-Gil, Miguel Tradacete, Joaqu&#237;n L&#243;pez",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Monocular Depth Estimation Using Synthetic Images With Shadow Removal",
     "authors": "Rui Guo, Babajide Ayinde, Hao Sun, Haritha Muralidharan, Kentaro Oguchi 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "MultiDepth: Single-Image Depth Estimation via Multi-Task Regression and Classification",
     "authors": "Lukas Liebel, Marco K&#246;rner 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Model predictive approach to integrated path planning and tracking for autonomous vehicles",
     "authors": "Chao Huang 0006, Boyuan Li, Masako Kishida",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Trajectory Planning for a Pseudo Omnidirectional Vehicle using Particle Swarm Optimization",
     "authors": "Philip Sch&#246;rner, Jens Doll, Maximilian Galm, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Motion Planning Method Addressing Arbitrary Lots for Autonomous Parking Vehicle",
     "authors": "Dequan Zeng, Yi Zhou, Zhuoping Yu, Lu Xiong 0001, Lang Xia, Peizhi Zhang, Rong Kang, Zhiqiang Li, Zhiqiang Fu, Jie Yao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Discrete Reversible Jump Markov Chain Monte Carlo Trajectory Clustering",
     "authors": "Steffen Busch, Claus Brenner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Human-like Highway Trajectory Modeling based on Inverse Reinforcement Learning",
     "authors": "Ruoyu Sun 0003, Shaochi Hu, Huijing Zhao, Mathieu Moze, Fran&#231;ois Aioun, Franck Guillemard",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Concept for Estimation and Prediction of the Tire-Road Friction Potential for an Autonomous Racecar",
     "authors": "Leonhard Hermansdorfer, Johannes Betz, Markus Lienkamp",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Model predictive tracking controller for a high fidelity vehicle dynamics model",
     "authors": "Husain Kanchwala, Icaro Bezerra Viana, Marco Cecotti, Nabil Aouf",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Longitudinal Dynamic versus Kinematic Models for Car-Following Control Using Deep Reinforcement Learning",
     "authors": "Yuan Lin, John McPhee 0001, Nasser L. Azad",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Calibrating Uncertainty Models for Steering Angle Estimation",
     "authors": "Christian Hubschneider, Robin Hutmacher, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Cross Validation for CNN based Affordance Learning and Control for Autonomous Driving",
     "authors": "Chen Sun 0008, Lang Su, Sunsheng Gu, Jean M. Uwabeza Vianney, Kongjian Qin, Dongpu Cao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Robust State Observers for Two Wheeled Inverted Pendulum under wheel-slip",
     "authors": "Filippo Parravicini, Matteo Corno, Sergio M. Savaresi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Development and Testing of a Connected Vehicle Optimal Lane Selection Algorithm",
     "authors": "Kyungwon Kang, Youssef Bichiou, Hesham A. Rakha, Ahmed Elbery, Hao Yang 0025",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic Cooperative Automated Lane-Change Maneuver Based on Minimum Safety Spacing Model",
     "authors": "Mingchang Xu, Yugong Luo, Gang Yang, Weiwei Kong, Keqiang Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Negotiation of Cooperative Maneuvers for Automated Vehicles: Experimental Results",
     "authors": "Daniel He&#223;, Ray Lattarulo, Joshu&#233; P&#233;rez, Tobias Hesse, Frank K&#246;ster",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Networked Model Predictive Vehicle Race Control",
     "authors": "Maximilian Kloock, Patrick Scheffe, Lukas Botz, Janis Maczijewski, Bassam Alrifaee, Stefan Kowalewski",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Generative Policy Model for Connected and Autonomous Vehicles",
     "authors": "Daniel Cunnington, Irene Manotas, Mark Law, Geeth de Mel, Seraphin B. Calo, Elisa Bertino, Alessandra Russo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Object-level Perception Sharing Among Connected Vehicles",
     "authors": "Moreno Ambrosin, Ignacio J. Alvarez, Cornelius B&#252;rkle, Lily L. Yang, Fabian Oboril, Manoj R. Sastry, Kathiravetpillai Sivanesan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Naturalistic Driving Study for Older Drivers based on the DriveSafe App",
     "authors": "Luis Miguel Bergasa, Javier Araluce, Eduardo Romera, Rafael Barea, Elena L&#243;pez Guill&#233;n, Javier del Egido, Carlos A. Hernanz-Mayoral",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Driver Identification through Multi-state Car Following Modeling",
     "authors": "Zhezhang Ding, Donghao Xu, Huijing Zhao, Mathieu Moze, Fran&#231;ois Aioun, Franck Guillemard",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Drivers' Trust Model while Using In-Vehicle Traffic Lights in a Partial Deployment Scenario",
     "authors": "Bo Yang 0044, Tsutomu Kaizuka, Kimihiko Nakano",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "What Does a Good Prediction Look Like?",
     "authors": "Florian Wirth, Stephan Krane, Melanie Loos, Eike Rehder, Carlos Fern&#225;ndez 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Investigating the Key Factors Influencing Travelers' Carsharing Choice - An Inclusion of Latent Variable Nested Logit Model",
     "authors": "Xiufeng Li, Xiang Liu, Ning Wang 0033, Decun Dong, Wenjian Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Accessible design of railway vehicle based on cognitive work analysis",
     "authors": "Yueyuan Chen, Weining Fang, Ke Niu 0003, Huijun Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Recurrent Conditional Generative Adversarial Networks for Autonomous Driving Sensor Modelling",
     "authors": "Henrik Arnelid, Edvin Listo Zec, Nasser Mohammadiha",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "End-to-end sensor modeling for LiDAR Point Cloud",
     "authors": "Khaled Elmadawi, Moemen Abdelrazek, Mohamed Elsobky, Hesham M. Eraqi, Mohamed Zahran",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Neural Roll Angle Estimation in a Model Predictive Control System",
     "authors": "Sebastian Blume, Philipp Maximilian Sieberg, Niko Maas, Dieter Schramm",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Design of Various Dynamical-Based Trajectory Tracking Control Strategies for Multi-Vehicle Platooning Problem",
     "authors": "Marwan K. Shalaby, Amr Farag, Omar M. AbdelAziz, Dalia M. Mahfouz, Omar M. Shehata, Elsayed I. Morgan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vision Based Localization for Infrastructure Enabled Autonomy",
     "authors": "Deepika Ravipati, Kenny Chour, Abhishek Nayak, Tyler Marr, Sheelabhadra Dey, Alvika Gautam, Sivakumar Rathinam, Swaminathan Gopalswamy",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Identification of critical ride comfort sections by use of a validated vehicle model and Monte Carlo simulations",
     "authors": "Alexander Genser, Philippe Nitsche, Anastasios Kouvelas",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Mining Mobility Patterns with Trip-Based Traffic Analysis Zones: A Deep Feature Embedding Approach",
     "authors": "Jing Lian 0003, Yang Li 0104, Shao-Lun Huang, Lin Zhang 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Probabilistic Tensor Factorization Approach to Detect Anomalies in Spatiotemporal Traffic Activities",
     "authors": "Xudong Wang, Antoine Fagette, Pascal Sartelet, Lijun Sun 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Trajectory clustering of road traffic in urban environments using incremental machine learning in combination with hyperdimensional computing",
     "authors": "Tharindu R. Bandaragoda, Daswin De Silva, Denis Kleyko, Evgeny Osipov, Urban Wiklund, Damminda Alahakoon",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Time Series Traffic Prediction via Hybrid Neural Networks",
     "authors": "Shengjian Zhao, Shu Lin 0002, Jungang Xu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Data-oriented network aggregation for large-scale network analysis using probe-vehicle trajectories",
     "authors": "Shohei Yasuda, Takamasa Iryo, Katsuya Sakai, Kazuya Fukushima",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Motorway Traffic Flow Prediction using Advanced Deep Learning",
     "authors": "Adriana Simona Mihaita, Haowen Li, Zongyang He, Marian-Andrei Rizoiu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Exploring the mobility and energy implications of shared versus private autonomous vehicles",
     "authors": "Joshua A. Auld, Felipe de Souza, Annesha Enam, Mahmoud Javanmardi, Monique Stinson, Ismail &#214;mer Verbas, Aymeric Rousseau",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Pricing Approach to Balance Demands for One-way Car-sharing Systems",
     "authors": "Lei Wang 0150, Wanjing Ma",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Avoiding stranded bicycles in free-floating bicycle-sharing systems: using survival analysis to derive operational rules for rebalancing",
     "authors": "Sergio Guidon, Henrik Becker, Kay W. Axhausen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Hierarchical Vehicle Routing for Online Delivery Platform",
     "authors": "Quoc Chinh Nguyen, Liuqin Yang, Zhuolun Li, Wenqing Chen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Analytical Model for On-Demand Ride Sharing to Evaluate the Impact of Reservation, Detour and Maximum Waiting Time",
     "authors": "Aledia Bilali, Florian Dandl, Ulrich Fastenrath, Klaus Bogenberger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A New Mathematical Approach to Solve Bike Share System Station Imbalances Based On Portable Stations",
     "authors": "Mohammed H. Almannaa, Mohammed Elhenawy, Mahmoud Masoud, Hesham A. Rakha",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Control of Platooned Vehicles in Presence of Traffic Shock Waves",
     "authors": "Amr Ibrahim, Mladen Cicic, Dip Goswami, Twan Basten, Karl Henrik Johansson",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Distributed Model Predictive Intersection Control of Multiple Vehicles",
     "authors": "Maximilian Kloock, Patrick Scheffe, Sascha Marquardt, Janis Maczijewski, Bassam Alrifaee, Stefan Kowalewski",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "The State-of-the-Art of Coordinated Ramp Control with Mixed Traffic Conditions",
     "authors": "Zhouqiao Zhao, Ziran Wang, Guoyuan Wu 0001, Fei Ye, Matthew J. Barth",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Scheduling Vehicles for On-Time Arrival using Route-Reservations",
     "authors": "Charalambos Menelaou, Stelios Timotheou, Panayiotis Kolios, Christos G. Panayiotou, Marios M. Polycarpou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "The Penetration Rate Effect of Connected and Automated Vehicles in Mixed Traffic Routing",
     "authors": "Arian Houshmand, Salom&#243;n Wollenstein-Betech, Christos G. Cassandras",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Preventing Freeway Capacity Drop via MTFC and Ramp Metering",
     "authors": "Xianghua Yu, Siyu Zhang, Yibing Wang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Enhancing Traffic Scene Predictions with Generative Adversarial Networks",
     "authors": "Peter K&#246;nig, Sandra Aigner, Marco K&#246;rner 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Traffic density estimation method from small satellite imagery: Towards frequent remote sensing of car traffic",
     "authors": "Kengo Sakai, Toru Seo, Takashi Fuse",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Self-Supervised Flow Estimation using Geometric Regularization with Applications to Camera Image and Grid Map Sequences",
     "authors": "Sascha Wirges, Johannes Gr&#228;ter, Qiuhao Zhang, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Clustering-based methodology for estimating bicycle accumulation levels on signalized links: a case study from the Netherlands",
     "authors": "Giulia Reggiani, Azita Dabiri, Winnie Daamen, Serge P. Hoogendoorn",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Lane-Changing Trajectory Optimization to Minimize Traffic Flow Disturbance in a Connected Automated Driving Environment",
     "authors": "Gihyeob An, Alireza Talebpour",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multi-lane Cruising Using Hierarchical Planning and Reinforcement Learning",
     "authors": "Kasra Rezaee, Peyman Yadmellat, Masoud S. Nosrati, Elmira Amirloo Abolfathi, Mohammed Elmahgiubi, Jun Luo 0009",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Online Path Generation from Sensor Data for Highly Automated Driving Functions",
     "authors": "Tim Salzmann, Julian Thomas, Thomas K&#252;hbeck, Jou-ching Sung, Sebastian Wagner 0006, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Relational Recurrent Neural Networks For Vehicle Trajectory Prediction",
     "authors": "Kaouther Messaoud, Itheri Yahiaoui, Anne Verroust-Blondet, Fawzi Nashashibi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "On Maximizing Lateral Clearance of an Autonomous Vehicle in Urban Environments",
     "authors": "Francesco Seccamonte, Juraj Kabzan, Emilio Frazzoli",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evolutionary Learning in Decision Making for Tactical Lane Changing",
     "authors": "Tingting Li, Jianping Wu, Ching-Yao Chan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Provably Safe and Smooth Lane Changes in Mixed Trafic",
     "authors": "Maximilian Naumann, Hendrik K&#246;nigshof, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Learning faster to perform autonomous lane changes by constructing maneuvers from shielded semantic actions",
     "authors": "Dapeng Liu, Mattias Br&#228;nnstr&#246;m 0001, Andrew Backhouse, Lennart Svensson",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Collaborative Framework for High-Definition Mapping",
     "authors": "Alexis Stoven-Dubois, Kuntima Kiala Miguel, Aziz Dziri, Bertrand Leroy, Roland Chapuis",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "VANET distributed data fusion for traffic management",
     "authors": "Romain Guyard, V&#233;ronique Cherfaoui",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Distributed asynchronous cooperative localization with inaccurate GNSS positions",
     "authors": "Elwan H&#233;ry, Philippe Xu, Philippe Bonnifait",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Range-based Cooperative Localization with Nonlinear Observability Analysis",
     "authors": "Brandon Araki, Igor Gilitschenski, Tatum Ogata, Alex Wallar, Wilko Schwarting, Zareen Choudhury, Sertac Karaman, Daniela Rus",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "DeepBbox: Accelerating Precise Ground Truth Generation for Autonomous Driving Datasets",
     "authors": "Govind Rathore, Wan-Yi Lin, Ji Eun Kim",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Head-Up Displays in Urban Partially Automated Driving: Effects of Using Augmented Reality",
     "authors": "Alexander Feierle, David Beller, Klaus Bengler",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Effect of Visual Instruction on Drivers' Reaction Pattern in Lateral Conflicts",
     "authors": "Mengxia Hu, Bo Wang, Chengliang Xu, Yibing Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "The Effect of Fatigue on Take-over Performance in Urgent Situations in Conditionally Automated Driving",
     "authors": "Anna Feldh&#252;tter, Alexandra Ruhl, Alexander Feierle, Klaus Bengler",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Development of a Co-Simulation Framework for Systematic Generation of Scenarios for Testing and Validation of Automated Driving Systems",
     "authors": "Demin Nalic, Arno Eichberger, Georg Hanzl, Martin Fellendorf, Branko Rogic",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evaluation Uncertainty in Data-Driven Self-Driving Testing",
     "authors": "Zhiyuan Huang, Mansur Arief, Henry Lam, Ding Zhao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Impacts of Automated Mobility on Demand on Long-term Mobility Choices: a Case Study of Singapore",
     "authors": "Zhou Meng, Diem-Trinh Le, Pericles Christopher Zegras, Joseph Ferreira",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Simulation-Based Methods for Validation of Automated Driving: A Model-Based Analysis and an Overview about Methods for Implementation",
     "authors": "Stefan Jesenski, Jan Erik Stellet, Wolfgang Branz, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Question of Trust: Statistical Characterization of Long-Term Traffic Estimations for their Improved Actionability",
     "authors": "Ibai La&#241;a, Esther Villar-Rodriguez, Urtats Etxegarai, Izaskun Oregi, Javier Del Ser",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Hybrid Deep Learning Approach with GCN and LSTM for Traffic Flow Prediction",
     "authors": "Zhishuai Li, Gang Xiong 0001, Yuanyuan Chen 0003, Yisheng Lv, Bin Hu 0010, Fenghua Zhu, Fei-Yue Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Probabilistic model for robust traffic state identification in urban networks",
     "authors": "Rafael Mena Yedra, Jordi Casas, Ricard Gavald&#224;",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Data-driven Models for Short-term Travel Time Predictio",
     "authors": "Aakash Kumar Narayanan, Chaitra Pranesh, Sarat Chandra Nagavarapu, B. Anil Kumar, Justin Dauwels",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Intelligent Platoon Operating Slot Optimization Method based on Drivers' Overtaking Behavior",
     "authors": "Junjie Chen, Wei ShangGuan, Baigen Cai, Manoj Bhat, Yu Du 0014",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Model Predictive Control Scheme for Intermodal Autonomous Mobility-on-Demand",
     "authors": "Jannik Zgraggen, Matthew Tsao, Mauro Salazar, Maximilian Schiffer, Marco Pavone 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Identification of Test Cases for Automated Driving Systems Using Bayesian Optimization",
     "authors": "Briti Gangopadhyay, Siddartha Khastgir, Sumanta Dey, Pallab Dasgupta, Giovanni Montana, Paul A. Jennings",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "System-Level Optimization of Longitudinal Acceleration of Autonomous Vehicles in Mixed Traffic",
     "authors": "Jordan Ivanchev, David Eckhoff, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Tradeoff Study of Real-time Traffic Prediction Approaches for Intelligent Transportation System",
     "authors": "Ming Zhao, Chee-Wei Ang, Bing Zhao 0004, Wee Siong Ng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Bayesian Optimization for Crowd Traffic Control Using Multi-Agent Simulation",
     "authors": "Takuma Otsuka, Hitoshi Shimizu, Tomoharu Iwata, Futoshi Naya, Hiroshi Sawada, Naonori Ueda",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Model-based Predictive Variable Speed Limit Control on Multi-lane Freeways with A Line of Connected Automated Vehicles",
     "authors": "Zhexian Li, Xiake Zhu, Xiaomeng Liu, Xu Qu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Adaptive Traffic Control Algorithm Based on Back-Pressure and Q-Learning",
     "authors": "Arnan Maipradit, Juntao Gao, Tomoya Kawakami, Minoru Ito",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Pedestrian Graph: Pedestrian Crossing Prediction Based on 2D Pose Estimation and Graph Convolutional Networks",
     "authors": "Pablo Rodrigo Gantier Cadena, Ming Yang 0002, Yeqiang Qian, Chunxiang Wang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Pedestrian Intention Detection as a Resource Competition Challenge",
     "authors": "Peter Gawronski, Darius Burschka",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling and Prediction of Human Behaviors based on Driving Data using Multi-Layer HMMs",
     "authors": "Qi Deng, Dirk S&#246;ffker",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Cyclist Intent Prediction using 3D LIDAR Sensors for Fully Automated Vehicles",
     "authors": "Khaled Saleh, Ahmed Abobakr, Darius Nahavandi, Julie Iskander, Mohammed Hassan Attia, Mostafa Hossny, Saeid Nahavandi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Crossing-Road Pedestrian Trajectory Prediction via Encoder-Decoder LSTM",
     "authors": "Peixin Xue, Jianyi Liu, Shitao Chen, Zhuoli Zhou, Yongbo Huo, Nanning Zheng 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "DeepWait: Pedestrian Wait Time Estimation in Mixed Traffic Conditions Using Deep Survival Analysis",
     "authors": "Arash Kalatian, Bilal Farooq",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Enhanced Initialization for Track-before-Detection based Multibody Motion Segmentation from a Moving Camera",
     "authors": "Hern&#225;n Gonzalez, Arjun Balakrishnan, Sergio Alberto Rodriguez Florez, Abdelhafid Elouardi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Recursive Background Modeling with Place-specific Autoencoders for Large-scale Image Change Detection",
     "authors": "Kousuke Yamaguchi, Tanaka Kanji 0003, Takuma Sugimoto, Rino Ide, Koji Takeda",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic Environment Prediction in Urban Scenes using Recurrent Representation Learning",
     "authors": "Masha Itkina, Katherine Rose Driggs-Campbell, Mykel J. Kochenderfer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Multi-Stage Clustering Framework for Automotive Radar Data",
     "authors": "Nicolas Scheiner, Nils Appenrodt, J&#252;rgen Dickmann, Bernhard Sick",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Ontology-based Reasoning Approach for Long-term Behavior Prediction of Road Users",
     "authors": "Fang Fang, Shotaro Yamaguchi, Abdelaziz Khiat",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Long-term Labeling: Reusing Annotations for Changing Detections",
     "authors": "Karsten Behrendt, Abhishek Mantha",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Deep Reinforcement Learning based Vehicle Navigation amongst pedestrians using a Grid-based state representation",
     "authors": "Niranjan Deshpande, Anne Spalanzani",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Human-Like Decision-Making for Automated Driving in Highways",
     "authors": "David Sierra Gonz&#225;lez, Mario Garz&#243;n, Jilles Steeve Dibangoye, Christian Laugier",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Constructing Topological Road Network of Wild Environment using Google Earth Pro",
     "authors": "Mengze Wu, Hui Jin, Bo Tang, Lei Yang, Tian Yang, Jianwei Gong",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Dynamic Service-Oriented Software Architecture for Highly Automated Vehicles",
     "authors": "Alexandru Kampmann, Bassam Alrifaee, Markus Kohout, Andreas W&#252;stenberg, Timo Woopen, Marcus Nolte, Lutz Eckstein, Stefan Kowalewski",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Model Predictive Path Integral Control for Car Driving with Autogenerated Cost map Based on Prior Map and Camera Image",
     "authors": "Alexander Buyval, Aidar Gabdullin, Konstantin Sozykin, Alexandr Klimchik",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Enhancing GNSS Performance and Detection of Road Crossing in Urban Area Using Deep Learning",
     "authors": "Sang Jae Cho, Bo Seong Kim, Tae-Seon Kim, Seung-Hyun Kong",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Cooperative Driving for Connected and Automated Vehicles at Non-signalized Intersection based on Model Predictive Control",
     "authors": "Xing Zhao, Jinxiang Wang 0002, Guodong Yin, Kuoran Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Supporting Data Stream Analytical Processing in Vehicular Sensor Networks",
     "authors": "Wendi Nie, Yaoxin Duan, Victor C. S. Lee, Kai Liu 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multi-Agent Path Finding with Priority for Cooperative Automated Valet Parking",
     "authors": "Ayano Okoso, Keisuke Otaki, Tomoki Nishi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Shared Driving Control between Human and Autonomous Driving System via Conflict resolution using Non-Cooperative Game Theory",
     "authors": "Shriram C. Jugade, Alessandro Corr&#234;a Victorino, V&#233;ronique Berge-Cherfaoui",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Load Balancing in Mobility-on-Demand Systems: Reallocation Via Parametric Control Using Concurrent Estimation",
     "authors": "Rebecca M. A. Swaszek, Christos G. Cassandras",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Effects of Warning Systems on Longitudinal Driving Behavior and Safety under Fog Conditions",
     "authors": "Xin Chang, Haijian Li, Jian Rong, Xiaohua Zhao, Guoqiang Zhao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Runtime Verification of Communications-based Train Control with Parametric Hybrid Automata",
     "authors": "Ming Chai, Haifeng Wang 0005, Hongjie Liu, Jidong Lv, Qian Hu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A dual-objective integrated optimization problem for energy conservation in subway systems",
     "authors": "Hongjie Liu, Jidong Lv, Ming Chai",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Bayesian game based defense scheme for CBTC systems under Man-in-the-middle attacks",
     "authors": "Yang Li, Li Zhu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Health Monitoring and Aging Assessment of HVAC Refrigerant Compressors in Railway Systems",
     "authors": "Andrea Staino, Rami Abou-Eid, Argenis Rojas, Breiffni Fitzgerald, Biswajit Basu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Virtual Reality and Convolutional Neural Networks for Railway Catenary Support Components Monitoring",
     "authors": "Wenqiang Liu, Zhigang Liu 0001, Alfredo N&#250;&#241;ez",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling and Verification of Route Protection for Train-centric Train Control System",
     "authors": "Xuefei Li, Ming Chai, Haifeng Wang 0005",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Link speed prediction for signalized urban traffic network using a hybrid deep learning approach",
     "authors": "Tong Zhang, Junchen Jin, Hui Yang, Haifeng Guo, Xiaoliang Ma",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic Origin-Destination Estimation Framework with Iterative Traffic Signal Tuning for Microscopic Traffic Simulation",
     "authors": "Yu Wang, Yicheng Zhang 0001, Hai-Heng Ng, Bing Zhao 0004, Wee Siong Ng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Simulation and Evaluation of CAVs Behavior in an Isolated Signalized Intersection Equipped with Dynamic Wireless Power Transfer System",
     "authors": "Qingyun Liu 0006, Simon Hu 0001, Panagiotis Angeloudis, Yibing Wang, Lihui Zhang, Qiang Yang 0004, Yongfu Li 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Impact and Deployment of Dynamic Traffic Light Control Strategies using a City-wide Simulation Scenari",
     "authors": "Imen Mahjri, S&#233;bastien Faye, Djamel Khadraoui",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Estimation of Traffic Demand Corresponding to Observed Link Traffic Volume in Microscopic Simulation",
     "authors": "Kazuki Abe, Hideki Fujii, Shinobu Yoshimura",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Extended Game-Theoretic Model for Aggregate Lane Choice Behavior of Vehicles at Traffic Diverges with a Bifurcating Lane",
     "authors": "Ruolin Li, Negar Mehr, Roberto Horowitz",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "What Lies Beneath: A Note on the Explainability of Black-box Machine Learning Models for Road Traffic Forecasting",
     "authors": "Alejandro Barredo Arrieta, Ibai La&#241;a, Javier Del Ser",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "In-Vehicle Network Intrusion Detection and Explanation Using Density Ratio Estimation",
     "authors": "Daiki Tanaka, Makoto Yamada, Hisashi Kashima, Takeshi Kishikawa, Tomoyuki Haga, Takamitsu Sasaki",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "LiveTraVeL: Real-time matching of transit vehicle trajectories to transit routes at scale",
     "authors": "Georg Osang, James Cook, Alex Fabrikant, Marco Gruteser",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Large-scale Traffic Data Imputation Using Matrix Completion on Graphs",
     "authors": "Tianyang Han, Kentaro Wada, Takashi Oguchi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Public Transport Waiting Time Estimation Using Semi-Supervised Graph Convolutional Networks",
     "authors": "Kai-Fung Chu, Albert Y. S. Lam, Becky P. Y. Loo, Victor O. K. Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Identifying Truck Stops from a Large Stream of GPS Data via a Hidden Markov Chain Model",
     "authors": "Mehdi Taghavi, Elnaz Irannezhad, Carlo G. Prato",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Lane Change Maneuver based on Bezier Curve providing Comfort Experience for Autonomous Vehicle Users",
     "authors": "Il Bae, Jin Hyo Kim, Jaeyoung Moon, Shiho Kim",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Predicting Time-Series Trajectories of Human Driven Vehicles, using an Unsupervised Attention-Based Recurrent Neural Network",
     "authors": "Ross Walker",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Vehicle Passing Model in Non-signalized Intersections based on Non-cooperative Game Theory",
     "authors": "Chijung Cheng, Danya Yao, Yi Zhang 0029, Ji Li, Yuqing Guo 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Learning to Operate a Fleet of Cars",
     "authors": "Christian Fluri, Claudio Ruch, Julian G. Zilly, Jan Hakenberg, Emilio Frazzoli",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Decision Making for Autonomous Vehicles at Unsignalized Intersection in Presence of Malicious Vehicles",
     "authors": "Sasinee Pruekprasert, Xiaoyi Zhang 0005, J&#233;r&#233;my Dubut, Chao Huang 0006, Masako Kishida",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Simulating use cases for the UAH Autonomous Electric Car",
     "authors": "Carlos G&#243;mez Hu&#233;lamo, Luis Miguel Bergasa, Rafael Barea, Elena L&#243;pez Guill&#233;n, Juan Felipe Arango, Pablo S&#225;nchez",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Automated Classification of Different Congestion Types",
     "authors": "Barbara Karl, Lisa Kessler, Klaus Bogenberger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vehicle Trajectory Prediction at Intersections using Interaction based Generative Adversarial Networks",
     "authors": "Debaditya Roy, Tetsuhiro Ishizaka, C. Krishna Mohan, Atsushi Fukuda",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Iterative DBSCAN (I-DBSCAN) to Identify Aggressive Driving Behaviors within Unlabeled Real-World Driving Data",
     "authors": "Charles Marks, Arash Jahangiri, Sahar Ghanipoor Machiani",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Towards Real-Time Heavy Goods Vehicle Driving Behaviour Classification in the United Kingdom",
     "authors": "Utkarsh Agrawal, Jimiama Mafeni Mase, Grazziela P. Figueredo, Christian Wagner 0002, Mohammad Mesgarpour, Robert I. John",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Unsupervised Clustering of Highway Motion Patterns",
     "authors": "Pavlo Tkachenko, Jinwei Zhou, Luigi del Re",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Kinematic wave-oriented Markov Chain model to capture the spatiotemporal correlations of coupled traffic states",
     "authors": "Baloka Belezamo, Xin Wu 0002, Cafer Avci, Xuesong Zhou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Pedestrians' Acceptance of Personal Mobility Devices on the Shared Path: A Structural Equation Modelling Approach",
     "authors": "Jo-Yu Kuo, Abrar Sayeed, Nagacharan Teja Tangirala, Yi Han Victoria Chua, Justin Dauwels, Marcel Philipp Mayer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "How Do Passing Events Influence the Perception of Risk Among Cyclists&#402;",
     "authors": "Thomas Mac Hale, Ronan Doorley, Michael O'Byrne, Giacinto Rittgers, Vikram Pakrashi, Bidisha Ghosh",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Surveillance-based Collision-time Analysis of Road-crossing Pedestrians",
     "authors": "Zahra Moayed, Hsiang-Jen Chien, Derek Zhang, Reinhard Klette",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Safety Criteria Analysis for Negotiating Blind Corners in Personal Mobility Vehicles Based on Driver's Attention Simulation on 3D Map",
     "authors": "Naoki Akai, Takatsugu Hirayama, Luis Yoichi Morales, Hiroshi Murase",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Automatic learning of cyclist's compliance for speed advice at intersections - a reinforcement learning-based approach",
     "authors": "Azita Dabiri, Andreas Hegyi, Serge P. Hoogendoorn",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Pose Based Start Intention Detection of Cyclists",
     "authors": "Viktor Kress, Janis Jung, Stefan Zernetsch, Konrad Doll, Bernhard Sick",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Recognition and Pseudonymization of Data Privacy Relevant Areas in Videos for Compliance with GDPR",
     "authors": "Johannes Hiller, Michael Schuldes, Lutz Eckstein",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multi-task Network for Panoptic Segmentation in Automated Driving",
     "authors": "Andra Petrovai, Sergiu Nedevschi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Coded Modulation Phase Unwrapping for Time-of-Flight Cameras",
     "authors": "Armin Sch&#246;nlieb, Hannes Plank, Christian Steger, Gerald Holweg, Norbert Druml",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optimized sensor placement for dependable roadside infrastructures",
     "authors": "Florian Geissler, Ralf Gr&#228;fe",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Environment Modeling Based on Generic Infrastructure Sensor Interfaces Using a Centralized Labeled-Multi-Bernoulli Filter",
     "authors": "Martin Herrmann, Johannes M&#252;ller 0003, Jan Strohbeck, Michael Buchholz",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Azimuth-Height Background Filtering Method for Roadside LiDAR Data",
     "authors": "Junxuan Zhao, Hao Xu 0004, Xueting Xia, Hongchao Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Crossing Blind Intersections from a Full Stop Using Estimated Visibility of Approaching Vehicles",
     "authors": "Patiphon Narksri, Eijiro Takeuchi, Yoshiki Ninomiya, Kazuya Takeda",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Comfortable Priority Handling with Predictive Velocity Optimization for Intersection Crossings",
     "authors": "Tim Puphal, Malte Probst, Misa Komuro, Yiyang Li, Julian Eggert",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optimizing the trade-off between fuel consumption and travel time in an unsignalized autonomous intersection crossing",
     "authors": "Andreas Hadjigeorgiou, Stelios Timotheou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Decision Making through Occluded Intersections for Autonomous Driving",
     "authors": "Xiao Lin, Jiucai Zhang, Jin Shang, Yi Wang, Hongkai Yu, Xiaoli Zhang 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "End-to-end Reinforcement Learning for Autonomous Longitudinal Control Using Advantage Actor Critic with Temporal Context",
     "authors": "Sampo Kuutti, Richard Bowden, Harita Joshi, Robert de Temple, Saber Fallah",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multi-lane Convoy Control for Autonomous Vehicles based on Distributed Graph and Potential Field",
     "authors": "Li Gao, Duanfeng Chu, Yongxing Cao, Liping Lu, Chaozhong Wu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Context Discovery for Personalised Automotive Functions",
     "authors": "Christoph Segler, Stefan Kugele, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An algorithm of cooperative V2V trajectory planning on a winding road considering the drivers' characteristics",
     "authors": "Kuoran Zhang, Jinxiang Wang 0002, Nan Chen 0001, Mingcong Cao, Guodong Yin",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "How to Measure Cooperation? Cost Functions for Cooperative Maneuver Planning on Highways",
     "authors": "Christian Knies, Jana Fank, Frank Diermeyer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multiagent Sensor Fusion for Connected &#38; Autonomous Vehicles to Enhance Navigation Safety",
     "authors": "Suryansh Saxena, Isaac K. Isukapati, Stephen F. Smith, John M. Dolan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Controller Design for V2X Application Under Unreliable Feedback Channel",
     "authors": "Jian Pan 0001, Qing Xu 0010, Keqiang Li 0002, Jianqiang Wang 0003",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Track Circuit Signal Denoising Method Based on Q-Learning Algorithm",
     "authors": "Yu-Long Xing, Jian Wang, Xin Li, Hui-Bing Zhao, Lin-fu Zhu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Improved T2T based Communication-Based Train Control Systems Through Cooperated Security Check",
     "authors": "Xiaoxuan Wang, Lingjia Liu 0001, Tao Tang 0004",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Stochastic Game Analysis for Attack-Defense of the CBTC Handover Process under Jamming Attacks",
     "authors": "Xuan Wang, Han Xiong, Xi Wang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Attacks and Counter Defense Mechanisms for CBTC Systems: System Modeling and Availability Analysis",
     "authors": "Wenhao Wu, Bing Bu 0002, Wei Zhang 0128",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "MPC-PI cascade control method for heavy-haul train",
     "authors": "Xubin Sun, Lipeng Niu, Sashan Yan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis of optimal train control problem on a non-steep track with speed limit",
     "authors": "Tong Liu, Jing Xun, Yafei Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Simulation Framework for Off-road Transport Operations using Electric Construction Vehicles",
     "authors": "Jiali Fu, Jan &#197;slund, Erik Uhlin",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Bayesian estimation of the Origin-Destination matrix using traffic flow dynamics",
     "authors": "Yiolanda Englezou, Stelios Timotheou, Christos G. Panayiotou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Heterogeneous traffic estimation with particle filtering",
     "authors": "Yanbing Wang, Daniel B. Work",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Simulation-Based Optimization Framework for Urban Congestion Pricing Considering Travelers' Departure Time Rescheduling",
     "authors": "Ziyuan Gu, Meead Saberi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Feasibility Study on Upgrading the Static TLC Infrastructure to Adaptive TLC",
     "authors": "Abhyudai Bisht, Khilan Ravani, Manish Chaturvedi, Naveen Kumar 0011",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling System Dynamics of Mixed Traffic with Partially Connected and Automated Vehicles",
     "authors": "Lianhua An, Xianfeng Terry Yang, Yiming Zhang, Zihan Zhang, Jia Hu 0003, Haoran Wang 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Learning Dynamic Graph Embedding for Traffic Flow Forecasting: A Graph Self-Attentive Method",
     "authors": "Zifeng Kang, Hanwen Xu, Jianming Hu, Xin Pei",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Attention-based Gated Recurrent Unit for Links Traffic Speed Forecasting",
     "authors": "Ghazaleh Khodabandelou, Mehdi Katranji, Sami Kraiem, Walid Kheriji, Fouad Hadj-Selem",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Measuring Spatial Distribution of Tourist Flows Based on Cellular Signalling Data: A Case Study of Shangha",
     "authors": "Chen Qian, Weifeng Li, Dongyuan Yang, Bin Ran, Feng Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Road Traffic Forecasting using Stacking Ensembles of Echo State Networks",
     "authors": "Javier Del Ser, Ibai La&#241;a, Miren Nekane Bilbao, Eleni I. Vlahogianni",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Estimating Link Travel Time Distribution Using Network Tomography Technique",
     "authors": "Peibo Duan, Guoqiang Mao, Baoqi Huang, Jun Kang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Querying Large Vehicular Networks: How to Balance On-Board Workload and Queries Response Time&#402;",
     "authors": "Romaric Duvignau, Bastian Havers, Vincenzo Gulisano, Marina Papatriantafilou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Effect of Heterogeneity in Time Headway on Error Propagation in Vehicular Strings",
     "authors": "Mani Deep Ankem, Swaroop Darbha",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Deep Reinforcement Learning-Based Approach to Intelligent Powertrain Control for Automated Vehicles",
     "authors": "I-Ming Chen 0002, Cong Zhao, Ching-Yao Chan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Simulation Modeling Framework with Autonomous Vehicle Region-based Routing and Public Transit Diversion Integration",
     "authors": "Simon Ian Ware, Antonis F. Lentzakis, Rong Su 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A run-based optimal strategy search method in intelligent stochastic transit networks",
     "authors": "Agostino Nuzzolo, Antonio Comi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Overcoming Challenges of Validation Automated Driving and Identification of Critical Scenarios",
     "authors": "Cheng Wang 0023, Hermann Winner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Exploring Potential Travel Demand of Customized Bus Using Smartcard Data",
     "authors": "Rongge Guo, Wei Guan, Ailing Huang, Wenyi Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Regularity of vehicle trips in urban areas",
     "authors": "Sujin Lee, Kitae Jang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis of Spatial Equity in Taxi Services: A Case Study of New York City",
     "authors": "Renbin Pan, Shuangyan Zhang, Hongtai Yang, Kun Xie 0002, Yi Wen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling Individuals' Largest Daily Trip Displacement using Extreme Value Theory",
     "authors": "Kaiqiang Xie, Lu Ma, Hui Xiong, Shasha Wu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Data-Fusion based Method for Identifying Individual Passenger Travel Dependence on Public Transportation",
     "authors": "Song Hu, Jian-cheng Weng, Wei Zhou, Pengfei Lin, Zhe Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "SECOND-DX: Single-model Multi-class Extension for Sparse 3D Object Detection",
     "authors": "Yusuke Muramatsu, Yuki Tsuji, Alexander Carballo, Simon Thompson 0002, Hiroyuki Chishiro, Shinpei Kato",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "3D Surface Reconstruction from Voxel-based Lidar Data",
     "authors": "Luis Rold&#227;o, Raoul de Charette, Anne Verroust-Blondet",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Frog and Blade Based Branching Direction Detection in LiDAR Data",
     "authors": "Ziming Guo, Baigen Cai, Wei Jiang 0018, Martin Lauer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Online Inference and Detection of Curbs in Partially Occluded Scenes with Sparse LIDAR",
     "authors": "Tarlan Suleymanov, Lars Kunze, Paul Newman 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Enhanced Temporal Data Organization for LiDAR Data in Autonomous Driving Environments",
     "authors": "Michael Kusenbach, Thorsten Luettel, Hans-Joachim Wuensche",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Training a Fast Object Detector for LiDAR Range Images Using Labeled Data from Sensors with Higher Resolution",
     "authors": "Manuel Herzog, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Integrated Trajectory Planning and Torque Vectoring for Autonomous Emergency Collision Avoidance",
     "authors": "Shayan Taherian, Umberto Montanaro, Shilp Dixit, Saber Fallah",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Path Planning for On-road Autonomous Driving with Concentrated Iterative Search",
     "authors": "Qi Wang 0081, Kuifeng Su, Dongpu Cao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis of the Effect of Various Input Representations for LSTM-Based Trajectory Prediction",
     "authors": "Antonia Breuer, Sven Elflein, Tim Joseph, Jan-Aike Bolte, Silviu Homoceanu, Tim Fingscheidt",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vision-Based Trajectory Planning via Imitation Learning for Autonomous Vehicles",
     "authors": "Peide Cai, Yuxiang Sun 0002, Yuying Chen, Ming Liu 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Path Planning for Autonomous Bus Driving in Highly Constrained Environments",
     "authors": "Rui Oliveira, Pedro F. Lima, Gon&#231;alo Collares Pereira, Jonas M&#229;rtensson 0001, Bo Wahlberg",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Accelerated Inverse Reinforcement Learning with Randomly Pre-sampled Policies for Autonomous Driving Reward Design",
     "authors": "Long Xin, Shengbo Eben Li, Pin Wang, Wenhan Cao, Bingbing Nie, Ching-Yao Chan, Bo Cheng 0003",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Model-free Deep Reinforcement Learning for Urban Autonomous Driving",
     "authors": "Jianyu Chen 0002, Bodi Yuan, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An odometry free automatic perpendicular parking strategy for a light urban vehicle based on a low resolution lidar",
     "authors": "Giulio Panzani, Dario Nava, Sergio M. Savaresi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Autonomous Driving Framework for Bus Transit Systems Towards Operation Safety and Robustness",
     "authors": "Fangzhou Han, Dachuan Li, Qi Hao 0003",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Not-at-Fault Driving in Traffic: A Reachability-Based Approach",
     "authors": "Sean Vaskov, Hannah Larson, Shreyas Kousik, Matthew Johnson-Roberson, Ram Vasudevan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fault detection in non-reporting Vehicle Tracking Units",
     "authors": "Luca Bravi, Matteo Simoncini, Leonardo Taccari, Leonardo Sarti, Stefano Caprasecca, Andrea Benericetti, Alessandro Lori, Samuele Salti, Francesco Sambo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Punctuality prediction: combined probability approach and random forest modelling with railway delay statistics in Sweden",
     "authors": "Sida Jiang, Christer Persson, Joel &#197;kesson",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Improving Timetable Robustness through Optimal Distribution of Runtime Supplement",
     "authors": "Bo Jin 0011, Xiaoyun Feng, Qingyuan Wang 0001, Xiaowen Wang, Cheng Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Train Rescheduling Optimization model with considering the Train Control for A High-Speed Railway Line under Temporary Speed Restriction",
     "authors": "Sihui Long, Lingyun Meng, Yihui Wang 0001, Jianrui Miao, Tinglan Li, Francesco Corman",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Research on Identification of Maintenance Significant Items in Reliability Centered Maintenance for Train Control System",
     "authors": "Yahui Yuan, Jian Wang 0022, Wei ShangGuan, Baigen Cai, Hongyu Song",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic train formation and dispatching for rail transit based on virtually coupled train set",
     "authors": "Ling Liu, Ping Wang 0003, Ying Wang, Wei Wei, Zhoufan Wang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Energy Saving in Metro Transit Substation through Train Trajectory Optimization",
     "authors": "Bo Jin 0011, Xiaoyun Feng, Pengfei Sun 0002, Mo Chen 0004, Yang Chai",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "What Could Go Wrong? Introspective Radar Odometry in Challenging Environments",
     "authors": "Roberto Aldera, Daniele De Martini, Matthew Gadd, Paul Newman 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evaluating the Measurement of Driver Heart and Breathing Rates from a Sensor-Equipped Steering Wheel using Spectrotemporal Signal Processing",
     "authors": "Raymundo Cassani, Tiago H. Falk, Atsushi Horai, Lucian Andrei Gheorghe",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Design of Acoustic Vehicle Detector with Steady-Noise Suppression",
     "authors": "Shigemi Ishida, Masato Uchino, Chengyu Li, Shigeaki Tagashira, Akira Fukuda",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Real-World Trajectory Extraction from Aerial Videos - A Comprehensive and Effective Solution",
     "authors": "Dongfang Zhao 0006, Xiaopeng Li 0020",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Localization in Aerial Imagery with Grid Maps using LocGAN",
     "authors": "Haohao Hu, Junyi Zhu 0002, Sascha Wirges, Martin Lauer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Occupancy Grids Generation Using Deep Radar Network for Autonomous Driving",
     "authors": "Nick Engelhardt, Rodrigo P&#233;rez, Qing Rao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Adaptive AEB Control Strategy for Collision Avoidance Including Rear Vehicles",
     "authors": "Seong-Geun Shin, Dae-Ryong Ahn, Yun-Seok Baek, Hyuck-Kee Lee",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Computationally Efficient Safety Falsification of Adaptive Cruise Control Systems",
     "authors": "Markus Koschi, Christian Pek, Sebastian Maierhofer, Matthias Althoff",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Lane Change Driver Assistance System for Online Operation Optimization of Connected Vehicles",
     "authors": "Franz Aubeck, Tobias Oetermann, Georg Birmes, Stefan Pischinger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Driving Decision and Control for Automated Lane Change Behavior based on Deep Reinforcement Learning",
     "authors": "Tianyu Shi, Pin Wang, Xuxin Cheng, Ching-Yao Chan, Ding Huang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A personalized Adaptive Cruise Control driving style characterization based on a learning approach",
     "authors": "Dario Nava, Giulio Panzani, Pierluigi Zampieri, Sergio M. Savaresi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Actor-Critic Reinforcement Learning for Linear Longitudinal Output Control of a Road Vehicle",
     "authors": "Luca Puccetti, Christian Rathgeber, S&#246;ren Hohmann",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis of OD Standard Time in metros Based on AFC data",
     "authors": "Linqi Xia, Jun Liu, Xin-yue Xu, Xi Jiang 0002, Chao Yu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An operation level based train regulation model for a metro line",
     "authors": "Yihui Wang 0001, Miao Zhang, Shuai Su, Tao Tang 0004, Bin Ning, Lei Chen 0043",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Urban Traffic Control Based on Model Free Adaptive Iterative Learning Control Scheme",
     "authors": "Dai Li, Zhongsheng Hou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Model of platoon evolution in LVM scenario",
     "authors": "Yingwei Dong, Yunwen Xu, Dewei Li 0001, Chenghong Hu, Yugeng Xi 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Velocity Coordination of Multi-vehicle Systems via Distributed Neighbor Selection",
     "authors": "Haibin Shao, Lulu Pan, Yugeng Xi 0001, Dewei Li 0001, Shu Lin 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A neuro-dynamic programming approach for perimeter control of two urban regions with macroscopic fundamental diagrams",
     "authors": "Z. C. Su, Andy H. F. Chow, N. Zheng, Y. P. Huang, R. X. Zhong",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Did We Test All Scenarios for Automated and Autonomous Driving Systems?",
     "authors": "Florian Hauer 0002, Tabea Schmidt, Bernd Holzm&#252;ller, Alexander Pretschner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Sampling-based Trajectory Planning and Control for a Collision Avoidance System",
     "authors": "Andreas Homann, Christian Lienke, Martin Keller, Markus Buss, Manoj Mohamed, Torsten Bertram",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Combined Estimation of Vehicle Slip Angle and Lateral Tire Forces with an Unscented Kalman Filter with Outlier Detection",
     "authors": "Peter Speth, Michael Buchholz",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Comparison of hazard analysis methods with regard to the series development of autonomous vehicles",
     "authors": "Greta Carlotta K&#246;lln, Michael Klicker, Stephan Schmidt",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Integrity Assessment Framework for Multi-modal Vehicle Localization",
     "authors": "Arjun Balakrishnan, Sergio Alberto Rodriguez F., Roger Reynaud",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Learning a Curve Guardian for Motorcycles",
     "authors": "Simon Hecker, Alexander Liniger, Henrik Maurenbrecher, Dengxin Dai, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Quantifying the Benefits of Autonomous On-Demand Ride-Pooling: A Simulation Study for Munich, Germany",
     "authors": "Roman Engelhardt, Florian Dandl, Aledia Bilali, Klaus Bogenberger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optimizing Multi-class Fleet Compositions for Shared Mobility-as-a-Service",
     "authors": "Alex Wallar, Wilko Schwarting, Javier Alonso-Mora, Daniela Rus",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Asynchronous Adaptive Large Neighborhood Search Algorithm for Dynamic Matching Problem in Ride Hailing Services",
     "authors": "Arslan Ali Syed, Bernd Kaltenhaeuser, Irina Gaponova, Klaus Bogenberger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An efficient matching method for dispatching autonomous vehicles",
     "authors": "Ming Li 0054, Nan Zheng, Xinkai Wu, Xiang Huo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Game Theoretic Models for Profit-Sharing in Multi-fleet Platoons",
     "authors": "Alexander Johansson, Jonas M&#229;rtensson 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis and development of an automatic eCall for motorcycles: a one-class cepstrum approach",
     "authors": "Simone Gelmini, Giulio Panzani, Sergio M. Savaresi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Literature Review of Analytical Models on Emergency Vehicle Service: Location, Dispatching, Routing and Preemption Control",
     "authors": "Lili Lu, Shuaian Wang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Early Findings from Field Trials of Heavy-Duty Truck Connected Eco-Driving System",
     "authors": "Ziran Wang, Pascal Amar, Eddie Garmon, Sandeep Tanugula, Yuan-Pu Hsu, Alexander Vu, Francisco Caballero, Peng Hao 0001, Guoyuan Wu 0001, Kanok Boriboonsomsin, Matthew J. Barth, Aravind Kailas",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Preserving Uncertainty in Demand Prediction for Autonomous Mobility Services",
     "authors": "Inon Peled, Kelvin Lee, Yu Jiang 0002, Justin Dauwels, Francisco C. Pereira",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling adaptive cruise control vehicles from experimental data: model comparison",
     "authors": "George Gunter, Raphael E. Stern, Daniel B. Work",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optical Interference Reduction with Spatial Filtering Receiver for Vehicular Visible Light Communication",
     "authors": "Claas Tebruegge, Qiaoshuang Zhang, Falko Dressler",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vision-based Place Recognition Using ConvNet Features and Temporal Correlation Between Consecutive Frames",
     "authors": "Chu-Tak Li, Wan-Chi Siu, Daniel Pak-Kong Lun",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Planning Ahead for EV: Total Travel Time Optimization for Electric Vehicles",
     "authors": "Sven Schoenberg, Falko Dressler",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "To each route its own ETA: A generative modeling framework for ETA prediction",
     "authors": "Charul Paliwal, Pravesh Biyani",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Path-based joint demand management and route guidance for multi-region traffic networks",
     "authors": "Charalambos Menelaou, Stelios Timotheou, Panayiotis Kolios, Christos G. Panayiotou, Marios M. Polycarpou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Integrated Approach for a Universal Routing Algorithm",
     "authors": "Mareike Hedderich, Ulrich Fastenrath, Zhiguang Cao, Michael G. H. Bell, Klaus Bogenberger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Urban Parking System Based on Dynamic Resource Allocation in an Era of Connected and Automated Vehicles",
     "authors": "Cong Zhao, I-Ming Chen 0002, Xinghua Li, Yuchuan Du",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Risky Action Recognition in Lane Change Video Clips using Deep Spatiotemporal Networks with Segmentation Mask Transfer",
     "authors": "Ekim Yurtsever, Yongkang Liu 0005, Jacob Lambert 0001, Chiyomi Miyajima, Eijiro Takeuchi, Kazuya Takeda, John H. L. Hansen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vision-Based Lane-Changing Behavior Detection Using Deep Residual Neural Network",
     "authors": "Zhensong Wei, Chao Wang 0089, Peng Hao 0001, Matthew J. Barth",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "The PREVENTION dataset: a novel benchmark for PREdiction of VEhicles iNTentIONs",
     "authors": "Rub&#233;n Izquierdo, &#193;lvaro Quintanar, Ignacio Parra, David Fern&#225;ndez Llorca, Miguel &#193;ngel Sotelo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Anytime Lane-Level Intersection Estimation Based on Trajectories of Other Traffic Participants",
     "authors": "Annika Meyer, Jonas Walter, Martin Lauer, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Automatic Creation of Path Information on Digital Map",
     "authors": "Haruka Iesaki, Shuhei Naruse, Tsubasa Hirakawa, Takayoshi Yamashita, Hironobu Fujiyoshi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Unmanned Vehicle Path Planning for Unknown Off-road Environments with Sparse Waypoints",
     "authors": "Lei Yang, Jianwei Gong, Guangming Xiong, Tian Yang, Mengze Wu, Sheng Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Towards Courteous Behavior and Trajectory Planning for Automated Driving",
     "authors": "Oliver Speidel, Maximilian Graf, Thanh Phan-Huu, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multilayer Graph-Based Trajectory Planning for Race Vehicles in Dynamic Scenarios",
     "authors": "Tim Stahl, Alexander Wischnewski, Johannes Betz, Markus Lienkamp",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Risk and Comfort Optimizing Motion Planning Scheme for Merging Scenarios",
     "authors": "Johannes M&#252;ller 0003, Michael Buchholz",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Decentralized Merging Control in Traffic Networks with Noisy Vehicle Dynamics: a Joint Optimal Control and Barrier Function Approach",
     "authors": "Wei Xiao 0003, Christos G. Cassandras, Calin Belta",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Merging into Single-Lane Roundabouts in the Presence of Uncertainty",
     "authors": "Ezequiel Debada, Denis Gillet",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Lane-Merging Using Policy-based Reinforcement Learning and Post-Optimization",
     "authors": "Patrick Hart, Leonard Rychly, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Integrated train and passenger disruption management for urban railway lines",
     "authors": "Nikola Besinovic, Yihui Wang 0001, Songwei Zhu, Egidio Quaglietta, Tao Tang 0004, Rob M. P. Goverde",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "RailCheck: Functional Safety for Wireless Condition Monitoring of Railway Turnouts and Level Crossings",
     "authors": "Jan Sramota, Mary Ann Lundteigen, Stig Petersen, Amund Skavhaug",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Resilience Adjustment Method for Real-time Cooperative Optimization of High-speed Trains",
     "authors": "Hongyu Song, Wei ShangGuan, Bai-gen Cai, Sheng Zhao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A human error quantitative analysis of the railway ATO system based upon improved CREAM",
     "authors": "Jianqiang Jin, Kaicheng Li, Lei Yuan, Guodong Wei",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Optimal Control Based Motion Planning Method in the Environment of Positioning Errors",
     "authors": "Zezhong Wang, Huile Xu, Yi Zhang 0029, Jianming Hu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Coordinated String Stability of Two Platoons",
     "authors": "Jiazhi Song, Shaoshuai Mou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "CPSS: CP-ABE based Platoon Secure Sensing Scheme against Cyber-Attacks",
     "authors": "Feng Jiang, Buren Qi, Tianhao Wu 0011, Konglin Zhu, Lin Zhang 0013",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Managing connected and automated vehicles in mixed traffic by human-leading platooning strategy: a simulation study",
     "authors": "Shengyue Yao, Bernhard Friedrich",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis of the Relationship Between Physiological Signals and Vehicle Maneuvers During a Naturalistic Driving Study",
     "authors": "Yuning Qiu, Teruhisa Misu, Carlos Busso",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Real-Time Driver State Monitoring Using a CNN Based Spatio-Temporal Approach",
     "authors": "Neslihan Kose, Okan K&#246;p&#252;kl&#252;, Alexander Unnervik, Gerhard Rigoll",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Novel Spatial-Temporal Graph for Skeleton-based Driver Action Recognition",
     "authors": "Peng Li, Meiqi Lu, Zhiwei Zhang, Donghui Shan, Yang Yang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Brake Maneuver Prediction - An Inference Leveraging RNN Focus on Sensor Confidence",
     "authors": "Shu Liu, Kevin Koch 0001, Bernhard Gahr, Felix Wortmann",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Autonomous Separation Assurance in An High-Density En Route Sector: A Deep Multi-Agent Reinforcement Learning Approach",
     "authors": "Marc Brittain, Peng Wei",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Learning When to Drive in Intersections by Combining Reinforcement Learning and Model Predictive Control",
     "authors": "Tommy Tram, Ivo Batkovic, Mohammad Ali 0002, Jonas Sj&#246;berg",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Stabilizing Traffic via Autonomous Vehicles: A Continuum Mean Field Game Approach",
     "authors": "Kuang Huang, Xuan Di, Qiang Du 0001, Xi Chen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "RA-TSC: Learning Adaptive Traffic Signal Control Strategy via Deep Reinforcement Learning",
     "authors": "Yu Du 0014, Wei ShangGuan, Dingchao Rong, Linguo Chai",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "On Robust Statistics for GNSS Single Point Positioning",
     "authors": "Daniel Medina, Haoqing Li 0001, Jordi Vil&#224;-Valls, Pau Closas",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Robust Localization with Low-Mounted Multiple LiDARs in Urban Environments",
     "authors": "Mahmut Demir, Kikuo Fujimura",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Hybrid GNSS/INS/UWB Positioning for Live Demonstration Assisted Driving",
     "authors": "Monica Navarro, Javier Arribas, Jordi Vil&#224;-Valls, Jordi Casademont, Anna Calveras, Marisa Catalan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Simulative Validation of Snapshot Likelihood based GNSS Probability Grid Positioning for Precise Vehicle Localization",
     "authors": "Paul Schwarzbach, Oliver Michler",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Agent-based Simulation for Shared Automated Electric Vehicles with Vehicle Relocation",
     "authors": "Li Li 0082, DianChao Lin, Theodoros Pantelidis, Joseph Y. J. Chow, Saif Eddin Jabari",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Combinatorial Reinforcement Learning of Linear Assignment Problems",
     "authors": "Sascha Hamzehi, Klaus Bogenberger, Philipp Franeck, Bernd Kaltenh&#228;user",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Genetic Algorithm based Dynamic Scheduling of EV in a Demand Responsive Bus Service for First Mile Transit",
     "authors": "Thilina Perera, Alok Prakash, Thambipillai Srikanthan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Event-triggering Approach for Bus Tracking based on Multimodel Mobility Prediction",
     "authors": "Maria Michalopoulou, Panayiotis Kolios, Christoforos Panayiotou, Georgios Ellinas",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Online Conformance Testing of CBTC On-board ATO Functions Based on UPPAAL-TRON Framework",
     "authors": "Kehang Chen, Jidong Lv, Jia Huang, Haonan Guo, Shuai Su, Tao Tang 0004",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "24 GHz and 77 GHz Radar Characteristics of Metal Guardrail for the Development of Metal Guardrail Surrogate for Road Departure Mitigation System Testing",
     "authors": "Jun Lin 0009, Stanley Y. P. Chien, Yaobin Chen, Chi-Chih Chen, Rini Sherony",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Training Engineers in Autonomous Driving Technologies using Autoware",
     "authors": "Alexander Carballo, David Robert Wong, Yoshiki Ninomiya, Shinpei Kato, Kazuya Takeda",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Safety Test Case Generation of Train-ground Transmission Function for CTCS Based on Fault Models",
     "authors": "Yujie Sun, Kaicheng Li, Lei Yuan, Guodong Wei",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Big Data Offloading using Smart Public Vehicles with Software Defined Connectivity",
     "authors": "Rashmi Munjal, William Liu, Xue Jun Li, Jairo A. Guti&#233;rrez",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Rear-end Collision Warning Algorithm based on Vehicular Communication",
     "authors": "Dawei Cao, Zhiying Qin, Ruiling Liu, Yang Yang 0066, Dexing Zhong",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optimal Proactive Vehicle Relocation for On-Demand Mobility Service with Deep Convolution-LSTM Network",
     "authors": "Zengxiang Lei, Xinwu Qian, Satish V. Ukkusuri",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Integrated Traffic Management System under Connected Environment",
     "authors": "Hao Yang 0025, Ken Oguchi 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "DCLane for Real-time Understanding of Lane Markings",
     "authors": "Zhiwei Cheng, Zhenyang Wang, Hongcheng Huang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Autonomous Lane Keeping Control System Based on Road Lane Model Using Deep Convolutional Neural Networks",
     "authors": "Jin Ho Yang, Woo Young Choi, Seung-Hi Lee, Chung Choo Chung",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vision-Based Lane Crossing Point Tracking for Motorcycles",
     "authors": "Pierre-Marie Damon, Majda Fouka, Hicham Hadj-Abdelkader, Hichem Arioui",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Interpretable Feature Generation using Deep Neural Networks and its Application to Lane Change Detection",
     "authors": "Oliver Gallitz, Oliver De Candido, Michael Botsch, Wolfgang Utschick",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Importance-Aware Semantic Segmentation with Efficient Pyramidal Context Network for Navigational Assistant Systems",
     "authors": "Kaite Xiang, Kaiwei Wang, Kailun Yang 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analyzing the Cross-Sensor Portability of Neural Network Architectures for LiDAR-based Semantic Labeling",
     "authors": "Florian Piewak, Peter Pinggera, Marius Z&#246;llner 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Disparity weighted loss for semantic segmentation of driving scenes",
     "authors": "Abdelhak Loukkal, Yves Grandvalet, You Li 0005",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Curb detection in urban traffic scenarios using LiDARs point cloud and semantically segmented color images",
     "authors": "Selma Evelyn Catalina Goga, Ion Giosan, Sergiu Nedevschi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Cooperation-Aware Reinforcement Learning for Merging in Dense Traffic",
     "authors": "Maxime Bouton, Alireza Nakhaei, Kikuo Fujimura, Mykel J. Kochenderfer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Game theoretic decision making for autonomous vehicles' merge manoeuvre in high traffic scenarios",
     "authors": "Mario Garz&#243;n, Anne Spalanzani",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Manual Drivers' Evaluation of Automated Merging Behavior in Dense Traffic: Efficiency Matters",
     "authors": "Johannes Potzy, Sophie Feinauer, Karl-Heinz Siedersberger, Klaus Bengler",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Longitudinal Position Control for Highway On-Ramp Merging: A Multi-Agent Approach to Automated Driving",
     "authors": "Larry Schester, Luis E. Ortiz",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Deep Reinforcement Learning Approach to High-speed Train Timetable Rescheduling under Disturbances",
     "authors": "Lingbin Ning, Yidong Li, Min Zhou 0003, Haifeng Song 0001, Hairong Dong 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Research on Optimized Pseudolite Constellation Design under Constrained GNSS Environment in Railway Stations",
     "authors": "Xiaolin Zhao, Jiang Liu 0007, Baigen Cai, Debiao Lu, Jian Wang 0022",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Towards a General Prediction System for the Primary Delay in Urban Railways",
     "authors": "Jianqing Wu 0002, Luping Zhou, Chen Cai, Fang Dong 0001, Jun Shen 0001, Geng Sun 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Autonomous Train Operational Safety assurance by Accidental Scenarios Searching",
     "authors": "Fei Yan, Shijie Zhang, Tao Tang 0004",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Transferable Utility Games based Intersection Control for Connected Vehicles",
     "authors": "DianChao Lin, Saif Eddin Jabari",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "iPCS: intersection Platoon Control Scheme for Non-Traffic Light Community",
     "authors": "Hao Wang, Rensheng Wang, Tianhao Wu 0011, Konglin Zhu, Lin Zhang 0013",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Traffic Signal Control for Isolated Intersection Based on Coordination Game and Pareto Efficiency",
     "authors": "Yang Zhao, Yiwen Liang, Jianming Hu, Zuo Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Vehicle Trajectory Prediction Using Intention-based Conditional Variational Autoencoder",
     "authors": "Xidong Feng, Zhepeng Cen, Jianming Hu, Yi Zhang 0029",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Driver attention level estimation using driver model identification",
     "authors": "Morimichi Nishigaki, Tetsuro Shirakata",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Integrated Approach to Probabilistic Vehicle Trajectory Prediction via Driver Characteristic and Intention Estimation",
     "authors": "Jinxin Liu, Yugong Luo, Hui Xiong 0006, Tinghan Wang, Heye Huang, Zhihua Zhong",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Driver torque steering assisting control considering the uncertainties of the driver's behavior in following large curvature path",
     "authors": "Zhenwu Fang, Jinxiang Wang 0002, Zhongsheng Lin, Pu Li 0003, Chao Feng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Generic Prediction Architecture Considering both Rational and Irrational Driving Behaviors",
     "authors": "Yeping Hu, Liting Sun, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Hierarchical Regional Control for Traffic Grid Signal Optimization",
     "authors": "Lingzhou Shu, Jia Wu 0005, Ziyan Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Adaptive Control Method for Arterial Signal Coordination Based on Deep Reinforcement Learning",
     "authors": "Peng Chen 0021, Zemao Zhu, Guangquan Lu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Towards Robust Deep Reinforcement Learning for Traffic Signal Control: Demand Surges, Incidents and Sensor Failures",
     "authors": "Filipe Rodrigues 0001, Carlos Lima Azevedo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Reinforcement Learning with Explainability for Traffic Signal Control",
     "authors": "Stefano Giovanni Rizzo, Giovanna Vantini, Sanjay Chawla",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Dynamic K-nearest Neighbor Map Matching Method Combined with Neural Network",
     "authors": "Ting Liu, Zhe Chen 0026, Chuan Chen, Zongtao Duan, Bin Zhao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fusing Direct Visibility Diagram with Clothoid Curves for Motion Planning",
     "authors": "Saeid Sedighi, Duong Nguyen Van, Petros Kapsalas, Klaus-Dieter Kuhnert",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Ground Vehicle Monocular Visual Odometry",
     "authors": "Mohamed Sabry, Abdulla Al-Kaff, Ahmed Hussein 0003, Slim Abdennadher",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "VINS-Vehicle: A Tightly-Coupled Vehicle Dynamics Extension to Visual-Inertial State Estimator",
     "authors": "Rong Kang, Lu Xiong 0001, Mingyu Xu, Junqiao Zhao, Peizhi Zhang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Interval Algebraic Approach for vehicle lateral tire forces estimation",
     "authors": "Sara Ifqir, Dalil Ichalal, Naima Ait Oufroukh, Sa&#239;d Mammar",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Framework for Vehicle Lateral Motion Control With Guaranteed Tracking and Performance",
     "authors": "Ankit Gupta 0005, Magnus Nilsson, Paolo Falcone, Emil Klintberg, Lars Johannesson M&#229;rdh",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling Longitudinal Following Control Based on Preceding Vehicle Motion Predictor",
     "authors": "Yang Li 0064, Dihua Sun, Min Zhao 0010, Jin Chen, Shuang Jin, Zhongcheng Liu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optimal Trajectory Generation for Autonomous Vehicles Under Centripetal Acceleration Constraints for In-lane Driving Scenarios",
     "authors": "Yajia Zhang, Hongyi Sun, Jinyun Zhou, Jiangtao Hu, Jinghao Miao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Autonomous Navigation for Mobility Scooters: a Complete Framework Based on Open-Source Software",
     "authors": "Marco Cecotti, Husain Kanchwala, Nabil Aouf",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Complete Testing for Speed Monitoring Function of Next-Generation Train Control System Based on IPOG Strategy",
     "authors": "Kehang Chen, Jidong Lv, Zhengwei Luo, Ming Chai, Hongjie Liu, Tao Tang 0004",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evaluating the Environmental Impacts of Connected and Automated Vehicles: Potential Shortcomings of a Binned-Based Emissions Model",
     "authors": "David Oswald, George Scora, Nigel Williams, Peng Hao 0001, Matthew J. Barth",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Infrared Reflectance Requirements of Metal Guardrail Surrogates for the Evaluation of Vehicle Road Departure Mitigation Systems",
     "authors": "Lin Li, Abir Saha, Seeta Ram Pandey, Yaobin Chen, Stanley Y. P. Chien, Rini Sherony",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Probabilistic Lane Change Prediction using Gaussian Process Neural Networks",
     "authors": "Martin Kr&#252;ger, Anne Stockem Novo, Till Nattermann, Torsten Bertram",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Experimental validation of lane-change intention prediction methodologies based on CNN and LSTM",
     "authors": "Rub&#233;n Izquierdo, &#193;lvaro Quintanar, Ignacio Parra, David Fern&#225;ndez Llorca, Miguel &#193;ngel Sotelo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Manifold Learning for Lane-changing Behavior Recognition in Urban Traffic",
     "authors": "Jinghang Li, Chao Lu 0006, Youzhi Xu, Zhao Zhang, Jianwei Gong, Huijun Di",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Automotive Safety: a Neural Network Approach for Lane Departure Detection using Real World Driving Data",
     "authors": "John Dahl, Rasmus Jonsson, Anton Kollmats, Gabriel Rodrigues de Campos, Jonas Fredriksson",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Semantic Understanding of Foggy Scenes with Purely Synthetic Data",
     "authors": "Martin Hahner, Dengxin Dai, Christos Sakaridis, Jan-Nico Zaech, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Data Selection for training Semantic Segmentation CNNs with cross-dataset weak supervision",
     "authors": "Panagiotis Meletis, Rob Romijnders, Gijs Dubbelman",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Adversarial Self-Training with Domain Mask for Semantic Segmentation",
     "authors": "Hsien-Kai Hsin, Hsiao-Chien Chiu, Chun-Chen Lin, Chih-Wei Chen, Pei-Kuei Tsung",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Semantic Classification of Pedestrian Traffic Scenarios for the Validation of Automated Driving",
     "authors": "Lukas Hartjen, Fabian Schuldt, Bernhard Friedrich",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Will Capsule Networks overcome Convolutional Neural Networks on Pedestrian Walking Direction?",
     "authors": "Safa&#226; Dafrallah, Aouatif Amine, St&#233;phane Mousset, Abdelaziz Bensrhair",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A heuristic model for pedestrian intention estimation",
     "authors": "Fanta Camara, Natasha Merat, Charles W. Fox",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Response of Vulnerable Road Users to Visual Information from Autonomous Vehicles in Shared Spaces",
     "authors": "Walter Morales-Alvarez, Miguel &#193;ngel de Miguel, Fernando Garc&#237;a 0002, Cristina Olaverri-Monreal",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Satisfying Social Preferences in Ridesharing Services",
     "authors": "Sandhya Saisubramanian, Connor Basich, Shlomo Zilberstein, Claudia V. Goldman",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A rescheduling optimization model under temporary speed restriction",
     "authors": "Xuan Li, Lingyun Meng, Yihui Wang 0001, Sihui Long, Jianrui Miao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Generalized Stochastic Petri Net Model for Performance Analysis of Trackside Infrastructure in Railway Station Areas under Uncertainty",
     "authors": "Malte Schmidt, Norman Weik, Stephan Zieger, Anke Schmeink, Nils Nie&#223;en",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Timetable Rescheduling Approach for Railway based on Monte Carlo Tree Search",
     "authors": "Rongsheng Wang 0001, Min Zhou 0003, Yidong Li, Qi Zhang 0052, Hairong Dong 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Energy-efficient trajectory planning for high-speed trains via an mixed integer linear programming approach",
     "authors": "Fanglin Cheng, Shuai Su, Miao Zhang, K. Li, Tao Tang 0004, Lei Yuan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic States Prediction in Autonomous Vehicles: Comparison of Three Different Methods",
     "authors": "Teng Liu, Bin Tian 0003, Yunfeng Ai, Long Chen 0005, Fei Liu, Dongpu Cao, Ning Bian, Fei-Yue Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic Dissemination Method for Collective Perception",
     "authors": "Christoph Allig, Gerd Wanielik",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Integrated optimal traffic flow control enabled by speed and time-gap regulation",
     "authors": "Claudio Roncoli",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Convolutional Trajectory Similarity Model: a faster method for trajectory similarity measurement",
     "authors": "Jiayi Guo, Ruobing Zhang, Jianming Hu, Yinan Jiang, Xin Pei",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Selecting Flow Optimal System Parameters for Automated Driving Systems",
     "authors": "Florian Hauer 0002, Raphael E. Stern, Alexander Pretschner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "On Steady-State Cornering Analysis for Motorcycles",
     "authors": "Majda Fouka, Lamri Nehaoua, Hichem Arioui, Sa&#239;d Mammar",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "B&#233;zierVAE: Improved Trajectory Modeling using Variational Autoencoders for the Safety Validation of Highly Automated Vehicles",
     "authors": "Robert Krajewski, Tobias Moers, Adrian Meister, Lutz Eckstein",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Backpropagation through Simulation: A Training Method for Neural Network-based Car-following",
     "authors": "Ruoyu Sun 0003, Donghao Xu, Huijing Zhao, Mathieu Moze, Fran&#231;ois Aioun, Franck Guillemard",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Advanced Self-Improving Ramp Metering Algorithm based on Multi-Agent Deep Reinforcement Learning",
     "authors": "Fuwen Deng, Jiandong Jin, Yu Shen, Yuchuan Du",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multi-Reward Architecture based Reinforcement Learning for Highway Driving Policies",
     "authors": "Wei Yuan 0002, Ming Yang 0002, Yuesheng He, Chunxiang Wang, Bing Wang 0006",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Large-scale traffic control using autonomous vehicles and decentralized deep reinforcement learning",
     "authors": "Harshal Maske, Tianshu Chu, Uros Kalabic",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Uncertainty Estimation with Distributional Reinforcement Learning for Applications in Intelligent Transportation Systems: A Case Study",
     "authors": "Pengyue Wang, Yan Li 0049, Shashi Shekhar 0001, William F. Northrop",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Characterization of a transmitter in a medium frequency maritime terrestrial navigation system",
     "authors": "Lars Grundh&#246;fer, Stefan Gewies, Niklas Hehenkamp, Michael Hoppe, Mario Walterfang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Enhanced Situational Awareness with Signals of Opportunity: RSS-based Localization and Tracking",
     "authors": "Mark Page, Thanuka L. Wickramarathne",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Accurate IMU Preintegration Using Switched Linear Systems For Autonomous Systems",
     "authors": "John Henawy, Zhengguo Li, Wei-Yun Yau, Gerald Seet, Kong-Wah Wan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Implementing Voronoi-based Guided Hybrid A* in Global Path Planning for Autonomous Vehicles",
     "authors": "Saeid Sedighi, Duong Nguyen Van, Petros Kapsalas, Klaus-Dieter Kuhnert",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Personalized Safety-focused Control by Minimizing Subjective Risk",
     "authors": "Naren Bao, Dongfang Yang, Alexander Carballo, &#220;mit &#214;zg&#252;ner, Kazuya Takeda",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "New online estimation algorithm of lateral tire-road coefficients based on Inertial Navigation System",
     "authors": "La&#235;titia Li, Brigitte d'Andr&#233;a-Novel, Sylvain Thorel",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Tracking Control of Unmanned Tracked Vehicle in Off-road Conditions with Large Curvature",
     "authors": "Ziye Zhao, Haiou Liu, Huiyan Chen, Shaohang Xu, Wenli Liang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Energy Management for Unmanned Tracked Vehicles Based on Global Path",
     "authors": "Shaohang Xu, Junqiang Xi, Huiyan Chen, Ziye Zhao, Shaojian Han",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Forecasting the Gap Between Demand and Supply of E-hailing Vehicle in Large Scale of Network Based on Two-stage Model",
     "authors": "Lu Ling, Xiongfei Lai, Li Feng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A discrete Mathematical Framework for Tracking Information Dissemination Dynamics via Vehicle-to-Vehicle Communications in an urban roadway Network",
     "authors": "Ala Alobeidyeen, Lili Du",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Nonlinearity in Time-Dependent Origin-Destination Demand Estimation in Congested Networks",
     "authors": "Sajjad Shafiei, Meead Saberi, Hai L. Vu 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Neural-Attention-Based Deep Learning Architectures for Modeling Traffic Dynamics on Lane Graphs",
     "authors": "Matthew A. Wright, Simon F. G. Ehlers, Roberto Horowitz",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Automatic extrinsic calibration between a camera and a 3D Lidar using 3D point and plane correspondences",
     "authors": "Surabhi Verma, Julie Stephany Berrio, Stewart Worrall 0002, Eduardo M. Nebot",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Online Intelligent Calibration of Cameras and LiDARs for Autonomous Driving Systems",
     "authors": "Hanbo Xu, Gongjin Lan, Shaoguan Wu, Qi Hao 0003",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Extrinsic Multi Sensor Calibration under Uncertainties",
     "authors": "Tilman K&#252;hner, Julius K&#252;mmerle",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "LACI: Low-effort Automatic Calibration of Infrastructure Sensors",
     "authors": "Johannes M&#252;ller 0003, Martin Herrmann, Jan Strohbeck, Vasileios Belagiannis, Michael Buchholz",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Targetless Rotational Auto-Calibration of Radar and Camera for Intelligent Transportation Systems",
     "authors": "Christoph Sch&#246;ller, Maximilian Schnettler, Annkathrin Kr&#228;mmer, Gereon Hinz, Maida Bakovic, M&#252;ge G&#252;zet, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fast and Precise Visual Rear Axle Calibration",
     "authors": "Julius K&#252;mmerle, Tilman K&#252;hner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Maneuver Identification for Interaction-Aware Highway Lane Change Behavior Planning based on Polygon Clipping and Convex Optimization",
     "authors": "Manuel Schmidt, Christian Wissing, Jan Braun, Till Nattermann, Torsten Bertram",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Reproducibility of Driving Profiles - Application of the Wizard of Oz Method for Vehicle Pedestrian Interaction",
     "authors": "Tanja Fuest, Lars Michalowski, Elisabeth Schmidt, Klaus Bengler",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "GRIP: Graph-based Interaction-aware Trajectory Prediction",
     "authors": "Xin Li 0080, Xiaowen Ying, Mooi Choo Chuah",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Interaction-Aware Approach for Online Parameter Estimation of a Multi-lane Intelligent Driver Model",
     "authors": "Johannes Buyer, Dominic Waldenmayer, Nico Su&#223;mann, Raoul Z&#246;llner, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling Multi-Vehicle Interaction Scenarios Using Gaussian Random Field",
     "authors": "Yaohui Guo, Vinay Varma Kalidindi, Mansur Arief, Wenshuo Wang 0001, Jiacheng Zhu, Huei Peng, Ding Zhao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Interactive Decision Making for Autonomous Vehicles in Dense Traffic",
     "authors": "David Isele",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evaluation on Diversity of Drivers' Cognitive Stress Response using EEG and ECG Signals during Real-Traffic Experiment with an Electric Vehicle",
     "authors": "Yuna Noh, Seyun Kim, Yoonjin Yoon",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Detection of driver's inattention: a real-time deep learning approach",
     "authors": "S. Tryhub, Giovanni Luca Masala",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Comparative Study on Transferable Driver Behavior Learning Methods in the Lane-Changing Scenario",
     "authors": "Zirui Li, Chao Lu 0006, Jianwei Gong, Fengqing Hu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evaluation of Driver's Cognitive Load when Presented Information on the Windshield using P300 Latency in Eye-fixation Related Potentials",
     "authors": "Shinya Takada, Kazutaka Ueda, Naruki Yamada, Yoshihiro Iguchi, Yukihiro Tao, Koji Koizumi, Masayuki Nakao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Learning autonomous vehicle passengers' preferred driving styles using g-g plots and haptic feedback",
     "authors": "Uros Kalabic, Ankush Chakrabarty, Rien Quirynen, Stefano Di Cairano",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Assessing the Mental States of Fallback-Ready Drivers in Automated Driving by Electrooculography",
     "authors": "Yanbin Wu, Ken Kihara, Yuji Takeda, Toshihisa Sato, Motoyuki Akamatsu, Satoshi Kitazaki",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Online Traffic Speed Estimation for Urban Road Networks with Few Data: A Transfer Learning Approach",
     "authors": "James J. Q. Yu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Real-time Prediction of Arterial Vehicle Trajectories: An Application to Predictive Route Guidance for an Emergency Vehicle",
     "authors": "Seongjin Choi, Jiwon Kim, Hwapyeong Yu, Hwasoo Yeo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic OD Prediction for Urban Networks Based on Automatic Number Plate Recognition Data: Paramertic vs. Non-parametric Approaches",
     "authors": "Fangfang Zheng, Jing Liu, Henk J. van Zuylen, Kun Wang, Xaobo Liu, Jie Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Influence of Emergency Vehicle Preemption on Travelling Time and Traffic Safety in Urban Environments enabled by Innovative Behavioral Models and V2X Communication - Simulation and Case Study",
     "authors": "Florian Weinert, Michael D&#252;ring, Klaus Bogenberger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Leveraging Sensor-Based Vehicle Position and Speed Information in Traffic Signal Control with Existing Infrastructure",
     "authors": "Christopher M. Day, Rob Helt, Daniel Sines, A. M. Tahsin Emtenan",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Short-term Vehicle Speed Prediction Based on Convolutional Bidirectional LSTM Networks",
     "authors": "Shaojian Han, Fengqi Zhang, Junqiang Xi, Yanfei Ren, Shaohang Xu",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Lane markings-based relocalization on highway",
     "authors": "Marc Revilloud, Emmanuel Doucet",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Mapping and Localization using Semantic Road Marking with Centimeter-level Accuracy in Indoor Parking Lots",
     "authors": "Jiaxin Hu, Ming Yang 0002, Hanqing Xu, Yuesheng He, Chunxiang Wang",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Graph-based Map-Aided Localization using Cadastral Maps as Virtual Laser Scans",
     "authors": "Guillaume Bresson, Zayed Alsayed, Sylvain Jonchery",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Leveraging Deep Learning Based Object Detection for Localising Autonomous Personal Mobility Devices in Sparse Maps",
     "authors": "Maleen Jayasuriya, Gamini Dissanayake, Ravindra Ranasinghe, Nathanael Gandhi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Parallel computing algorithm for real-time mapping between large-scale networks",
     "authors": "Ethan Zhang, Amirmahdi Tafreshian, Neda Masoud",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Novel Method to Construct Lane Accurate Crossroad Maps by Mining Series Sensors of Large Vehicle Fleets",
     "authors": "Friedrich Schweizer, Fynn Terhar, Klaus Bogenberger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Reduced Kernel Extreme Learning Machine for Traffic Sign Recognition",
     "authors": "E. Sanz-Madoz, Javier Echanobe, &#211;scar Mata-Carballeira, In&#233;s del Campo, M. Victoria Mart&#237;nez",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Real-time Parking Slot Detection for Camera-equipped Vehicles",
     "authors": "Timo F&#233;ret, Pramod Chandrashekhariah, Noel Trujillo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Trade-off analysis using synthetic training data for neural networks in the automotive development process",
     "authors": "Raphael Pfeffer, Kai Bredow, Eric Sax",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Fusion of Object Tracking and Dynamic Occupancy Grid Map",
     "authors": "Nils Rexin, Marcel Musch, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Robustness and Deployability of Deep Object Detectors in Autonomous Driving",
     "authors": "Ganesh Adam, Vibhav Chitalia, Namrata Simha, Asad Ismail, Shashikant Kulkarni, Vikram Narayan, Matthias Schulze",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Recognition &#38; Evaluation of Additional Traffic Signs on the example of '80 km/h when wet'",
     "authors": "Tobias Weber, Emec Ercelik, Martin Ebert, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Off-road Terrain Path Planning for Differential Steering Vehicles Based on Artificial Potential Field Gradient",
     "authors": "Jiaming Hu, Yuhui Hu, Kai Liu 0014, Wei Wang, Huiyan Chen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Flatness-based Model Predictive Control for Autonomous Vehicle Trajectory Tracking",
     "authors": "Zejiang Wang, Jingqiang Zha, Junmin Wang 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analysis of Race Car Drivers' Pedal Interactions by means of Supervised Learning",
     "authors": "Julian von Schleinitz, Lukas W&#246;rle, Michael Graf, Andreas Schr&#246;der 0001, Wolfgang Trutschnig",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Deep Truck : A deep neural network model for longitudinal dynamics of heavy duty trucks",
     "authors": "Saleh Albeaik, Fang-Chieh Chou, Xiao-Yun Lu, Alexandre M. Bayen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Modeling of Energy Losses During Cornering for Electric City Buses",
     "authors": "Camiel J. J. Beckers, Igo J. M. Besselink, Henk Nijmeijer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Model Predictive Control Allocation of Systems with Different Dynamics",
     "authors": "Moad Kissai, Bruno Monsuez, Xavier Mouton, Didier Martinez, Adriana Tapus",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Efficient Autonomy Validation in Simulation with Adaptive Stress Testing",
     "authors": "Mark Koren, Mykel J. Kochenderfer",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Global Planning Method for Visiting Roads with Parking Spaces in Priority using Rural Postman Problem",
     "authors": "Minsoo Kim, Joonwoo Ahn, Jaeheung Park",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Towards a Driver Support System for Teleoperated Driving",
     "authors": "Stefan Neumeier, Christian Facchi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Polar Occupancy Map - A Compact Traffic Representation for Deep Learning Scenario Classification",
     "authors": "Halil Beglerovic, Jonas Ruebsam, Steffen Metzner, Martin Horn",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optimal Assignment of e-scooter to Chargers",
     "authors": "Mahmoud Masoud, Mohammed Elhenawy, Mohammed H. Almannaa, Shi Qiang Liu, Sebastien Glaser, Andry Rakotonirainy",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "An Intelligent Toolkit for Benchmarking Data-Driven Aerospace Prognostics",
     "authors": "Divish Rengasamy, Jimiama M. M. Mase, Benjamin Rothwell, Grazziela P. Figueredo",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Analytical Model for Queue Length Estimation at Signalized Intersections from Travel Time",
     "authors": "Anna Mary Philip, Gitakrishnan Ramadurai",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Deep Reinforcement Learning Agent for Traffic Intersection Control Optimization",
     "authors": "Deepeka Garg, Maria Chli, George Vogiatzis",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Optimization of Signalized Intersections Equipped with LRV Signal Priority Systems by Minimizing Cars' Stop Time",
     "authors": "Mina Ghanbarikarekani, Michelle Zeibots, Xiaobo Qu 0002",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Left turn phasing type determination at isolated intersections solved by a genetic algorithm",
     "authors": "Qinrui Tang, Junchen Jin",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Reinforcement Learning Approach for Intelligent Traffic Signal Control at Urban Intersections",
     "authors": "Mengyu Guo, Pin Wang, Ching-Yao Chan, Sid Askary",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Training Reinforcement Learning Agent for Traffic Signal Control under Different Traffic Conditions",
     "authors": "Jinghong Zeng, Jianming Hu, Yi Zhang 0029",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Machine Vision-Enabled Traffic Controller for Safer and Smoother Traffic Flow Around Construction Sites",
     "authors": "Weiqin Chuah, Ruwan B. Tennakoon, Reza Hoseinnezhad, Alireza Bab-Hadiashar",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Semi-supervised Detector Training with Prototypes for Vehicle Detection",
     "authors": "Georg Waltner, Michael Opitz, Georg Krispel, Horst Possegger, Horst Bischof",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "GPS Based Adaptive Traffic Light Timings and Lane Scheduling",
     "authors": "Krishna Kant Sharma, Indu S",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Spatiotemporal Traffic Speed Reconstruction from Travel Time Measurements Using Bluetooth Detection",
     "authors": "Lisa Kessler, Barbara Karl, Klaus Bogenberger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "MagSpeed: A Novel Method of Vehicle Speed Estimation Through A Single Magnetic Sensor",
     "authors": "Yimeng Feng, Guoqiang Mao, Bo Cheng 0001, Baoqi Huang, Shangbo Wang, Junliang Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Trajectory based Monitoring of Saturation Flow Rate with Video Calibration: a Case Study",
     "authors": "Walid Fourati, Aleksandar Trifunovic, Morten Fle&#223;er, Bernhard Friedrich",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Probable Multi-hypothesis Blind Spot Estimation for Driving Risk Prediction",
     "authors": "Takayuki Sugiura, Tomoki Watanabe",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "DADA-2000: Can Driving Accident be Predicted by Driver Attention&#402; Analyzed by A Benchmark",
     "authors": "Jianwu Fang, Dingxin Yan, Jiahuan Qiao, Jianru Xue, He Wang, Sen Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Objective and Subjective Analysis to Quantify Influence Factors of Driving Risk",
     "authors": "Heye Huang, Yang Li 0093, Xunjia Zheng, Jianqiang Wang 0003, Qing Xu 0010, Sifa Zheng",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Attention Neural Baby Talk: Captioning of Risk Factors while Driving",
     "authors": "Yuki Mori, Hiroshi Fukui, Tsubasa Hirakawa, Jo Nishiyama, Takayoshi Yamashita, Hironobu Fujiyoshi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A General Framework of Learning Multi-Vehicle Interaction Patterns from Video",
     "authors": "Chengyuan Zhang 0002, Jiacheng Zhu, Wenshuo Wang 0001, Ding Zhao",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Interpretable Modelling of Driving Behaviors in Interactive Driving Scenarios based on Cumulative Prospect Theory",
     "authors": "Liting Sun, Wei Zhan, Yeping Hu, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Action and Object Interaction Recognition for Driver Activity Classification",
     "authors": "Patrick Weyers, David Schiebener, Anton Kummert",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "May I Cut Into Your Lane?: A Policy Network to Learn Interactive Lane Change Behavior for Autonomous Driving",
     "authors": "Junho Lee, Jun Won Choi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multi-Objective Autonomous Braking System using Naturalistic Dataset",
     "authors": "Rafael Vasquez, Bilal Farooq",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Investigating Initial Driver Intention on Overtaking on Rural Roads",
     "authors": "Fei Yan 0010, Mark Eilers, Lars Weber, Martin Baumann 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Strengthening the Case for a Bayesian Approach to Car-following Model Calibration and Validation using Probabilistic Programming",
     "authors": "Franklin Abodo, Andrew Berthaume, Stephen Zitzow-Childs, Leonardo Bobadilla",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Case Study of Trust on Autonomous Driving",
     "authors": "Shili Sheng, Erfan Pakdamanian, Kyungtae Han, BaekGyu Kim, Prashant Tiwari, Inki Kim, Lu Feng 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Kalman Filter-based Vehicle Count Estimation Approach Using Probe Data: A Multi-lane Road Case Study",
     "authors": "Mohammad A. Aljamal, Hossam M. Abdelghaffar, Hesham A. Rakha",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Traffic State Estimation Based on Kalman Filter Technique using Connected Vehicle V2V Basic Safety Messages",
     "authors": "Rongsheng Chen, Michael W. Levin",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A comparative study on filtering methods for online freeway traffic estimation using heterogeneous data",
     "authors": "Xuan Sy Trinh, Dong Ngoduy, Mehdi Keyvan-Ekbatani, Blair Robertson",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Early Identification of Recurrent Congestion in Heterogeneous Urban Traffic",
     "authors": "Lin Zhu, Rajesh Krishnan, Fangce Guo, John W. Polak, Aruna Sivakumar",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "GRAIL: A Gradients-of-Intensities-based Local Descriptor for Map-based Localization Using LiDAR Sensors",
     "authors": "Constanze Hungar, Sara Brakemeier, Stefan J&#252;rgens, Frank K&#246;ster",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "3D Map Optimization with Fully Convolutional Neural Network and Dynamic Local NDT",
     "authors": "Zebang Shen, Yichong Xu, Muchen Sun, Alexander Carballo, Qingguo Zhou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "LIDAR-Based High Reflective Landmarks (HRL)s For Vehicle Localization in an HD Map",
     "authors": "Farouk Ghallabi, Marie-Anne Mittet, Ghayath El-Haj-Shhade, Fawzi Nashashibi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A data mapping method for roadside LiDAR sensors",
     "authors": "Yuan Tian 0021, Hao Xu 0004, Jianqing Wu 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "V2G Connected Battery Recharging and Refueling Driver Assistance System to Optimize Long Distance Operation",
     "authors": "Franz Aubeck, Georg Birmes, Stefan Pischinger",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Detecting approach of emergency vehicles using siren sound processing",
     "authors": "Yuki Ebizuka, Shin Kato, Makoto Itami",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Head-up Displays for Augmented Reality Applications in Racing Vehicles: a Feasibility Study",
     "authors": "Matteo Corno, Luca Franceschetti, Simone Gelmini, Sergio M. Savaresi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A microsimulation approach for the impact assessment of a Vehicle-to-Infrastructure based Road Hazard Warning system",
     "authors": "Kallirroi N. Porfyri, Areti Kotsi, Evangelos Mitsakis",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "High-speed UAV Delivery System with Non-stop Parcel Handover Using High-speed Visual Control",
     "authors": "Satoshi Tanaka, Taku Senoo, Masatoshi Ishikawa",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Push, Stop, and Replan: An Application of Pebble Motion on Graphs to Planning in Automated Warehouses",
     "authors": "Miroslav Kulich, Tom&#225;s Nov&#225;k, Libor Preucil",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Semi-Automatic Pallet Pick-up as an Advanced Driver Assistance System for Forklifts",
     "authors": "Benjamin Molter, Johannes Fottner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Evaluation of the Application of Smart Glasses for Decentralized Control Systems in Logistics",
     "authors": "Thomas Kirks, Jana Jost, Tim Uhlott, Julian P&#252;th, Matthias Jakobs",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Negotiation Approach by Reinforcement Learning for Takeoff Sequencing Decision in Airports",
     "authors": "Diego S. Kieckbusch, Geraldo P. Rocha Filho, Vitor Filincowsky Ribeiro, Jose Alexandre T. G. Fregnani, Bento S. Mattos, Li Weigang 0001",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Air Traffic Configuration Modelling and Dynamic Airspace Allocation using Discrete-Time Markov Chains",
     "authors": "Lewis Faulkner, Aaron McFadyen",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Dynamic Analysis and Control of a Flying Cable Driven Parallel Manipulator Mounted on an Airship",
     "authors": "Fida Ben Abdallah, Naoufel Azouz, Lotfi Beji, Azgal Abichou",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Drone Fleet Deployment Strategy for Large Scale Agriculture and Forestry Surveying",
     "authors": "Man Liang, Daniel Delahaye",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Identification of Major Road Influence Area Using NDS Data",
     "authors": "Raju Thapa, Shauna L. Hallmark, Nicole Oneyear, Omar Smadi",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Improving Ridesplitting Service Using Optimization Procedures on Shareability Network: A Case Study of Chengdu, China",
     "authors": "Meiting Tu, Ye Li, Wenxiang Li, Minchao Tu, Olivier Orfila, Dominique Gruyer, XuegangJeff Ban",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Impact of Weather on Shared Electric Scooter Utilization",
     "authors": "Jijo K. Mathew, Mingmin Liu, Darcy M. Bullock",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Inferring Accurate Bus Trajectories from Noisy Estimated Arrival Time Records",
     "authors": "Lakmal Meegahapola, Noel Athaide, Kasthuri Jayarajah, Shili Xiang, Archan Misra",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Emergency Vehicle-Centered Traffic Signal Control in Intelligent Transportation Systems",
     "authors": "Miaomiao Cao, Qiqi Shuai, Victor O. K. Li",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multimodal iNtelligent Deep (MiND) Traffic Signal Controller",
     "authors": "Soheil Mohamad Alizadeh Shabestary, Baher Abdulhai",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Grid-Based Micro Traffic Prediction using Fully Convolutional Networks",
     "authors": "Philip Sch&#246;rner, Christian Hubschneider, Jonathan H&#228;rtl, Rupert Polley, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "Multi-Objective Calibration of Microscopic Traffic Simulation for Highway Traffic Safety",
     "authors": "Edgar Tamayo Cascan, Jordan Ivanchev, David Eckhoff, Alberto L. Sangiovanni-Vincentelli, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "ITSC",
-    "year": 2019,
     "title": "A Benchmark Dataset and Multi-Scale Attention Network for Semantic Traffic Light Detection",
     "authors": "Yang Feng, Deqian Kong, Ping Wei 0001, Hongbin Sun 0001, Nanning Zheng 0001",
     "abstract": null

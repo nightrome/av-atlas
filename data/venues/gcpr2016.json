@@ -1,252 +1,180 @@
 [
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Precise and Robust Line Detection for Highly Distorted and Noisy Images",
     "authors": "Dominik Wolters, Reinhard Koch",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Pixel-Level Encoding and Depth Layering for Instance-Level Semantic Labeling",
     "authors": "Jonas Uhrig, Marius Cordts, Uwe Franke, Thomas Brox",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Artistic Style Transfer for Videos",
     "authors": "Manuel Ruder, Alexey Dosovitskiy, Thomas Brox",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Semantically Guided Depth Upsampling",
     "authors": "Nick Schneider, Lukas Schneider, Peter Pinggera, Uwe Franke, Marc Pollefeys, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Chimpanzee Faces in the Wild: Log-Euclidean CNNs for Predicting Identities and Attributes of Primates",
     "authors": "Alexander Freytag, Erik Rodner, Marcel Simon, Alexander Loos, Hjalmar S. K&#252;hl, Joachim Denzler",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Convolutional Scale Invariance for Semantic Segmentation",
     "authors": "Ivan Kreso, Denis Causevic, Josip Krapac, Sinisa Segvic",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Convexification of Learning from Constraints",
     "authors": "Iaroslav Shcherbatyi, Bjoern Andres",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "FSI Schemes: Fast Semi-Iterative Solvers for PDEs and Optimisation Methods",
     "authors": "David Hafner, Peter Ochs, Joachim Weickert, Martin Rei&#223;el, Sven Grewenig",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Automated Segmentation of Immunostained Cell Nuclei in 3D Ultramicroscopy Images",
     "authors": "Aaron Scherzinger, Florian Kleene, Cathrin Dierkes, Friedemann Kiefer, Klaus H. Hinrichs, Xiaoyi Jiang 0001",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Robust Interactive Multi-label Segmentation with an Advanced Edge Detector",
     "authors": "Sabine M&#252;ller 0001, Peter Ochs, Joachim Weickert, Norbert M. Graf",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Contiguous Patch Segmentation in Pointclouds",
     "authors": "William Nguatem, Helmut Mayer 0001",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Randomly Sparsified Synthesis for Model-Based Deformation Analysis",
     "authors": "Stefan Reinhold, Andreas Jordt, Reinhard Koch",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Depth Map Based Facade Abstraction from Noisy Multi-View Stereo Point Clouds",
     "authors": "Andreas Ley, Olaf Hellwich",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Stereo Visual Odometry Without Temporal Filtering",
     "authors": "Joerg Deigmoeller, Julian Eggert",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Large-Scale Active Learning with Approximations of Expected Model Output Changes",
     "authors": "Christoph K&#228;ding, Alexander Freytag, Erik Rodner, Andrea Perino, Joachim Denzler",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "A Convnet for Non-maximum Suppression",
     "authors": "Jan Hendrik Hosang, Rodrigo Benenson, Bernt Schiele",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Occlusion-Aware Depth Estimation Using Sparse Light Field Coding",
     "authors": "Ole Johannsen, Antonin Sulc, Bastian Goldluecke",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Joint Object Pose Estimation and Shape Reconstruction in Urban Street Scenes Using 3D Shape Priors",
     "authors": "Francis Engelmann, J&#246;rg St&#252;ckler, Bastian Leibe",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Joint Recursive Monocular Filtering of Camera Motion and Disparity Map",
     "authors": "Johannes Berger, Christoph Schn&#246;rr",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "From Traditional to Modern: Domain Adaptation for Action Classification in Short Social Video Clips",
     "authors": "Aditya Singh, Saurabh Saini, Rajvi Shah, P. J. Narayanan",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Discrete Tomography by Continuous Multilabeling Subject to Projection Constraints",
     "authors": "Matthias Zisler, Stefania Petra, Claudius Schn&#246;rr, Christoph Schn&#246;rr",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Reduction of Point Cloud Artifacts Using Shape Priors Estimated with the Gaussian Process Latent Variable Model",
     "authors": "Jens Krenzin, Olaf Hellwich",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Camera-Agnostic Monocular SLAM and Semi-dense 3D Reconstruction",
     "authors": "Martin R&#252;nz, Frank Neuhaus, Christian Winkens, Dietrich Paulus",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Efficient Single-View 3D Co-segmentation Using Shape Similarity and Spatial Part Relations",
     "authors": "Nikita Araslanov, Seongyong Koo, Juergen Gall, Sven Behnke",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Fast and Accurate Micro Lenses Depth Maps for Multi-focus Light Field Cameras",
     "authors": "Rodrigo Ferreira, Nuno Gon&#231;alves 0001",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Train Detection and Tracking in Optical Time Domain Reflectometry (OTDR) Signals",
     "authors": "Adam Papp, Christoph Wiesmeyr, Martin Litzenberger, Heinrich Garn, Walter G. Kropatsch",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Parametric Dictionary-Based Velocimetry for Echo PIV",
     "authors": "Ecaterina Bodnariuc, Stefania Petra, Christian Poelma, Christoph Schn&#246;rr",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Identifying Individual Facial Expressions by Deconstructing a Neural Network",
     "authors": "Farhad Arbabzadah, Gr&#233;goire Montavon, Klaus-Robert M&#252;ller, Wojciech Samek",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Boundary Preserving Variational Image Differentiation",
     "authors": "Yosra Mathlouthi, Amar Mitiche, Ismail Ben Ayed",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "A Prediction-Correction Approach for Real-Time Optical Flow Computation Using Stereo",
     "authors": "Maxime Derome, Aur&#233;lien Plyer, Martial Sanfourche, Guy Le Besnerais",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Weakly-Supervised Semantic Segmentation by Redistributing Region Scores Back to the Pixels",
     "authors": "Josip Krapac, Sinisa Segvic",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Learning a Confidence Measure for Real-Time Egomotion Estimation",
     "authors": "Stephanie Lessmann, Jens Westerhoff, Mirko Meuter, Josef Pauli",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Learning to Select Long-Track Features for Structure-From-Motion and Visual SLAM",
     "authors": "Jonas Scheer, Mario Fritz, Oliver Grau",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Source Localization of Reaction-Diffusion Models for Brain Tumors",
     "authors": "Rym Jaroudi, George Baravdish, Freddie &#197;str&#246;m, B. Tomas Johansson",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Depth Estimation Through a Generative Model of Light Field Synthesis",
     "authors": "Mehdi S. M. Sajjadi, Rolf K&#246;hler, Bernhard Sch&#246;lkopf, Michael Hirsch 0001",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2016,
     "title": "Coupling Convolutional Neural Networks and Hough Voting for Robust Segmentation of Ultrasound Volumes",
     "authors": "Christine Kroll, Fausto Milletari, Nassir Navab, Seyed-Ahmad Ahmadi",
     "abstract": null

@@ -1,1386 +1,990 @@
 [
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Making Neural Programming Architectures Generalize via Recursion",
     "authors": "Jonathon Cai, Richard Shin, Dawn Song",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "End-to-end Optimized Image Compression",
     "authors": "Johannes Ballé, Valero Laparra, Eero P. Simoncelli",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Optimization as a Model for Few-Shot Learning",
     "authors": "Sachin Ravi, Hugo Larochelle",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning End-to-End Goal-Oriented Dialog",
     "authors": "Antoine Bordes, Y-Lan Boureau, Jason Weston",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Towards Principled Methods for Training Generative Adversarial Networks",
     "authors": "Martín Arjovsky, Léon Bottou",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Reinforcement Learning with Unsupervised Auxiliary Tasks",
     "authors": "Max Jaderberg, Volodymyr Mnih, Wojciech Marian Czarnecki, Tom Schaul, Joel Z. Leibo, David Silver 0001, Koray Kavukcuoglu",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Multi-Agent Cooperation and the Emergence of (Natural) Language",
     "authors": "Angeliki Lazaridou, Alexander Peysakhovich, Marco Baroni",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Understanding deep learning requires rethinking generalization",
     "authors": "Chiyuan Zhang, Samy Bengio, Moritz Hardt, Benjamin Recht, Oriol Vinyals",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Neural Architecture Search with Reinforcement Learning",
     "authors": "Barret Zoph, Quoc V. Le",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Q-Prop: Sample-Efficient Policy Gradient with An Off-Policy Critic",
     "authors": "Shixiang Gu, Timothy P. Lillicrap, Zoubin Ghahramani, Richard E. Turner, Sergey Levine",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Act by Predicting the Future",
     "authors": "Alexey Dosovitskiy, Vladlen Koltun",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima",
     "authors": "Nitish Shirish Keskar, Dheevatsa Mudigere, Jorge Nocedal, Mikhail Smelyanskiy, Ping Tak Peter Tang",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Semi-supervised Knowledge Transfer for Deep Learning from Private Training Data",
     "authors": "Nicolas Papernot, Martín Abadi, Úlfar Erlingsson, Ian J. Goodfellow, Kunal Talwar",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Amortised MAP Inference for Image Super-resolution",
     "authors": "Casper Kaae Sønderby, Jose Caballero, Lucas Theis, Wenzhe Shi, Ferenc Huszár",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning Graphical State Transitions",
     "authors": "Daniel D. Johnson 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Maximum Entropy Flow Networks",
     "authors": "Gabriel Loaiza-Ganem, Yuanjun Gao, John P. Cunningham",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Topology and Geometry of Half-Rectified Network Optimization",
     "authors": "C. Daniel Freeman, Joan Bruna",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Paying More Attention to Attention: Improving the Performance of Convolutional Neural Networks via Attention Transfer",
     "authors": "Sergey Zagoruyko, Nikos Komodakis",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning Visual Servoing with Deep Features and Fitted Q-Iteration",
     "authors": "Alex X. Lee, Sergey Levine, Pieter Abbeel",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Stochastic Neural Networks for Hierarchical Reinforcement Learning",
     "authors": "Carlos Florensa, Yan Duan, Pieter Abbeel",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Nonparametric Neural Networks",
     "authors": "George Philipp, Jaime G. Carbonell",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Distributed Second-Order Optimization using Kronecker-Factored Approximations",
     "authors": "Jimmy Ba, Roger B. Grosse, James Martens",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Pruning Filters for Efficient ConvNets",
     "authors": "Hao Li 0022, Asim Kadav, Igor Durdanovic, Hanan Samet, Hans Peter Graf",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Generate Samples from Noise through Infusion Training",
     "authors": "Florian Bordes, Sina Honari, Pascal Vincent",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Filter shaping for Convolutional Neural Networks",
     "authors": "Xingyi Li, Fuxin Li, Xiaoli Z. Fern, Raviv Raich",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Normalizing the Normalizers: Comparing and Extending Network Normalization Schemes",
     "authors": "Mengye Ren, Renjie Liao 0001, Raquel Urtasun, Fabian H. Sinz, Richard S. Zemel",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Multilayer Recurrent Network Models of Primate Retinal Ganglion Cell Responses",
     "authors": "Eleanor Batty, Josh Merel, Nora Brackbill, Alexander Heitman, Alexander Sher, Alan M. Litke, E. J. Chichilnisky, Liam Paninski",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Improving Generative Adversarial Networks with Denoising Feature Matching",
     "authors": "David Warde-Farley, Yoshua Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Efficient Vector Representation for Documents through Corruption",
     "authors": "Minmin Chen",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning Invariant Feature Spaces to Transfer Skills with Reinforcement Learning",
     "authors": "Abhishek Gupta 0004, Coline Devin, Yuxuan Liu 0001, Pieter Abbeel, Sergey Levine",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Transfer of View-manifold Learning to Similarity Perception of Novel Objects",
     "authors": "Xingyu Lin, Hao Wang, Zhihao Li, Yimeng Zhang, Alan L. Yuille, Tai Sing Lee",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "What does it take to generate natural textures?",
     "authors": "Ivan Ustyuzhaninov, Wieland Brendel, Leon A. Gatys, Matthias Bethge",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Emergence of foveal image sampling from learning to attend in visual scenes",
     "authors": "Brian Cheung, Eric Weiss, Bruno A. Olshausen",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "An Information-Theoretic Framework for Fast and Robust Unsupervised Learning via Neural Population Infomax",
     "authors": "Wentao Huang, Kechen Zhang",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "PixelCNN++: Improving the PixelCNN with Discretized Logistic Mixture Likelihood and Other Modifications",
     "authors": "Tim Salimans, Andrej Karpathy, Xi Chen 0022, Diederik P. Kingma",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Mode Regularized Generative Adversarial Networks",
     "authors": "Tong Che, Yanran Li, Athul Paul Jacob, Yoshua Bengio, Wenjie Li 0002",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Highway and Residual Networks learn Unrolled Iterative Estimation",
     "authors": "Klaus Greff, Rupesh Kumar Srivastava, Jürgen Schmidhuber",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Improving Neural Language Models with a Continuous Cache",
     "authors": "Edouard Grave, Armand Joulin, Nicolas Usunier",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Unsupervised Cross-Domain Image Generation",
     "authors": "Yaniv Taigman, Adam Polyak, Lior Wolf",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Third Person Imitation Learning",
     "authors": "Bradly C. Stadie, Pieter Abbeel, Ilya Sutskever",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Variational Recurrent Adversarial Deep Domain Adaptation",
     "authors": "Sanjay Purushotham, Wilka Carvalho, Tanachat Nilanon, Yan Liu 0002",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Program Synthesis for Character Level Language Modeling",
     "authors": "Pavol Bielik, Veselin Raychev, Martin T. Vechev",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Episodic Exploration for Deep Deterministic Policies for StarCraft Micromanagement",
     "authors": "Nicolas Usunier, Gabriel Synnaeve, Zeming Lin, Soumith Chintala",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Soft Weight-Sharing for Neural Network Compression",
     "authors": "Karen Ullrich, Edward Meeds, Max Welling",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Neural Program Lattices",
     "authors": "Chengtao Li, Daniel Tarlow, Alexander L. Gaunt, Marc Brockschmidt, Nate Kushman",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Tracking the World State with Recurrent Entity Networks",
     "authors": "Mikael Henaff, Jason Weston, Arthur Szlam, Antoine Bordes, Yann LeCun",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Steerable CNNs",
     "authors": "Taco S. Cohen, Max Welling",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Query, Reason, and Answer Questions On Ambiguous Texts",
     "authors": "Xiaoxiao Guo, Tim Klinger, Clemens Rosenbaum, Joseph P. Bigus, Murray Campbell, Ban Kawas, Kartik Talamadupula, Gerry Tesauro, Satinder Singh 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Deep Predictive Coding Networks for Video Prediction and Unsupervised Learning",
     "authors": "William Lotter, Gabriel Kreiman, David D. Cox",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Diet Networks: Thin Parameters for Fat Genomics",
     "authors": "Adriana Romero, Pierre Luc Carrier, Akram Erraqabi, Tristan Sylvain, Alex Auvolat, Etienne Dejoie, Marc-André Legault, Marie-Pierre Dubé, Julie G. Hussin, Yoshua Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Deep Biaffine Attention for Neural Dependency Parsing",
     "authors": "Timothy Dozat, Christopher D. Manning",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "PixelVAE: A Latent Variable Model for Natural Images",
     "authors": "Ishaan Gulrajani, Kundan Kumar, Faruk Ahmed, Adrien Ali Taïga, Francesco Visin, David Vázquez 0001, Aaron C. Courville",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Snapshot Ensembles: Train 1, Get M for Free",
     "authors": "Gao Huang 0001, Yixuan Li 0001, Geoff Pleiss, Zhuang Liu 0003, John E. Hopcroft, Kilian Q. Weinberger",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Training Agent for First-Person Shooter Game with Actor-Critic Curriculum Learning",
     "authors": "Yuxin Wu 0004, Yuandong Tian",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Neuro-Symbolic Program Synthesis",
     "authors": "Emilio Parisotto, Abdel-rahman Mohamed, Rishabh Singh, Lihong Li 0001, Dengyong Zhou, Pushmeet Kohli",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Decomposing Motion and Content for Natural Video Sequence Prediction",
     "authors": "Ruben Villegas, Jimei Yang, Seunghoon Hong, Xunyu Lin, Honglak Lee",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Towards a Neural Statistician",
     "authors": "Harrison Edwards, Amos J. Storkey",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Generative Models and Model Criticism via Optimized Maximum Mean Discrepancy",
     "authors": "Danica J. Sutherland, Hsiao-Yu Tung, Heiko Strathmann, Soumyajit De, Aaditya Ramdas, Alexander J. Smola, Arthur Gretton",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Generalizing Skills with Semi-Supervised Reinforcement Learning",
     "authors": "Chelsea Finn, Tianhe Yu, Justin Fu, Pieter Abbeel, Sergey Levine",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning Curve Prediction with Bayesian Neural Networks",
     "authors": "Aaron Klein, Stefan Falkner, Jost Tobias Springenberg, Frank Hutter",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Optimize",
     "authors": "Ke Li 0011, Jitendra Malik",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "A Compare-Aggregate Model for Matching Text Sequences",
     "authors": "Shuohang Wang, Jing Jiang 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Data Noising as Smoothing in Neural Network Language Models",
     "authors": "Ziang Xie, Sida I. Wang, Jiwei Li 0001, Daniel Lévy, Aiming Nie, Dan Jurafsky, Andrew Y. Ng",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Training Compressed Fully-Connected Networks with a Density-Diversity Penalty",
     "authors": "Shengjie Wang 0001, Haoran Cai, Jeff A. Bilmes, William S. Noble",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Autoencoding Variational Inference For Topic Models",
     "authors": "Akash Srivastava, Charles Sutton",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Optimal Binary Autoencoding with Pairwise Correlations",
     "authors": "Akshay Balsubramani",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "On the Quantitative Analysis of Decoder-Based Generative Models",
     "authors": "Yuhuai Wu, Yuri Burda, Ruslan Salakhutdinov, Roger B. Grosse",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Trained Ternary Quantization",
     "authors": "Chenzhuo Zhu, Song Han 0003, Huizi Mao, William J. Dally",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "DSD: Dense-Sparse-Dense Training for Deep Neural Networks",
     "authors": "Song Han 0003, Jeff Pool, Sharan Narang, Huizi Mao, Enhao Gong, Shijian Tang, Erich Elsen, Peter Vajda, Manohar Paluri, John Tran, Bryan Catanzaro, William J. Dally",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "A Compositional Object-Based Approach to Learning Physical Dynamics",
     "authors": "Michael Chang 0003, Tomer D. Ullman, Antonio Torralba 0001, Joshua B. Tenenbaum",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Remember Rare Events",
     "authors": "Lukasz Kaiser, Ofir Nachum, Aurko Roy, Samy Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Transfer Learning for Sequence Tagging with Hierarchical Recurrent Networks",
     "authors": "Zhilin Yang 0001, Ruslan Salakhutdinov, William W. Cohen",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Words or Characters? Fine-grained Gating for Reading Comprehension",
     "authors": "Zhilin Yang 0001, Bhuwan Dhingra, Ye Yuan, Junjie Hu 0001, William W. Cohen, Ruslan Salakhutdinov",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "A Simple but Tough-to-Beat Baseline for Sentence Embeddings",
     "authors": "Sanjeev Arora, Yingyu Liang, Tengyu Ma 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Capacity and Trainability in Recurrent Neural Networks",
     "authors": "Jasmine Collins, Jascha Sohl-Dickstein, David Sussillo",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Perform Physics Experiments via Deep Reinforcement Learning",
     "authors": "Misha Denil, Pulkit Agrawal 0001, Tejas D. Kulkarni, Tom Erez, Peter W. Battaglia, Nando de Freitas",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Improving Policy Gradient by Exploring Under-appreciated Rewards",
     "authors": "Ofir Nachum, Mohammad Norouzi 0002, Dale Schuurmans",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Deep Learning with Dynamic Computation Graphs",
     "authors": "Moshe Looks, Marcello Herreshoff, DeLesley Hutchins, Peter Norvig",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Calibrating Energy-based Generative Adversarial Networks",
     "authors": "Zihang Dai, Amjad Almahairi, Philip Bachman, Eduard H. Hovy, Aaron C. Courville",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Pruning Convolutional Neural Networks for Resource Efficient Inference",
     "authors": "Pavlo Molchanov 0001, Stephen Tyree, Tero Karras, Timo Aila, Jan Kautz",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Query-Reduction Networks for Question Answering",
     "authors": "Min Joon Seo, Sewon Min, Ali Farhadi, Hannaneh Hajishirzi",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Designing Neural Network Architectures using Reinforcement Learning",
     "authors": "Bowen Baker, Otkrist Gupta, Nikhil Naik 0003, Ramesh Raskar",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Machine Comprehension Using Match-LSTM and Answer Pointer",
     "authors": "Shuohang Wang, Jing Jiang 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "DeepDSL: A Compilation-based Domain-Specific Language for Deep Learning",
     "authors": "Tian Zhao, Xiaobing Huang, Yu Cao",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Bidirectional Attention Flow for Machine Comprehension",
     "authors": "Min Joon Seo, Aniruddha Kembhavi, Ali Farhadi, Hannaneh Hajishirzi",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Incorporating long-range consistency in CNN-based texture generation",
     "authors": "Guillaume Berger, Roland Memisevic",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Dynamic Coattention Networks For Question Answering",
     "authors": "Caiming Xiong, Victor Zhong, Richard Socher",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "SampleRNN: An Unconditional End-to-End Neural Audio Generation Model",
     "authors": "Soroush Mehri, Kundan Kumar, Ishaan Gulrajani, Rithesh Kumar, Shubham Jain, Jose Sotelo, Aaron C. Courville, Yoshua Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Metacontrol for Adaptive Imagination-Based Optimization",
     "authors": "Jessica B. Hamrick, Andrew J. Ballard, Razvan Pascanu, Oriol Vinyals, Nicolas Heess, Peter W. Battaglia",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Exploring Sparsity in Recurrent Neural Networks",
     "authors": "Sharan Narang, Greg Diamos, Shubho Sengupta, Erich Elsen",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Lossy Image Compression with Compressive Autoencoders",
     "authors": "Lucas Theis, Wenzhe Shi, Andrew Cunningham, Ferenc Huszár",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Structured Attention Networks",
     "authors": "Yoon Kim, Carl Denton, Luong Hoang, Alexander M. Rush",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Zoneout: Regularizing RNNs by Randomly Preserving Hidden Activations",
     "authors": "David Krueger 0001, Tegan Maharaj, János Kramár, Mohammad Pezeshki, Nicolas Ballas, Nan Rosemary Ke, Anirudh Goyal, Yoshua Bengio, Aaron C. Courville, Christopher J. Pal",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Deep Probabilistic Programming",
     "authors": "Dustin Tran, Matthew D. Hoffman, Rif A. Saurous, Eugene Brevdo, Kevin Murphy 0002, David M. Blei",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "LR-GAN: Layered Recursive Generative Adversarial Networks for Image Generation",
     "authors": "Jianwei Yang, Anitha Kannan, Dhruv Batra, Devi Parikh",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Variational Lossy Autoencoder",
     "authors": "Xi Chen 0022, Diederik P. Kingma, Tim Salimans, Yan Duan, Prafulla Dhariwal, John Schulman, Ilya Sutskever, Pieter Abbeel",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "A recurrent neural network without chaos",
     "authors": "Thomas Laurent 0001, James von Brecht",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer",
     "authors": "Noam Shazeer, Azalia Mirhoseini, Krzysztof Maziarz, Andy Davis, Quoc V. Le, Geoffrey E. Hinton, Jeff Dean",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Tree-structured decoding with doubly-recurrent neural networks",
     "authors": "David Alvarez-Melis, Tommi S. Jaakkola",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Introspection: Accelerating Neural Network Training By Learning Weight Evolution",
     "authors": "Abhishek Sinha, Aahitagni Mukherjee, Mausoom Sarkar, Balaji Krishnamurthy",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Hyperband: Bandit-Based Configuration Evaluation for Hyperparameter Optimization",
     "authors": "Lisha Li, Kevin Jamieson 0001, Giulia DeSalvo, Afshin Rostamizadeh, Ameet Talwalkar",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Lie-Access Neural Turing Machines",
     "authors": "Greg Yang, Alexander M. Rush",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Quasi-Recurrent Neural Networks",
     "authors": "James Bradbury 0002, Stephen Merity, Caiming Xiong, Richard Socher",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Recurrent Environment Simulators",
     "authors": "Silvia Chiappa, Sébastien Racanière, Daan Wierstra, Shakir Mohamed",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "EPOpt: Learning Robust Neural Network Policies Using Model Ensembles",
     "authors": "Aravind Rajeswaran, Sarvjeet Ghotra, Balaraman Ravindran, Sergey Levine",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Attend, Adapt and Transfer: Attentive Deep Architecture for Adaptive Transfer from multiple sources in the same domain",
     "authors": "Janarthanan Rajendran, Aravind S. Lakshminarayanan, Mitesh M. Khapra, P. Prasanna, Balaraman Ravindran",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Multi-view Recurrent Neural Acoustic Word Embeddings",
     "authors": "Wanjia He, Weiran Wang, Karen Livescu",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning Features of Music From Scratch",
     "authors": "John Thickstun, Zaïd Harchaoui, Sham M. Kakade",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks",
     "authors": "Dan Hendrycks, Kevin Gimpel",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to superoptimize programs",
     "authors": "Rudy Bunel, Alban Desmaison, M. Pawan Kumar, Philip H. S. Torr, Pushmeet Kohli",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Trusting SVM for Piecewise Linear CNNs",
     "authors": "Leonard Berrada, Andrew Zisserman, M. Pawan Kumar",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Sigma Delta Quantized Networks",
     "authors": "Peter O'Connor, Max Welling",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "A Structured Self-Attentive Sentence Embedding",
     "authors": "Zhouhan Lin, Minwei Feng, Cícero Nogueira dos Santos, Mo Yu, Bing Xiang, Bowen Zhou 0002, Yoshua Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Regularizing CNNs with Locally Constrained Decorrelations",
     "authors": "Pau Rodríguez, Jordi Gonzàlez 0001, Guillem Cucurull, Josep M. Gonfaus, F. Xavier Roca",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "The Concrete Distribution: A Continuous Relaxation of Discrete Random Variables",
     "authors": "Chris J. Maddison, Andriy Mnih, Yee Whye Teh",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Unrolled Generative Adversarial Networks",
     "authors": "Luke Metz, Ben Poole, David Pfau, Jascha Sohl-Dickstein",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "TopicRNN: A Recurrent Neural Network with Long-Range Semantic Dependency",
     "authors": "Adji B. Dieng, Chong Wang 0002, Jianfeng Gao 0001, John W. Paisley",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Frustratingly Short Attention Spans in Neural Language Modeling",
     "authors": "Michal Daniluk, Tim Rocktäschel, Johannes Welbl, Sebastian Riedel 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Recurrent Hidden Semi-Markov Model",
     "authors": "Hanjun Dai, Bo Dai 0001, Yan-Ming Zhang, Shuang Li 0002, Le Song",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Deep Variational Bayes Filters: Unsupervised Learning of State Space Models from Raw Data",
     "authors": "Maximilian Karl, Maximilian Soelch 0001, Justin Bayer, Patrick van der Smagt",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Generative Multi-Adversarial Networks",
     "authors": "Ishan P. Durugkar, Ian Gemp, Sridhar Mahadevan",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Mollifying Networks",
     "authors": "Çaglar Gülçehre, Marcin Moczulski, Francesco Visin, Yoshua Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "beta-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework",
     "authors": "Irina Higgins, Loïc Matthey, Arka Pal, Christopher P. Burgess, Xavier Glorot, Matthew M. Botvinick, Shakir Mohamed, Alexander Lerchner",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Offline bilingual word vectors, orthogonal transformations and the inverted softmax",
     "authors": "Samuel L. Smith, David H. P. Turban, Steven Hamblin, Nils Y. Hammerla",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Visualizing Deep Neural Network Decisions: Prediction Difference Analysis",
     "authors": "Luisa M. Zintgraf, Taco S. Cohen, Tameem Adel, Max Welling",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Categorical Reparameterization with Gumbel-Softmax",
     "authors": "Eric Jang, Shixiang Gu, Ben Poole",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Online Bayesian Transfer Learning for Sequential Data Modeling",
     "authors": "Priyank Jaini, Zhitang Chen, Pablo Carbajal, Edith Law, Laura Middleton, Kayla Regan, Mike Schaekermann, George Trimponias, James Tung, Pascal Poupart",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Latent Sequence Decompositions",
     "authors": "William Chan, Yu Zhang 0033, Quoc V. Le, Navdeep Jaitly",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Paleo: A Performance Model for Deep Neural Networks",
     "authors": "Hang Qi, Evan Randall Sparks, Ameet Talwalkar",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Combining policy gradient and Q-learning",
     "authors": "Brendan O'Donoghue, Rémi Munos, Koray Kavukcuoglu, Volodymyr Mnih",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Density estimation using Real NVP",
     "authors": "Laurent Dinh, Jascha Sohl-Dickstein, Samy Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Recurrent Batch Normalization",
     "authors": "Tim Cooijmans, Nicolas Ballas, César Laurent, Çaglar Gülçehre, Aaron C. Courville",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "SGDR: Stochastic Gradient Descent with Warm Restarts",
     "authors": "Ilya Loshchilov, Frank Hutter",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning a Natural Language Interface with Neural Programmer",
     "authors": "Arvind Neelakantan, Quoc V. Le, Martín Abadi, Andrew McCallum, Dario Amodei",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Reinforcement Learning through Asynchronous Advantage Actor-Critic on a GPU",
     "authors": "Mohammad Babaeizadeh, Iuri Frosio, Stephen Tyree, Jason Clemons, Jan Kautz",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Navigate in Complex Environments",
     "authors": "Piotr Mirowski, Razvan Pascanu, Fabio Viola, Hubert Soyer, Andy Ballard, Andrea Banino, Misha Denil, Ross Goroshin, Laurent Sifre, Koray Kavukcuoglu, Dharshan Kumaran, Raia Hadsell",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "DeepCoder: Learning to Write Programs",
     "authors": "Matej Balog, Alexander L. Gaunt, Marc Brockschmidt, Sebastian Nowozin, Daniel Tarlow",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning and Policy Search in Stochastic Dynamical Systems with Bayesian Neural Networks",
     "authors": "Stefan Depeweg, José Miguel Hernández-Lobato, Finale Doshi-Velez, Steffen Udluft",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Variable Computation in Recurrent Neural Networks",
     "authors": "Yacine Jernite, Edouard Grave, Armand Joulin, Tomás Mikolov",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Deep Variational Information Bottleneck",
     "authors": "Alexander A. Alemi, Ian Fischer, Joshua V. Dillon, Kevin Murphy 0002",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "The Neural Noisy Channel",
     "authors": "Lei Yu 0008, Phil Blunsom, Chris Dyer, Edward Grefenstette, Tomás Kociský",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Automatic Rule Extraction from Long Short Term Memory Networks",
     "authors": "W. James Murdoch, Arthur Szlam",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Dialogue Learning With Human-in-the-Loop",
     "authors": "Jiwei Li, Alexander H. Miller, Sumit Chopra, Marc'Aurelio Ranzato, Jason Weston",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Adversarially Learned Inference",
     "authors": "Vincent Dumoulin, Ishmael Belghazi, Ben Poole, Alex Lamb, Martín Arjovsky, Olivier Mastropietro, Aaron C. Courville",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning through Dialogue Interactions by Asking Questions",
     "authors": "Jiwei Li, Alexander H. Miller, Sumit Chopra, Marc'Aurelio Ranzato, Jason Weston",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Deep Information Propagation",
     "authors": "Samuel S. Schoenholz, Justin Gilmer, Surya Ganguli, Jascha Sohl-Dickstein",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "FractalNet: Ultra-Deep Neural Networks without Residuals",
     "authors": "Gustav Larsson, Michael Maire, Gregory Shakhnarovich",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Revisiting Classifier Two-Sample Tests",
     "authors": "David Lopez-Paz, Maxime Oquab",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Repeat: Fine Grained Action Repetition for Deep Reinforcement Learning",
     "authors": "Sahil Sharma 0003, Aravind S. Lakshminarayanan, Balaraman Ravindran",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Loss-aware Binarization of Deep Networks",
     "authors": "Lu Hou 0002, Quanming Yao, James T. Kwok",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Play in a Day: Faster Deep Reinforcement Learning by Optimality Tightening",
     "authors": "Frank S. He, Yang Liu 0097, Alexander G. Schwing, Jian Peng 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Energy-based Generative Adversarial Networks",
     "authors": "Junbo Jake Zhao, Michaël Mathieu, Yann LeCun",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Central Moment Discrepancy (CMD) for Domain-Invariant Representation Learning",
     "authors": "Werner Zellinger, Thomas Grubinger, Edwin Lughofer, Thomas Natschläger, Susanne Saminger-Platz",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Incremental Network Quantization: Towards Lossless CNNs with Low-precision Weights",
     "authors": "Aojun Zhou, Anbang Yao, Yiwen Guo, Lin Xu, Yurong Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Entropy-SGD: Biasing Gradient Descent Into Wide Valleys",
     "authors": "Pratik Chaudhari, Anna Choromanska, Stefano Soatto, Yann LeCun, Carlo Baldassi, Christian Borgs, Jennifer T. Chayes, Levent Sagun, Riccardo Zecchina",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Deep Multi-task Representation Learning: A Tensor Factorisation Approach",
     "authors": "Yongxin Yang, Timothy M. Hospedales",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Sample Efficient Actor-Critic with Experience Replay",
     "authors": "Ziyu Wang 0001, Victor Bapst, Nicolas Heess, Volodymyr Mnih, Rémi Munos, Koray Kavukcuoglu, Nando de Freitas",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Temporal Ensembling for Semi-Supervised Learning",
     "authors": "Samuli Laine, Timo Aila",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "On Detecting Adversarial Perturbations",
     "authors": "Jan Hendrik Metzen, Tim Genewein, Volker Fischer 0003, Bastian Bischoff",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Training deep neural-networks using a noise adaptation layer",
     "authors": "Jacob Goldberger, Ehud Ben-Reuven",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning to Compose Words into Sentences with Reinforcement Learning",
     "authors": "Dani Yogatama, Phil Blunsom, Chris Dyer, Edward Grefenstette, Wang Ling",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Delving into Transferable Adversarial Examples and Black-box Attacks",
     "authors": "Yanpei Liu, Xinyun Chen, Chang Liu 0021, Dawn Song",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Identity Matters in Deep Learning",
     "authors": "Moritz Hardt, Tengyu Ma 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Adversarial Feature Learning",
     "authors": "Jeff Donahue, Philipp Krähenbühl, Trevor Darrell",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Towards the Limit of Network Quantization",
     "authors": "Yoojin Choi, Mostafa El-Khamy, Jungwon Lee",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Faster CNNs with Direct Sparse Convolutions and Guided Pruning",
     "authors": "Jongsoo Park, Sheng R. Li, Wei Wen 0003, Ping Tak Peter Tang, Hai Li 0001, Yiran Chen 0001, Pradeep Dubey",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Stick-Breaking Variational Autoencoders",
     "authors": "Eric T. Nalisnick, Padhraic Smyth",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Batch Policy Gradient Methods for Improving Neural Conversation Models",
     "authors": "Kirthevasan Kandasamy, Yoram Bachrach, Ryota Tomioka, Daniel Tarlow, David Carter",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Support Regularized Sparse Coding and Its Fast Encoder",
     "authors": "Yingzhen Yang, Jiahui Yu, Pushmeet Kohli, Jianchao Yang, Thomas S. Huang",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Tying Word Vectors and Word Classifiers: A Loss Framework for Language Modeling",
     "authors": "Hakan Inan, Khashayar Khosravi, Richard Socher",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Towards Deep Interpretability (MUS-ROVER II): Learning Hierarchical Representations of Tonal Music",
     "authors": "Haizi Yu, Lav R. Varshney",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Discrete Variational Autoencoders",
     "authors": "Jason Tyler Rolfe",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Do Deep Convolutional Nets Really Need to be Deep and Convolutional?",
     "authors": "Gregor Urban, Krzysztof J. Geras, Samira Ebrahimi Kahou, Özlem Aslan, Shengjie Wang 0001, Abdelrahman Mohamed, Matthai Philipose, Matthew Richardson, Rich Caruana",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Geometry of Polysemy",
     "authors": "Jiaqi Mu, Suma Bhat, Pramod Viswanath",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning Invariant Representations Of Planar Curves",
     "authors": "Gautam Pai 0001, Aaron Wetzler, Ron Kimmel",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Reasoning with Memory Augmented Neural Networks for Language Comprehension",
     "authors": "Tsendsuren Munkhdalai, Hong Yu 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Learning Recurrent Representations for Hierarchical Behavior Modeling",
     "authors": "Eyrun Eyjolfsdottir, Kristin Branson, Yisong Yue, Pietro Perona",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Adversarial Machine Learning at Scale",
     "authors": "Alexey Kurakin, Ian J. Goodfellow, Samy Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Predicting Medications from Diagnostic Codes with Recurrent Neural Networks",
     "authors": "Jacek M. Bajor, Thomas A. Lasko",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Recurrent Mixture Density Network for Spatiotemporal Visual Attention",
     "authors": "Loris Bazzani, Hugo Larochelle, Lorenzo Torresani",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Inductive Bias of Deep Convolutional Networks through Pooling Geometry",
     "authors": "Nadav Cohen 0001, Amnon Shashua",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Efficient Representation of Low-Dimensional Manifolds using Deep Networks",
     "authors": "Ronen Basri, David W. Jacobs",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Semi-Supervised Classification with Graph Convolutional Networks",
     "authors": "Thomas N. Kipf, Max Welling",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Sparsely-Connected Neural Networks: Towards Efficient VLSI Implementation of Deep Neural Networks",
     "authors": "Arash Ardakani, Carlo Condo, Warren J. Gross",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Adversarial Training Methods for Semi-Supervised Text Classification",
     "authors": "Takeru Miyato, Andrew M. Dai, Ian J. Goodfellow",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Fine-grained Analysis of Sentence Embeddings Using Auxiliary Prediction Tasks",
     "authors": "Yossi Adi, Einat Kermany, Yonatan Belinkov, Ofer Lavi, Yoav Goldberg",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Pointer Sentinel Mixture Models",
     "authors": "Stephen Merity, Caiming Xiong, James Bradbury 0002, Richard Socher",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "An Actor-Critic Algorithm for Sequence Prediction",
     "authors": "Dzmitry Bahdanau, Philemon Brakel, Kelvin Xu, Anirudh Goyal, Ryan Lowe, Joelle Pineau, Aaron C. Courville, Yoshua Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Understanding Trainable Sparse Coding with Matrix Factorization",
     "authors": "Thomas Moreau 0001, Joan Bruna",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Tighter bounds lead to improved classifiers",
     "authors": "Nicolas Le Roux",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "HolStep: A Machine Learning Dataset for Higher-order Logic Theorem Proving",
     "authors": "Cezary Kaliszyk, François Chollet, Christian Szegedy",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Why Deep Neural Networks for Function Approximation?",
     "authors": "Shiyu Liang, R. Srikant 0001",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Hierarchical Multiscale Recurrent Neural Networks",
     "authors": "Junyoung Chung, Sungjin Ahn, Yoshua Bengio",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Neural Photo Editing with Introspective Adversarial Networks",
     "authors": "Andrew Brock, Theodore Lim, James M. Ritchie, Nick Weston",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Dropout with Expectation-linear Regularization",
     "authors": "Xuezhe Ma, Yingkai Gao, Zhiting Hu, Yaoliang Yu, Yuntian Deng, Eduard H. Hovy",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "HyperNetworks",
     "authors": "David Ha, Andrew M. Dai, Quoc V. Le",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "A Learned Representation For Artistic Style",
     "authors": "Vincent Dumoulin,  Jonathon Shlens, Manjunath Kudlur",
     "abstract": null
   },
   {
-    "conference": "ICLR",
-    "year": 2017,
     "title": "Hadamard Product for Low-rank Bilinear Pooling",
     "authors": "Jin-Hwa Kim, Kyoung Woon On, Woosang Lim, Jeonghee Kim, Jung-Woo Ha 0001, Byoung-Tak Zhang",
     "abstract": null

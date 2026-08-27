@@ -1,329 +1,235 @@
 [
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Motion Planning as Probabilistic Inference using Gaussian Processes and Factor Graphs",
     "authors": "Jing Dong 0002, Mustafa Mukadam, Frank Dellaert, Byron Boots",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Incremental Task and Motion Planning: A Constraint-Based Approach",
     "authors": "Neil T. Dantam, Zachary K. Kingston, Swarat Chaudhuri, Lydia E. Kavraki",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "New perspective on sampling-based motion planning via random geometric graphs",
     "authors": "Kiril Solovey, Oren Salzman, Dan Halperin",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Robot Motion Planning on a Chip",
     "authors": "Sean Murray, Will Floyd-Jones, Ying Qi, Daniel J. Sorin, George Dimitri Konidaris",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "An Inverse Optimal Control Approach for the Transfer of Human Walking Motions in Constrained Environment to Humanoid Robots",
     "authors": "Debora Clever, Katja D. Mombaur",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Simplifying Gait Design via Shape Basis Optimization",
     "authors": "Chaohui Gong, Daniel I. Goldman, Howie Choset",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "'Body-in-the-Loop' Optimization of Assistive Robotic Devices: A Validation Study",
     "authors": "Jeffrey R. Koller, Deanna H. Gates, Daniel P. Ferris, C. David Remy",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Mechanical Antagonism in Legged Robots",
     "authors": "Andy Abate, Jonathan W. Hurst, Ross L. Hatton",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Synergistic Design of a Bio-Inspired Micro Aerial Vehicle with Articulated Wings",
     "authors": "Jonathan Hoff, Alireza Ramezani, Soon-Jo Chung, Seth Hutchinson 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Robust Phase-Space Planning for Agile Legged Locomotion over Various Terrain Topologies",
     "authors": "Ye Zhao 0002, Benito R. Fernández, Luis Sentis",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Design and Implementation of a Novel Robot Fish with Active and Compliant Propulsion Mechanism",
     "authors": "Yong Zhong, Ruxu Du",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Geometric Swimming on a Granular Surface",
     "authors": "Jin Dai, Hossein Faraji, Chaohui Gong, Ross L. Hatton, Daniel I. Goldman, Howie Choset",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Estimating SE(3) elements using a dual quaternion based linear Kalman filter",
     "authors": "Rangaprasad Arun Srivatsan, Gillian T. Rosen, D. Feroze Naina Mohamed, Howie Choset",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Probabilistic Approaches to the AXB = YCZ Calibration Problem in Multi-Robot Systems",
     "authors": "Qianli Ma 0002, Zachariah Goh, Gregory S. Chirikjian",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Set-labelled filters and sensor transformations",
     "authors": "Fatemeh Zahra Saberifar, Shervin Ghasemlou, Jason M. O'Kane, Dylan A. Shell",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Recursive Decentralized Collaborative Localization for Sparsely Communicating Robots",
     "authors": "Lukas Luft, Tobias Schubert 0002, Stergios I. Roumeliotis, Wolfram Burgard",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Safe Control under Uncertainty with Probabilistic Signal Temporal Logic",
     "authors": "Dorsa Sadigh, Ashish Kapoor",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Closed Loop Control of a Tethered Magnetic Capsule Endoscope",
     "authors": "Addisu Z. Taddese, Piotr R. Slawinski, Keith L. Obstein, Pietro Valdastri",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Coordinated multi-arm motion planning: Reaching for moving objects in the face of uncertainty",
     "authors": "Seyed Sina Mirrazavi Salehian, Nadia Figueroa, Aude Billard",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Shape-Based Compliance in Locomotion",
     "authors": "Matthew J. Travers, Julian Whitman, Perrin E. Schiebel, Daniel I. Goldman, Howie Choset",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Seeing Glassware: from Edge Detection to Pose Estimation and Shape Recovery",
     "authors": "Cody J. Phillips 0001, Matthieu Lecce, Kostas Daniilidis",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "A Cartesian 6-DoF Gaze Controller for Humanoid Robots",
     "authors": "Alessandro Roncone, Ugo Pattacini, Giorgio Metta, Lorenzo Natale",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Discriminatively-guided Deliberative Perception for Pose Estimation of Multiple 3D Object Instances",
     "authors": "Venkatraman Narayanan, Maxim Likhachev",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "A Probabilistic Framework for Real-time 3D Segmentation using Spatial, Temporal, and Semantic Cues",
     "authors": "David Held, Devin Guillory, Brice Rebsamen, Sebastian Thrun, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "An End-To-End System for Accomplishing Tasks with Modular Robots",
     "authors": "Gangyuan Jing, Tarik Tosun, Mark Yim, Hadas Kress-Gazit",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Robotic Assistance in Coordination of Patient Care",
     "authors": "Matthew C. Gombolay, Xi Jessie Yang, Bradley Hayes, Nicole Seo, Zixi Liu, Samir Wadhwania, Tania Yu, Neel Shah, Toni Golen, Julie A. Shah",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Online Feedback Control for Input-Saturated Robotic Systems on Lie Groups",
     "authors": "Taosha Fan, Todd D. Murphey",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Mathematical Tools for Analysis, Simulation and Design of Robotic Angular Encoders",
     "authors": "Peter G. Cramer",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Planning for Autonomous Cars that Leverage Effects on Human Actions",
     "authors": "Dorsa Sadigh, Shankar Sastry 0001, Sanjit A. Seshia, Anca D. Dragan",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "A Novel Relationship Between Dynamics and Complexity in Multi-agent Collision Avoidance",
     "authors": "Jeffrey Kane Johnson",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Planar Time Optimal Paths for Non-Symmetric Vehicles in Constant Flows",
     "authors": "Bilal Hammoud, Elie A. Shammas",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Routing Autonomous Vehicles in Congested Transportation Networks: Structural Properties and Coordination Algorithms",
     "authors": "Rick Zhang, Federico Rossi 0001, Marco Pavone 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Combined Optimization and Reinforcement Learning for Manipulation Skills",
     "authors": "Peter Englert, Marc Toussaint",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Understanding Hand-Object Manipulation with Grasp Types and Object Attributes",
     "authors": "Minjie Cai, Kris M. Kitani, Yoichi Sato 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Integrated force and distance sensing using elastomer-embedded commodity proximity sensors",
     "authors": "Radhen Patel, Nikolaus Correll",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Lessons from the Amazon Picking Challenge: Four Aspects of Building Robotic Systems",
     "authors": "Clemens Eppner, Sebastian Höfer, Rico Jonschkowski, Roberto Martin Martin, Arne Sieverling, Vincent Wall, Oliver Brock",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Efficient Grounding of Abstract Spatial Concepts for Natural Language Interaction with Robot Manipulators",
     "authors": "Rohan Paul, Jacob Arkin, Nicholas Roy, Thomas M. Howard",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Asking for Help with the Right Question by Predicting Human Visual Performance",
     "authors": "Hong Cai, Yasamin Mostofi",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Representing and Learning Complex Object Interactions",
     "authors": "Yilun Zhou, George Dimitri Konidaris",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Situated Language Understanding with Human-like and Visualization-Based Transparency",
     "authors": "Leah Perlmutter, Eric Kernfeld, Maya Cakmak",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Multi-modal Auto-Encoders as Joint Estimators for Robotics Scene Understanding",
     "authors": "Cesar Cadena 0001, Anthony R. Dick, Ian D. Reid 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Vehicle Detection from 3D Lidar Using Fully Convolutional Network",
     "authors": "Bo Li 0018, Tianlei Zhang, Tian Xia",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Robust Multimodal Sequence-Based Loop Closure Detection via Structured Sparsity",
     "authors": "Hao Zhang 0011, Fei Han 0002, Hua Wang 0007",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Street-View Change Detection with Deconvolutional Networks",
     "authors": "Pablo F. Alcantarilla, Simon Stent, Germán Ros 0001, Roberto Arroyo, Riccardo Gherardi",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Task Variant Allocation in Distributed Robotics",
     "authors": "José Cano 0001, David Robert White, Alejandro Bordallo, Ciaran McCreesh, Patrick Prosser, Jeremy Singer, Vijay Nagarajan",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Functional Gradient Motion Planning in Reproducing Kernel Hilbert Spaces",
     "authors": "Zita Marinho, Byron Boots, Anca D. Dragan, Arunkumar Byravan, Geoffrey J. Gordon, Siddhartha S. Srinivasa",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2016,
     "title": "Time and Energy Optimal Path Planning in General Flows",
     "authors": "Dhanushka Kularatne, Subhrajit Bhattacharya, M. Ani Hsieh",
     "abstract": null

@@ -32,14 +32,32 @@ class TestNormalizeTitle(unittest.TestCase):
         self.assertEqual(mc.normalize_title(None), "")
 
 
+class TestConferenceAndYearForFile(unittest.TestCase):
+    def test_derives_conference_and_year_from_a_per_venue_year_filename(self):
+        self.assertEqual(mc.conference_and_year_for_file("cvpr2024.json"), ("CVPR", 2024))
+        self.assertEqual(mc.conference_and_year_for_file("neurips2025.json"), ("NeurIPS", 2025))
+
+    def test_strips_a_github_suffix(self):
+        self.assertEqual(mc.conference_and_year_for_file("icra2019_github.json"), ("ICRA", 2019))
+
+    def test_a_continuous_journal_file_gets_conference_but_no_year(self):
+        # "_all" files (e.g. ijcv_all.json) span many years -- the real year
+        # has to come from each entry, not the filename.
+        self.assertEqual(mc.conference_and_year_for_file("ijcv_all.json"), ("IJCV", None))
+
+    def test_unrecognized_prefix_returns_no_conference(self):
+        conference, year = mc.conference_and_year_for_file("arxiv_s2_citing.json")
+        self.assertIsNone(conference)
+
+
 class TestMergeCorpusEndToEnd(unittest.TestCase):
-    def _run(self, venue_papers, prior_papers_full=None):
+    def _run(self, venue_papers, prior_papers_full=None, venue_filename="cvpr2024.json"):
         tmpdir = tempfile.TemporaryDirectory()
         self.addCleanup(tmpdir.cleanup)
         base = Path(tmpdir.name)
         venues_dir = base / "venues"
         venues_dir.mkdir()
-        (venues_dir / "cvpr2024.json").write_text(json.dumps(venue_papers), encoding="utf-8")
+        (venues_dir / venue_filename).write_text(json.dumps(venue_papers), encoding="utf-8")
 
         categories_file = base / "categories.json"
         categories_file.write_text(json.dumps({"categories": []}), encoding="utf-8")
@@ -128,6 +146,25 @@ class TestMergeCorpusEndToEnd(unittest.TestCase):
         papers = self._run(venue_papers, prior_papers_full=None)
         self.assertEqual(len(papers), 1)
         self.assertNotIn("authors_detail", papers[0])
+
+    def test_venue_and_year_are_derived_from_filename_when_absent_from_entries(self):
+        # The whole point of stripping "conference"/"year" from venues/*.json
+        # (repo-size cleanup) -- a real per-venue-year file with neither
+        # field on any entry must still produce the right venue/year.
+        venue_papers = [{"title": "Stripped Fields Paper", "authors": "A B"}]
+        papers = self._run(venue_papers, venue_filename="wacv2023.json")
+        self.assertEqual(papers[0]["venue"], "WACV")
+        self.assertEqual(papers[0]["year"], 2023)
+
+    def test_explicit_per_entry_conference_and_year_still_win(self):
+        # An entry that DOES carry its own conference/year (an "_all"
+        # journal file's year, or a not-yet-migrated file) must not be
+        # overridden by a filename-derived guess.
+        venue_papers = [{"title": "Explicit Fields Paper", "authors": "A B",
+                          "conference": "IJCV", "year": 2019}]
+        papers = self._run(venue_papers, venue_filename="ijcv_all.json")
+        self.assertEqual(papers[0]["venue"], "IJCV")
+        self.assertEqual(papers[0]["year"], 2019)
 
     def test_every_paper_gets_classified(self):
         venue_papers = [{"title": "Autonomous Driving Survey", "authors": "A B",

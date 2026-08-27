@@ -1,2905 +1,2075 @@
 [
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "CNN Image Retrieval Learns from BoW: Unsupervised Fine-Tuning with Hard Examples",
     "authors": "Filip Radenovic, Giorgos Tolias, Ondrej Chum",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "SSD: Single Shot MultiBox Detector",
     "authors": "Wei Liu 0015, Dragomir Anguelov, Dumitru Erhan, Christian Szegedy, Scott E. Reed, Cheng-Yang Fu, Alexander C. Berg",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Recurrent Encoder-Decoder Network for Sequential Face Alignment",
     "authors": "Xi Peng 0005, Rogério Schmidt Feris, Xiaoyu Wang 0002, Dimitris N. Metaxas",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Robust Facial Landmark Detection via Recurrent Attentive-Refinement Networks",
     "authors": "Shengtao Xiao, Jiashi Feng, Junliang Xing, Hanjiang Lai, Shuicheng Yan, Ashraf A. Kassim",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning to Refine Object Segments",
     "authors": "Pedro Oliveira Pinheiro, Tsung-Yi Lin, Ronan Collobert, Piotr Dollár",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Automatic Portrait Matting",
     "authors": "Xiaoyong Shen, Xin Tao 0001, Hongyun Gao 0001, Chao Zhou 0001, Jiaya Jia",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Segmentation from Natural Language Expressions",
     "authors": "Ronghang Hu, Marcus Rohrbach, Trevor Darrell",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Semantic Object Parsing with Graph LSTM",
     "authors": "Xiaodan Liang, Xiaohui Shen, Jiashi Feng, Liang Lin 0004, Shuicheng Yan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "SSHMT: Semi-supervised Hierarchical Merge Tree for Electron Microscopy Image Segmentation",
     "authors": "Ting Liu 0005, Miaomiao Zhang, Mehran Javanmardi, Nisha Ramesh, Tolga Tasdizen",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Towards Viewpoint Invariant 3D Human Pose Estimation",
     "authors": "Albert Haque, Boya Peng, Zelun Luo, Alexandre Alahi, Serena Yeung, Li Fei-Fei 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Person Re-Identification by Unsupervised \\ell _1 ℓ 1 Graph Learning",
     "authors": "Elyor Kodirov, Tao Xiang 0002, Zhen-Yong Fu, Shaogang Gong",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Learning the City: Quantifying Urban Perception at a Global Scale",
     "authors": "Abhimanyu Dubey, Nikhil Naik 0003, Devi Parikh, Ramesh Raskar, César A. Hidalgo 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "4D Match Trees for Non-rigid Surface Alignment",
     "authors": "Armin Mustafa, Hansung Kim 0001, Adrian Hilton 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Eigen Appearance Maps of Dynamic Shapes",
     "authors": "Adnane Boukhayma, Vagia Tsiminaki, Jean-Sébastien Franco, Edmond Boyer",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learnable Histogram: Statistical Context Features for Deep Neural Networks",
     "authors": "Zhe Wang 0006, Hongsheng Li 0001, Wanli Ouyang, Xiaogang Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Pedestrian Behavior Understanding and Prediction with Deep Neural Networks",
     "authors": "Shuai Yi, Hongsheng Li 0001, Xiaogang Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Real-Time RGB-D Activity Prediction by Soft Regression",
     "authors": "Jianfang Hu, Wei-Shi Zheng 0001, Lianyang Ma, Gang Wang 0012, Jian-Huang Lai",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A 3D Morphable Eye Region Model for Gaze Estimation",
     "authors": "Erroll Wood, Tadas Baltrusaitis, Louis-Philippe Morency, Peter Robinson 0001, Andreas Bulling",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Foreground Segmentation via Dynamic Tree-Structured Sparse RPCA",
     "authors": "Salehe Erfanian Ebadi, Ebroul Izquierdo",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Contextual Priming and Feedback for Faster R-CNN",
     "authors": "Abhinav Shrivastava, Abhinav Gupta 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Efficient Multi-view Surface Refinement with Adaptive Resolution Control",
     "authors": "Shiwei Li 0001, Sing Yu Siu, Tian Fang, Long Quan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Gaussian Process Density Counting from Weak Supervision",
     "authors": "Matthias von Borstel, Melih Kandemir, Philip Schmidt 0001, Madhavi K. Rao, Kumar T. Rajamani, Fred A. Hamprecht",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Region-Based Semantic Segmentation with End-to-End Training",
     "authors": "Holger Caesar, Jasper R. R. Uijlings, Vittorio Ferrari",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Fast 6D Pose Estimation from a Monocular Image Using Hierarchical Pose Trees",
     "authors": "Yoshinori Konishi, Yuki Hanzawa, Masato Kawade, Manabu Hashimoto",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Models for Actions and Person-Object Interactions with Transfer to Question Answering",
     "authors": "Arun Mallya, Svetlana Lazebnik",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Software Platform for Manipulating the Camera Imaging Pipeline",
     "authors": "Hakki Can Karaimer, Michael S. Brown",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Benchmark and Simulator for UAV Tracking",
     "authors": "Matthias Mueller 0001, Neil Smith, Bernard Ghanem",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Scene Depth Profiling Using Helmholtz Stereopsis",
     "authors": "Hironori Mori, Roderick Köhle, Markus Kamm",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Projective Bundle Adjustment from Arbitrary Initialization Using the Variable Projection Method",
     "authors": "Je Hyeong Hong, Christopher Zach, Andrew W. Fitzgibbon, Roberto Cipolla",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Localizing and Orienting Street Views Using Overhead Imagery",
     "authors": "Nam N. Vo, James Hays",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Hollywood in Homes: Crowdsourcing Data Collection for Activity Understanding",
     "authors": "Gunnar A. Sigurdsson, Gül Varol, Xiaolong Wang 0004, Ali Farhadi, Ivan Laptev, Abhinav Gupta 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Shuffle and Learn: Unsupervised Learning Using Temporal Order Verification",
     "authors": "Ishan Misra, C. Lawrence Zitnick, Martial Hebert",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "DOC: Deep OCclusion Estimation from a Single Image",
     "authors": "Peng Wang 0001, Alan L. Yuille",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "RepMatch: Robust Feature Matching and Pose for Reconstructing Modern Cities",
     "authors": "Wen-Yan Lin, Siying Liu, Nianjuan Jiang, Minh N. Do, Ping Tan, Jiangbo Lu",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Convolutional Oriented Boundaries",
     "authors": "Kevis-Kokitsi Maninis, Jordi Pont-Tuset, Pablo Andrés Arbeláez, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Superpixel Convolutional Networks Using Bilateral Inceptions",
     "authors": "Raghudeep Gadde, Varun Jampani, Martin Kiefel, Daniel Kappler, Peter V. Gehler",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Sublabel-Accurate Convex Relaxation of Vectorial Multilabel Energies",
     "authors": "Emanuel Laude, Thomas Möllenhoff, Michael Möller 0001, Jan Lellmann, Daniel Cremers",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Building Dual-Domain Representations for Compression Artifacts Reduction",
     "authors": "Jun Guo 0024, Hongyang Chao",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Geometric Neural Phrase Pooling: Modeling the Spatial Co-occurrence of Neurons",
     "authors": "Lingxi Xie, Qi Tian 0001, John Flynn, Jingdong Wang 0001, Alan L. Yuille",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Photo Aesthetics Ranking Network with Attributes and Content Adaptation",
     "authors": "Shu Kong, Xiaohui Shen, Zhe Lin 0001, Radomír Mech, Charless C. Fowlkes",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "SDF-2-SDF: Highly Accurate 3D Object Reconstruction",
     "authors": "Miroslava Slavcheva, Wadim Kehl, Nassir Navab, Slobodan Ilic",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Knowledge Transfer for Scene-Specific Motion Prediction",
     "authors": "Lamberto Ballan, Francesco Castaldo, Alexandre Alahi, Francesco Palmieri 0001, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Weakly Supervised Localization Using Deep Feature Maps",
     "authors": "Archith John Bency, Heesung Kwon, Hyungtae Lee, S. Karthikeyan 0001, B. S. Manjunath",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Embedding Deep Metric for Person Re-identification: A Study Against Large Variations",
     "authors": "Hailin Shi, Yang Yang 0062, Xiangyu Zhu 0001, Shengcai Liao, Zhen Lei 0001, Wei-Shi Zheng 0001, Stan Z. Li",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning to Track at 100 FPS with Deep Regression Networks",
     "authors": "David Held, Sebastian Thrun, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Matching Handwritten Document Images",
     "authors": "Praveen Krishnan, C. V. Jawahar",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Semantic Clustering for Robust Fine-Grained Scene Recognition",
     "authors": "Marian George, Mandar Dixit, Gábor Zogg, Nuno Vasconcelos",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Ambient Sound Provides Supervision for Visual Learning",
     "authors": "Andrew Owens, Jiajun Wu 0001, Josh H. McDermott, William T. Freeman, Antonio Torralba 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Grounding of Textual Phrases in Images by Reconstruction",
     "authors": "Anna Rohrbach, Marcus Rohrbach, Ronghang Hu, Trevor Darrell, Bernt Schiele",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Improving Multi-label Learning with Missing Labels by Structured Semantic Correlations",
     "authors": "Hao Yang 0033, Joey Tianyi Zhou, Jianfei Cai 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Visual Relationship Detection with Language Priors",
     "authors": "Cewu Lu, Ranjay Krishna, Michael S. Bernstein, Li Fei-Fei 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "The Curious Robot: Learning Visual Representations via Physical Interactions",
     "authors": "Lerrel Pinto, Dhiraj Gandhi, Yuanfeng Han, Yong-Lae Park, Abhinav Gupta 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Image Co-localization by Mimicking a Good Detector's Confidence Score Distribution",
     "authors": "Yao Li 0003, Lingqiao Liu, Chunhua Shen, Anton van den Hengel",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Facilitating and Exploring Planar Homogeneous Texture for Indoor Scene Understanding",
     "authors": "Shahzor Ahmad, Loong-Fah Cheong",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "An Empirical Study and Analysis of Generalized Zero-Shot Learning for Object Recognition in the Wild",
     "authors": "Wei-Lun Chao, Soravit Changpinyo, Boqing Gong, Fei Sha",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Modeling Context in Referring Expressions",
     "authors": "Licheng Yu, Patrick Poirson, Shan Yang, Alexander C. Berg, Tamara L. Berg",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Taxonomy-Regularized Semantic Deep Convolutional Neural Networks",
     "authors": "Wonjoon Goo, Juyong Kim 0002, Gunhee Kim, Sung Ju Hwang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Playing for Data: Ground Truth from Computer Games",
     "authors": "Stephan R. Richter, Vibhav Vineet, Stefan Roth 0001, Vladlen Koltun",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Human Re-identification in Crowd Videos Using Personal, Social and Environmental Constraints",
     "authors": "Shayan Modiri Assari, Haroon Idrees, Mubarak Shah",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Revisiting Additive Quantization",
     "authors": "Julieta Martinez 0001, Joris Clement, Holger H. Hoos, James J. Little",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Single Image Dehazing via Multi-scale Convolutional Neural Networks",
     "authors": "Wenqi Ren, Si Liu 0001, Hua Zhang 0008, Jin-shan Pan, Xiaochun Cao, Ming-Hsuan Yang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Photometric Stereo Under Non-uniform Light Intensities and Exposures",
     "authors": "Donghyeon Cho, Yasuyuki Matsushita, Yu-Wing Tai, In-So Kweon",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Visual Motif Discovery via First-Person Vision",
     "authors": "Ryo Yonetani, Kris Makoto Kitani, Yoichi Sato 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Cluster Sampling Method for Image Matting via Sparse Coding",
     "authors": "Xiaoxue Feng, Xiaohui Liang 0001, Zili Zhang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Fundamental Matrices from Moving Objects Using Line Motion Barcodes",
     "authors": "Yoni Kasten, Gil Ben-Artzi, Shmuel Peleg, Michael Werman",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Fashion Landmark Detection in the Wild",
     "authors": "Ziwei Liu 0002, Sijie Yan, Ping Luo 0002, Xiaogang Wang 0001, Xiaoou Tang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Human Pose Estimation Using Deep Consensus Voting",
     "authors": "Ita Lifshitz, Ethan Fetaya, Shimon Ullman",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Leveraging Visual Question Answering for Image-Caption Ranking",
     "authors": "Xiao Lin, Devi Parikh",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "DAVE: A Unified Framework for Fast Vehicle Detection and Annotation",
     "authors": "Yi Zhou 0007, Li Liu 0004, Ling Shao 0001, Matt Mellor",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Real-Time Joint Tracking of a Hand Manipulating an Object from RGB-D Input",
     "authors": "Srinath Sridhar 0002, Franziska Mueller 0001, Michael Zollhöfer, Dan Casas, Antti Oulasvirta, Christian Theobalt",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "DeepWarp: Photorealistic Image Resynthesis for Gaze Manipulation",
     "authors": "Yaroslav Ganin, Daniil Kononenko, Diana Sungatullina, Victor S. Lempitsky",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Non-rigid 3D Shape Retrieval via Large Margin Nearest Neighbor Embedding",
     "authors": "Ioannis Chiotellis, Rudolph Triebel, Thomas Windheuser, Daniel Cremers",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Multi-Task Zero-Shot Action Recognition with Prioritised Data Augmentation",
     "authors": "Xun Xu 0002, Timothy M. Hospedales, Shaogang Gong",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Head Reconstruction from Internet Photos",
     "authors": "Shu Liang, Linda G. Shapiro, Ira Kemelmacher-Shlizerman",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Support Discrimination Dictionary Learning for Image Classification",
     "authors": "Yang Liu 0105, Wei Chen 0016, Qingchao Chen, Ian J. Wassell",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Accelerating the Super-Resolution Convolutional Neural Network",
     "authors": "Chao Dong 0005, Chen Change Loy, Xiaoou Tang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Symmetric Non-rigid Structure from Motion for Category-Specific Object Structure Estimation",
     "authors": "Yuan Gao 0015, Alan L. Yuille",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Peak-Piloted Deep Network for Facial Expression Recognition",
     "authors": "Xiangyun Zhao, Xiaodan Liang, Luoqi Liu, Teng Li 0001, Yugang Han, Nuno Vasconcelos, Shuicheng Yan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Is Faster R-CNN Doing Well for Pedestrian Detection?",
     "authors": "Liliang Zhang, Liang Lin, Xiaodan Liang, Kaiming He",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Coarse-to-fine Planar Regularization for Dense Monocular Depth Estimation",
     "authors": "Stephan Liwicki, Christopher Zach, Ondrej Miksik, Philip H. S. Torr",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Attributes Driven Multi-camera Person Re-identification",
     "authors": "Chi Su, Shiliang Zhang, Junliang Xing, Wen Gao 0001, Qi Tian 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "An Occlusion-Resistant Ellipse Detection Method by Joining Coelliptic Arcs",
     "authors": "Halil Ibrahim Cakir, Cihan Topal, Cuneyt Akinlar",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Branching Path Following for Graph Matching",
     "authors": "Tao Wang 0011, Haibin Ling, Congyan Lang, Jun Wu 0007",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Higher Order Conditional Random Fields in Deep Neural Networks",
     "authors": "Anurag Arnab, Sadeep Jayasumana, Shuai Zheng 0001, Philip H. S. Torr",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "LSTM-CF: Unifying Context Modeling and Fusion with LSTMs for RGB-D Scene Labeling",
     "authors": "Zhen Li 0026, Yukang Gan, Xiaodan Liang, Yizhou Yu, Hui Cheng, Liang Lin 0004",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Stereo Video Deblurring",
     "authors": "Anita Sellent, Carsten Rother, Stefan Roth 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Robust Image and Video Dehazing with Visual Artifact Suppression via Gradient Residual Minimization",
     "authors": "Chen Chen 0003, Minh N. Do, Jue Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Smooth Neighborhood Structure Mining on Multiple Affinity Graphs with Applications to Context-Sensitive Similarity",
     "authors": "Song Bai 0001, Shaoyan Sun, Xiang Bai, Zhaoxiang Zhang 0001, Qi Tian 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Title Generation for User Generated Videos",
     "authors": "Kuo-Hao Zeng, Tseng-Hung Chen, Juan Carlos Niebles, Min Sun 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Natural Image Matting Using Deep Convolutional Neural Networks",
     "authors": "Donghyeon Cho, Yu-Wing Tai, In-So Kweon",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Double-Opponent Vectorial Total Variation",
     "authors": "Freddie Åström, Christoph Schnörr",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning to Count with CNN Boosting",
     "authors": "Elad Walach, Lior Wolf",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Amodal Instance Segmentation",
     "authors": "Ke Li 0011, Jitendra Malik",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Perceptual Losses for Real-Time Style Transfer and Super-Resolution",
     "authors": "Justin Johnson 0001, Alexandre Alahi, Li Fei-Fei 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "An Efficient Fusion Move Algorithm for the Minimum Cost Lifted Multicut Problem",
     "authors": "Thorsten Beier, Björn Andres, Ullrich Köthe, Fred A. Hamprecht",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "ℓ ^0 ℓ 0 -Sparse Subspace Clustering",
     "authors": "Yingzhen Yang, Jiashi Feng, Nebojsa Jojic, Jianchao Yang, Thomas S. Huang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Normalized Cut Meets MRF",
     "authors": "Meng Tang 0001, Dmitrii Marin, Ismail Ben Ayed, Yuri Boykov",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Fast Global Registration",
     "authors": "Qian-Yi Zhou, Jaesik Park, Vladlen Koltun",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Polysemous Codes",
     "authors": "Matthijs Douze, Hervé Jégou, Florent Perronnin",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Binary Hashing with Semidefinite Relaxation and Augmented Lagrangian",
     "authors": "Thanh-Toan Do, Anh-Dzung Doan, Duc Thanh Nguyen, Ngai-Man Cheung",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Efficient Continuous Relaxations for Dense CRF",
     "authors": "Alban Desmaison, Rudy Bunel, Pushmeet Kohli, Philip H. S. Torr, M. Pawan Kumar",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Complexity of Discrete Energy Minimization Problems",
     "authors": "Mengtian Li, Alexander Shekhovtsov 0001, Daniel Huber",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Convex Solution to Spatially-Regularized Correspondence Problems",
     "authors": "Thomas Windheuser, Daniel Cremers",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Deep Learning-Based Approach to Progressive Vehicle Re-identification for Urban Surveillance",
     "authors": "Xinchen Liu, Wu Liu 0005, Tao Mei 0001, Huadong Ma",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Reflection Symmetry Detection via Appearance of Structure Descriptor",
     "authors": "Ibragim R. Atadjanov, Seungkyu Lee 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Faceless Person Recognition: Privacy Implications in Social Media",
     "authors": "Seong Joon Oh, Rodrigo Benenson, Mario Fritz, Bernt Schiele",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Segmental Spatiotemporal CNNs for Fine-Grained Action Segmentation",
     "authors": "Colin Lea, Austin Reiter, René Vidal, Gregory D. Hager",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Structure from Motion on a Sphere",
     "authors": "Jonathan Ventura",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Evaluation of LBP and Deep Texture Descriptors with a New Robustness Benchmark",
     "authors": "Li Liu 0002, Paul W. Fieguth, Xiaogang Wang 0001, Matti Pietikäinen, Dewen Hu",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "MS-Celeb-1M: A Dataset and Benchmark for Large-Scale Face Recognition",
     "authors": "Yandong Guo, Lei Zhang 0001, Yuxiao Hu 0001, Xiaodong He 0001, Jianfeng Gao 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Hierarchical Beta Process with Gaussian Process Prior for Hyperspectral Image Super Resolution",
     "authors": "Naveed Akhtar, Faisal Shafait, Ajmal S. Mian",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A 4D Light-Field Dataset and CNN Architectures for Material Recognition",
     "authors": "Ting-Chun Wang, Jun-Yan Zhu, Hiroaki Ebi, Manmohan Chandraker, Alexei A. Efros, Ravi Ramamoorthi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Graph-Based Consistent Matching for Structure-from-Motion",
     "authors": "Tianwei Shen, Siyu Zhu 0001, Tian Fang, Runze Zhang, Long Quan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "All-Around Depth from Small Motion with a Spherical Panoramic Camera",
     "authors": "Sunghoon Im 0001, Hyowon Ha, François Rameau, Hae-Gon Jeon, Gyeongmin Choe, In-So Kweon",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "On Volumetric Shape Reconstruction from Implicit Forms",
     "authors": "Li Wang 0046, Franck Hétroy-Wheeler, Edmond Boyer",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Multi-attributed Graph Matching with Multi-layer Random Walks",
     "authors": "Han-Mu Park, Kuk-Jin Yoon",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Learning of Local RGB-D Patches for 3D Object Detection and 6D Pose Estimation",
     "authors": "Wadim Kehl, Fausto Milletari, Federico Tombari, Slobodan Ilic, Nassir Navab",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Neural Approach to Blind Motion Deblurring",
     "authors": "Ayan Chakrabarti",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Joint Face Representation Adaptation and Clustering in Videos",
     "authors": "Zhanpeng Zhang, Ping Luo 0002, Chen Change Loy, Xiaoou Tang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Uncovering Symmetries in Polynomial Systems",
     "authors": "Viktor Larsson, Kalle Åström",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "ATGV-Net: Accurate Depth Super-Resolution",
     "authors": "Gernot Riegler, Matthias Rüther, Horst Bischof",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Indoor-Outdoor 3D Reconstruction Alignment",
     "authors": "Andrea Cohen, Johannes L. Schönberger, Pablo Speciale, Torsten Sattler, Jan-Michael Frahm, Marc Pollefeys",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "The Unreasonable Effectiveness of Noisy Data for Fine-Grained Recognition",
     "authors": "Jonathan Krause, Benjamin Sapp, Andrew Howard, Howard Zhou, Alexander Toshev, Tom Duerig, James Philbin, Li Fei-Fei 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Simple Hierarchical Pooling Data Structure for Loop Closure",
     "authors": "Xiaohan Fei, Konstantine Tsotsos, Stefano Soatto",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Versatile Approach for Solving PnP, PnPf, and PnPfr Problems",
     "authors": "Gaku Nakano",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Depth Map Super-Resolution by Deep Multi-Scale Guidance",
     "authors": "Tak-Wai Hui, Chen Change Loy, Xiaoou Tang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "SEAGULL: Seam-Guided Local Alignment for Parallax-Tolerant Image Stitching",
     "authors": "Kaimo Lin, Nianjuan Jiang, Loong-Fah Cheong, Minh N. Do, Jiangbo Lu",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Grid Loss: Detecting Occluded Faces",
     "authors": "Michael Opitz, Georg Waltner, Georg Poier, Horst Possegger, Horst Bischof",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Large-Scale R-CNN with Classifier Adaptive Quantization",
     "authors": "Ryota Hinami, Shin'ichi Satoh 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Face Detection with End-to-End Integration of a ConvNet and a 3D Model",
     "authors": "Yunzhu Li, Benyuan Sun, Tianfu Wu 0001, Yizhou Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Large Scale Asset Extraction for Urban Images",
     "authors": "Lama Affara, Liangliang Nan, Bernard Ghanem, Peter Wonka",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Multi-label Active Learning Based on Maximum Correntropy Criterion: Towards Robust and Discriminative Labeling",
     "authors": "Zengmao Wang, Bo Du 0001, Lefei Zhang, Liangpei Zhang 0001, Meng Fang, Dacheng Tao",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Shading-Aware Multi-view Stereo",
     "authors": "Fabian Langguth, Kalyan Sunkavalli, Sunil Hadap, Michael Goesele",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Fine-Scale Surface Normal Estimation Using a Single NIR Image",
     "authors": "Youngjin Yoon, Gyeongmin Choe, Namil Kim, Joon-Young Lee, In So Kweon",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Pixelwise View Selection for Unstructured Multi-View Stereo",
     "authors": "Johannes L. Schönberger, Enliang Zheng, Jan-Michael Frahm, Marc Pollefeys",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Laplacian Pyramid Reconstruction and Refinement for Semantic Segmentation",
     "authors": "Golnaz Ghiasi, Charless C. Fowlkes",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Generic 3D Representation via Pose Estimation and Matching",
     "authors": "Amir R. Zamir, Tilman Wekel, Pulkit Agrawal 0001, Colin Wei, Jitendra Malik, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Hand Pose Estimation from Local Surface Normals",
     "authors": "Chengde Wan, Angela Yao, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Abundant Inverse Regression Using Sufficient Reduction and Its Applications",
     "authors": "Hyunwoo J. Kim, Brandon M. Smith 0001, Nagesh Adluru, Charles R. Dyer, Sterling C. Johnson, Vikas Singh",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Diverse Models: The Coulomb Structured Support Vector Machine",
     "authors": "Martin Schiegg, Ferran Diego, Fred A. Hamprecht",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Pose Hashing with Microlens Arrays",
     "authors": "Ian Schillebeeckx, Robert Pless",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "The Fast Bilateral Solver",
     "authors": "Jonathan T. Barron, Ben Poole",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Phase-Based Modification Transfer for Video",
     "authors": "Simone Meyer, Alexander Sorkine-Hornung, Markus H. Gross",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Colorful Image Colorization",
     "authors": "Richard Zhang 0001, Phillip Isola, Alexei A. Efros",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Focal Flow: Measuring Distance and Velocity with Defocus and Differential Motion",
     "authors": "Emma Alexander, Qi Guo 0009, Sanjeev J. Koppal, Steven J. Gortler, Todd E. Zickler",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "An Evaluation of Computational Imaging Techniques for Heterogeneous Inverse Scattering",
     "authors": "Ioannis Gkioulekas, Anat Levin, Todd E. Zickler",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Precomputed Real-Time Texture Synthesis with Markovian Generative Adversarial Networks",
     "authors": "Chuan Li 0001, Michael Wand 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Fast Guided Global Interpolation for Depth and Motion",
     "authors": "Yu Li 0003, Dongbo Min, Minh N. Do, Jiangbo Lu",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning High-Order Filters for Efficient Blind Deconvolution of Document Photographs",
     "authors": "Lei Xiao 0014, Jue Wang 0001, Wolfgang Heidrich, Michael Hirsch 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Multi-view Inverse Rendering Under Arbitrary Illumination and Albedo",
     "authors": "Kichang Kim, Akihiko Torii, Masatoshi Okutomi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "DAPs: Deep Action Proposals for Action Understanding",
     "authors": "Victor Escorcia, Fabian Caba Heilbron, Juan Carlos Niebles, Bernard Ghanem",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Large Contextual Dataset for Classification, Detection and Counting of Cars with Deep Learning",
     "authors": "T. Nathan Mundhenk, Goran Konjevod, Wesam A. Sakla, Kofi Boakye",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Reliable Attribute-Based Object Recognition Using High Predictive Value Classifiers",
     "authors": "Wentao Luan, Yezhou Yang, Cornelia Fermüller, John S. Baras",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Spatio-Temporal LSTM with Trust Gates for 3D Human Action Recognition",
     "authors": "Jun Liu 0036, Amir Shahroudy, Dong Xu 0001, Gang Wang 0012",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Going Further with Point Pair Features",
     "authors": "Stefan Hinterstoisser, Vincent Lepetit, Naresh Rajkumar, Kurt Konolige",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Webly-Supervised Video Recognition by Mutually Voting for Relevant Web Images and Web Video Frames",
     "authors": "Chuang Gan 0001, Chen Sun 0002, Lixin Duan, Boqing Gong",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "HFS: Hierarchical Feature Selection for Efficient Image Segmentation",
     "authors": "Ming-Ming Cheng, Yun Liu 0011, Qibin Hou, Jiawang Bian, Philip H. S. Torr, Shi-Min Hu 0001, Zhuowen Tu",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Generating Visual Explanations",
     "authors": "Lisa Anne Hendricks, Zeynep Akata, Marcus Rohrbach, Jeff Donahue, Bernt Schiele, Trevor Darrell",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Marker-Less 3D Human Motion Capture with Monocular Image Sequence and Height-Maps",
     "authors": "Yu Du 0016, Yongkang Wong, Yonghao Liu, Feilin Han, Yilin Gui, Zhen Wang 0003, Mohan S. Kankanhalli, Weidong Geng",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Tensor Representations via Kernel Linearization for Action Recognition from 3D Skeletons",
     "authors": "Piotr Koniusz, Anoop Cherian, Fatih Porikli",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Manhattan-World Urban Reconstruction from Point Clouds",
     "authors": "Minglei Li 0003, Peter Wonka, Liangliang Nan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "From Multiview Image Curves to 3D Drawings",
     "authors": "Anil Usumezbas, Ricardo Fabbri, Benjamin B. Kimia",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Shape from Selfies: Human Body Shape Estimation Using CCA Regression Forests",
     "authors": "Endri Dibra, A. Cengiz Öztireli, Remo Ziegler, Markus H. Gross",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Can We Jointly Register and Reconstruct Creased Surfaces by Shape-from-Template Accurately?",
     "authors": "Mathias Gallardo, Toby Collins, Adrien Bartoli",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Distractor-Supported Single Target Tracking in Extremely Cluttered Scenes",
     "authors": "Jingjing Xiao, Linbo Qiao, Rustam Stolkin, Ales Leonardis",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Connectionist Temporal Modeling for Weakly Supervised Action Labeling",
     "authors": "De-An Huang, Li Fei-Fei 0001, Juan Carlos Niebles",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Joint Image Filtering",
     "authors": "Yijun Li 0001, Jia-Bin Huang 0001, Narendra Ahuja, Ming-Hsuan Yang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Efficient Multi-frequency Phase Unwrapping Using Kernel Density Estimation",
     "authors": "Felix Järemo Lawin, Per-Erik Forssén, Hannes Ovren",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Multi-scale CNN for Affordance Segmentation in RGB Images",
     "authors": "Anirban Roy, Sinisa Todorovic",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Hierarchical Dynamic Parsing and Encoding for Action Recognition",
     "authors": "Bing Su 0001, Jiahuan Zhou, Xiaoqing Ding, Hao Wang 0005, Ying Wu 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Distinct Class-Specific Saliency Maps for Weakly Supervised Semantic Segmentation",
     "authors": "Wataru Shimoda, Keiji Yanai",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Diagram is Worth a Dozen Images",
     "authors": "Aniruddha Kembhavi, Mike Salvato, Eric Kolve, Min Joon Seo, Hannaneh Hajishirzi, Ali Farhadi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Automatic Attribute Discovery with Neural Activations",
     "authors": "Sirion Vittayakorn, Takayuki Umeda, Kazuhiko Murasaki, Kyoko Sudo, Takayuki Okatani, Kota Yamaguchi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "\"What Happens If...\" Learning to Predict the Effect of Forces in Images",
     "authors": "Roozbeh Mottaghi, Mohammad Rastegari, Abhinav Gupta 0001, Ali Farhadi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "View Synthesis by Appearance Flow",
     "authors": "Tinghui Zhou, Shubham Tulsiani, Weilun Sun, Jitendra Malik, Alexei A. Efros",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Top-Down Learning for Structured Labeling with Convolutional Pseudoprior",
     "authors": "Saining Xie, Xun Huang, Zhuowen Tu",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Generative Image Modeling Using Style and Structure Adversarial Networks",
     "authors": "Xiaolong Wang 0004, Abhinav Gupta 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Joint Learning of Semantic and Latent Attributes",
     "authors": "Peixi Peng, Yonghong Tian 0001, Tao Xiang 0002, Yaowei Wang 0001, Tiejun Huang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection",
     "authors": "Zhaowei Cai, Quanfu Fan, Rogério Schmidt Feris, Nuno Vasconcelos",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Specialized Network for Illuminant Estimation",
     "authors": "Wu Shi, Chen Change Loy, Xiaoou Tang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Weakly-Supervised Semantic Segmentation Using Motion Cues",
     "authors": "Pavel Tokmakov, Karteek Alahari, Cordelia Schmid",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Human-in-the-Loop Person Re-identification",
     "authors": "Hanxiao Wang 0001, Shaogang Gong, Xiatian Zhu, Tao Xiang 0002",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Real-Time Monocular Segmentation and Pose Tracking of Multiple Objects",
     "authors": "Henning Tjaden, Ulrich Schwanecke, Elmar Schömer",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Estimation of Human Body Shape in Motion with Wide Clothing",
     "authors": "Jinlong Yang 0001, Jean-Sébastien Franco, Franck Hétroy-Wheeler, Stefanie Wuhrer",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Shape-Based Approach for Salient Object Detection Using Deep Learning",
     "authors": "Jongpil Kim, Vladimir Pavlovic 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Fast Optical Flow Using Dense Inverse Search",
     "authors": "Till Kroeger, Radu Timofte, Dengxin Dai, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Global Registration of 3D Point Sets via LRS Decomposition",
     "authors": "Federica Arrigoni, Beatrice Rossi, Andrea Fusiello",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Recognition from Hand Cameras: A Revisit with Deep Learning",
     "authors": "Cheng-Sheng Chan, Shou-Zhong Chen, Pei-Xuan Xie, Chiung-Chih Chang, Min Sun 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "XNOR-Net: ImageNet Classification Using Binary Convolutional Neural Networks",
     "authors": "Mohammad Rastegari, Vicente Ordonez, Joseph Redmon, Ali Farhadi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Top-Down Neural Attention by Excitation Backprop",
     "authors": "Jianming Zhang 0001, Zhe Lin 0001, Jonathan Brandt, Xiaohui Shen, Stan Sclaroff",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Recursive Filters for Low-Level Vision via a Hybrid Neural Network",
     "authors": "Sifei Liu, Jin-shan Pan, Ming-Hsuan Yang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Representations for Automatic Colorization",
     "authors": "Gustav Larsson, Michael Maire, Gregory Shakhnarovich",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Reconstruction-Classification Networks for Unsupervised Domain Adaptation",
     "authors": "Muhammad Ghifary, W. Bastiaan Kleijn, Mengjie Zhang 0001, David Balduzzi, Wen Li",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Without Forgetting",
     "authors": "Zhizhong Li 0001, Derek Hoiem",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Identity Mappings in Deep Residual Networks",
     "authors": "Kaiming He, Xiangyu Zhang 0005, Shaoqing Ren, Jian Sun 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Networks with Stochastic Depth",
     "authors": "Gao Huang 0001, Yu Sun 0020, Zhuang Liu 0003, Daniel Sedra, Kilian Q. Weinberger",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Less Is More: Towards Compact CNNs",
     "authors": "Hao Zhou, Jose M. Alvarez, Fatih Porikli",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Unsupervised Visual Representation Learning by Graph-Based Consistent Constraints",
     "authors": "Dong Li 0025, Wei-Chih Hung, Jia-Bin Huang 0001, Shengjin Wang, Narendra Ahuja, Ming-Hsuan Yang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Seed, Expand and Constrain: Three Principles for Weakly-Supervised Image Segmentation",
     "authors": "Alexander Kolesnikov 0003, Christoph H. Lampert",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Patch-Based Low-Rank Matrix Completion for Learning of Shape and Motion Models from Few Training Samples",
     "authors": "Jan Ehrhardt, Matthias Wilms, Heinz Handels",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Chained Predictions Using Convolutional Neural Networks",
     "authors": "Georgia Gkioxari, Alexander Toshev, Navdeep Jaitly",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Multi-region Two-Stream R-CNN for Action Detection",
     "authors": "Xiaojiang Peng, Cordelia Schmid",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Semantic Co-segmentation in Videos",
     "authors": "Yi-Hsuan Tsai, Guangyu Zhong, Ming-Hsuan Yang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Attribute2Image: Conditional Image Generation from Visual Attributes",
     "authors": "Xinchen Yan, Jimei Yang, Kihyuk Sohn, Honglak Lee",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Modeling Context Between Objects for Referring Expression Understanding",
     "authors": "Varun K. Nagaraja, Vlad I. Morariu, Larry S. Davis",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Friction from Reflectance: Deep Reflectance Codes for Predicting Physical Surface Properties from One-Shot In-Field Reflectance",
     "authors": "Hang Zhang 0005, Kristin J. Dana, Ko Nishino",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Saliency Detection with Recurrent Fully Convolutional Networks",
     "authors": "Linzhao Wang, Lijun Wang, Huchuan Lu, Pingping Zhang, Xiang Ruan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep3D: Fully Automatic 2D-to-3D Video Conversion with Deep Convolutional Neural Networks",
     "authors": "Junyuan Xie, Ross B. Girshick, Ali Farhadi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Temporal Model Adaptation for Person Re-identification",
     "authors": "Niki Martinel, Abir Das, Christian Micheloni, Amit K. Roy-Chowdhury",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Image Quality Assessment Using Similar Scene as Reference",
     "authors": "Yudong Liang, Jinjun Wang, Xingyu Wan, Yihong Gong, Nanning Zheng 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "MOON: A Mixed Objective Optimization Network for the Recognition of Facial Attributes",
     "authors": "Ethan M. Rudd, Manuel Günther, Terrance E. Boult",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Degeneracies in Rolling Shutter SfM",
     "authors": "Cenek Albl, Akihiro Sugimoto, Tomás Pajdla",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Deformation Network for Object Landmark Localization",
     "authors": "Xiang Yu 0002, Feng Zhou, Manmohan Chandraker",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Visual Storylines with Skipping Recurrent Neural Networks",
     "authors": "Gunnar A. Sigurdsson, Xinlei Chen, Abhinav Gupta 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Towards Large-Scale City Reconstruction from Satellites",
     "authors": "Liuyun Duan, Florent Lafarge",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Weakly Supervised Object Localization Using Size Estimates",
     "authors": "Miaojing Shi, Vittorio Ferrari",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Supervised Transformer Network for Efficient Face Detection",
     "authors": "Dong Chen 0003, Gang Hua 0001, Fang Wen 0001, Jian Sun 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Geometric Approach to Image Labeling",
     "authors": "Freddie Åström, Stefania Petra, Bernhard Schmitzer, Christoph Schnörr",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "ActionSnapping: Motion-Based Video Synchronization",
     "authors": "Jean-Charles Bazin, Alexander Sorkine-Hornung",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Minimal Solution for Non-perspective Pose Estimation from Line Correspondences",
     "authors": "Gim Hee Lee",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Natural Image Stitching with the Global Similarity Prior",
     "authors": "Yu-Sheng Chen, Yung-Yu Chuang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Minimal Solvers for Generalized Pose and Scale Estimation from Two Rays and One Point",
     "authors": "Federico Camposeco, Torsten Sattler, Marc Pollefeys",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning to Hash with Binary Deep Neural Network",
     "authors": "Thanh-Toan Do, Anh-Dzung Doan, Ngai-Man Cheung",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Automatically Selecting Inference Algorithms for Discrete Energy Minimisation",
     "authors": "Paul Henderson, Vittorio Ferrari",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Ego2Top: Matching Viewers in Egocentric and Top-View Videos",
     "authors": "Shervin Ardeshir, Ali Borji",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Online Action Detection",
     "authors": "Roeland De Geest, Efstratios Gavves, Amir Ghodrati, Zhenyang Li, Cees Snoek, Tinne Tuytelaars",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Cross-Modal Supervision for Learning Active Speaker Detection in Video",
     "authors": "Punarjay Chakravarty, Tinne Tuytelaars",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Recurrent Temporal Deep Field for Semantic Video Labeling",
     "authors": "Peng Lei, Sinisa Todorovic",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Ultra-Resolving Face Images by Discriminative Generative Networks",
     "authors": "Xin Yu 0002, Fatih Porikli",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Discriminative Framework for Anomaly Detection in Large Videos",
     "authors": "Allison Del Giorno, J. Andrew Bagnell, Martial Hebert",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "ContextLocNet: Context-Aware Deep Network Models for Weakly Supervised Localization",
     "authors": "Vadim Kantorov, Maxime Oquab, Minsu Cho, Ivan Laptev",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Network Flow Formulations for Learning Binary Hashing",
     "authors": "Lopamudra Mukherjee, Jiming Peng, Trevor Sigmund, Vikas Singh",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "SPICE: Semantic Propositional Image Caption Evaluation",
     "authors": "Peter Anderson 0001, Basura Fernando, Mark Johnson 0001, Stephen Gould",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Transfer Neural Trees for Heterogeneous Domain Adaptation",
     "authors": "Wei-Yu Chen, Tzu-Ming Harry Hsu, Yao-Hung Hubert Tsai, Yu-Chiang Frank Wang, Ming-Syan Chen",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Tracking Persons-of-Interest via Adaptive Discriminative Features",
     "authors": "Shun Zhang, Yihong Gong, Jia-Bin Huang 0001, Jongwoo Lim, Jinjun Wang, Narendra Ahuja, Ming-Hsuan Yang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Spot On: Action Localization from Pointly-Supervised Proposals",
     "authors": "Pascal Mettes, Jan C. van Gemert, Cees G. M. Snoek",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Detecting Engagement in Egocentric Video",
     "authors": "Yu-Chuan Su, Kristen Grauman",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Beyond Correlation Filters: Learning Continuous Convolution Operators for Visual Tracking",
     "authors": "Martin Danelljan, Andreas Robinson, Fahad Shahbaz Khan, Michael Felsberg",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Look-Ahead Before You Leap: End-to-End Active Recognition by Forecasting the Effect of Motion",
     "authors": "Dinesh Jayaraman, Kristen Grauman",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "General Automatic Human Shape and Motion Capture Using Volumetric Contour Cues",
     "authors": "Helge Rhodin, Nadia Robertini, Dan Casas, Christian Richardt, Hans-Peter Seidel, Christian Theobalt",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Globally Continuous and Non-Markovian Crowd Activity Analysis from Videos",
     "authors": "He Wang 0002, Carol O'Sullivan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Joint Face Alignment and 3D Face Reconstruction",
     "authors": "Feng Liu 0013, Dan Zeng 0002, Qijun Zhao, Xiaoming Liu 0002",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Keep It SMPL: Automatic Estimation of 3D Human Pose and Shape from a Single Image",
     "authors": "Federica Bogo, Angjoo Kanazawa, Christoph Lassner, Peter V. Gehler, Javier Romero 0002, Michael J. Black",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Do We Really Need to Collect Millions of Faces for Effective Face Recognition?",
     "authors": "Iacopo Masi, Anh Tuan Tran 0001, Tal Hassner, Jatuporn Toy Leksut, Gérard G. Medioni",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Generative Visual Manipulation on the Natural Image Manifold",
     "authors": "Jun-Yan Zhu, Philipp Krähenbühl, Eli Shechtman, Alexei A. Efros",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Cascaded Bi-Network for Face Hallucination",
     "authors": "Shizhan Zhu, Sifei Liu, Chen Change Loy, Xiaoou Tang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Cluster Sparsity Field for Hyperspectral Imagery Denoising",
     "authors": "Lei Zhang 0054, Wei Wei 0008, Yanning Zhang 0001, Chunhua Shen, Anton van den Hengel, Qinfeng Shi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Zoom Better to See Clearer: Human and Object Parsing with Hierarchical Auto-Zoom Net",
     "authors": "Fangting Xia, Peng Wang 0001, Liang-Chieh Chen, Alan L. Yuille",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Common and Specific Features for RGB-D Semantic Segmentation with Deconvolutional Networks",
     "authors": "Jinghua Wang, Zhenhua Wang 0002, Dacheng Tao, Simon See, Gang Wang 0012",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "MADMM: A Generic Algorithm for Non-smooth Optimization on Manifolds",
     "authors": "Artiom Kovnatsky, Klaus Glashoff, Michael M. Bronstein",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Interpreting the Ratio Criterion for Matching SIFT Descriptors",
     "authors": "Avi Kaplan, Tamar Avraham, Michael Lindenbaum",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Semi-supervised Learning Based on Joint Diffusion of Graph Functions and Laplacians",
     "authors": "Kwang In Kim",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Improving Semantic Embedding Consistency by Metric Learning for Zero-Shot Classiffication",
     "authors": "Maxime Bucher, Stéphane Herbin, Frédéric Jurie",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Sequential Approach to 3D Human Pose Estimation: Separation of Localization and Identification of Body Joints",
     "authors": "Ho Yub Jung, Yumin Suh, Gyeongsik Moon, Kyoung Mu Lee",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Novel Tiny Object Recognition Algorithm Based on Unit Statistical Curvature Feature",
     "authors": "Yimei Kang, Xiang Li",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Fine-Grained Material Classification Using Micro-geometry and Reflectance",
     "authors": "Christos Kampouris, Stefanos Zafeiriou, Abhijeet Ghosh, Sotiris Malassiotis",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "The Conditional Lucas & Kanade Algorithm",
     "authors": "Chen-Hsuan Lin 0001, Rui Zhu 0004, Simon Lucey",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Where Should Saliency Models Look Next?",
     "authors": "Zoya Bylinskii, Adrià Recasens, Ali Borji, Aude Oliva, Antonio Torralba 0001, Frédo Durand",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Robust Face Alignment Using a Mixture of Invariant Experts",
     "authors": "Oncel Tuzel, Tim K. Marks, Salil Tambe",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Partial Linearization Based Optimization for Multi-class SVM",
     "authors": "Pritish Mohapatra, Puneet Kumar Dokania, C. V. Jawahar, M. Pawan Kumar",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Search-Based Depth Estimation via Coupled Dictionary Learning with Large-Margin Structure Inference",
     "authors": "Yan Zhang 0109, Rongrong Ji, Xiaopeng Fan 0001, Yan Wang 0059, Feng Guo 0005, Yue Gao 0002, Debin Zhao",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Scalable Metric Learning via Weighted Approximate Rank Component Analysis",
     "authors": "Cijo Jose, François Fleuret",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Spatio-Temporally Consistent Correspondence for Dense Dynamic Scene Modeling",
     "authors": "Dinghuang Ji, Enrique Dunn, Jan-Michael Frahm",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "3D Image Reconstruction from X-Ray Measurements with Overlap",
     "authors": "Maria Klodt, Raphael A. Hauser",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "DeeperCut: A Deeper, Stronger, and Faster Multi-person Pose Estimation Model",
     "authors": "Eldar Insafutdinov, Leonid Pishchulin, Bjoern Andres, Mykhaylo Andriluka, Bernt Schiele",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Resonant Deformable Matching: Simultaneous Registration and Reconstruction",
     "authors": "John Corring, Anand Rangarajan 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Unsupervised Learning of Visual Representations by Solving Jigsaw Puzzles",
     "authors": "Mehdi Noroozi, Paolo Favaro",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "COCO Attributes: Attributes for People, Animals, and Objects",
     "authors": "Genevieve Patterson, James Hays",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Temporally Robust Global Motion Compensation by Keypoint-Based Congealing",
     "authors": "Seyed Morteza Safdarnejad, Yousef Atoum, Xiaoming Liu 0002",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Salient Deconvolutional Networks",
     "authors": "Aravindh Mahendran, Andrea Vedaldi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Visualizing Image Priors",
     "authors": "Tamar Rott Shaham, Tomer Michaeli",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Exploiting Semantic Information and Deep Matching for Optical Flow",
     "authors": "Min Bai, Wenjie Luo 0002, Kaustav Kundu, Raquel Urtasun",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Similarity Registration Problems for 2D/3D Ultrasound Calibration",
     "authors": "Francisco Vasconcelos 0001, Donald Peebles, Sébastien Ourselin, Danail Stoyanov",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Adaptive Signal Recovery on Graphs via Harmonic Analysis for Experimental Design in Neuroimaging",
     "authors": "Won Hwa Kim, Seong Jae Hwang, Nagesh Adluru, Sterling C. Johnson, Vikas Singh",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Benchmark for Automatic Visual Classification of Clinical Skin Disease Images",
     "authors": "Xiaoxiao Sun 0002, Jufeng Yang, Ming Sun 0006, Kai Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Learning 3D Shape Surfaces Using Geometry Images",
     "authors": "Ayan Sinha, Jing Bai 0004, Karthik Ramani",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Image Retrieval: Learning Global Representations for Image Search",
     "authors": "Albert Gordo, Jon Almazán, Jérôme Revaud, Diane Larlus",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Building Scene Models by Completing and Hallucinating Depth and Semantics",
     "authors": "Miaomiao Liu 0001, Xuming He 0001, Mathieu Salzmann",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Weakly Supervised Learning of Heterogeneous Concepts in Videos",
     "authors": "Sohil Shah, Kuldeep Kulkarni, Arijit Biswas, Ankit Gandhi, Om Deshmukh, Larry S. Davis",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Semantic Deformation Flows with 3D Convolutional Networks",
     "authors": "Mehmet Ersin Yümer 0001, Niloy J. Mitra",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Recurrent Instance Segmentation",
     "authors": "Bernardino Romera-Paredes, Philip Hilaire Sean Torr",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Individualness and Determinantal Point Processes for Pedestrian Detection",
     "authors": "Donghoon Lee 0004, Geonho Cha, Ming-Hsuan Yang 0001, Songhwai Oh",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Real-Time 3D Reconstruction and 6-DoF Tracking with an Event Camera",
     "authors": "Hanme Kim, Stefan Leutenegger, Andrew J. Davison",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Single Image 3D Interpreter Network",
     "authors": "Jiajun Wu 0001, Tianfan Xue, Joseph J. Lim, Yuandong Tian, Joshua B. Tenenbaum, Antonio Torralba 0001, William T. Freeman",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Dual Structured Light 3D Using a 1D Sensor",
     "authors": "Jian Wang 0100, Aswin C. Sankaranarayanan, Mohit Gupta 0001, Srinivasa G. Narasimhan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Shape Acquisition and Registration for 3D Endoscope Based on Grid Pattern Projection",
     "authors": "Ryo Furukawa 0001, Hiroki Morinaga, Yoji Sanomura, Shinji Tanaka, Shigeto Yoshida, Hiroshi Kawasaki",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Target Response Adaptation for Correlation Filter Tracking",
     "authors": "Adel Bibi, Matthias Mueller 0001, Bernard Ghanem",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Image Matching by Simply Watching Video",
     "authors": "Gucan Long, Laurent Kneip, José M. Álvarez 0004, Hongdong Li, Xiaohu Zhang, Qifeng Yu",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Distance for HMMs Based on Aggregated Wasserstein Metric and State Registration",
     "authors": "Yukun Chen, Jianbo Ye, Jia Li 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "LIFT: Learned Invariant Feature Transform",
     "authors": "Kwang Moo Yi, Eduard Trulls, Vincent Lepetit, Pascal Fua",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning a Predictable and Generative Vector Representation for Objects",
     "authors": "Rohit Girdhar, David F. Fouhey, Mikel Rodriguez, Abhinav Gupta 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "HouseCraft: Building Houses from Rental Ads and Street Views",
     "authors": "Hang Chu, Shenlong Wang, Raquel Urtasun, Sanja Fidler",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Superpixel-Based Two-View Deterministic Fitting for Multiple-Structure Data",
     "authors": "Guobao Xiao, Hanzi Wang, Yan Yan 0001, David Suter",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Instance-Sensitive Fully Convolutional Networks",
     "authors": "Jifeng Dai, Kaiming He, Yi Li 0038, Shaoqing Ren, Jian Sun 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Domain Adaptive Fisher Vector for Visual Recognition",
     "authors": "Li Niu 0002, Jianfei Cai 0001, Dong Xu 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Robust Encoder Through Locality Preserving Low-Rank Dictionary",
     "authors": "Zhengming Ding, Ming Shao, Yun Fu 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Pattern Mining Saliency",
     "authors": "Yuqiu Kong, Lijun Wang, Xiuping Liu, Huchuan Lu, Xiang Ruan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Streaming Video Segmentation via Short-Term Hierarchical Segmentation and Frame-by-Frame Markov Random Field Optimization",
     "authors": "Won-Dong Jang, Chang-Su Kim 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning to Learn: Model Regression Networks for Easy Small Sample Learning",
     "authors": "Yu-Xiong Wang, Martial Hebert",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Shape from Water: Bispectral Light Absorption for Depth Recovery",
     "authors": "Yuta Asano, Yinqiang Zheng, Ko Nishino, Imari Sato",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Dynamic Hierarchical Models for Anytime Scene Labeling",
     "authors": "Buyu Liu, Xuming He 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Semantic 3D Reconstruction of Heads",
     "authors": "Fabio Maninchedda, Christian Häne, Bastien Jacquet, Amaël Delaunoy, Marc Pollefeys",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Human Attribute Recognition by Deep Hierarchical Contexts",
     "authors": "Yining Li, Chen Huang 0001, Chen Change Loy, Xiaoou Tang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Person Re-identification via Recurrent Feature Aggregation",
     "authors": "Yichao Yan, Bingbing Ni, Zhichao Song, Chao Ma 0004, Yan Yan 0002, Xiaokang Yang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Biconvex Relaxation for Semidefinite Programming in Computer Vision",
     "authors": "Sohil Shah, Abhay Kumar Yadav, Carlos Domingo Castillo, David W. Jacobs, Christoph Studer, Tom Goldstein",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Image Co-segmentation Using Maximum Common Subgraph Matching and Region Co-growing",
     "authors": "Avik Hati, Subhasis Chaudhuri, Rajbabu Velmurugan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "End-to-End Localization and Ranking for Relative Attributes",
     "authors": "Krishna Kumar Singh, Yong Jae Lee",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Efficient Large Scale Image Classification via Prediction Score Decomposition",
     "authors": "Duy-Dinh Le, Tien-Dung Mai, Shin'ichi Satoh 0001, Thanh Duc Ngo, Duc Anh Duong",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Stochastic Dykstra Algorithms for Metric Learning with Positive Definite Covariance Descriptors",
     "authors": "Tomoki Matsuzawa, Raissa Relator, Jun Sese, Tsuyoshi Kato",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "MeshFlow: Minimum Latency Online Video Stabilization",
     "authors": "Shuaicheng Liu, Ping Tan 0002, Lu Yuan 0001, Jian Sun 0001, Bing Zeng 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Large-Scale Training of Shadow Detectors with Noisily-Annotated Shadow Examples",
     "authors": "Tomás F. Yago Vicente, Le Hou, Chen-Ping Yu, Minh Hoai, Dimitris Samaras",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "RNN Fisher Vectors for Action Recognition and Image Annotation",
     "authors": "Guy Lev, Gil Sadeh, Benjamin Eliot Klein, Lior Wolf",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "CDT: Cooperative Detection and Tracking for Tracing Multiple Objects in Video Sequences",
     "authors": "Han-Ul Kim 0001, Chang-Su Kim 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "MARS: A Video Benchmark for Large-Scale Person Re-Identification",
     "authors": "Liang Zheng 0001, Zhi Bie, Yifan Sun 0003, Jingdong Wang 0001, Chi Su, Shengjin Wang, Qi Tian 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Angry Crowds: Detecting Violent Events in Videos",
     "authors": "Sadegh Mohammadi 0001, Alessandro Perina, Hamed Kiani, Vittorio Murino",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Sparse Recovery of Hyperspectral Signal from Natural RGB Images",
     "authors": "Boaz Arad, Ohad Ben-Shahar",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Light Field Segmentation Using a Ray-Based Graph Structure",
     "authors": "Matthieu Hog, Neus Sabater, Christine Guillemot",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Design of Kernels in Convolutional Neural Networks for Image Classification",
     "authors": "Zhun Sun, Mete Ozay, Takayuki Okatani",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Visual Features from Large Weakly Supervised Data",
     "authors": "Armand Joulin, Laurens van der Maaten, Allan Jabri, Nicolas Vasilache",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "3D Mask Face Anti-spoofing with Remote Photoplethysmography",
     "authors": "Siqi Liu 0003, Pong C. Yuen, Shengping Zhang, Guoying Zhao 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Guided Matching Based on Statistical Optical Flow for Fast and Robust Correspondence Analysis",
     "authors": "Josef Maier, Martin Humenberger, Markus Murschitz, Oliver Zendel 0001, Markus Vincze",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Pose Estimation Errors, the Ultimate Diagnosis",
     "authors": "Carolina Redondo-Cabrera, Roberto Javier López-Sastre, Yu Xiang, Tinne Tuytelaars, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Siamese Long Short-Term Memory Architecture for Human Re-identification",
     "authors": "Rahul Rama Varior, Bing Shuai, Jiwen Lu, Dong Xu 0001, Gang Wang 0012",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Integration of Probabilistic Pose Estimates from Multiple Views",
     "authors": "Özgür Erkent, Dadhichi Shukla, Justus H. Piater",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "SurfCut: Free-Boundary Surface Extraction",
     "authors": "Marei Algarni, Ganesh Sundaramoorthi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "CATS: Co-saliency Activated Tracklet Selection for Video Co-localization",
     "authors": "Koteswar Rao Jerripothula, Jianfei Cai 0001, Junsong Yuan 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Online Human Action Detection Using Joint Classification-Regression Recurrent Neural Networks",
     "authors": "Yanghao Li, Cuiling Lan, Junliang Xing, Wenjun Zeng 0001, Chunfeng Yuan, Jiaying Liu 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Jensen Bregman LogDet Divergence Optimal Filtering in the Manifold of Positive Definite Matrices",
     "authors": "Yin Wang, Octavia I. Camps, Mario Sznaier, Biel Roig-Solvas",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "SyB3R: A Realistic Synthetic Benchmark for 3D Reconstruction from Images",
     "authors": "Andreas Ley, Ronny Hänsch, Olaf Hellwich",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "When is Rotations Averaging Hard?",
     "authors": "Kyle Wilson, David Bindel, Noah Snavely",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Capturing Dynamic Textured Surfaces of Moving Targets",
     "authors": "Ruizhe Wang 0002, Lingyu Wei, Etienne Vouga, Qixing Huang, Duygu Ceylan, Gérard G. Medioni, Hao Li 0015",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "ShapeFit and ShapeKick for Robust, Scalable Structure from Motion",
     "authors": "Thomas A. Goldstein, Paul Hand, Choongbum Lee, Vladislav Voroninski, Stefano Soatto",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Heat Diffusion Long-Short Term Memory Learning for 3D Shape Analysis",
     "authors": "Fan Zhu 0001, Jin Xie 0001, Yi Fang 0006",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Multi-view 3D Models from Single Images with a Convolutional Network",
     "authors": "Maxim Tatarchenko, Alexey Dosovitskiy, Thomas Brox",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Extending Long Short-Term Memory for Multi-View Structured Learning",
     "authors": "Shyam Sundar Rajagopalan, Louis-Philippe Morency, Tadas Baltrusaitis, Roland Goecke",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Gated Bi-directional CNN for Object Detection",
     "authors": "Xingyu Zeng, Wanli Ouyang, Bin Yang 0022, Junjie Yan, Xiaogang Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Graph Based Skeleton Motion Representation and Similarity Measurement for Action Recognition",
     "authors": "Pei Wang, Chunfeng Yuan, Weiming Hu 0004, Bing Li 0001, Yanning Zhang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Reliable Fusion of ToF and Stereo Depth Driven by Confidence Measures",
     "authors": "Giulio Marin, Pietro Zanuttigh, Stefano Mattoccia",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Fast, Exact and Multi-scale Inference for Semantic Image Segmentation with Deep Gaussian CRFs",
     "authors": "Siddhartha Chandra, Iasonas Kokkinos",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Kernel-Based Supervised Discrete Hashing for Image Retrieval",
     "authors": "Xiaoshuang Shi, Fuyong Xing, Jinzheng Cai, Zizhao Zhang 0002, Yuanpu Xie, Lin Yang 0002",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Iterative Reference Driven Metric Learning for Signer Independent Isolated Sign Language Recognition",
     "authors": "Fang Yin, Xiujuan Chai, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Ask, Attend and Answer: Exploring Question-Guided Spatial Attention for Visual Question Answering",
     "authors": "Huijuan Xu 0001, Kate Saenko",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Relay Backpropagation for Effective Learning of Deep Convolutional Neural Networks",
     "authors": "Li Shen 0005, Zhouchen Lin, Qingming Huang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Counting in the Wild",
     "authors": "Carlos Arteta, Victor S. Lempitsky, Andrew Zisserman",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Discriminative Feature Learning Approach for Deep Face Recognition",
     "authors": "Yandong Wen, Kaipeng Zhang, Zhifeng Li 0001, Yu Qiao 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Network of Experts for Large-Scale Image Categorization",
     "authors": "Karim Ahmed, Mohammad Haris Baig, Lorenzo Torresani",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Zero-Shot Recognition via Structured Prediction",
     "authors": "Ziming Zhang, Venkatesh Saligrama",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "What's the Point: Semantic Segmentation with Point Supervision",
     "authors": "Amy L. Bearman, Olga Russakovsky, Vittorio Ferrari, Li Fei-Fei 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Generalized Successive Shortest Paths Solver for Tracking Dividing Targets",
     "authors": "Carsten Haubold, Janez Ales, Steffen Wolf 0001, Fred A. Hamprecht",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Accurate and Linear Time Pose Estimation from Points and Lines",
     "authors": "Alexander Vakhitov, Jan Funke, Francesc Moreno-Noguer",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Pseudo-geometric Formulation for Fitting Equidistant Parallel Lines",
     "authors": "Faisal Azhar, Stephen Pollard",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Towards Perspective-Free Object Counting with Deep Learning",
     "authors": "Daniel Oñoro-Rubio, Roberto Javier López-Sastre",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Information Bottleneck Domain Adaptation with Privileged Information for Visual Recognition",
     "authors": "Saeid Motiian, Gianfranco Doretto",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Template-Free 3D Reconstruction of Poorly-Textured Nonrigid Surfaces",
     "authors": "Xuan Wang 0009, Mathieu Salzmann, Fei Wang 0008, Jizhong Zhao",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "FigureSeer: Parsing Result-Figures in Research Papers",
     "authors": "Noah Siegel, Zachary Horvitz, Roie Levin, Santosh Kumar Divvala, Ali Farhadi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Approximate Search with Quantized Sparse Representations",
     "authors": "Himalaya Jain, Patrick Pérez, Rémi Gribonval, Joaquin Zepeda, Hervé Jégou",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Sympathy for the Details: Dense Trajectories and Hybrid Classification Architectures for Action Recognition",
     "authors": "César Roberto de Souza, Adrien Gaidon, Eleonora Vig, Antonio Manuel López Peña",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Human Pose Estimation via Convolutional Part Heatmap Regression",
     "authors": "Adrian Bulat, Georgios Tzimiropoulos",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Collaborative Layer-Wise Discriminative Learning in Deep Neural Networks",
     "authors": "Xiaojie Jin 0004, Yunpeng Chen, Jian Dong 0011, Jiashi Feng, Shuicheng Yan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Decoupling of Defocus and Motion Blur for Dynamic Segmentation",
     "authors": "Abhijith Punnappurath, Yogesh Balaji, Mahesh Mohan M. R., Ambasamudram Narayanan Rajagopalan",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Video Summarization with Long Short-Term Memory",
     "authors": "Ke Zhang 0028, Wei-Lun Chao, Fei Sha, Kristen Grauman",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Leaving Some Stones Unturned: Dynamic Feature Prioritization for Activity Detection in Streaming Video",
     "authors": "Yu-Chuan Su, Kristen Grauman",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Robust and Accurate Line- and/or Point-Based Pose Estimation without Manhattan Assumptions",
     "authors": "Yohann Salaün, Renaud Marlet, Pascal Monasse",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "MARLow: A Joint Multiplanar Autoregressive and Low-Rank Approach for Image Completion",
     "authors": "Mading Li, Jiaying Liu 0001, Zhiwei Xiong, Xiaoyan Sun 0001, Zongming Guo",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "An Uncertain Future: Forecasting from Static Images Using Variational Autoencoders",
     "authors": "Jacob Walker, Carl Doersch, Abhinav Gupta 0001, Martial Hebert",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Carried Object Detection Based on an Ensemble of Contour Exemplars",
     "authors": "Farnoosh Ghadiri, Robert Bergevin, Guillaume-Alexandre Bilodeau",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Query-Focused Extractive Video Summarization",
     "authors": "Aidean Sharghi, Boqing Gong, Mubarak Shah",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Temporal Segment Networks: Towards Good Practices for Deep Action Recognition",
     "authors": "Limin Wang 0002, Yuanjun Xiong, Zhe Wang 0013, Yu Qiao 0001, Dahua Lin, Xiaoou Tang, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "PlaNet - Photo Geolocation with Convolutional Neural Networks",
     "authors": "Tobias Weyand, Ilya Kostrikov, James Philbin",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Detecting Text in Natural Image with Connectionist Text Proposal Network",
     "authors": "Zhi Tian, Weilin Huang, Tong He 0001, Pan He, Yu Qiao 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Face Recognition Using a Unified 3D Morphable Model",
     "authors": "Guosheng Hu, Fei Yan 0001, Chi-Ho Chan, Weihong Deng, William J. Christmas, Josef Kittler, Neil Martin Robertson",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Augmented Feedback in Semantic Segmentation Under Image Level Supervision",
     "authors": "Xiaojuan Qi 0001, Zhengzhe Liu, Jianping Shi, Hengshuang Zhao, Jiaya Jia",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Linear Depth Estimation from an Uncalibrated, Monocular Polarisation Image",
     "authors": "William A. P. Smith, Ravi Ramamoorthi, Silvia Tozza",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Online Variational Bayesian Motion Averaging",
     "authors": "Guillaume Bourmaud",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Unified Depth Prediction and Intrinsic Image Decomposition from a Single Image via Joint Convolutional Neural Fields",
     "authors": "Seungryong Kim, Kihong Park, Kwanghoon Sohn, Stephen Lin 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "ObjectNet3D: A Large Scale Database for 3D Object Recognition",
     "authors": "Yu Xiang, Wonhui Kim, Wei Chen, Jingwei Ji, Christopher B. Choy, Hao Su 0001, Roozbeh Mottaghi, Leonidas J. Guibas, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Branching Gaussian Processes with Applications to Spatiotemporal Reconstruction of 3D Trees",
     "authors": "Kyle Simek, Ravishankar Palanivelu, Kobus Barnard",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Tracking Completion",
     "authors": "Yao Sui, Guanghui Wang 0001, Yafei Tang, Li Zhang 0023",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Inter-battery Topic Representation Learning",
     "authors": "Cheng Zhang 0005, Hedvig Kjellström, Carl Henrik Ek",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Online Adaptation for Joint Scene and Object Classification",
     "authors": "Jawadul H. Bappy, Sujoy Paul, Amit K. Roy-Chowdhury",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Real-Time Facial Segmentation and Performance Capture from RGB Input",
     "authors": "Shunsuke Saito, Tianye Li, Hao Li 0015",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Temporal Transformations from Time-Lapse Videos",
     "authors": "Yipin Zhou, Tamara L. Berg",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Interactive Image Segmentation Using Constrained Dominant Sets",
     "authors": "Eyasu Zemene, Marcello Pelillo",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Markov Random Field for Image Modeling",
     "authors": "Zhirong Wu, Dahua Lin, Xiaoou Tang",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Symmetry Prior for Convex Variational 3D Reconstruction",
     "authors": "Pablo Speciale, Martin R. Oswald, Andrea Cohen, Marc Pollefeys",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "SPLeaP: Soft Pooling of Learned Parts for Image Classification",
     "authors": "Praveen Kulkarni 0003, Frédéric Jurie, Joaquin Zepeda, Patrick Pérez, Louis Chevallier",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Spatial Attention Deep Net with Partial PSO for Hierarchical Hybrid Hand Pose Estimation",
     "authors": "Qi Ye 0001, Shanxin Yuan, Tae-Kyun Kim 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "VolumeDeform: Real-Time Volumetric Non-rigid Reconstruction",
     "authors": "Matthias Innmann, Michael Zollhöfer, Matthias Nießner, Christian Theobalt, Marc Stamminger",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "\\pi Match: Monocular vSLAM and Piecewise Planar Reconstruction Using Fast Plane Correspondences",
     "authors": "Carolina Raposo, João Pedro Barreto 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Peripheral Expansion of Depth Information via Layout Estimation with Fisheye Camera",
     "authors": "Alejandro Pérez-Yus, Gonzalo López-Nicolás, José Jesús Guerrero",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Built-in Foreground/Background Prior for Weakly-Supervised Semantic Segmentation",
     "authors": "Fatemehsadat Saleh, Mohammad Sadegh Ali Akbarian, Mathieu Salzmann, Lars Petersson, Stephen Gould, José M. Álvarez 0004",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "It's Moving! A Probabilistic Model for Causal Motion Segmentation in Moving Camera Videos",
     "authors": "Pia Bideau, Erik G. Learned-Miller",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Kernelized Subspace Ranking for Saliency Detection",
     "authors": "Tiantian Wang 0002, Lihe Zhang, Huchuan Lu, Chong Sun, Jinqing Qi",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Depth-Aware Motion Magnification",
     "authors": "Julian F. P. Kooij, Jan C. van Gemert",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Stacked Hourglass Networks for Human Pose Estimation",
     "authors": "Alejandro Newell, Kaiyu Yang, Jia Deng 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Real-Time Large-Scale Dense 3D Reconstruction with Loop Closure",
     "authors": "Olaf Kähler, Victor Adrian Prisacariu, David William Murray 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Pixel-Level Domain Transfer",
     "authors": "Donggeun Yoo, Namil Kim, Sunggyun Park, Anthony S. Paek, In-So Kweon",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Accelerating Convolutional Neural Networks with Dominant Convolutional Kernel and Knowledge Pre-regression",
     "authors": "Zhenyang Wang, Zhidong Deng, Shiyao Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Learning Social Etiquette: Human Trajectory Understanding In Crowded Scenes",
     "authors": "Alexandre Robicquet, Amir Sadeghian, Alexandre Alahi, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Bayesian Image Based 3D Pose Estimation",
     "authors": "Marta Sanzari, Valsamis Ntouskos, Fiora Pirri",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Efficient and Robust Semi-supervised Learning Over a Sparse-Regularized Graph",
     "authors": "Hang Su 0006, Jun Zhu 0001, Zhaozheng Yin, Yinpeng Dong, Bo Zhang 0010",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Novel Coplanar Line-Points Invariants for Robust Line Matching Across Views",
     "authors": "Qi Jia 0001, Xinkai Gao, Xin Fan 0001, Zhongxuan Luo, Haojie Li, Ziyao Chen",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Sparse Representation Based Complete Kernel Marginal Fisher Analysis Framework for Computational Art Painting Categorization",
     "authors": "Ajit Puthenputhussery, Qingfeng Liu, Chengjun Liu",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "3D-R2N2: A Unified Approach for Single and Multi-view 3D Object Reconstruction",
     "authors": "Christopher B. Choy, Danfei Xu, JunYoung Gwak, Kevin Chen 0001, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Cascaded Continuous Regression for Real-Time Incremental Face Tracking",
     "authors": "Enrique Sánchez-Lozano, Brais Martínez, Georgios Tzimiropoulos, Michel F. Valstar",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Real-Time Visual Tracking: Promoting the Robustness of Correlation Filter Learning",
     "authors": "Yao Sui, Ziming Zhang, Guanghui Wang 0001, Yafei Tang, Li Zhang 0023",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Deep Self-correlation Descriptor for Dense Cross-Modal Correspondence",
     "authors": "Seungryong Kim, Dongbo Min, Stephen Lin 0001, Kwanghoon Sohn",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Structured Matching for Phrase Localization",
     "authors": "Mingzhe Wang, Mahmoud Azab, Noriyuki Kojima, Rada Mihalcea, Jia Deng 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Crossing-Line Crowd Counting with Two-Phase Deep Neural Networks",
     "authors": "Zhuoyi Zhao, Hongsheng Li 0001, Rui Zhao 0001, Xiaogang Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Revisiting Visual Question Answering Baselines",
     "authors": "Allan Jabri, Armand Joulin, Laurens van der Maaten",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Unsupervised CNN for Single View Depth Estimation: Geometry to the Rescue",
     "authors": "Ravi Garg, B. G. Vijay Kumar, Gustavo Carneiro 0001, Ian D. Reid 0001",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "A Continuous Optimization Approach for Efficient and Accurate Scene Flow",
     "authors": "Zhaoyang Lv, Chris Beall, Pablo F. Alcantarilla, Fuxin Li, Zsolt Kira, Frank Dellaert",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Improving Multi-frame Data Association with Sparse Representations for Robust Near-online Multi-object Tracking",
     "authors": "Loïc Fagot-Bouquet, Romaric Audigier, Yoann Dhome, Frédéric Lerasle",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Gated Siamese Convolutional Neural Network Architecture for Human Re-identification",
     "authors": "Rahul Rama Varior, Mrinal Haloi, Gang Wang 0012",
     "abstract": null
   },
   {
-    "conference": "ECCV",
-    "year": 2016,
     "title": "Saliency Detection via Combining Region-Level and Pixel-Level Predictions with CNNs",
     "authors": "Youbao Tang, Xiangqian Wu 0002",
     "abstract": null

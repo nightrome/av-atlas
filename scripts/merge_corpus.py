@@ -39,6 +39,40 @@ VENUES_DIR = BASE / "data" / "venues"
 OUT_FILE = BASE / "data" / "papers_full.json"
 CATEGORIES_FILE = BASE / "data" / "categories.json"
 
+# Every entry in a per-venue-year file (e.g. cvpr2024.json) repeated the same
+# "conference"/"year" values 265k times over -- 11.1MB of pure redundancy
+# across data/venues/*.json, already fully determined by the filename
+# (repo-size cleanup, user-requested; see DECISIONS.md). scripts/strip_
+# redundant_venue_fields.py removes them from the tracked files; this dict
+# (derived from the real, once-verified 1:1 filename-prefix -> conference
+# mapping, not guessed) is how they're reconstructed on read.
+VENUE_PREFIX_TO_CONFERENCE = {
+    "aaai": "AAAI", "accv": "ACCV", "bmvc": "BMVC", "corl": "CoRL", "cvpr": "CVPR",
+    "eccv": "ECCV", "gcpr": "GCPR", "iccv": "ICCV", "iclr": "ICLR", "icml": "ICML",
+    "icra": "ICRA", "ijcv": "IJCV", "ijrr": "IJRR", "iros": "IROS", "itsc": "ITSC",
+    "iv": "IV", "neurips": "NeurIPS", "ral": "RA-L", "rss": "RSS", "tits": "T-ITS",
+    "tpami": "TPAMI", "tro": "T-RO", "wacv": "WACV",
+}
+
+
+def conference_and_year_for_file(filename):
+    """(conference, year) implied by a venue filename, or (None, None) for a
+    prefix this table doesn't recognize (e.g. an arxiv*.json file, which
+    keeps its own real per-entry conference/year and is never looked up
+    here -- see the venue_files/arxiv_files split below). Only a fallback:
+    callers still prefer a per-entry "conference"/"year" field when the
+    source (currently only arxiv_s2_citing.json, and any not-yet-migrated
+    venue file) actually carries one -- see the "or" in the record-
+    construction loop below. year is None for a "_all" journal file (e.g.
+    ijcv_all.json -- continuous publication, not one proceedings per file,
+    so the real year still has to come from each entry, not the filename)."""
+    stem = filename[:-5] if filename.endswith(".json") else filename
+    m = re.match(r"^([a-z]+)", stem)
+    conference = VENUE_PREFIX_TO_CONFERENCE.get(m.group(1)) if m else None
+    year_match = re.search(r"(\d{4})", stem)
+    year = int(year_match.group(1)) if year_match else None
+    return conference, year
+
 
 def normalize_title(t):
     return re.sub(r"[^a-z0-9]", "", (t or "").lower())
@@ -128,6 +162,7 @@ def main():
             continue
         source = discovery_source(f.name)
         is_arxiv_file = f.name.startswith("arxiv")
+        file_conference, file_year = conference_and_year_for_file(f.name)
         for p in papers:
             key = normalize_title(p.get("title"))
             if not key:
@@ -143,8 +178,8 @@ def main():
                     "title": p.get("title"),
                     "authors": p.get("authors"),
                     "abstract": p.get("abstract"),
-                    "venue": p.get("conference"),
-                    "year": p.get("year"),
+                    "venue": p.get("conference") or file_conference,
+                    "year": p.get("year") or file_year,
                     "citations": p.get("citations"),
                     "citations_updated": p.get("citations_updated"),
                     "doi": p.get("doi"),

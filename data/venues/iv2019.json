@@ -1,2422 +1,1730 @@
 [
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "In-Chamber V2X Oriented Test Scheme for Connected Vehicles",
     "authors": "Jianmei Lei, Siru Chen, Lingqiu Zeng, Fangli Liu, Konglin Zhu, Jie Liu",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Optimal control based CACC: Problem formulation, solution, and stability analysis",
     "authors": "Yu Bail, Yu Zhang 0109, Meng Wang 0020, Jia Hu 0003",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "TARA+: Controllability-aware Threat Analysis and Risk Assessment for L3 Automated Driving Systems",
     "authors": "Anastasia Bolovinou, Ugur-Ilker Atmaca, Al Tariq Sheik, Obaid Ur Rehman, Gerhard Wallraf, Angelos Amditis",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Test and Evaluation of Connected and Autonomous Vehicles in Real-world Scenarios",
     "authors": "Joel Pereira, Cristiano Premebida, Alireza Asvadi, F. Cannata, Luis Garrote 0001, Urbano Jos&#233; C. Nunes",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Infrastructure Support for Cooperative Maneuvers in Connected and Automated Driving",
     "authors": "Alejandro Correa 0002, Robert Alms, Javier Goz&#225;lvez, Miguel Sepulcre, Michele Rondinone, Robbin Blokpoel, Leonhard L&#252;cken, Gokulnath Thandavarayan",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Test-Driven Approach for Security Designs of Automated Vehicles",
     "authors": "Dajiang Suo, Sanjay E. Sarma",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Estimating Labeling Quality with Deep Object Detectors",
     "authors": "Christian Haase-Sch&#252;tz, Heinz Hertlein, Werner Wiesbeck",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "System Architecture and Application-Specific Verification Method for Fault-Tolerant Automated Driving Systems",
     "authors": "Ayhan Mehmed, Wilfried Steiner, Moritz Antlanger, Sasikumar Punnekkat",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Formalisation and algorithmic approach to the automated driving validation problem",
     "authors": "Jan Erik Stellet, Tino Brade, Alexander Poddey, Stefan Jesenski, Wolfgang Branz",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Probabilistic Framework for Collision Probability Estimation and an Analysis of the Discretization Precision",
     "authors": "Daniel &#197;sljung, Mathias Westlund, Jonas Fredriksson",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Specifying Safety of Autonomous Vehicles in Signal Temporal Logic",
     "authors": "Nikos Ar&#233;chiga",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Socially Compliant Navigation in dense crowds",
     "authors": "Roman Bresson, Jacques Saraydaryan, Julie Dugdale, Anne Spalanzani",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Pedestrian Decision-Making Responses to External Human-Machine Interface Designs for Autonomous Vehicles",
     "authors": "Christopher G. Burns, Luis Oliveira 0001, Peter Thomas, Sumeet Iyer, Stewart A. Birrell",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "The SKYNIVI Experience: Evoking Startle and Frustration in Dyads and Single Drivers",
     "authors": "Ignacio J. Alvarez, Jennifer Healey, Erica Lewis",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Integrating Neurophysiological Sensors and Driver Models for Safe and Performant Automated Vehicle Control in Mixed Traffic",
     "authors": "Werner Damm, Martin Fr&#228;nzle, Andreas L&#252;dtke, Jochem W. Rieger, Alexander Trende, Anirudh Unni",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Perceived Pedestrian Safety: Public Interaction with Driverless Vehicles",
     "authors": "Miguel &#193;ngel de Miguel, Daniel Fuchshuber, Ahmed Hussein 0003, Cristina Olaverri-Monreal",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "The interface challenge for semi-automated vehicles: how driver behavior and trust influence information requirements over time",
     "authors": "Arun Ulahannan, Stewart A. Birrell, Simon Thomson, Lee Skyrpchuk, Alex Mouzakitis, Paul A. Jennings",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Time to lane change and completion prediction based on Gated Recurrent Unit Network",
     "authors": "Zhanhong Yan, Kaiming Yang, Zheng Wang 0039, Bo Yang 0044, Tsutomu Kaizuka, Kimihiko Nakano",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Vehicle Detection based on Deep Learning Heatmap Estimation",
     "authors": "Ruddy Th&#233;odosc, Dieumet Denis, Christophe Blanc, Thierry Chateau, Paul Checchin",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Specialized Cyclist Detection Dataset: Challenging Real-World Computer Vision Dataset for Cyclist Detection Using a Monocular RGB Camera",
     "authors": "Alexander Masalov, Pavel V. Matrenin, Jeffrey M. Ota, Florian Wirth, Christoph Stiller, Heath Corbet, Eric Lee",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Utilizing Weak Supervision to Infer Complex Objects and Situations in Autonomous Driving Data",
     "authors": "Zhenzhen Weng, Paroma Varma, Alexander Masalov, Jeffrey M. Ota, Christopher R&#233;",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Environment-aware Development of Robust Vision-based Cooperative Perception Systems",
     "authors": "Georg Volk, Alexander von Bernuth, Oliver Bringmann 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Analysis of Message Generation Rules for Collective Perception in Connected and Automated Driving",
     "authors": "Gokulnath Thandavarayan, Miguel Sepulcre, Javier Goz&#225;lvez",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Safe but not Overcautious Motion Planning under Occlusions and Limited Sensor Range",
     "authors": "Maximilian Naumann, Hendrik Konigshof, Martin Lauer, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Reducing Computation Times for Planning of Reference Trajectories in Cooperative Autonomous Driving",
     "authors": "Jan Eilbrecht, Olaf Stursberg",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Component-based Integration of Interconnected Vehicle Architectures",
     "authors": "Alexander David Hellwig, Stefan Kriebel, Evgeny Kusmenko, Bernhard Rumpe",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Virtual World Bridges the Real Challenge: Automated Data Generation for Autonomous Driving",
     "authors": "Dongfang Liu, Yaqin Mia Wang, Kar Ee Ho, Zhiwei Chu, Eric Matson",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Modeling dangerous driving events based on in-vehicle data using Random Forest and Recurrent Neural Network",
     "authors": "Daniel Alvarez-Coello, Benjamin Klotz, Daniel Wilms, Sofien Fejji, Jorge Marx G&#243;mez, Rapha&#235;l Troncy",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Recurrent Neural Network Architectures for Vulnerable Road User Trajectory Prediction",
     "authors": "Hui Xiong 0006, Fabian Flohr, Sijia Wang, Baofeng Wang, Jianqiang Wang 0003, Keqiang Li 0002",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Learning Error Patterns from Diagnosis Trouble Codes",
     "authors": "Stefan Kriebel, Evgeny Kusmenko, Bernhard Rumpe, Igor Shumeiko",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Backpropagation for Parametric STL",
     "authors": "Karen Leung, Nikos Ar&#233;chiga, Marco Pavone 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Transferable Driver Behavior Learning via Distribution Adaption in the Lane Change Scenario",
     "authors": "Zirui Li, Cheng Gong, Chao Lu 0006, Jianwei Gong, Junyan Lu, Youzhi Xu, Fengqing Hu",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Model Based Motion Planning Framework for Automated Vehicles in Structured Environments",
     "authors": "Maximilian Graf, Oliver Speidel, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Behavior Planning of Autonomous Cars with Social Perception",
     "authors": "Liting Sun, Wei Zhan, Ching-Yao Chan, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Lidar-based Dual-level Virtual Lanes Construction and Anticipation of Specific Road Infrastructure Events for Autonomous Driving",
     "authors": "Ferit &#220;zer, Amaury Breheret, &#201;milie Wirbel, Rachid Benmokhtar",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Analysis of taxi driving behavior and driving risk based on trajectory data",
     "authors": "Jing Fan, Ye Li, Yuanlin Liu, Yu Zhang, Changxi Ma",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "How to Improve Object Detection in a Driver Assistance System Applying Explainable Deep Learning",
     "authors": "Tomasz Nowak, Michal R. Nowicki, Krzysztof Cwian, Piotr Skrzypczynski",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Algorithmization of constrained monotonic maneuvers for an advanced driver assistant system in the intelligent urban buses",
     "authors": "Tomasz Gawron, Mateusz Mydlarz, Maciej Marcin Michalek",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Interval-based/Data-driven Risk Management for Intelligent Vehicles: Application to an Adaptive Cruise Control System",
     "authors": "Nadhir Mansour Ben Lakhal, Lounis Adouane, Othman Nasri, Jaleleddine Ben Hadj Slama",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Multi-Controller Architecture for Reliable Autonomous Vehicle Navigation: Combination of Model-Driven and Data-Driven Formalization",
     "authors": "Dimia Iberraken, Lounis Adouanc, Dieumet Denis",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Validation of Perception and Decision-Making Systems for Autonomous Driving via Statistical Model Checking",
     "authors": "Mathieu Barbier, Alessandro Renzaglia, Jean Quilbeuf, Lukas Rummelhard, Anshul Paigwar, Christian Laugier, Axel Legay, Javier Iba&#241;ez-Guzm&#225;n, Olivier Simonin 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Dynamic demand estimation for an AMoD system in Paris",
     "authors": "Sebastian H&#246;rl, Milos Balac, Kay W. Axhausen",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Real- World Maneuver Extraction for Autonomous Vehicle Validation: A Comparative Study",
     "authors": "Ahmetcan Erdogan, Burak Ugranli, Erkan Adali, Ali Sentas, Eren Mungan, Emre Kaplan, Andrea Leitner",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Learning Risk Level Set Parameters from Data Sets for Safer Driving",
     "authors": "Alyssa Pierson, Wilko Schwarting, Sertac Karaman, Daniela Rus",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "AGen: Adaptable Generative Prediction Networks for Autonomous Driving",
     "authors": "Wenwen Si, Tianhao Wei, Changliu Liu",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "GeoScenario: An Open DSL for Autonomous Driving Scenario Representation",
     "authors": "Rodrigo Queiroz, Thorsten Berger, Krzysztof Czarnecki 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Detection-by- Tracking Boosted Online 3D Multi-Object Tracking",
     "authors": "Quei-An Chen, Akihiro Tsukada",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "The Right (Angled) Perspective: Improving the Understanding of Road Scenes Using Boosted Inverse Perspective Mapping",
     "authors": "Tom Bruls, Horia Porav, Lars Kunze, Paul Newman 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "VeIGAN: Vectorial Inpainting Generative Adversarial Network for Depth Maps Object Removal",
     "authors": "Lucas P. N. Matias, Marc Sons, Jefferson R. Souza, Denis F. Wolf, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Deep Learning based Vehicle Position and Orientation Estimation via Inverse Perspective Mapping Image",
     "authors": "Youngseok Kim 0001, Dongsuk Kum",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "PWOC-3D: Deep Occlusion-Aware End-to-End Scene Flow Estimation",
     "authors": "Rohan Saxena, Ren&#233; Schuster, Oliver Wasenm&#252;ller, Didier Stricker",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Learning Low-Rank Images for Robust All-Day Feature Matching",
     "authors": "Mengdan Feng, Marcelo H. Ang, Gim Hee Lee",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Combinatorial use of optical tracker, Gaussian Mixture PHD and group tracking for vehicle light tracking",
     "authors": "Martin Alsfasser, Mirko Meuter, Anton Kummert",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Direct 3D Detection of Vehicles in Monocular Images with a CNN based 3D Decoder",
     "authors": "Michael Weber 0009, Michael F&#252;rst, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "On Low-Bitrate Image Compression for Distributed Automotive Perception: Higher Peak SNR Does Not Mean Better Semantic Segmentation",
     "authors": "Jonas L&#246;hdefink, Andreas B&#228;r, Nico M. Schmidt, Fabian H&#252;ger, Peter Schlicht, Tim Fingscheidt",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Instance Segmentation as Image Segmentation Annotation",
     "authors": "Thomio Watanabe, Denis F. Wolf",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Towards Corner Case Detection for Autonomous Driving",
     "authors": "Jan-Aike Bolte, Andreas B&#228;r, Daniel Lipinski, Tim Fingscheidt",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Can we PASS beyond the Field of View? Panoramic Annular Semantic Segmentation for Real-World Surrounding Perception",
     "authors": "Kailun Yang 0001, Xinxin Hu, Luis Miguel Bergasa, Eduardo Romera, Xiao Huang, Dongming Sun, Kaiwei Wang",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Deep Intersection Classification Using First and Third Person Views",
     "authors": "Koji Takeda, Kanji Tanaka 0003",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Dense-ACSSD for End-to-end Traffic Scenes Recognition",
     "authors": "Zhiwei Cheng, Zhenyang Wang, Hongcheng Huang, Yanbo Liu",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "3D Object Trajectory Reconstruction using Instance-Aware Multibody Structure from Motion and Stereo Sequence Constraints",
     "authors": "Sebastian Bullinger, Christoph Bodensteiner, Michael Arens, Rainer Stiefelhagen",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Road Crack Detection Using Deep Convolutional Neural Network and Adaptive Thresholding",
     "authors": "Rui Fan 0001, Mohammud Junaid Bocus, Yilong Zhu, Jianhao Jiao, Li Wang, Fulong Ma, Shanshan Cheng, Ming Liu 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Road Scene Layout Reconstruction based on CNN and its Application in Traffic Simulation",
     "authors": "Chao Zhu, Yaochen Li, Yuehu Liu, Zhiqiang Tian, Zhichao Cui, Chi Zhang 0020, Xinyu Zhu",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Novel Robust Lane Change Trajectory Planning Method for Autonomous Vehicle",
     "authors": "Dequan Zeng, Zhuoping Yu, Lu Xiong 0001, Junqiao Zhao, Peizhi Zhang, Zhiqiang Li, Zhiqiang Fu, Jie Yao, Yi Zhou",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Real-time 3D Traffic Cone Detection for Autonomous Driving",
     "authors": "Ankit Dhall, Dengxin Dai, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Generation of Scenes in Intersections for the Validation of Highly Automated Driving Functions",
     "authors": "Stefan Jesenski, Jan Erik Stellet, Florian A. Schiegg, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Improving Multi Object Tracking-By-Detection Model Using a Temporal Interlaced Encoding and a Specialized Deep Detector",
     "authors": "Ala Mhalla, Thierry Chateau",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "An Online Multi-lidar Dynamic Occupancy Mapping Method",
     "authors": "Jiawei Huang 0006, Mahmut Demir, Thang Lian, Kikuo Fujimura",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Characteristics Analysis and Classification of Lane-changing Behavior after Following Process based on China-FOT",
     "authors": "Haozhou Wei, Zhixiong Ma, Xichan Zhu, Yeting Lin",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Obstacle Avoidance, Path Planning and Control for Autonomous Vehicles",
     "authors": "Hind Laghmara, Mohamed Taha Boudali, Thomas Laurain, Jonathan Ledy, Rodolfo Orjuela, Jean-Philippe Lauffenburger, Michel Basset",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Modelling the dynamic behavior of the steering system for low speed autonomous path tracking",
     "authors": "&#193;d&#225;m Domina, Viktor Tihanyi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Is This Car Going to Move? Parked Car Classification for Automated Vehicles",
     "authors": "Karsten Behrendt, Olivier Mangin, Namrata Bhakta, St&#233;phanie Lef&#232;vre",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Learning a Lattice Planner Control Set for Autonomous Vehicles",
     "authors": "Ryan De Iaco, Stephen L. Smith 0001, Krzysztof Czarnecki 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Multi-modal Probabilistic Prediction of Interactive Behavior via an Interpretable Model",
     "authors": "Yeping Hu, Wei Zhan, Liting Sun, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Semantic Segmentation of Road Profiles for Efficient Sensing in Autonomous Driving",
     "authors": "Guo Cheng, Jiang Yu Zheng, Mehmet Kilicarslan",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "How to Evaluate Object-of-Fixation Detection",
     "authors": "Julian Schwehr, Moritz Knaust, Volker Willert",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Anomaly Detection for Advanced Driver Assistance Systems Using Online Feature Selection",
     "authors": "Christoph Segler, Stefan Kugele, Philipp Obergfell, Mohd Hafeez Osman, Sina Shafaei, Eric Sax, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Thin-Plate Spline-based Adaptive 3D Surround View",
     "authors": "Iljoo Baek, Akshit Kanda, Tzu Chieh Tai, Anchan Saxena, Ragunathan Rajkumar",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A model predictive control-based lane merging strategy for autonomous vehicles",
     "authors": "Anh Tuan Tran 0003, Masato Kawaguchi, Hiroyuki Okuda, Tatsuya Suzuki 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Framework for Traffic Light Detection and Recognition using Deep Learning and Grassmann Manifolds",
     "authors": "Any Gupta, Ayesha Choudhary",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Refueling and Battery Charging Driver Assistance System for Online Operation Optimization of Connected Vehicles",
     "authors": "Franz Aubeck, Till Peter, Georg Birmes, Rene Savelsberg, Stefan Pischinger",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Influence of Cruise Control on Driver Guidance - a Comparison between System Generations and Countries",
     "authors": "Nico Epple, Simone Dari, Ludwig Drees, Valentin Protschky, Andreas Riener",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Long-Haul Truck Scheduling with Driving Hours and Parking Availability Constraints",
     "authors": "Filipe Vital, Petros A. Ioannou",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Enhancing Situational Awareness and Performance of Adaptive Cruise Control through Model Predictive Control and Deep Reinforcement Learning",
     "authors": "N. Kemal Ure, Muharrem Ugur Yavas, Ali Alizadeh, Can Kurtulus",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Benchmarking and Functional Decomposition of Automotive Lidar Sensor Models",
     "authors": "Philipp Rosenberger, Martin Holder, Sebastian Hueh, Hermann Winner, Tobias Fleck, Marc Ren&#233; Zofka, J. Marius Z&#246;llner, Thomas D'hondt, Benjamin Wassermann",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Lateral State Estimation of Preceding Target Vehicle Based on Multiple Neural Network Ensemble",
     "authors": "Chengwei Li, Yafei Wang 0002, Zhisong Zhou, Jingkai Wu, Wenqiang Jin, Chengliang Yin",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "CNN-based Object Detection on Low Precision Hardware: Racing Car Case Study",
     "authors": "Nicol&#242; De Rita, Alessandro Aimar, Tobi Delbruck",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Circular Convolutional Neural Networks for Panoramic Images and Laser Data",
     "authors": "Stefan Schubert, Peer Neubert, Johannes P&#246;schmann, Peter Protzel",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Capsule Neural Network based Height Classification using Low-Cost Automotive Ultrasonic Sensors",
     "authors": "Maximilian P&#246;pperl, Raghavendra Gulagundi, Senthil Kumar Yogamani, Stefan Milz",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Deep Active Learning for Efficient Training of a LiDAR 3D Object Detector",
     "authors": "Di Feng, Xiao Wei, Lars Rosenbaum, Atsuto Maki, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Beyond Bounding Boxes: Using Bounding Shapes for Real-Time 3D Vehicle Detection from Monocular RGB Images",
     "authors": "Nils G&#228;hlert, Jun-Jun Wan, Michael Weber 0009, J. Marius Z&#246;llner, Uwe Franke, Joachim Denzler",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Deep-Learning Approach for Parking Slot Detection on Surround-View Images",
     "authors": "Andrea Zinelli, Luigi Musto, Fabio Pizzati",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Hierarchical Network for Diverse Trajectory Proposals",
     "authors": "Sriram N. N., Gourav Kumar, Abhay Singh, M. Siva Karthik, Saket Saurav, Brojeshwar Bhowmick, K. Madhava Krishna",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Graph Neural Networks for Modelling Traffic Participant Interaction",
     "authors": "Frederik Diehl, Thomas Brunner, Michael Truong-Le, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Generation of Natural Traffic Sign Images Using Domain Translation with Cycle-Consistent Generative Adversarial Networks",
     "authors": "Dominic Spata, Daniela Horn, Sebastian Houben",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Single Network Panoptic Segmentation for Street Scene Understanding",
     "authors": "Daan de Geus, Panagiotis Meletis, Gijs Dubbelman",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Forecasting Pedestrian Trajectory with Machine-Annotated Training Data",
     "authors": "Olly Styles, Arun Ross, Victor Sanchez",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Radar-based Road User Classification and Novelty Detection with Recurrent Neural Network Ensembles",
     "authors": "Nicolas Scheiner, Nils Appenrodt, J&#252;rgen Dickmann, Bernhard Sick",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Angular Resolution Improvement by Using Multi-Radar and FBSS MUSIC DoA Estimation Algorithm",
     "authors": "Henna Paaso, Mervi Hirvonen",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Association of Straight Radar Landmarks for Vehicle Self-Localization",
     "authors": "Klaudius Werber, Jens Klappstein, Jtirgen Dickmann, Christian Waldschmidt",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Micro-Doppler Extraction of Bicycle Pedaling Movements Using Automotive Radar",
     "authors": "Patrick Held, Dagmar Steinhauser, Alexander Kamann, Andreas Koch 0011, Thomas Brandmeier, Ulrich T. Schwarz",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Fast Implementation of Volumetric Occupancy Grids",
     "authors": "Michael Slutsky, Daniel Dobkin",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Semantic Segmentation on Automotive Radar Maps",
     "authors": "Robert Prophet, Gang Li, Christian Sturm 0005, Martin Vossiek",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Micro-Doppler Extraction of Pedestrian Limbs for High Resolution Automotive Radar",
     "authors": "Dagmar Steinhauser, Patrick Held, Alexander Kamann, Andreas Koch 0011, Thomas Brandmeier",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Radar Measurement Model for Extended Object Tracking in Dynamic Scenarios",
     "authors": "Philipp Berthold, Martin Michaelis, Thorsten Luettel, Daniel Meissner, Hans-Joachim Wuensche",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Efficient living subject localization and weak vital-sign signal enhancement using impulse radio based UWB radar",
     "authors": "Qiwen Deng, Jialiang Le, Saeed Barbat, Renran Tian, Yaobin Chen",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Marker-less Vision-based Detection of Improper Seat Belt Routing",
     "authors": "Michael Baltaxe, Ruben Mergui, Kobi Nistel, Gila Kamhi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Regeneration and Joining of the Learned Motion Primitives for Automated Vehicle Motion Planning Applications",
     "authors": "Boyang Wang 0002, Jianwei Gong, Wenli Liang, Huiyan Chen",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Driver Situational Awareness Estimation System Based on Standard Glance Model for Unscheduled Takeover Situations",
     "authors": "Hiroaki Hayashi, Mitsuhiro Kamezaki, Udara E. Manawadu, Takahiro Kawano, Takaaki Ema, Tomoya Tomita, Catherine Lollett, Shigeki Sugano",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Exploring the Use of Augmented Reality Interfaces for Driver Assistance in Short-Notice Takeovers",
     "authors": "Patrick Lindemann, Niklas M&#252;ller, Gerhard Rigoll",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Trajectory Forecasts with Uncertainties of Vulnerable Road Users by Means of Neural Networks",
     "authors": "Stefan Zernetsch, Hannes Reichert, Viktor Kress, Konrad Doll, Bernhard Sick",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Opportunistic Use of In-Vehicle Wireless Networks for Vulnerable Road User Interaction",
     "authors": "Pedro M. d'Orey, Pedro M. Santos 0002, Jos&#233; Pintor, Ana Aguiar",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Context-based cyclist path prediction using Recurrent Neural Networks",
     "authors": "Ewoud A. I. Pool, Julian F. P. Kooij, Dariu M. Gavrila",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Investigating User Requirements for Communication Between Automated Vehicles and Vulnerable Road Users",
     "authors": "Andreas L&#246;cken, Philipp Wintersberger, Anna-Katharina Frison, Andreas Riener",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Extension of the 3DCoAutoSim to Simulate Vehicle and Pedestrian Interaction based on SUMO and Unity 3D",
     "authors": "Leyre Artal-Villa, Ahmed Hussein 0003, Cristina Olaverri-Monreal",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Optimal motion planning with reachable sets of vulnerable road users",
     "authors": "Michael Hartmann, Daniel Watzenig",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Top-view Trajectories: A Pedestrian Dataset of Vehicle-Crowd Interaction from Controlled Experiments and Crowded Campus",
     "authors": "Dongfang Yang, Linhui Li, Keith A. Redmill, &#220;mit &#214;zg&#252;ner",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Composable Q- Functions for Pedestrian Car Interactions",
     "authors": "Christian Muench, Dariu M. Gavrila",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Understanding Pedestrian-Vehicle Interactions with Vehicle Mounted Vision: An LSTM Model and Empirical Analysis",
     "authors": "Daniela A. Ridel, Nachiket Deo, Denis F. Wolf, Mohan M. Trivedi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Pedestrian Trajectory Prediction with Learning-based Approaches: A Comparative Study",
     "authors": "Yang Li 0093, Long Xin, Dameng Yu, Pengwen Dai, Jianqiang Wang 0003, Shengbo Eben Li",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "DD-Pose - A large-scale Driver Head Pose Benchmark",
     "authors": "Markus Roth, Dariu M. Gavrila",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Driver Information Embedding with Siamese LSTM networks",
     "authors": "Hien Q. Dang, Johannes F&#252;rnkranz",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Towards Tactical Maneuver Detection for Autonomous Driving Based on Vision Only",
     "authors": "Antonia Breuer, Jana Kirschner, Silviu Homoceanu, Tim Fingscheidt",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Driving Behavior Modeling Based on Hidden Markov Models with Driver's Eye-Gaze Measurement and Ego-Vehicle Localization",
     "authors": "Naoki Akai, Takatsugu Hirayama, Luis Yoichi Morales, Yasuhiro Akagi, Hailong Liu 0001, Hiroshi Murase",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Driving Intention Recognition and Lane Change Prediction on the Highway",
     "authors": "Teawon Han, Junbo Jing, &#220;mit &#214;zg&#252;ner",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Prediction of ego vehicle trajectories based on driver intention and environmental context",
     "authors": "Katharina Gillmeier, Frederik Diederichs, Dieter Spath",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "End-to-end Prediction of Driver Intention using 3D Convolutional Neural Networks",
     "authors": "Patrick Gebert, Alina Roitberg, Monica Haurilet, Rainer Stiefelhagen",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Non-local Social Pooling for Vehicle Trajectory Prediction",
     "authors": "Kaouther Messaoud, Itheri Yahiaoui, Anne Verroust-Blondet, Fawzi Nashashibi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Fuzzy Controller Inference via Gradient Descent to Model the Longitudinal Behavior on Real Drivers",
     "authors": "Alberto D&#237;az-&#193;lvarez, Francisco Serradilla Garcia, Felipe Jim&#233;nez, Edgar Talavera-Mufioz, Cristina Olaverri-Monreal",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Camera-Based Eye Blink Detection Algorithm for Assessing Driver Drowsiness",
     "authors": "Mohamed Hedi Baccour, Frauke Driewer, Enkelejda Kasneci, Wolfgang Rosenstiel",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Novel Predictive Haptic Control Interface for Automation-to-Human Takeover of Automated Vehicles",
     "authors": "Yutong Li 0002, Chen Lv 0001, Junliang Xue",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Systematic Analysis of the Sensor Coverage of Automated Vehicles Using Phenomenological Sensor Models",
     "authors": "Thomas Ponn, Fabian M&#252;ller, Frank Diermeyer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Evaluating Machine Learning &#38; Antenna Placement for Enhanced GNSS Accuracy for CAVs",
     "authors": "Elijah I. Adegoke, Jasmine Zidane, Erik Kampert, Paul A. Jennings, Col R. Ford, Stewart A. Birrell, Matthew D. Higgins",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Hybrid Online POMDP Planning and Deep Reinforcement Learning for Safer Self-Driving Cars",
     "authors": "Florian Pusse, Matthias Klusch",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Autonomous Vehicle Path Planning Considering Dwarf or Negative Obstacles",
     "authors": "Lei Yang, Qi Wang 0081, Yingqi Tan, Jianwei Gong",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Generating Compact Geometric Track-Maps for Train Positioning Applications",
     "authors": "Hanno Winter, Stefan Luthardt, Volker Willert, J&#252;rgen Adamy",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Optimization-based Tactical Behavior Planning for Autonomous Freeway Driving in Favor of the Traffic Flow",
     "authors": "Henrik Bey, Frank Dierkes, Sebastian Bayerl, Alexander Lange, Dennis Fa&#223;bender, J&#246;rn Thielecke",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Controllability Analysis and Optimal Controller Synthesis of Mixed Traffic Systems",
     "authors": "Jiawei Wang 0001, Yang Zheng 0001, Qing Xu 0010, Jianqiang Wang 0003, Keqiang Li 0002",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Reactive Path Planning for Autonomous Vehicle Using B&#233;zier Curve Optimization",
     "authors": "Julien Moreau 0002, Pierre Melchior, St&#233;phane Victor, Mathieu Moze, Fran&#231;ois Aioun, Franck Guillemard",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Pedestrian Collision Avoidance System for Scenarios with Occlusions",
     "authors": "Markus Schratter, Maxime Bouton, Mykel J. Kochenderfer, Daniel Watzenig",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Sampling/Importance Resampling for Semantically Consistent Synthetic to Real Image Domain Adaptation in Urban Traffic Scenes",
     "authors": "Artem Savkin, Monika Kasperek, Federico Tombari",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Ecological NMPC Controller for Connected and Automated Plug-in Hybrid Electric Vehicles at Roundabouts",
     "authors": "Sina Alighanbari, Nasser L. Azad",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Motion Planning Framework for Autonomous Vehicles: A Time Scaled Collision Cone Interleaved Model Predictive Control Approach",
     "authors": "Raghu Ram Theerthala, A. V. S. Sai Bhargav Kumar, Mithun Babu, S. Phaniteja, K. Madhava Krishna",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Give Me Two Points and I'll Tell You Who You Are",
     "authors": "Ekler Paulino de Mattos, Augusto C. S. A. Domingues, Antonio A. F. Loureiro",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Novel Traffic Light Control Strategy With a Reconfigured Stop Line",
     "authors": "Jinyan Ji, Jiabao Zhao, Hao Sun",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Comparing Different On-Street Parking Information for Parking Guidance and Information Systems",
     "authors": "Sergio Di Martino, Vincenzo Norman Vitale, Fabian Bock",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Space-Efficient Traffic Protocols for Intelligent Crossroads",
     "authors": "Daniel Markert, Alejandro Masrur",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Novel Context-aware Classification for Highly Accurate Automatic Toll Collection",
     "authors": "Marouan Khata, Nadiya Shvai, Abul Hasnat 0001, Arcadi Llanza, Assan Sanogo, Antoine Meicler, Amir Nakib",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Designing an IoT Framework for Automated Driving Impact Analysis",
     "authors": "Francesco Bellotti, Riccardo Berta, Ahmad Hassan Kobeissi, Nisrine Osman, Eduardo Arnold, Mehrdad Dianati, Ben Nagy 0002, Alessandro De Gloria",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Tight Coupling of Vision-Lidar Measurements for an Effective Odometry",
     "authors": "Young Woo Seo, Chih-Chung Chou",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "VIZARD: Reliable Visual Localization for Autonomous Vehicles in Urban Outdoor Environments",
     "authors": "Mathias B&#252;rki, Lukas Schaupp, Marcin Dymczyk, Renaud Dub&#233;, Cesar Cadena 0001, Roland Siegwart, Juan I. Nieto 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Incrementally learned Mixture Models for GNSS Localization",
     "authors": "Tim Pfeifer, Peter Protzel",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Multisensor Fusion Localization using Extended H&#8734;Filter using Pre-filtered Sensors Measurements",
     "authors": "Mostafa Osman, Ricardo Alonso, Ahmed Hammam, Francisco Miguel Moreno, Abdulla Al-Kaff, Ahmed Hussein 0003",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Real-Time Pose Graph SLAM based on Radar",
     "authors": "Martin Holder, Sven Hellwig, Hermann Winner",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Ground Truth Generation for Quantitative Performance Evaluation of Localization Methods in Urban Areas",
     "authors": "Yuichi Takeda, Chikao Tsuchiya, Abdelaziz Khiat",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Self-Localization Method for Urban Environments using Vehicle-Body-Embedded Off-the-Shelf Sensors",
     "authors": "Chikao Tsuchiya, Yuichi Takeda, Abdelaziz Khiat",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Identifying robust landmarks in feature-based maps",
     "authors": "Julie Stephany Berrio, James R. Ward, Stewart Worrall 0002, Eduardo M. Nebot",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Updating the visibility of a feature-based map for long-term maintenance",
     "authors": "Julie Stephany Berrio, James R. Ward, Stewart Worrall 0002, Eduardo M. Nebot",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Map Switching Monte Carlo LiDAR Localization for Automated Driving in Parking Garages",
     "authors": "Birgit Henke, Johann Nikolai Hark, Daniel Becker 0004, Oliver Sawade, Ilja Radusch",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Accurate Global Trajectory Alignment using Poles and Road Markings",
     "authors": "Haohao Hu, Marc Sons, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "On Ambiguities in Feature-Based Vehicle Localization and their A Priori Detection in Maps",
     "authors": "Isabell Hofstetter, Michael Sprunk, Frank Schuster, Florian Ries, Martin Haueis",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Urban Localization with Street Views using a Convolutional Neural Network for End-to-End Camera Pose Regression",
     "authors": "Guillaume Bresson, Li Yu, Cyril Joly, Fabien Moutarde",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "DL-SLAM: Direct 2.5D LiDAR SLAM for Autonomous Driving",
     "authors": "Jun Li, Junqiao Zhao, Yuchen Kang, Xudong He, Chen Ye 0002, Lu Sun 0002",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Crowdsourced HD Map Patches Based on Road Model Inference and Graph-Based SLAM",
     "authors": "Martin Liebner, Dominik Jain, Julian Schauseil, David Pannen, Andreas Hackel&#246;er",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Pose and covariance matrix propagation issues in cooperative localization with LiDAR perception",
     "authors": "Elwan H&#233;ry, Philippe Xu, Philippe Bonnifait",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Estimating the reliability of georeferenced lane markings for map-aided localization",
     "authors": "Anthony Welte, Philippe Xu, Philippe Bonnifait, Cl&#233;ment Zinoune",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "High Integrity Localization With Multi-Lane Camera Measurements",
     "authors": "Joelle Al Hage, Philippe Xu, Philippe Bonnifait",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Real-time Adaptive UWB Positioning System Enhanced by Sensor Fusion for Multiple Targets Detection",
     "authors": "Benny Wijaya, Nanshan Deng, Kun Jiang 0002, Ruidong Yan, Diange Yang",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Metrics for the Evaluation of localisation Robustness",
     "authors": "Siqi Yi, Stewart Worrall 0002, Eduardo M. Nebot",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Accurate Elevation Maps based Graph-Slam Framework for Autonomous Driving",
     "authors": "Mohammad Aldibaja, Ryo Yanase, Tae Hyon Kim, Akisue Kuramoto, Keisuke Yoneda, Noaki Suganuma",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "3D Semantic Modelling With Label Correction For Extensive Outdoor Scene",
     "authors": "Yuhao Chen, Ming Yang 0002, Chunxiang Wang, Bing Wang 0006",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "GNSS NLOS Signal Modeling and Quantification Method in Railway Urban Canyon Environment",
     "authors": "Shuxian Jiang, Debiao Lu, Baigen Cai",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Graph Matching Pose SLAM based on Road Network Information",
     "authors": "Lei He 0019, Ming Yang 0002, Hao Li 0024, Yuesheng He, Bing Wang 0006, Chunxiang Wang",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Leveraging Heteroscedastic Aleatoric Uncertainties for Robust Real-Time LiDAR 3D Object Detection",
     "authors": "Di Feng, Lars Rosenbaum, Fabian Timm, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Real-time 3D LiDAR Flow for Autonomous Vehicles",
     "authors": "Stefan A. Baur, Frank Moosmann, Sascha Wirges, Christoph B. Rist",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Easy auto-calibration of sensors on a vehicle equipped with multiple 2D-LIDARs and cameras",
     "authors": "Eric Royer, Morgan Slade, Michel Dhome",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Evidential deep learning for arbitrary LIDAR object classification in the context of autonomous driving",
     "authors": "Edouard Capellier, Franck Davoine, V&#233;ronique Cherfaoui, You Li 0005",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Bridging the Day and Night Domain Gap for Semantic Segmentation",
     "authors": "Eduardo Romera, Luis Miguel Bergasa, Kailun Yang 0001, Jos&#233; M. &#193;lvarez 0004, Rafael Barea",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Training Object Detectors With Noisy Data",
     "authors": "Simon Chadwick, Paul Newman 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Learning Interaction-Aware Probabilistic Driver Behavior Models from Urban Scenarios",
     "authors": "Jens Schulz, Constantin Hubmann, Nikolai Morin, Julian L&#246;chner, Darius Burschka",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "On Boosting Semantic Street Scene Segmentation with Weak Supervision",
     "authors": "Panagiotis Meletis, Gijs Dubbelman",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Toward Modularization of Neural Network Autonomous Driving Policy Using Parallel Attribute Networks",
     "authors": "Zhuo Xu, Haonan Chang, Chen Tang 0001, Changliu Liu, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Image Detector Based Automatic 3D Data Labeling and Training for Vehicle Detection on Point Cloud",
     "authors": "Zhengyong Chen, Qinghai Liao, Zhe Wang 0013, Yang Liu 0208, Ming Liu 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Unconstrained Road Marking Recognition with Generative Adversarial Networks",
     "authors": "Younkwan Lee, Juhyun Lee, Yoojin Hong, YeongMin Ko, Moongu Jeon",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "SteeringLoss: Theory and Application for Steering Prediction",
     "authors": "Wei Yuan 0002, Ming Yang 0002, Chunxiang Wang, Bing Wang 0006",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "FANTrack: 3D Multi-Object Tracking with Feature Association Network",
     "authors": "Erkan Baser, Venkateshwaran Balasubramanian, Prarthana Bhattacharyya, Krzysztof Czarnecki 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "An LSTM Network for Real-Time Odometry Estimation",
     "authors": "Michelle Valente, Cyril Joly, Arnaud de La Fortelle",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Semantic Segmentation of Video Sequences with Convolutional LSTMs",
     "authors": "Andreas Pfeuffer, Karina Schulz, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Learning A Recurrent Neural Network for State Estimation using Filtered Sensory Data",
     "authors": "Ahmed Hammam, Mohamed A. Abdelhady, Omar M. Shehata, Elsayed I. Morgan",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Continuous Control for Automated Lane Change Behavior Based on Deep Deterministic Policy Gradient Algorithm",
     "authors": "Pin Wang, Hanhan Li, Ching-Yao Chan",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Multi-Agent Reinforcement Learning for Autonomous On Demand Vehicles",
     "authors": "Ali Boyali, Naohisa Hashimoto, Vijay John, Tankut Acarman",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Safe Reinforcement Learning with Scene Decomposition for Navigating Complex Urban Environments",
     "authors": "Maxime Bouton, Alireza Nakhaei, Kikuo Fujimura, Mykel J. Kochenderfer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Extended Vehicle Tracking with Probabilistic Spatial Relation Projection and Consideration of Shape Feature Uncertainties",
     "authors": "Mao Shan, Charika De Alvis, Stewart Worrall 0002, Eduardo M. Nebot",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "LIDAR-Based road signs detection For Vehicle Localization in an HD Map",
     "authors": "Farouk Ghallabi, Ghayath El-Haj-Shhade, Marie-Anne Mittet, Fawzi Nashashibi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Supervised Learning for Semantic Segmentation of 3D LiDAR Data",
     "authors": "Jilin Mei, Jiayu Chen 0006, Wen Yao, Xijun Zhao, Huijing Zhao",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Novel Dual-Lidar Calibration Algorithm Using Planar Surfaces",
     "authors": "Jianhao Jiao, Qinghai Liao, Yilong Zhu, Tianyu Liu 0008, Yang Yu 0028, Rui Fan 0001, Lujia Wang 0001, Ming Liu 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Off-Road Drivable Area Extraction Using 3D LiDAR Data",
     "authors": "Biao Gao, Anran Xu, Yancheng Pan, Xijun Zhao, Wen Yao, Huijing Zhao",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "CNN-based synthesis of realistic high-resolution LiDAR data",
     "authors": "Larissa T. Triess, David Peter, Christoph B. Rist, Markus Enzweiler, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Capturing Object Detection Uncertainty in Multi-Layer Grid Maps",
     "authors": "Sascha Wirges, Marcel Reith-Braun, Martin Lauer, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Weather Influence and Classification with Automotive Lidar Sensors",
     "authors": "Robin Heinzler, Philipp Schindler, J&#252;rgen Seekircher, Werner Ritter, Wilhelm Stork",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Cross-Sensor Deep Domain Adaptation for LiDAR Detection and Segmentation",
     "authors": "Christoph B. Rist, Markus Enzweiler, Dariu M. Gavrila",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Utilizing LiDAR Intensity in Object Tracking",
     "authors": "Stefan Kraemer, Mohamed Essayed Bouzouraa, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "DeLiO: Decoupled LiDAR Odometry",
     "authors": "Queens Maria Thomas, Oliver Wasenm&#252;ller, Didier Stricker",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "BoxNet: A Deep Learning Method for 2D Bounding Box Estimation from Bird's-Eye View Point Cloud",
     "authors": "Ehsan Nezhadarya, Yang Liu, Bingbing Liu",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Simultaneous description of logical design and implementation of automated driving systems",
     "authors": "Yasuhiro Akagi, Takayuki Morikawa",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Practical Planning Framework and Its Implementation for Autonomous Navigation in Off-road Environment",
     "authors": "Tian Yang, Guangming Xiong, Yu Zhang 0037, Lei Yang, Bo Tang, Mengze Wu, Jianwei Gong",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Visual Explanation by Attention Branch Network for End-to-end Learning-based Self-driving",
     "authors": "Keisuke Mori, Hiroshi Fukui, Takuya Murase, Tsubasa Hirakawa, Takayoshi Yamashita, Hironobu Fujiyoshi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Secure Pose Estimation for Autonomous Vehicles under Cyber Attacks",
     "authors": "Qipeng Liu 0002, Yilin Mo, Xiaoyu Mo, Chen Lv 0001, Ehsan Mihankhah, Danwei Wang",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Towards Cross-Verification and Use of Simulation in the Assessment of Automated Driving",
     "authors": "Sebastian Wagner 0006, Korbinian Groh, Thomas K&#252;hbeck, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "An Approach for a Requirement Analysis for an Autonomous Family Vehicle",
     "authors": "Tobias Schr&#228;der, Torben Stolte, Inga Jatzkowski, Robert Graubohm, Markus Maurer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Hybrid Control Design for Autonomous Vehicles at Uncontrolled Crosswalks",
     "authors": "Nitin R. Kapania, Vijay Govindarajan, Francesco Borrelli, J. Christian Gerdes",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Bridging the Gap between Open Source Software and Vehicle Hardware for Autonomous Driving",
     "authors": "Tobias Kessler, Julian Bernhard, Martin Buechel, Klemens Esterle, Patrick Hart, Daniel Malovetz, Michael Truong-Le, Frederik Diehl, Thomas Brunner, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Distributed Model Predictive Pose Control of Multiple Nonholonomic Vehicles",
     "authors": "Maximilian Kloock, Ludwig Kragl, Janis Maczijewski, Bassam Alrifaee, Stefan Kowalewski",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "End-to-End Deep Learning Applied in Autonomous Navigation using Multi-Cameras System with RGB and Depth Images",
     "authors": "Jos&#233; Alberto D&#237;az-Amado, Iago Pach&#234;co Gomes, Jean Amaro, Denis Fernando Wolf, Fernando Santos Os&#243;rio",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Tactical Level Decision-Making for Platoons of Autonomous Vehicles Using Auction Mechanisms",
     "authors": "Zafeiris Kokkinogenis, Miguel Teixeira, Pedro M. d'Orey, Rosaldo J. F. Rossetti",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "DoS-Resilient Hybrid Controller for String-Stable Connected Vehicles",
     "authors": "Roberto Merco, Francesco Ferrante, Pierluigi Pisu",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A decision-making architecture for automated driving without detailed prior maps",
     "authors": "Antonio Artu&#241;edo, Jorge Godoy, Jorge Villagra",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Trajectory Planning for Automated Vehicles in Overtaking Scenarios",
     "authors": "Maximilian Graf, Oliver Speidel, Klaus Dietmayer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "SafeVRU: A Research Platform for the Interaction of Self-Driving Vehicles with Vulnerable Road Users",
     "authors": "Laura Ferranti, Bruno Brito, Ewoud A. I. Pool, Y. Zheng, Ronald M. Ensing, Riender Happee, Barys N. Shyrokau, Julian F. P. Kooij, Javier Alonso-Mora, Dariu M. Gavrila",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Modeling of takeover variables with respect to driver situation awareness and workload for intelligent driver assistance",
     "authors": "Foghor Tanshi, Dirk S&#246;ffker",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Attention Monitoring and Hazard Assessment with Bio-Sensing and Vision: Empirical Analysis Utilizing CNNs on the KITTI Dataset",
     "authors": "Siddharth 0001, Mohan M. Trivedi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Effects of Vehicle Simulation Visual Fidelity on Assessing Driver Performance and Behavior",
     "authors": "Coleman Merenda, Chihiro Suga, Joseph L. Gabbard, Teruhisa Misu",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Passing through the Bottleneck - The Potential of External Human-Machine Interfaces",
     "authors": "Michael Rettenmaier, Moritz Pietsch, Jonas Schmidtler, Klaus Bengler",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "PointAtMe: Efficient 3D Point Cloud Labeling in Virtual Reality",
     "authors": "Florian Wirth, Jannik Quehl, Jeffrey M. Ota, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Type-o-Steer: Reimagining the Steering Wheel for Productive Non-Driving Related Tasks in Conditionally Automated Vehicles",
     "authors": "Clemens Schartm&#252;ller, Philipp Wintersberger, Anna-Katharina Frison, Andreas Riener",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Pedestrian Group Detection in Shared Space",
     "authors": "Hao Cheng 0008, Yao Li 0033, Monika Sester",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Cloud-Based AI Framework for Machine Learning Orchestration: A &#34;Driving or Not-Driving&#34; Case-Study for Self-Driving Cars",
     "authors": "Cristian Olariu, Haytham Assem, Juan Diego Ortega, Marcos Nieto",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Camera and LiDAR Fusion for On-road Vehicle Tracking with Reinforcement Learning",
     "authors": "Yongkun Fang, Huijing Zhao, Hongbin Zha, Xijun Zhao, Wen Yao",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Efficient Multi-Sensor Extended Target Tracking using GM-PHD Filter",
     "authors": "Alireza Ahrabian, Mehryar Emambakhsh, Marcel Sheeny, Andrew M. Wallace",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Infrastructure-supported Perception and Track-level Fusion using Edge Computing",
     "authors": "Michael Gabb, Holger Digel, Tobias M&#252;ller, R&#252;diger-Walter Henn",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Probabilistic framework for ego-lane determination",
     "authors": "Abderrahim Kasmi, Dieumet Denis, Romuald Aufr&#232;re, Roland Chapuis",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Car parking assistance based on Time-or-Flight camera",
     "authors": "Luis Paarup Pel&#225;ez, Myriam Elizabeth Vaca Recalde, Enrique D. Mart&#237; Mu&#241;&#243;z, Jes&#250;s Murgoitio Larrauri, Joshu&#233; P&#233;rez Rastelli, Norbert Druml, Bernhard Hillbrand",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Dual Inverse Sensor Model for Radar Occupancy Grids",
     "authors": "Michael Slutsky, Daniel Dobkin",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Occlusion aware sensor fusion for early crossing pedestrian detection",
     "authors": "Andras Palffy, Julian F. P. Kooij, Dariu M. Gavrila",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Robust Extrinsic Parameter Calibration of 3D LIDAR Using Lie Algebras",
     "authors": "Chao Xia, Yanqing Shen, Tangyike Zhang, Songyi Zhang, Yongbo Huo, Shi-tao Chen, Nanning Zheng 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Stochastic Cloning for Robust Fusion of Multiple Relative and Absolute Measurements",
     "authors": "Thomas Emter, Anton Schirg, Philipp Woock, Janko Petereit",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Learning Scene Adaptive Covariance Error Model of LiDAR Scan Matching for Fusion Based Localization",
     "authors": "Xiaoliang Ju, Donghao Xu, Xijun Zhao, Wen Yao, Huijing Zhao",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Fast Lidar - Camera Fusion for Road Detection by CNN and Spherical Coordinate Transformation",
     "authors": "Jae-Seol Lee, Tae-Hyoung Park",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Merging Strategy for Gaussian Process Extended Target Estimates in Multi-Sensor Applications",
     "authors": "Martin Michaelis, Philipp Berthold, Thorsten Luettel, Daniel Meissner, Hans-Joachim Wuensche",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Road profile and suspension state estimation boosted with vehicle dynamics conjectures",
     "authors": "Angel Gabriel Alatorre Vazquez, Cyrano Vaseur, Alessandro Corr&#234;a Victorino, Ali Charara 0002",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "3D BAT: A Semi-Automatic, Web-based 3D Annotation Toolbox for Full-Surround, Multi-Modal Data Streams",
     "authors": "Walter Zimmer, Akshay Rangesh, Mohan M. Trivedi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Reacting to Multi-Obstacle Emergency Scenarios Using Linear Time Varying Model Predictive Control",
     "authors": "Vasundhara Jain, Uli Kolbe, Gabi Breuel, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "The Car That Cried Wolf: Driver Responses to Missing, Perfectly Performing, and Oversensitive Collision Avoidance Systems",
     "authors": "Ernestine Fu, Srinath Sibi, David Bryan Miller, Mishel Johns, Brian K. Mok, Martin Fischer 0010, David Sirkin",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Deep Reinforcement Learning Framework for Energy Management of Extended Range Electric Delivery Vehicles",
     "authors": "Pengyue Wang, Yan Li 0049, Shashi Shekhar 0001, William F. Northrop",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Comparison Between Coupled and Decoupled Vehicle Motion Controllers Based on Prediction Models",
     "authors": "Jose A. Matute, Ray Lattarulo, Asier Zubizarreta, Joshu&#233; P&#233;rez",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Alignment of Perception Information for Cooperative Perception",
     "authors": "Christoph Allig, Gerd Wanielik",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Road Network Coverage Models for Cloud-based Automotive Applications: A Case Study in the City of Munich",
     "authors": "Konstantin Riedl, Sebastian Kurscheid, Andreas Noll, Johannes Betz, Markus Lienkamp",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "ReLaDec: Reliable Latency Decision Algorithm for Connected Vehicle Applications",
     "authors": "Haris Volos 0002, Takashi Bando, Kenji Konishi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Integration of Attribute-based Access Control into Automotive Architectures",
     "authors": "Marcel Rumez, Alexander Duda, Patrick Gr&#252;nder, Reiner Kriesten, Eric Sax",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Framework for Automated Collaborative Fault Detection in Large-Scale Vehicle Networks",
     "authors": "John M. Maroli, &#220;mit &#214;zg&#252;ner, Keith A. Redmill",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Probability Collectives Algorithm applied to Decentralized Intersection Coordination for Connected Autonomous Vehicles",
     "authors": "Charles Philippe, Lounis Adouane, Antonios Tsourdos, Hyo-Sang Shin, Beno&#238;t Thuilot",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Evaluation of lane-merging approaches for connected vehicles",
     "authors": "Tiago C. dos Santos, Diego Renan Bruno, Fernando Santos Os&#243;rio, Denis F. Wolf",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Subjective-Logic-based Reliability Estimation Mechanism for Cooperative Information with Application to IV's Safety",
     "authors": "Johannes M&#252;ller 0003, Michael Gabb, Michael Buchholz",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Value-Anticipating V2V Communications for Cooperative Perception",
     "authors": "Takamasa Higuchi, Marco Giordani, Andrea Zanella, Michele Zorzi, Onur Altintas",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Cooperative Multi-Vehicle Behavior Coordination for Autonomous Driving",
     "authors": "Tobias Kessler, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Novel Embedded Platform for Secure and Privacy-Concerned Cross-Domain Service Access",
     "authors": "Alexander Rech, Markus Pistauer, Christian Steger",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Multi-lane Formation Assignment and Control for Connected Vehicles",
     "authors": "Mengchi Cai, Qing Xu 0010, Keqiang Li 0002, Jianqiang Wang 0003",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Dynamics Platooning Model and Protocols for Self-Driving Vehicles",
     "authors": "Amr Farag, Ahmed Hussein 0003, Omar M. Shehata, Fernando Garc&#237;a 0002, Hadj Hamma Tadjine, Elmar Matthes",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Emergency Vehicle Traversal using DSRC/WAVE based Vehicular Communication",
     "authors": "Insaf Ismath, Tharaka Samarasinghe, Dileeka Dias, Madara Wimalarathna, Waruna Rasanga, Nalin Jayaweera, Yohan Nugera",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "An Integrated Path-following and Yaw Motion Control Strategy for Autonomous Distributed Drive Electric Vehicles with Differential Steering",
     "authors": "Yuan Zou, Ningyuan Guo, Xudong Zhang 0002",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Effect of Vertical Dynamics on Vehicle's Lateral Stability Control System",
     "authors": "Hussein Termous, Xavier Moreau, Clovis Francis, Hassan Shraim",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Improvement of Control Performance of Sampling Based Model Predictive Control using GPU",
     "authors": "Arun Muraleedharan, Hiroyuki Okuda, Tatsuya Suzuki 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Bi-level Optimal Edge Computing Model for On-ramp Merging in Connected Vehicle Environment",
     "authors": "Fei Ye, Jianlin Guo, Kyeong Jin Kim, Philip V. Orlik, Heejin Ahn, Stefano Di Cairano, Matthew J. Barth",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Data Driven Method of Feedforward Compensator Optimization for Autonomous Vehicle Control",
     "authors": "Pin Wang, Tianyu Shi, Chonghao Zou, Long Xin, Ching-Yao Chan",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Modeling of Coupled Vertical and Longitudinal Dynamics of Bicycles for Brake and Suspension Control",
     "authors": "Silas Klug, Alessandro Moia, Armin Verhagen, Daniel G&#246;rges, Sergio M. Savaresi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Controlling an Autonomous Vehicle with Deep Reinforcement Learning",
     "authors": "Andreas Folkers, Matthias Rick, Christof B&#252;skens",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Semi-Active Suspension Control on Bicycles: Anti-Dive during Road Excitation",
     "authors": "Silas Klug, Alessandro Moia, Armin Verhagen, Daniel G&#246;rges, Sergio M. Savaresi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Constant-Time Algorithm for Checking Reachability of Arrival Times and Arrival Velocities of Autonomous Vehicles",
     "authors": "Ty Nguyen, Tsz-Chiu Au",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Comparison of Transmission Control Algorithms for Automated Vehicles",
     "authors": "Sandor Vass, J. Gy&#246;ngy&#246;ssy, Viktor Tihanyi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Comparison of Lateral Dynamic Models for Tractor-Trailer Systems",
     "authors": "Zachary Brock, James Nelson, Ross L. Hatton",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Modular approach to compact low-speed kinematic modelling of multi-articulated urban buses for motion algorithmization purposes",
     "authors": "Maciej Marcin Michalek",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Developing an Adaptive Strategy for Connected Eco-Driving under Uncertain Traffic Condition",
     "authors": "Zhensong Wei, Peng Hao 0001, Matthew J. Barth",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Multi-lane Freeway Oscillation Mitigation at Early-Stage Development of Connected Vehicles",
     "authors": "Hao Yang 0025, Ken Oguchi 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "An Advanced Simulation Framework of an Integrated Vehicle-Powertrain Eco-Operation System for Electric Buses",
     "authors": "Fei Ye, Peng Hao 0001, Guoyuan Wu 0001, Danial Esaid, Kanok Boriboonsomsin, Matthew J. Barth",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Fleet-Based Machine Learning Approach for Automatic Detection of Deviations between Measurements and Reality",
     "authors": "Jakob Pfeiffer, Peter Wolf, Roberto Pereira 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Optimal Charging and Driving Strategies for Battery Electric Vehicles on Long Distance Trips: a Dynamic Programming Approach",
     "authors": "Maximilian Cussigh, Thomas Hamacher",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Predictive cruise control behind a stationary or slow moving object",
     "authors": "Sten Elling Tingstad Jacobsen, Anton Gustafsson, Nam Vu, Sachin Madhusudhana, Ahad Hamednia, Nalin Kumar Sharma, Nikolce Murgovski",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Ego-Vehicle Speed Prediction Using Fuzzy Markov Chain With Speed Constraints",
     "authors": "Jaweeok Shin, Sunbin Kim, Myoungho Sunwoo, Manbae Han",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Gap Acceptance Based Safety Assessment Of Autonomous Overtaking Function",
     "authors": "Jinwei Zhou, Pavlo Tkachenko, Luigi del Re",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Beyond-Design-Basis Evaluation of Advanced Driver Assistance Systems",
     "authors": "Florian Reiterer, Jinwei Zhou, Jan Kovanda, Vojtech Rulc, Vladislav Kemka, Luigi del Re",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Predictable Trajectory Planner in Time-domain and Hierarchical Motion Controller for Intelligent Vehicles in Structured Road",
     "authors": "Zhiqiang Li, Lu Xiong 0001, Dequan Zeng, Peizhi Zhang, Zhiqiang Fu, Jie Yao, Yi Zhou",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Critical Factor Graph Situation Clusters for Accelerated Automotive Safety Validation",
     "authors": "Tim Allan Wheeler, Mykel J. Kochenderfer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "From Specifications to Behavior: Maneuver Verification in a Semantic State Space",
     "authors": "Klemens Esterle, Vincent Aravantinos, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Addressing Inherent Uncertainty: Risk-Sensitive Behavior Generation for Automated Driving using Distributional Reinforcement Learning",
     "authors": "Julian Bernhard, Stefan Pollok, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Incorporating Uncertainty in Predicting Vehicle Maneuvers at Intersections With Complex Interactions",
     "authors": "Joonatan M&#228;ntt&#228;ri, John Folkesson",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Parallel Multi-Hypothesis Algorithm for Criticality Estimation in Traffic and Collision Avoidance",
     "authors": "Eduardo S&#225;nchez Morales, Richard Membarth, Andreas Gaull, Philipp Slusallek, Tobias Dirndorfer, Alexander Kammenhuber, Christoph Lauer, Michael Botsch",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A POMDP Maneuver Planner For Occlusions in Urban Scenarios",
     "authors": "Constantin Hubmann, Nils Quetschlich, Jens Schulz, Julian Bernhard, Daniel Althoff, Christoph Stiller",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "High-Definition Map Combined Local Motion Planning and Obstacle Avoidance for Autonomous Driving",
     "authors": "Zhiqiang Jian, Songyi Zhang, Shi-tao Chen, Xin Lv, Nanning Zheng 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Motion Planning for Collision Mitigation via FEM-Based Crash Severity Maps",
     "authors": "Bruno Simon, Florian Franke, Peter Riegl, Andreas Gaull",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Novel Vehicle Open Door Safety System Based on Cyclist Detection Using Fisheye Camera and Improved Deep Convolutional Generative Adversarial Nets",
     "authors": "Miankuan Zhu, Lei Han, Fujian Liang, Chaoxing Xi, Lei Wu, Zutao Zhang",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Implementation of an Optimal Look-Ahead Controller in a Heavy-Duty Distribution Vehicle",
     "authors": "Manne Held, Oscar Fl&#228;rdh, Fredrik Roos, Jonas M&#229;rtensson 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A New Way of Estimating Distances to Foregoing Vehicles from a Monocular Camera with Error Modeling",
     "authors": "Teppei Suzuki, Ikuro Sato",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Driving Scenario Representation for Scalable Real-Data Analytics with Neural Networks",
     "authors": "Lennart Ries, Jacob Langner, Stefan Otten, Johannes Bach, Eric Sax",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Specific Feedback Matters - The Role of Specific Feedback in the Development of Trust in Automated Driving Systems",
     "authors": "Aaron Edelmann, Stefan St&#252;mper, Tibor Petzoldt",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Detecting Anomalous Driving Behavior using Neural Networks",
     "authors": "Matthias Matousek, Mohamed El-Zohairy, Ala'a Al-Momani, Frank Kargl, Christoph B&#246;sch 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Probabilistic Modeling of Vehicle Acceleration and State Propagation With Long Short-Term Memory Neural Networks",
     "authors": "Ian Jones, Kyungtae Han",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Method for the Estimation of Coexisting Risk-Inducing Factors in Traffic Scenarios",
     "authors": "Hiroki Watanabe, Lukas Tobisch, Tim Laudien, Johannes Wallner 0002, G&#252;nther Prokop",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Headlight Range Estimation for Autonomous Driving using Deep Neural Networks",
     "authors": "Jakob Mayr, Can Giracoglu, Christian Unger, Federico Tombari",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Path Planning using a Kinematic Driver-Vehicle-Road Model with Consideration of Driver's Characteristics",
     "authors": "Yongjun Yan, Jinxiang Wang 0002, Kuoran Zhang, Mingcong Cao, Jiansong Chen",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Towards Standardization of AV Safety: C++ Library for Responsibility Sensitive Safety",
     "authors": "Bernd Ga&#223;mann, Fabian Oboril, Cornelius B&#252;rkle, Shuang Liu, Shoumeng Yan, Maria Soledad Elli, Ignacio J. Alvarez, Naveen Aerrabotu, Suhel Jaber, Peter van Beek, Darshan Iyer, Jack Weast",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "LiDAR-Based Contour Estimation of Oncoming Vehicles in Pre-Crash Scenarios",
     "authors": "Kilian Schneider, Robert Lugner, Thomas Brandmeier",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Realistic Ultrasonic Environment Simulation Using Conditional Generative Adversarial Networks",
     "authors": "Maximilian P&#246;pperl, Raghavendra Gulagundi, Senthil Kumar Yogamani, Stefan Milz",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Robust Function and Sensor Design Considering Sensor Measurement Errors Applied to Automatic Emergency Braking",
     "authors": "Christoph St&#246;ckle, Wolfgang Utschick, Stephan Herrmann 0003, Tobias Dirndorfer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Communication Strategies for Automated Merging in Dense Traffic",
     "authors": "Johannes Potzy, Magdalena Feuerbach, Klaus Bengler",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Predictive Trajectory Planning in Situations with Hidden Road Users Using Partially Observable Markov Decision Processes",
     "authors": "Philip Sch&#246;rner, Lars T&#246;ttel, Jens Doll, J. Marius Z&#246;llner",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Improved Optimization of Motion Primitives for Motion Planning in State Lattices",
     "authors": "Kristoffer Bergman, Oskar Ljungqvist, Daniel Axehill",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "CUbE: A Research Platform for Shared Mobility and Autonomous Driving in Urban Environments",
     "authors": "Andreas Hartmannsgruber, Julien Seitz, Matthias Schreier, Matthias Strauss, Norbert Balbierer, Andree Hohm",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Multi-Stage Residual Fusion Network for LIDAR-Camera Road Detection",
     "authors": "Dameng Yu, Hui Xiong 0006, Qing Xu 0010, Jianqiang Wang 0003, Keqiang Li 0002",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Semantic Grid-Based Road Model Estimation for Autonomous Driving",
     "authors": "Julian Thomas, Julian Tatsch, Wim van Ekeren, Ra&#250;l Rojas 0001, Alois C. Knoll",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Context Aware Road-user Importance Estimation (iCARE)",
     "authors": "Alireza Rahimpour, Sujitha Martin, Ashish Tawari, Hairong Qi 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Reliable Risk Management for Autonomous Vehicles based on Sequential Bayesian Decision Networks and Dynamic Inter-Vehicular Assessment",
     "authors": "Dimia Iberraken, Lounis Adouane, Dieumet Denis",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Generating Critical Test Scenarios for Automated Vehicles with Evolutionary Algorithms",
     "authors": "Moritz Klischat, Matthias Althoff",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Performance Optimization of Autonomous Platforms in Unstructured Outdoor Environments Using a Novel Constrained Planning Approach",
     "authors": "Nina Heide, Alexander Albrecht, Thomas Emter, Janko Petereit",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "An Attention-based Recurrent Convolutional Network for Vehicle Taillight Recognition",
     "authors": "Kuan-Hui Lee, Takaaki Tagawa, Jia-En M. Pan, Adrien Gaidon, Bertrand Douillard",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A Human Factors Approach to Defining Requirements for Low-speed Autonomous Vehicles to Enable Intelligent Platooning",
     "authors": "Roger Woodman, Ke Lu, Matthew D. Higgins, Simon Brewerton, Paul A. Jennings, Stewart A. Birrell",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Scene-Guided Region Proposal Re-ranking Method for On-road Vehicle Candidate Generation",
     "authors": "Zhixiong Nan, Yang Feng, Jiawei He 0002, Ping Wei 0001, Linhai Xu, Hongbin Sun 0001, Nanning Zheng 0001",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "From Functional to Logical Scenarios: Detailing a Keyword-Based Scenario Description for Execution in a Simulation Environment",
     "authors": "Till Menzel, Gerrit Bagschik, Leon Isensee, Andre Schomburg, Markus Maurer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Large-Scale extraction of accurate vehicle trajectories for driving behavior learning",
     "authors": "Aubrey Clausse, Salma Benslimane, Arnaud de La Fortelle",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Dynamic Real-time Multimodal Routing with Hierarchical Hybrid Planning",
     "authors": "Shushman Choudhury, Jacob P. Knickerbocker, Mykel J. Kochenderfer",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Reference Path Correction for Autonomous Ground Vehicles Driving Over Rough Terrain",
     "authors": "Shaobo Wang, Pan Zhao 0001, Yanghao Zheng, Biao Yu, Weixin Huang, Hui Zhu 0010, Huawei Liang",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "An Adaptive Path Tracking Controller Based on Reinforcement Learning with Urban Driving Application",
     "authors": "Longsheng Chen, Yuanpeng Chen, Xiangtong Yao, Yunxiao Shan, Long Chen 0005",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Service Discovery for the Connected Car with Semantic Accessors",
     "authors": "Matthew Weber, Ravi Akella, Edward A. Lee",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Controlling Steering Angle for Cooperative Self-driving Vehicles utilizing CNN and LSTM-based Deep Networks",
     "authors": "Rodolfo Valiente, Mahdi Zaman, Sedat Ozer, Yaser P. Fallah",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Research of Path Planning Model Based on Hotspots Evaluation",
     "authors": "Lingqiu Zeng, Ke Zhang, Qingwen Han, Siru Chen, Lei Ye 0001, Ruimei Wang, Jianmei Lei, Qinglong Xie",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "An Efficient Requirement-Aware Attachment Policy for Future Millimeter Wave Vehicular Networks",
     "authors": "Davide Peron, Marco Giordani, Michele Zorzi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Field Operational Test of V2V between Tramcars and Cars 'Towards Automated Driving System",
     "authors": "Hideaki Nanba, Takeo Kawai, Manabu Sawada, Md. Shoaib Bhuiyan, Koji Oguri",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Simulated Basic Safety Message: Concept &#38; Application",
     "authors": "Suryansh Saxena, Isaac K. Isukapati",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Fitting Cornering Speed Models with One-Class Support Vector Machines",
     "authors": "James M. Fleming, Xingda Yan, Roberto Lot",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Unsupervised and Supervised Learning with the Random Forest Algorithm for Traffic Scenario Clustering and Classification",
     "authors": "Friedrich Kruber, Jonas Wurst, Eduardo S&#225;nchez Morales, Samarjit Chakraborty, Michael Botsch",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "A New Causal Direction Reasoning Method for Decision Making on Noisy Data",
     "authors": "Boxu Zhao, Guiming Luo",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Wasserstein Generative Learning with Kinematic Constraints for Probabilistic Interactive Driving Behavior Prediction",
     "authors": "Hengbo Ma, Jiachen Li 0001, Wei Zhan, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Cooperative Object Classification for Driving Applications",
     "authors": "Eduardo Arnold, Omar Y. Al-Jarrah, Mehrdad Dianati, Saber Fallah, David Oxtoby, Alex Mouzakitis",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Deep, spatially coherent Inverse Sensor Models with Uncertainty Incorporation using the evidential Framework",
     "authors": "Daniel Bauer, Lars Kuhnert, Lutz Eckstein",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Coordination and Trajectory Prediction for Vehicle Interactions via Bayesian Generative Modeling",
     "authors": "Jiachen Li 0001, Hengbo Ma, Wei Zhan, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "SSeg-LSTM: Semantic Scene Segmentation for Trajectory Prediction",
     "authors": "Arsal Syed, Brendan Tran Morris",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "RoarNet: A Robust 3D Object Detection based on RegiOn Approximation Refinement",
     "authors": "Kiwoo Shin, Youngwook Paul Kwon, Masayoshi Tomizuka",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Enhanced Object Detection in Bird's Eye View Using 3D Global Context Inferred From Lidar Point Data",
     "authors": "Yecheol Kim, Jaekyum Kim, Junho Koh, Jun Won Choi",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Precise Synthetic Image and LiDAR (PreSIL) Dataset for Autonomous Vehicle Perception",
     "authors": "Braden Hurl, Krzysztof Czarnecki 0001, Steven L. Waslander",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Jointly Detecting and Retrieving Vehicles from Road Image Sequences based on CNN",
     "authors": "Xiao Wu, Yaochen Li, Yuehu Liu, Shanmin Pang, Le Wang 0003, Chuan Wu, Huihui Huo",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Enhanced free space detection in multiple lanes based on single CNN with scene identification",
     "authors": "Fabio Pizzati, Fernando Garc&#237;a",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Instance Stixels: Segmenting and Grouping Stixels into Objects",
     "authors": "Thomas M. Hehn, Julian F. P. Kooij, Dariu M. Gavrila",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Ego-motion and Surrounding Vehicle State Estimation Using a Monocular Camera",
     "authors": "Jun Hayakawa, Behzad Dariush",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Global and Local Multi-scale Feature Fusion for Object Detection and Semantic Segmentation",
     "authors": "Young-Chul Lim, Minsung Kang",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "PointLaneNet: Efficient end-to-end CNNs for Accurate Real-Time Lane Detection",
     "authors": "Zhenpeng Chen, Qianfei Liu, Chenfan Lian",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Robust 3D Perception for any Environment and any Weather Condition using Thermal Stereo",
     "authors": "Seiichi Mita, Yuquan Xu, Kazuhisa Ishimaru, Sakiko Nishino",
     "abstract": null
   },
   {
-    "conference": "IV",
-    "year": 2019,
     "title": "Efficient Instance and Semantic Segmentation for Automated Driving",
     "authors": "Andra Petrovai, Sergiu Nedevschi",
     "abstract": null

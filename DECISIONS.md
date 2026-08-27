@@ -739,3 +739,29 @@ output -- shrinking that means either a more compact on-disk format
 (trades off the "reviewable as a diff" property these files are kept
 verbose JSON for) or accepting the size as the real cost of keeping the
 one dataset this whole pipeline can't regenerate.
+
+## data/venues/*.json: dropped redundant per-entry "conference"/"year"
+
+Follow-up to the two entries above. Every entry in a per-venue-year file
+(e.g. `cvpr2024.json`) repeated the same `"conference": "CVPR", "year":
+2024` -- 265,378 entries, 11.1MB of pure redundancy, fully determined by
+the filename. `scripts/strip_redundant_venue_fields.py` removes both from
+193,539 entries across the 194 per-venue-year files, and just `"conference"`
+(kept `"year"`, which genuinely varies per entry) from the 6 continuous-
+journal `*_all.json` files (`ijcv`/`ijrr`/`ral`/`tits`/`tpami`/`tro`).
+`arxiv_s2_citing.json` (untracked, genuinely non-uniform per entry -- a bulk
+citation-discovery crawl, not a single-venue listing) is untouched.
+`merge_corpus.py`'s `conference_and_year_for_file()` reconstructs both from
+the filename (a real, once-verified 1:1 prefix -> conference mapping, not
+guessed), falling back to a per-entry field only when the file still has
+one -- so this is safe to apply gradually; a not-yet-migrated venue file
+keeps working exactly as before.
+
+Real but modest: `data/venues/`'s git tree size dropped from 138.7MB to
+131.1MB (~5.5%) -- smaller than the raw 11.1MB estimate since git already
+compresses the removed text reasonably well too, same reasoning as the
+gh-pages entry above. The fetcher scripts themselves (`fetch_cvf.py`,
+`fetch_neurips.py`, ...) still write the old, redundant schema -- this is a
+post-processing step, not a fetcher change -- so `strip_redundant_venue_
+fields.py` needs a re-run after fetching a new venue file, before
+committing it.

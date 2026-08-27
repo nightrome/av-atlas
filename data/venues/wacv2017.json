@@ -1,980 +1,700 @@
 [
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Salient Object Detection by Integrating Multi-level Cues",
     "authors": "Jing Zhang 0052, Yuchao Dai, Fatih Porikli",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Multi-planar Fitting in an Indoor ManhattanWorld",
     "authors": "Seongdo Kim 0001, Roberto Manduchi",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Universal Skin Detection Without Color Information",
     "authors": "Abhijit Sarkar 0001, A. Lynn Abbott, Zachary R. Doerzaph",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Recurrent Fully Convolutional Networks for Video Segmentation",
     "authors": "Sepehr Valipour, Mennatullah Siam, Martin Jägersand, Nilanjan Ray",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Learning Spatial Transforms for Refining Object Segment Proposals",
     "authors": "Haoyang Zhang, Xuming He 0001, Fatih Porikli",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Repeated Pattern Detection Using CNN Activations",
     "authors": "Louis Lettry, Michal Perdoch, Kenneth Vanhoey, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Context Modeling for Semantic Segmentation",
     "authors": "Kien Nguyen Thanh, Clinton Fookes, Sridha Sridharan",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "3D Semantic Segmentation of Modular Furniture Using rjMCMC",
     "authors": "Ishrat Badami, Manu Tom, Markus Mathias, Bastian Leibe",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "PASCAL Boundaries: A Semantic Boundary Dataset with a Deep Semantic Boundary Detector",
     "authors": "Vittal Premachandran, Boyan Bonev 0001, Xiaochen Lian, Alan L. Yuille",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Can Affordances Guide Object Decomposition into Semantically Meaningful Parts?",
     "authors": "Safoura Rezapour Lakani, Antonio Jose Rodríguez-Sánchez, Justus H. Piater",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Solving Occlusion Problem in Pedestrian Detection by Constructing Discriminative Part Layers",
     "authors": "Cong Cao, Yu Wang 0018, Jien Kato, Guanwen Zhang, Kenji Mase",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Unifying Registration Based Tracking: A Case Study with Structural Similarity",
     "authors": "Abhineet Singh, Mennatullah Siam, Martin Jägersand",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Moving Poselets for Video Based Action Recognition",
     "authors": "Effrosyni Mavroudi, Lingling Tao, René Vidal",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "First-Person Action Decomposition and Zero-Shot Learning",
     "authors": "Yun C. Zhang, Yin Li 0003, James M. Rehg",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Higher-Order Pooling of CNN Features via Kernel Linearization for Action Recognition",
     "authors": "Anoop Cherian, Piotr Koniusz, Stephen Gould",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Semi-Coupled Two-Stream Fusion ConvNets for Action Recognition at Extremely Low Resolutions",
     "authors": "Jiawei Chen 0006, Jonathan Wu 0002, Janusz Konrad, Prakash Ishwar",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "On Geometric Features for Skeleton-Based Action Recognition Using Multilayer LSTM Networks",
     "authors": "Songyang Zhang 0004, Xiaoming Liu 0002, Jun Xiao 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Real-Time Online Action Detection Forests Using Spatio-Temporal Contexts",
     "authors": "Seungryul Baek, Kwang In Kim, Tae-Kyun Kim 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Ordered Pooling of Optical Flow Sequences for Action Recognition",
     "authors": "Jue Wang 0010, Anoop Cherian, Fatih Porikli",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Two Stream LSTM: A Deep Fusion Framework for Human Action Recognition",
     "authors": "Harshala Gammulle, Simon Denman, Sridha Sridharan, Clinton Fookes",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Multi-Camera Action Dataset for Cross-Camera Action Recognition Benchmarking",
     "authors": "Wenhui Li 0001, Yongkang Wong, Anan Liu, Yang Li 0108, Yuting Su 0001, Mohan S. Kankanhalli",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Efficient Action Detection in Untrimmed Videos via Multi-task Learning",
     "authors": "Yi Zhu 0001, Shawn D. Newsam",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Learning Discriminative Features via Label Consistent Neural Network",
     "authors": "Zhuolin Jiang, Yaming Wang, Larry S. Davis, Walter Andrews, Viktor Rozgic",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Recognition of Group Activities in Videos Based on Single-and Two-Person Descriptors",
     "authors": "Stéphane Lathuilière, Georgios D. Evangelidis, Radu Horaud",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Quantitative Analysis of Automatic Image Cropping Algorithms: A Dataset and Comparative Study",
     "authors": "Yi-Ling Chen 0004, Tzu-Wei Huang, Kai-Han Chang, Yu-Chen Tsai, Hwann-Tzong Chen, Bing-Yu Chen 0004",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Joint Regression and Ranking for Image Enhancement",
     "authors": "Parag Shridhar Chandakkar, Baoxin Li",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Material Classification under Natural Illumination Using Reflectance Maps",
     "authors": "Stamatios Georgoulis, Vincent Vanweddingen, Marc Proesmans, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Dense Batch Non-Rigid Structure from Motion in a Second",
     "authors": "Vladislav Golyanik, Didier Stricker",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Global Model with Local Interpretation for Dynamic Shape Reconstruction",
     "authors": "Antonio Agudo, Francesc Moreno-Noguer",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Occlusions are Fleeting - Texture is Forever: Moving Past Brightness Constancy",
     "authors": "Christopher C. W. Ham, Surya P. N. Singh, Simon Lucey",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Accurate 3D Reconstruction of Dynamic Scenes from Monocular Image Sequences with Severe Occlusions",
     "authors": "Vladislav Golyanik, Torben Fetzer, Didier Stricker",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Patchwork Stereo: Scalable, Structure-Aware 3D Reconstruction in Man-Made Environments",
     "authors": "Amine Bourki, Martin de La Gorce, Renaud Marlet, Nikos Komodakis",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Calibration Technique for Underwater Active Oneshot Scanning System with Static Pattern Projector and Multiple Cameras",
     "authors": "Hiroshi Kawasaki, Hideaki Nakai, Hirohisa Baba, Ryusuke Sagawa, Ryo Furukawa 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Fast Deep Vehicle Detection in Aerial Images",
     "authors": "Lars Wilko Sommer, Tobias Schuchert, Jürgen Beyerer",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Beyond Spatial Auto-Regressive Models: Predicting Housing Prices with Satellite Imagery",
     "authors": "Archith J. Bency, Swati Rallapalli, Raghu K. Ganti, Mudhakar Srivatsa, B. S. Manjunath",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Robust Hand Gestural Interaction for Smartphone Based AR/VR Applications",
     "authors": "Shreyash Mohatta, Ramakrishna Perla, Gaurav Gupta, Ehtesham Hassan, Ramya Hebbalaguppe",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Spatial-Temporal Motion Field Analysis for Pixelwise Crack Detection on Concrete Surfaces",
     "authors": "Subhajit Chaudhury, Gaku Nakano, Jun Takada, Akihiko Iketani",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "2-Line Exhaustive Searching for Real-Time Vanishing Point Estimation in Manhattan World",
     "authors": "Xiaohu Lu, Jian Yao 0002, Haoang Li, Yahui Liu",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Pano2CAD: Room Layout from a Single Panorama Image",
     "authors": "Jiu Xu, Björn Stenger, Tommi Kerola, Tony Tung",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "A Multi-view RGB-D Approach for Human Pose Estimation in Operating Rooms",
     "authors": "Abdolrahim Kadkhodamohammadi, Afshin Gangi, Michel de Mathelin, Nicolas Padoy",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Real Estate Image Classification",
     "authors": "Jawadul H. Bappy, Joseph R. Barr, Narayanan Srinivasan 0002, Amit K. Roy-Chowdhury",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Learn How to Choose: Independent Detectors Versus Composite Visual Phrases",
     "authors": "Guy Rosenthal, Ariel Shamir, Leonid Sigal",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Temporal Robust Features for Violence Detection",
     "authors": "Daniel Moreira, Sandra Eliza Fontes de Avila, Mauricio Perez, Daniel Moraes, Vanessa Testoni, Eduardo Valle, Siome Goldenstein, Anderson Rocha 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "SAMP: Shape and Motion Priors for 4D Vehicle Reconstruction",
     "authors": "Francis Engelmann, Jörg Stückler, Bastian Leibe",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Predicting the Perceptual Demands of Urban Driving with Video Regression",
     "authors": "Luke Palmer, Alina Bialkowski, Gabriel J. Brostow, Jonas Ambeck-Madsen, Nilli Lavie",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Optimal Threshold and LoG Based Feature Identification and Tracking of Bat Flapping Flight",
     "authors": "Yousi Lin, Yang Xu, Hui Chen, Matthew J. Bender, A. Lynn Abbott, Rolf Müller 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Fast Semi Dense Epipolar Flow Estimation",
     "authors": "Matthieu Garrigues, Antoine Manzanera",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Global Consistency Priors for Joint Part-Based Object Tracking and Image Segmentation",
     "authors": "Oliver Müller 0003, Bodo Rosenhahn",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Joint Epipolar Tracking (JET): Simultaneous Optimization of Epipolar Geometry and Feature Correspondences",
     "authors": "Henry Bradler, Matthias Ochs, Nolang Fanani, Rudolf Mester",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Computing Egomotion with Local Loop Closures for Egocentric Videos",
     "authors": "Suvam Patra, Himanshu Aggarwal, Himani Arora, Subhashis Banerjee, Chetan Arora 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Cyclical Learning Rates for Training Neural Networks",
     "authors": "Leslie N. Smith",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Guaranteed Parameter Estimation for Discrete Energy Minimization",
     "authors": "Mengtian Li, Daniel Huber",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Solving Robust Regularization Problems Using Iteratively Re-weighted Least Squares",
     "authors": "Khurrum Aftab Kiani, Tom Drummond",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Detecting Social Insects in Videos Using Spatiotemporal Regularization",
     "authors": "Nhat Rich Nguyen, Min C. Shin",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "From Affine Rank Minimization Solution to Sparse Modeling",
     "authors": "Iman Abbasnejad, Sridha Sridharan, Simon Denman, Clinton Fookes, Simon Lucey",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Learning Attributes from Human Gaze",
     "authors": "Nils Murrugarra-Llerena, Adriana Kovashka",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Multi-task Curriculum Transfer Deep Learning of Clothing Attributes",
     "authors": "Qi Dong 0004, Shaogang Gong, Xiatian Zhu",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Learning Logo Detection with Data Expansion by Synthesising Context",
     "authors": "Hang Su 0004, Xiatian Zhu, Shaogang Gong",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Boosted Convolutional Neural Networks (BCNN) for Pedestrian Detection",
     "authors": "Chi-Hao Wu 0001, Weihao Gan, De Lan, C.-C. Jay Kuo",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Improved Deep Learning of Object Category Using Pose Information",
     "authors": "Jiaping Zhao, Laurent Itti",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Learning to Recognize Objects by Retaining Other Factors of Variation",
     "authors": "Jiaping Zhao, Chin-Kai Chang, Laurent Itti",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Artistic Movement Recognition by Boosted Fusion of Color Structure and Topographic Description",
     "authors": "Corneliu Florea, Cosmin Toca, Fabian Gieseke",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Heterogeneous Feature Fusion for Template-Based Face Recognition",
     "authors": "Navaneeth Bodla, Jingxiao Zheng, Hongyu Xu, Jun-Cheng Chen, Carlos Domingo Castillo, Rama Chellappa",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Integrated Global-Local Metric Learning for Person Re-identification",
     "authors": "Jing Zhang, Xu Zhao",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Multi-shot Person Re-Identification Using Part Appearance Mixture",
     "authors": "Furqan M. Khan, François Brémond",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Active Online Anomaly Detection Using Dirichlet Process Mixture Model and Gaussian Process Classification",
     "authors": "Jagannadan Varadarajan, Ramanathan Subramanian, Narendra Ahuja, Pierre Moulin, Jean-Marc Odobez",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Flowdometry: An Optical Flow and Deep Learning Based Approach to Visual Odometry",
     "authors": "Peter Muller, Andreas E. Savakis",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "PCA Based Computation of Illumination-Invariant Space for Road Detection",
     "authors": "Taeyoung Kim, Yu-Wing Tai, Sung-Eui Yoon",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Providing Video Annotations in Multimedia Containers for Visualization and Research",
     "authors": "Julius Schöning, Patrick Faion, Gunther Heidemann, Ulf Krumnack",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Detecting Sexually Provocative Images",
     "authors": "Debashis Ganguly, Mohammad H. Mofrad, Adriana Kovashka",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Complex Event Recognition from Images with Few Training Examples",
     "authors": "Unaiza Ahsan, Chen Sun 0002, James Hays, Irfan A. Essa",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "High-Level Concepts for Affective Understanding of Images",
     "authors": "Afsheen Rafaqat Ali, Usman Shahid, Mohsen Ali, Jeffrey Ho",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Assessment of Peanut Pod Maturity",
     "authors": "Ekta Bindlish, A. Lynn Abbott, Maria Balota",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "X-Ray Scattering Image Classification Using Deep Learning",
     "authors": "Boyu Wang 0001, Kevin G. Yager, Dantong Yu, Minh Hoai",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "A Deep Learning Frame-Work for Recognizing Developmental Disorders",
     "authors": "Pushkar Shukla, Tanu Gupta, Aradhya Saini, Priyanka Singh 0001, Raman Balasubramanian",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "When Was That Made?",
     "authors": "Sirion Vittayakorn, Alexander C. Berg, Tamara L. Berg",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Telecom Inventory Management via Object Recognition and Localisation on Google Street View Images",
     "authors": "Ramya Hebbalaguppe, Gaurav Garg, Ehtesham Hassan, Hiranmay Ghosh, Ankit Verma",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Object Ranking for Template Matching",
     "authors": "Jean-Philippe Mercier, Ludovic Trottier, Philippe Giguère, Brahim Chaib-draa",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "A Deep Learning Paradigm for Detection of Harmful Algal Blooms",
     "authors": "Arun C. S. Kumar, Suchendra M. Bhandarkar",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Robust Road Marking Detection and Recognition Using Density-Based Grouping and Machine Learning Techniques",
     "authors": "Oleksandr Bailo, Seokju Lee, François Rameau, Jae Shin Yoon, In-So Kweon",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Beacon-Guided Structure from Motion for Smartphone-Based Navigation",
     "authors": "Tatsuya Ishihara, Jayakorn Vongkulbhisal, Kris M. Kitani, Chieko Asakawa",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Hardware-Centric Vision Processing for Mobile IoT Environment Exploiting Approximate Graph Cut in Resistor Grid",
     "authors": "Yeongjae Choi, Jun-Seok Park, Lee-Sup Kim",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Exploring Local Context for Multi-target Tracking in Wide Area Aerial Surveillance",
     "authors": "Bor-Jeng Chen, Gérard G. Medioni",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Melanoma Detection Based on Mahalanobis Distance Learning and Constrained Graph Regularized Nonnegative Matrix Factorization",
     "authors": "Yanyang Gu, Jun Zhou 0001, Bin Qian 0006",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Size and Texture-Based Classification of Lung Tumors with 3D CNNs",
     "authors": "Zhihao Luo, Marcus A. Brubaker, Michael Brudno",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "3D-Brain Segmentation Using Deep Neural Network and Gaussian Mixture Model",
     "authors": "Duy M. H. Nguyen, Huy T. Vu, Quang Huy Ung, Binh T. Nguyen 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Ultrasound Tracking Using ProbeSight: Camera Pose Estimation Relative to External Anatomy by Inverse Rendering of a Prior High-Resolution 3D Surface Map",
     "authors": "Jihang Wang, Chengqian Che, John M. Galeotti, Samantha Horvath, Vijay Gorantla, George D. Stetten",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Center-Focusing Multi-task CNN with Injected Features for Classification of Glioma Nuclear Images",
     "authors": "Veda Murthy, Le Hou, Dimitris Samaras, Tahsin M. Kurç, Joel H. Saltz",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Densification of Semi-Dense Reconstructions for Novel View Generation of Live Scenes",
     "authors": "Domagoj Baricevic, Tobias Höllerer, Matthew Turk 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Texture Attribute Synthesis and Transfer Using Feed-Forward CNNs",
     "authors": "Thomas Irmer, Tobias Glasmachers, Subhransu Maji",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "A Statistical Approach to Continuous Self-Calibrating Eye Gaze Tracking for Head-Mounted Virtual Reality Systems",
     "authors": "Subarna Tripathi, Brian Guenter",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Sparse Dictionary Learning for Identifying Grasp Locations",
     "authors": "Ludovic Trottier, Philippe Giguère, Brahim Chaib-draa",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "T-LESS: An RGB-D Dataset for 6D Pose Estimation of Texture-Less Objects",
     "authors": "Tomas Hodan, Pavel Haluza, Stepán Obdrzálek, Jiri Matas, Manolis I. A. Lourakis, Xenophon Zabulis",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Gaussian Mixture Models for Temporal Depth Fusion",
     "authors": "Cevahir Çigla, Roland Brockers, Larry H. Matthies",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "An Open-Source Platform for Underwater Image and Video Analytics",
     "authors": "Matthew Dawkins, Linus Sherrill, Keith Fieldhouse, Anthony Hoogs, Benjamin L. Richards, David Zhang, Lakshman Prasad, Kresimir Williams, Nathan Lauffenburger, Gaoang Wang",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Describing Unseen Classes by Exemplars: Zero-Shot Learning Using Grouped Simile Ensemble",
     "authors": "Yang Long 0001, Ling Shao 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Multi-modal Vehicle Detection in Aerial ISR Imagery",
     "authors": "Wesam A. Sakla, Goran Konjevod, T. Nathan Mundhenk",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Subcategory-Aware Convolutional Neural Networks for Object Proposals and Detection",
     "authors": "Yu Xiang, Wongun Choi, Yuanqing Lin, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "StuffNet: Using 'Stuff' to Improve Object Detection",
     "authors": "Samarth Brahmbhatt, Henrik I. Christensen, James Hays",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Towards Fine-Grained Open Zero-Shot Learning: Inferring Unseen Visual Features from Attributes",
     "authors": "Yang Long 0001, Li Liu 0004, Ling Shao 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Fused DNN: A Deep Neural Network Fusion Approach to Fast and Robust Pedestrian Detection",
     "authors": "Xianzhi Du, Mostafa El-Khamy, Jungwon Lee, Larry S. Davis",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Fast Pedestrian Detection via Random Projection Features with Shape Prior",
     "authors": "Yun Zhao, Zejian Yuan, Dapeng Chen, Jie Lyu 0001, Tie Liu",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Enriched Deep Recurrent Visual Attention Model for Multiple Object Recognition",
     "authors": "Artsiom Ablavatski, Shijian Lu, Jianfei Cai 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Box Refinement: Object Proposal Enhancement and Pruning",
     "authors": "Siyang Li 0002, Heming Zhang 0003, Junting Zhang, Yuzhuo Ren, C.-C. Jay Kuo",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Semantic Text Summarization of Long Videos",
     "authors": "Shagan Sah, Sourabh Kulhare, Allison Gray, Subhashini Venugopalan, Emily Prud'hommeaux, Raymond W. Ptucha",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Unsupervised Joint Mining of Deep Features and Image Labels for Large-Scale Radiology Image Categorization and Scene Recognition",
     "authors": "Xiaosong Wang 0001, Le Lu 0001, Hoo-Chang Shin, Lauren Kim, Mohammadhadi Bagheri, Isabella Nogues, Jianhua Yao 0001, Ronald M. Summers",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Probabilistic Surface Inference for Industrial Inspection Planning",
     "authors": "Mahsa Mohammadikaji, Stephan Bergmann, Stephan Irgenfried, Jürgen Beyerer, Carsten Dachsbacher, Heinz Wörn",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Spatio-Temporal Anomaly Detection for Industrial Robots through Prediction in Unsupervised Feature Space",
     "authors": "Asim Munawar, Phongtharin Vinayavekhin, Giovanni De Magistris",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Automatic Defect Recognition in X-Ray Testing Using Computer Vision",
     "authors": "Domingo Mery, Carlos Arteta",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "X-Ray PoseNet: 6 DoF Pose Estimation for Mobile X-Ray Devices",
     "authors": "Mai Bui 0001, Shadi Albarqouni, Michael Schrapp, Nassir Navab, Slobodan Ilic",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Crack Segmentation by Leveraging Multiple Frames of Varying Illumination",
     "authors": "Stephen J. Schmugge, Lance Rice, John Lindberg, Robert Grizzi, Chris Joffe, Min C. Shin",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "GPU-Accelerated Real-Time Stixel Computation",
     "authors": "Daniel Hernández Juárez, Antonio Espinosa 0001, Juan C. Moure, David Vázquez 0001, Antonio Manuel López Peña",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Model-Driven Simulations for Computer Vision",
     "authors": "V. S. R. Veeravasarapu, Constantin A. Rothkopf, Visvanathan Ramesh",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Automatic Calibration of a Multiple-Projector Spherical Fish Tank VR Display",
     "authors": "Qian Zhou, Gregor Miller, Kai Wu, Daniela Correa, Sidney S. Fels",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Transfer Learning and Deep Feature Extraction for Planktonic Image Data Sets",
     "authors": "Eric C. Orenstein, Oscar Beijbom",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Fast and Robust Eyelid Outline and Aperture Detection in Real-World Scenarios",
     "authors": "Wolfgang Fuhl, Thiago Santini, Enkelejda Kasneci",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "On Crater Verification Using Mislocalized Crater Regions",
     "authors": "Ebrahim Emami, George Bebis, Ara V. Nefian, Terry Fong",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Robust 3D Patch-Based Face Hallucination",
     "authors": "Chengchao Qu, Christian Herrmann 0001, Eduardo Monari, Tobias Schuchert, Jürgen Beyerer",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Dictionary Alignment for Low-Resolution and Heterogeneous Face Recognition",
     "authors": "Sivaram Prasad Mudunuri, Soma Biswas",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Pose-Robust Face Verification by Exploiting Competing Tasks",
     "authors": "Boyu Lu, Jingxiao Zheng, Jun-Cheng Chen, Rama Chellappa",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Feature Consistent Variational Autoencoder",
     "authors": "Xianxu Hou, LinLin Shen, Ke Sun 0006, Guoping Qiu",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Egocentric Height Estimation",
     "authors": "Jessica Finocchiaro, Aisha Urooj Khan, Ali Borji",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Gender-from-Iris or Gender-from-Mascara?",
     "authors": "Andrey Kuehlkamp, Benedict Becker, Kevin W. Bowyer",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "ContlensNet: Robust Iris Contact Lens Detection Using Deep Convolutional Neural Networks",
     "authors": "Ramachandra Raghavendra, Kiran B. Raja, Christoph Busch 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Breathing Rate Monitoring during Sleep from a Depth Camera under Real-Life Conditions",
     "authors": "Manuel Martínez 0001, Rainer Stiefelhagen",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Writer Identification in Noisy Handwritten Documents",
     "authors": "Karl Ni, Patrick Callier, Bradley Hatch",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Image Set Classification Using Sparse Bayesian Regression",
     "authors": "Mohammed E. Fathy 0001, Rama Chellappa",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Bandwidth Limited Object Recognition in High Resolution Imagery",
     "authors": "Laura Lopez-Fuentes, Andrew D. Bagdanov, Joost van de Weijer 0001, Harald Skinnemoen",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Personalized Image Aesthetic Quality Assessment by Joint Regression and Ranking",
     "authors": "Kayoung Park, Seunghoon Hong, Mooyeol Baek, Bohyung Han",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Spatio-Temporal Features for Multimodal Emotion Recognition",
     "authors": "Dung Nguyen Tien, Kien Nguyen Thanh, Sridha Sridharan, Afsane Ghasemi, David Dean, Clinton Fookes",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Human Pose Estimation Using Deep Structure Guided Learning",
     "authors": "Baole Ai, Yu Zhou 0007, Yao Yu 0001, Sidan Du",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Switching Linear Inverse-Regression Model for Tracking Head Pose",
     "authors": "Vincent Drouard, Sileye O. Ba, Radu Horaud",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Deep Image Set Hashing",
     "authors": "Jie Feng, Svebor Karaman, Shih-Fu Chang",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Learning Effective Binary Descriptors via Cross Entropy",
     "authors": "Liu Liu 0021, Hairong Qi 0001",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Convolutional Sparse and Low-Rank Coding-Based Rain Streak Removal",
     "authors": "He Zhang 0004, Vishal M. Patel",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Fast, Accurate, Small-Scale 3D Scene Capture Using a Low-Cost Depth Sensor",
     "authors": "Nicole Carey, Justin Werfel, Radhika Nagpal",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Who Moved My Cheese? Automatic Annotation of Rodent Behaviors with Convolutional Neural Networks",
     "authors": "Zhongzheng Ren, Adriana Noronha Annie, Vogel Ciernia, Yong Jae Lee",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Temporally Coded Illumination for Rolling Shutter Motion De-blurring",
     "authors": "Scott McCloskey, Sharath Venkatesha",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Text-Edge-Box: An Object Proposal Approach for Scene Texts Localization",
     "authors": "Dinh Nguyen, Shijian Lu, Nizar Ouarti, Mounir Mokhtari",
     "abstract": null
   },
   {
-    "conference": "WACV",
-    "year": 2017,
     "title": "Distance Penalization and Fusion for Person Re-identification",
     "authors": "Behzad Mirmahboub, Mohamed Lamine Mekhalfi, Vittorio Murino",
     "abstract": null

@@ -1,497 +1,355 @@
 [
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Differentiable Particle Filters: End-to-End Learning with Algorithmic Priors",
     "authors": "Rico Jonschkowski, Divyam Rastogi, Oliver Brock",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "One-Shot Imitation from Observing Humans via Domain-Adaptive Meta-Learning",
     "authors": "Tianhe Yu, Chelsea Finn, Sudeep Dasari, Annie Xie, Tianhao Zhang 0001, Pieter Abbeel, Sergey Levine",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "SegMap: 3D Segment Mapping using Data-Driven Descriptors",
     "authors": "Renaud Dubé, Andrei Cramariuc, Daniel Dugas, Juan I. Nieto 0001, Roland Siegwart, Cesar Cadena 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "HyP-DESPOT: A Hybrid Parallel Algorithm for Online Planning under Uncertainty",
     "authors": "Panpan Cai, Yuanfu Luo, David Hsu, Wee Sun Lee",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Shared Autonomy via Deep Reinforcement Learning",
     "authors": "Siddharth Reddy, Anca D. Dragan, Sergey Levine",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "FlashFusion: Real-time Globally Consistent Dense 3D Reconstruction using CPU Computing",
     "authors": "Lei Han, Lu Fang 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Creating Foldable Polyhedral Nets Using Evolution Control",
     "authors": "Yue Hao 0003, Yunhyeong Kim, Zhonghua Xi, Jyh-Ming Lien",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Asymmetric Actor Critic for Image-Based Robot Learning",
     "authors": "Lerrel Pinto, Marcin Andrychowicz, Peter Welinder, Wojciech Zaremba, Pieter Abbeel",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Reinforcement and Imitation Learning for Diverse Visuomotor Skills",
     "authors": "Yuke Zhu, Ziyu Wang 0001, Josh Merel, Andrei A. Rusu, Tom Erez, Serkan Cabi, Saran Tunyasuvunakool, János Kramár, Raia Hadsell, Nando de Freitas, Nicolas Heess",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Sim-to-Real: Learning Agile Locomotion For Quadruped Robots",
     "authors": "Jie Tan 0001, Tingnan Zhang, Erwin Coumans, Atil Iscen, Yunfei Bai, Danijar Hafner, Steven Bohez, Vincent Vanhoucke",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Directionally Controlled Time-of-Flight Ranging for Mobile Sensing Platforms",
     "authors": "Zaid Tasneem, Dingkang Wang, Huikai Xie, Sanjeev J. Koppal",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Learning Task-Oriented Grasping for Tool Manipulation from Simulated Self-Supervision",
     "authors": "Kuan Fang, Yuke Zhu, Animesh Garg, Andrey Kurenkov, Viraj Mehta, Li Fei-Fei 0001, Silvio Savarese",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Constant Factor Time Optimal Multi-Robot Routing on High-Dimensional Grids",
     "authors": "Jingjin Yu",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Sampling-Based Approximation Algorithms for Reachability Analysis with Provable Guarantees",
     "authors": "Lucas Liebenwein, Cenk Baykal, Igor Gilitschenski, Sertac Karaman, Daniela Rus",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Full-Frame Scene Coordinate Regression for Image-Based Localization",
     "authors": "Xiaotian Li, Juha Ylioinas, Juho Kannala",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Efficient Surfel-Based SLAM using 3D Laser Range Data in Urban Environments",
     "authors": "Jens Behley, Cyrill Stachniss",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "The Critical Radius in Sampling-based Motion Planning",
     "authors": "Kiril Solovey, Michal Kleinbort",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Handling implicit and explicit constraints in manipulation planning",
     "authors": "Florent Lamiraux, Joseph Mirabel",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "PoseCNN: A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes",
     "authors": "Yu Xiang 0001, Tanner Schmidt, Venkatraman Narayanan, Dieter Fox",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Coordination of back bending and leg movements for quadrupedal locomotion",
     "authors": "Baxi Chong, Yasemin Ozkan Aydin, Chaohui Gong, Guillaume Sartoretti, Yunjin Wu, Jennifer M. Rieser, Haosen Xing, Jeffery W. Rankin, Krijn B. Michel, Alfredo G. Nicieza, John R. Hutchinson, Daniel I. Goldman, Howie Choset",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Closing the Loop for Robotic Grasping: A Real-time, Generative Grasp Synthesis Approach",
     "authors": "Douglas Morrison, Juxi Leitner, Peter Corke",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "LoST? Appearance-Invariant Place Recognition for Opposite Viewpoints using Visual Semantics",
     "authors": "Sourav Garg, Niko Sünderhauf, Michael Milford",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Trajectory Optimization On Manifolds with Applications to SO(3) and R3XS2",
     "authors": "Michael Watterson, Sikang Liu 0002, Ke Sun 0008, Trey Smith, Vijay Kumar 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Push-Net: Deep Planar Pushing for Objects with Unknown Physical Properties",
     "authors": "Jue Kun Li, Wee Sun Lee, David Hsu",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "View Selection with Geometric Uncertainty Modeling",
     "authors": "Cheng Peng 0010, Volkan Isler",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "A Real-time Augmented Reality Surgical System for Overlaying Stiffness Information",
     "authors": "Nicolas Zevallos, Arun Srivatsan Rangaprasad, Hadi Salman, Lu Li, Jianing Qian, Saumya Saxena, Mengyun Xu, Kartik Patath, Howie Choset",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Geometry-aware Tracking of Manipulability Ellipsoids",
     "authors": "Noémie Jaquier, Leonel Dario Rozo, Darwin G. Caldwell, Sylvain Calinon",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Interactive Visual Grounding of Referring Expressions for Human-Robot Interaction",
     "authors": "Mohit Shridhar, David Hsu",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "SurfelWarp: Efficient Non-Volumetric Single View Dynamic Reconstruction",
     "authors": "Wei Gao 0026, Russ Tedrake",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Dual-Speed MR Safe Pneumatic Stepper Motors",
     "authors": "Vincent Groenhuis, Francoise J. Siepel, Stefano Stramigioli",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Improving Multi-Robot Behavior Using Learning-Based Receding Horizon Task Allocation",
     "authors": "Philipp Schillinger, Mathias Bürger, Dimos V. Dimarogonas",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Lightweight Unsupervised Deep Loop Closure",
     "authors": "Nate Merrill, Guoquan Huang 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "The Transfer of Human Trust in Robot Capabilities across Tasks",
     "authors": "Harold Soh, Pan Shu, Min Chen 0018, David Hsu",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Adaptive Bias and Attitude Observer on the Special Orthogonal Group for True-North Gyrocompass Systems: Theory and Preliminary Results",
     "authors": "Andrew R. Spielvogel, Louis L. Whitcomb",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Optimal Solution of the Generalized Dubins Interval Problem",
     "authors": "Petr Vána, Jan Faigl",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Embedded High Precision Control and Corn Stand Counting Algorithms for an Ultra-Compact 3D Printed Field Robot",
     "authors": "Erkan Kayacan, Zhong-Zhong Zhang, Girish Chowdhary 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "On the interaction between Autonomous Mobility-on-Demand systems and the power network: models and coordination algorithms",
     "authors": "Federico Rossi 0001, Ramón Iglesias, Mahnoosh Alizadeh, Marco Pavone 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Analytical Derivatives of Rigid Body Dynamics Algorithms",
     "authors": "Justin Carpentier, Nicolas Mansard",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Multi-Objective Analysis of Ridesharing in Automated Mobility-on-Demand",
     "authors": "Michal Cáp, Javier Alonso-Mora",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "A Real-Time Game Theoretic Planner for Autonomous Two-Player Drone Racing",
     "authors": "Riccardo Spica, Davide Falanga, Eric Cristofalo, Eduardo Montijano, Davide Scaramuzza 0001, Mac Schwager",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Contact-Implicit Optimization of Locomotion Trajectories for a Quadrupedal Microrobot",
     "authors": "Neel Doshi, Kaushik Jayaram, Benjamin Goldberg 0003, Zachary Manchester, Robert J. Wood, Scott Kuindersma",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Robust Sampling Based Model Predictive Control with Sparse Objective Information",
     "authors": "Grady Williams, Brian Goldfain, Paul Drews, Kamil Saigol, James M. Rehg, Evangelos A. Theodorou",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "RelaxedIK: Real-time Synthesis of Accurate and Feasible Robot Arm Motion",
     "authors": "Daniel Rakita, Bilge Mutlu, Michael Gleicher",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Differentiable Physics and Stable Modes for Tool-Use and Manipulation Planning",
     "authors": "Marc Toussaint, Kelsey R. Allen, Kevin A. Smith 0001, Joshua B. Tenenbaum",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Data-Driven Measurement Models for Active Localization in Sparse Environments",
     "authors": "Ian Abraham, Anastasia Mavrommati, Todd D. Murphey",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Online User Assessment for Minimal Intervention During Task-Based Robotic Assistance",
     "authors": "Aleksandra Kalinowska, Kathleen Fitzsimons, Julius P. A. Dewald, Todd D. Murphey",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Toward Specification-Guided Active Mars Exploration for Cooperative Robot Teams",
     "authors": "Petter Nilsson, Sofie Haesaert, Rohan Thakker, Kyohei Otsu, Cristian Ioan Vasile, Ali-Akbar Agha-Mohammadi, Richard M. Murray, Aaron D. Ames",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Simplifying Reward Design through Divide-and-Conquer",
     "authors": "Ellis Ratner, Dylan Hadfield-Menell, Anca D. Dragan",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Learning Complex Dexterous Manipulation with Deep Reinforcement Learning and Demonstrations",
     "authors": "Aravind Rajeswaran, Vikash Kumar, Abhishek Gupta 0004, Giulia Vezzani, John Schulman, Emanuel Todorov, Sergey Levine",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Contact-Aided Invariant Extended Kalman Filtering for Legged Robot State Estimation",
     "authors": "Ross Hartley, Maani Ghaffari Jadidi, Jessy W. Grizzle, Ryan M. Eustice",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Bayesian Tactile Exploration for Compliant Docking With Uncertain Shapes",
     "authors": "Kris Hauser",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "GPU-Based Max Flow Maps in the Plane",
     "authors": "Renato Farias, Marcelo Kallmann",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "A Variable Stiffness Gripper with Antagonistic Magnetic Springs for Enhancing Manipulation",
     "authors": "Amirhossein H. Memar, Ehsan Tarkesh Esfahani",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Fast Online Trajectory Optimization for the Bipedal Robot Cassie",
     "authors": "Taylor Apgar, Patrick Clary, Kevin Green, Alan Fern, Jonathan W. Hurst",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Robust Obstacle Avoidance using Tube NMPC",
     "authors": "Gowtham Garimella, Matthew Sheckells, Joseph L. Moore, Marin Kobilarov",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Agile Autonomous Driving using End-to-End Deep Imitation Learning",
     "authors": "Yunpeng Pan, Ching-An Cheng, Kamil Saigol, Keuntaek Lee, Xinyan Yan, Evangelos A. Theodorou, Byron Boots",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Efficiently Sampling from Underlying Models",
     "authors": "Greydon T. Foil, David Wettergreen",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "In-Hand Manipulation via Motion Cones",
     "authors": "Nikhil Chavan Dafle, Rachel M. Holladay, Alberto Rodriguez 0003",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "A Novel Whisker Sensor Used for 3D Contact Point Determination and Contour Extraction",
     "authors": "Hannah M. Emnett, Matthew Graff, Mitra J. Z. Hartmann",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Exploiting Stochasticity for the Control of Transitions in Gyre Flows",
     "authors": "Dhanushka Kularatne, Eric Forgoston, M. Ani Hsieh",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Safe Motion Planning in Unknown Environments: Optimality Benchmarks and Tractable Policies",
     "authors": "Lucas Janson, Tommy Hu, Marco Pavone 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "EV-FlowNet: Self-Supervised Optical Flow Estimation for Event-based Cameras",
     "authors": "Alex Zihao Zhu, Liangzhe Yuan, Kenneth Chaney, Kostas Daniilidis",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Plug-and-Play Supervisory Control Using Muscle and Brain Signals for Real-Time Gesture and Error Detection",
     "authors": "Joseph DelPreto, Andres F. Salazar-Gomez, Stephanie Gil, Ramin M. Hasani, Frank H. Guenther, Daniela Rus",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Passive Static Equilibrium with Frictional Contacts and Application to Grasp Stability Analysis",
     "authors": "Maximilian Haas-Heger, Christos H. Papadimitriou, Mihalis Yannakakis, Garud Iyengar, Matei T. Ciocarlie",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Generalized WarpDriver: Unified Collision Avoidance for Multi-Robot Systems in Arbitrarily Complex Environments",
     "authors": "David Wolinski, Ming C. Lin",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Following High-level Navigation Instructions on a Simulated Quadcopter with Imitation Learning",
     "authors": "Valts Blukis, Nataly Brukhim, Andrew Bennett, Ross A. Knepper, Yoav Artzi",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Sequence-to-Sequence Language Grounding of Non-Markovian Task Specifications",
     "authors": "Nakul Gopalan, Dilip Arumugam, Lawson L. S. Wong, Stefanie Tellex",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Autonomous Thermalling as a Partially Observable Markov Decision Process",
     "authors": "Iain Guilliard, Richard Rogahn, Jim Piavis, Andrey Kolobov",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Probabilistically Safe Robot Planning with Confidence-Based Human Predictions",
     "authors": "Jaime F. Fisac, Andrea Bajcsy, Sylvia L. Herbert, David Fridovich-Keil, Steven Wang, Claire J. Tomlin, Anca D. Dragan",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Autonomous Adaptive Modification of Unstructured Environments",
     "authors": "Maira Saboia, Vivek Thangavelu, Walker Gosrich, Nils Napp",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2018,
     "title": "Near-Optimal Budgeted Data Exchange for Distributed Loop Closure Detection",
     "authors": "Yulun Tian, Kasra Khosoussi, Matthew Giamou, Jonathan P. How, Jonathan Kelly",
     "abstract": null

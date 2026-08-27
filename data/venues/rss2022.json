@@ -1,518 +1,370 @@
 [
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "ACID: Action-Conditional Implicit Visual Dynamics for Deformable Object Manipulation",
     "authors": "Bokui Shen, Zhenyu Jiang 0002, Christopher B. Choy, Silvio Savarese, Leonidas J. Guibas, Anima Anandkumar, Yuke Zhu",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "KernelGPA: A Deformable SLAM Back-end",
     "authors": "Fang Bai, Adrien Bartoli",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Occupancy-SLAM: Simultaneously Optimizing Robot Poses and Continuous Occupancy Map",
     "authors": "Liang Zhao 0003, Yingyu Wang, Shoudong Huang",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Resilient Multi-Sensor Exploration of Multifarious Environments with a Team of Aerial Robots",
     "authors": "Graeme Best, Rohit Garg, John Keller, Geoffrey A. Hollinger, Sebastian A. Scherer",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "CURL: Continuous, Ultra-compact Representation for LiDAR",
     "authors": "Kaicheng Zhang, Ziyang Hong 0001, Shida Xu, Sen Wang 0002",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "SEER: Unsupervised and sample-efficient environment specialization of image descriptors",
     "authors": "Peer Neubert, Stefan Schubert",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Equivariant Transporter Network",
     "authors": "Haojie Huang 0001, Dian Wang 0001, Robin Walters 0001, Robert Platt 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "RoboCraft: Learning to See, Simulate, and Shape Elasto-Plastic Objects with Graph Networks",
     "authors": "Haochen Shi, Huazhe Xu, Zhiao Huang, Yunzhu Li, Jiajun Wu 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Play it by Ear: Learning Skills amidst Occlusion through Audio-Visual Imitation Learning",
     "authors": "Maximilian Du, Olivia Y. Lee, Suraj Nair 0003, Chelsea Finn",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "The Surprising Effectiveness of Representation Learning for Visual Imitation",
     "authors": "Jyothish Pari, Nur Muhammad (Mahi) Shafiullah, Sridhar Pandian Arunachalam, Lerrel Pinto",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Mesh-based Dynamics with Occlusion Reasoning for Cloth Manipulation",
     "authors": "Zixuan Huang, Xingyu Lin, David Held",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "iSDF: Real-Time Neural Signed Distance Fields for Robot Perception",
     "authors": "Joseph Ortiz, Alexander Clegg, Jing Dong 0002, Edgar Sucar, David Novotný, Michael Zollhöfer, Mustafa Mukadam",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "POCD: Probabilistic Object-Level Change Detection and Volumetric Mapping in Semi-Static Scenes",
     "authors": "Jingxing Qian, Veronica Chatrath, Jun Yang 0053, James Servos, Angela P. Schoellig, Steven L. Waslander",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "PropEM-L: Radio Propagation Environment Modeling and Learning for Communication-Aware Multi-Robot Exploration",
     "authors": "Lillian Clark, Jeffrey A. Edlund, Marc Sanchez Net, Tiago Stegun Vaquero, Ali-akbar Agha-mohammadi",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "DICP: Doppler Iterative Closest Point Algorithm",
     "authors": "Bruno Hexsel, Heethesh Vhavle, Yi Chen",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Iterative Residual Policy for Goal-Conditioned Dynamic Manipulation of Deformable Objects",
     "authors": "Cheng Chi 0001, Benjamin Burchfiel, Eric Cousineau, Siyuan Feng 0003, Shuran Song",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "DextAIRity: Deformable Manipulation Can be a Breeze",
     "authors": "Zhenjia Xu, Cheng Chi 0001, Benjamin Burchfiel, Eric Cousineau, Siyuan Feng 0003, Shuran Song",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "FlowBot3D: Learning 3D Articulation Flow to Manipulate Articulated Objects",
     "authors": "Ben Eisner, Harry Zhang, David Held",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "ViKiNG: Vision-Based Kilometer-Scale Navigation with Geographic Hints",
     "authors": "Dhruv Shah, Sergey Levine",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "MIRROR: Differentiable Deep Social Projection for Assistive Human-Robot Communication",
     "authors": "Kaiqi Chen, Jeffrey Fong, Harold Soh",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Human Motion Control of Quadrupedal Robots using Deep Reinforcement Learning",
     "authors": "Sunwoo Kim, Maks Sorokin, Jehee Lee, Sehoon Ha",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Rapid Locomotion via Reinforcement Learning",
     "authors": "Gabriel B. Margolis, Ge Yang 0003, Kartik Paigwar, Tao Chen 0046, Pulkit Agrawal 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Robotic Telekinesis: Learning a Robotic Hand Imitator by Watching Humans on YouTube",
     "authors": "Aravind Sivakumar, Kenneth Shaw, Deepak Pathak",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Underwater Robot-To-Human Communication Via Motion: Implementation and Full-Loop Human Interface Evaluation",
     "authors": "Michael Fulton, Muntaqim Mehtaz, Junaed Sattar, Owen Queeglay",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Gaze Complements Control Input for Goal Prediction During Assisted Teleoperation",
     "authors": "Reuben M. Aronson, Henny Admoni",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Human-to-Robot Imitation in the Wild",
     "authors": "Shikhar Bahl, Abhinav Gupta 0001, Deepak Pathak",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Variational Inference MPC using Normalizing Flows and Out-of-Distribution Projection",
     "authors": "Thomas Power, Dmitry Berenson",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Negative Result for Learning from Demonstration: Challenges for End-Users Teaching Robots with Task And Motion Planning Abstractions",
     "authors": "Nakul Gopalan, Nina Moorman, Manisha Natarajan, Matthew C. Gombolay",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "A Learning-based Iterative Control Framework for Controlling a Robot Arm with Pneumatic Artificial Muscles",
     "authors": "Hao Ma, Dieter Büchler, Bernhard Schölkopf, Michael Muehlebach",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Distributed Optimisation and Deconstruction of Bridges by Self-Assembling Robots",
     "authors": "Edward Bray, Roderich Gross",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Data Augmentation for Manipulation",
     "authors": "Peter Mitrano, Dmitry Berenson",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Embodied Multi-Agent Task Planning from Ambiguous Instruction",
     "authors": "Xinzhu Liu, Xinghang Li, Di Guo 0002, Sinan Tan, Huaping Liu 0001, Fuchun Sun 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Bridging Model-based Safety and Model-free Reinforcement Learning through System Identification of Low Dimensional Linear Models",
     "authors": "Zhongyu Li 0003, Jun Zeng 0002, Akshay Thirugnanam, Koushil Sreenath",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Autonomously Untangling Long Cables",
     "authors": "Vainavi Viswanath, Kaushik Shivakumar, Justin Kerr, Brijen Thananjeyan, Ellen R. Novoseller, Jeffrey Ichnowski, Alejandro Escontrela, Michael Laskey, Joseph E. Gonzalez, Ken Goldberg",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Factory: Fast Contact for Robotic Assembly",
     "authors": "Yashraj Narang, Kier Storey, Iretiayo Akinola, Miles Macklin, Philipp Reist, Lukasz Wawrzyniak, Yunrong Guo, Ádám Moravánszky, Gavriel State, Michelle Lu, Ankur Handa, Dieter Fox",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Fundamental Performance Limits for Sensor-Based Robot Control and Policy Learning",
     "authors": "Anirudha Majumdar, Vincent Pacelli",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Certifiable Robot Design Optimization using Differentiable Programming",
     "authors": "Charles Dawson 0001, Chuchu Fan",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Collocation Methods for Second Order Systems",
     "authors": "Siro Moreno-Martín, Lluís Ros, Enric Celaya",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Collision Detection Accelerated: An Optimization Perspective",
     "authors": "Louis Montaut, Quentin Le Lidec, Vladimír Petrík, Josef Sivic, Justin Carpentier",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "PROX-QP: Yet another Quadratic Programming Solver for Robotics and beyond",
     "authors": "Antoine Bambade, Sarah El Kazdadi, Adrien B. Taylor, Justin Carpentier",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "SymForce: Symbolic Computation and Code Generation for Robotics",
     "authors": "Hayk Martiros, Aaron Miller, Nathan Bucki, Bradley Solliday, Ryan Kennedy, Jack Zhu, Tung Dang, Dominic Pattison, Harrison Zheng, Teo Tomic, Peter Henry, Gareth Cross, Josiah VanderMey, Alvin Sun, Samuel Wang, Kristen Holtz",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Failure Prediction with Statistical Guarantees for Vision-Based Robot Control",
     "authors": "Alec Farid, David Snyder, Allen Z. Ren, Anirudha Majumdar",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Proxima: An Approach for Time or Accuracy Budgeted Collision Proximity Queries",
     "authors": "Daniel Rakita, Bilge Mutlu, Michael Gleicher",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "You Only Demonstrate Once: Category-Level Manipulation from Single Visual Demonstration",
     "authors": "Bowen Wen, Wenzhao Lian, Kostas E. Bekris, Stefan Schaal",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "DiPCAN: Distilling Privileged Information for Crowd-Aware Navigation",
     "authors": "Gianluca Monaci, Michel Aractingi, Tomi Silander",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Parameterized Differential Dynamic Programming",
     "authors": "Alex Oshin, Matthew D. Houghton, Michael J. Acheson, Irene M. Gregory, Evangelos A. Theodorou",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "AK: Attentive Kernel for Information Gathering",
     "authors": "Weizhe Chen 0004, Roni Khardon, Lantao Liu",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "SVAM: Saliency-guided Visual Attention Modeling by Autonomous Underwater Robot",
     "authors": "Md Jahidul Islam, Ruobing Wang 0002, Junaed Sattar",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "TNS: Terrain Traversability Mapping and Navigation System for Autonomous Excavators",
     "authors": "Tianrui Guan, Zhenpeng He, Ruitao Song, Dinesh Manocha, Liangjun Zhang",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Hydra: A Real-time Spatial Perception System for 3D Scene Graph Construction and Optimization",
     "authors": "Nathan Hughes, Yun Chang, Luca Carlone",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Learning Mixed Strategies in Trajectory Games",
     "authors": "Lasse Peters, David Fridovich-Keil, Laura Ferranti, Cyrill Stachniss, Javier Alonso-Mora, Forrest Laine",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "A Local Optimization Framework for Multi-Objective Ergodic Search",
     "authors": "Zhongqiang Ren, Akshaya Kesarimangalam Srinivasan, Howard Coffin, Ian Abraham, Howie Choset",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Multi-Robot Adversarial Resilience using Control Barrier Functions",
     "authors": "Matthew Cavorsi, Beatrice Capelli, Lorenzo Sabattini, Stephanie Gil",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "FaDIV-Syn: Fast Depth-Independent View Synthesis using Soft Masks and Implicit Blending",
     "authors": "Andre Rochow, Max Schwarz, Michael Weinmann, Sven Behnke",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Decentralized Safe Multi-agent Stochastic Optimal Control using Deep FBSDEs and ADMM",
     "authors": "Marcus A. Pereira, Augustinos D. Saravanos, Oswin So, Evangelos A. Theodorou",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "CALI: Coarse-to-Fine ALIgnments Based Unsupervised Domain Adaptation of Traversability Prediction for Deployable Autonomous Navigation",
     "authors": "Zheng Chen 0016, Durgakant Pushp, Lantao Liu",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Sub-1.5 Time-Optimal Multi-Robot Path Planning on Grids in Polynomial Time",
     "authors": "Teng Guo 0006, Jingjin Yu",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Conflict-Based Steiner Search for Multi-Agent Combinatorial Path Finding",
     "authors": "Zhongqiang Ren, Sivakumar Rathinam, Howie Choset",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Traversing Supervisor Problem: An Approximately Optimal Approach to Multi-Robot Assistance",
     "authors": "Tianchen Ji, Roy Dong, Katherine Driggs-Campbell",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Cooperative Multi-Agent Trajectory Generation with Modular Bayesian Optimization",
     "authors": "Gilhyun Ryou, Ezra Tal, Sertac Karaman",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Meta Value Learning for Fast Policy-Centric Optimal Motion Planning",
     "authors": "Siyuan Xu, Minghui Zhu",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Soft Robots Learn to Crawl: Jointly Optimizing Design and Control with Sim-to-Real Transfer",
     "authors": "Charles B. Schaff, Audrey Sedal, Matthew R. Walter",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Bridge Data: Boosting Generalization of Robotic Skills with Cross-Domain Datasets",
     "authors": "Frederik Ebert, Yanlai Yang, Karl Schmeckpeper, Bernadette Bucher, Georgios Georgakis, Kostas Daniilidis, Chelsea Finn, Sergey Levine",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Invariance Through Latent Alignment",
     "authors": "Takuma Yoneda, Ge Yang 0003, Matthew R. Walter, Bradly C. Stadie",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Correcting Robot Plans with Natural Language Feedback",
     "authors": "Pratyusha Sharma, Balakumar Sundaralingam, Valts Blukis, Chris Paxton 0001, Tucker Hermans, Antonio Torralba 0001, Jacob Andreas, Dieter Fox",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "End-to-End Learning of Hybrid Inverse Dynamics Models for Precise and Compliant Impedance Control",
     "authors": "Moritz Reuss, Niels van Duijkeren, Robert Krug 0003, Philipp Becker, Vaisakh Shaj, Gerhard Neumann",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "FuseBot: RF-Visual Mechanical Search",
     "authors": "Tara Boroushaki, Laura Dodds, Nazish Naeem, Fadel Adib",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Learning Interpretable, High-Performing Policies for Autonomous Driving",
     "authors": "Rohan R. Paleja, Yaru Niu, Andrew Silva, Chace Ritchie, Sugju Choi, Matthew C. Gombolay",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Learning Forward Dynamics Model and Informed Trajectory Sampler for Safe Quadruped Navigation",
     "authors": "Yunho Kim, Chanyoung Kim, Jemin Hwangbo",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Action Conditioned Tactile Prediction: case study on slip prediction",
     "authors": "Willow Mandil, Kiyanoush Nazari, Amir Ghalamzan E",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Sample Efficient Grasp Learning Using Equivariant Models",
     "authors": "Xupeng Zhu, Dian Wang 0001, Ondrej Biza, Guanang Su, Robin Walters 0001, Robert Platt 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Understanding Dynamic Tactile Sensing for Liquid Property Estimation",
     "authors": "Hung-Jui Huang, Xiaofeng Guo, Wenzhen Yuan 0001",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Aerial Layouting: Design and Control of a Compliant and Actuated End-Effector for Precise In-flight Marking on Ceilings",
     "authors": "Christian Lanegger, Marco Ruggia, Marco Tognon, Lionel Ott, Roland Siegwart",
     "abstract": null
   },
   {
-    "conference": "RSS",
-    "year": 2022,
     "title": "Adaptive Manipulation of Conductive, Nonmagnetic Objects via a Continuous Model of Magnetically Induced Force and Torque",
     "authors": "Griffin F. Tabor, Lan N. Pham, Jake J. Abbott, Tucker Hermans",
     "abstract": null

@@ -1,294 +1,210 @@
 [
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Learned Collaborative Stereo Refinement",
     "authors": "Patrick Kn&#246;belreiter, Thomas Pock",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Plane Completion and Filtering for Multi-View Stereo Reconstruction",
     "authors": "Andreas Kuhn 0005, Shan Lin, Oliver Erdler",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Simultaneous Semantic Segmentation and Outlier Detection in Presence of Domain Shift",
     "authors": "Petra Bevandic, Ivan Kreso, Marin Orsic, Sinisa Segvic",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "3D Bird's-Eye-View Instance Segmentation",
     "authors": "Cathrin Elich, Francis Engelmann, Theodora Kontogianni, Bastian Leibe",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Classification-Specific Parts for Improving Fine-Grained Visual Categorization",
     "authors": "Dimitri Korsch, Paul Bodesheim, Joachim Denzler",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Adjustment and Calibration of Dome Port Camera Systems for Underwater Vision",
     "authors": "Mengkun She, Yifan Song 0004, Jochen Mohrmann, Kevin K&#246;ser",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Training Auto-Encoder-Based Optimizers for Terahertz Image Reconstruction",
     "authors": "Tak Ming Wong, Matthias Kahl, Peter Haring Bol&#237;var, Andreas Kolb 0001, Michael M&#246;ller 0001",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Joint Viewpoint and Keypoint Estimation with Real and Synthetic Data",
     "authors": "Pau Panareda Busto, Juergen Gall",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Non-causal Tracking by Deblatting",
     "authors": "Denys Rozumnyi, Jan Kotera, Filip Sroubek, Jiri Matas",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "On the Estimation of the Wasserstein Distance in Generative Models",
     "authors": "Thomas Pinetz, Daniel Soukup, Thomas Pock",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Deep Archetypal Analysis",
     "authors": "Sebastian Mathias Keller, Maxim Samarin, Mario Wieser, Volker Roth 0001",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Single Level Feature-to-Feature Forecasting with Deformable Convolutions",
     "authors": "Josip Saric, Marin Orsic, Tonci Antunovic, Sacha Vrazic, Sinisa Segvic",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Predicting Landscapes from Environmental Conditions Using Generative Networks",
     "authors": "Christian Requena-Mesa, Markus Reichstein, Miguel D. Mahecha, Basil Kraft, Joachim Denzler",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Semi-supervised Segmentation of Salt Bodies in Seismic Images Using an Ensemble of Convolutional Neural Networks",
     "authors": "Yauhen Babakhin, Artsiom Sanakoyeu, Hirotoshi Kitamura",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Entrack: A Data-Driven Maximum-Entropy Approach to Fiber Tractography",
     "authors": "Viktor Wegmayr, Giacomo Giuliari, Joachim M. Buhmann",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Generative Aging of Brain MR-Images and Prediction of Alzheimer Progression",
     "authors": "Viktor Wegmayr, Maurice H&#246;rold, Joachim M. Buhmann",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Nonlinear Causal Link Estimation Under Hidden Confounding with an Application to Time Series Anomaly Detection",
     "authors": "Violeta Teodora Trifunov, Maha Shadaydeh, Jakob Runge, Veronika Eyring, Markus Reichstein, Joachim Denzler",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Iris Verification with Convolutional Neural Network and Unit-Circle Layer",
     "authors": "Radim Spetl&#237;k, Ivan Razumenic",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "SDNet: Semantically Guided Depth Estimation Network",
     "authors": "Matthias Ochs, Adrian Kretz, Rudolf Mester",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Object Segmentation Using Pixel-Wise Adversarial Loss",
     "authors": "Ricard Durall, Franz-Josef Pfreundt, Ullrich K&#246;the, Janis Keuper",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Visual Coin-Tracking: Tracking of Planar Double-Sided Objects",
     "authors": "Jon&#225;s Ser&#253;ch, Jiri Matas",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Exploiting Attention for Visual Relationship Detection",
     "authors": "Tongxin Hu, Wentong Liao, Michael Ying Yang, Bodo Rosenhahn",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Learning Task-Specific Generalized Convolutions in the Permutohedral Lattice",
     "authors": "Anne S. Wannenwetsch, Martin Kiefel, Peter V. Gehler, Stefan Roth 0001",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Achieving Generalizable Robustness of Deep Neural Networks by Stability Training",
     "authors": "Jan Laermann, Wojciech Samek, Nils Strodthoff",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "2D and 3D Segmentation of Uncertain Local Collagen Fiber Orientations in SHG Microscopy",
     "authors": "Lars Schmarje, Claudius Zelenka, Ulf Geisen, Claus C. Gl&#252;er, Reinhard Koch",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Points2Pix: 3D Point-Cloud to Image Translation Using Conditional GANs",
     "authors": "Stefan Milz, Martin Simon, Kai Fischer, Maximilian P&#246;pperl, Horst-Michael Gross",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "MLAttack: Fooling Semantic Segmentation Networks by Multi-layer Attacks",
     "authors": "Puneet Gupta 0002, Esa Rahtu",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Not Just a Matter of Semantics: The Relationship Between Visual and Semantic Similarity",
     "authors": "Clemens-Alexander Brust, Joachim Denzler",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "DynGraph: Visual Question Answering via Dynamic Scene Graphs",
     "authors": "Monica Haurilet, Ziad Al-Halah, Rainer Stiefelhagen",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Training Invertible Neural Networks as Autoencoders",
     "authors": "The-Gia Leo Nguyen, Lynton Ardizzone, Ullrich K&#246;the",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Weakly Supervised Learning of Dense Semantic Correspondences and Segmentation",
     "authors": "Nikolai Ufer, Kam To Lui, Katja Schwarz, Paul Warkentin, Bj&#246;rn Ommer",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "A Neural-Symbolic Architecture for Inverse Graphics Improved by Lifelong Meta-learning",
     "authors": "Michael Kissner, Helmut Mayer 0001",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Unsupervised Multi-source Domain Adaptation Driven by Deep Adversarial Ensemble Learning",
     "authors": "Sayan Rakshit, Biplab Banerjee, Gemma Roig, Subhasis Chaudhuri",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Time-Frequency Causal Inference Uncovers Anomalous Events in Environmental Systems",
     "authors": "Maha Shadaydeh, Joachim Denzler, Yanira Guanche Garcia, Miguel D. Mahecha",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Tongue Contour Tracking in Ultrasound Images with Spatiotemporal LSTM Networks",
     "authors": "Enes Aslan, Yusuf Sinan Akgul",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Localized Interactive Instance Segmentation",
     "authors": "Soumajit Majumder, Angela Yao",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Iterative Greedy Matching for 3D Human Pose Tracking from Multiple Views",
     "authors": "Julian Tanke, Juergen Gall",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Visual Person Understanding Through Multi-task and Multi-dataset Learning",
     "authors": "Kilian Pfeiffer, Alexander Hermans, Istv&#225;n S&#225;r&#225;ndi, Mark Weber, Bastian Leibe",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Dynamic Classifier Chains for Multi-label Learning",
     "authors": "Pawel Trajdos, Marek Kurzynski",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Learning 3D Semantic Reconstruction on Octrees",
     "authors": "Xiaojuan Wang, Martin R. Oswald, Ian Cherabier, Marc Pollefeys",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Learning to Disentangle Latent Physical Factors for Video Prediction",
     "authors": "Deyao Zhu, Marco Munderloh, Bodo Rosenhahn, J&#246;rg St&#252;ckler",
     "abstract": null
   },
   {
-    "conference": "GCPR",
-    "year": 2019,
     "title": "Learning to Train with Synthetic Humans",
     "authors": "David T. Hoffmann, Dimitrios Tzionas, Michael J. Black, Siyu Tang 0001",
     "abstract": null

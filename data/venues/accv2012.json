@@ -1,1575 +1,1125 @@
 [
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Beyond Dataset Bias: Multi-task Unaligned Shared Knowledge Transfer",
     "authors": "Tatiana Tommasi, Novi Quadrianto, Barbara Caputo, Christoph H. Lampert",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Cross-Database Transfer Learning via Learnable and Discriminant Error-Correcting Output Codes",
     "authors": "Feng-Ju Chang, Yen-Yu Lin, Ming-Fang Weng",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Human Reidentification with Transferred Metric Learning",
     "authors": "Wei Li 0044, Rui Zhao 0001, Xiaogang Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Tell Me What You Like and I'll Tell You What You Are: Discriminating Visual Preferences on Flickr Data",
     "authors": "Pietro Lovato, Alessandro Perina, Nicu Sebe, Omar Zandon&#224;, Alessio Montagnini, Manuele Bicego, Marco Cristani",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Local Context Priors for Object Proposal Generation",
     "authors": "Marko Ristin, Juergen Gall, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Arbitrary-Shape Object Localization Using Adaptive Image Grids",
     "authors": "Chunluan Zhou, Junsong Yuan 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Disambiguation in Unknown Object Detection by Integrating Image and Speech Recognition Confidences",
     "authors": "Yuko Ozasa, Yasuo Ariki, Mikio Nakano, Naoto Iwahashi",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Class-Specific Weighted Dominant Orientation Templates for Object Detection",
     "authors": "Hui-Jin Lee, Ki-Sang Hong",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Salient Object Detection via Color Contrast and Color Distribution",
     "authors": "Keren Fu, Chen Gong 0002, Jie Yang 0002, Yue Zhou 0005",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Data Decomposition and Spatial Mixture Modeling for Part Based Model",
     "authors": "Junge Zhang, Yongzhen Huang, Kaiqi Huang, Zifeng Wu, Tieniu Tan",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Appearance Sharing for Collective Human Pose Estimation",
     "authors": "Marcin Eichner, Vittorio Ferrari",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Max-Margin Regularization for Reducing Accidentalness in Chamfer Matching",
     "authors": "Angela Eigenstetter, Pradeep Krishna Yarlagadda, Bj&#246;rn Ommer",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Coupling-and-Decoupling: A Hierarchical Model for Occlusion-Free Car Detection",
     "authors": "Bo Li 0031, Tianfu Wu 0001, Wenze Hu, Mingtao Pei",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "The Pooled NBNN Kernel: Beyond Image-to-Class and Image-to-Image",
     "authors": "Konstantinos Rematas, Mario Fritz, Tinne Tuytelaars",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Local Hypersphere Coding Based on Edges between Visual Words",
     "authors": "Weiqiang Ren, Yongzhen Huang, Xin Zhao 0012, Kaiqi Huang, Tieniu Tan",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Spatially Local Coding for Object Recognition",
     "authors": "Sancho McCann, David G. Lowe",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Semantic Segmentation with Millions of Features: Integrating Multiple Cues in a Combined Random Forest Approach",
     "authors": "Bj&#246;rn Fr&#246;hlich, Erik Rodner, Joachim Denzler",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Semi-Supervised Learning on a Budget: Scaling Up to Large Datasets",
     "authors": "Sandra Ebert, Mario Fritz, Bernt Schiele",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "One-Class Multiple Instance Learning via Robust PCA for Common Object Discovery",
     "authors": "Xinggang Wang, Zhengdong Zhang 0001, Yi Ma 0001, Xiang Bai, Wenyu Liu 0001, Zhuowen Tu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Online Semi-Supervised Discriminative Dictionary Learning for Sparse Representation",
     "authors": "Guangxiao Zhang, Zhuolin Jiang, Larry S. Davis",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Efficient Discriminative Learning of Class Hierarchy for Many Class Prediction",
     "authors": "Lin Chen 0021, Lixin Duan, Ivor W. Tsang, Dong Xu 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Grouping Active Contour Fragments for Object Recognition",
     "authors": "Wei Zheng, Songlin Song, Hong Chang 0001, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Detecting Partially Occluded Objects with an Implicit Shape Model Random Field",
     "authors": "Paul Wohlhart, Michael Donoser, Peter M. Roth, Horst Bischof",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Relative Forest for Attribute Prediction",
     "authors": "Shaoxin Li 0001, Shiguang Shan, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Discriminative Dictionary Learning with Pairwise Constraints",
     "authors": "Huimin Guo, Zhuolin Jiang, Larry S. Davis",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Adaptive Unsupervised Multi-view Feature Selection for Visual Concept Recognition",
     "authors": "Yinfu Feng, Jun Xiao 0001, Yueting Zhuang, Xiaoming Liu 0002",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Iris Recognition Using Consistent Corner Optical Flow",
     "authors": "Aditya Nigam, Phalguni Gupta",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Face Recognition in Videos - A Graph Based Modified Kernel Discriminant Analysis",
     "authors": "Gayathri Mahalingam, Chandra Kambhamettu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Learning Hierarchical Bag of Words Using Naive Bayes Clustering",
     "authors": "Siddhartha Chandra, Shailesh Kumar, C. V. Jawahar",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Efficient Human Parsing Based on Sketch Representation",
     "authors": "Meng Wang, Zhaoxiang Zhang 0001, Yunhong Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Exclusive Visual Descriptor Quantization",
     "authors": "Yu Zhang 0004, Jianxin Wu 0001, Weiyao Lin",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Underwater Live Fish Recognition Using a Balance-Guaranteed Optimized Tree",
     "authors": "Phoenix X. Huang, Bastiaan Johannes Boom, Robert B. Fisher",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Local 3D Symmetry for Visual Saliency in 2.5D Point Clouds",
     "authors": "Ekaterina Potapova, Michael Zillich, Markus Vincze",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Exploiting Features - Locally Interleaved Sequential Alignment for Object Detection",
     "authors": "Karel Zimmermann, David Hurych, Tom&#225;s Svoboda",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Efficient and Scalable 4th-Order Match Propagation",
     "authors": "David Ok, Renaud Marlet, Jean-Yves Audibert",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Hierarchical Object Representations for Visual Recognition via Weakly Supervised Learning",
     "authors": "Tianzhu Zhang 0001, Rui Cai 0002, Zhiwei Li 0006, Lei Zhang 0001, Hanqing Lu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Invariant Surface-Based Shape Descriptor for Dynamic Surface Encoding",
     "authors": "Tony Tung, Takashi Matsuyama",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Linear Discriminant Analysis with Maximum Correntropy Criterion",
     "authors": "Wei Zhou, Sei-ichiro Kamata",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "AfNet: The Affordance Network",
     "authors": "Karthik Mahesh Varadarajan, Markus Vincze",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Directed Graphical Model for Linear Barcode Scanning from Blurred Images",
     "authors": "Ling Chen",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Probabilistic 3D Model Retrieval System Using Sphere Image",
     "authors": "Ke Ding, Yunhui Liu 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Model Based Training, Detection and Pose Estimation of Texture-Less 3D Objects in Heavily Cluttered Scenes",
     "authors": "Stefan Hinterstoisser, Vincent Lepetit, Slobodan Ilic, Stefan Holzer, Gary R. Bradski, Kurt Konolige, Nassir Navab",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Boosting with Side Information",
     "authors": "Jixu Chen, Xiaoming Liu 0002, Siwei Lyu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Generalized Mutual Subspace Based Methods for Image Set Classification",
     "authors": "Takumi Kobayashi 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Simultaneous Monocular 2D Segmentation, 3D Pose Recovery and 3D Reconstruction",
     "authors": "Victor Adrian Prisacariu, Aleksandr V. Segal, Ian D. Reid 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Joint Kernel Learning for Supervised Image Segmentation",
     "authors": "Jongmin Kim 0006, Youngjoo Seo, Sanghyuk Park, Sungrack Yun, Chang D. Yoo",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Application of Heterogenous Motion Models towards Structure Recovery from Motion",
     "authors": "M. V. Rohith, Chandra Kambhamettu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Locality-Constrained Active Appearance Model",
     "authors": "Xiaowei Zhao, Shiguang Shan, Xiujuan Chai, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Modeling Hidden Topics with Dual Local Consistency for Image Analysis",
     "authors": "Peng Li, Jian Cheng 0001, Hanqing Lu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Design of Non-Linear Discriminative Dictionaries for Image Classification",
     "authors": "Ashish Shrivastava 0001, Hien Van Nguyen, Vishal M. Patel, Rama Chellappa",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Efficient Background Subtraction under Abrupt Illumination Variations",
     "authors": "Junqiu Wang, Yasushi Yagi",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Naive Bayes Image Classification: Beyond Nearest Neighbors",
     "authors": "Radu Timofte, Tinne Tuytelaars, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Contextual Pooling in Image Classification",
     "authors": "Zifeng Wu, Yongzhen Huang, Liang Wang 0001, Tieniu Tan",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Spatial Graph for Image Classification",
     "authors": "Zifeng Wu, Yongzhen Huang, Liang Wang 0001, Tieniu Tan",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Knowledge Leverage from Contours to Bounding Boxes: A Concise Approach to Annotation",
     "authors": "Jie-Zhi Cheng, Feng-Ju Chang, Kuang-Jui Hsu, Yen-Yu Lin",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Efficient Pixel-Grouping Based on Dempster's Theory of Evidence for Image Segmentation",
     "authors": "Bj&#246;rn Scheuermann 0002, Markus Schlosser, Bodo Rosenhahn",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Video Segmentation with Superpixels",
     "authors": "Fabio Galasso, Roberto Cipolla, Bernt Schiele",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Noise Tolerant Watershed Transformation with Viscous Force for Seeded Image Segmentation",
     "authors": "Di Yang, Stephen Gould, Marcus Hutter",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Active Learning for Interactive Segmentation with Expected Confidence Change",
     "authors": "Dan Wang, Canxiang Yan, Shiguang Shan, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Cross Anisotropic Cost Volume Filtering for Segmentation",
     "authors": "Vladislav Kramarev, Oliver Demetz, Christopher Schroers, Joachim Weickert",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Multi-layer Spectral Clustering for Video Segmentation",
     "authors": "Xiaofei Di, Hong Chang 0001, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Video Co-segmentation",
     "authors": "Jos&#233; C. Rubio, Joan Serrat 0002, Antonio M. L&#243;pez 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Globally Minimal Path Method Using Dynamic Speed Functions Based on Progressive Wave Propagation",
     "authors": "Wei Liao 0002, Stefan W&#246;rz, Karl Rohr",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Vanishing Points Estimation and Line Classification in a Manhattan World",
     "authors": "Lilian Zhang, Reinhard Koch",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Online Learning for Fast Segmentation of Moving Objects",
     "authors": "Liam F. Ellis, Vasileios Zografos",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Linear Programming Based Method for Joint Object Region Matching and Labeling",
     "authors": "Junyan Wang 0002, Li Wang 0057, Kap Luk Chan, Martin Constable",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Using Models of Objects with Deformable Parts for Joint Categorization and Segmentation of Objects",
     "authors": "Nikhil Naikal, Dheeraj Singaraju, S. Shankar Sastry",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Robust Stereo Prior for Human Segmentation",
     "authors": "Glenn Sheasby, Julien P. C. Valentin, Nigel T. Crook, Philip H. S. Torr",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Voronoi-Based Extraction of a Feature Skeleton from Noisy Triangulated Surfaces",
     "authors": "Tilman Wekel, Olaf Hellwich",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Maximal Cliques Based Rigid Body Motion Segmentation with a RGB-D Camera",
     "authors": "Samunda Perera, Nick Barnes",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Online Web-Data-Driven Segmentation of Selected Moving Objects in Videos",
     "authors": "Xiang Xiang 0001, Hong Chang, Jiebo Luo 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Multi-Level Structured Image Coding on High-Dimensional Image Representation",
     "authors": "Li-Jia Li 0001, Jun Zhu 0001, Hao Su 0001, Eric P. Xing, Li Fei-Fei 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Incremental Slow Feature Analysis with Indefinite Kernel for Online Temporal Video Segmentation",
     "authors": "Stephan Liwicki, Stefanos Zafeiriou, Maja Pantic",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Texture Classification Based on BIMF Monogenic Signals",
     "authors": "Jianjia Pan, Yuan Yan Tang",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Toward Perception-Based Shape Decomposition",
     "authors": "Tingting Jiang 0001, Zhongqian Dong, Chang Ma, Yizhou Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Co-regularized PLSA for Multi-view Clustering",
     "authors": "Yu Jiang, Jing Liu 0001, Zechao Li, Peng Li, Hanqing Lu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Quadra-Embedding: Binary Code Embedding with Low Quantization Error",
     "authors": "Youngwoon Lee, Jae-Pil Heo, Sung-Eui Yoon",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Learning a Context Aware Dictionary for Sparse Representation",
     "authors": "Farzad Siyahjani, Gianfranco Doretto",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Robust Multiple-Instance Learning with Superbags",
     "authors": "Borislav Antic, Bj&#246;rn Ommer",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Automatic Grading of Cortical and PSC Cataracts Using Retroillumination Lens Images",
     "authors": "Xinting Gao, Damon Wing Kee Wong, Tian-Tsong Ng, Carol Yim-lui Cheung, Ching Yu Cheng, Tien Yin Wong",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Registration of Pre-Operative CT and Non-Contrast-Enhanced C-Arm CT: An Application to Trans-Catheter Aortic Valve Implantation (TAVI)",
     "authors": "Yongning Lu, Ying Sun 0001, Rui Liao, Sim Heng Ong",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Automatic Webcam-Based Human Heart Rate Measurements Using Laplacian Eigenmap",
     "authors": "Lan Wei, Yonghong Tian 0001, Yaowei Wang 0001, Touradj Ebrahimi, Tiejun Huang 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Superpixel Classification Based Optic Disc Segmentation",
     "authors": "Jun Cheng 0003, Jiang Liu 0001, Yanwu Xu 0001, Fengshou Yin, Damon Wing Kee Wong, Ngan Meng Tan, Ching Yu Cheng, Yih Chung Tham, Tien Yin Wong",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Anterior Cruciate Ligament Segmentation from Knee MR Images Using Graph Cuts with Geometric and Probabilistic Shape Constraints",
     "authors": "Hansang Lee, Helen Hong, Junmo Kim 0002",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Robust Mid-Sagittal Plane Extraction in 3-D Ultrasound Fetal Volume for First Trimester Screening",
     "authors": "Kwang Hee Lee, Sang Wook Lee",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Automatic Skin Lesion Segmentation Based on Texture Analysis and Supervised Learning",
     "authors": "Yingding He, Fengying Xie",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Multiscale Convolutional Neural Networks for Vision-Based Classification of Cells",
     "authors": "Pierre Buyssens, Abderrahim Elmoataz, Olivier L&#233;zoray",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Semantic-Context-Based Augmented Descriptor for Image Feature Matching",
     "authors": "Samir Khoualed, Thierry Chateau, Umberto Castellani",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Image Synthesis and Occlusion Removal of Intermediate Views by Stereo Matching",
     "authors": "Seongyun Cho, JeongMok Ha, Hong Jeong",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "PEDIVHANDI: Multimodal Indexation and Retrieval System for Lecture Videos",
     "authors": "Nhu-Van Nguyen, Jean-Marc Ogier, Franck Charneau",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Digitization of Deformed Documents Using a High-Speed Multi-camera Array",
     "authors": "Yoshihiro Watanabe, Kotaro Itoyama, Masahiro Yamada, Masatoshi Ishikawa",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Phase-Based Approach for Caption Detection in Videos",
     "authors": "Shu Wen, Yonghong Song, Yuanlin Zhang 0001, Yu Yu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Efficient Clothing Retrieval with Semantic-Preserving Visual Phrases",
     "authors": "Jianlong Fu, Jinqiao Wang, Zechao Li, Min Xu 0001, Hanqing Lu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "VISOR: Towards On-the-Fly Large-Scale Object Category Retrieval",
     "authors": "Ken Chatfield, Andrew Zisserman",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Picture Is Worth a Thousand Tags: Automatic Web Based Image Tag Expansion",
     "authors": "Andrew Gilbert, Richard Bowden",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Image Retrieval Using Eigen Queries",
     "authors": "Nisarg Raval, Rashmi Vilas Tonge, C. V. Jawahar",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Fast and Effective Retrieval of Plant Leaf Shapes",
     "authors": "Bin Wang 0041, Yongsheng Gao 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Complete Generic Camera Calibration and Modeling Using Spline Surfaces",
     "authors": "Dennis Rosebrock, Friedrich M. Wahl",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "q-Gaussian Mixture Models Based on Non-extensive Statistics for Image and Video Semantic Indexing",
     "authors": "Nakamasa Inoue, Koichi Shinoda",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Rapid Uncertainty Computation with Gaussian Processes and Histogram Intersection Kernels",
     "authors": "Alexander Freytag, Erik Rodner, Paul Bodesheim, Joachim Denzler",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Histogram of Oriented Normal Vectors for Object Recognition with a Depth Sensor",
     "authors": "Shuai Tang, Xiaoyu Wang 0002, Xutao Lv, Tony X. Han, James Keller 0001, Zhihai He, Marjorie Skubic, Shihong Lao",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Globally Optimal Consensus Set Maximization through Rotation Search",
     "authors": "Jean-Charles Bazin, Yongduek Seo, Marc Pollefeys",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Graspable Parts Recognition in Man-Made 3D Shapes",
     "authors": "Hamid Laga",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Face Recognition after Plastic Surgery: A Comprehensive Study",
     "authors": "Xin Liu 0044, Shiguang Shan, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Enhancing Expression Recognition in the Wild with Unlabeled Reference Data",
     "authors": "Mengyi Liu, Shaoxin Li 0001, Shiguang Shan, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Benchmarking Still-to-Video Face Recognition via Partial and Local Linear Discriminant Analysis on COX-S2V Dataset",
     "authors": "Zhiwu Huang, Shiguang Shan, Haihong Zhang, Shihong Lao, Alifu Kuerban, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Fusing Magnitude and Phase Features for Robust Face Recognition",
     "authors": "Yan Li 0014, Shiguang Shan, Haihong Zhang, Shihong Lao, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Finding Happiest Moments in a Social Context",
     "authors": "Abhinav Dhall, Jyoti Joshi, Ibrahim Radwan, Roland Goecke",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Sparsity Sharing Embedding for Face Verification",
     "authors": "Donghoon Lee, Hyunsin Park, Junyoung Chung, Youngook Song, Chang D. Yoo",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Semantic Pixel Sets Based Local Binary Patterns for Face Recognition",
     "authors": "Zhenhua Chai, Heydi Mendez Vazquez, Ran He 0001, Zhenan Sun, Tieniu Tan",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "An Adaptation Framework for Head-Pose Classification in Dynamic Multi-view Scenarios",
     "authors": "Anoop Kolar Rajagopal, Subramanian Ramanathan, Radu L. Vieriu, Elisa Ricci 0001, Oswald Lanz, Kalpathi Ramakrishnan, Nicu Sebe",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Face Parts Localization Using Structured-Output Regression Forests",
     "authors": "Heng Yang 0001, Ioannis Patras",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Human Face Super-Resolution Based on NSCT",
     "authors": "Jing Liu, Guangda Su, Xiaolong Ren, Jiansheng Chen",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Digital Paparazzi: Spotting Celebrities in Professional Photo Libraries",
     "authors": "Sina Jafarpour, Li-Jia Li 0001, Roelof van Zwol",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Nighttime Face Recognition at Long Distance: Cross-Distance and Cross-Spectral Matching",
     "authors": "Hyunju Maeng, Shengcai Liao, Dongoh Kang, Seong-Whan Lee, Anil K. Jain 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Hand Posture Recognition from Disparity Cost Map",
     "authors": "Hanjie Wang, Qi Wang, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Qualitative Pose Estimation by Discriminative Deformable Part Models",
     "authors": "Hyungtae Lee, Vlad I. Morariu, Larry S. Davis",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Learning Discriminant Face Descriptor for Face Recognition",
     "authors": "Zhen Lei 0001, Stan Z. Li",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Optimal Operator Space Pursuit: A Framework for Video Sequence Data Analysis",
     "authors": "Xiao Bian, Hamid Krim",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Cross-view Graph Embedding",
     "authors": "Zhiwu Huang, Shiguang Shan, Haihong Zhang, Shihong Lao, Xilin Chen 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Fast Training of Effective Multi-class Boosting Using Coordinate Descent Optimization",
     "authors": "Guosheng Lin, Chunhua Shen, Anton van den Hengel, David Suter",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Hierarchical Space Tiling for Scene Modeling",
     "authors": "Shuo Wang, Yizhou Wang 0001, Song-Chun Zhu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Adaptive Integration of Feature Matches into Variational Optical Flow Methods",
     "authors": "Michael Stoll, Sebastian Volz, Andr&#233;s Bruhn",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Efficient Learning of Linear Predictors Using Dimensionality Reduction",
     "authors": "Stefan Holzer, Slobodan Ilic, David Joseph Tan, Nassir Navab",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Robust Visual Tracking Using Dynamic Classifier Selection with Sparse Representation of Label Noise",
     "authors": "Yuefeng Chen, Qing Wang 0006",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Dynamic Objectness for Adaptive Tracking",
     "authors": "Severin Stalder, Helmut Grabner, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Visual Tracking in Continuous Appearance Space via Sparse Coding",
     "authors": "Guofeng Wang, Fan Zhong 0001, Yue Liu, Qunsheng Peng 0001, Xueying Qin",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Robust Object Tracking in Crowd Dynamic Scenes Using Explicit Stereo Depth",
     "authors": "Chi Li, Le Lu 0001, Gregory D. Hager, Jianyu Tang, Hanzi Wang",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Structured Visual Tracking with Dynamic Graph",
     "authors": "Zhaowei Cai, Longyin Wen, Jianwei Yang, Zhen Lei 0001, Stan Z. Li",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Online Multi-target Tracking by Large Margin Structured Learning",
     "authors": "Suna Kim, Suha Kwak, Jan Feyereisl, Bohyung Han",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "An Anchor Patch Based Optimization Framework for Reducing Optical Flow Drift in Long Image Sequences",
     "authors": "Wenbin Li 0002, Darren Cosker, Matthew Brown 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "One-Class Multiple Instance Learning and Applications to Target Tracking",
     "authors": "Karthik Sankaranarayanan, James W. Davis",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Dense Scene Flow Based on Depth and Multi-channel Bilateral Filter",
     "authors": "Xiaowei Zhang, Dapeng Chen, Zejian Yuan, Nanning Zheng 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Object Tracking within the Framework of Concept Drift",
     "authors": "Li Chen, Yue Zhou 0005, Jie Yang 0002",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Multiple Target Tracking Using Frame Triplets",
     "authors": "Asad A. Butt, Robert T. Collins",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Spatio-Temporal Clustering Model for Multi-object Tracking through Occlusions",
     "authors": "Lei Zhang, Qing Wang 0006",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Robust Object Tracking Using Constellation Model with Superpixel",
     "authors": "Weijun Wang, Ramakant Nevatia",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Robust Registration-Based Tracking by Sparse Representation with Model Update",
     "authors": "Peihua Li, Qilong Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Robust and Efficient Pose Estimation from Line Correspondences",
     "authors": "Lilian Zhang, Chi Xu 0002, Kok-Meng Lee, Reinhard Koch",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Nonlocal Spectral Prior Model for Low-Level Vision",
     "authors": "Shenlong Wang, Lei Zhang 0006, Yan Liang 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Simultaneous Multiple Rotation Averaging Using Lagrangian Duality",
     "authors": "Johan Fredriksson, Carl Olsson",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Observation-Driven Adaptive Differential Evolution for Robust Bronchoscope 3-D Motion Tracking",
     "authors": "Xi&#243;ngbiao Lu&#243;, Kensaku Mori",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Tracking Growing Axons by Particle Filtering in 3D + t Fluorescent Two-Photon Microscopy Images",
     "authors": "Huei-Fang Yang, Xavier Descombes, Charles Kervrann, Caroline Medioni, Florence Besse",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Image Upscaling Using Multiple Dictionaries of Natural Image Patches",
     "authors": "Pulak Purkait, Bhabatosh Chanda",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Biologically Motivated Double-Opponency Approach to Illumination Invariance",
     "authors": "Sivalogeswaran Ratnasingam, Antonio Robles-Kelly",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Measuring Linearity of Closed Curves and Connected Compound Curves",
     "authors": "Paul L. Rosin, Jovanka Pantovic, Jovisa D. Zunic",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Patch Mosaic for Fast Motion Deblurring",
     "authors": "Hyeoungho Bae, Charless C. Fowlkes, Pai H. Chou",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Single-Image Blind Deblurring for Non-uniform Camera-Shake Blur",
     "authors": "Yuquan Xu, Lu Wang, Xiyuan Hu, Silong Peng",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Image Super-Resolution Using Local Learnable Kernel Regression",
     "authors": "Renjie Liao 0001, Zengchang Qin",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "MRF-Based Blind Image Deconvolution",
     "authors": "Nikos Komodakis, Nikos Paragios",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Efficient Image Appearance Description Using Dense Sampling Based Local Binary Patterns",
     "authors": "Juha Ylioinas, Abdenour Hadid, Yimo Guo, Matti Pietik&#228;inen",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Navigation toward Non-static Target Object Using Footprint Detection Based Tracking",
     "authors": "Meng Yi, Yinfei Yang, Wenjing Qi, Yu Zhou 0016, Yunfeng Li, Zygmunt Pizlo, Longin Jan Latecki",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Single Image Super Resolution Reconstruction in Perturbed Exemplar Sub-space",
     "authors": "Takashi Shibata 0001, Akihiko Iketani, Shuji Senda",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Image Super-Resolution: Use of Self-learning and Gabor Prior",
     "authors": "Nilay L. Khatri, Manjunath V. Joshi",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Action Disambiguation Analysis Using Normalized Google-Like Distance Correlogram",
     "authors": "Qianru Sun, Hong Liu 0008",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Alpha-Flow for Video Matting",
     "authors": "Mikhail Sindeev, Anton Konushin, Carsten Rother",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Combinational Subsequence Matching for Human Identification from General Actions",
     "authors": "Maodi Hu, Yunhong Wang 0001, James J. Little",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Iterative Semi-Global Matching for Robust Driver Assistance Systems",
     "authors": "Simon Hermann, Reinhard Klette",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Action Recognition Using Canonical Correlation Kernels",
     "authors": "Gattigorla Nagendar, Sai Ganesh Bandiatmakuri, Mahesh Goud Tandarpally, C. V. Jawahar",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A New Framework for Background Subtraction Using Multiple Cues",
     "authors": "SeungJong Noh, Moongu Jeon",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Weighted Interaction Force Estimation for Abnormality Detection in Crowd Scenes",
     "authors": "Xiaobin Zhu 0001, Jing Liu 0001, Jinqiao Wang, Wei Fu, Hanqing Lu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Egocentric Activity Monitoring and Recovery",
     "authors": "Ardhendu Behera, David C. Hogg, Anthony G. Cohn 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Spatiotemporal Salience via Centre-Surround Comparison of Visual Spacetime Orientations",
     "authors": "Andrei Zaharescu, Richard Wildes",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Temporal-Spatial Refinements for Video Concept Fusion",
     "authors": "Jie Geng, Zhenjiang Miao, Hai Chi",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Features with Feelings - Incorporating User Preferences in Video Categorization",
     "authors": "Ramya Srinivasan 0002, Amit K. Roy-Chowdhury",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Comparative Study of Encoding, Pooling and Normalization Methods for Action Recognition",
     "authors": "Xingxing Wang, Limin Wang 0002, Yu Qiao 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Dynamic Saliency Models and Human Attention: A Comparative Study on Videos",
     "authors": "Nicolas Riche, Matei Mancas, Dubravko Culibrk, Vladimir S. Crnojevic, Bernard Gosselin, Thierry Dutoit",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Horror Video Scene Recognition Based on Multi-view Multi-instance Learning",
     "authors": "Xinmiao Ding, Bing Li 0001, Weiming Hu 0004, Weihua Xiong, Zhenchong Wang",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Learning Object Appearance from Occlusions Using Structure and Motion Recovery",
     "authors": "Kai Cordes, Bj&#246;rn Scheuermann 0002, Bodo Rosenhahn, J&#246;rn Ostermann",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Exploring the Similarities of Neighboring Spatiotemporal Points for Action Pair Matching",
     "authors": "Irene Kotsia, Ioannis Patras",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Sequential Reconstruction Segment-Wise Feature Track and Structure Updating Based on Parallax Paths",
     "authors": "Mauricio Hess-Flores, Mark A. Duchaineau, Kenneth I. Joy",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Generic Active Appearance Models Revisited",
     "authors": "Georgios Tzimiropoulos, Joan Alabort-i-Medina, Stefanos Zafeiriou, Maja Pantic",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Tracking Pedestrian with Multi-component Online Deformable Part-Based Model",
     "authors": "Yi Xie 0006, Mingtao Pei, Zhao Liu, Tianfu Wu 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Local Distance Comparison for Multiple-shot People Re-identification",
     "authors": "Guanwen Zhang, Yu Wang 0018, Jien Kato, Takafumi Marutani, Kenji Mase",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Non-sequential Multi-view Detection, Localization and Identification of People Using Multi-modal Feature Maps",
     "authors": "Rok Mandeljc, Stanislav Kovacic, Matej Kristan, Janez Pers",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Full 6DOF Pose Estimation from Geo-Located Images",
     "authors": "Clemens Arth, Gerhard Reitmayr, Dieter Schmalstieg",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Learning a Quality-Based Ranking for Feature Point Trajectories",
     "authors": "Liangjing Ding, Adrian Barbu, Anke Meyer-Baese",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Self-calibration and Motion Recovery from Silhouettes with Two Mirrors",
     "authors": "Hui Zhang 0062, Ling Shao 0001, Kwan-Yee Kenneth Wong",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Stereo Reconstruction and Contrast Restoration in Daytime Fog",
     "authors": "Laurent Caraffa, Jean-Philippe Tarel",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Large-Scale Bundle Adjustment by Parameter Vector Partition",
     "authors": "Shanmin Pang, Jianru Xue, Le Wang 0003, Nanning Zheng 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Learning Feature Subspaces for Appearance-Based Bundle Adjustment",
     "authors": "Chia-Ming Cheng, Hwann-Tzong Chen",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Toward Efficient Acquisition of BRDFs with Fewer Samples",
     "authors": "Muhammad Asad Ali, Imari Sato, Takahiro Okabe, Yoichi Sato 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Shadow-Free TILT for Facade Rectification",
     "authors": "Lumei Li, Hongping Yan, LingFeng Wang 0002, Chunhong Pan",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Reconstructing Shape from Dictionaries of Shading Primitives",
     "authors": "Alexandros Panagopoulos, Sunil Hadap, Dimitris Samaras",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Iterative Feedback Estimation of Depth and Radiance from Defocused Images",
     "authors": "Xing Lin, Jin-Li Suo, Xun Cao, Qionghai Dai",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Two-Image Perspective Photometric Stereo Using Shape-from-Shading",
     "authors": "Roberto Mecca, Ariel Tankus, Alfred M. Bruckstein",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Stable Two View Reconstruction Using the Six-Point Algorithm",
     "authors": "Kazuki Nozawa, Akihiko Torii, Masatoshi Okutomi",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Unknown Radial Distortion Centers in Multiple View Geometry Problems",
     "authors": "Jos&#233; Henrique Brito, Roland Angst, Kevin K&#246;ser, Christopher Zach, Pedro Branco 0001, Manuel Jo&#227;o Ferreira, Marc Pollefeys",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Depth-Estimation-Free Condition for Projective Factorization and Its Application to 3D Reconstruction",
     "authors": "Yohei Murakami, Takeshi Endo, Yoshimichi Ito, Noboru Babaguchi",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Epipolar Geometry Estimation for Urban Scenes with Repetitive Structures",
     "authors": "Maria Kushnir, Ilan Shimshoni",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Non-rigid Self-calibration of a Projective Camera",
     "authors": "Hanno Ackermann, Bodo Rosenhahn",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Piecewise Planar Scene Reconstruction and Optimization for Multi-view Stereo",
     "authors": "Hyojin Kim 0001, Hong Xiao, Nelson L. Max",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Bayesian Approach to Uncertainty-Based Depth Map Super Resolution",
     "authors": "Jing Li, Gang Zeng, Rui Gan, Hongbin Zha, Long Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Cross Image Inference Scheme for Stereo Matching",
     "authors": "Xiao Tan 0001, Changming Sun, Xavier Sirault, Robert Furbank, Tuan D. Pham",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Bayesian Epipolar Geometry Estimation from Tomographic Projections",
     "authors": "Sami S. Brandt, Katrine Hommelhoff Jensen, Fran&#231;ois Lauze",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "On the Global Self-calibration of Central Cameras Using Two Infinitesimal Rotations",
     "authors": "Ferran Espuny",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Precise 3D Reconstruction from a Single Image",
     "authors": "Changqing Zou, Jianbo Liu, Jianzhuang Liu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "An Efficient Image Matching Method for Multi-View Stereo",
     "authors": "Shuji Sakai, Koichi Ito 0001, Takafumi Aoki, Tomohito Masuda, Hiroki Unten",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Self-calibration of a PTZ Camera Using New LMI Constraints",
     "authors": "Fran&#231;ois Rameau, Adlane Habed, C&#233;dric Demonceaux, Desire Sidib&#233;, David Fofi",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Fast 3D Surface Reconstruction from Point Clouds Using Graph-Based Fronts Propagation",
     "authors": "Abdallah El Chakik, Xavier Desquesnes, Abderrahim Elmoataz",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Apparel Classification with Style",
     "authors": "Lukas Bossard, Matthias Dantone, Christian Leistner, Christian Wengert, Till Quack, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Deblurring Vein Images and Removing Skin Wrinkle Patterns by Using Tri-band Illumination",
     "authors": "Naoto Miura, Yoichi Sato 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Reconstruction of 3D Surface and Restoration of Flat Document Image from Monocular Image Sequence",
     "authors": "Hiroki Shibayama, Yoshihiro Watanabe, Masatoshi Ishikawa",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Utilizing Optical Aberrations for Extended-Depth-of-Field Panoramas",
     "authors": "Huixuan Tang, Kiriakos N. Kutulakos",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Motion-Invariant Coding Using a Programmable Aperture Camera",
     "authors": "Toshiki Sonoda, Hajime Nagahara, Rin-Ichiro Taniguchi",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Color-Aware Regularization for Gradient Domain Image Manipulation",
     "authors": "Fanbo Deng, Seon Joo Kim, Yu-Wing Tai, Michael S. Brown",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Local Covariance Filtering for Color Images",
     "authors": "Keiichiro Shirai, Masahiro Okuda, Takao Jinno, Masayuki Okamoto, Masaaki Ikehara",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A New Projection Space for Separation of Specular-Diffuse Reflection Components in Color Images",
     "authors": "Jianwei Yang, Zhaowei Cai, Longyin Wen, Zhen Lei 0001, Guodong Guo, Stan Z. Li",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Hand Vein Recognition Based on Oriented Gradient Maps and Local Feature Matching",
     "authors": "Di Huang 0001, Yinhang Tang, Yiding Wang, Liming Chen 0002, Yunhong Wang 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Fusing Warping, Cropping, and Scaling for Optimal Image Thumbnail Generation",
     "authors": "Zhan Qu, Jinqiao Wang, Min Xu 0001, Hanqing Lu",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Shift-Map Based Stereo Image Retargeting with Disparity Adjustment",
     "authors": "Shaoyu Qi, Jeffrey Ho",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Object Templates for Visual Place Categorization",
     "authors": "Hao Yang 0033, Jianxin Wu 0001",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Reconstructing Sequential Patterns without Knowing Image Correspondences",
     "authors": "Saba Batool Miyan, Jun Sato",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Registration of Multi-view Images of Planar Surfaces",
     "authors": "Radom&#237;r V&#225;vra, Jir&#237; Filip",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Automatic Stave Discovery for Musical Facsimiles",
     "authors": "Radu Timofte, Luc Van Gool",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Unsupervised Language Learning for Discovered Visual Concepts",
     "authors": "Prithwijit Guha, Amitabha Mukerjee",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Parameterized Variety Based View Synthesis Scheme for Multi-view 3DTV",
     "authors": "Mansi Sharma, Santanu Chaudhury, Brejesh Lall",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Quasi-regular Facade Structure Extraction",
     "authors": "Tian Han 0001, Chun Liu, Chiew-Lan Tai, Long Quan",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Multi-view Synthesis Based on Single View Reference Layer",
     "authors": "Yang-Ho Cho, Ho-Young Lee, Du-Sik Park",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Hand-Eye Calibration without Hand Orientation Measurement Using Minimal Solution",
     "authors": "Zuzana Kukelova, Jan Heller, Tom&#225;s Pajdla",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Detecting Changes in Images of Street Scenes",
     "authors": "Jana Kosecka",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Adaptive Background Defogging with Foreground Decremental Preconditioned Conjugate Gradient",
     "authors": "Jacky Shun-Cho Yuk, Kwan-Yee Kenneth Wong",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Shadow Repair Approach for Kinect Depth Maps",
     "authors": "Yu Yu, Yonghong Song, Yuanlin Zhang 0001, Shu Wen",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "A Unified Framework for Line Extraction in Dioptric and Catadioptric Cameras",
     "authors": "Jesus Bermudez-Cameo, Gonzalo L&#243;pez-Nicol&#225;s, Jos&#233; Jes&#250;s Guerrero",
     "abstract": null
   },
   {
-    "conference": "ACCV",
-    "year": 2012,
     "title": "Fusion of Time-of-Flight and Stereo for Disambiguation of Depth Measurements",
     "authors": "Ouk Choi, Seungkyu Lee 0001",
     "abstract": null
