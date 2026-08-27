@@ -128,6 +128,15 @@ def deploy_gh_pages():
         run(["git", "worktree", "remove", "--force", str(worktree)], check=False)
         rmtree_retry(worktree) if worktree.exists() else None
         run(["git", "worktree", "prune"], check=False)
+        # `git worktree remove` above only detaches the worktree, it doesn't
+        # delete the local branch created inside it -- without this, the
+        # SECOND deploy's `git checkout --orphan gh-pages-publish` fails
+        # outright (branch already exists), confirmed the hard way: the
+        # deploy immediately after this squash-to-one-commit change shipped
+        # broke on exactly this. -D (not -d) since an orphan branch has no
+        # merge-base with anything, so git can't tell it's "merged" the
+        # normal way -d checks for.
+        run(["git", "branch", "-D", "gh-pages-publish"], check=False)
 
 
 def main():
