@@ -31,6 +31,7 @@ import html
 import json
 import re
 import statistics
+import unicodedata
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -72,6 +73,16 @@ INSTITUTION_COUNTRIES_FILE = BASE / "data" / "institution_countries.json"
 # is_valid_institution() below -- same mechanism as INVALID_INSTITUTIONS,
 # just sourced from a review pass instead of hand-typed.
 INSTITUTION_FLAGS_LLM_FILE = BASE / "data" / "institution_flags_llm.json"
+# Same idea, but a redirect instead of a rejection: {variant name: canonical
+# name} for institutions that are real and valid but get spelled/branded
+# differently across papers (diacritic variants, abbreviation vs. spelled-out
+# form, a department/school prefix in front of an identifiable parent
+# university, a corporate lab name that's really just its parent company).
+# The hand-typed INSTITUTION_ALIASES dict below covers the common cases found
+# by eye; this is the same idea at registry scale -- an LLM review pass over
+# every currently-valid institution name, see that file's own generating
+# comment and DECISIONS.md's "Institution extraction switched..." entry.
+INSTITUTION_ALIASES_LLM_FILE = BASE / "data" / "institution_aliases_llm.json"
 VENUE_LOGOS_FILE = BASE / "data" / "venue_logos.json"
 CITATION_GRAPH_FILE = BASE / "data" / "citation_graph.json"
 # Must match build_citation_graph.py's CVF_VENUES -- the set of venues its
@@ -88,9 +99,14 @@ COUNTRY_NAMES = {
     "SG": "Singapore", "FR": "France", "CH": "Switzerland", "SE": "Sweden",
     "AU": "Australia", "IT": "Italy", "IL": "Israel", "IN": "India", "ES": "Spain",
     "AT": "Austria", "BE": "Belgium", "DK": "Denmark", "FI": "Finland", "NO": "Norway",
-    "RU": "Russia", "BR": "Brazil", "HK": "Hong Kong", "TW": "Taiwan", "IE": "Ireland",
+    "RU": "Russia", "BR": "Brazil",
+    # User-requested: Hong Kong and Macao merge into China rather than
+    # showing as their own countries -- both are Chinese special
+    # administrative regions, not separate countries.
+    "HK": "China", "MO": "China",
+    "TW": "Taiwan", "IE": "Ireland",
     "PL": "Poland", "PT": "Portugal", "NZ": "New Zealand", "ZA": "South Africa",
-    "MO": "Macao", "EG": "Egypt", "BD": "Bangladesh", "MX": "Mexico", "TR": "Turkey",
+    "EG": "Egypt", "BD": "Bangladesh", "MX": "Mexico", "TR": "Turkey",
     "TH": "Thailand", "MY": "Malaysia", "ID": "Indonesia", "VN": "Vietnam",
     "SA": "Saudi Arabia", "AE": "United Arab Emirates", "GR": "Greece", "CZ": "Czechia",
     "HU": "Hungary", "RO": "Romania", "UA": "Ukraine", "CL": "Chile", "AR": "Argentina",
@@ -277,6 +293,30 @@ DBLP_DISAMBIG_SUFFIX_RE = re.compile(r"\s+\d{4}$")
 # trailing footnote-marker glyph left over from the same kind of parse.
 FOOTNOTEMARK_SUFFIX_RE = re.compile(r"[�†‡*§¶✉]?\d*footnotemark:?\s*\d*\s*$", re.I)
 
+# A trailing footnote/correspondence-marker symbol glued onto a name with no
+# accompanying "footnotemark" text for FOOTNOTEMARK_SUFFIX_RE above to key
+# off of -- e.g. "Jianbing Shen♠" and "Jianbing Shen🖂" (a spade suit symbol
+# and an envelope emoji respectively, both real LaTeX correspondence-author
+# markers), confirmed on real data as three separate leaderboard entries for
+# the same person. Category-based (Unicode Symbol: "So"/"Sk"/"Sm") rather
+# than a hardcoded list of specific glyphs, so a marker symbol not seen
+# before -- a different envelope emoji, a different suit, a star operator --
+# is still caught; a real person's name is never encoded as ending in a
+# Symbol-category character. †‡*§¶ are added explicitly since they're
+# Unicode Punctuation ("Po"), not Symbol, and academic footnote convention
+# uses them the same way -- but Po is too broad a category to strip on its
+# own (it also covers ordinary punctuation like periods and commas that
+# legitimately end other kinds of strings, just never a person's own name
+# by construction here).
+TRAILING_NAME_MARKER_PUNCTUATION = set("†‡*§¶")
+
+
+def strip_trailing_symbol_markers(name):
+    while name and (name[-1] in TRAILING_NAME_MARKER_PUNCTUATION
+                    or unicodedata.category(name[-1]) in ("So", "Sk", "Sm")):
+        name = name[:-1].rstrip()
+    return name
+
 
 # Some sources (confirmed: DBLP-derived venue listings) leak raw numeric
 # HTML entities into the author-name field instead of decoding them, e.g.
@@ -344,6 +384,7 @@ def clean_author_name(name):
     name = KNOWN_NAME_FIXES.get(name, name)
     name = DBLP_DISAMBIG_SUFFIX_RE.sub("", name).strip()
     name = FOOTNOTEMARK_SUFFIX_RE.sub("", name).strip()
+    name = strip_trailing_symbol_markers(name).strip()
     return name
 
 
@@ -655,7 +696,10 @@ INVALID_INSTITUTIONS = {
     "Cary", "Brookline", "Minneapolis", "Sunnyvale", "Mountain View", "Santa Clara",
     "San Antonio", "San Diego", "San Francisco", "El Paso", "Dearborn", "Tacoma",
     "Parkville", "Pasadena", "Charlottesville", "Wuhan", "Ningbo", "Hillsboro",
-    "Kronach", "Renningen", "Sindelfingen", "Delft",
+    "Kronach", "Renningen", "Sindelfingen", "Delft", "Oslo",
+    # Bare country abbreviation, same comma-split cause as the bare full
+    # country names above -- user-flagged.
+    "UAE",
     # A generic lab/institute name with a qualifier BEFORE the generic noun
     # (e.g. "Robotics Institute", "Multimedia Laboratory") -- SUBUNIT_PREFIX_RE
     # above only catches the noun-first form ("Institute for...", "Laboratory
@@ -694,6 +738,13 @@ INVALID_INSTITUTIONS = {
 INVALID_INSTITUTIONS_LLM = set(
     json.loads(INSTITUTION_FLAGS_LLM_FILE.read_text(encoding="utf-8")).keys()
     if INSTITUTION_FLAGS_LLM_FILE.exists() else ()
+)
+
+# Loaded once at import time, same pattern as INVALID_INSTITUTIONS_LLM above
+# -- {variant: canonical}, see INSTITUTION_ALIASES_LLM_FILE's own comment.
+INSTITUTION_ALIASES_LLM = (
+    json.loads(INSTITUTION_ALIASES_LLM_FILE.read_text(encoding="utf-8"))
+    if INSTITUTION_ALIASES_LLM_FILE.exists() else {}
 )
 
 
@@ -1185,7 +1236,8 @@ def normalize_institution(name):
     # (e.g. "HKISI_CAS") -- not part of the institution's actual name.
     name = name.replace("_", " ")
     name = re.sub(r"\s+", " ", name).strip()
-    return INSTITUTION_ALIASES.get(name, name)
+    name = INSTITUTION_ALIASES.get(name, name)
+    return INSTITUTION_ALIASES_LLM.get(name, name)
 
 
 # A keyword strongly indicating a degree-granting or public-research
@@ -2591,11 +2643,21 @@ def main():
     adjacent_entries = [e for e in all_entries
                          if e.get("av_relevance") == "adjacent" and is_fully_processed(e)]
     non_av_paper_counts = defaultdict(int)
+    # Same reasoning, same shape, for citations rather than paper count --
+    # author.html's stat tiles pair "AV citations" with "Non-AV citations"
+    # (user-requested), and that pairing needs both numbers available
+    # synchronously on page load, not behind the lazy stats_adjacent.json
+    # fetch the Papers table below only triggers once a reader actually
+    # switches the SHOW filter.
+    non_av_paper_citations = defaultdict(int)
     for e in adjacent_entries:
+        cites = citation_count(e)
         for raw in (e.get("authors") or "").split(","):
             name = clean_author_name(raw)
             if name and is_full_name(name):
                 non_av_paper_counts[name] += 1
+                if cites:
+                    non_av_paper_citations[name] += cites
 
     # Per-venue collection completeness for the About page's Data coverage
     # table -- computed from the actual corpus (all_entries, not just
@@ -2730,6 +2792,7 @@ def main():
                                 for cat, vals in sorted(category_stats.items(), key=lambda kv: -kv[1]["citations"])],
         "author_detail": author_detail,
         "non_av_paper_counts": dict(non_av_paper_counts),
+        "non_av_paper_citations": dict(non_av_paper_citations),
         # Precise "who actually works here" per institution -- see
         # institution_authors' comment above for why this exists separately
         # from the paper-level `institutions` field on each paper.

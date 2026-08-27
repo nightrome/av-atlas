@@ -94,7 +94,7 @@
     <div id="export-container"></div>
   </div>
   <p id="total-countries-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
-  <table><thead><tr><th>#</th><th>Country</th><th class="num">Papers</th><th class="num">Authors</th><th class="num" title="How many other papers in this corpus cite a paper from this country. Counted only within this corpus, never from an external database.">Total citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Country</th><th class="num">Papers</th><th class="num">Authors</th><th class="num" title="How many other papers in this corpus cite a paper from this country. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th></tr></thead>
   <tbody id="countries-body"></tbody></table>
 </div>
 
@@ -114,8 +114,8 @@ const COUNTRY_GRID = {
   "South Africa": [7, 9], "India": [4, 14], "Pakistan": [3, 13],
   "Bangladesh": [4, 15], "Thailand": [5, 15], "Malaysia": [6, 15],
   "Indonesia": [6, 16], "Vietnam": [5, 16], "Singapore": [6, 15],
-  "China": [2, 15], "Hong Kong": [3, 15], "Taiwan": [3, 16], "Japan": [2, 16],
-  "South Korea": [2, 16], "Macao": [3, 15], "Australia": [7, 16],
+  "China": [2, 15], "Taiwan": [3, 16], "Japan": [2, 16],
+  "South Korea": [2, 16], "Australia": [7, 16],
   "New Zealand": [8, 17], "Iceland": [0, 6], "Portugal": [3, 6], "Spain": [3, 7],
   "Iran": [3, 12], "Luxembourg": [2, 8],
 };
@@ -142,9 +142,9 @@ fetchStatsWithRelevance(relevance).then(stats => {
     search: { placeholder: 'Search country names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
     metrics: [
-      { key: 'papers', label: 'Paper count' },
+      { key: 'papers', label: 'Papers' },
       { key: 'avg', label: 'Citations / paper' },
-      { key: 'total', label: 'Total citations' },
+      { key: 'total', label: 'Citations' },
     ],
     topN: {
       default: 50, storageKey: 'countries-timeline-topn',

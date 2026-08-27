@@ -62,6 +62,30 @@ class TestIsValidInstitution(unittest.TestCase):
         self.assertIn("Robotics", ag.INVALID_INSTITUTIONS_LLM)
         self.assertFalse(ag.is_valid_institution("Robotics"))
 
+    def test_redirects_variant_spellings_flagged_by_the_llm_canonicalization_pass(self):
+        # institution_aliases_llm.json (an LLM canonicalization pass over
+        # every currently-valid institution name, user-flagged: diacritic
+        # variants, abbreviation-vs-spelled-out forms, department-prefixed
+        # names, and corporate-lab-vs-parent-company names were all still
+        # fragmenting real institutions into separate rows) is loaded once
+        # at import time into INSTITUTION_ALIASES_LLM and applied at the end
+        # of normalize_institution(), after the hand-typed INSTITUTION_ALIASES
+        # dict. Asserts against the real data file, not a fixture -- same
+        # convention as test_rejects_entries_flagged_by_the_llm_review_pass.
+        self.assertGreater(len(ag.INSTITUTION_ALIASES_LLM), 0, "the real data file should be present and non-empty")
+        for variant, canonical in [
+            ("TUM", "Technical University of Munich"),
+            ("Technical University Munich", "Technical University of Munich"),
+            ("Technische Universität München", "Technical University of Munich"),
+            ("ETH Zurich", "ETH Zürich"),
+            ("Valeo.ai", "Valeo"),
+            ("Los Angeles (UCLA)", "University of California, Los Angeles"),
+            ("SKL-IOTSC", "University of Macau"),
+            ("Bosch Corporate Research", "Bosch"),
+            ("Cross-Domain Computing Solutions", "Bosch"),
+        ]:
+            self.assertEqual(ag.normalize_institution(variant), canonical, variant)
+
     def test_accepts_a_real_institution_name(self):
         self.assertTrue(ag.is_valid_institution("University of Oxford"))
         self.assertTrue(ag.is_valid_institution("Carnegie Mellon University"))
@@ -223,7 +247,11 @@ class TestNormalizeInstitution(unittest.TestCase):
         # superscript footnote reference ("³Intelligent Vehicles Lab")
         # that lost its superscript formatting during PDF extraction.
         self.assertEqual(ag.normalize_institution("3Intelligent Vehicles Lab"), "Intelligent Vehicles Lab")
-        self.assertEqual(ag.normalize_institution("2Bosch Corporate Research"), "Bosch Corporate Research")
+        # "Bosch Corporate Research" is itself further redirected to "Bosch"
+        # by INSTITUTION_ALIASES_LLM (user-requested) -- this still exercises
+        # the footnote-number-stripping regex under test, just against its
+        # post-alias canonical form.
+        self.assertEqual(ag.normalize_institution("2Bosch Corporate Research"), "Bosch")
         # Real digit-prefixed names in this corpus that must NOT be mangled:
         # a company brand ("3M"), an ordinary "3D ..." lab name, and TU
         # Delft's own "3mE" faculty short code (caught in testing before this
@@ -323,7 +351,12 @@ class TestNormalizeInstitution(unittest.TestCase):
                           "Munich Center for Machine Learning")
 
     def test_strips_trailing_legal_suffixes(self):
-        self.assertEqual(ag.normalize_institution("Aptiv Services Deutschland GmbH"), "Aptiv Services Deutschland")
+        # "Aptiv Services Deutschland" is itself further redirected to
+        # "Aptiv" by INSTITUTION_ALIASES_LLM (a regional-subsidiary-into-
+        # parent-company merge, same pattern as the Bosch/Xiaomi ones
+        # user-requested) -- still exercises the legal-suffix-stripping
+        # regex under test, just against its post-alias canonical form.
+        self.assertEqual(ag.normalize_institution("Aptiv Services Deutschland GmbH"), "Aptiv")
         self.assertEqual(ag.normalize_institution("Zoox Inc"), "Zoox")
         # "Ltd"/"Co." are deliberately left alone (see the bare-"Ltd" comment
         # in INVALID_INSTITUTIONS) -- only LLC/Inc/GmbH are stripped.
@@ -370,6 +403,24 @@ class TestCleanAuthorName(unittest.TestCase):
         self.assertEqual(ag.clean_author_name("Yi-Ting Chen"), "Yi-Ting Chen")
         for dash in ("‐", "‑", "‒", "–", "−"):
             self.assertEqual(ag.clean_author_name(f"Ying{dash}Cong Chen"), "Ying-Cong Chen")
+
+    def test_strips_trailing_correspondence_marker_symbols(self):
+        # User-flagged real case: "Jianbing Shen♠", "Jianbing Shen🖂", and
+        # plain "Jianbing Shen" all existed as three separate leaderboard
+        # entries for the same person -- a spade suit symbol and an
+        # envelope emoji are both real LaTeX correspondence-author markers,
+        # neither of which FOOTNOTEMARK_SUFFIX_RE catches (it requires the
+        # literal word "footnotemark" after the marker; these have nothing
+        # after it at all).
+        self.assertEqual(ag.clean_author_name("Jianbing Shen♠"), "Jianbing Shen")
+        self.assertEqual(ag.clean_author_name("Jianbing Shen\U0001F582"), "Jianbing Shen")
+        self.assertEqual(ag.clean_author_name("Jianbing Shen"), "Jianbing Shen")
+
+    def test_strips_unfamiliar_symbol_markers_too(self):
+        # Category-based, not a hardcoded glyph list -- a marker symbol this
+        # project has never specifically seen before must still be caught.
+        self.assertEqual(ag.clean_author_name("Alice Author★"), "Alice Author")  # star
+        self.assertEqual(ag.clean_author_name("Bob Builder✖"), "Bob Builder")  # heavy X
 
 
 class TestIsFullyProcessed(unittest.TestCase):
@@ -805,6 +856,9 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # must not get its real data thrown out just for having many
         # authors -- only a count wildly out of proportion to the paper's
         # own author-string length is suspect.
+        # "MIT" is itself expanded to "Massachusetts Institute of Technology"
+        # by INSTITUTION_ALIASES_LLM -- incidental to what this test actually
+        # checks (that a plausible-count authors_detail block isn't dropped).
         real_authors = [{"name": f"Real Author {i}", "affiliations": ["MIT"]} for i in range(12)]
         raw_names = ", ".join(f"Real Author {i}" for i in range(12))
         stats = self._run([
@@ -812,7 +866,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
              "authors": raw_names, "authors_detail": real_authors},
         ])
         paper = stats["all_papers"][0]
-        self.assertEqual(paper["institutions"], ["MIT"])
+        self.assertEqual(paper["institutions"], ["Massachusetts Institute of Technology"])
 
     def test_drops_authors_detail_that_names_completely_different_people(self):
         # Real case, user-flagged: a 6-Chinese-author AAAI paper carried 8

@@ -151,7 +151,7 @@ function render(stats) {
 
   const grid = document.getElementById('stat-grid');
   grid.appendChild(stat(papers.length, 'AV papers in corpus'));
-  grid.appendChild(stat(totalCitations, 'Total citations'));
+  grid.appendChild(stat(totalCitations, 'Citations'));
   grid.appendChild(stat(avg == null ? '—' : avg, 'Citations / paper', { decimals: 1 }));
   const years = papers.map(p => p.year).filter(Boolean);
   grid.appendChild(stat(years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '—', 'Year range (AV papers)'));

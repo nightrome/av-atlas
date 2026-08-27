@@ -80,7 +80,7 @@
     <div id="export-container"></div>
   </div>
   <p id="authors-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
-  <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" title="Years between this author's first and last AV-relevant publication in this corpus (0 if only one year).">Career span</th><th class="num" title="How many other papers in this corpus cite a paper by this author. Counted only within this corpus, never from an external database.">Total citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th><th class="num" title="Share of this author's in-corpus citations that come from their own later papers, rather than an independent paper.">Self-citation %</th><th class="num" title="How many other papers by this author are in the corpus but not classified as AV-relevant.">Other papers</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" title="Years between this author's first and last AV-relevant publication in this corpus (0 if only one year).">Career span</th><th class="num" title="How many other papers in this corpus cite a paper by this author. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th><th class="num" title="Share of this author's in-corpus citations that come from their own later papers, rather than an independent paper.">Self-citation %</th><th class="num" title="How many other papers by this author are in the corpus but not classified as AV-relevant.">Other papers</th></tr></thead>
   <tbody id="researchers-body"></tbody></table>
 </div>
 
@@ -233,9 +233,9 @@ fetchStatsWithRelevance(relevance).then(stats => {
     search: { placeholder: 'Search author names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
     metrics: [
-      { key: 'total', label: 'Total citations' },
+      { key: 'total', label: 'Citations' },
       { key: 'avg', label: 'Citations / paper' },
-      { key: 'papers', label: 'Paper count' },
+      { key: 'papers', label: 'Papers' },
     ],
     minPapers: { default: 50 },
     topN: { default: 50, storageKey: 'authors-topn', onChange: render },
@@ -326,23 +326,24 @@ function render() {
   }[metric] || byTotal;
   authors.sort(authorSort);
 
-  // "Show top N" caps the list/table the same way it caps every other
-  // page's chart+table pair.
+  // "Show top N" caps the scatter chart only -- the table below paginates
+  // through the FULL filtered set regardless (user-flagged: a table
+  // capped at whatever the chart's top-N happens to be rarely has a second
+  // Prev/Next page to go to, even though nothing about a table -- unlike a
+  // chart -- needs a readability cap). `authors` (unsliced) feeds the
+  // table; `chartAuthors` (topN-sliced) feeds only the scatter chart.
   const topN = filters.topN || 50;
   const matchCount = authors.length;
-  authors = authors.slice(0, topN);
+  const chartAuthors = authors.slice(0, topN);
 
-  document.getElementById('result-count').textContent = matchCount > topN
-    ? `${authors.length} of ${matchCount} authors (top ${topN})`
-    : `${authors.length} authors`;
+  document.getElementById('result-count').textContent = `${matchCount} authors`;
   document.getElementById('authors-summary-stat').textContent =
     `${((stats.corpus_stats || {}).total_researchers || 0).toLocaleString()} authors named across the corpus`;
 
   // Authors with no citation-bearing paper at all have no meaningful y-value
   // for this chart -- plotting them at 0 would misrepresent "unknown" as
-  // "confirmed zero impact". Already capped to topN above, same set the
-  // table below shows -- no separate hardcoded cap needed here anymore.
-  renderScatter(document.getElementById('scatter'), authors.filter(a => a.avg_citations != null));
+  // "confirmed zero impact".
+  renderScatter(document.getElementById('scatter'), chartAuthors.filter(a => a.avg_citations != null));
 
   const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length, { onChange: render });
   const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);

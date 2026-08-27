@@ -101,7 +101,7 @@
     <div id="export-container"></div>
   </div>
   <p id="institutions-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
-  <table><thead><tr><th>#</th><th>Institution</th><th class="num">Papers</th><th class="num" title="How many other papers in this corpus cite a paper from this institution. Counted only within this corpus, never from an external database.">Total citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Institution</th><th class="num">Papers</th><th class="num" title="How many other papers in this corpus cite a paper from this institution. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th></tr></thead>
   <tbody id="institutions-body"></tbody></table>
 </div>
 
@@ -186,8 +186,8 @@ fetchStatsWithRelevance(relevance).then(stats => {
     relevance: true,
     metrics: [
       { key: 'avg', label: 'Citations / paper' },
-      { key: 'total', label: 'Total citations' },
-      { key: 'papers', label: 'Paper count' },
+      { key: 'total', label: 'Citations' },
+      { key: 'papers', label: 'Papers' },
     ],
     minPapers: { default: 10 },
     topN: {
@@ -223,15 +223,18 @@ function render() {
   };
   institutions.sort(sorters[metric] || byAvg);
 
-  // "Show top N" caps the list/table the same way it caps the timeline
-  // chart above -- previously it only affected the chart.
+  // "Show top N" caps the timeline chart/legend only -- the table below is
+  // titled "All institutions" and paginates through the FULL filtered set
+  // regardless of this setting (user-flagged: a table that says "all" but
+  // is actually capped at whatever the chart's top-N happens to be is
+  // misleading, and Prev/Next on an already-capped list rarely has a
+  // second page to go to). `institutions` (unsliced) feeds the table;
+  // `chartInstitutions` (topN-sliced) feeds only the chart/legend.
   const topN = filters.topN || 10;
   const matchCount = institutions.length;
-  institutions = institutions.slice(0, topN);
+  const chartInstitutions = institutions.slice(0, topN);
 
-  document.getElementById('result-count').textContent = matchCount > topN
-    ? `${institutions.length} of ${matchCount} institutions (top ${topN})`
-    : `${institutions.length} institutions`;
+  document.getElementById('result-count').textContent = `${matchCount} institutions`;
   document.getElementById('institutions-summary-stat').textContent =
     `${(stats.corpus_stats || {}).total_institutions || 0} institutions identified across the corpus`;
 
@@ -271,7 +274,7 @@ function render() {
 
   currentTimelineDraw = renderDimensionTimeline({
     papers, dimensionFn: p => p.institutions, labelFor: v => v,
-    rankedNames: institutions.map(x => x.name),
+    rankedNames: chartInstitutions.map(x => x.name),
     elIds: {
       legend: 'timeline-legend', chart: 'timeline-chart',
       tooltip: 'timeline-tooltip', normalize: 'timeline-normalize',

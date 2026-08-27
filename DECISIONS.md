@@ -591,3 +591,66 @@ their raw text. That re-crawl is real, comparable in size/duration to the
 has_code_link recheck, and deliberately not run in the same session this
 landed in (avoids a second writer racing the crawler already running against
 the same files) — queued as follow-up work, not forgotten.
+
+## Institution registry canonicalization pass (retroactive, LLM-batched)
+
+The extraction fix above stops new duplication from being created; it does
+nothing about the ~6,200 institution names already sitting in the registry
+from before it existed, many of which are still-valid-but-differently-
+spelled versions of the same real institution: diacritic variants ("ETH
+Zurich" vs "ETH Zürich"), abbreviation vs. spelled-out forms ("TUM" / "TU
+Munich" / "Technical University Munich" / "Technische Universität München"
+all naming the same place), a department/campus prefix in front of an
+identifiable parent ("Department of Electronics. University of Alcalá"),
+and a corporate lab name that's really just its parent company ("Valeo.ai",
+"Bosch Corporate Research", "Cross-Domain Computing Solutions"). User-
+flagged with a long list of real examples, several of which independently
+converged on the same author (Johannes Betz's own papers alone carried 8
+different spellings of Technical University of Munich, confirmed on real
+`papers_full.json` data) — the concrete illustration of why one-off aliases
+don't scale here either: hand-typing ten more `INSTITUTION_ALIASES` entries
+would only have covered the ten examples actually reported, not the
+hundreds of similar unreported cases sitting in the same registry.
+
+Solved the same way the invalid-institution flags were (see
+`institution_flags_llm.json`'s own generating comment): one full read-through
+of every currently-valid registry entry (3,484 names, invalid ones already
+excluded), not a per-name local-LLM call — a local Ollama call takes ~20s
+each on this hardware, which would be ~19 hours across the full list for a
+one-time backfill; a single batched review pass is both faster and, freed
+from a fixed per-call prompt budget, able to actually compare names against
+each other rather than judge each in isolation. Produced
+`data/institution_aliases_llm.json`, a flat `{variant: canonical}` map,
+loaded once at import time into `INSTITUTION_ALIASES_LLM` and applied at the
+end of `normalize_institution()`, after the hand-typed `INSTITUTION_ALIASES`
+dict (same two-tier "hand-typed first, LLM-sourced fills in the rest"
+pattern as `INVALID_INSTITUTIONS`/`INVALID_INSTITUTIONS_LLM`).
+
+Conservative by construction: the review was explicitly told to leave a pair
+unmapped when genuinely unsure rather than guess, and it did — e.g. "TU
+Munich"/"University of Munich" (TUM vs. LMU, different schools with
+overlapping short names), "Tokyo Institute of Technology"/"University of
+Tokyo", and "Georgia Institute of Technology"/"University of Georgia" were
+all correctly left as separate institutions despite superficial similarity.
+Even so, spot-checking the first pass (structural checks for cycles/self-
+maps, a random sample, and a systematic scan for any mapping that silently
+dropped a diacritic or hyphen) caught ~15 genuinely wrong-direction entries
+before this shipped — diacritics stripped the wrong way ("Koç University" ->
+"Koc University", losing real information), a hyphen dropped from an
+official brand name ("Mercedes-Benz" -> "Mercedes Benz"), and one over-broad
+merge not actually requested ("NVIDIA Research" folded into "NVIDIA", which
+would have erased a real distinction the existing test suite already
+depended on). Fixed by hand rather than treated as acceptable noise, the
+same "verify before trusting an LLM pass at scale" standard the earlier
+invalid-institution flags were held to.
+
+Retroactively resolves the "existing papers never had their raw sentence
+preserved" limitation noted above for every case where the fragments
+`clean_affiliations()` left behind are still individually valid institution
+names (Betz's case exactly — TUM's various spellings all survived as
+distinct valid entries, just never linked to each other) without needing the
+queued re-crawl at all. It doesn't help the cases where the OLD comma-split
+left genuine junk fragments (postal codes, person names, mid-sentence
+prose) rather than a valid-but-differently-spelled institution name — that
+class of fix still needs either the queued re-crawl or a raw-text
+reconstruction pass, and remains queued, not solved by this.
