@@ -335,6 +335,12 @@ KNOWN_NAME_FIXES = {
     # different, real person who happens to share the surname) -- excluded
     # by name, not by the accident of not matching one of these keys.
     "J. Marius Zöllner": "Marius Zöllner",
+    # A triple-"n" typo (source: arXiv listing metadata for one paper) --
+    # user-flagged as a duplicate author record split off the real "Johannes
+    # Betz" (Technical University of Munich, autonomous racing research;
+    # confirmed same person via the one paper carrying the typo -- RoboRacer
+    # benchmark work, the same research area as the rest of his corpus).
+    "Johannnes Betz": "Johannes Betz",
     "Johann Marius Zöllner": "Marius Zöllner",
     "J. M. Zöllner": "Marius Zöllner",
     "J. Zollner": "Marius Zöllner",
@@ -1899,17 +1905,26 @@ def main():
     # institution list instead of their own one -- confirmed on real data
     # (user-reported "Holger Caesar's last 3 affiliations are wrong" and
     # "Pei An has a Delft University of Technology affiliation that's
-    # probably wrong"): a 4-institution ("Huazhong University...",
-    # "Northwestern Polytechnical University", "Southwest Jiaotong
-    # University", "Delft University of Technology") list was identical
-    # across all 7 authors of one paper, even though those institutions
-    # are for different specific co-authors, not any one person. This can't
-    # be corrected per-author without knowing which institution is whose
-    # (data the source doesn't give); the honest fix is to not attribute
-    # any of it to a specific person. Only clears the field when 2+ authors
-    # share an identical 2+-institution list -- a single shared institution
-    # (a paper genuinely written entirely from one lab) is real signal, not
-    # this bug, and is left alone.
+    # probably wrong", and again later: Yue Wang's, Boyi Li's, and Marco
+    # Pavone's pages all showing a co-author's institution, one case a 5-way
+    # glued string "UC Berkeley Stanford UCL Virginia Tech Nvidia" that
+    # split cleanly into 5 real institutions once re-extracted, still
+    # identically shared by 2 authors afterward). This can't be corrected
+    # per-author without knowing which institution is whose (data the
+    # source doesn't give), so no INDIVIDUAL author is credited with any of
+    # it -- flagged here, checked in the author_institutions/author_countries
+    # accumulation loop further down, not applied by mutating the raw
+    # affiliations/countries fields the way an earlier version of this fix
+    # did. That earlier version nulled the fields directly, which also
+    # silently zeroed out paper_institutions/paper_countries below (and, by
+    # extension, the Institutions/Countries LEADERBOARD pages, which read
+    # from that same paper-level set) -- an unnecessary second loss, since
+    # "this paper involved these institutions" stays true even when no
+    # single author can be tied to any one of them. Only flags a paper when
+    # 2+ authors share an identical 2+-institution list -- a single shared
+    # institution (a paper genuinely written entirely from one lab) is real
+    # signal, not this bug, and is left alone.
+    blanket_shared_papers = set()
     n_shared_affiliation_block = 0
     for e in entries:
         detail = e.get("authors_detail")
@@ -1918,13 +1933,12 @@ def main():
         aff_lists = [tuple(sorted(a.get("affiliations") or [])) for a in detail]
         non_empty = [af for af in aff_lists if af]
         if len(non_empty) >= 2 and len(set(non_empty)) == 1 and len(non_empty[0]) >= 2:
-            for a in detail:
-                a["affiliations"] = []
-                a["countries"] = []
+            blanket_shared_papers.add(id(e))
             n_shared_affiliation_block += 1
     if n_shared_affiliation_block:
-        print(f"  cleared shared-affiliation-block authors_detail (every author credited with the "
-              f"same multi-institution list, not verifiably any one person's) on {n_shared_affiliation_block} papers")
+        print(f"  {n_shared_affiliation_block} papers have a shared-affiliation-block (every author credited "
+              f"with the same multi-institution list, not verifiably any one person's) -- excluded from "
+              f"individual author credit, kept for paper-level Institutions/Countries aggregation")
 
     # Fallback country-by-institution-name lookup for when the per-author
     # country code above is missing even though the institution name itself
@@ -2411,6 +2425,14 @@ def main():
         year = e.get("year")
         paper_institutions = set()
         paper_countries = set()
+        # See the blanket_shared_papers comment above: real evidence the
+        # PAPER involved these institutions (paper_institutions/paper_
+        # countries just below are populated from own_affs regardless of
+        # this flag), not reliable evidence of any INDIVIDUAL's own
+        # affiliation, so author_institutions/institution_authors/
+        # author_countries (this person's own page) skip crediting anyone
+        # on a flagged paper.
+        blanket_shared = id(e) in blanket_shared_papers
         co_author_names = {clean_author_name(x.get("name")) for x in details if x.get("name")}
         for a in details:
             name = clean_author_name(a.get("name"))
@@ -2420,27 +2442,29 @@ def main():
             author_papers[name] += 1
             author_names_enriched.add(name)
             own_affs = author_affiliations(a, all_author_names, co_author_names)
-            for aff in own_affs:
-                rec = author_institutions[name].setdefault(aff, {"first_year": year, "last_year": year, "papers": 0})
-                if year is not None:
-                    rec["first_year"] = year if rec["first_year"] is None else min(rec["first_year"], year)
-                    rec["last_year"] = year if rec["last_year"] is None else max(rec["last_year"], year)
-                rec["papers"] += 1
-                inst_authors_entry = institution_authors[aff][name]
-                inst_authors_entry["papers"] += 1
-                inst_authors_entry["citations"] += c
-                if year is not None:
-                    inst_authors_entry["first_year"] = year if inst_authors_entry["first_year"] is None \
-                        else min(inst_authors_entry["first_year"], year)
-                    inst_authors_entry["last_year"] = year if inst_authors_entry["last_year"] is None \
-                        else max(inst_authors_entry["last_year"], year)
+            if not blanket_shared:
+                for aff in own_affs:
+                    rec = author_institutions[name].setdefault(aff, {"first_year": year, "last_year": year, "papers": 0})
+                    if year is not None:
+                        rec["first_year"] = year if rec["first_year"] is None else min(rec["first_year"], year)
+                        rec["last_year"] = year if rec["last_year"] is None else max(rec["last_year"], year)
+                    rec["papers"] += 1
+                    inst_authors_entry = institution_authors[aff][name]
+                    inst_authors_entry["papers"] += 1
+                    inst_authors_entry["citations"] += c
+                    if year is not None:
+                        inst_authors_entry["first_year"] = year if inst_authors_entry["first_year"] is None \
+                            else min(inst_authors_entry["first_year"], year)
+                        inst_authors_entry["last_year"] = year if inst_authors_entry["last_year"] is None \
+                            else max(inst_authors_entry["last_year"], year)
             codes = author_country_codes(a)
-            for code in codes:
-                cname = COUNTRY_NAMES.get(code, code)
-                rec = author_countries[name].setdefault(cname, {"first_year": year, "last_year": year})
-                if year is not None:
-                    rec["first_year"] = year if rec["first_year"] is None else min(rec["first_year"], year)
-                    rec["last_year"] = year if rec["last_year"] is None else max(rec["last_year"], year)
+            if not blanket_shared:
+                for code in codes:
+                    cname = COUNTRY_NAMES.get(code, code)
+                    rec = author_countries[name].setdefault(cname, {"first_year": year, "last_year": year})
+                    if year is not None:
+                        rec["first_year"] = year if rec["first_year"] is None else min(rec["first_year"], year)
+                        rec["last_year"] = year if rec["last_year"] is None else max(rec["last_year"], year)
             paper_institutions.update(own_affs)
             paper_countries.update(codes)
         # Same institution-name fallback as paper_countries_institutions()

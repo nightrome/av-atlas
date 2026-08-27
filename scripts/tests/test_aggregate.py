@@ -166,7 +166,11 @@ class TestNormalizeInstitution(unittest.TestCase):
         # "Corresponding author" footnote glued onto a real institution
         # name with no separator, sometimes with no space at all.
         self.assertEqual(ag.normalize_institution("Tsinghua University Corresponding author"), "Tsinghua University")
-        self.assertEqual(ag.normalize_institution("NVIDIA ResearchCorresponding authors:"), "NVIDIA Research")
+        # "NVIDIA Research" is itself further redirected to "NVIDIA" by
+        # INSTITUTION_ALIASES_LLM (user-requested) -- still exercises the
+        # footnote-stripping regex under test, just against its post-alias
+        # canonical form.
+        self.assertEqual(ag.normalize_institution("NVIDIA ResearchCorresponding authors:"), "NVIDIA")
 
     def test_strips_dagger_and_replacement_char_footnote_junk(self):
         self.assertEqual(
@@ -888,6 +892,75 @@ class TestAggregateEndToEnd(unittest.TestCase):
         paper = stats["all_papers"][0]
         self.assertEqual(paper["institutions"], [])
         self.assertEqual(paper["countries"], [])
+
+    def test_blanket_shared_affiliation_excluded_from_individuals_kept_for_paper(self):
+        # User-flagged real case: Yue Wang's, Boyi Li's, and Marco Pavone's
+        # author pages all showed institutions that were really a
+        # co-author's -- some sources (arXiv/ar5iv papers whose LaTeX
+        # doesn't mark which author belongs to which affiliation, some
+        # legacy/OpenAlex-sourced records) can't map an affiliation block to
+        # a specific author 1:1 and fall back to crediting EVERY author on
+        # the paper with the SAME full multi-institution list. This can't be
+        # corrected per-author without knowing which institution is whose,
+        # so no individual author is credited with any of it -- but the
+        # PAPER itself really did involve all of these institutions, so
+        # paper-level aggregation (which feeds the Institutions/Countries
+        # leaderboard pages) keeps it.
+        blanket_authors = [
+            {"name": "Alice Blanket", "affiliations": ["NVIDIA Research", "Stanford University"]},
+            {"name": "Bob Blanket", "affiliations": ["NVIDIA Research", "Stanford University"]},
+            {"name": "Carol Blanket", "affiliations": ["NVIDIA Research", "Stanford University"]},
+        ]
+        stats = self._run([
+            {"title": "Blanket Affiliation Paper", "year": 2025, "venue": "CVPR", "av_relevance": "core",
+             "authors": "Alice Blanket, Bob Blanket, Carol Blanket", "authors_detail": blanket_authors},
+        ])
+        paper = stats["all_papers"][0]
+        # "NVIDIA Research" is itself further redirected to "NVIDIA" by
+        # INSTITUTION_ALIASES_LLM (user-requested), incidental to what this
+        # test actually checks.
+        self.assertEqual(paper["institutions"], ["NVIDIA", "Stanford University"])
+        author_detail = stats["author_detail"]
+        # No institutions, no countries, no Scholar profile, no ORCID --
+        # author_detail skips creating an entry at all rather than one with
+        # nothing useful in it (see the "not institutions and not countries
+        # and not profile and not orcid" guard just above where it's built).
+        for name in ("Alice Blanket", "Bob Blanket", "Carol Blanket"):
+            self.assertNotIn(name, author_detail)
+
+    def test_genuinely_shared_single_institution_is_still_credited(self):
+        # Contrast case for the guard above: every author landing on the
+        # SAME ONE institution isn't suspicious (a real single-lab paper) --
+        # only >1 authors uniformly sharing a SET of 2+ institutions is. Must
+        # not become collateral damage from the blanket-shared clearing.
+        stats = self._run([
+            {"title": "Same Lab Paper", "year": 2025, "venue": "CVPR", "av_relevance": "core",
+             "authors": "Dave Samelab, Erin Samelab",
+             "authors_detail": [
+                 {"name": "Dave Samelab", "affiliations": ["ETH Zürich"]},
+                 {"name": "Erin Samelab", "affiliations": ["ETH Zürich"]},
+             ]},
+        ])
+        author_detail = stats["author_detail"]
+        self.assertEqual([i["name"] for i in author_detail["Dave Samelab"]["institutions"]], ["ETH Zürich"])
+        self.assertEqual([i["name"] for i in author_detail["Erin Samelab"]["institutions"]], ["ETH Zürich"])
+
+    def test_two_authors_with_genuinely_different_affiliations_are_both_credited(self):
+        # Another contrast case: two authors with DIFFERENT institutions
+        # (the normal, correct case a real per-author source produces) must
+        # not trip the blanket-shared guard, which only fires when the
+        # SHARED set has 2+ institutions.
+        stats = self._run([
+            {"title": "Real Per-Author Paper", "year": 2025, "venue": "CVPR", "av_relevance": "core",
+             "authors": "Frank Diff, Grace Diff",
+             "authors_detail": [
+                 {"name": "Frank Diff", "affiliations": ["Carnegie Mellon University"]},
+                 {"name": "Grace Diff", "affiliations": ["University of Oxford"]},
+             ]},
+        ])
+        author_detail = stats["author_detail"]
+        self.assertEqual([i["name"] for i in author_detail["Frank Diff"]["institutions"]], ["Carnegie Mellon University"])
+        self.assertEqual([i["name"] for i in author_detail["Grace Diff"]["institutions"]], ["University of Oxford"])
 
     def test_citing_papers_includes_self_citations_but_tracks_them_separately(self):
         # User-requested: self-citations (citer shares an author with the
