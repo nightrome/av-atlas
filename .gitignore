@@ -34,6 +34,12 @@ data/affiliations_arxiv.json
 data/affiliations_cvf.json
 data/reference_lists_cvf.json
 data/reference_lists_arxiv.json
+# mine_abstracts.py's side file (folded into papers_full.json by
+# apply_abstracts_arxiv.py) -- same reasoning as affiliations_arxiv.json
+# above. Large (backfilled from papers_full.json's full existing abstract
+# set the day this file was introduced, not just newly-mined ones -- see
+# DECISIONS.md), not reviewable as a diff.
+data/abstracts_arxiv.json
 # fetch_arxiv_links.py's resumability cache -- its output is folded into
 # papers_full.json's arxiv_url field by apply_arxiv_links.py, same pattern
 # as every other fetch/apply side-file pair above.

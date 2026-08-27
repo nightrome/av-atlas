@@ -16,21 +16,35 @@ Two passes:
      exact-normalized-title-match standard as fetch_affiliations_arxiv.py's
      find_arxiv_id, to avoid a same-topic-different-paper false match),
      3s/request per arXiv's own etiquette guidance. This is the slow pass.
-     A clean search that finds no match sets abstract_search_exhausted on
-     the paper -- distinguishes "we looked, there's genuinely nothing on
-     arXiv" from "haven't searched yet" (aggregate.py's coverage stat counts
-     both a found abstract and a confirmed miss as done), and means a later
-     run skips straight past it instead of re-searching the same paper
-     forever. A network/API exception does NOT set it, so a transient
-     failure still gets retried next run.
+     A clean search that finds no match is recorded as "exhausted" --
+     distinguishes "we looked, there's genuinely nothing on arXiv" from
+     "haven't searched yet" (aggregate.py's coverage stat counts both a
+     found abstract and a confirmed miss as done), and means a later run
+     skips straight past it instead of re-searching the same paper forever.
+     A network/API exception does NOT record it, so a transient failure
+     still gets retried next run.
 
-Writes directly to papers_full.json (single writer for this field, no
-separate side file -- unlike affiliations/institutions there's no
-disambiguation step downstream that needs the raw fetch preserved). Saves
-after every batch, so a killed/restarted run only redoes the current batch,
-never loses prior progress.
+Writes ONLY to its own side file, data/abstracts_arxiv.json -- same
+fetch/apply-with-side-file shape as fetch_affiliations_arxiv.py/
+apply_affiliations_arxiv.py, not the "single writer straight into
+papers_full.json" shape this script used before. That earlier shape meant
+every abstract ever mined -- and every "confirmed no arXiv match" marker,
+which is what prevents re-searching a dead end forever -- lived ONLY inside
+the ~280MB gitignored papers_full.json, with no independent record: if that
+file were ever lost, recovering it meant re-running this whole rate-limited
+crawl from zero (see DECISIONS.md). The side file is still gitignored (large,
+derived, same reasoning as affiliations_arxiv.json) but is now independently
+regenerable-by-replay: run this, then apply_abstracts_arxiv.py, and
+papers_full.json's abstract data is back without touching arXiv again.
+
+Never mutates papers_full.json -- only reads it, to compute the mining
+pool and to check what's already known (papers_full.json's own fields are
+still consulted alongside the cache, since older abstracts predate this
+side-file split and only ever landed there). Safe to run anytime, including
+alongside another script that IS writing papers_full.json, unlike before.
 
 Usage: python mine_abstracts.py
+Then: python apply_abstracts_arxiv.py
 """
 import json
 import re
@@ -44,6 +58,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
+ABSTRACTS_CACHE_FILE = BASE / "data" / "abstracts_arxiv.json"
 ARXIV_API = "http://export.arxiv.org/api/query"
 ATOM_NS = {"atom": "http://www.w3.org/2005/Atom"}
 HEADERS = {"User-Agent": "av-atlas-corpus-builder (contact: h.caesar@tudelft.nl)"}
@@ -109,13 +124,33 @@ def fetch_by_title(title):
     return clean_abstract(entry.findtext("atom:summary", default="", namespaces=ATOM_NS))
 
 
-def save(papers):
-    PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+def load_cache():
+    if ABSTRACTS_CACHE_FILE.exists():
+        return json.loads(ABSTRACTS_CACHE_FILE.read_text(encoding="utf-8"))
+    return {}
+
+
+def save_cache(cache):
+    ABSTRACTS_CACHE_FILE.write_text(json.dumps(cache, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+
+
+def already_known(e, cache):
+    """True if an abstract is already known OR this paper's arXiv search is
+    already confirmed exhausted -- checks papers_full.json's own fields
+    (older data, from before the side-file split) as well as the cache
+    (this script's own, possibly not yet folded back in by
+    apply_abstracts_arxiv.py) so neither source of truth causes a re-fetch
+    the other one already answered."""
+    if e.get("abstract") or e.get("abstract_search_exhausted"):
+        return True
+    cached = cache.get(normalize_title(e.get("title")))
+    return bool(cached and (cached.get("abstract") or cached.get("exhausted")))
 
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
+    cache = load_cache()
     core = [e for e in papers if e.get("av_relevance") == "core"]
 
     # Also target a narrow, well-justified slice of "adjacent" papers: those
@@ -150,20 +185,14 @@ def main():
           f"(likely miscategorized for lack of an abstract) added to the mining pool")
     core = core + adjacent_recheck
 
-    missing = [e for e in core if not e.get("abstract")]
+    missing = [e for e in core if not already_known(e, cache)]
     print(f"{len(core)} papers in the mining pool (core + the adjacent-recheck slice above), "
           f"{len(missing)} missing an abstract")
 
     with_url = [e for e in missing if e.get("arxiv_url")]
-    # Skip papers a previous run already searched and confirmed have no
-    # arXiv match -- re-searching them every run is pure wasted work (the
-    # answer can't change unless the paper somehow gains an arxiv_url later,
-    # which is handled by the with_url branch above, not this one).
-    without_url = [e for e in missing if not e.get("arxiv_url") and not e.get("abstract_search_exhausted")]
-    already_exhausted = sum(1 for e in missing if not e.get("arxiv_url") and e.get("abstract_search_exhausted"))
+    without_url = [e for e in missing if not e.get("arxiv_url")]
     print(f"  {len(with_url)} already have an arxiv_url (fast pass), "
-          f"{len(without_url)} need a title search (slow pass), "
-          f"{already_exhausted} previously confirmed no arXiv match (skipped)")
+          f"{len(without_url)} need a title search (slow pass)")
 
     # -- Pass 1: batch ID lookup for papers with a known arxiv_url --
     filled = 0
@@ -183,9 +212,9 @@ def main():
             time.sleep(REQUEST_DELAY)
             continue
         for aid, abstract in found.items():
-            id_to_entry[aid]["abstract"] = abstract
+            cache[normalize_title(id_to_entry[aid]["title"])] = {"abstract": abstract}
             filled += 1
-        save(papers)
+        save_cache(cache)
         print(f"  pass 1: {i + len(batch)}/{len(with_url)} processed, {filled} filled so far", flush=True)
         time.sleep(REQUEST_DELAY)
 
@@ -204,20 +233,22 @@ def main():
             time.sleep(REQUEST_DELAY)
             continue
         consecutive_failures = 0
+        key = normalize_title(e["title"])
         if abstract:
-            e["abstract"] = abstract
+            cache[key] = {"abstract": abstract}
             filled += 1
         else:
-            e["abstract_search_exhausted"] = True
+            cache[key] = {"exhausted": True}
             exhausted += 1
         if (j + 1) % 25 == 0:
-            save(papers)
+            save_cache(cache)
             print(f"  pass 2: {j + 1}/{len(without_url)} processed, {filled} filled, "
                   f"{exhausted} confirmed no match so far (total)", flush=True)
         time.sleep(REQUEST_DELAY)
 
-    save(papers)
+    save_cache(cache)
     print(f"Done. {filled} abstracts filled, {exhausted} confirmed no arXiv match, in total.")
+    print("Run apply_abstracts_arxiv.py to fold this into papers_full.json.")
 
 
 if __name__ == "__main__":

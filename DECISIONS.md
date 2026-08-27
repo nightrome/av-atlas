@@ -654,3 +654,53 @@ left genuine junk fragments (postal codes, person names, mid-sentence
 prose) rather than a valid-but-differently-spelled institution name — that
 class of fix still needs either the queued re-crawl or a raw-text
 reconstruction pass, and remains queued, not solved by this.
+
+## Reproducibility audit: mine_abstracts.py given a side file, glued-institution fix given a repair script
+
+User-asked: "how much of the database is actually reproducible... did some
+[manual edits] write directly to the files and therefore we cannot
+reconstruct the database in the future?" A real audit, not a reassurance --
+checked every file under `data/` against `.gitignore` and cross-referenced
+each gitignored one against the script that's supposed to regenerate it.
+Found two genuine gaps, both closed:
+
+**mine_abstracts.py had no side file.** Every other fetcher in this
+pipeline (`fetch_affiliations_arxiv.py`, `fetch_cvf_affiliations.py`,
+citation sources) writes to its own small `data/*.json` side file, folded
+into `papers_full.json` by a separate `apply_*.py` -- so even if
+`papers_full.json` is lost, the side file alone can reconstruct that slice
+without re-crawling. `mine_abstracts.py` wrote straight into
+`papers_full.json`'s `abstract`/`abstract_search_exhausted` fields directly,
+by its own design ("no separate side file... no disambiguation step
+downstream that needs the raw fetch preserved" -- true, but beside the
+point: the raw fetch was still the ONLY record of potentially days of
+rate-limited arXiv API work). Fixed by giving it the same shape: writes to
+`data/abstracts_arxiv.json` only, `apply_abstracts_arxiv.py` (new) folds it
+into `papers_full.json`, same "only fills gaps, safe to run anytime"
+contract as `apply_affiliations_arxiv.py`. Backfilled the cache from
+`papers_full.json`'s current state on introduction (121,802 abstracts +
+8,321 confirmed-no-match markers) so this protects the whole project's
+accumulated abstract-mining history, not just abstracts mined after this
+change shipped.
+
+**The glued-institution-string fix (see the entry above) was a one-off
+`python -c` edit, not a script.** `papers_full.json` is gitignored and
+"regenerable" is the whole premise of that being safe -- but an edit that
+only ever touched the live file, with no tracked record of what it did,
+breaks that premise for exactly the data it touched. `scripts/
+repair_garbled_authors_detail.py` already established the right pattern
+for this class of fix (a past session's own one-off repair, kept as a real,
+tracked, tested, re-runnable script rather than a shell one-liner) --
+`repair_glued_institution_strings.py` (new, with a test) follows it:
+idempotent, a no-op if the glued strings are already gone, safe to re-run
+after any future re-crawl that might reintroduce the same shape of garbled
+text.
+
+Not fully solved by this audit, left as accepted risk: the affiliations/
+citation-graph/reference-list side files (`affiliations_arxiv.json`,
+`affiliations_cvf.json`, `citation_graph.json`, `reference_lists_*.json`)
+are gitignored and depend on external services (arXiv, CVF, OpenAlex)
+staying available and unchanged to be re-fetched from scratch -- genuinely
+regenerable in principle, but a real multi-day undertaking in practice, not
+instant. `data/venues/*.json` (the actual proceedings listings, tracked)
+remains the one dataset this whole pipeline cannot survive losing.
