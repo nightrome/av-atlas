@@ -92,7 +92,7 @@
 
 <div class="panel" id="timeline-panel">
   <div class="panel-title-row">
-    <h2>Papers over time</h2>
+    <h2>Top papers by citations and year</h2>
   </div>
   <div class="line-chart-wrap" id="timeline-chart-wrap">
     <svg id="timeline-chart"></svg>
@@ -418,7 +418,14 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle) {
       .sort((a, b) => (b.citations || 0) - (a.citations || 0))
       .slice(0, topN);
 
-    const allYears = [...new Set(topPapers.map(p => p.year))].sort();
+    // A continuous year span (not just the years that happen to have a top
+    // paper) so each paper sits at its true position on a real time axis and
+    // the gaps between influential years stay visible.
+    const yrNums = topPapers.map(p => p.year);
+    const allYears = [];
+    if (yrNums.length) {
+      for (let yr = Math.min(...yrNums); yr <= Math.max(...yrNums); yr++) allYears.push(yr);
+    }
 
     const legend = document.getElementById('timeline-legend');
     legend.innerHTML = '';
@@ -440,12 +447,16 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle) {
       const series = topPapers
         .filter(p => !hidden.has(p.title))
         .map(p => {
+          // Only the publication year carries a value; every other year is
+          // null (absent), not 0 -- so each paper renders as a single dot at
+          // (publication year, citation count) rather than a line spiking up
+          // from and back down to zero across the whole axis.
           const values = {};
-          allYears.forEach(yr => { values[yr] = yr === p.year ? p.citations : 0; });
+          allYears.forEach(yr => { values[yr] = yr === p.year ? p.citations : null; });
           return { name: shortPaperName(p, datasetNameByTitle), color: TIMELINE_PALETTE[topPapers.indexOf(p) % TIMELINE_PALETTE.length], values };
         });
       lineChart(document.getElementById('timeline-chart'), document.getElementById('timeline-tooltip'),
-        series, allYears, v => `${v} citation${v === 1 ? '' : 's'}`, { yLabel: 'Citations, at publication year' });
+        series, allYears, v => `${v} citation${v === 1 ? '' : 's'}`, { yLabel: 'Citations (plotted at publication year)', dotRadius: 5 });
     }
     drawSeries();
   }

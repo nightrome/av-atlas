@@ -1118,6 +1118,27 @@
     container.appendChild(wrap);
   };
 
+  // Rounds a chart's data maximum up to a "nice" axis top so the 4 evenly
+  // spaced gridlines land on readable numbers (0 / 750 / 1500 / 2250 / 3000)
+  // instead of raw quarter-fractions of the data max (0 / 554 / 1108 / ...).
+  // Small integer ranges get plain integer steps; a data point up to ~5%
+  // above the nice top is tolerated rather than doubling the axis height for
+  // it (it just sits a hair above the top gridline).
+  window.niceAxisMax = function (dataMax) {
+    if (!(dataMax > 0)) return 1;
+    // Small integer-count ranges get plain integer steps. Guarded to
+    // dataMax >= 1 so normalized/fractional charts (e.g. a 0..0.14 "share of
+    // papers" axis) fall through to the nice-number path instead of being
+    // snapped up to 4.
+    if (dataMax >= 1 && dataMax <= 12) return Math.max(1, Math.ceil(dataMax / 4)) * 4;
+    const rough = dataMax / 4;
+    const base = Math.pow(10, Math.floor(Math.log10(rough)));
+    const f = rough / base;
+    const nice = f <= 1.05 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 3 ? 3
+      : f <= 4 ? 4 : f <= 5 ? 5 : f <= 7.5 ? 7.5 : 10;
+    return nice * base * 4;
+  };
+
   window.lineChart = function (svgEl, tooltipEl, series, years, formatValue, opts) {
     opts = opts || {};
     svgEl.innerHTML = '';
@@ -1149,7 +1170,8 @@
     }
 
     const allValues = series.flatMap(s => years.map(y => s.values[y])).filter(v => v != null);
-    const maxV = opts.fixedMax != null ? opts.fixedMax : Math.max(1e-9, ...allValues);
+    const dataMax = opts.fixedMax != null ? opts.fixedMax : Math.max(1e-9, ...allValues);
+    const maxV = opts.fixedMax != null ? dataMax : niceAxisMax(dataMax);
     const x = i => PAD_L + (years.length <= 1 ? 0 : (i / (years.length - 1)) * (W - PAD_L - PAD_R));
     const y = v => H - PAD_B - (Math.max(0, v) / maxV) * (H - PAD_T - PAD_B);
 
@@ -1202,7 +1224,7 @@
         const v = s.values[yr];
         if (v == null) return;
         const dot = document.createElementNS(ns, 'circle');
-        dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(v)); dot.setAttribute('r', 3);
+        dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(v)); dot.setAttribute('r', opts.dotRadius || 3);
         dot.setAttribute('fill', s.color);
         dot.setAttribute('class', 'series-dot');
         svgEl.appendChild(dot);

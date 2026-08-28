@@ -93,6 +93,7 @@
     <h2>Papers</h2>
     <div id="export-container"></div>
   </div>
+  <div id="papers-pagination"></div>
   <table><thead><tr><th>Title</th><th>Year</th><th>Venue</th><th>Category</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th></tr></thead>
   <tbody id="papers-body"></tbody></table>
 </div>
@@ -198,16 +199,23 @@ function render(stats) {
     if (!p.year) return;
     yearAgg[p.year] = (yearAgg[p.year] || 0) + 1;
   });
-  const years = Object.keys(yearAgg).sort();
+  // Fill the whole span between the first and last active year, so years
+  // with no papers show as an empty slot rather than being dropped from the
+  // axis (which silently compresses a gap into a continuous-looking run).
+  const activeYears = Object.keys(yearAgg).map(Number).sort((a, b) => a - b);
+  const years = [];
+  if (activeYears.length) {
+    for (let y = activeYears[0]; y <= activeYears[activeYears.length - 1]; y++) years.push(y);
+  }
   const chart = document.getElementById('year-chart');
-  const maxC = Math.max(1, ...years.map(y => yearAgg[y]));
+  const maxC = Math.max(1, ...years.map(y => yearAgg[y] || 0));
   years.forEach(y => {
-    const v = yearAgg[y];
+    const v = yearAgg[y] || 0;
     const wrap = document.createElement('div');
     wrap.className = 'bar-wrap';
     const bar = document.createElement('div');
     bar.className = 'bar';
-    bar.style.height = Math.max(3, (v / maxC) * 100) + '%';
+    bar.style.height = (v === 0 ? 0 : Math.max(3, (v / maxC) * 100)) + '%';
     const tooltip = document.createElement('div');
     tooltip.className = 'tooltip';
     tooltip.textContent = `${y}: ${v} paper${v === 1 ? '' : 's'}`;
@@ -296,13 +304,20 @@ function render(stats) {
     ])));
     appendSumRow(papersBody, rows, [null, null, null, null, p => p.citations]);
   }
-  makeSortableSafe(document.getElementById('papers-body').closest('table'), sortedPapers, [
-    { accessor: p => p.title, numeric: false },
-    { accessor: p => p.year, numeric: true },
-    { accessor: p => p.venue, numeric: false },
-    { accessor: p => p.category, numeric: false },
-    { accessor: p => p.citations, numeric: true },
-  ], renderBody);
+  // Paginate rather than dumping every paper into one table (Toyota/Tsinghua-
+  // scale institutions have hundreds).
+  function renderPapersPage() {
+    const pg = renderPagination(document.getElementById('papers-pagination'), 'institution.html', sortedPapers.length, { onChange: renderPapersPage });
+    const shown = sortedPapers.slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(document.getElementById('papers-body').closest('table'), shown, [
+      { accessor: p => p.title, numeric: false },
+      { accessor: p => p.year, numeric: true },
+      { accessor: p => p.venue, numeric: false },
+      { accessor: p => p.category, numeric: false },
+      { accessor: p => p.citations, numeric: true },
+    ], renderBody);
+  }
+  renderPapersPage();
 
   const exportContainer = document.getElementById('export-container');
   exportContainer.innerHTML = '';

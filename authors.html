@@ -363,11 +363,13 @@ function render() {
       const link = document.createElement('a');
       link.href = `author.html?name=${encodeURIComponent(a.name)}`;
       link.textContent = a.name;
-      tbody.appendChild(row([i + 1, link, a.papers, fmtAvg(a.lifetime), a.citations, fmtAvg(a.avg_citations), fmtPct(a.selfCitationPct), a.nonAvPapers]));
+      tbody.appendChild(row([pagination.offset + i + 1, link, a.papers, fmtAvg(a.lifetime), a.citations, fmtAvg(a.avg_citations), fmtPct(a.selfCitationPct), a.nonAvPapers]));
     });
     appendSumRow(tbody, data, [null, null, a => a.papers, null, a => a.citations, null, null, a => a.nonAvPapers]);
   }
-  makeSortableSafe(tbody.closest('table'), authors, [
+  // Feed the table the current page's slice, not the whole list -- otherwise
+  // every row renders at once and Prev/Next only move the count label.
+  makeSortableSafe(tbody.closest('table'), shown, [
     null,
     { accessor: a => a.name, numeric: false },
     { accessor: a => a.papers, numeric: true },

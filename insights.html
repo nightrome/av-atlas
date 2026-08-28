@@ -880,7 +880,8 @@ function lineChart(svgEl, tooltipEl, series, years, formatValue, opts) {
     svgEl.appendChild(yLabelEl);
   }
   const allValues = series.flatMap(s => years.map(y => s.values[y])).filter(v => v != null);
-  const maxV = Math.max(1e-9, ...allValues);
+  const dataMax = Math.max(1e-9, ...allValues);
+  const maxV = typeof window.niceAxisMax === 'function' ? window.niceAxisMax(dataMax) : dataMax;
   const x = i => PAD_L + (years.length <= 1 ? 0 : (i / (years.length - 1)) * (W - PAD_L - PAD_R));
   const y = v => H - PAD_B - (Math.max(0, v) / maxV) * (H - PAD_T - PAD_B);
   for (let i = 0; i <= 4; i++) {

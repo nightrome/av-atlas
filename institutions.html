@@ -256,11 +256,13 @@ function render() {
       const nameLink = document.createElement('a');
       nameLink.href = `institution.html?name=${encodeURIComponent(x.name)}`;
       nameLink.textContent = x.name;
-      tbody.appendChild(row([i + 1, nameLink, x.papers, x.citations, fmtAvg(x.avg_citations)]));
+      tbody.appendChild(row([pagination.offset + i + 1, nameLink, x.papers, x.citations, fmtAvg(x.avg_citations)]));
     });
     appendSumRow(tbody, data, [null, null, x => x.papers, x => x.citations, null]);
   }
-  makeSortableSafe(tbody.closest('table'), institutions, [
+  // Feed the table the current page's slice, not the whole list -- otherwise
+  // every row renders at once and Prev/Next only move the count label.
+  makeSortableSafe(tbody.closest('table'), shown, [
     null,
     { accessor: x => x.name, numeric: false },
     { accessor: x => x.papers, numeric: true },
