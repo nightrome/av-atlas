@@ -32,7 +32,10 @@ published" structurally impossible instead of a step to remember, and
 means a single command is always both the test run and the deploy.
 
 Usage: python build_public_site.py
+   or: python build_public_site.py --publish-only   # steps 1-4 skipped; only re-copy
+                                                    # current pages + existing stats.json
 """
+import argparse
 import re
 import shutil
 import subprocess
@@ -170,18 +173,30 @@ def run_step(label, script_name):
 
 
 def main():
-    run_step("Rebuilding corpus (merge_corpus.py)", "merge_corpus.py")
-    # One-off data repairs, applied here (not just left as scripts to remember
-    # to run by hand) so a full recrawl-from-scratch reproduces the same
-    # corpus without a manual step: merge_corpus.py rebuilds papers_full.json
-    # from data/venues/*.json alone, which would otherwise silently drop
-    # these fixes since they patch papers_full.json directly rather than the
-    # tracked venue sources. Both are idempotent (a no-op once already
-    # applied), so re-running them on every build is safe and cheap.
-    run_step("Repairing garbled authors_detail", "repair_garbled_authors_detail.py")
-    run_step("Repairing glued institution strings", "repair_glued_institution_strings.py")
-    run_step("Rebuilding stats (aggregate.py)", "aggregate.py")
-    run_step("Running tests (run_tests.py)", "run_tests.py")
+    parser = argparse.ArgumentParser(description="Build (and optionally just re-publish) the AV Atlas public site.")
+    parser.add_argument("--publish-only", action="store_true",
+                        help="Skip the corpus rebuild (merge_corpus/aggregate), the one-off repairs and the "
+                             "test suite; only re-copy the current HTML/JS/CSS and the EXISTING "
+                             "data/stats.json into public/. Use this only for a pages-only change where "
+                             "nothing under data/ moved -- a previous full build must have left "
+                             "data/stats.json (and data/abstracts/) in place.")
+    args = parser.parse_args()
+
+    if args.publish_only:
+        print("--- Publish-only: skipping corpus rebuild, repairs and tests ---")
+    else:
+        run_step("Rebuilding corpus (merge_corpus.py)", "merge_corpus.py")
+        # One-off data repairs, applied here (not just left as scripts to remember
+        # to run by hand) so a full recrawl-from-scratch reproduces the same
+        # corpus without a manual step: merge_corpus.py rebuilds papers_full.json
+        # from data/venues/*.json alone, which would otherwise silently drop
+        # these fixes since they patch papers_full.json directly rather than the
+        # tracked venue sources. Both are idempotent (a no-op once already
+        # applied), so re-running them on every build is safe and cheap.
+        run_step("Repairing garbled authors_detail", "repair_garbled_authors_detail.py")
+        run_step("Repairing glued institution strings", "repair_glued_institution_strings.py")
+        run_step("Rebuilding stats (aggregate.py)", "aggregate.py")
+        run_step("Running tests (run_tests.py)", "run_tests.py")
     print("\n--- Publishing public site ---")
     build_public_site()
 

@@ -11,6 +11,8 @@ Single deploy command for AV Atlas.
 
 Usage: python scripts/deploy.py
    or: python scripts/deploy.py --no-main-commit   # publish without touching main
+   or: python scripts/deploy.py --skip-build       # HTML/JS/CSS-only change: skip
+                                                   # the corpus rebuild + tests
 """
 import argparse
 import shutil
@@ -46,9 +48,12 @@ def rmtree_retry(path, attempts=5, delay=0.5):
             time.sleep(delay)
 
 
-def build():
+def build(skip_build=False):
     print("--- Building AV Atlas ---")
-    subprocess.run([sys.executable, "build_public_site.py"], cwd=BASE / "scripts", check=True)
+    cmd = [sys.executable, "build_public_site.py"]
+    if skip_build:
+        cmd.append("--publish-only")
+    subprocess.run(cmd, cwd=BASE / "scripts", check=True)
 
 
 def commit_sources(msg):
@@ -143,9 +148,14 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-main-commit", action="store_true",
                          help="Skip committing/pushing source changes to main; just build and deploy gh-pages.")
+    parser.add_argument("--skip-build", action="store_true",
+                         help="Skip the corpus rebuild (merge_corpus/aggregate) and the test suite; just "
+                              "re-copy the current pages and the existing data/stats.json into public/ and "
+                              "publish. Only safe for HTML/JS/CSS-only changes where nothing under data/ moved; "
+                              "a previous full build must have left data/stats.json in place.")
     args = parser.parse_args()
 
-    build()
+    build(skip_build=args.skip_build)
     if not args.no_main_commit:
         commit_sources("Update AV Atlas")
     deploy_gh_pages()
