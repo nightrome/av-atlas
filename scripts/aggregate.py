@@ -133,10 +133,14 @@ def citation_count(entry):
     # rank highly (server-side sort key) while displaying 0 citations
     # (client always showed in-corpus only) -- a real user-reported mismatch.
     #
-    # None means "not yet known" -- distinct from a real 0. Consumers must
-    # not silently coerce this to 0, or "no data yet" and "definitely never
-    # cited" become indistinguishable, which quietly drags down every average.
-    return ((entry.get("citations_by_source") or {}).get("in_corpus") or {}).get("count")
+    # A paper the in-corpus citation graph has no incoming edge for gets 0,
+    # not None: "how many papers in this corpus reference it" is a question
+    # the corpus can always answer, and the answer is just often zero. A
+    # partial reference-list crawl is a coverage caveat surfaced on the
+    # About page ("What's not covered yet"), not a reason to blank the
+    # number. (User-decided; the old None sentinel left ~half the corpus
+    # reading as "unknown" on every page.)
+    return ((entry.get("citations_by_source") or {}).get("in_corpus") or {}).get("count") or 0
 
 
 def citations_by_source_for_client(entry):
@@ -2345,20 +2349,21 @@ def main():
             all_institutions_seen.update(author_affiliations(a, all_author_names, co_author_names))
     total_institutions_all = len(all_institutions_seen)
 
-    # "Best paper" must be chosen only among papers with an actual citation
-    # count -- otherwise, for a year/venue where nothing has citation data,
-    # this would silently pick whichever unknown-citation paper happens to
-    # sort first and label it "best", which is not a real comparison.
+    # "Best paper" must be chosen only among papers with at least one
+    # in-corpus citation -- otherwise, for a year/venue where nothing is
+    # cited in-corpus yet, this would silently pick whichever 0-citation
+    # paper happens to sort first and label it "best", which is not a real
+    # comparison.
     best_by_year = {}
     for p in papers:
-        if p["citations"] is None:
+        if not p["citations"]:
             continue
         y = p["year"]
         if y and (y not in best_by_year or p["citations"] > best_by_year[y]["citations"]):
             best_by_year[y] = p
     best_by_venue = {}
     for p in papers:
-        if p["citations"] is None:
+        if not p["citations"]:
             continue
         v = p["venue"]
         if v and (v not in best_by_venue or p["citations"] > best_by_venue[v]["citations"]):
@@ -2749,13 +2754,12 @@ def main():
             # paper passes through classify.py immediately on merge (stage
             # 1 == stage 0, always, by construction -- kept as its own
             # stage anyway so a reader doesn't have to know that), then
-            # picks up an abstract, author/institution detail, and a
-            # citation count on its own schedule depending on discovery
-            # path and which backfills have reached it so far. A paper
-            # can be found here at any stage; only "citations known" ever
-            # gates what's shown on the homepage by default (see
-            # index.html's server-sorted top_papers, which always sorts
-            # unknown-citation papers last).
+            # picks up an abstract and author/institution detail on its own
+            # schedule depending on discovery path and which backfills have
+            # reached it so far. (There's no "citations known" stage: every
+            # paper now has a real in-corpus citation count, 0 included --
+            # how complete the underlying reference-list crawl is shows in
+            # the "Citation graph: ... reference lists" rows below.)
             "pipeline_stages": {
                 "1_discovered": len(entries),
                 "2_classified": len(entries),  # classify.py runs on every entry at merge time
@@ -2765,7 +2769,6 @@ def main():
                 # only "never searched yet" should read as still pending.
                 "3_abstract": sum(1 for e in entries if e.get("abstract") or e.get("abstract_search_exhausted")),
                 "4_author_detail": n_with_author_detail,
-                "5_citations_known": sum(1 for p in papers if p["citations"] is not None),
             },
         },
         "verification": {

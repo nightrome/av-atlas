@@ -92,7 +92,7 @@
 
 <div class="panel" id="timeline-panel">
   <div class="panel-title-row">
-    <h2>Top papers by citations and year</h2>
+    <h2>Papers over time</h2>
   </div>
   <div class="line-chart-wrap" id="timeline-chart-wrap">
     <svg id="timeline-chart"></svg>
@@ -231,12 +231,11 @@ function sourceCell(p) {
 }
 
 // Citation counts are always whole numbers -- only an average may carry one
-// decimal place (see Methodology).
-// '—' (not a blank cell, not "0") for "no citation data yet" -- same
-// missing-data convention as fmtAvg elsewhere on the site. A blank cell
-// reads as an oversight; a bare 0 reads as "confirmed zero citations",
-// neither of which is true for a paper the citation graph hasn't reached
-// yet (e.g. FlexDrive, user-flagged: citations is null, not 0).
+// decimal place (see Methodology). Every paper now carries a real integer:
+// "how many papers in this corpus reference it" always has an answer, and
+// the answer is 0 for a paper nothing here cites (user-decided -- the old
+// null/"—" sentinel left half the corpus reading as "unknown"). Reference-
+// list crawl progress is a coverage caveat, shown on the About page.
 function fmtCitations(n) { return n == null ? '—' : Math.round(n); }
 
 function citationsCell(p) {
@@ -357,26 +356,17 @@ let currentQuery = new URLSearchParams(location.search).get('q') || '';
 
 // Unlike every other page's timeline (which groups many papers into a
 // dimension and counts papers-per-year), the Papers page's own timeline is
-// about individual papers: each of the top N papers by citation count gets
-// its own marker, plotted at the year it was published, sized by how many
-// citations it has. Only papers with citations != null are eligible at all
-// (top papers are ranked by citation count, so a paper with no citation
-// data wouldn't rank anyway).
-//
-// This used to plot when OTHER papers cited each one (via each paper's
-// citing_papers array), grouped by the citing paper's year -- but
-// citing_papers is only populated for papers the citation-graph crawl has
-// actually reached, which is a much smaller set than "has a citation count
-// at all" (in particular, adjacent/not-AV-relevant papers never get
-// citing_papers populated), so switching the Show dropdown away from "AV
-// relevant" reliably produced "No data for the current filters" even though
-// the table right below it was full of cited papers (user-reported). Now
-// only depends on each paper's own year and citation count, both always
-// present whenever citations is non-null, so there's always something to
-// plot as long as the current filters match any cited paper.
+// about individual papers: for each of the top N papers by in-corpus
+// citation count, it plots how many citations that paper received each
+// year. The per-year counts are reconstructed from the paper's
+// citing_papers list (titles of the in-corpus papers that cite it), each
+// resolved to its own publication year via a title -> year map over the
+// whole corpus. Non-cumulative: the value at year Y is citations received
+// IN year Y, not a running total. A top paper whose citers can't be
+// resolved to years at all just doesn't draw a line.
 //
 // Written directly against the shared lineChart primitive (not
-// renderDimensionTimeline, which is grouping-shaped) since "one marker per
+// renderDimensionTimeline, which is grouping-shaped) since "one series per
 // specific paper" doesn't fit that helper's dimension model. The topN it
 // draws with comes from the filter bar's Show top field (see the
 // currentTimelineDraw wiring below), not a control of its own.
@@ -407,24 +397,40 @@ function shortPaperName(p, datasetNameByTitle) {
   return surname + yy;
 }
 
-function renderPapersCitationTimeline(papers, datasetNameByTitle) {
+function renderPapersCitationTimeline(papers, datasetNameByTitle, allPapers) {
   // In memory only for this pageview, not persisted -- a refresh always
   // starts with every series visible.
   const hidden = new Set();
 
+  // title -> publication year, over the whole corpus, so a top paper's
+  // citing_papers titles can be bucketed by the citing paper's own year.
+  const yearByTitle = new Map();
+  (allPapers || []).forEach(p => { if (p.title && p.year) yearByTitle.set(p.title, p.year); });
+
   function draw(topN) {
     const topPapers = [...papers]
-      .filter(p => p.citations != null && p.year)
+      .filter(p => (p.citations || 0) > 0 && Array.isArray(p.citing_papers) && p.citing_papers.length)
       .sort((a, b) => (b.citations || 0) - (a.citations || 0))
       .slice(0, topN);
 
-    // A continuous year span (not just the years that happen to have a top
-    // paper) so each paper sits at its true position on a real time axis and
-    // the gaps between influential years stay visible.
-    const yrNums = topPapers.map(p => p.year);
+    // Per paper: { year -> number of its citations that landed in that year }.
+    const countsByPaper = new Map();
+    let minYr = Infinity, maxYr = -Infinity;
+    topPapers.forEach(p => {
+      const perYear = {};
+      p.citing_papers.forEach(t => {
+        const yr = yearByTitle.get(t);
+        if (!yr) return;
+        perYear[yr] = (perYear[yr] || 0) + 1;
+        if (yr < minYr) minYr = yr;
+        if (yr > maxYr) maxYr = yr;
+      });
+      countsByPaper.set(p.title, perYear);
+    });
+
     const allYears = [];
-    if (yrNums.length) {
-      for (let yr = Math.min(...yrNums); yr <= Math.max(...yrNums); yr++) allYears.push(yr);
+    if (isFinite(minYr)) {
+      for (let yr = minYr; yr <= maxYr; yr++) allYears.push(yr);
     }
 
     const legend = document.getElementById('timeline-legend');
@@ -447,16 +453,13 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle) {
       const series = topPapers
         .filter(p => !hidden.has(p.title))
         .map(p => {
-          // Only the publication year carries a value; every other year is
-          // null (absent), not 0 -- so each paper renders as a single dot at
-          // (publication year, citation count) rather than a line spiking up
-          // from and back down to zero across the whole axis.
+          const perYear = countsByPaper.get(p.title) || {};
           const values = {};
-          allYears.forEach(yr => { values[yr] = yr === p.year ? p.citations : null; });
+          allYears.forEach(yr => { values[yr] = perYear[yr] || 0; });
           return { name: shortPaperName(p, datasetNameByTitle), color: TIMELINE_PALETTE[topPapers.indexOf(p) % TIMELINE_PALETTE.length], values };
         });
       lineChart(document.getElementById('timeline-chart'), document.getElementById('timeline-tooltip'),
-        series, allYears, v => `${v} citation${v === 1 ? '' : 's'}`, { yLabel: 'Citations (plotted at publication year)', dotRadius: 5 });
+        series, allYears, v => `${v} citation${v === 1 ? '' : 's'}`, { yLabel: 'Citations received per year' });
     }
     drawSeries();
   }
@@ -466,7 +469,7 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle) {
 
 function renderResults() {
   const stats = currentStats, filters = currentFilters;
-  currentTimelineDraw = renderPapersCitationTimeline(filterPapers(stats.all_papers || [], filters), buildDatasetNameByTitle(stats));
+  currentTimelineDraw = renderPapersCitationTimeline(filterPapers(stats.all_papers || [], filters), buildDatasetNameByTitle(stats), stats.all_papers || []);
   currentTimelineDraw(filters.topN || 10);
   const query = currentQuery.trim().toLowerCase();
   const anyFilter = filters.category || filters.venue || filters.year || filters.country || filters.institution || filters.author || query;

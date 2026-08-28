@@ -106,16 +106,6 @@
 <div class="panel" id="citing-panel">
   <div class="panel-title-row">
     <h2>Citations</h2>
-    <div class="limit-row">
-      Show
-      <select id="citing-limit">
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50" selected>50</option>
-        <option value="100">100</option>
-        <option value="all">All</option>
-      </select>
-    </div>
     <div id="export-container"></div>
   </div>
   <div class="chart" id="citing-chart"></div>
@@ -127,17 +117,9 @@
 <div class="panel" id="citing-authors-panel">
   <div class="panel-title-row">
     <h2>Citing authors</h2>
-    <div class="limit-row">
-      Show
-      <select id="citing-authors-limit">
-        <option value="10" selected>10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="1000">All</option>
-      </select>
-    </div>
   </div>
   <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Authors of other papers in this corpus that cite this paper.</p>
+  <div id="citing-authors-pagination"></div>
   <table><thead><tr><th>Author</th><th class="num">Citing instances</th>
   <th class="num" title="Total citations across this citing author's own papers in this corpus.">Citations</th>
   <th class="num" title="Total papers by this citing author in this corpus.">Papers</th>
@@ -452,17 +434,13 @@ function render(stats) {
       citingBody.appendChild(row([link, c.venue || '', c.year || '', categoryLabel(c.category || 'uncategorized')]));
     });
   }
-  const citingLimitSel = document.getElementById('citing-limit');
   const citingPaginationContainer = document.getElementById('citing-pagination-container');
   function renderCitingTable() {
-    // Same fixed-page + Prev/Next pattern as index.html's Papers table
-    // (renderPagination), plus a "Show" dropdown for the page size itself --
-    // a citation list can run into the hundreds (see paper.html's own CD
+    // Fixed 50-per-page + Prev/Next, same as every other table on the site
+    // -- a citation list can run into the hundreds (see paper.html's own CD
     // index tile: a paper with a large in-corpus citer count), and this was
     // rendering every single one into one unpaginated table (user-flagged).
-    const limitVal = citingLimitSel.value;
-    const pageSize = limitVal === 'all' ? Math.max(1, citingRows.length) : (parseInt(limitVal, 10) || 50);
-    const pagination = renderPagination(citingPaginationContainer, 'paper.html', citingRows.length, { pageSize, onChange: renderCitingTable });
+    const pagination = renderPagination(citingPaginationContainer, 'paper.html', citingRows.length, { onChange: renderCitingTable });
     const shown = citingRows.slice(pagination.offset, pagination.offset + pagination.pageSize);
     makeSortableSafe(citingBody.closest('table'), shown, [
       { accessor: c => c.title, numeric: false },
@@ -471,19 +449,6 @@ function render(stats) {
       { accessor: c => c.category || 'uncategorized', numeric: false },
     ], renderCitingBody);
   }
-  try {
-    const stored = sessionStorage.getItem('paper-citing-limit');
-    if (stored && [...citingLimitSel.options].some(o => o.value === stored)) citingLimitSel.value = stored;
-  } catch (e) { /* ignore */ }
-  citingLimitSel.addEventListener('change', () => {
-    try { sessionStorage.setItem('paper-citing-limit', citingLimitSel.value); } catch (e) { /* ignore */ }
-    // A page-size change starts back at page 1 -- same reasoning as any
-    // other filter/sort change resetting pagination (see renderPagination's
-    // own comment): a reader on page 3 of 50-per-page could otherwise land
-    // on an empty or wrong slice once the size changes.
-    history.replaceState(null, '', withParam('paper.html', 'page', null));
-    renderCitingTable();
-  });
   renderCitingTable();
 
   const exportContainer = document.getElementById('export-container');
@@ -550,9 +515,9 @@ function render(stats) {
     }
   }
   function renderCitingAuthors() {
-    const limitSel = document.getElementById('citing-authors-limit');
-    const limit = parseInt(limitSel.value, 10) || 10;
-    const shown = citingAuthors.slice(0, limit);
+    const pg = renderPagination(document.getElementById('citing-authors-pagination'), 'paper.html', citingAuthors.length,
+      { paramKey: 'citing_page', onChange: renderCitingAuthors });
+    const shown = citingAuthors.slice(pg.offset, pg.offset + pg.pageSize);
     makeSortableSafe(citingAuthorsBody.closest('table'), shown, [
       { accessor: c => c.name, numeric: false },
       { accessor: c => c.count, numeric: true },
@@ -562,15 +527,6 @@ function render(stats) {
       { accessor: c => c.institution || '', numeric: false },
     ], renderCitingAuthorsBody);
   }
-  const citingAuthorsLimitSel = document.getElementById('citing-authors-limit');
-  try {
-    const stored = sessionStorage.getItem('paper-citing-authors-limit');
-    if (stored && [...citingAuthorsLimitSel.options].some(o => o.value === stored)) citingAuthorsLimitSel.value = stored;
-  } catch (e) { /* ignore */ }
-  citingAuthorsLimitSel.addEventListener('change', () => {
-    try { sessionStorage.setItem('paper-citing-authors-limit', citingAuthorsLimitSel.value); } catch (e) { /* ignore */ }
-    renderCitingAuthors();
-  });
   renderCitingAuthors();
 }
 </script>

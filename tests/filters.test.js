@@ -155,7 +155,7 @@ test('applyCitationSource: always reads citations_by_source.in_corpus, never ope
   ] };
   applyCitationSource(stats);
   assert.strictEqual(stats.all_papers[0].citations, 2, 'in_corpus is used even though openalex has a higher count');
-  assert.strictEqual(stats.all_papers[1].citations, null, 'no in_corpus data stays null even if openalex has one -- there is no fallback');
+  assert.strictEqual(stats.all_papers[1].citations, 0, 'no in_corpus data is a real 0 (nothing in-corpus cites it), never an openalex fallback');
 });
 
 test('computeSelfCitationStats: otherCitations subtracts self_citations back out of citations, avoiding double-count', () => {

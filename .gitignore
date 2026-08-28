@@ -19,6 +19,10 @@ data/stats_adjacent.json
 # Sharded abstract text split out of stats.json (regenerate with
 # scripts/aggregate.py) -- same reasoning as stats.json above.
 data/abstracts/
+# One-off evaluation artifact from scripts/audit_code_links_llm.py (LLM
+# second opinion on the has_code_link heuristic) -- rerun to regenerate,
+# not part of the site build.
+data/code_link_audit.json
 # sql.js-httpvfs prototype's SQLite file (build with scripts/build_sqlite.py)
 # -- regenerable, ~90MB, and authors_sql_prototype.html is a local-only
 # spike (not linked from nav, not deployed) so this never needs to ship.

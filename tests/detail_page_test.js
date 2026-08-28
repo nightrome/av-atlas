@@ -52,8 +52,8 @@ async function testAuthorPage() {
 
   const coauthorRows = (idRegistry['coauthors-body'].children || []).filter(c => c.tagName === 'TR');
   check('author.html: coauthors-body has at least one row', coauthorRows.length > 0);
-  check('author.html: coauthors table defaults to at most 10 rows (Show dropdown default)',
-    coauthorRows.length <= 10);
+  check('author.html: coauthors table shows at most one 50-row page',
+    coauthorRows.length <= 51); // 50 rows + a possible sum/empty row
 
   check('author.html: citing-authors-body element exists', !!idRegistry['citing-authors-body']);
   const citingRows = (idRegistry['citing-authors-body'].children || []).filter(c => c.tagName === 'TR');

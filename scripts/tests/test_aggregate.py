@@ -610,12 +610,14 @@ class TestShardIndex(unittest.TestCase):
 
 
 class TestCitationCount(unittest.TestCase):
-    def test_no_source_returns_none_not_zero(self):
-        # This is the load-bearing distinction: "no data" must never become a
-        # real 0, or every downstream average silently treats it as zero
-        # impact instead of excluding it.
-        self.assertIsNone(ag.citation_count({}))
-        self.assertIsNone(ag.citation_count({"citations_by_source": {"in_corpus": {"count": None}}}))
+    def test_no_source_returns_zero(self):
+        # User-decided: "how many papers in this corpus reference it" always
+        # has an answer, and the answer is 0 when the citation graph has no
+        # incoming edge for the paper -- never None. Reference-list crawl
+        # progress is a coverage caveat shown on the About page, not a reason
+        # to blank the number.
+        self.assertEqual(ag.citation_count({}), 0)
+        self.assertEqual(ag.citation_count({"citations_by_source": {"in_corpus": {"count": None}}}), 0)
 
     def test_reads_in_corpus_count(self):
         entry = {"citations_by_source": {"in_corpus": {"count": 2}}}
@@ -629,7 +631,9 @@ class TestCitationCount(unittest.TestCase):
             "citations": 40, "citations_scholar": 35, "citations_openalex": 40,
             "citations_by_source": {"openalex": {"count": 40}, "semantic_scholar": {"count": 35}},
         }
-        self.assertIsNone(ag.citation_count(entry))
+        # No in_corpus edge -> a real 0, and the external counts are still
+        # never consulted.
+        self.assertEqual(ag.citation_count(entry), 0)
 
     def test_a_genuine_zero_in_corpus_count_is_real(self):
         entry = {"citations_by_source": {"in_corpus": {"count": 0}}}

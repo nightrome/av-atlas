@@ -82,6 +82,7 @@
     <h2 style="margin-top:0;">Networking metrics</h2>
     <div id="export-container"></div>
   </div>
+  <div id="metrics-pagination"></div>
   <div class="table-scroll">
   <table id="metrics-table">
     <colgroup>
@@ -526,16 +527,24 @@ function renderMetricsTable(nodes, edges, topAuthors, allPapers) {
       ]));
     });
   }
-  makeSortableSafe(tbody.closest('table'), rows, [
-    { accessor: r => r.name, numeric: false },
-    { accessor: r => r.papers, numeric: true },
-    { accessor: r => r.coAuthors, numeric: true },
-    { accessor: r => r.crossInstPapers, numeric: true },
-    { accessor: r => r.institutions, numeric: true },
-    { accessor: r => r.crossCountryPapers, numeric: true },
-    { accessor: r => r.countries, numeric: true },
-    { accessor: r => r.centrality, numeric: true },
-  ], renderBody);
+  // Paginate at 50/page -- the "Show top" control still decides how many
+  // authors are in the graph and this analysis, the table just pages
+  // through them rather than rendering all 250 at once.
+  function renderMetricsPage() {
+    const pg = renderPagination(document.getElementById('metrics-pagination'), 'network.html', rows.length, { onChange: renderMetricsPage });
+    const shown = rows.slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(tbody.closest('table'), shown, [
+      { accessor: r => r.name, numeric: false },
+      { accessor: r => r.papers, numeric: true },
+      { accessor: r => r.coAuthors, numeric: true },
+      { accessor: r => r.crossInstPapers, numeric: true },
+      { accessor: r => r.institutions, numeric: true },
+      { accessor: r => r.crossCountryPapers, numeric: true },
+      { accessor: r => r.countries, numeric: true },
+      { accessor: r => r.centrality, numeric: true },
+    ], renderBody);
+  }
+  renderMetricsPage();
 
   const exportContainer = document.getElementById('export-container');
   exportContainer.innerHTML = '';

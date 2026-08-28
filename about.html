@@ -487,7 +487,6 @@ fetch('stats.json').then(r => r.json()).then(stats => {
     const stages = cs.pipeline_stages || {};
     addRow(statusBody, 'Papers discovered (AV-relevant)', stages['1_discovered'] || 0, coreTotal);
     addRow(statusBody, 'Abstract search complete', stages['3_abstract'] || 0, coreTotal);
-    addRow(statusBody, 'Citation count known', stages['5_citations_known'] || 0, coreTotal);
     // A confirmed-404 paper counts as done (nothing more to fetch), not
     // pending -- see aggregate.py's citation_graph_coverage comment.
     addRow(statusBody, 'Citation graph: CVPR/ICCV/WACV reference lists',

@@ -173,8 +173,12 @@
   // redistributed the way a number computed entirely in-house can. See
   // Methodology.
   function inCorpusCitations(p) {
+    // No in_corpus entry means the citation graph found nothing citing this
+    // paper -- a real 0, not "unknown". aggregate.py's citation_count()
+    // makes the same call server-side; kept in sync here for the client's
+    // own re-derivation off citations_by_source.
     const c = ((p.citations_by_source || {})["in_corpus"] || {}).count;
-    return c != null ? c : null;
+    return c != null ? c : 0;
   }
 
   // Every page already reads p.citations directly off stats.all_papers
@@ -254,14 +258,22 @@
     return out;
   };
 
+  // A pagination URL param is either "page" or "<something>_page" (a page
+  // with more than one independently paged table -- e.g. author.html --
+  // gives each its own key so they don't fight over a single "page").
+  const PAGE_PARAM_RE = /(^|_)page$/;
+
   window.withParam = function (page, key, value) {
     const p = new URLSearchParams(location.search);
     if (value) p.set(key, value); else p.delete(key);
     // Changing any filter/sort/search resets pagination to page 1 -- without
     // this, a reader on page 3 of one filter combination who then narrows
     // the category would land on page 3 of the new, much shorter list,
-    // which is silently either empty or the wrong slice.
-    if (key !== 'page') p.delete('page');
+    // which is silently either empty or the wrong slice. A change to one
+    // table's own page key leaves the others alone.
+    if (!PAGE_PARAM_RE.test(key)) {
+      [...p.keys()].forEach(k => { if (PAGE_PARAM_RE.test(k)) p.delete(k); });
+    }
     return page + (p.toString() ? '?' + p.toString() : '');
   };
 
@@ -553,6 +565,7 @@
         { value: 1, label: 'All (incl. 1 paper)' },
         { value: 2, label: '2+ papers' },
         { value: 10, label: '10+ papers' },
+        { value: 25, label: '25+ papers' },
         { value: 50, label: '50+ papers' },
         { value: 100, label: '100+ papers' },
       ];
@@ -737,14 +750,17 @@
   window.renderPagination = function (container, page, total, opts) {
     opts = opts || {};
     const pageSize = opts.pageSize || 50;
+    // Each independently paged table on a page passes its own paramKey
+    // ("page" by default) so several can coexist without sharing one state.
+    const paramKey = opts.paramKey || 'page';
     const totalPages = Math.max(1, Math.ceil(total / pageSize));
-    let current = parseInt(new URLSearchParams(location.search).get('page'), 10) || 1;
+    let current = parseInt(new URLSearchParams(location.search).get(paramKey), 10) || 1;
     if (current < 1) current = 1;
     if (current > totalPages) current = totalPages;
     const offset = (current - 1) * pageSize;
 
     function goTo(newPage) {
-      const url = withParam(page, 'page', newPage);
+      const url = withParam(page, paramKey, newPage);
       if (opts.onChange) {
         history.replaceState(null, '', url);
         opts.onChange();
@@ -805,16 +821,18 @@
     // citations/paper" off a single cited paper, reading as a real zero
     // rather than "we only have data for 1 paper from this country").
     const minCitedForAvg = options.minCitedForAvg || 0;
-    // citedCounts tracks only papers that actually have a citation number, so
-    // a paper with no data (as opposed to a real 0) is excluded from the
-    // average's denominator instead of silently dragging it toward zero.
+    // citedCounts tracks only papers with at least one citation, so the
+    // average stays "citations per cited paper" -- a paper the corpus
+    // doesn't reference (a real 0 now, no longer null) is counted in
+    // `papers` but kept out of the average's denominator rather than
+    // dragging it toward zero.
     const citations = {}, counts = {}, citedCounts = {};
     papers.forEach(p => {
       const vals = accessor(p) || [];
       new Set(vals).forEach(v => {
         if (!v) return;
         counts[v] = (counts[v] || 0) + 1;
-        if (p.citations != null) {
+        if (p.citations) {
           citations[v] = (citations[v] || 0) + p.citations;
           citedCounts[v] = (citedCounts[v] || 0) + 1;
         }

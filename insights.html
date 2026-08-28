@@ -229,9 +229,12 @@
     same references, as one more contribution to an ongoing line of work (consolidating)? Computed
     from papers with enough in-corpus citers for the score to mean something; most of the corpus
     isn't cited enough yet to qualify (<span id="disruption-scored-note"></span>). The score itself
-    only takes a handful of exact values, so many papers land on the same one &mdash; ranked below by
-    that score first, then by citer count, so the lists lead with the most robustly-agreed-on cases
-    rather than an arbitrary pick among ties.
+    only takes a handful of exact values, so many papers land on the same one &mdash; the list below
+    is ranked by that score first, then by citer count, so it leads with the most
+    robustly-agreed-on cases rather than an arbitrary pick among ties. Only the disruptive end is
+    shown: the consolidating end saturates at the minimum score for any lightly-cited paper whose
+    few citers all consolidate, so a "most consolidating" ranking is dominated by citer-count
+    noise rather than a real signal.
   </p>
   <div class="fact-grid" id="disruption-facts"></div>
   <div class="limit-row" style="margin-top:16px;">
@@ -240,18 +243,11 @@
       <option value="5" selected>5</option>
       <option value="10">10</option>
       <option value="25">25</option>
-      <option value="50">All</option>
     </select>
   </div>
-  <div class="move-cols" style="margin-top:8px;">
-    <div>
-      <h3 style="margin-top:0; color:#3fae6a;">▲ Most disruptive</h3>
-      <ul class="move-list" id="disruptive-list"></ul>
-    </div>
-    <div>
-      <h3 style="margin-top:0; color:#e6614f;">▼ Most consolidating</h3>
-      <ul class="move-list" id="consolidating-list"></ul>
-    </div>
+  <div style="margin-top:8px;">
+    <h3 style="margin-top:0; color:#3fae6a;">▲ Most disruptive</h3>
+    <ul class="move-list" id="disruptive-list"></ul>
   </div>
 </div>
 
@@ -755,15 +751,11 @@ function render(ins, stats) {
       list.appendChild(li);
     }
     const disruptiveList = document.getElementById('disruptive-list');
-    const consolidatingList = document.getElementById('consolidating-list');
     function renderDisruptionLists(limit) {
       disruptiveList.innerHTML = '';
-      consolidatingList.innerHTML = '';
       (disruption.most_disruptive || []).slice(0, limit).forEach(p => disruptionRow(disruptiveList, p, true));
-      (disruption.most_consolidating || []).slice(0, limit).forEach(p => disruptionRow(consolidatingList, p, false));
       if (!disruption.most_disruptive || !disruption.most_disruptive.length) {
         disruptiveList.innerHTML = '<li>Not enough data yet.</li>';
-        consolidatingList.innerHTML = '<li>Not enough data yet.</li>';
       }
     }
     const disruptionLimitSel = document.getElementById('disruption-limit');
