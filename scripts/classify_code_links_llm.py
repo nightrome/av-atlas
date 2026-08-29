@@ -251,8 +251,13 @@ def main():
 
 
 def _save(done):
-    OUT_FILE.write_text(json.dumps(done, ensure_ascii=False, indent=2),
-                        encoding="utf-8", newline="\n")
+    # Atomic write (temp + replace): aggregate.py may read this file at any
+    # moment during a concurrent build, and a half-written file would fail
+    # its json.loads and abort the deploy.
+    tmp = OUT_FILE.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(done, ensure_ascii=False, indent=2),
+                   encoding="utf-8", newline="\n")
+    tmp.replace(OUT_FILE)
 
 
 if __name__ == "__main__":
