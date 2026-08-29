@@ -447,7 +447,7 @@ class TestIsFullyProcessed(unittest.TestCase):
 class TestPaperShortName(unittest.TestCase):
     def test_uses_text_before_colon(self):
         name = ag.paper_short_name(
-            "nuScenes: A Multimodal Dataset for Autonomous Driving", ["Holger Caesar"], 2020)
+            "nuScenes: A Multimodal Dataset for Autonomous Driving", ["A. Researcher"], 2020)
         self.assertEqual(name, "nuScenes")
 
     def test_falls_back_to_surname_year_when_no_colon_or_dash(self):
@@ -1138,8 +1138,8 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertNotIn("Google Person", waymo_names)
 
     def test_author_countries_are_chronological_not_alphabetical(self):
-        # user-flagged real case: Holger Caesar showed "United States" as
-        # his country on a co-author's page even though his most recent
+        # user-flagged real case: an author showed "United States" as
+        # their country on a co-author's page even though their most recent
         # institution (2023-2025) is in the Netherlands -- "United States"
         # only won because it sorts after "Netherlands" alphabetically, and
         # every page that reads author_detail[name].countries picks the
@@ -1345,7 +1345,7 @@ class TestComputeInsights(unittest.TestCase):
 
     def test_most_cited_paper_uses_the_known_dataset_short_name_when_one_exists(self):
         papers = [self._paper("nuScenes: A Multimodal Dataset for Autonomous Driving", 2020, citations=300,
-                               authors=["Holger Caesar"])]
+                               authors=["A. Researcher"])]
         datasets = [{"name": "nuScenes", "paper_title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
                      "also_introduced_in": []}]
         insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [], datasets)

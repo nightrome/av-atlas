@@ -60,13 +60,40 @@
     }
     .filter-bar .search-field input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
     .filter-bar-secondary { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-    .pagination-row { display: flex; align-items: center; gap: 8px; font-size: 0.85em; color: var(--muted); }
+    .pagination-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.85em; color: var(--muted); margin: 8px 0; }
     .pagination-row button {
       background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
       padding: 4px 10px; font-size: 0.95em; cursor: pointer;
     }
     .pagination-row button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
     .pagination-row button:disabled { opacity: 0.4; cursor: default; }
+    .pagination-row .page-size { display: inline-flex; align-items: center; gap: 6px; margin-right: 4px; }
+    .pagination-row .page-size select {
+      background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 3px 6px; font-size: 0.95em; cursor: pointer;
+    }
+    /* An info affordance in a panel/section header row -- a hover/tap tooltip
+       describing what a table shows. Uses a data-tip attribute + ::after so
+       it works without JS. A base layout for .panel-title-row so the icon
+       lands top-right consistently even on pages that don't style the class
+       themselves. */
+    .panel-title-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .info-tip {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--border);
+      color: var(--muted); font-size: 11px; font-style: normal; font-weight: 700;
+      cursor: help; flex-shrink: 0; user-select: none; margin-left: auto;
+    }
+    .info-tip:hover, .info-tip:focus { color: var(--accent); border-color: var(--accent); outline: none; }
+    .info-tip::after {
+      content: attr(data-tip); position: absolute; right: 0; top: calc(100% + 6px);
+      width: max-content; max-width: min(320px, 80vw); white-space: normal;
+      background: var(--panel); color: var(--text); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 10px; font-size: 0.82em; font-weight: 400; line-height: 1.4;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25); z-index: 20;
+      opacity: 0; visibility: hidden; transition: opacity 0.12s;
+    }
+    .info-tip:hover::after, .info-tip:focus::after { opacity: 1; visibility: visible; }
     .controls-meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
     .controls-meta-row:empty { display: none; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
@@ -719,65 +746,105 @@
     return new URLSearchParams(location.search).get('metric') || defaultKey;
   };
 
-  // Fixed-size (50 per page) pagination with Prev/Next, replacing the old
-  // "Rows: 50/100/250/All" dropdown (user-requested) -- "All" meant
-  // rendering however many hundreds or thousands of rows a broad filter
-  // left behind in one go, and was also the direct cause of a real bug: a
-  // page like Institutions computes its list from whatever the current
-  // Min.-papers threshold and filters leave behind, and "All" only ever
-  // meant "all of THAT already-narrowed set", not "every institution in the
-  // corpus" -- reading as broken when a much larger number was expected.
-  // Fixed pages sidestep both problems: never renders more than 50 rows at
-  // once regardless of how big the filtered set is, and Prev/Next make the
-  // rest reachable without a page reload doing something surprising.
+  // Small "i" info icon with a hover/tap tooltip, dropped into a panel or
+  // section header so every table can say what it shows. Pure CSS tooltip
+  // (see .info-tip in the style block above); tabindex so it's keyboard- and
+  // touch-reachable. `text` is set as an attribute, never as markup.
+  window.infoTip = function (text) {
+    const el = document.createElement('span');
+    el.className = 'info-tip';
+    el.textContent = 'i';
+    el.setAttribute('role', 'img');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('aria-label', text);
+    el.setAttribute('data-tip', text);
+    return el;
+  };
+
+  // Appends an info icon to an element (typically a panel's title row). If
+  // the target isn't a flex row already, it still lands top-right via the
+  // .info-tip { margin-left: auto } rule when the row is display:flex.
+  window.addInfoTip = function (headerEl, text) {
+    if (headerEl && !headerEl.querySelector('.info-tip')) headerEl.appendChild(infoTip(text));
+  };
+
+  // Pagination: a "Show N" page-size dropdown (10 / 25 / 50 / 100, default
+  // 10) plus Prev/Next. Replaced an older fixed-50 design (itself a
+  // replacement for a "Rows: 50/100/250/All" picker whose "All" could dump
+  // thousands of rows and, on pages like Institutions, only ever meant "all
+  // of the already-narrowed set"). The dropdown gives control back without
+  // reintroducing an unbounded "All": the ceiling is 100 and Prev/Next
+  // reach the rest.
   //
   // `total` is the length of the list the caller is about to render (after
-  // every other filter/search has already been applied). Returns
-  // {offset, pageSize, page, totalPages} so the caller slices with
-  // list.slice(offset, offset + pageSize); also renders "X–Y of Z" plus
-  // Prev/Next buttons into `container`.
+  // every other filter/search). Returns {offset, pageSize, page,
+  // totalPages} so the caller slices list.slice(offset, offset + pageSize).
   //
-  // Prev/Next update the URL's page param via history.replaceState and call
-  // opts.onChange() -- they do NOT navigate (user-flagged: clicking Prev/Next
-  // reloaded the entire page just to swap 50 rows, when everything needed to
-  // render the new page is already sitting in memory). opts.onChange is the
-  // caller's own render() function, called again the same way a search
-  // keystroke already re-renders without a reload; falls back to a real
-  // navigation only if a caller hasn't been updated to pass one.
-  // replaceState (not pushState) deliberately: paging through results isn't
-  // "navigation" a reader expects the Back button to step through one page
-  // at a time, so Back leaves the list page entirely, same as before.
+  // Prev/Next and the size dropdown update the URL via history.replaceState
+  // and call opts.onChange() -- they do NOT navigate (clicking them used to
+  // reload the whole page just to swap rows already in memory). replaceState
+  // (not pushState) so Back leaves the list page rather than stepping one
+  // page at a time.
+  //
+  // opts.paramKey ("page" by default) namespaces the page param so several
+  // independently paged tables can coexist on one page (author.html); the
+  // matching size param is "<base>_show" (or plain "show"). opts.pageSizes
+  // and opts.defaultPageSize override the 10/25/50/100 default-10 choices.
   window.renderPagination = function (container, page, total, opts) {
     opts = opts || {};
-    const pageSize = opts.pageSize || 50;
-    // Each independently paged table on a page passes its own paramKey
-    // ("page" by default) so several can coexist without sharing one state.
     const paramKey = opts.paramKey || 'page';
+    const sizeKey = paramKey === 'page' ? 'show' : paramKey.replace(/page$/, 'show');
+    const sizes = opts.pageSizes || [10, 25, 50, 100];
+    const defaultSize = opts.defaultPageSize || 10;
+    const params = new URLSearchParams(location.search);
+
+    let pageSize = parseInt(params.get(sizeKey), 10);
+    if (!sizes.includes(pageSize)) pageSize = defaultSize;
+
     const totalPages = Math.max(1, Math.ceil(total / pageSize));
-    let current = parseInt(new URLSearchParams(location.search).get(paramKey), 10) || 1;
+    let current = parseInt(params.get(paramKey), 10) || 1;
     if (current < 1) current = 1;
     if (current > totalPages) current = totalPages;
     const offset = (current - 1) * pageSize;
 
-    function goTo(newPage) {
-      const url = withParam(page, paramKey, newPage);
-      if (opts.onChange) {
-        history.replaceState(null, '', url);
-        opts.onChange();
-      } else {
-        location.href = url;
-      }
+    // Touches only this table's own two params -- leaves other tables'
+    // page/size state on the same URL alone.
+    function apply(updates) {
+      const u = new URL(location.href);
+      Object.entries(updates).forEach(([k, v]) => {
+        if (v == null) u.searchParams.delete(k); else u.searchParams.set(k, v);
+      });
+      if (opts.onChange) { history.replaceState(null, '', u); opts.onChange(); }
+      else location.href = u.pathname + u.search;
     }
+    const goTo = newPage => apply({ [paramKey]: newPage == null ? null : String(newPage) });
 
     container.innerHTML = '';
     const row = document.createElement('div');
     row.className = 'pagination-row';
 
+    const showWrap = document.createElement('span');
+    showWrap.className = 'page-size';
+    showWrap.append('Show ');
+    const sizeSel = document.createElement('select');
+    sizes.forEach(n => {
+      const o = document.createElement('option');
+      o.value = String(n); o.textContent = String(n);
+      if (n === pageSize) o.selected = true;
+      sizeSel.appendChild(o);
+    });
+    sizeSel.addEventListener('change', () => {
+      // New size -> back to page 1 for this table (drop its page param).
+      apply({ [sizeKey]: sizeSel.value === String(defaultSize) ? null : sizeSel.value, [paramKey]: null });
+    });
+    showWrap.appendChild(sizeSel);
+    row.appendChild(showWrap);
+
     const prev = document.createElement('button');
     prev.type = 'button';
     prev.textContent = '‹ Prev';
     prev.disabled = current <= 1;
-    prev.addEventListener('click', () => goTo(current > 2 ? String(current - 1) : null));
+    prev.addEventListener('click', () => goTo(current > 2 ? current - 1 : null));
     row.appendChild(prev);
 
     const label = document.createElement('span');
@@ -790,7 +857,7 @@
     next.type = 'button';
     next.textContent = 'Next ›';
     next.disabled = current >= totalPages;
-    next.addEventListener('click', () => goTo(String(current + 1)));
+    next.addEventListener('click', () => goTo(current + 1));
     row.appendChild(next);
 
     container.appendChild(row);

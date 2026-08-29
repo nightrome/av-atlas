@@ -45,6 +45,15 @@ from collections import Counter, defaultdict
 
 from fetch_common import BASE
 
+# Progress lines print paper titles (Greek letters, math symbols) -- the
+# Windows console's cp1252 default throws UnicodeEncodeError on those. Make
+# stdout/stderr lossy-UTF-8.
+for _s in (sys.stdout, sys.stderr):
+    try:
+        _s.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 # Reuse the exact fetch + patterns the heuristic itself uses, so the audit
 # looks at the same page content the detector saw.
 from fetch_affiliations_arxiv import (

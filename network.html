@@ -80,7 +80,7 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2 style="margin-top:0;">Networking metrics</h2>
-    <div id="export-container"></div>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Collaboration metrics for the top authors in the co-authorship graph: distinct co-authors, cross-institution and cross-country papers, and a PageRank centrality score." data-tip="Collaboration metrics for the top authors in the co-authorship graph: distinct co-authors, cross-institution and cross-country papers, and a PageRank centrality score.">i</span></div>
   </div>
   <div id="metrics-pagination"></div>
   <div class="table-scroll">
@@ -346,7 +346,7 @@ function render() {
   const topSet = new Set(topAuthors);
 
   //  as the join delimiter, not a space -- author names routinely
-  // contain spaces themselves ("Holger Caesar"), so joining two full names
+  // contain spaces themselves (a first name and a surname), so joining two full names
   // with a single space and splitting back on space is ambiguous/lossy
   // (confirmed broken on real data: it silently reconstructed the wrong
   // pair of names for virtually every two-word-name author, which then

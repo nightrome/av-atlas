@@ -91,9 +91,10 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2 style="margin-top:0;">All countries</h2>
-    <div id="export-container"></div>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Countries by AV-relevant paper count, distinct authors, and total in-corpus citations, for the current filters." data-tip="Countries by AV-relevant paper count, distinct authors, and total in-corpus citations, for the current filters.">i</span></div>
   </div>
   <p id="total-countries-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
+  <div id="countries-pagination"></div>
   <table><thead><tr><th>#</th><th>Country</th><th class="num">Papers</th><th class="num">Authors</th><th class="num" title="How many other papers in this corpus cite a paper from this country. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th></tr></thead>
   <tbody id="countries-body"></tbody></table>
 </div>
@@ -272,18 +273,25 @@ function render() {
       nameLink.href = `index.html?country=${encodeURIComponent(c.name)}`;
       nameLink.textContent = c.name;
       nameLink.style.color = 'var(--text)';
-      tbody.appendChild(row([i + 1, nameLink, c.papers, c.authors, c.citations, fmtAvg(c.avg_citations)]));
+      tbody.appendChild(row([pageOffset + i + 1, nameLink, c.papers, c.authors, c.citations, fmtAvg(c.avg_citations)]));
     });
     appendSumRow(tbody, data, [null, null, r => r.papers, r => r.authors, r => r.citations, null]);
   }
-  makeSortableSafe(tbody.closest('table'), tableRows, [
-    null,
-    { accessor: c => c.name, numeric: false },
-    { accessor: c => c.papers, numeric: true },
-    { accessor: c => c.authors, numeric: true },
-    { accessor: c => c.citations, numeric: true },
-    { accessor: c => c.avg_citations ?? -Infinity, numeric: true },
-  ], renderBody);
+  let pageOffset = 0;
+  function renderCountriesPage() {
+    const pg = renderPagination(document.getElementById('countries-pagination'), 'countries.html', tableRows.length, { onChange: renderCountriesPage });
+    pageOffset = pg.offset;
+    const shown = tableRows.slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(tbody.closest('table'), shown, [
+      null,
+      { accessor: c => c.name, numeric: false },
+      { accessor: c => c.papers, numeric: true },
+      { accessor: c => c.authors, numeric: true },
+      { accessor: c => c.citations, numeric: true },
+      { accessor: c => c.avg_citations ?? -Infinity, numeric: true },
+    ], renderBody);
+  }
+  renderCountriesPage();
 
   const exportContainer = document.getElementById('export-container');
   exportContainer.innerHTML = '';

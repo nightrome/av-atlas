@@ -5,11 +5,11 @@ One-off repair for a real, already-shipped data bug: apply_cvf_affiliations.py
 used to do `for name in authors` where `authors` was papers_full.json's raw
 comma-separated STRING field, not a list -- iterating it character by
 character. 1107 papers ended up with authors_detail like
-[{"name": "H", ...}, {"name": "o", ...}, {"name": "l", ...}, ...] instead of
+[{"name": "A", ...}, {"name": "l", ...}, {"name": "i", ...}, ...] instead of
 one entry per real author (confirmed on nuScenes: reduced to single letters,
 which zeroed out its author list everywhere downstream -- institution
-credit, self-citation detection, "Holger Caesar has no affiliation" on the
-Researchers page). The root cause is fixed in apply_cvf_affiliations.py; this
+credit, self-citation detection, and real authors showing "no affiliation"
+on the Researchers page). The root cause is fixed in apply_cvf_affiliations.py; this
 repairs the data already written to disk, which that script won't touch
 again (it skips any paper that already has authors_detail).
 

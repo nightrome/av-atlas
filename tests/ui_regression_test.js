@@ -37,6 +37,14 @@ function isDescendantOf(el, ancestor) {
   }
   return false;
 }
+function hasAncestorClass(el, cls) {
+  let node = el;
+  while (node) {
+    if ((node.className || '').split(/\s+/).includes(cls)) return true;
+    node = node.parentNode;
+  }
+  return false;
+}
 function allText(el) {
   if (el.nodeType === 3) return el.textContent || '';
   return (el._text || '') + (el.children || []).map(allText).join('');
@@ -77,6 +85,10 @@ function isTopNSelect(el) {
   // 50, ...) -- distinguishes it from the bar's other selects (relevance,
   // category, venue, sort, min), none of which are all-numeric options.
   if (el.tagName !== 'SELECT' || !el.children.length) return false;
+  // The pagination "Show N" page-size dropdown is also all-numeric but is a
+  // legitimate per-table control living in .pagination-row, not a stray
+  // copy of the chart's "Show top N".
+  if (hasAncestorClass(el, 'pagination-row') || hasAncestorClass(el, 'page-size')) return false;
   return el.children.every(o => o.tagName === 'OPTION' && /^\d+$/.test(allText(o).trim()));
 }
 

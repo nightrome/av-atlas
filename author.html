@@ -55,14 +55,19 @@
   tr:hover { background: var(--panel2); }
   td a { color: var(--accent); text-decoration: none; }
   td a:hover { text-decoration: underline; }
-  .chart { display: flex; align-items: flex-end; gap: 3px; height: 100px; padding: 4px 0 0; border-bottom: 2px solid var(--border); }
-  .chart .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+  /* Horizontal safety net: with ~15 year columns the chart can get wider
+     than a phone viewport -- scroll inside its own box instead of spilling
+     past the panel's padding (user-flagged: "straddles margins on the
+     phone"). */
+  .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .chart { display: flex; align-items: flex-end; gap: 3px; height: 100px; padding: 4px 0 0; border-bottom: 2px solid var(--border); min-width: 300px; }
+  .chart .bar-wrap { flex: 1 0 18px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
   .chart .bar { width: 100%; max-width: 26px; border-radius: 4px 4px 0 0; background: var(--accent); min-height: 2px; }
   .chart .xlabel { font-size: 0.68em; color: var(--muted); margin-top: 4px; white-space: nowrap; }
   .chart .tooltip {
     display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
     background: var(--text); color: var(--panel); font-size: 0.72em; padding: 3px 7px; border-radius: 5px;
-    white-space: nowrap; margin-bottom: 4px; z-index: 5;
+    white-space: nowrap; margin-bottom: 4px; z-index: 5; max-width: 82vw;
   }
   .chart .bar-wrap:hover .tooltip { display: block; }
 </style>
@@ -85,14 +90,14 @@
 <div class="stat-grid" id="stat-grid"></div>
 
 <div class="panel">
-  <h2>Citations by year of publication</h2>
-  <div class="chart" id="year-chart"></div>
+  <div class="panel-title-row"><h2 style="margin-top:0;">Citations by year of publication</h2><span class="info-tip" tabindex="0" role="img" aria-label="Each bar is the in-corpus citations received by this author’s papers published that year. Hover a bar for the paper count." data-tip="Each bar is the in-corpus citations received by this author’s papers published that year. Hover a bar for the paper count.">i</span></div>
+  <div class="chart-scroll"><div class="chart" id="year-chart"></div></div>
 </div>
 
 <div class="panel">
   <div class="panel-title-row">
     <h2>Top co-authors</h2>
-  </div>
+  <span class="info-tip" tabindex="0" role="img" aria-label="People this author has co-written corpus papers with, most frequent first." data-tip="People this author has co-written corpus papers with, most frequent first.">i</span></div>
   <div id="coauthors-pagination"></div>
   <table><thead><tr><th>Co-author</th><th class="num">Papers coauthored</th><th>Country</th><th>Institution</th></tr></thead>
   <tbody id="coauthors-body"></tbody></table>
@@ -101,7 +106,7 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2>Citing authors</h2>
-  </div>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Authors of other corpus papers that cite this author’s work, ranked by how many citing papers each has." data-tip="Authors of other corpus papers that cite this author’s work, ranked by how many citing papers each has.">i</span></div>
   <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Authors of other papers in this corpus that cite this author's work.</p>
   <div id="citing-authors-pagination"></div>
   <table><thead><tr><th>Author</th><th class="num">Citing instances</th>
@@ -121,7 +126,7 @@
         <option value="adjacent">Not AV relevant</option>
         <option value="both">Both</option>
       </select>
-    </div>
+    <span class="info-tip" tabindex="0" role="img" aria-label="This author’s papers in the corpus. Use the dropdown to switch between AV-relevant, not-AV-relevant, and both." data-tip="This author’s papers in the corpus. Use the dropdown to switch between AV-relevant, not-AV-relevant, and both.">i</span></div>
     <div id="export-container"></div>
   </div>
   <div id="papers-pagination"></div>

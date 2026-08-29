@@ -1920,11 +1920,9 @@ def main():
     # LaTeX doesn't mark which author belongs to which affiliation, every
     # listed author sometimes gets credited with the SAME full multi-
     # institution list instead of their own one -- confirmed on real data
-    # (user-reported "Holger Caesar's last 3 affiliations are wrong" and
-    # "Pei An has a Delft University of Technology affiliation that's
-    # probably wrong", and again later: Yue Wang's, Boyi Li's, and Marco
-    # Pavone's pages all showing a co-author's institution, one case a 5-way
-    # glued string "UC Berkeley Stanford UCL Virginia Tech Nvidia" that
+    # (multiple user reports of an author's page showing a co-author's
+    # institution, or an author's recent affiliations being wrong; one case
+    # a 5-way glued string "UC Berkeley Stanford UCL Virginia Tech Nvidia" that
     # split cleanly into 5 real institutions once re-extracted, still
     # identically shared by 2 authors afterward). This can't be corrected
     # per-author without knowing which institution is whose (data the
@@ -2410,10 +2408,10 @@ def main():
     # same way author_institutions tracks it per institution (see below),
     # so "which country is this author's CURRENT one" can be answered by
     # chronological order instead of alphabetical order. Confirmed real bug
-    # (user-flagged): Holger Caesar shows "United States" as his country on
-    # a co-author's page even though his latest (2023-2025) institution is
-    # TU Delft/Netherlands -- "United States" only won because it sorts
-    # after "Netherlands" alphabetically, not because it's more recent.
+    # (user-flagged): an author whose most recent institution is in the
+    # Netherlands was showing "United States" as their country on a
+    # co-author's page, only because it sorts after "Netherlands"
+    # alphabetically, not because it's more recent.
     author_countries = defaultdict(dict)
     inst_citations = defaultdict(int)
     inst_papers = defaultdict(int)
@@ -2424,9 +2422,9 @@ def main():
     # unioned together) is correct for "does this paper involve institution
     # X" but was previously reused for "top authors AT X" too, which wrongly
     # credited every co-author on a shared paper with each other's employer
-    # (confirmed on real data: Dragomir Anguelov, who only ever appears with
-    # a Waymo affiliation himself, was showing as a top author of Google
-    # solely because a co-author on some shared papers is Google-affiliated).
+    # (confirmed on real data: an author who only ever appears with one
+    # company's affiliation was showing as a top author of a different
+    # company, solely because a co-author on some shared papers works there).
     institution_authors = defaultdict(lambda: defaultdict(
         lambda: {"papers": 0, "citations": 0, "first_year": None, "last_year": None}))
     country_citations = defaultdict(int)
@@ -2547,9 +2545,9 @@ def main():
         scholar_profiles_raw = json.loads(SCHOLAR_PROFILES_FILE.read_text(encoding="utf-8"))
     # Keyed by clean_author_name(), not the raw JSON key, so a
     # scholar_profiles.json entry added under an old/uncleaned spelling
-    # (e.g. "J. Marius Zöllner", from before that name was folded into
-    # "Marius Zöllner" via KNOWN_NAME_FIXES) still lands on the one
-    # canonical author instead of creating a second, stale-keyed entry.
+    # (an initials-and-surname variant, say, from before that name was
+    # folded into its canonical form via KNOWN_NAME_FIXES) still lands on
+    # the one canonical author instead of creating a second, stale-keyed entry.
     scholar_profiles = {}
     for raw_name, prof in scholar_profiles_raw.items():
         scholar_profiles.setdefault(clean_author_name(raw_name), prof)

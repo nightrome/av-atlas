@@ -38,12 +38,12 @@ class TestApplyCvfAffiliations(unittest.TestCase):
 
     def test_splits_the_raw_author_string_into_one_entry_per_author(self):
         papers = [{"title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
-                   "authors": "Holger Caesar, Varun Bankiti, Alex H. Lang"}]
+                   "authors": "A. Researcher, B. Scientist, C. Scholar"}]
         affiliations = {"nuscenesamultimodaldatasetforautonomousdriving":
                          {"affiliations": ["nuTonomy: an APTIV company"]}}
         result = self._run(papers, affiliations)
         names = [a["name"] for a in result[0]["authors_detail"]]
-        self.assertEqual(names, ["Holger Caesar", "Varun Bankiti", "Alex H. Lang"])
+        self.assertEqual(names, ["A. Researcher", "B. Scientist", "C. Scholar"])
 
     def test_every_author_gets_the_same_shared_affiliation_list(self):
         papers = [{"title": "Paper", "authors": "A One, B Two"}]

@@ -1,0 +1,677 @@
+{
+  "1001waysofscenariogenerationfortestingofselfdrivingcarsasurvey": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper is a survey and does not provide its own implementation of scenario generation methods.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "100drivers2200kmanaturaldatasetofdrivingstyletowardhumancenteredintelligentdrivingsystems": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide a link to its own code implementation.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "123dunifyingmultimodalautonomousdrivingdataatscale": {
+    "verdict": "yes",
+    "url": "https://github.com/kesai-labs/py123d",
+    "evidence": "Code and documentation are available at https://github.com/kesai-labs/py123d.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "1stplacesolutionforpvuwchallenge2023videopanopticsegmentation": {
+    "verdict": "yes",
+    "url": "https://github.com/zhang-tao-whu/DVIS",
+    "evidence": "The code is available at https://github.com/zhang-tao-whu/DVIS.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "1stplacesolutionforthe5thlsvoschallengevideoinstancesegmentation": {
+    "verdict": "yes",
+    "url": "https://github.com/zhang-tao-whu/DVIS",
+    "evidence": "The code will be available at https://github.com/zhang-tao-whu/DVIS.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "1stplacesolutionforwaymoopendatasetchallenge3ddetectionanddomainadaptation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided abstract.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "1stplacesolutionsforwaymoopendatasetchallenges2dand3dtracking": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "25dvehicleodometryestimation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "2coool2ndworkshoponthechallengeofoutoflabelhazardsinautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided abstract.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "2d3dposetrackingwithmultiviewconstraints": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "2kretrofitentropyguidedefficientsparserefinementforhighresolution3dgeometryprediction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "Code will be released upon acceptance.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "2ndplacesolutionforcvpr2024e2echallengeendtoendautonomousdrivingusingvisionlanguagemodel": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "2ndplacesolutionforpvuwchallenge2024videopanopticsegmentation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "360depthestimationinthewildthedepth360datasetandthesegfusenetwork": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3csimcarlacornercasesimulationforcontrolassessmentinautonomousdriving": {
+    "verdict": "yes",
+    "url": "https://github.com/Maftej/3csim",
+    "evidence": "The code for our 3CSim is publicly available at a GitHub repository.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dadaptivestructuralconvolutionnetworkfordomaininvariantpointcloudrecognition": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dagenttrimodalmultiagentcollaborationforscalable3dobjectannotation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dboundingboxestimationforautonomousvehiclesbycascadedgeometricconstraintsanddepurated2ddetectionsusing3dresults": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links related to the paper's method are found.",
+    "n_candidate_links": 2,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dcargenscalable3dcargenerationvia3dconsistentmultiviewsynthesis": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the provided project page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dcascadercnnhighqualityobjectdetectioninpointclouds": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3ddataaugmentationfordrivingscenesoncamera": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any code links or mention of code availability.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3ddepthnetpointcloudguideddepthcompletionnetworkforsparsedepthandsinglecolorimage": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3ddualfusiondualdomaindualquerycameralidarfusionfor3dobjectdetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper only states that the source codes will be released publicly, but no code has been released yet.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dextendedobjecttrackingbyfusingroadsidesparseradarpointcloudsandpixelkeypoints": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No direct link to the paper's own code was found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 2,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dfctsimultaneous3dobjectdetectionandtrackingusingfeaturecorrelation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dforfreecrossmodaltransferlearningusinghdmaps": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dfullyconvolutionalnetworkforvehicledetectioninpointcloud": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dgaarealisticandrobust3dgaussianbasedadversarialattackforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dgaussiansplattingagainstmovingobjectsforhighfidelitystreetscenereconstruction": {
+    "verdict": "yes",
+    "url": "https://github.com/thinkxca/3dgs",
+    "evidence": "The source code for this work is available to the public at https://github.com/thinkxca/3dgs",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dgeodetgeneralpurposegeometryawareimagebased3dobjectdetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The project page does not provide a code link.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dgscalib3dgaussiansplattingformultimodalspatiotemporalcalibration": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dgslsrlargescalerelocationforautonomousdrivingbasedon3dgaussiansplatting": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code link related to the paper is found.",
+    "n_candidate_links": 2,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dharmoniclosstowardstaskconsistentandtimefriendly3dobjectdetectiononedgeforv2xorchestration": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dhierarchicalrefinementandaugmentationforunsupervisedlearningofdepthandposefrommonocularvideo": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3diffusiondetdiffusionmodelfor3dobjectdetectionwithrobustlidarcamerafusion": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3diounetiouguided3dobjectdetectorforpointclouds": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dlanedetectionfromfrontorsurroundviewusingjointmodelingmatching": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dlanedetectionwithodometryforhighspeedvehicleracing": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the paper.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dlanenetanchorfreelanedetectionusingasemilocalrepresentation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dlidarmappingrelativeaccuracyautomaticevaluationalgorithm": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dlmviclearningbasedmultiviewimagecodingwith3dgaussiangeometricpriors": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dmetaregistrationlearningtolearnregistrationof3dpointclouds": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dmultiobjecttrackingbasedonuncertaintyguideddataassociation": {
+    "verdict": "yes",
+    "url": "https://github.com/hejiawei2023/UG3DMOT",
+    "evidence": "The URL points to a GitHub repository with the same title as the paper.",
+    "n_candidate_links": 3,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dmultiobjecttrackingemployingmsglmbfilterforautonomousdriving": {
+    "verdict": "yes",
+    "url": "https://github.com/linh-gist/ms-glmb-nuScenes",
+    "evidence": "Our source code for nuScenes dataset is available at https://github.com/linh-gist/ms-glmb-nuScenes.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dmultipleobjecttrackingonautonomousdrivingaliteraturereview": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dobjectdetectioncombiningsemanticandgeometricfeaturesfrompointclouds": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links related to the paper's own implementation are found.",
+    "n_candidate_links": 2,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dobjectdetectionforautonomousdrivingasurvey": {
+    "verdict": "yes",
+    "url": "https://github.com/rui-qian/SoTA-3D-Object-Detection",
+    "evidence": "We also set up a regularly updated project page on: https://github.com/rui-qian/SoTA-3D-Object-Detection.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dobjectdetectionfromlidardatausingdistancedependentfeatureextraction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dobjectdetectionmethodbasedonyoloandkmeansforimageandpointclouds": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the paper.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dobjectpositioningusingdifferentiablemultimodallearning": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dobjectrecognitionwithensemblelearningastudyofpointcloudbaseddeeplearningmodels": {
+    "verdict": "yes",
+    "url": "https://github.com/dkoguciuk/ensemble_learning_for_point_clouds",
+    "evidence": "The URL provided in the abstract links to a GitHub repository containing the code.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dobjectreconstructionwithmmwaveradars": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dpillarspillarbasedtwostage3dobjectdetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dpointcloudcompletionwithgeometricawareadversarialaugmentation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dpointcloudobjectdetectiononedgedevicesforsplitcomputing": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dppe3dpointpositionalencodingformulticamera3dobjectdetectiontransformers": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper states 'We will make the codes available for further investigation.'",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dquestionansweringforcitysceneunderstanding": {
+    "verdict": "yes",
+    "url": "https://sites.google.com/view/city3dqa/",
+    "evidence": "Our dataset and code are available on our project website.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dradarandcameracocalibrationaflexibleandaccuratemethodfortargetbasedextrinsiccalibration": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any code links or mention of code availability.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3drotrediscoveringthemissingprimitiveforrgbbased3daugmentation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dscenerenderingwithmultimodalgaussiansplatting": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dsceneunderstandingaturbanintersectionusingstereovisionanddigitalmap": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dsiamrpnanendtoendlearningmethodforrealtime3dsingleobjecttrackingusingrawpointcloud": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links related to the paper's method are found.",
+    "n_candidate_links": 2,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dtmdetadualpathsynergynetworkoftransformerandssmfor3dobjectdetectioninpointclouds": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The provided URL is not a valid GitHub link and the paper does not mention a valid code link.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dtoflidarinmobileroboticsareview": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper is a review and does not contain any information about releasing its own code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3dvisualperceptionforselfdrivingcarsusingamulticamerasystemcalibrationmappinglocalizationandobstacledetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper mentions publicly available code for intrinsic and extrinsic calibration and stereo matching, but does not explicitly state that the paper's own implementation is available.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 2,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "3m3dmultiviewmultipathmultirepresentationfor3dobjectdetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "4cacomputationcommunicationandcontrolcodesignframeworkforcavs": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "4dcaal4dradarcameracalibrationandautolabelingforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any code links or mention of code availability.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "4ddrivingscenegenerationwithstereoforcing": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code availability sentences and no direct link to the paper's own code.",
+    "n_candidate_links": 2,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "4dformermultimodal4dpanopticsegmentation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the provided page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "4dlidaropenanopen4dfmcwlidardatasetformotionawareautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any code links or mention of releasing its own code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "4dmillimeterwaveradarinautonomousdrivingasurvey": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper is a survey and does not provide its own implementation of the methods or experiments.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "4dr360statereasoningforjoint3ddetectionandoccupancypredictionin4dradarcamerafullsceneperception": {
+    "verdict": "yes",
+    "url": null,
+    "evidence": "Code and labels will be released.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "4dradargsselfsuperviseddynamicdrivingscenereconstructionwith4dradar": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  },
+  "4dradarmeetslidarandcameracooperativeperceptionunderadverseweather": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The provided URL only links to a dataset and code availability page, not the paper's own code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-29"
+  }
+}

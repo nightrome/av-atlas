@@ -18,7 +18,7 @@ class TestIsGarbled(unittest.TestCase):
         self.assertTrue(repair.is_garbled(detail))
 
     def test_real_full_names_are_not_garbled(self):
-        detail = [{"name": "Holger Caesar"}, {"name": "Varun Bankiti"}]
+        detail = [{"name": "A. Researcher"}, {"name": "B. Scientist"}]
         self.assertFalse(repair.is_garbled(detail))
 
     def test_empty_detail_is_not_garbled(self):

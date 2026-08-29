@@ -37,6 +37,7 @@ import argparse
 import copy
 import json
 import re
+import sys
 import time
 import urllib.request
 
@@ -46,6 +47,16 @@ from fetch_affiliations_arxiv import (
     CODE_AVAILABILITY_TEXT_RE,
     fetch_ar5iv_page,
 )
+
+# Progress lines print paper titles, which routinely carry Greek letters and
+# math symbols; the Windows console defaults to cp1252 and a bare print()
+# then throws UnicodeEncodeError (once, in the except handler, it took the
+# whole run down). Make stdout/stderr lossy-UTF-8 instead.
+for _s in (sys.stdout, sys.stderr):
+    try:
+        _s.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 AFFIL_FILE = BASE / "data" / "affiliations_arxiv.json"
