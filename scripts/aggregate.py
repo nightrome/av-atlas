@@ -85,6 +85,7 @@ INSTITUTION_FLAGS_LLM_FILE = BASE / "data" / "institution_flags_llm.json"
 INSTITUTION_ALIASES_LLM_FILE = BASE / "data" / "institution_aliases_llm.json"
 VENUE_LOGOS_FILE = BASE / "data" / "venue_logos.json"
 CITATION_GRAPH_FILE = BASE / "data" / "citation_graph.json"
+CODE_LINKS_LLM_FILE = BASE / "data" / "code_links_llm.json"
 # Must match build_citation_graph.py's CVF_VENUES -- the set of venues its
 # PDF-download path can reach at all (CVF-hosted, predictable URL).
 CVF_CITATION_GRAPH_VENUES = {"CVPR", "ICCV", "WACV"}
@@ -1824,6 +1825,18 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
 
 def main():
     all_entries = json.loads(IN_FILE.read_text(encoding="utf-8"))
+    # LLM code-link verdicts (scripts/classify_code_links_llm.py) -- the
+    # source of truth for has_code_link wherever a "yes"/"no" verdict
+    # exists, replacing the old regex detector (an audit put that at ~40%
+    # false positives: HuggingFace doc links, third-party baseline repos,
+    # and a "code ... available" text match that also fired on the negated
+    # form). Keyed by normalized title. "unclear", or no verdict yet
+    # (the classifier runs in slow periodic batches over ~10k papers),
+    # falls back to the regex has_code_link exactly as before -- so the
+    # Insights numbers shift toward the LLM's answer as coverage grows.
+    code_links_llm = {}
+    if CODE_LINKS_LLM_FILE.exists():
+        code_links_llm = json.loads(CODE_LINKS_LLM_FILE.read_text(encoding="utf-8"))
     for e in all_entries:
         if e.get("venue"):
             e["venue"] = normalize_venue(e["venue"])
@@ -2034,13 +2047,18 @@ def main():
             # on paper.html so a reader can check the original listing.
             "source_url": e.get("source_url"),
         })
-        # Only included when actually checked (see fetch_affiliations_arxiv.py's
-        # detect_code_link) -- omitted, not null, for the majority of papers
-        # this hasn't reached yet, same convention as self_citations/cd_index
-        # below (a present-but-null field on every one of ~20k papers would
-        # bloat stats.json for no reason -- see DECISIONS.md's stats.json
-        # size history).
-        if e.get("has_code_link") is not None:
+        # Only included when actually checked -- omitted, not null, for the
+        # majority of papers not yet reached, same convention as
+        # self_citations/cd_index below (a present-but-null field on every
+        # one of ~20k papers would bloat stats.json for no reason -- see
+        # DECISIONS.md's stats.json size history). LLM verdict wins; the
+        # regex has_code_link (fetch_affiliations_arxiv.py) and the
+        # abstract-text upgrade are fallbacks only until the classifier
+        # reaches every paper.
+        llm_cl = code_links_llm.get(normalize_title(e.get("title")))
+        if llm_cl and llm_cl.get("verdict") in ("yes", "no"):
+            papers[-1]["has_code_link"] = llm_cl["verdict"] == "yes"
+        elif e.get("has_code_link") is not None:
             papers[-1]["has_code_link"] = e["has_code_link"]
         elif e.get("abstract") and ABSTRACT_CODE_AVAILABILITY_RE.search(e["abstract"]):
             # Only ever upgrades a never-checked paper to True -- see

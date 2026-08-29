@@ -262,11 +262,14 @@
 </p>
 <h3>Open-source code (Insights)</h3>
 <p>
-  Whether a paper links to its own code (github.com/gitlab.com/bitbucket.org), detected from the
-  same arXiv preprint page already fetched for author affiliations and references, so it costs
-  nothing extra to check. Only covers arXiv-sourced papers, and only the ones this site has reached
-  so far -- every comparison (citation impact, share over time) is restricted to papers actually
-  checked, never silently padded out with papers nobody looked at.
+  Whether a paper releases <em>its own</em> source code. A first pass just scanned the arXiv page
+  for a code-host link, but that over-counted badly (a spot check put it near 40% wrong: links to
+  datasets or leaderboards, third-party baseline repos cited in passing, and a loose "code is
+  available" text match that also caught "code is <em>not</em> available"). Now a language model
+  reads each paper's arXiv page and decides whether the authors actually published code for
+  <em>this</em> work. It works through the ~10k arXiv papers in batches, so coverage grows over
+  time; every comparison (citation impact, share over time) is restricted to papers actually
+  checked, never padded out with papers nobody looked at.
 </p>
 </div>
 </details>
