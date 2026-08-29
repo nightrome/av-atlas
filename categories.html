@@ -75,7 +75,6 @@
       <input type="checkbox" id="category-normalize" checked>
       Normalize by total papers that year
     </label>
-    <span style="color:var(--muted);">Click a legend entry to toggle it on/off.</span>
   </div>
   <div class="line-chart-wrap" id="category-chart-wrap">
     <svg id="category-chart"></svg>
@@ -105,8 +104,9 @@ fetchStatsWithRelevance('').then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'categories.html', {
     showCategory: false,
+    singleRow: true,
     checkbox: {
-      id: 'exclude-datasets', label: 'Exclude dataset papers',
+      id: 'exclude-datasets', dropdownLabel: 'DATASETS',
       storageKey: 'categories-exclude-datasets', onChange: () => render(),
     },
     metrics: [
@@ -114,13 +114,6 @@ fetchStatsWithRelevance('').then(stats => {
       { key: 'total', label: 'Citations' },
       { key: 'papers', label: 'Papers' },
     ],
-    // Not applied to the category-ranking list below the chart -- that list
-    // is every category there is (~23), never large enough to need capping
-    // the way Papers/Institutions/Venues/Countries' tables are.
-    topN: {
-      default: 10, storageKey: 'category-timeline-topn',
-      onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); },
-    },
   });
   render();
 }).catch(err => {
@@ -405,7 +398,7 @@ function render() {
   document.getElementById('timeline-panel').style.display = filters.category ? 'none' : '';
   if (!filters.category) {
     currentTimelineDraw = renderCategoryTimeline(stats, filters);
-    currentTimelineDraw(filters.topN || 10);
+    currentTimelineDraw(10);
   }
 }
 </script>

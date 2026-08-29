@@ -119,16 +119,16 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2>Papers</h2>
-    <div class="limit-row">
-      Show
-      <select id="papers-relevance">
-        <option value="core" selected>AV relevant</option>
-        <option value="adjacent">Not AV relevant</option>
-        <option value="both">Both</option>
-      </select>
-    <span class="info-tip" tabindex="0" role="img" aria-label="This author’s papers in the corpus. Use the dropdown to switch between AV-relevant, not-AV-relevant, and both." data-tip="This author’s papers in the corpus. Use the dropdown to switch between AV-relevant, not-AV-relevant, and both.">i</span></div>
     <div id="export-container"></div>
+    <span class="info-tip" tabindex="0" role="img" aria-label="This author’s papers in the corpus. Use the dropdown to switch between AV papers, Non-AV papers, and both." data-tip="This author’s papers in the corpus. Use the dropdown to switch between AV papers, Non-AV papers, and both.">i</span>
   </div>
+  <span id="papers-relevance-holder" hidden><span class="page-size">Show
+    <select id="papers-relevance">
+      <option value="core" selected>AV papers</option>
+      <option value="adjacent">Non-AV papers</option>
+      <option value="both">Both</option>
+    </select>
+  </span></span>
   <div id="papers-pagination"></div>
   <table><thead><tr><th>Title</th><th>Year</th><th>Venue</th><th>Category</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th></tr></thead>
   <tbody id="papers-body"></tbody></table>
@@ -566,10 +566,11 @@ function render(stats) {
     ])));
   }
   let currentPapersBase = papers;
+  const papersRelevanceControl = document.querySelector('#papers-relevance-holder .page-size');
   function renderPapersPage() {
     const sorted = [...currentPapersBase].sort((a, b) => (b.citations ?? -Infinity) - (a.citations ?? -Infinity));
     const pg = renderPagination(document.getElementById('papers-pagination'), 'author.html', sorted.length,
-      { paramKey: 'papers_page', onChange: renderPapersPage });
+      { paramKey: 'papers_page', onChange: renderPapersPage, leadingControl: papersRelevanceControl });
     const shown = sorted.slice(pg.offset, pg.offset + pg.pageSize);
     makeSortableSafe(document.getElementById('papers-body').closest('table'), shown, [
       { accessor: p => p.title, numeric: false },
@@ -578,8 +579,13 @@ function render(stats) {
       { accessor: p => p.category, numeric: false },
       { accessor: p => p.citations, numeric: true },
     ], renderBody);
-    exportContainer.innerHTML = '';
-    exportContainer.appendChild(renderExportButton(document.getElementById('papers-body').closest('table'), `${name}-papers.csv`));
+    exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+    exportContainer.insertBefore(renderExportButtons({
+      table: document.getElementById('papers-body').closest('table'),
+      csvName: `${name}-papers.csv`,
+      bibtexPapers: () => currentPapersBase,
+      bibtexName: `${name}-papers.bib`,
+    }), exportContainer.firstChild);
   }
   function drawPapersTable(basePapers) {
     currentPapersBase = basePapers;

@@ -70,7 +70,6 @@
 <div class="panel">
   <div class="controls-row" id="controls-row">
     <input type="text" id="search-box" placeholder="Find an author…">
-    <span id="cluster-count"></span>
   </div>
   <div class="graph-wrap">
     <svg id="graph" viewBox="0 0 1850 1050" style="width: 100%; height: 800px; display: block;"></svg>
@@ -368,16 +367,13 @@ function render() {
   });
 
   const nodes = topAuthors.map(name => ({ id: name, papers: paperCounts[name] }));
-  const { clusterOf, clusterSizes } = detectClusters(nodes, edges);
+  const { clusterOf } = detectClusters(nodes, edges);
 
   const maxPapers = Math.max(1, ...nodes.map(n => n.papers));
   const radius = n => 4 + Math.sqrt(n.papers / maxPapers) * 15;
 
   const W = 1850, H = 1050;
   const pos = layoutForceGraph(nodes, edges, clusterOf, W, H, 300, radius);
-
-  document.getElementById('cluster-count').textContent =
-    `${clusterSizes.filter(s => s > 1).length} collaboration clusters found`;
 
   const svg = document.getElementById('graph');
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
@@ -531,7 +527,7 @@ function renderMetricsTable(nodes, edges, topAuthors, allPapers) {
   // authors are in the graph and this analysis, the table just pages
   // through them rather than rendering all 250 at once.
   function renderMetricsPage() {
-    const pg = renderPagination(document.getElementById('metrics-pagination'), 'network.html', rows.length, { onChange: renderMetricsPage });
+    const pg = renderPagination(document.getElementById('metrics-pagination'), 'network.html', rows.length, { onChange: renderMetricsPage, showSizeControl: false });
     const shown = rows.slice(pg.offset, pg.offset + pg.pageSize);
     makeSortableSafe(tbody.closest('table'), shown, [
       { accessor: r => r.name, numeric: false },

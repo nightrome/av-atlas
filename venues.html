@@ -98,7 +98,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
     search: { placeholder: 'Search venue names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
     checkbox: {
-      id: 'exclude-preprints', label: 'Exclude preprints',
+      id: 'exclude-preprints', dropdownLabel: 'PREPRINTS',
       storageKey: 'venues-exclude-preprints', onChange: () => render(),
     },
     metrics: [

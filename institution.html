@@ -320,8 +320,13 @@ function render(stats) {
   renderPapersPage();
 
   const exportContainer = document.getElementById('export-container');
-  exportContainer.innerHTML = '';
-  exportContainer.appendChild(renderExportButton(papersBody.closest('table'), `${name}-papers.csv`));
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButtons({
+    table: papersBody.closest('table'),
+    csvName: `${name}-papers.csv`,
+    bibtexPapers: () => sortedPapers,
+    bibtexName: `${name}-papers.bib`,
+  }), exportContainer.firstChild);
 }
 </script>
 <script src="nav.js"></script>

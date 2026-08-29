@@ -80,7 +80,7 @@
     <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Authors ranked by the chosen metric, computed from the papers left by the current filters. “Citations / paper” averages only over that author’s papers that have at least one citation." data-tip="Authors ranked by the chosen metric, computed from the papers left by the current filters. “Citations / paper” averages only over that author’s papers that have at least one citation.">i</span></div>
   </div>
   <p id="authors-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
-  <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" title="Years between this author's first and last AV-relevant publication in this corpus (0 if only one year).">Career span</th><th class="num" title="How many other papers in this corpus cite a paper by this author. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th><th class="num" title="Share of this author's in-corpus citations that come from their own later papers, rather than an independent paper.">Self-citation %</th><th class="num" title="How many other papers by this author are in the corpus but not classified as AV-relevant.">Other papers</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" title="Years between this author's first and last AV-relevant publication in this corpus (0 if only one year).">Career span</th><th class="num" title="How many other papers in this corpus cite a paper by this author. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th><th class="num" title="Share of this author's in-corpus citations that come from their own later papers, rather than an independent paper.">Self-citation %</th><th class="num" title="How many other papers by this author are in the corpus but not classified as AV-relevant.">Non-AV papers</th></tr></thead>
   <tbody id="researchers-body"></tbody></table>
 </div>
 
@@ -233,8 +233,8 @@ fetchStatsWithRelevance(relevance).then(stats => {
     search: { placeholder: 'Search author names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
     metrics: [
-      { key: 'total', label: 'Citations' },
       { key: 'avg', label: 'Citations / paper' },
+      { key: 'total', label: 'Citations' },
       { key: 'papers', label: 'Papers' },
     ],
     minPapers: { default: 50 },
@@ -317,7 +317,7 @@ function render() {
     a.lifetime = firstYear == null ? null : lastYear - firstYear;
   });
 
-  const metric = getMetric('papers');
+  const metric = getMetric('avg');
   const byTotal = (a, b) => b.citations - a.citations;
   const authorSort = {
     avg: (a, b) => (b.avg_citations ?? -Infinity) - (a.avg_citations ?? -Infinity),
@@ -345,7 +345,7 @@ function render() {
   // "confirmed zero impact".
   renderScatter(document.getElementById('scatter'), chartAuthors.filter(a => a.avg_citations != null));
 
-  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length, { onChange: render });
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length, { onChange: render, showSizeControl: false });
   const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);
 
   const authorsGrid = document.getElementById('authors-grid');

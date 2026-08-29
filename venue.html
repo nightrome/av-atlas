@@ -82,7 +82,7 @@
 
 <div class="panel">
   <div class="panel-title-row">
-    <h2>Papers</h2>
+    <h2>All papers</h2>
     <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="AV-relevant papers from this venue, most-cited first." data-tip="AV-relevant papers from this venue, most-cited first.">i</span></div>
   </div>
   <div id="papers-pagination"></div>
@@ -257,8 +257,13 @@ function render(stats) {
   renderPapersPage();
 
   const exportContainer = document.getElementById('export-container');
-  exportContainer.innerHTML = '';
-  exportContainer.appendChild(renderExportButton(papersBody.closest('table'), `${name}-papers.csv`));
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButtons({
+    table: papersBody.closest('table'),
+    csvName: `${name}-papers.csv`,
+    bibtexPapers: () => sortedPapers,
+    bibtexName: `${name}-papers.bib`,
+  }), exportContainer.firstChild);
 }
 </script>
 <script src="nav.js"></script>

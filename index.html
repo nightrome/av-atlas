@@ -86,13 +86,12 @@
 </head>
 <body>
 <nav id="topnav"></nav>
-<div class="stat-grid" id="stat-grid"></div>
 <div id="filter-bar-container"></div>
-<div id="pagination-container"></div>
 
 <div class="panel" id="timeline-panel">
   <div class="panel-title-row">
     <h2>Papers over time</h2>
+    <span class="info-tip" tabindex="0" role="img" aria-label="For each paper on the current page of the table below, the in-corpus citations it received per year. Use “Show top” to change how many, Prev/Next to move through them." data-tip="For each paper on the current page of the table below, the in-corpus citations it received per year. Use “Show top” to change how many, Prev/Next to move through them.">i</span>
   </div>
   <div class="line-chart-wrap" id="timeline-chart-wrap">
     <svg id="timeline-chart"></svg>
@@ -104,15 +103,14 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2>Top Papers</h2>
-    <div class="export-buttons">
-      <button id="export-csv" type="button">Export CSV</button>
-      <button id="export-bibtex" type="button">Export BibTeX</button>
+    <div class="export-buttons" id="export-container">
     <span class="info-tip" tabindex="0" role="img" aria-label="Every paper matching the current filters, ranked by in-corpus citations. Click a column header to re-sort. Citations count only other papers in this corpus that cite it." data-tip="Every paper matching the current filters, ranked by in-corpus citations. Click a column header to re-sort. Citations count only other papers in this corpus that cite it.">i</span></div>
   </div>
   <div class="table-scroll">
-  <table><thead><tr><th>#</th><th>Title</th><th>Category</th><th>Year</th><th>Venue</th><th>Source</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="In-corpus citations received within 2 years of publication -- a leading indicator, not a substitute for the total. Blank for papers not yet 2 years old.">Early citations</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Title</th><th>Category</th><th>Year</th><th>Venue</th><th>Source</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="In-corpus citations received within 2 years of publication: a leading indicator, not a substitute for the total. Blank for papers not yet 2 years old.">Early citations</th></tr></thead>
   <tbody id="papers-body"></tbody></table>
   </div>
+  <div id="pagination-container"></div>
 </div>
 
 <script src="filters.js"></script>
@@ -267,52 +265,12 @@ function categoryCell(p) {
 
 let currentStats = null;
 let currentExportPapers = [];
-
-// A stable, collision-free BibTeX key needs no external ID scheme here --
-// firstAuthorSurname + year + a short slug of the title is unique enough
-// for a corpus this size and matches the convention most reference
-// managers generate on import anyway.
-function bibtexKey(p, seen) {
-  const surname = ((p.authors || [])[0] || 'anon').trim().split(/\s+/).pop().replace(/[^a-zA-Z]/g, '') || 'anon';
-  const firstWord = (p.title || '').split(/\s+/).find(w => /[a-zA-Z]{3,}/.test(w)) || '';
-  let key = `${surname}${p.year || ''}${firstWord.replace(/[^a-zA-Z0-9]/g, '')}`;
-  let unique = key, n = 2;
-  while (seen.has(unique)) { unique = key + n; n += 1; }
-  seen.add(unique);
-  return unique;
-}
-
-function bibtexField(v) { return String(v == null ? '' : v).replace(/[{}]/g, ''); }
-
-function papersToBibtex(papers) {
-  const seenKeys = new Set();
-  return papers.map(p => {
-    const key = bibtexKey(p, seenKeys);
-    const fields = [
-      ['title', bibtexField(p.title)],
-      ['author', (p.authors || []).join(' and ')],
-      ['year', p.year || ''],
-      ['booktitle', p.venue || ''],
-    ];
-    if (p.doi) fields.push(['doi', p.doi]);
-    const body = fields.filter(([, v]) => v).map(([k, v]) => `  ${k} = {${v}}`).join(',\n');
-    return `@inproceedings{${key},\n${body}\n}`;
-  }).join('\n\n');
-}
-
-document.getElementById('export-csv').addEventListener('click', () => {
-  exportTableToCsv(document.getElementById('papers-body').closest('table'), 'av-atlas-papers.csv');
-});
-document.getElementById('export-bibtex').addEventListener('click', () => {
-  downloadText('av-atlas-papers.bib', papersToBibtex(currentExportPapers), 'application/x-bibtex;charset=utf-8');
-});
 let currentFilters = null;
 let currentTimelineDraw = null;
 
 const relevance = new URLSearchParams(location.search).get('relevance') || '';
 fetchStatsWithRelevance(relevance).then(stats => {
   currentStats = stats;
-  renderStatGrid(stats);
   // The filter bar (incl. the search input) is built once per page load --
   // category/venue/year selects navigate to a new URL on change anyway, and
   // rebuilding the search <input> on every keystroke (as a full render(stats)
@@ -320,34 +278,25 @@ fetchStatsWithRelevance(relevance).then(stats => {
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'index.html', {
     search: { placeholder: 'Search paper titles…', param: 'q', onInput: v => { currentQuery = v; renderResults(); } },
     relevance: true,
+    minCitations: true,
     topN: {
       default: 10, storageKey: 'papers-timeline-topn', row: 1,
-      onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); renderResults(); },
+      onChange: () => renderResults(),
     },
   });
+  const exportContainer = document.getElementById('export-container');
+  exportContainer.insertBefore(
+    renderExportButtons({
+      table: document.getElementById('papers-body').closest('table'),
+      csvName: 'av-atlas-papers.csv',
+      bibtexPapers: () => currentExportPapers,
+      bibtexName: 'av-atlas-papers.bib',
+    }),
+    exportContainer.firstChild);
   renderResults();
 }).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
 });
-
-// Rendered once, on initial load only -- render() below reruns on every
-// search keystroke and filter/sort change, and appending fresh stat tiles
-// into the same #stat-grid on every one of those reruns (without ever
-// clearing it) is what caused the whole stat banner to visibly repeat
-// itself after a few keystrokes in the title search box.
-function renderStatGrid(stats) {
-  const cs = stats.corpus_stats || {};
-  const stat = (value, label) => {
-    const tile = document.createElement('div');
-    tile.className = 'stat-tile';
-    tile.innerHTML = `<div class="value">${value}</div><div class="label">${label}</div>`;
-    return tile;
-  };
-  const grid = document.getElementById('stat-grid');
-  grid.innerHTML = '';
-  grid.appendChild(stat((stats.generated_from || 0).toLocaleString(), 'Papers indexed (total)'));
-  grid.appendChild(stat((stats.core_relevant || 0).toLocaleString(), 'AV-relevant'));
-}
 
 // Live, client-side title search -- re-renders results on every keystroke
 // without a page reload or rebuilding the filter bar (unlike the
@@ -407,16 +356,17 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle, allPapers) {
   const yearByTitle = new Map();
   (allPapers || []).forEach(p => { if (p.title && p.year) yearByTitle.set(p.title, p.year); });
 
-  function draw(topN) {
-    const topPapers = [...papers]
-      .filter(p => (p.citations || 0) > 0 && Array.isArray(p.citing_papers) && p.citing_papers.length)
-      .sort((a, b) => (b.citations || 0) - (a.citations || 0))
-      .slice(0, topN);
+  // `papersToPlot` is exactly the papers shown on the current page of the
+  // Top Papers table -- Prev/Next and the "Show top" size both flow through
+  // here, so the chart always tracks what the reader is looking at.
+  function draw(papersToPlot) {
+    const plotPapers = (papersToPlot || [])
+      .filter(p => (p.citations || 0) > 0 && Array.isArray(p.citing_papers) && p.citing_papers.length);
 
     // Per paper: { year -> number of its citations that landed in that year }.
     const countsByPaper = new Map();
     let minYr = Infinity, maxYr = -Infinity;
-    topPapers.forEach(p => {
+    plotPapers.forEach(p => {
       const perYear = {};
       p.citing_papers.forEach(t => {
         const yr = yearByTitle.get(t);
@@ -435,8 +385,8 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle, allPapers) {
 
     const legend = document.getElementById('timeline-legend');
     legend.innerHTML = '';
-    renderLegendToggleAll(legend, hidden, topPapers.map(p => p.title), () => draw(topN));
-    topPapers.forEach((p, i) => {
+    renderLegendToggleAll(legend, hidden, plotPapers.map(p => p.title), () => draw(papersToPlot));
+    plotPapers.forEach((p, i) => {
       const item = document.createElement('div');
       item.className = 'legend-item' + (hidden.has(p.title) ? ' off' : '');
       renderSwatchLabel(item, TIMELINE_PALETTE[i % TIMELINE_PALETTE.length], `${shortPaperName(p, datasetNameByTitle)} (${p.citations})`);
@@ -450,16 +400,16 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle, allPapers) {
     });
 
     function drawSeries() {
-      const series = topPapers
+      const series = plotPapers
         .filter(p => !hidden.has(p.title))
         .map(p => {
           const perYear = countsByPaper.get(p.title) || {};
           const values = {};
           allYears.forEach(yr => { values[yr] = perYear[yr] || 0; });
-          return { name: shortPaperName(p, datasetNameByTitle), color: TIMELINE_PALETTE[topPapers.indexOf(p) % TIMELINE_PALETTE.length], values };
+          return { name: shortPaperName(p, datasetNameByTitle), color: TIMELINE_PALETTE[plotPapers.indexOf(p) % TIMELINE_PALETTE.length], values };
         });
       lineChart(document.getElementById('timeline-chart'), document.getElementById('timeline-tooltip'),
-        series, allYears, v => `${v} citation${v === 1 ? '' : 's'}`, { yLabel: 'Citations received per year' });
+        series, allYears, v => `${v} citation${v === 1 ? '' : 's'}`, { yLabel: 'Citations received per year', tightAxis: true });
     }
     drawSeries();
   }
@@ -469,10 +419,9 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle, allPapers) {
 
 function renderResults() {
   const stats = currentStats, filters = currentFilters;
-  currentTimelineDraw = renderPapersCitationTimeline(filterPapers(stats.all_papers || [], filters), buildDatasetNameByTitle(stats), stats.all_papers || []);
-  currentTimelineDraw(filters.topN || 10);
+  currentTimelineDraw = renderPapersCitationTimeline(null, buildDatasetNameByTitle(stats), stats.all_papers || []);
   const query = currentQuery.trim().toLowerCase();
-  const anyFilter = filters.category || filters.venue || filters.year || filters.country || filters.institution || filters.author || query;
+  const anyFilter = filters.category || filters.venue || filters.year || filters.country || filters.institution || filters.author || filters.minCitations || query;
   // Always the full set, not the server's precomputed top_papers -- that's
   // capped at 50, which would silently cap "Show top 100/250" below its own
   // requested size. Client-side sort/slice over ~19k core papers is cheap
@@ -484,24 +433,22 @@ function renderResults() {
   // only way to re-rank from here -- no separate "Rank by" dropdown.
   papers = [...papers].sort((a, b) => (b.citations ?? -Infinity) - (a.citations ?? -Infinity));
 
-  // "Show top N" no longer caps the table -- reverted (user-flagged, this
-  // time in the opposite direction from an earlier "top 10 should cap the
-  // table too" fix): a table titled as showing the current filtered set
-  // should paginate through all of it via Prev/Next, the same as
-  // institutions.html/authors.html/venues.html now do, not stop at
-  // whatever the chart's top-N happens to be. "Show top N" (still read at
-  // the citation-timeline chart's own draw call above) now controls only
-  // that chart.
+  // The filter bar's "Show top" is the single size control for this page:
+  // it sets both how many rows the table shows per page AND how many
+  // papers the "Papers over time" chart plots (the current page's slice).
+  // Prev/Next move that same window for both.
   document.getElementById('result-count').textContent = anyFilter
     ? `${papers.length} paper${papers.length === 1 ? '' : 's'} match`
-    : `${papers.length} shown`;
+    : `${papers.length} papers`;
   currentExportPapers = papers;
 
-  const pagination = renderPagination(document.getElementById('pagination-container'), 'index.html', papers.length, { onChange: renderResults });
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'index.html', papers.length,
+    { onChange: renderResults, pageSize: filters.topN || 10, showSizeControl: false });
 
   const papersTable = document.querySelector('#papers-body').closest('table');
   const papersBody = document.getElementById('papers-body');
   const shown = papers.slice(pagination.offset, pagination.offset + pagination.pageSize);
+  currentTimelineDraw(shown);
   function renderPapersBody(rows) {
     papersBody.innerHTML = '';
     rows.forEach((p, i) => papersBody.appendChild(row([

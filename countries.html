@@ -147,10 +147,6 @@ fetchStatsWithRelevance(relevance).then(stats => {
       { key: 'avg', label: 'Citations / paper' },
       { key: 'total', label: 'Citations' },
     ],
-    topN: {
-      default: 50, storageKey: 'countries-timeline-topn',
-      onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); render(); },
-    },
   });
   render();
 }).catch(err => {
@@ -210,18 +206,10 @@ function render() {
   countries.sort(sorters[metric] || sorters.papers);
   tableRows.sort(sorters[metric] || sorters.papers);
 
-  // "Show top N" caps the table AND dims every map tile outside that same
-  // top N (user-requested: changing Show top should change the map too) --
-  // dimmed rather than removed, same treatment as a search-query mismatch
-  // just below, so the map's geography stays intact rather than leaving
-  // gaps where a country used to be.
-  const topN = filters.topN || 50;
-  const matchCount = tableRows.length;
-  tableRows = tableRows.slice(0, topN);
-
-  document.getElementById('result-count').textContent = matchCount > topN
-    ? `${tableRows.length} of ${matchCount} countries (top ${topN})`
-    : `${tableRows.length} countries`;
+  // The whole set of countries (only ~40); the table below paginates it,
+  // and every country tile on the map shows at full opacity except ones
+  // filtered out by a search query.
+  document.getElementById('result-count').textContent = `${tableRows.length} countries`;
   document.getElementById('total-countries-stat').textContent =
     `${countries.length} countries with AV papers in this corpus`;
 
@@ -232,7 +220,6 @@ function render() {
   grid.innerHTML = '';
   const byName = {};
   countries.forEach(c => { byName[c.name] = c; });
-  const topNCountries = new Set(countries.slice(0, topN).map(c => c.name));
 
   // A country with zero papers has nothing to link to or show a value for --
   // rendering it as a dashed "zero" tile implied it was clickable/meaningful
@@ -251,7 +238,7 @@ function render() {
     const step = Math.min(SEQ_RAMP.length - 1, Math.round(t * (SEQ_RAMP.length - 1)));
     tile.style.background = SEQ_RAMP[step];
     if (step <= 2) tile.style.color = '#0b0b0b';
-    if ((query && !matchesSearchQuery(name, query)) || !topNCountries.has(name)) tile.style.opacity = '0.25';
+    if (query && !matchesSearchQuery(name, query)) tile.style.opacity = '0.25';
     grid.appendChild(tile);
   });
 
@@ -302,7 +289,7 @@ function render() {
     rankedNames: countries.map(c => c.name),
     elIds: { legend: 'timeline-legend', chart: 'timeline-chart', tooltip: 'timeline-tooltip', normalize: 'timeline-normalize' },
   });
-  currentTimelineDraw(filters.topN || 10);
+  currentTimelineDraw(10);
 }
 </script>
 <script src="nav.js"></script>

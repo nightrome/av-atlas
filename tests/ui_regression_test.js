@@ -61,8 +61,6 @@ const TOPN_PAGES = {
   'index.html': 100,
   'institutions.html': 100,
   'venues.html': 100,
-  'countries.html': 100,
-  'categories.html': 100,
   'network.html': 250,
 };
 
@@ -129,10 +127,10 @@ function checkRelevanceInFilterBar(file, result) {
   const selects = findAll(filterBar, e => e.tagName === 'SELECT');
   const hasRelevanceSelect = selects.some(sel => {
     const optionTexts = (sel.children || []).map(allText);
-    return optionTexts.some(t => t.includes('Not AV relevant'));
+    return optionTexts.some(t => t.includes('Non-AV papers'));
   });
   if (!hasRelevanceSelect) {
-    errors.push('no "Show" (AV relevant / Not AV relevant) dropdown found inside #filter-bar-container');
+    errors.push('no "Show" (AV papers / Non-AV papers) dropdown found inside #filter-bar-container');
   }
   return errors;
 }

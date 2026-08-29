@@ -452,8 +452,13 @@ function render(stats) {
   renderCitingTable();
 
   const exportContainer = document.getElementById('export-container');
-  exportContainer.innerHTML = '';
-  exportContainer.appendChild(renderExportButton(citingBody.closest('table'), 'citing-papers.csv'));
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButtons({
+    table: citingBody.closest('table'),
+    csvName: 'citing-papers.csv',
+    bibtexPapers: () => citingRows,
+    bibtexName: 'citing-papers.bib',
+  }), exportContainer.firstChild);
 
   // Citing authors: every author of a citing paper, same table shape as
   // author.html's own "Citing authors" panel (user-requested: design this

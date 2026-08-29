@@ -1505,7 +1505,11 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
     # single-year percentages, which over- or under-weights whichever year
     # happened to be noisiest) -- one bad or one great year doesn't dominate
     # the headline number the way a single year-over-year comparison would. --
-    GROWTH_WINDOW_YEARS = 5
+    # Enough complete years for the Insights "Growth" panel to offer a
+    # "compared to N years earlier" dropdown up to N=10 (it recomputes the
+    # CAGR client-side from these arrays, for both the AV and the
+    # all-papers series).
+    GROWTH_WINDOW_YEARS = 11
     growth_years = complete_years[-GROWTH_WINDOW_YEARS:]
     insights["corpus_growth"] = {
         "years": growth_years,
@@ -2665,10 +2669,11 @@ def main():
 
     insights = compute_insights(
         papers, all_entries, citation_graph, category_stats,
-        # min_papers=10, stricter than the Authors page's own min-1 floor --
-        # "highest average impact" shouldn't be won by two papers and one
-        # lucky hit (user-requested).
-        top_authors_by_avg(author_citations, author_papers, n=5, min_papers=10),
+        # >= 10 papers, stricter than the Authors page's own min-1 floor --
+        # "most citations per paper" shouldn't be won by a couple of papers
+        # and one lucky hit (user-requested). min_papers=9 because
+        # top_authors_by_avg's own test is strictly greater-than.
+        top_authors_by_avg(author_citations, author_papers, n=5, min_papers=9),
         top_authors_by_paper_count,
         top(inst_citations, inst_papers, n=5),
         datasets,
@@ -2758,6 +2763,7 @@ def main():
             "year_range": [min(year_counts), max(year_counts)] if year_counts else None,
             "total_researchers": total_researchers,
             "total_institutions": total_institutions_all,
+            "total_countries": len(country_papers),
             "citation_graph_coverage": citation_graph_coverage,
             # How many core papers came from each discovery path -- see the
             # "source" field on each paper for what these mean. Surfaced so

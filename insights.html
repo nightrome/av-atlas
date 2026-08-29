@@ -40,7 +40,9 @@
   .fact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 10px; }
   .fact-card {
     background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
+    position: relative;
   }
+  .fact-card .info-tip { position: absolute; top: 8px; right: 8px; margin: 0; }
   .fact-card .big { font-size: 1.7em; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
   .fact-card .big.accent { color: var(--accent); }
   .fact-card .label { color: var(--muted); font-size: 0.85em; margin-top: 4px; }
@@ -115,8 +117,19 @@
 <nav id="topnav"></nav>
 
 <div class="panel">
-  <h2>Growth</h2>
-  <p class="section-intro">Average annual growth, computed over complete years only.</p>
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Growth</h2>
+    <div class="limit-row">
+      Compared to
+      <select id="growth-years-back">
+        <option value="1">1 year earlier</option>
+        <option value="2">2 years earlier</option>
+        <option value="3" selected>3 years earlier</option>
+        <option value="5">5 years earlier</option>
+        <option value="10">10 years earlier</option>
+      </select>
+    <span class="info-tip" tabindex="0" role="img" aria-label="Papers added per year, AV-relevant and total. The two percentages are a compound annual growth rate over the window the dropdown selects. Log y-axis." data-tip="Papers added per year, AV-relevant and total. The two percentages are a compound annual growth rate over the window the dropdown selects. Log y-axis.">i</span></div>
+  </div>
   <div class="fact-grid" id="growth-facts"></div>
   <div class="line-chart-wrap" id="growth-chart-wrap">
     <svg id="growth-chart"></svg>
@@ -137,7 +150,7 @@
         <option value="5">5 years earlier</option>
         <option value="10">10 years earlier</option>
       </select>
-    </div>
+    <span class="info-tip" tabindex="0" role="img" aria-label="Which categories gained or lost the most share of AV papers between a recent complete year and one N years earlier (set by the dropdown)." data-tip="Which categories gained or lost the most share of AV papers between a recent complete year and one N years earlier (set by the dropdown).">i</span></div>
   </div>
   <p class="section-intro" id="trend-window-note"></p>
   <div class="move-cols">
@@ -155,7 +168,7 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2 style="margin-top:0;">Dataset adoption over time</h2>
-    <div id="dataset-topn-container"></div>
+    <div id="dataset-topn-container"><span class="info-tip" tabindex="0" role="img" aria-label="How many papers per year cite each of the most-used AV datasets, from those papers&#x27; own reference lists." data-tip="How many papers per year cite each of the most-used AV datasets, from those papers&#x27; own reference lists.">i</span></div>
   </div>
   <p class="section-intro">How many papers per year cite each dataset.</p>
   <div class="line-chart-wrap" id="dataset-chart-wrap">
@@ -166,13 +179,13 @@
 </div>
 
 <div class="panel">
-  <h2>People &amp; institutions</h2>
-  <p class="section-intro">By different definitions of "leading".</p>
+  <div class="panel-title-row"><h2>Leadership</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages." data-tip="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages.">i</span></div>
+  <p class="section-intro">Leading people, institutions and papers.</p>
   <div class="fact-grid" id="people-facts"></div>
 </div>
 
 <div class="panel">
-  <h2>Collaboration</h2>
+  <div class="panel-title-row"><h2>Collaboration</h2><span class="info-tip" tabindex="0" role="img" aria-label="How many distinct people, institutions and countries appear on a typical paper, and how the average author count per paper has changed over time." data-tip="How many distinct people, institutions and countries appear on a typical paper, and how the average author count per paper has changed over time.">i</span></div>
   <p class="section-intro">How many people, institutions, and countries collaborate on a typical paper.</p>
   <div class="fact-grid" id="collab-facts"></div>
   <div class="line-chart-wrap" id="team-chart-wrap">
@@ -182,10 +195,10 @@
 </div>
 
 <div class="panel">
-  <h2>Researcher careers</h2>
+  <div class="panel-title-row"><h2>Researcher careers</h2><span class="info-tip" tabindex="0" role="img" aria-label="“Career span” is the years between an author&#x27;s first and last AV-relevant paper in this corpus, not their real career length." data-tip="“Career span” is the years between an author&#x27;s first and last AV-relevant paper in this corpus, not their real career length.">i</span></div>
   <p class="section-intro">
     An author's "career span" here is the span between their first and last AV-relevant publication
-    in this corpus -- not their real age or whole career.
+    in this corpus, not their real age or whole career.
   </p>
   <h3 style="margin-top:0;">Where researchers are in their career</h3>
   <p class="section-intro" style="margin-bottom:4px;">Researchers per career span, in years.</p>
@@ -216,13 +229,13 @@
 </div>
 
 <div class="panel">
-  <h2>Citation patterns</h2>
+  <div class="panel-title-row"><h2>Citation patterns</h2><span class="info-tip" tabindex="0" role="img" aria-label="How concentrated in-corpus citations are: the self-citation share, and how much of all citations go to the most-cited papers." data-tip="How concentrated in-corpus citations are: the self-citation share, and how much of all citations go to the most-cited papers.">i</span></div>
   <p class="section-intro">How citations are distributed across the corpus.</p>
   <div class="fact-grid" id="citation-facts"></div>
 </div>
 
 <div class="panel" id="disruption-panel">
-  <h2>Disruption vs. consolidation</h2>
+  <div class="panel-title-row"><h2 style="margin-top:0;">Disruptive papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="The CD index: does later work cite a paper instead of its own references (disruptive) or alongside them (consolidating). Only the disruptive end is shown." data-tip="The CD index: does later work cite a paper instead of its own references (disruptive) or alongside them (consolidating). Only the disruptive end is shown.">i</span></div>
   <p class="section-intro">
     The CD index (Funk &amp; Owen-Smith, 2017): does later work engage with a paper as having
     <em>superseded</em> its own references (disruptive), or does it cite the paper alongside those
@@ -252,11 +265,11 @@
 </div>
 
 <div class="panel" id="open-source-panel">
-  <h2>Open-source code</h2>
+  <div class="panel-title-row"><h2>Open-source code</h2><span class="info-tip" tabindex="0" role="img" aria-label="Share of checked arXiv papers that release their own code, judged by a language model, and whether it correlates with citations." data-tip="Share of checked arXiv papers that release their own code, judged by a language model, and whether it correlates with citations.">i</span></div>
   <p class="section-intro">
     Whether a paper releases its own code (not a dataset, not a baseline it compares against), judged
     by a language model from its arXiv page, and whether that correlates with citation impact.
-    Restricted to papers actually checked -- arXiv-sourced only, and the model works through them in
+    Restricted to papers actually checked (arXiv-sourced only), and the model works through them in
     batches, so coverage and the percentages here keep shifting as it goes (see About).
   </p>
   <div class="fact-grid" id="open-source-facts"></div>
@@ -265,7 +278,7 @@
 </div>
 
 <div class="panel">
-  <h2>Most cited paper by year</h2>
+  <div class="panel-title-row"><h2>Most cited paper by year</h2><span class="info-tip" tabindex="0" role="img" aria-label="The single highest in-corpus-cited paper published in each year." data-tip="The single highest in-corpus-cited paper published in each year.">i</span></div>
   <p class="section-intro">The highest-cited paper published each year, in-corpus citations only.</p>
   <table class="data-table" id="best-by-year-table">
     <thead><tr><th>Year</th><th>Title</th><th>Venue</th><th class="num">Citations</th></tr></thead>
@@ -284,7 +297,7 @@
         <option value="80" selected>80+</option>
         <option value="200">200+</option>
       </select>
-    </div>
+    <span class="info-tip" tabindex="0" role="img" aria-label="For venues above the size threshold, the share of their total output that this site classified as AV-relevant." data-tip="For venues above the size threshold, the share of their total output that this site classified as AV-relevant.">i</span></div>
   </div>
   <p class="section-intro">
     Share of each venue's total output judged AV-relevant. Venues below the threshold above are
@@ -577,19 +590,51 @@ function render(ins, stats) {
   ], renderBestByYearBody);
 
   // -- Growth -- (aggregate.py already excludes the current, still-partial
-  // year from every field here -- nothing to filter client-side)
+  // year from every field here; nothing to filter client-side). The two
+  // headline percentages are a compound annual growth rate computed
+  // client-side from corpus_growth's year arrays, over whatever window the
+  // "Compared to N years earlier" dropdown selects.
   const gf = document.getElementById('growth-facts');
   const growth = ins.corpus_growth || {};
-  const years = growth.years || [];
-  if (ins.avg_annual_growth) {
-    const g = ins.avg_annual_growth;
-    statTile(gf, `${g.pct > 0 ? '+' : ''}${g.pct.toFixed(1)}%`, 'Average annual growth, AV-relevant papers',
-      `Compound annual growth rate, ${g.from_year} to ${g.to_year} (complete years only).`);
+  const gYears = growth.years || [];
+  const growthBackSel = document.getElementById('growth-years-back');
+
+  function growthTile(container, value, label, tip) {
+    const card = document.createElement('div');
+    card.className = 'fact-card';
+    const big = document.createElement('div');
+    big.className = 'big accent';
+    big.textContent = value;
+    card.appendChild(big);
+    const lab = document.createElement('div');
+    lab.className = 'label';
+    lab.textContent = label;
+    card.appendChild(lab);
+    if (tip && typeof window.infoTip === 'function') card.appendChild(window.infoTip(tip));
+    container.appendChild(card);
   }
-  if (years.length) {
+
+  function renderGrowthFacts() {
+    gf.innerHTML = '';
+    if (gYears.length < 2) return;
+    const lastIdx = gYears.length - 1;
+    const back = parseInt(growthBackSel && growthBackSel.value, 10) || 3;
+    const fromIdx = Math.max(0, lastIdx - back);
+    const intervals = lastIdx - fromIdx;
+    const cagr = (a, b) => (a > 0 && intervals > 0) ? (Math.pow(b / a, 1 / intervals) - 1) * 100 : null;
+    const tip = `Compound annual growth rate, ${gYears[fromIdx]} to ${gYears[lastIdx]} (complete years only).`;
+    const avPct = cagr(growth.core_papers[fromIdx], growth.core_papers[lastIdx]);
+    const allPct = cagr(growth.total_papers[fromIdx], growth.total_papers[lastIdx]);
+    if (avPct != null) growthTile(gf, `${avPct > 0 ? '+' : ''}${avPct.toFixed(1)}%`, 'AV paper growth', tip);
+    if (allPct != null) growthTile(gf, `${allPct > 0 ? '+' : ''}${allPct.toFixed(1)}%`, 'All paper growth', tip);
+  }
+  renderGrowthFacts();
+  if (growthBackSel) growthBackSel.addEventListener('change', renderGrowthFacts);
+
+  if (gYears.length) {
     const series = [
-      { name: 'AV-relevant', color: PALETTE[0], values: Object.fromEntries(years.map((y, i) => [y, growth.core_papers[i]])) },
-      { name: 'Total indexed', color: PALETTE[1], values: Object.fromEntries(years.map((y, i) => [y, growth.total_papers[i]])) },
+      { name: 'AV papers', color: PALETTE[0], values: Object.fromEntries(gYears.map((y, i) => [y, growth.core_papers[i]])) },
+      { name: 'All papers', color: PALETTE[1], values: Object.fromEntries(gYears.map((y, i) => [y, growth.total_papers[i]])) },
     ];
     const legend = document.getElementById('growth-legend');
     series.forEach(s => {
@@ -603,29 +648,29 @@ function render(ins, stats) {
       legend.appendChild(item);
     });
     lineChart(document.getElementById('growth-chart'), document.getElementById('growth-tooltip'),
-      series, years, v => `${v.toLocaleString()} papers`, { yLabel: 'Papers per year' });
+      series, gYears, v => `${v.toLocaleString()} papers`, { yLabel: 'Papers per year (log)', log: true });
   }
 
-  // -- People & institutions --
+  // -- Leadership --
   const pf = document.getElementById('people-facts');
   if (ins.most_prolific_author) {
     const a = ins.most_prolific_author;
-    statTile(pf, a.name, 'Most prolific author', `${a.papers} papers, ${a.citations} total citations.`,
+    statTile(pf, a.name, 'Author with most papers', `${a.papers} papers, ${a.citations} total citations.`,
       `author.html?name=${encodeURIComponent(a.name)}`);
   }
   if (ins.highest_impact_author) {
     const a = ins.highest_impact_author;
-    statTile(pf, a.name, 'Highest citations per paper', `${a.avg_citations} citations/paper across ${a.papers} papers.`,
+    statTile(pf, a.name, 'Author with most citations per paper', `${a.avg_citations} citations/paper across ${a.papers} papers.`,
       `author.html?name=${encodeURIComponent(a.name)}`);
   }
   if (ins.leading_institution) {
     const i = ins.leading_institution;
-    statTile(pf, i.name, 'Leading institution by total citations', `${i.papers} papers, ${i.citations} total citations.`,
+    statTile(pf, i.name, 'Institution with most citations', `${i.papers} papers, ${i.citations} total citations.`,
       `institution.html?name=${encodeURIComponent(i.name)}`);
   }
   if (ins.most_cited_paper) {
     const p = ins.most_cited_paper;
-    statTile(pf, p.short_title, 'Most-cited paper in the corpus', `${p.citations.toLocaleString()} citations (${p.year}).`,
+    statTile(pf, p.short_title, 'Paper with most citations', `${p.citations.toLocaleString()} citations (${p.year}).`,
       `paper.html?title=${encodeURIComponent(p.title)}`);
   }
 
@@ -873,11 +918,18 @@ function lineChart(svgEl, tooltipEl, series, years, formatValue, opts) {
   }
   const allValues = series.flatMap(s => years.map(y => s.values[y])).filter(v => v != null);
   const dataMax = Math.max(1e-9, ...allValues);
+  const useLog = !!opts.log;
+  const logLo = 1;
+  const logHi = Math.max(10, Math.pow(10, Math.ceil(Math.log10(Math.max(logLo + 1e-9, dataMax)))));
   const maxV = typeof window.niceAxisMax === 'function' ? window.niceAxisMax(dataMax) : dataMax;
   const x = i => PAD_L + (years.length <= 1 ? 0 : (i / (years.length - 1)) * (W - PAD_L - PAD_R));
-  const y = v => H - PAD_B - (Math.max(0, v) / maxV) * (H - PAD_T - PAD_B);
-  for (let i = 0; i <= 4; i++) {
-    const v = (maxV / 4) * i;
+  const y = useLog
+    ? v => H - PAD_B - ((Math.log10(Math.max(logLo, v)) - Math.log10(logLo)) / (Math.log10(logHi) - Math.log10(logLo))) * (H - PAD_T - PAD_B)
+    : v => H - PAD_B - (Math.max(0, v) / maxV) * (H - PAD_T - PAD_B);
+  const gridVals = useLog
+    ? Array.from({ length: Math.round(Math.log10(logHi)) + 1 }, (_, e) => Math.pow(10, e))
+    : Array.from({ length: 5 }, (_, i) => (maxV / 4) * i);
+  gridVals.forEach((v, i) => {
     const gy = y(v);
     const line = document.createElementNS(ns, 'line');
     line.setAttribute('x1', PAD_L); line.setAttribute('x2', W - PAD_R);
@@ -887,9 +939,10 @@ function lineChart(svgEl, tooltipEl, series, years, formatValue, opts) {
     const label = document.createElementNS(ns, 'text');
     label.setAttribute('x', PAD_L - 6); label.setAttribute('y', gy + 3);
     label.setAttribute('text-anchor', 'end'); label.setAttribute('class', 'axis-label');
-    label.textContent = opts.formatAxis ? opts.formatAxis(v) : Math.round(v);
+    label.textContent = opts.formatAxis ? opts.formatAxis(v)
+      : useLog ? v.toLocaleString() : Math.round(v);
     svgEl.appendChild(label);
-  }
+  });
   const xStep = Math.max(1, Math.ceil(years.length / 18));
   years.forEach((yr, i) => {
     if (i % xStep !== 0 && i !== years.length - 1) return;

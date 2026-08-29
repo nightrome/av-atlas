@@ -77,7 +77,7 @@
        it works without JS. A base layout for .panel-title-row so the icon
        lands top-right consistently even on pages that don't style the class
        themselves. */
-    .panel-title-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .panel-title-row { position: relative; }
     .info-tip {
       display: inline-flex; align-items: center; justify-content: center;
       width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--border);
@@ -141,6 +141,15 @@
       padding: 5px 10px; font-size: 0.82em; cursor: pointer;
     }
     .export-csv-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .export-row { display: inline-flex; gap: 6px; }
+    .export-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--panel2); color: var(--muted); border: 1px solid var(--border);
+      border-radius: 6px; padding: 3px 8px; font-size: 0.74em; font-weight: 700;
+      letter-spacing: 0.03em; cursor: pointer;
+    }
+    .export-badge:hover { border-color: var(--accent); color: var(--accent); }
+    .export-badge::before { content: "\\2913"; font-weight: 400; font-size: 1.1em; line-height: 1; }
     .sum-row td { font-weight: 600; border-top: 2px solid var(--border); border-bottom: none; color: var(--text); }
 
     .av-toast {
@@ -351,6 +360,7 @@
       }
     }
     if (filters.year) out = out.filter(p => String(p.year) === filters.year);
+    if (filters.minCitations) out = out.filter(p => (p.citations || 0) >= filters.minCitations);
     if (filters.country) out = out.filter(p => (p.countries || []).includes(filters.country));
     if (filters.institution) out = out.filter(p => (p.institutions || []).includes(filters.institution));
     if (filters.author) out = out.filter(p => (p.authors || []).includes(filters.author));
@@ -378,8 +388,10 @@
     panel.className = 'controls-panel';
     const bar = document.createElement('div');
     bar.className = 'filter-bar';
-    const bar2 = document.createElement('div');
-    bar2.className = 'filter-bar filter-bar-secondary';
+    // opts.singleRow: keep every control on one line (used on Categories,
+    // where there are only a few) instead of the default two-row split.
+    const bar2 = opts.singleRow ? bar : document.createElement('div');
+    if (!opts.singleRow) bar2.className = 'filter-bar filter-bar-secondary';
 
     function field(labelText, el) {
       const wrap = document.createElement('div');
@@ -444,7 +456,7 @@
     if (opts.relevance) {
       const relValue = new URLSearchParams(location.search).get('relevance') || '';
       const sel = document.createElement('select');
-      [['', 'AV relevant'], ['adjacent', 'Not AV relevant'], ['both', 'Both']].forEach(([value, text]) => {
+      [['', 'AV papers'], ['adjacent', 'Non-AV papers'], ['both', 'Both']].forEach(([value, text]) => {
         const opt = document.createElement('option');
         opt.value = value;
         opt.textContent = text;
@@ -535,6 +547,23 @@
       bar.appendChild(field('Year', sel));
     }
 
+    // A WHICH-papers filter: keep only papers with at least this many
+    // in-corpus citations. Navigates via ?mincites= like the other row-1
+    // filters; filters.minCitations is the parsed integer (0 == off).
+    if (opts.minCitations) {
+      const cur = parseInt(new URLSearchParams(location.search).get('mincites'), 10) || 0;
+      const sel = document.createElement('select');
+      [[0, 'Any'], [1, '1+'], [5, '5+'], [10, '10+'], [25, '25+'], [50, '50+'], [100, '100+']].forEach(([v, t]) => {
+        const o = document.createElement('option');
+        o.value = String(v); o.textContent = t;
+        if (v === cur) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.addEventListener('change', () => { location.href = withParam(page, 'mincites', sel.value === '0' ? null : sel.value); });
+      bar.appendChild(field('Min citations', sel));
+      filters.minCitations = cur;
+    }
+
     // One optional boolean toggle in the bar (currently only Categories'
     // "Exclude dataset papers") -- used to be its own standalone checkbox
     // sitting above that page's chart, disconnected from every other
@@ -543,27 +572,32 @@
     // change here does not navigate -- it persists to sessionStorage and
     // calls onChange directly, since the caller already has what it needs
     // to redraw in memory.
+    // One optional include/exclude control, rendered as a labelled Yes/No
+    // dropdown so it matches every other field in the bar (was a lone
+    // checkbox). cbOpts.dropdownLabel is the short field label (e.g.
+    // "DATASETS", "PREPRINTS"); "Yes" means include those papers, "No"
+    // means exclude them. filters.checkbox stays true == "exclude" so
+    // callers don't change.
     if (opts.checkbox) {
       const cbOpts = opts.checkbox;
-      let checked = false;
-      if (cbOpts.storageKey) { try { checked = sessionStorage.getItem(cbOpts.storageKey) === '1'; } catch (e) { /* ignore */ } }
-      const wrap = document.createElement('label');
-      wrap.className = 'field checkbox-field';
-      const input = document.createElement('input');
-      input.type = 'checkbox';
-      input.id = cbOpts.id;
-      input.checked = checked;
-      input.addEventListener('change', () => {
-        if (cbOpts.storageKey) { try { sessionStorage.setItem(cbOpts.storageKey, input.checked ? '1' : '0'); } catch (e) { /* ignore */ } }
-        filters.checkbox = input.checked;
-        if (cbOpts.onChange) cbOpts.onChange(input.checked);
+      let excluded = false;
+      if (cbOpts.storageKey) { try { excluded = sessionStorage.getItem(cbOpts.storageKey) === '1'; } catch (e) { /* ignore */ } }
+      const sel = document.createElement('select');
+      sel.id = cbOpts.id;
+      [['yes', 'Yes'], ['no', 'No']].forEach(([v, t]) => {
+        const o = document.createElement('option');
+        o.value = v; o.textContent = t;
+        if ((v === 'no') === excluded) o.selected = true;
+        sel.appendChild(o);
       });
-      const labelSpan = document.createElement('span');
-      labelSpan.textContent = cbOpts.label;
-      wrap.appendChild(input);
-      wrap.appendChild(labelSpan);
-      bar.appendChild(wrap);
-      filters.checkbox = checked;
+      sel.addEventListener('change', () => {
+        const nowExcluded = sel.value === 'no';
+        if (cbOpts.storageKey) { try { sessionStorage.setItem(cbOpts.storageKey, nowExcluded ? '1' : '0'); } catch (e) { /* ignore */ } }
+        filters.checkbox = nowExcluded;
+        if (cbOpts.onChange) cbOpts.onChange(nowExcluded);
+      });
+      bar.appendChild(field(cbOpts.dropdownLabel || 'Include', sel));
+      filters.checkbox = excluded;
     }
 
     if (opts.metrics && opts.metrics.length) {
@@ -589,7 +623,7 @@
     // thousands of rows at once, vs. fixed 50-per-page with Prev/Next).
     if (opts.minPapers) {
       const choices = opts.minPapers.options || [
-        { value: 1, label: 'All (incl. 1 paper)' },
+        { value: 1, label: '1+ papers' },
         { value: 2, label: '2+ papers' },
         { value: 10, label: '10+ papers' },
         { value: 25, label: '25+ papers' },
@@ -668,7 +702,7 @@
     }
 
     panel.appendChild(bar);
-    if (bar2.children.length) panel.appendChild(bar2);
+    if (bar2 !== bar && bar2.children.length) panel.appendChild(bar2);
 
     const metaRow = document.createElement('div');
     metaRow.className = 'controls-meta-row';
@@ -798,8 +832,18 @@
     const defaultSize = opts.defaultPageSize || 10;
     const params = new URLSearchParams(location.search);
 
-    let pageSize = parseInt(params.get(sizeKey), 10);
-    if (!sizes.includes(pageSize)) pageSize = defaultSize;
+    // A caller can suppress the "Show N" dropdown (opts.showSizeControl:
+    // false) and/or dictate the page size from an outside control
+    // (opts.pageSize) -- e.g. the Papers page, where the filter bar's
+    // "Show top" is the single control for both the table and the chart.
+    const showSizeControl = opts.showSizeControl !== false && opts.pageSize == null;
+    let pageSize;
+    if (opts.pageSize != null) {
+      pageSize = opts.pageSize;
+    } else {
+      pageSize = parseInt(params.get(sizeKey), 10);
+      if (!sizes.includes(pageSize)) pageSize = defaultSize;
+    }
 
     const totalPages = Math.max(1, Math.ceil(total / pageSize));
     let current = parseInt(params.get(paramKey), 10) || 1;
@@ -823,22 +867,28 @@
     const row = document.createElement('div');
     row.className = 'pagination-row';
 
-    const showWrap = document.createElement('span');
-    showWrap.className = 'page-size';
-    showWrap.append('Show ');
-    const sizeSel = document.createElement('select');
-    sizes.forEach(n => {
-      const o = document.createElement('option');
-      o.value = String(n); o.textContent = String(n);
-      if (n === pageSize) o.selected = true;
-      sizeSel.appendChild(o);
-    });
-    sizeSel.addEventListener('change', () => {
-      // New size -> back to page 1 for this table (drop its page param).
-      apply({ [sizeKey]: sizeSel.value === String(defaultSize) ? null : sizeSel.value, [paramKey]: null });
-    });
-    showWrap.appendChild(sizeSel);
-    row.appendChild(showWrap);
+    // A caller-supplied control (e.g. author.html's AV/Non-AV papers
+    // dropdown) rendered on the same line, before the page-size box.
+    if (opts.leadingControl) row.appendChild(opts.leadingControl);
+
+    if (showSizeControl) {
+      const showWrap = document.createElement('span');
+      showWrap.className = 'page-size';
+      showWrap.append('Show ');
+      const sizeSel = document.createElement('select');
+      sizes.forEach(n => {
+        const o = document.createElement('option');
+        o.value = String(n); o.textContent = String(n);
+        if (n === pageSize) o.selected = true;
+        sizeSel.appendChild(o);
+      });
+      sizeSel.addEventListener('change', () => {
+        // New size -> back to page 1 for this table (drop its page param).
+        apply({ [sizeKey]: sizeSel.value === String(defaultSize) ? null : sizeSel.value, [paramKey]: null });
+      });
+      showWrap.appendChild(sizeSel);
+      row.appendChild(showWrap);
+    }
 
     const prev = document.createElement('button');
     prev.type = 'button';
@@ -1087,13 +1137,60 @@
     return a;
   };
 
+  // BibTeX for a list of paper objects. A stable key = first-author surname
+  // + year + a short title slug -- unique enough for a corpus this size and
+  // what most reference managers generate on import anyway.
+  function bibtexField(v) { return String(v == null ? '' : v).replace(/[{}]/g, ''); }
+  window.papersToBibtex = function (papers) {
+    const seen = new Set();
+    return (papers || []).map(p => {
+      const surname = ((p.authors || [])[0] || 'anon').trim().split(/\s+/).pop().replace(/[^a-zA-Z]/g, '') || 'anon';
+      const firstWord = (p.title || '').split(/\s+/).find(w => /[a-zA-Z]{3,}/.test(w)) || '';
+      let key = `${surname}${p.year || ''}${firstWord.replace(/[^a-zA-Z0-9]/g, '')}`;
+      let unique = key, n = 2;
+      while (seen.has(unique)) { unique = key + n; n += 1; }
+      seen.add(unique);
+      const fields = [
+        ['title', bibtexField(p.title)],
+        ['author', (p.authors || []).join(' and ')],
+        ['year', p.year || ''],
+        ['booktitle', p.venue || ''],
+      ];
+      if (p.doi) fields.push(['doi', p.doi]);
+      const body = fields.filter(([, v]) => v).map(([k, v]) => `  ${k} = {${v}}`).join(',\n');
+      return `@inproceedings{${unique},\n${body}\n}`;
+    }).join('\n\n');
+  };
+
+  function exportBadge(label, onClick) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'export-badge';
+    b.textContent = label;
+    b.title = `Download ${label}`;
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  // CSV badge for any table; optionally a BibTeX badge too when the caller
+  // has the underlying paper objects (a table alone doesn't carry authors
+  // or DOIs). Returns a small inline row of one or two icon badges.
+  window.renderExportButtons = function (opts) {
+    const row = document.createElement('span');
+    row.className = 'export-row';
+    row.appendChild(exportBadge('CSV', () => exportTableToCsv(opts.table, opts.csvName || 'export.csv')));
+    if (opts.bibtexPapers) {
+      row.appendChild(exportBadge('BibTeX', () => downloadText(
+        opts.bibtexName || 'export.bib',
+        papersToBibtex(typeof opts.bibtexPapers === 'function' ? opts.bibtexPapers() : opts.bibtexPapers),
+        'application/x-bibtex;charset=utf-8')));
+    }
+    return row;
+  };
+
+  // Back-compat: the CSV-only badge, same shape callers already append.
   window.renderExportButton = function (table, filename) {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'export-csv-btn';
-    btn.textContent = 'Export CSV';
-    btn.addEventListener('click', () => exportTableToCsv(table, filename));
-    return btn;
+    return renderExportButtons({ table, csvName: filename });
   };
 
   // Animates a stat tile's number counting up from 0 to its real value on
@@ -1256,12 +1353,24 @@
 
     const allValues = series.flatMap(s => years.map(y => s.values[y])).filter(v => v != null);
     const dataMax = opts.fixedMax != null ? opts.fixedMax : Math.max(1e-9, ...allValues);
-    const maxV = opts.fixedMax != null ? dataMax : niceAxisMax(dataMax);
+    // opts.log -> logarithmic y axis (gridlines at powers of ten).
+    // opts.tightAxis -> round the top up only to the next 50, so the axis
+    // sits just above the data instead of niceAxisMax's roomier ceiling.
+    const useLog = !!opts.log;
+    const logLo = 1;
+    const logHi = Math.max(10, Math.pow(10, Math.ceil(Math.log10(Math.max(logLo + 1e-9, dataMax)))));
+    const maxV = opts.fixedMax != null ? dataMax
+      : opts.tightAxis ? Math.max(1, Math.ceil(dataMax / 50) * 50)
+      : niceAxisMax(dataMax);
     const x = i => PAD_L + (years.length <= 1 ? 0 : (i / (years.length - 1)) * (W - PAD_L - PAD_R));
-    const y = v => H - PAD_B - (Math.max(0, v) / maxV) * (H - PAD_T - PAD_B);
+    const y = useLog
+      ? v => H - PAD_B - ((Math.log10(Math.max(logLo, v)) - Math.log10(logLo)) / (Math.log10(logHi) - Math.log10(logLo))) * (H - PAD_T - PAD_B)
+      : v => H - PAD_B - (Math.max(0, v) / maxV) * (H - PAD_T - PAD_B);
 
-    for (let i = 0; i <= 4; i++) {
-      const v = (maxV / 4) * i;
+    const gridVals = useLog
+      ? Array.from({ length: Math.round(Math.log10(logHi)) + 1 }, (_, e) => Math.pow(10, e))
+      : Array.from({ length: 5 }, (_, i) => (maxV / 4) * i);
+    gridVals.forEach((v, i) => {
       const gy = y(v);
       const line = document.createElementNS(ns, 'line');
       line.setAttribute('x1', PAD_L); line.setAttribute('x2', W - PAD_R);
@@ -1271,9 +1380,10 @@
       const label = document.createElementNS(ns, 'text');
       label.setAttribute('x', PAD_L - 6); label.setAttribute('y', gy + 3);
       label.setAttribute('text-anchor', 'end'); label.setAttribute('class', 'axis-label');
-      label.textContent = opts.formatAxis ? opts.formatAxis(v) : Math.round(v);
+      label.textContent = opts.formatAxis ? opts.formatAxis(v)
+        : useLog ? v.toLocaleString() : Math.round(v);
       svgEl.appendChild(label);
-    }
+    });
     const xStep = Math.max(1, Math.ceil(years.length / 18));
     years.forEach((yr, i) => {
       if (i % xStep !== 0 && i !== years.length - 1) return;

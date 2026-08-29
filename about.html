@@ -255,7 +255,7 @@
 </p>
 <h3>Early-citation velocity (Papers)</h3>
 <p>
-  How many in-corpus citations a paper received within 2 years of publication -- a leading indicator
+  How many in-corpus citations a paper received within 2 years of publication: a leading indicator
   shown alongside its total, not a replacement for it. Only shown once that 2-year window has
   actually closed; a paper published last year hasn't had the chance yet, and showing 0 would read
   as "never got any" rather than "too soon to tell".
@@ -451,10 +451,12 @@ fetch('stats.json').then(r => r.json()).then(stats => {
     card.appendChild(lab);
     intro.appendChild(card);
   }
-  tile(coreTotal.toLocaleString(), 'AV-relevant papers indexed');
-  tile((cs.venues_covered || 0).toLocaleString(), 'venues, complete proceedings');
-  tile((cs.total_researchers || 0).toLocaleString(), 'researchers tracked');
-  tile((cs.total_institutions || 0).toLocaleString(), 'institutions tracked');
+  tile((stats.generated_from || 0).toLocaleString(), 'Papers');
+  tile(coreTotal.toLocaleString(), 'AV papers');
+  tile((cs.total_researchers || 0).toLocaleString(), 'Authors');
+  tile((cs.total_institutions || 0).toLocaleString(), 'Institutions');
+  tile(((cs.big_venues || []).length || cs.venues_covered || 0).toLocaleString(), 'Venues');
+  tile((cs.total_countries || 0).toLocaleString(), 'Countries');
 
   // -- Data coverage table (generated from the corpus itself, see
   // aggregate.py's venue_coverage -- never hand-typed, can't go stale). --
