@@ -44588,5 +44588,105 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct",
     "labeled_at": "2026-08-30T21:35:41.299666+00:00"
+  },
+  "uavstereoamultipleresolutiondatasetforstereomatchinginuavscenarios": {
+    "title": "UAVStereo: A Multiple Resolution Dataset for Stereo Matching in UAV Scenarios",
+    "pool": "core_audit",
+    "label": "adjacent",
+    "reason": "UAV scenario, not road vehicle",
+    "has_abstract": true,
+    "venue": "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:36:02.537307+00:00"
+  },
+  "amultiphaseadaptablebuslanesharingstrategyforvehicleswithvariousturningintentionsatintersections": {
+    "title": "A Multi-Phase-Adaptable Bus Lane Sharing Strategy for Vehicles with Various Turning Intentions at Intersections",
+    "pool": "gap_noabs",
+    "label": "core",
+    "reason": "bus lane sharing, vehicles, intersections",
+    "has_abstract": false,
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:36:16.408813+00:00"
+  },
+  "hdrsahybridreputationsystemwithdynamicupdateintervalfordetectingmaliciousvehiclesinvanets": {
+    "title": "HDRS: A Hybrid Reputation System With Dynamic Update Interval for Detecting Malicious Vehicles in VANETs",
+    "pool": "gap_noabs",
+    "label": "core",
+    "reason": "VANETs related to autonomous vehicles",
+    "has_abstract": false,
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:36:32.104488+00:00"
+  },
+  "comfybenchbenchmarkingllmbasedagentsincomfyuiforautonomouslydesigningcollaborativeaisystems": {
+    "title": "ComfyBench: Benchmarking LLM-based Agents in ComfyUI for Autonomously Designing Collaborative AI Systems",
+    "pool": "gap_abs",
+    "label": "adjacent",
+    "reason": "LLM-based agents, not driving",
+    "has_abstract": true,
+    "venue": "CVPR",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:36:58.820151+00:00"
+  },
+  "comparingfutureautonomouselectrictaxiswithanexistingfreefloatingcarsharingsystem": {
+    "title": "Comparing Future Autonomous Electric Taxis With an Existing Free-Floating Carsharing System",
+    "pool": "gap_noabs",
+    "label": "core",
+    "reason": "autonomous electric taxis",
+    "has_abstract": false,
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:37:14.207302+00:00"
+  },
+  "swarmslamsparsedecentralizedcollaborativesimultaneouslocalizationandmappingframeworkformultirobotsystems": {
+    "title": "Swarm-SLAM: Sparse Decentralized Collaborative Simultaneous Localization and Mapping Framework for Multi-Robot Systems",
+    "pool": "gap_noabs",
+    "label": "adjacent",
+    "reason": "multi-robot systems",
+    "has_abstract": false,
+    "venue": "ICRA",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:37:28.468921+00:00"
+  },
+  "distributedmacroscopictrafficsimulationwithopentrafficmodels": {
+    "title": "Distributed macroscopic traffic simulation with Open Traffic Models",
+    "pool": "gap_abs",
+    "label": "adjacent",
+    "reason": "traffic-signal timing",
+    "has_abstract": true,
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:37:45.311796+00:00"
+  },
+  "automateddataaugmentationsforgraphclassification": {
+    "title": "Automated Data Augmentations for Graph Classification",
+    "pool": "gap_noabs",
+    "label": "adjacent",
+    "reason": "graph classification",
+    "has_abstract": false,
+    "venue": "ICLR",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:38:04.166064+00:00"
+  },
+  "improvinglosslesscompressionratesviamontecarlobitsbackcoding": {
+    "title": "Improving Lossless Compression Rates via Monte Carlo Bits-Back Coding",
+    "pool": "gap_noabs",
+    "label": "adjacent",
+    "reason": "lossless compression, Monte Carlo",
+    "has_abstract": false,
+    "venue": "ICML",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:38:20.465651+00:00"
+  },
+  "adaptivekeyframegenerationbasedlidarinertialodometryforcomplexundergroundenvironments": {
+    "title": "Adaptive Keyframe Generation Based LiDAR Inertial Odometry for Complex Underground Environments",
+    "pool": "gap_noabs",
+    "label": "core",
+    "reason": "LiDAR Inertial Odometry for AVs",
+    "has_abstract": false,
+    "venue": "ICRA",
+    "model": "qwen2.5:7b-instruct",
+    "labeled_at": "2026-08-30T21:38:43.130198+00:00"
   }
 }

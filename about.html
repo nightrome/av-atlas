@@ -98,8 +98,13 @@
 <p>
   Every classification here, whether a paper is AV-relevant, which topic it belongs to, who
   wrote it, or who cites it, is produced by an automated pipeline, not manual review. Figures
-  should be read as a well-informed estimate, not a verified count. The methodology's
-  shortcomings are described below. To correct or remove your information, get in touch.
+  should be read as a well-informed estimate, not a verified count, and no confidence intervals
+  are shown: where a leaderboard row or rollup rests on only a handful of papers, the paper
+  count shown next to it is the guide to how much weight it can bear. Venue and year coverage is
+  uneven (see Data coverage), so counts over time and comparisons between venues or between
+  authors are shaped partly by how completely each venue-year is indexed &mdash; read trends as
+  directional, not exact. The methodology's shortcomings are described below. To correct or
+  remove your information, get in touch.
 </p>
 </div>
 </details>
@@ -169,11 +174,17 @@
       included.</li>
   <li><strong>2. Merge &amp; classify.</strong> Dedupe across sources by normalized title. Assign
       a <strong>category</strong> (topic, e.g. object detection, planning) from keyword matching,
-      and an <strong>AV-relevance</strong> label independently. A paper's category never decides
-      whether it's AV-relevant, since category keywords are generic CV/robotics terms that also
-      match plenty of non-AV papers. Relevance instead requires an explicit AV-specific phrase or a
-      language model judging the technology is directly applied to autonomous vehicles, not merely
-      potentially useful for them.</li>
+      and an <strong>AV-relevance</strong> label independently, against a written rubric: a paper
+      is <em>core</em> if its own contribution or evaluation is about automating a road vehicle or
+      the driving task, and <em>adjacent</em> if it only names autonomous driving as one possible
+      application. A layered classifier decides it: hard scope filters first exclude non-road
+      platforms (aerial, underwater, legged, manipulation) and pure vehicle-hardware papers; then
+      an explicit AV-specific phrase in the title or abstract, or a standalone driving word in the
+      title, marks a paper core; then a small model of learned per-phrase weights (trained on hand
+      labels plus local-language-model labels, with negative weights on phrases that over-fire)
+      and a local-language-model verdict get the last say on the rest. A paper's category never
+      feeds this decision, since category keywords are generic CV/robotics terms that match
+      plenty of non-AV papers.</li>
   <li><strong>3. Enrich.</strong> For AV-relevant papers only: author affiliations (from a CVF PDF
       or an arXiv preprint's HTML rendering), ORCID and Semantic Scholar author identifiers, and
       profile photos for top-ranked authors.</li>
@@ -194,9 +205,9 @@
 <div style="display:flex;align-items:center;gap:8px;position:relative;"><h3 style="margin-top:0;">Classification accuracy</h3><span class="info-tip" tabindex="0" role="img" aria-label="How the AV-relevance classifier scored against 65 papers hand-labelled by a human: accuracy, precision, recall and the sample size." data-tip="How the AV-relevance classifier scored against 65 papers hand-labelled by a human: accuracy, precision, recall and the sample size.">i</span></div>
 <p>
   65 papers were hand-labeled by a human reviewer in August 2026: a mix of clear AV-relevant
-  papers, clear non-AV papers, and deliberately borderline cases. Compared against this site's
-  actual classification (the keyword rule OR'd with the language model, exactly what decides
-  every paper's status, not just the language model in isolation):
+  papers, clear non-AV papers, and deliberately borderline cases. Compared against the layered
+  classifier described under How it works (exactly what decides every paper's status). This is a
+  small sample, so read the figures with that in mind:
 </p>
 <div class="metric-grid">
   <div class="metric-tile"><div class="metric-value">96.8%</div><div class="metric-label">Accuracy</div></div>
@@ -305,11 +316,14 @@
 <div class="detail-body">
 <h3 style="margin-top:0;">Institutions, countries &amp; researchers</h3>
 <p>
-  Author affiliations (institution and country) are looked up separately for AV-relevant papers;
-  coverage isn't yet complete for the full corpus, and the Institutions/Countries pages always
-  reflect current coverage. Both a total and a per-paper average citation figure are shown for
-  every institution/country/researcher, since sample sizes can be small; neither is a substitute
-  for the underlying paper count, which is also always shown.
+  Author affiliations (institution and country) are looked up separately for AV-relevant papers.
+  Coverage is partial &mdash; currently around a third of AV-relevant papers have affiliation
+  data, and it is not a random third (papers with an arXiv preprint or a good external index
+  entry are far likelier to be covered), so the Institutions and Countries leaderboards are
+  biased toward well-indexed work. The pages always reflect current coverage. Both a total and a
+  per-paper average citation figure are shown for every institution/country/researcher, since
+  sample sizes can be small; neither is a substitute for the underlying paper count, which is
+  also always shown.
 </p>
 <p>
   Affiliation text is sometimes noisy on the source's end; obviously broken entries are filtered
