@@ -91,6 +91,10 @@
   topic it belongs to, who wrote it, or who cites it, is produced by an automated pipeline, not
   manual review. Figures should be read as a well-informed estimate, not a verified count.
 </p>
+<div style="display:flex;align-items:center;gap:8px;position:relative;">
+  <span style="color:var(--muted);font-size:0.85em;">Corpus at a glance</span>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Totals across the whole corpus: every indexed paper, the AV-relevant subset, and the distinct authors, institutions, venues and countries seen on them." data-tip="Totals across the whole corpus: every indexed paper, the AV-relevant subset, and the distinct authors, institutions, venues and countries seen on them.">i</span>
+</div>
 <div class="fact-grid" id="intro-facts"></div>
 
 <details class="detail-section" open>
@@ -175,7 +179,7 @@
 <div class="detail-body">
 <p class="section-intro">Two independent checks against real ground truth, not one automated method checked against another.</p>
 
-<h3 style="margin-top:0;">Classification accuracy</h3>
+<div style="display:flex;align-items:center;gap:8px;position:relative;"><h3 style="margin-top:0;">Classification accuracy</h3><span class="info-tip" tabindex="0" role="img" aria-label="How the AV-relevance classifier scored against 65 papers hand-labelled by a human: accuracy, precision, recall and the sample size." data-tip="How the AV-relevance classifier scored against 65 papers hand-labelled by a human: accuracy, precision, recall and the sample size.">i</span></div>
 <p>
   65 papers were hand-labeled by a human reviewer in August 2026: a mix of clear AV-relevant
   papers, clear non-AV papers, and deliberately borderline cases. Compared against this site's
@@ -194,7 +198,7 @@
   one of several possible applications rather than being about it.
 </p>
 
-<h3>Citation counts vs. Google Scholar</h3>
+<div style="display:flex;align-items:center;gap:8px;position:relative;"><h3>Citation counts vs. Google Scholar</h3><span class="info-tip" tabindex="0" role="img" aria-label="A hand-collected check: this site's in-corpus citation count vs Google Scholar's global count for 52 sampled papers. Scholar is roughly an order of magnitude higher." data-tip="A hand-collected check: this site's in-corpus citation count vs Google Scholar's global count for 52 sampled papers. Scholar is roughly an order of magnitude higher.">i</span></div>
 <p>
   Every citation count here is <strong>internal</strong>: how many other papers already in this
   corpus cite a given paper, computed entirely from data collected for this site. It measures
@@ -285,6 +289,9 @@
   those. Venues under 500 collected papers (mostly incidental, discovered via the citation graph
   rather than a full pull) aren't listed here.
 </p>
+<div style="display:flex;align-items:center;gap:8px;position:relative;justify-content:flex-end;">
+  <span class="info-tip" tabindex="0" role="img" aria-label="Per venue: the year range of papers pulled and whether abstracts have been collected for all years, some, or none. Generated from the corpus itself." data-tip="Per venue: the year range of papers pulled and whether abstracts have been collected for all years, some, or none. Generated from the corpus itself.">i</span>
+</div>
 <table class="data-table">
   <thead><tr><th>Venue</th><th>Years covered</th><th>Abstracts</th></tr></thead>
   <tbody id="coverage-body"></tbody>
@@ -299,6 +306,9 @@
   This site's data-collection processes run on an ongoing basis; coverage only increases over
   time. The table is the current status of each stage as of the last data update.
 </p>
+<div style="display:flex;align-items:center;gap:8px;position:relative;justify-content:flex-end;">
+  <span class="info-tip" tabindex="0" role="img" aria-label="How far each ongoing data-collection stage has progressed through the corpus, as of the last data update. Coverage only goes up over time." data-tip="How far each ongoing data-collection stage has progressed through the corpus, as of the last data update. Coverage only goes up over time.">i</span>
+</div>
 <table class="data-table">
   <thead>
     <tr><th>Process</th><th class="num">Processed</th><th class="num">Total</th><th class="num">Coverage</th></tr>
