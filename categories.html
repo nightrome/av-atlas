@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Categories</title>
+<title>AV Atlas: Categories</title>
 <meta name="description" content="How autonomous vehicle research breaks down by topic, from perception and planning to simulation and world models.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Categories">
+<meta property="og:title" content="AV Atlas: Categories">
 <meta property="og:description" content="How autonomous vehicle research breaks down by topic, from perception and planning to simulation and world models.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/categories.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Categories">
+<meta name="twitter:title" content="AV Atlas: Categories">
 <meta name="twitter:description" content="How autonomous vehicle research breaks down by topic, from perception and planning to simulation and world models.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -84,7 +84,7 @@
 </div>
 
 <div class="panel">
-  <div class="panel-title-row"><h2 style="margin-top:0; font-size: 1.1em;">Category ranking</h2><span class="info-tip" tabindex="0" role="img" aria-label="Topic categories by paper count and in-corpus citations. “Industry %” is the share of author affiliations classified as industry rather than academic." data-tip="Topic categories by paper count and in-corpus citations. “Industry %” is the share of author affiliations classified as industry rather than academic.">i</span></div>
+  <div class="panel-title-row"><h2 style="margin-top:0; font-size: 1.1em;">Category ranking</h2><span class="info-tip" tabindex="0" role="img" aria-label="Topic categories by paper count and in-corpus citations. Industry % is the share of a category's author affiliations classified as industry rather than academic (a keyword match plus a hand-curated exception list); affiliations that can't be classified confidently are left out rather than guessed at." data-tip="Topic categories by paper count and in-corpus citations. Industry % is the share of a category's author affiliations classified as industry rather than academic (a keyword match plus a hand-curated exception list); affiliations that can't be classified confidently are left out rather than guessed at.">i</span></div>
   <div id="bars"></div>
 </div>
 
@@ -256,8 +256,8 @@ function renderCategoryTimeline(stats, filters) {
 }
 
 // null means no paper in that category has a citation count at all (as
-// opposed to a real average of 0) -- show "—", not a misleading number.
-function fmtAvg(v) { return v == null ? '—' : v; }
+// opposed to a real average of 0) -- show "n/a", not a misleading number.
+function fmtAvg(v) { return v == null ? 'n/a' : v; }
 
 // Each paper's institutions (not each paper) counts as 1 vote toward its
 // category's industry/academic tally (user-requested) -- a 3-institution
@@ -389,7 +389,7 @@ function render() {
 
     const industryNum = document.createElement('div');
     industryNum.className = 'bar-num' + (metric === 'industry' ? ' active-metric' : '');
-    industryNum.textContent = c.industry_pct == null ? '—' : `${c.industry_pct}%`;
+    industryNum.textContent = c.industry_pct == null ? 'n/a' : `${c.industry_pct}%`;
     row.appendChild(industryNum);
 
     bars.appendChild(row);

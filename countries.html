@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Countries</title>
+<title>AV Atlas: Countries</title>
 <meta name="description" content="Which countries are most active in autonomous vehicle research, by papers and citations.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Countries">
+<meta property="og:title" content="AV Atlas: Countries">
 <meta property="og:description" content="Which countries are most active in autonomous vehicle research, by papers and citations.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/countries.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Countries">
+<meta name="twitter:title" content="AV Atlas: Countries">
 <meta name="twitter:description" content="Which countries are most active in autonomous vehicle research, by papers and citations.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -130,8 +130,8 @@ function initials(name) {
 const SEQ_RAMP = ['#cde2fb', '#9ec5f4', '#6da7ec', '#3987e5', '#256abf', '#184f95', '#0d366b'];
 
 // null means no paper from that country has a citation count at all (as
-// opposed to a real average of 0) -- show "—", not a misleading number.
-function fmtAvg(v) { return v == null ? '—' : v; }
+// opposed to a real average of 0) -- show "n/a", not a misleading number.
+function fmtAvg(v) { return v == null ? 'n/a' : v; }
 
 let currentStats = null, currentFilters = null;
 let currentQuery = new URLSearchParams(location.search).get('q') || '';
@@ -159,7 +159,7 @@ function row(cells) {
     const td = document.createElement('td');
     // Columns 2+ (Papers/Authors/Total citations/Citations-per-paper) are
     // always numeric-position, even when the cell's actual value is the
-    // '—' fallback string from fmtAvg() -- typeof-checking the value
+    // 'n/a' fallback string from fmtAvg() -- typeof-checking the value
     // missed exactly that case, leaving "no data" rows left-aligned while
     // every real-number row was right-aligned (user-reported: column not
     // consistently right-aligned).
@@ -281,8 +281,8 @@ function render() {
   renderCountriesPage();
 
   const exportContainer = document.getElementById('export-container');
-  exportContainer.innerHTML = '';
-  exportContainer.appendChild(renderExportButton(tbody.closest('table'), 'av-atlas-countries.csv'));
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButton(tbody.closest('table'), 'av-atlas-countries.csv'), exportContainer.firstChild);
 
   currentTimelineDraw = renderDimensionTimeline({
     papers, dimensionFn: p => p.countries, labelFor: v => v,

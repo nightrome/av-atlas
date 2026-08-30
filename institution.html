@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Institution</title>
+<title>AV Atlas: Institution</title>
 <meta name="description" content="An institution's publication record within autonomous vehicle research: papers, citations, and top authors.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Institution">
+<meta property="og:title" content="AV Atlas: Institution">
 <meta property="og:description" content="An institution's publication record within autonomous vehicle research: papers, citations, and top authors.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/institution.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Institution">
+<meta name="twitter:title" content="AV Atlas: Institution">
 <meta name="twitter:description" content="An institution's publication record within autonomous vehicle research: papers, citations, and top authors.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -63,7 +63,7 @@
 <div class="header">
   <div class="avatar" id="avatar"></div>
   <div>
-    <h2 id="name">—</h2>
+    <h2 id="name">…</h2>
     <div class="tags" id="tags"></div>
   </div>
 </div>
@@ -192,7 +192,7 @@ function render(stats) {
   const grid = document.getElementById('stat-grid');
   grid.appendChild(stat(papers.length, 'AV papers in corpus'));
   grid.appendChild(stat(totalCitations, 'Citations'));
-  grid.appendChild(stat(avg == null ? '—' : avg, 'Citations / paper', { decimals: 1 }));
+  grid.appendChild(stat(avg == null ? 'n/a' : avg, 'Citations / paper', { decimals: 1 }));
   grid.appendChild(stat(authorSet.size, 'Distinct authors credited'));
 
   const yearAgg = {};
@@ -259,8 +259,8 @@ function render(stats) {
   // (stats.institution_authors) always has them, the paper-level fallback
   // (institutions with no authors_detail coverage at all) never does.
   function fmtYears(a) {
-    if (a.first_year == null) return '—';
-    return a.first_year === a.last_year ? String(a.first_year) : `${a.first_year}–${a.last_year}`;
+    if (a.first_year == null) return 'n/a';
+    return a.first_year === a.last_year ? String(a.first_year) : `${a.first_year} to ${a.last_year}`;
   }
   function renderAuthorsBody(rows) {
     authorsBody.innerHTML = '';

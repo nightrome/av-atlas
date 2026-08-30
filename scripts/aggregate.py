@@ -520,7 +520,11 @@ def _abstract_short_name(abstract):
     return None
 
 
-DISRUPTION_MIN_CITERS = 3
+# A +1/-1 average over fewer than ~10 citers is too coarse to trust (and
+# with the sparse in-corpus citation graph, a handful of citers almost
+# always land on exactly +1). Raised from 3 so the "most disruptive" list
+# is papers where the score is actually supported.
+DISRUPTION_MIN_CITERS = 10
 # How many years after publication counts as "early" for the early-citation-
 # velocity signal on index.html -- 2 full calendar years (publication year
 # + the next 2) is long enough for a paper to plausibly have been read and
@@ -588,6 +592,14 @@ def compute_disruption_index(edges):
         if len(citer_keys) < DISRUPTION_MIN_CITERS:
             continue
         target_refs = set(edges.get(target_key, ()))
+        # A focal paper whose OWN reference list was never scanned has an
+        # empty target_refs, which forces every citer to a +1 "disruptive"
+        # vote -> a fake, guaranteed CD == 1.0. Those dominated the
+        # "most disruptive" list (KITTI, CARLA, ...) purely because they're
+        # highly cited, not because they're disruptive. Only score a paper
+        # once we actually know what it cites.
+        if not target_refs:
+            continue
         votes = sum(-1 if (set(edges.get(c, ())) & target_refs) else 1 for c in citer_keys)
         result[target_key] = {"cd_index": round(votes / len(citer_keys), 3), "n_citers": len(citer_keys)}
     return result

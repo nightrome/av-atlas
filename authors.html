@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Authors</title>
+<title>AV Atlas: Authors</title>
 <meta name="description" content="Researchers publishing autonomous vehicle research, ranked by papers and by citations within AV research specifically.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Authors">
+<meta property="og:title" content="AV Atlas: Authors">
 <meta property="og:description" content="Researchers publishing autonomous vehicle research, ranked by papers and by citations within AV research specifically.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/authors.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Authors">
+<meta name="twitter:title" content="AV Atlas: Authors">
 <meta name="twitter:description" content="Researchers publishing autonomous vehicle research, ranked by papers and by citations within AV research specifically.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -137,9 +137,9 @@ function authorCard(a, rank, detail) {
 }
 
 // null means no paper of theirs has a citation count at all (as opposed to a
-// real average of 0) -- show that as "—", not a misleading number.
-function fmtAvg(v) { return v == null ? '—' : v; }
-function fmtPct(v) { return v == null ? '—' : v + '%'; }
+// real average of 0) -- show that as "n/a", not a misleading number.
+function fmtAvg(v) { return v == null ? 'n/a' : v; }
+function fmtPct(v) { return v == null ? 'n/a' : v + '%'; }
 
 // Papers-vs-citations/paper scatter: paper count (x) against avg citations/paper (y),
 // bubble radius by total citations -- the "graphs of papers and people" view.
@@ -250,7 +250,7 @@ function row(cells) {
   cells.forEach((c, i) => {
     const td = document.createElement('td');
     // Columns 2+ are always numeric-position, even when the cell's value is
-    // the '—' fallback string from fmtAvg() -- see the same fix on
+    // the 'n/a' fallback string from fmtAvg() -- see the same fix on
     // countries.html for why a typeof-based check misaligns "no data" rows.
     if (i > 1) td.className = 'num';
     if (c instanceof Node) td.appendChild(c);
@@ -381,8 +381,8 @@ function render() {
   ], renderBody);
 
   const exportContainer = document.getElementById('export-container');
-  exportContainer.innerHTML = '';
-  exportContainer.appendChild(renderExportButton(tbody.closest('table'), 'av-atlas-authors.csv'));
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButton(tbody.closest('table'), 'av-atlas-authors.csv'), exportContainer.firstChild);
 }
 </script>
 <script src="nav.js"></script>

@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Co-authorship Network</title>
+<title>AV Atlas: Co-authorship Network</title>
 <meta name="description" content="An interactive map of collaboration between autonomous vehicle researchers, clustered by who actually publishes together.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Co-authorship Network">
+<meta property="og:title" content="AV Atlas: Co-authorship Network">
 <meta property="og:description" content="An interactive map of collaboration between autonomous vehicle researchers, clustered by who actually publishes together.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/network.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Co-authorship Network">
+<meta name="twitter:title" content="AV Atlas: Co-authorship Network">
 <meta name="twitter:description" content="An interactive map of collaboration between autonomous vehicle researchers, clustered by who actually publishes together.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -546,8 +546,8 @@ function renderMetricsTable(nodes, edges, topAuthors, allPapers) {
   renderMetricsPage();
 
   const exportContainer = document.getElementById('export-container');
-  exportContainer.innerHTML = '';
-  exportContainer.appendChild(renderExportButton(tbody.closest('table'), 'av-atlas-network-metrics.csv'));
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButton(tbody.closest('table'), 'av-atlas-network-metrics.csv'), exportContainer.firstChild);
 }
 
 function setupPanZoom(svg, viewport, W, H) {

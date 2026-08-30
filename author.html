@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Author</title>
+<title>AV Atlas: Author</title>
 <meta name="description" content="A researcher's publication record within autonomous vehicle research: papers, citations, co-authors, and career trajectory.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Author">
+<meta property="og:title" content="AV Atlas: Author">
 <meta property="og:description" content="A researcher's publication record within autonomous vehicle research: papers, citations, co-authors, and career trajectory.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/author.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Author">
+<meta name="twitter:title" content="AV Atlas: Author">
 <meta name="twitter:description" content="A researcher's publication record within autonomous vehicle research: papers, citations, co-authors, and career trajectory.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -79,7 +79,7 @@
 <div class="header">
   <div class="avatar" id="avatar"></div>
   <div>
-    <h2 id="name">—</h2>
+    <h2 id="name">…</h2>
     <div class="ambiguous-warning" id="ambiguous-warning" style="display:none;"></div>
     <div class="tags" id="tags"></div>
     <a class="scholar-link" id="scholar-link" target="_blank" rel="noopener"></a>
@@ -268,7 +268,7 @@ function render(stats) {
       a.href = `institution.html?name=${encodeURIComponent(inst.name)}`;
       const yr = inst.first_year == null ? ''
         : inst.first_year === inst.last_year ? ` (${inst.first_year})`
-        : ` (${inst.first_year}–${inst.last_year})`;
+        : ` (${inst.first_year} to ${inst.last_year})`;
       a.textContent = inst.name + yr;
       a.className = 'tag-link';
       return a;
@@ -339,8 +339,8 @@ function render(stats) {
   grid.appendChild(statPair(papers.length, 'AV papers', nonAvCount, 'Non-AV papers'));
   grid.appendChild(statPair(totalCitations, 'AV citations', nonAvCitations, 'Non-AV citations'));
   grid.appendChild(statPair(
-    avg == null ? '—' : avg, 'AV citations / paper',
-    nonAvAvg == null ? '—' : nonAvAvg, 'Non-AV citations / paper',
+    avg == null ? 'n/a' : avg, 'AV citations / paper',
+    nonAvAvg == null ? 'n/a' : nonAvAvg, 'Non-AV citations / paper',
     { decimals: 1 }
   ));
 
@@ -419,18 +419,18 @@ function render(stats) {
       const link = document.createElement('a');
       link.href = `author.html?name=${encodeURIComponent(c.name)}`;
       link.textContent = c.name;
-      let instCell = '—';
+      let instCell = 'n/a';
       if (c.institution) {
         const instLink = document.createElement('a');
         instLink.href = `institution.html?name=${encodeURIComponent(c.institution)}`;
         // Years shown only when known, same as the tags row above.
         const yr = c.institutionFirstYear == null ? ''
           : c.institutionFirstYear === c.institutionLastYear ? ` (${c.institutionFirstYear})`
-          : ` (${c.institutionFirstYear}–${c.institutionLastYear})`;
+          : ` (${c.institutionFirstYear} to ${c.institutionLastYear})`;
         instLink.textContent = c.institution + yr;
         instCell = instLink;
       }
-      coauthorsBody.appendChild(row([link, c.papers, c.country || '—', instCell]));
+      coauthorsBody.appendChild(row([link, c.papers, c.country || 'n/a', instCell]));
     });
     if (!rows.length) {
       const tr = document.createElement('tr');
@@ -506,17 +506,17 @@ function render(stats) {
       const link = document.createElement('a');
       link.href = `author.html?name=${encodeURIComponent(c.name)}`;
       link.textContent = c.name;
-      let instCell = '—';
+      let instCell = 'n/a';
       if (c.institution) {
         const instLink = document.createElement('a');
         instLink.href = `institution.html?name=${encodeURIComponent(c.institution)}`;
         const yr = c.institutionFirstYear == null ? ''
           : c.institutionFirstYear === c.institutionLastYear ? ` (${c.institutionFirstYear})`
-          : ` (${c.institutionFirstYear}–${c.institutionLastYear})`;
+          : ` (${c.institutionFirstYear} to ${c.institutionLastYear})`;
         instLink.textContent = c.institution + yr;
         instCell = instLink;
       }
-      citingAuthorsBody.appendChild(row([link, c.count, c.totalCitations, c.totalPapers, c.country || '—', instCell]));
+      citingAuthorsBody.appendChild(row([link, c.count, c.totalCitations, c.totalPapers, c.country || 'n/a', instCell]));
     });
     if (!rows.length) {
       const tr = document.createElement('tr');

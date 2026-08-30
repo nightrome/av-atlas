@@ -61,7 +61,11 @@ ROBOTS_TXT = "User-agent: *\nAllow: /\n"
 # published anyway by this same glob -- broken if actually visited live,
 # since its scripts/vendor/sqljs-httpvfs/ dependencies and the .db file it
 # queries are never copied into the published output below.
-EXCLUDED_HTML = {"label_relevance.html", "authors_sql_prototype.html"}
+EXCLUDED_HTML = {"label_relevance.html", "authors_sql_prototype.html",
+                 # Parked markup+JS for the Insights "Open-source code"
+                 # panel, pulled until the LLM code-link classifier has
+                 # trustworthy coverage. Not a real page.
+                 "_deferred_open_source.html"}
 
 
 def html_pages():

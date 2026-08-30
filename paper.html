@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Paper</title>
+<title>AV Atlas: Paper</title>
 <meta name="description" content="A paper's details within AV Atlas: authors, venue, citations, and where it fits in autonomous vehicle research.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Paper">
+<meta property="og:title" content="AV Atlas: Paper">
 <meta property="og:description" content="A paper's details within AV Atlas: authors, venue, citations, and where it fits in autonomous vehicle research.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/paper.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Paper">
+<meta name="twitter:title" content="AV Atlas: Paper">
 <meta name="twitter:description" content="A paper's details within AV Atlas: authors, venue, citations, and where it fits in autonomous vehicle research.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -80,7 +80,7 @@
 <div id="detail-back-container"></div>
 
 <div class="header">
-  <h2 id="title">—</h2>
+  <h2 id="title">…</h2>
   <div class="meta" id="venue-meta"></div>
   <div class="meta" id="links-meta"></div>
   <span class="category-chip" id="category-chip"></span>
@@ -287,12 +287,12 @@ function render(stats) {
   // many papers this one itself references). Labeled explicitly by source
   // so the two numbers don't read as contradictory.
   const grid = document.getElementById('stat-grid');
-  grid.appendChild(stat(paper.citations ?? '—', 'Cited by (external source)'));
+  grid.appendChild(stat(paper.citations ?? 'n/a', 'Cited by (external source)'));
   // A confirmed-zero-citers paper and a paper whose citing reference lists
   // just haven't been scanned yet BOTH show 0 here -- this site's own
   // citation-graph coverage is partial (see About's crawler-status table),
   // so 0 means "no citers found so far", not "confirmed uncited". A tooltip
-  // rather than a separate "—" state, since there's no reliable per-paper
+  // rather than a separate "n/a" state, since there's no reliable per-paper
   // signal for "definitely fully scanned" to switch on (user-requested:
   // state missing citation data clearly, not indistinguishable from zero).
   const withinCorpusTile = stat((paper.citing_papers || []).length, 'Cited by (within this corpus)');
@@ -300,7 +300,7 @@ function render(stats) {
     + "site's own citation-graph coverage is partial, so this number can only grow over time -- it is not "
     + 'a confirmed final count, even when it reads 0.';
   grid.appendChild(withinCorpusTile);
-  grid.appendChild(stat(paper.authors ? paper.authors.length : '—', 'Authors'));
+  grid.appendChild(stat(paper.authors ? paper.authors.length : 'n/a', 'Authors'));
   if (paper.cd_index != null) {
     // CD index (Funk & Owen-Smith 2017): +1 = every in-corpus citer engages
     // with this paper but not its own references (disruptive -- treated as
@@ -498,17 +498,17 @@ function render(stats) {
       const link = document.createElement('a');
       link.href = `author.html?name=${encodeURIComponent(c.name)}`;
       link.textContent = c.name;
-      let instCell = '—';
+      let instCell = 'n/a';
       if (c.institution) {
         const instLink = document.createElement('a');
         instLink.href = `institution.html?name=${encodeURIComponent(c.institution)}`;
         const yr = c.institutionFirstYear == null ? ''
           : c.institutionFirstYear === c.institutionLastYear ? ` (${c.institutionFirstYear})`
-          : ` (${c.institutionFirstYear}–${c.institutionLastYear})`;
+          : ` (${c.institutionFirstYear} to ${c.institutionLastYear})`;
         instLink.textContent = c.institution + yr;
         instCell = instLink;
       }
-      citingAuthorsBody.appendChild(row([link, c.count, c.totalCitations, c.totalPapers, c.country || '—', instCell]));
+      citingAuthorsBody.appendChild(row([link, c.count, c.totalCitations, c.totalPapers, c.country || 'n/a', instCell]));
     });
     if (!rows.length) {
       const tr = document.createElement('tr');

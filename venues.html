@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Venues</title>
+<title>AV Atlas: Venues</title>
 <meta name="description" content="Which computer vision and robotics venues publish the most autonomous vehicle research, and how AV-relevant each one is.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Venues">
+<meta property="og:title" content="AV Atlas: Venues">
 <meta property="og:description" content="Which computer vision and robotics venues publish the most autonomous vehicle research, and how AV-relevant each one is.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/venues.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Venues">
+<meta name="twitter:title" content="AV Atlas: Venues">
 <meta name="twitter:description" content="Which computer vision and robotics venues publish the most autonomous vehicle research, and how AV-relevant each one is.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -134,7 +134,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
 });
 
 // numCols: column indices that are always right-aligned regardless of value
-// type -- needed for columns whose "no data" placeholder ('N/A', '—') is a
+// type -- needed for columns whose "no data" placeholder ('N/A', 'n/a') is a
 // string, not a number, so the typeof-number inference below would
 // otherwise left-align just that one row's cell in an otherwise-numeric
 // column.
@@ -151,11 +151,11 @@ function row(cells, numCols) {
 }
 
 // null means no paper from that venue has a citation count at all (as
-// opposed to a real average of 0) -- show "—", not a misleading number.
-function fmtAvg(v) { return v == null ? '—' : v; }
+// opposed to a real average of 0) -- show "n/a", not a misleading number.
+function fmtAvg(v) { return v == null ? 'n/a' : v; }
 
 function bestPaperCell(best) {
-  if (!best) return '—';
+  if (!best) return 'n/a';
   const link = document.createElement('a');
   link.className = 'best-paper-cell';
   link.href = `paper.html?title=${encodeURIComponent(best.title)}`;
@@ -164,8 +164,8 @@ function bestPaperCell(best) {
   return link;
 }
 
-// null when total is 0 -- avoid a divide-by-zero showing as "—" vs a real 0%.
-function fmtRatio(papers, total) { return total ? `${((papers / total) * 100).toFixed(1)}%` : '—'; }
+// null when total is 0 -- avoid a divide-by-zero showing as "n/a" vs a real 0%.
+function fmtRatio(papers, total) { return total ? `${((papers / total) * 100).toFixed(1)}%` : 'n/a'; }
 
 function render() {
   const stats = currentStats, filters = currentFilters;
@@ -199,7 +199,7 @@ function render() {
     const yr = yearRangeByVenue[r.name];
     const startYear = corpusStartYear != null ? corpusStartYear : (yr ? yr[0] : null);
     const endYear = yr ? yr[1] : null;
-    r.yearRange = endYear == null ? '—' : (startYear === endYear ? `${endYear}` : `${startYear}–${endYear}`);
+    r.yearRange = endYear == null ? 'n/a' : (startYear === endYear ? `${endYear}` : `${startYear} to ${endYear}`);
   });
 
   const query = currentQuery.trim().toLowerCase();
@@ -225,7 +225,7 @@ function render() {
   const cs = stats.corpus_stats || {};
   document.getElementById('venues-summary-stat').textContent =
     `${cs.venues_covered || 0} venues covered` +
-    (cs.year_range ? `, spanning ${cs.year_range[0]}–${cs.year_range[1]}` : '');
+    (cs.year_range ? `, spanning ${cs.year_range[0]} to ${cs.year_range[1]}` : '');
   const pagination = renderPagination(document.getElementById('pagination-container'), 'venues.html', shownRows0.length, { onChange: render });
   const shownRows = shownRows0.slice(pagination.offset, pagination.offset + pagination.pageSize);
 
@@ -257,8 +257,8 @@ function render() {
   ], renderBody);
 
   const exportContainer = document.getElementById('export-container');
-  exportContainer.innerHTML = '';
-  exportContainer.appendChild(renderExportButton(tbody.closest('table'), 'av-atlas-venues.csv'));
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButton(tbody.closest('table'), 'av-atlas-venues.csv'), exportContainer.firstChild);
 
   currentTimelineDraw = renderDimensionTimeline({
     // arXiv preprint isn't a venue in the peer-reviewed sense -- it's the

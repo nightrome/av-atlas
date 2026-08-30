@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Insights</title>
+<title>AV Atlas: Insights</title>
 <meta name="description" content="Trends in autonomous vehicle research: rising and declining topics, researcher careers, citation patterns, and collaboration.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Insights">
+<meta property="og:title" content="AV Atlas: Insights">
 <meta property="og:description" content="Trends in autonomous vehicle research: rising and declining topics, researcher careers, citation patterns, and collaboration.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/insights.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Insights">
+<meta name="twitter:title" content="AV Atlas: Insights">
 <meta name="twitter:description" content="Trends in autonomous vehicle research: rising and declining topics, researcher careers, citation patterns, and collaboration.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -180,7 +180,7 @@
 
 <div class="panel">
   <div class="panel-title-row"><h2>Leadership</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages." data-tip="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages.">i</span></div>
-  <p class="section-intro">Leading people, institutions and papers.</p>
+  <p class="section-intro">Leading people, institutions and papers in the field.</p>
   <div class="fact-grid" id="people-facts"></div>
 </div>
 
@@ -235,19 +235,13 @@
 </div>
 
 <div class="panel" id="disruption-panel">
-  <div class="panel-title-row"><h2 style="margin-top:0;">Disruptive papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="The CD index: does later work cite a paper instead of its own references (disruptive) or alongside them (consolidating). Only the disruptive end is shown." data-tip="The CD index: does later work cite a paper instead of its own references (disruptive) or alongside them (consolidating). Only the disruptive end is shown.">i</span></div>
+  <div class="panel-title-row"><h2 style="margin-top:0;">Disruptive papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="The CD index (Funk and Owen-Smith, 2017). For each in-corpus citer of a paper: does it cite the paper on its own (a disruptive vote) or alongside the paper's own references (consolidating)? The score is the average of those votes, from -1 to +1. Computed only for papers whose own reference list has been scanned and that have at least 10 in-corpus citers." data-tip="The CD index (Funk and Owen-Smith, 2017). For each in-corpus citer of a paper: does it cite the paper on its own (a disruptive vote) or alongside the paper's own references (consolidating)? The score is the average of those votes, from -1 to +1. Computed only for papers whose own reference list has been scanned and that have at least 10 in-corpus citers.">i</span></div>
   <p class="section-intro">
     The CD index (Funk &amp; Owen-Smith, 2017): does later work engage with a paper as having
     <em>superseded</em> its own references (disruptive), or does it cite the paper alongside those
     same references, as one more contribution to an ongoing line of work (consolidating)? Computed
-    from papers with enough in-corpus citers for the score to mean something; most of the corpus
-    isn't cited enough yet to qualify (<span id="disruption-scored-note"></span>). The score itself
-    only takes a handful of exact values, so many papers land on the same one &mdash; the list below
-    is ranked by that score first, then by citer count, so it leads with the most
-    robustly-agreed-on cases rather than an arbitrary pick among ties. Only the disruptive end is
-    shown: the consolidating end saturates at the minimum score for any lightly-cited paper whose
-    few citers all consolidate, so a "most consolidating" ranking is dominated by citer-count
-    noise rather than a real signal.
+    only for papers whose own reference list has been scanned and that have enough in-corpus
+    citers for the average to mean something. Ranked by the score, then by citer count.
   </p>
   <div class="fact-grid" id="disruption-facts"></div>
   <div class="limit-row" style="margin-top:16px;">
@@ -264,18 +258,6 @@
   </div>
 </div>
 
-<div class="panel" id="open-source-panel">
-  <div class="panel-title-row"><h2>Open-source code</h2><span class="info-tip" tabindex="0" role="img" aria-label="Share of checked arXiv papers that release their own code, judged by a language model, and whether it correlates with citations." data-tip="Share of checked arXiv papers that release their own code, judged by a language model, and whether it correlates with citations.">i</span></div>
-  <p class="section-intro">
-    Whether a paper releases its own code (not a dataset, not a baseline it compares against), judged
-    by a language model from its arXiv page, and whether that correlates with citation impact.
-    Restricted to papers actually checked (arXiv-sourced only), and the model works through them in
-    batches, so coverage and the percentages here keep shifting as it goes (see About).
-  </p>
-  <div class="fact-grid" id="open-source-facts"></div>
-  <h3>Share of checked papers with a code link, by year</h3>
-  <ul class="venue-list" id="open-source-by-year-list"></ul>
-</div>
 
 <div class="panel">
   <div class="panel-title-row"><h2>Most cited paper by year</h2><span class="info-tip" tabindex="0" role="img" aria-label="The single highest in-corpus-cited paper published in each year." data-tip="The single highest in-corpus-cited paper published in each year.">i</span></div>
@@ -568,8 +550,11 @@ function render(ins, stats) {
   // index.html, moved here per user request.)
   const bestByYearBody = document.getElementById('best-by-year-body');
   const byYear = {};
+  // The current calendar year is still in progress, so its "most cited"
+  // paper isn't a fair comparison against the completed years -- leave it out.
+  const currentYear = new Date().getFullYear();
   (stats.all_papers || []).forEach(p => {
-    if (!p.year || p.citations == null) return;
+    if (!p.year || p.citations == null || p.year >= currentYear) return;
     if (!byYear[p.year] || p.citations > byYear[p.year].citations) byYear[p.year] = p;
   });
   const bestByYearRows = Object.keys(byYear).sort().reverse().map(y => byYear[y]);
@@ -627,6 +612,18 @@ function render(ins, stats) {
     const allPct = cagr(growth.total_papers[fromIdx], growth.total_papers[lastIdx]);
     if (avPct != null) growthTile(gf, `${avPct > 0 ? '+' : ''}${avPct.toFixed(1)}%`, 'AV paper growth', tip);
     if (allPct != null) growthTile(gf, `${allPct > 0 ? '+' : ''}${allPct.toFixed(1)}%`, 'All paper growth', tip);
+  }
+  // Only offer look-back windows the data can actually cover: with N
+  // complete years, "compared to K years earlier" is meaningless for
+  // K >= N (it just clamps to the first year, so every larger K gives the
+  // same number). Disable those and snap the selection down if needed.
+  if (growthBackSel) {
+    const maxBack = Math.max(1, gYears.length - 1);
+    [...growthBackSel.options].forEach(o => { o.disabled = parseInt(o.value, 10) > maxBack; });
+    if ((parseInt(growthBackSel.value, 10) || 0) > maxBack) {
+      const enabled = [...growthBackSel.options].filter(o => !o.disabled);
+      if (enabled.length) growthBackSel.value = enabled[enabled.length - 1].value;
+    }
   }
   renderGrowthFacts();
   if (growthBackSel) growthBackSel.addEventListener('change', renderGrowthFacts);
@@ -729,7 +726,7 @@ function render(ins, stats) {
       name.href = `author.html?name=${encodeURIComponent(a.name)}`;
       name.textContent = a.name;
       // Each metric its own column (user-requested), not folded into one
-      // "(first–last)" text string and a single combined "X cit./paper, Y
+      // "(first to last)" text string and a single combined "X cit./paper, Y
       // papers" span.
       youngBody.appendChild(row([name, a.first_year, a.last_year, a.lifetime, a.papers, a.citations, a.avg_citations]));
     });
@@ -763,12 +760,12 @@ function render(ins, stats) {
     statTile(cif, `${c.top10pct_share_pct.toFixed(1)}%`, 'of all citations go to the top 10% of cited papers');
   }
 
-  // -- Disruption vs. consolidation --
+  // -- Disruptive papers --
   const disruption = ins.disruption_index;
   const disruptionPanel = document.getElementById('disruption-panel');
   if (disruption && disruption.scored_papers) {
-    document.getElementById('disruption-scored-note').textContent =
-      `${disruption.scored_papers.toLocaleString()} papers currently have a computable score`;
+    const scoredNote = document.getElementById('disruption-scored-note');
+    if (scoredNote) scoredNote.textContent = `${disruption.scored_papers.toLocaleString()} papers currently have a computable score`;
     const dif = document.getElementById('disruption-facts');
     const meanLabel = disruption.mean_cd_index >= 0
       ? 'average paper leans disruptive' : 'average paper leans consolidating';
@@ -814,36 +811,6 @@ function render(ins, stats) {
     });
   } else if (disruptionPanel) {
     disruptionPanel.style.display = 'none';
-  }
-
-  // -- Open-source code --
-  const openSource = ins.open_source;
-  const openSourcePanel = document.getElementById('open-source-panel');
-  if (openSource) {
-    const osf = document.getElementById('open-source-facts');
-    statTile(osf, `${openSource.with_code_pct.toFixed(1)}%`, 'of checked papers link to their own code');
-    statTile(osf, openSource.checked_papers.toLocaleString(), 'papers checked for a code link');
-    if (openSource.avg_citations_with_code != null && openSource.avg_citations_without_code != null) {
-      statTile(osf, openSource.avg_citations_with_code, 'avg. citations, papers with code');
-      statTile(osf, openSource.avg_citations_without_code, 'avg. citations, papers without code');
-    }
-    const yearList = document.getElementById('open-source-by-year-list');
-    (openSource.with_code_pct_by_year || []).forEach(row => {
-      const li = document.createElement('li');
-      const name = document.createElement('span');
-      name.textContent = row.year;
-      li.appendChild(name);
-      const pct = document.createElement('span');
-      pct.className = 'pct';
-      pct.textContent = `${row.pct.toFixed(1)}%`;
-      li.appendChild(pct);
-      yearList.appendChild(li);
-    });
-    if (!(openSource.with_code_pct_by_year || []).length) {
-      yearList.innerHTML = '<li>Not enough checked papers in any single year yet.</li>';
-    }
-  } else if (openSourcePanel) {
-    openSourcePanel.style.display = 'none';
   }
 
   // -- Venue relevance --

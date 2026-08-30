@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — About</title>
+<title>AV Atlas: About</title>
 <meta name="description" content="How AV Atlas finds, classifies, and scores autonomous vehicle research papers, and two independent checks on how reliable the numbers actually are.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — About">
+<meta property="og:title" content="AV Atlas: About">
 <meta property="og:description" content="How AV Atlas finds, classifies, and scores autonomous vehicle research papers, and two independent checks on how reliable the numbers actually are.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/about.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — About">
+<meta name="twitter:title" content="AV Atlas: About">
 <meta name="twitter:description" content="How AV Atlas finds, classifies, and scores autonomous vehicle research papers, and two independent checks on how reliable the numbers actually are.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -83,16 +83,28 @@
 <nav id="topnav"></nav>
 <p class="freshness-note" id="freshness-note"></p>
 
-<p style="margin: 4px 0 0;">
+<details class="detail-section" open>
+<summary>What AV Atlas is</summary>
+<div class="detail-body">
+<p>
   AV Atlas indexes autonomous vehicle (AV) research papers from major computer vision and
   robotics venues and reports who is publishing, which institutions and countries are active,
   how research topics have shifted over time, and which papers are most cited <em>within AV
-  research specifically</em>. Every classification here, whether a paper is AV-relevant, which
-  topic it belongs to, who wrote it, or who cites it, is produced by an automated pipeline, not
-  manual review. Figures should be read as a well-informed estimate, not a verified count.
+  research specifically</em>. Unless a control says otherwise ("All papers" vs. "AV papers"),
+  every statistic on the site is computed over the filtered corpus of AV papers only. Citation
+  numbers are therefore roughly 13&times; lower than Google Scholar's; we think they are a
+  better gauge of standing within the AV field.
 </p>
-<div style="display:flex;align-items:center;gap:8px;position:relative;">
-  <span style="color:var(--muted);font-size:0.85em;">Corpus at a glance</span>
+<p>
+  Every classification here, whether a paper is AV-relevant, which topic it belongs to, who
+  wrote it, or who cites it, is produced by an automated pipeline, not manual review. Figures
+  should be read as a well-informed estimate, not a verified count. The methodology's
+  shortcomings are described below. To correct or remove your information, get in touch.
+</p>
+</div>
+</details>
+
+<div style="display:flex;justify-content:flex-end;position:relative;">
   <span class="info-tip" tabindex="0" role="img" aria-label="Totals across the whole corpus: every indexed paper, the AV-relevant subset, and the distinct authors, institutions, venues and countries seen on them." data-tip="Totals across the whole corpus: every indexed paper, the AV-relevant subset, and the distinct authors, institutions, venues and countries seen on them.">i</span>
 </div>
 <div class="fact-grid" id="intro-facts"></div>
@@ -213,7 +225,7 @@
 <div class="metric-grid">
   <div class="metric-tile"><div class="metric-value">13.4×</div><div class="metric-label">Geometric mean ratio</div></div>
   <div class="metric-tile"><div class="metric-value">11.6×</div><div class="metric-label">Median ratio</div></div>
-  <div class="metric-tile"><div class="metric-value">1.9× – 166×</div><div class="metric-label">Range</div></div>
+  <div class="metric-tile"><div class="metric-value">1.9×  to  166×</div><div class="metric-label">Range</div></div>
   <div class="metric-tile"><div class="metric-value">52</div><div class="metric-label">Sample size</div></div>
 </div>
 <div class="chart-panel">
@@ -230,50 +242,6 @@
   mental model, while still being just that: rough. A "no citation data" paper isn't necessarily
   uncited. It may be a paper no other paper in this corpus cites yet, or one whose own reference
   list hasn't been processed yet (see What's not covered yet).
-</p>
-</div>
-</details>
-
-<details class="detail-section">
-<summary>Beyond the leaderboards</summary>
-<div class="detail-body">
-<p class="section-intro">
-  Four analyses that go past simple counting, each with a real methodology and a real limitation.
-</p>
-<h3 style="margin-top:0;">Disruption index (Insights, individual paper pages)</h3>
-<p>
-  The CD index (Funk &amp; Owen-Smith, 2017, <em>Management Science</em>): for a paper's in-corpus
-  citers, does each one cite the paper alone (treating it as having superseded its own references,
-  a disruptive vote) or cite the paper alongside those same references (a consolidating vote)? The
-  score is the average of these votes, from -1 (every citer consolidates) to +1 (every citer treats
-  it as disruptive). Only computed for papers with enough in-corpus citers for the average to mean
-  something; most of the corpus isn't cited enough yet to qualify.
-</p>
-<h3>Industry vs. academia (Categories)</h3>
-<p>
-  Each paper's author affiliations are classified as industry or academic (a keyword match plus a
-  hand-curated list for the common exceptions, like a corporate lab whose name contains "Institute"),
-  and each affiliation counts as one vote toward its category's Industry % column. A heuristic, not a
-  verified ground truth: an institution this can't confidently classify either way is left out of
-  the count rather than guessed at.
-</p>
-<h3>Early-citation velocity (Papers)</h3>
-<p>
-  How many in-corpus citations a paper received within 2 years of publication: a leading indicator
-  shown alongside its total, not a replacement for it. Only shown once that 2-year window has
-  actually closed; a paper published last year hasn't had the chance yet, and showing 0 would read
-  as "never got any" rather than "too soon to tell".
-</p>
-<h3>Open-source code (Insights)</h3>
-<p>
-  Whether a paper releases <em>its own</em> source code. A first pass just scanned the arXiv page
-  for a code-host link, but that over-counted badly (a spot check put it near 40% wrong: links to
-  datasets or leaderboards, third-party baseline repos cited in passing, and a loose "code is
-  available" text match that also caught "code is <em>not</em> available"). Now a language model
-  reads each paper's arXiv page and decides whether the authors actually published code for
-  <em>this</em> work. It works through the ~10k arXiv papers in batches, so coverage grows over
-  time; every comparison (citation impact, share over time) is restricted to papers actually
-  checked, never padded out with papers nobody looked at.
 </p>
 </div>
 </details>
@@ -437,8 +405,7 @@
 <script>
 fetch('stats.json').then(r => r.json()).then(stats => {
   if (stats.generated_at) {
-    document.getElementById('freshness-note').textContent =
-      `Data last updated ${stats.generated_at}. Citation counts may be out of date since then.`;
+    document.getElementById('freshness-note').textContent = `Data last updated ${stats.generated_at}.`;
   }
 
   const cs = stats.corpus_stats || {};
@@ -461,12 +428,12 @@ fetch('stats.json').then(r => r.json()).then(stats => {
     card.appendChild(lab);
     intro.appendChild(card);
   }
-  tile((stats.generated_from || 0).toLocaleString(), 'Papers');
+  tile((stats.generated_from || 0).toLocaleString(), 'All papers');
   tile(coreTotal.toLocaleString(), 'AV papers');
   tile((cs.total_researchers || 0).toLocaleString(), 'Authors');
   tile((cs.total_institutions || 0).toLocaleString(), 'Institutions');
   tile(((cs.big_venues || []).length || cs.venues_covered || 0).toLocaleString(), 'Venues');
-  tile((cs.total_countries || 0).toLocaleString(), 'Countries');
+  tile((cs.total_countries || (stats.top_countries || []).length || 0).toLocaleString(), 'Countries');
 
   // -- Data coverage table (generated from the corpus itself, see
   // aggregate.py's venue_coverage -- never hand-typed, can't go stale). --
@@ -475,8 +442,8 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   const ABSTRACT_LABEL = { full: 'Yes', partial: 'Some years', none: 'No' };
   Object.entries(venueCoverage).forEach(([venue, d]) => {
     const tr = document.createElement('tr');
-    const years = d.years.length ? `${d.years[0]}–${d.years[d.years.length - 1]}` : '—';
-    [venue, years, ABSTRACT_LABEL[d.abstract_coverage] || '—'].forEach(text => {
+    const years = d.years.length ? `${d.years[0]} to ${d.years[d.years.length - 1]}` : 'n/a';
+    [venue, years, ABSTRACT_LABEL[d.abstract_coverage] || 'n/a'].forEach(text => {
       const td = document.createElement('td');
       td.textContent = text;
       tr.appendChild(td);
@@ -485,7 +452,7 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   });
 
   // -- Crawler status table --
-  function pct(num, den) { return den ? Math.round((num / den) * 100) + '%' : '—'; }
+  function pct(num, den) { return den ? Math.round((num / den) * 100) + '%' : 'n/a'; }
   function addRow(tbody, name, processed, total) {
     const tr = document.createElement('tr');
     const cells = [name, processed.toLocaleString(), total.toLocaleString(), pct(processed, total)];

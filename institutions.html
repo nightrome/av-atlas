@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas — Institutions</title>
+<title>AV Atlas: Institutions</title>
 <meta name="description" content="Which institutions are most active in autonomous vehicle research, ranked by papers and citations.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
-<meta property="og:title" content="AV Atlas — Institutions">
+<meta property="og:title" content="AV Atlas: Institutions">
 <meta property="og:description" content="Which institutions are most active in autonomous vehicle research, ranked by papers and citations.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/institutions.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AV Atlas — Institutions">
+<meta name="twitter:title" content="AV Atlas: Institutions">
 <meta name="twitter:description" content="Which institutions are most active in autonomous vehicle research, ranked by papers and citations.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -156,8 +156,8 @@ function institutionCard(x, rank, imageUrl) {
 }
 
 // null means no paper from that institution has a citation count at all (as
-// opposed to a real average of 0) -- show "—", not a misleading number.
-function fmtAvg(v) { return v == null ? '—' : v; }
+// opposed to a real average of 0) -- show "n/a", not a misleading number.
+function fmtAvg(v) { return v == null ? 'n/a' : v; }
 
 function row(cells) {
   const tr = document.createElement('tr');
@@ -271,8 +271,8 @@ function render() {
   ], renderBody);
 
   const exportContainer = document.getElementById('export-container');
-  exportContainer.innerHTML = '';
-  exportContainer.appendChild(renderExportButton(tbody.closest('table'), 'av-atlas-institutions.csv'));
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButton(tbody.closest('table'), 'av-atlas-institutions.csv'), exportContainer.firstChild);
 
   currentTimelineDraw = renderDimensionTimeline({
     papers, dimensionFn: p => p.institutions, labelFor: v => v,

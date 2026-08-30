@@ -232,9 +232,9 @@ function sourceCell(p) {
 // decimal place (see Methodology). Every paper now carries a real integer:
 // "how many papers in this corpus reference it" always has an answer, and
 // the answer is 0 for a paper nothing here cites (user-decided -- the old
-// null/"—" sentinel left half the corpus reading as "unknown"). Reference-
+// null/"n/a" sentinel left half the corpus reading as "unknown"). Reference-
 // list crawl progress is a coverage caveat, shown on the About page.
-function fmtCitations(n) { return n == null ? '—' : Math.round(n); }
+function fmtCitations(n) { return n == null ? 'n/a' : Math.round(n); }
 
 function citationsCell(p) {
   const wrap = document.createElement('div');
@@ -245,13 +245,13 @@ function citationsCell(p) {
 }
 
 // early_citations is only set once the window has actually closed (see
-// aggregate.py) -- a paper too recent to judge shows "—", not a 0 that
+// aggregate.py) -- a paper too recent to judge shows "n/a", not a 0 that
 // would misread as "confirmed no early citations".
 function earlyCitationsCell(p) {
   const wrap = document.createElement('div');
   wrap.style.textAlign = 'right';
   wrap.style.fontVariantNumeric = 'tabular-nums';
-  wrap.textContent = p.early_citations == null ? '—' : p.early_citations;
+  wrap.textContent = p.early_citations == null ? 'n/a' : p.early_citations;
   return wrap;
 }
 

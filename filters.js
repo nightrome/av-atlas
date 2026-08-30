@@ -899,7 +899,7 @@
 
     const label = document.createElement('span');
     label.textContent = total
-      ? `${(offset + 1).toLocaleString()}–${Math.min(offset + pageSize, total).toLocaleString()} of ${total.toLocaleString()}`
+      ? `${(offset + 1).toLocaleString()} to ${Math.min(offset + pageSize, total).toLocaleString()} of ${total.toLocaleString()}`
       : '0 of 0';
     row.appendChild(label);
 
