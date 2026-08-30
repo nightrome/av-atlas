@@ -10,9 +10,10 @@ have -- often a campus or headquarters photo for companies), P154 is
 specifically curated to be the organization's logo/seal, so it reliably
 avoids the "Google -> photo of the Googleplex" problem.
 
-Fallback: a small hand-curated domain map + Clearbit's free logo API
-(https://logo.clearbit.com/<domain>, no auth) for companies/labs that either
-have no Wikidata item or no P154 claim there.
+Fallbacks, in order: Wikipedia's pageimages API, then the Wikipedia REST
+summary endpoint (whose lead image is usually the infobox crest/logo even
+when pageimages returns nothing). Organizations with no Wikipedia article at
+all (some corporate and national labs) are left without a logo.
 
 Institutions are organizations, not private individuals, so there's no
 namesake-collision privacy concern the way there was for author photos (see
@@ -38,6 +39,7 @@ OUT_FILE = BASE / "data" / "institution_logos.json"
 WIKIDATA_API = "https://www.wikidata.org/w/api.php"
 WIKI_API = "https://en.wikipedia.org/w/api.php"
 COMMONS_FILEPATH = "https://commons.wikimedia.org/wiki/Special:FilePath/{}?width=300"
+WIKI_SUMMARY = "https://en.wikipedia.org/api/rest_v1/page/summary/{}"
 
 # A sub-lab or division's own name often doesn't match its parent
 # organization's Wikidata item well (or the parent doesn't have a separate
@@ -50,9 +52,19 @@ NAME_ALIASES = {
     "Huawei Noah’s Ark Lab": "Huawei",
     "Huawei Noah's Ark Lab": "Huawei",
     "NVIDIA Research": "NVIDIA",
+    "Bosch": "Robert Bosch GmbH",
+    "Bosch Research": "Robert Bosch GmbH",
+    "Bosch Mobility Solutions": "Robert Bosch GmbH",
     "Google DeepMind": "DeepMind",
     "Microsoft Research": "Microsoft",
     "Meta": "Meta Platforms, Inc.",
+    "HKUST (GZ)": "Hong Kong University of Science and Technology",
+    "HKUST(GZ)": "Hong Kong University of Science and Technology",
+    "HKUST": "Hong Kong University of Science and Technology",
+    "The Hong Kong University of Science and Technology (Guangzhou)": "Hong Kong University of Science and Technology",
+    "University of Hong Kong": "The University of Hong Kong",
+    "Xi'an Jiaotong University": "Xi'an Jiao Tong University",
+    "Department of Aeronautical & Aviation Engineering The Hong Kong Polytechnic University Kowloon": "Hong Kong Polytechnic University",
 }
 
 
@@ -107,6 +119,21 @@ def wiki_pageimage(title):
     return None
 
 
+def wiki_rest_summary_image(title):
+    """Fallback: the lead image the Wikipedia REST summary endpoint reports.
+    For universities this is almost always the crest/seal/logo from the
+    infobox (the plain pageimages API often returns nothing for the same
+    article). May still be a building photo for a company, so it ranks
+    below Wikidata's curated P154 but above giving up."""
+    data = json.loads(fetch(WIKI_SUMMARY.format(urllib.parse.quote(title.replace(" ", "_"))), timeout=15))
+    src = (data.get("originalimage") or data.get("thumbnail") or {}).get("source")
+    if not src:
+        return None
+    # Strip the API's analytics query string so the stored URL is the bare
+    # upload.wikimedia.org file.
+    return src.split("?")[0]
+
+
 def lookup(name):
     search_term = NAME_ALIASES.get(name, name)
     try:
@@ -124,6 +151,13 @@ def lookup(name):
             return {"logo_url": img, "source": "wikipedia-pageimage"}
     except Exception as e:
         print(f"    wikipedia pageimage lookup failed for {name}: {e}")
+
+    try:
+        img = wiki_rest_summary_image(search_term)
+        if img:
+            return {"logo_url": img, "source": "wikipedia-summary"}
+    except Exception as e:
+        print(f"    wikipedia summary lookup failed for {name}: {e}")
 
     return None
 

@@ -102,14 +102,16 @@
     `<a href="${p.href}"${p.href === current ? ' class="active"' : ''}>${p.label}</a>`
   ).join('');
 
-  // Same cache-bypassing hard reload as the ski-resort app's ↻ button --
-  // stats.json and the shared JS files are static files behind GitHub Pages'
-  // CDN, so a plain refresh can still serve a stale cached copy after a
-  // redeploy; this clears any Cache API entries and reloads with a
-  // cache-busting query param to force a fresh fetch.
+  // Full page reset. stats.json and the shared JS files are static files
+  // behind GitHub Pages' CDN, so a plain refresh can serve a stale cached
+  // copy after a redeploy; this clears any Cache API entries and reloads
+  // with a cache-busting query param. It also drops every filter/sort/
+  // search query param and clears the remembered dropdown state in
+  // sessionStorage, so the page comes back exactly as it looks on a first
+  // visit rather than keeping the controls where they were left.
   const reloadBtn = document.createElement('button');
   reloadBtn.id = 'hardReload';
-  reloadBtn.title = 'Reload, bypassing the browser cache';
+  reloadBtn.title = 'Reset filters and reload, bypassing the browser cache';
   reloadBtn.textContent = '↻';
   reloadBtn.addEventListener('click', async () => {
     reloadBtn.disabled = true;
@@ -122,7 +124,8 @@
     } catch (e) {
       console.warn('Could not clear caches:', e && e.message);
     }
-    const u = new URL(location.href);
+    try { sessionStorage.clear(); } catch (e) { /* ignore */ }
+    const u = new URL(location.origin + location.pathname);
     u.searchParams.set('v', Date.now().toString(36));
     location.replace(u.toString());
   });
