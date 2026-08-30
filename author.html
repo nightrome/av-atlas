@@ -235,7 +235,8 @@ function render(stats) {
   // if they reliably belonged to one person.
   const warningEl = document.getElementById('ambiguous-warning');
   if (detail.ambiguous) {
-    warningEl.textContent = '⚠ There may be multiple researchers with this name. The statistics below may not all belong to the same person.';
+    warningEl.textContent = '⚠ There may be multiple researchers with this name. The statistics below may not all belong to the same person'
+      + (detail.scholar_url ? ', and the linked Google Scholar profile is only one of them.' : '.');
     warningEl.style.display = '';
   } else {
     warningEl.style.display = 'none';

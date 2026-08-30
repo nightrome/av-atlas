@@ -30823,5 +30823,230 @@
     "n_avail_sentences": 1,
     "model": "qwen2.5:7b-instruct",
     "checked_at": "2026-08-30"
+  },
+  "epsmanovelmetrictoevaluatethesafetyofenvironmentalperceptioninautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "epvisaefficientauctiondesignforrealtimephysicalvirtualsynchronizationinthemetaverse": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "eqdriveefficientequivariantmotionforecastingwithmultimodalityforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "eqtaaequivarianttrafficaccidentanticipationviadiffusionbasedaccidentvideosynthesis": {
+    "verdict": "yes",
+    "url": "https://github.com/JWFanggit/Diffusion-TAA",
+    "evidence": "The paper states 'The code will be available at https://github.com/JWFanggit/Diffusion-TAA'.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "equivariantdeeplearningofmixedintegeroptimalcontrolsolutionsforvehicledecisionmakingandmotionplanning": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "equivariantmapandagentgeometryforautonomousdrivingmotionprediction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "erasethenredrawanoveldataaugmentationapproachforfreespacedetectionusingdiffusionmodel": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The project page does not provide any code links or information about code availability.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "erawnetenhancerefinealignwnetforsceneassociateddriverattentionestimation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "errorcorrectionfordensesemanticimagelabeling": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "erssramparuleadherencemotionplannerbasedonextendedresponsibilitysensitivesafetyforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "escooterriderdetectionandclassificationindenseurbanenvironments": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "esgnefficientstereogeometrynetworkforfast3dobjectdetection": {
+    "verdict": "yes",
+    "url": null,
+    "evidence": "Our source code will be released.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "esiaanenergybasedspatiotemporalinteractionawareframeworkforpedestrianintentionprediction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "esnetanefficientstereomatchingnetwork": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper states 'Our code will be made available.' but no link is provided.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimatingcounterfactualtreatmentoutcomesovertimeincomplexmultiagentscenarios": {
+    "verdict": "yes",
+    "url": "https://github.com/keisuke198619/TGV-CRN",
+    "evidence": "The URL provided in the paper links to a GitHub repository containing the implementation of the proposed method.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimatingdriverpersonalitytraitsfromonroaddrivingdata": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimatinglabelqualityanderrorsinsemanticsegmentationdataviaanymodel": {
+    "verdict": "yes",
+    "url": "https://github.com/cleanlab/cleanlab",
+    "evidence": "Code to run our method: https://github.com/cleanlab/cleanlab",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimatinglinkflowsinroadnetworkswithsynthetictrajectorydatagenerationreinforcementlearningbasedapproaches": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links related to the paper's method/experiments found.",
+    "n_candidate_links": 2,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimatingrisklevelsofdrivingscenariosthroughanalysisofdrivingstylesforautonomousvehicles": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimatingtheprobabilitythatavehiclereachesaneartermgoalstateusingmultiplelanechanges": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the paper.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimatinguncertaintyforvehiclemotionpredictiononyandexshiftsdataset": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimationawaremodelpredictivepathfollowingcontrolforageneral2trailerwithacarliketractor": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimationofappearanceandoccupancyinformationinbirdseyeviewfromsurroundmonocularimages": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide a URL for its own code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimationofclosestinpathvehiclecipvbylowchannellidarandcamerasensorfusionforautonomousvehicle": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "estimationofdriversgazeregionfromheadpositionandorientationusingprobabilisticconfidenceregions": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
   }
 }

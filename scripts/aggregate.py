@@ -376,6 +376,12 @@ KNOWN_NAME_FIXES = {
     # "Dariu M.") -- caught here as a targeted fix for the two confirmed
     # papers with this exact formatting, not a general comma-order fix.
     "Gavrila": "Dariu M. Gavrila",
+    # User-requested: the middle-initial form is this person's dominant
+    # publishing name (University of Toronto Robotics Institute, ~11 papers
+    # here) and the one his Google Scholar profile uses; the bare "Steven
+    # Waslander" (~3 papers) is the same person. Confirmed one identity via
+    # scholar.google.com/citations?user=jY_Bcd8AAAAJ.
+    "Steven Waslander": "Steven L. Waslander",
 }
 
 # PDF/font text extraction occasionally renders a hyphenated name's hyphen
