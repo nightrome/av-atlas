@@ -366,9 +366,16 @@ function render() {
     const fill = document.createElement('div');
     fill.className = 'bar-fill';
     const t = (c[rankKey] || 0) / max;
-    const step = Math.min(SEQ_RAMP.length - 1, Math.round(t * (SEQ_RAMP.length - 1)));
+    // Square-root scale for the visual only (the rows are already sorted by
+    // the true value). On "Citations / paper" one category -- Datasets --
+    // sits far above the rest, so a linear bar leaves every other category
+    // a 2-3px sliver that conveys nothing. sqrt keeps the ordering and
+    // still shows the outlier as the longest bar, while giving the pack
+    // visible, comparable lengths.
+    const w = Math.sqrt(t);
+    const step = Math.min(SEQ_RAMP.length - 1, Math.round(w * (SEQ_RAMP.length - 1)));
     fill.style.background = SEQ_RAMP[step];
-    fill.style.width = (t * 100) + '%';
+    fill.style.width = (w * 100) + '%';
     track.appendChild(fill);
     row.appendChild(track);
 

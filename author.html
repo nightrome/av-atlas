@@ -123,7 +123,7 @@
     <div id="export-container"></div>
     <span class="info-tip" tabindex="0" role="img" aria-label="This author’s papers in the corpus. Use the dropdown to switch between AV papers, Non-AV papers, and both." data-tip="This author’s papers in the corpus. Use the dropdown to switch between AV papers, Non-AV papers, and both.">i</span>
   </div>
-  <span id="papers-relevance-holder" hidden><span class="page-size">Show
+  <span id="papers-relevance-holder" hidden><span class="page-size">Papers
     <select id="papers-relevance">
       <option value="core" selected>AV papers</option>
       <option value="adjacent">Non-AV papers</option>
@@ -368,7 +368,9 @@ function render(stats) {
     wrap.className = 'bar-wrap';
     const bar = document.createElement('div');
     bar.className = 'bar';
-    bar.style.height = (v.papers === 0 ? 0 : Math.max(3, (v.citations / maxC) * 100)) + '%';
+    // Scale the tallest bar to 90%, not 100%, so it does not sit flush
+    // against the panel's top edge (which reads as a clipped bar).
+    bar.style.height = (v.papers === 0 ? 0 : Math.max(3, (v.citations / maxC) * 90)) + '%';
     const tooltip = document.createElement('div');
     tooltip.className = 'tooltip';
     tooltip.textContent = `${y}: ${v.citations} citations, ${v.papers} paper${v.papers === 1 ? '' : 's'}`;

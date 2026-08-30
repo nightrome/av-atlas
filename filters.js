@@ -487,6 +487,11 @@
         const u = new URL(location.href);
         if (input.value) u.searchParams.set(opts.search.param || 'q', input.value);
         else u.searchParams.delete(opts.search.param || 'q');
+        // A new query means a different (usually shorter) result set, so
+        // reset every table's pagination to page 1 -- same rule withParam
+        // applies to the dropdowns. Without this a reader on page 2 sees
+        // "11 to 20 of N" of a fresh search instead of the first results.
+        [...u.searchParams.keys()].forEach(k => { if (PAGE_PARAM_RE.test(k)) u.searchParams.delete(k); });
         history.replaceState(null, '', u.toString());
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => opts.search.onInput(input.value), 200);
