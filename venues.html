@@ -75,9 +75,15 @@
 
 <div class="panel">
   <div class="panel-title-row">
-    <h2 style="margin-top:0;">All venues</h2>
-    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Venues by AV-relevant paper count and total in-corpus citations, for the current filters." data-tip="Venues by AV-relevant paper count and total in-corpus citations, for the current filters.">i</span></div>
+    <h2 style="margin-top:0;">Seed venues</h2>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="The venues whose complete proceedings AV Atlas pulls as its starting corpus, ranked by the chosen metric. Individual papers can also enter the corpus through the citation graph (a scanned reference list naming a title from some other venue), so paper listings elsewhere on the site include work from many venues not on this list." data-tip="The venues whose complete proceedings AV Atlas pulls as its starting corpus, ranked by the chosen metric. Individual papers can also enter the corpus through the citation graph (a scanned reference list naming a title from some other venue), so paper listings elsewhere on the site include work from many venues not on this list.">i</span></div>
   </div>
+  <p class="section-intro" style="margin: -4px 0 12px;">
+    These are the venues AV Atlas pulls complete proceedings from as its starting point. Papers
+    from other venues still show up across the site: a scanned reference list can name a paper
+    that no seed venue published, and it then enters the corpus like any other. So an author,
+    institution or "cited by" page will list papers from venues that are not on this list.
+  </p>
   <p id="venues-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
   <div id="pagination-container"></div>
   <table><thead><tr><th>Venue</th><th>Years covered</th><th class="num">Papers</th><th class="num">AV papers</th><th class="num" title="Share of this venue's total published papers that were classified AV-relevant.">AV paper ratio</th><th class="num" title="How many other papers in this corpus cite a paper from this venue. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Total citations divided by AV paper count, counted only over papers with a known citation count.">Citations / paper</th><th>Best paper</th></tr></thead>
@@ -114,9 +120,9 @@ fetchStatsWithRelevance(relevance).then(stats => {
     // which is a very different use case: picking one specific venue to
     // filter TO, not judging which venues count as real AV venues).
     minPapers: {
-      default: 80,
+      default: 1,
       options: [
-        { value: 1, label: 'All (incl. 1 paper)' },
+        { value: 1, label: '1+ AV papers' },
         { value: 10, label: '10+ AV papers' },
         { value: 25, label: '25+ AV papers' },
         { value: 80, label: '80+ AV papers' },
@@ -177,7 +183,14 @@ function render() {
   // filters.minPapers is inclusive ("80+ AV papers"), aggregateByDimension's
   // own minPapers is exclusive (> N) -- same -1 adjustment as every other
   // page with a Min. control (see institutions.html).
-  const rows = aggregateByDimension(papers, p => [p.venue], { minPapers: (filters.minPapers || 1) - 1, minCitedForAvg: 3 });
+  let rows = aggregateByDimension(papers, p => [p.venue], { minPapers: (filters.minPapers || 1) - 1, minCitedForAvg: 3 });
+  // Only the seed venues (complete-proceedings pulls). Every other venue
+  // string in the corpus is a single citation-graph-discovered paper, not
+  // a venue AV Atlas tracks -- listing those here overstated the venue
+  // count (46 vs ~1,100). big_venues is the same set the Venue filter
+  // dropdown uses.
+  const seedVenues = new Set((stats.corpus_stats || {}).big_venues || []);
+  if (seedVenues.size) rows = rows.filter(r => seedVenues.has(r.name));
   const bestByVenue = {};
   const yearRangeByVenue = {};
   papers.forEach(p => {
@@ -221,10 +234,10 @@ function render() {
   const matchCount = shownRows0.length;
   const chartRows = shownRows0.slice(0, topN);
 
-  document.getElementById('result-count').textContent = `${matchCount} venues`;
+  document.getElementById('result-count').textContent = `${matchCount} seed venues`;
   const cs = stats.corpus_stats || {};
   document.getElementById('venues-summary-stat').textContent =
-    `${cs.venues_covered || 0} venues covered` +
+    `${rows.length} seed venues` +
     (cs.year_range ? `, spanning ${cs.year_range[0]} to ${cs.year_range[1]}` : '');
   const pagination = renderPagination(document.getElementById('pagination-container'), 'venues.html', shownRows0.length, { onChange: render });
   const shownRows = shownRows0.slice(pagination.offset, pagination.offset + pagination.pageSize);

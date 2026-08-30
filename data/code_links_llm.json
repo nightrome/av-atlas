@@ -17098,5 +17098,455 @@
     "n_avail_sentences": 0,
     "model": "qwen2.5:7b-instruct",
     "checked_at": "2026-08-30"
+  },
+  "complexeryolorealtime3dobjectdetectionandtrackingonsemanticpointclouds": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "composingdrivingworldsthroughdisentangledcontrolforadversarialscenariogeneration": {
+    "verdict": "yes",
+    "url": "https://github.com/Yifever20002/CompoSIA",
+    "evidence": "The project page directly links to the CompoSIA repository.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compositesafetypotentialfieldforhighwaydrivingriskassessment": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compositionallysafeconstructionofautonomousdrivingsystems": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compositionalsemanticcommunicationforphysicalaicategorytheorymeetsgametheory": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compositionandapplicationofcurrentadvanceddrivingassistancesystemareview": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper is a review and does not contain or link to its own implementation of ADAS methods.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "comprehensiveassessmentoflidarevaluationmetricsacomparativestudyusingsimulatedandrealdata": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "comprehensiveoverviewofrewardengineeringandshapinginadvancingreinforcementlearningapplications": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "comprehensiverobustnessanalysisoflidarbased3dobjectdetectioninautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any code links or mention of code availability.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compressedmappriorsfor3dperception": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compressingdeepreinforcementlearningnetworkswithadynamicstructuredpruningmethodforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compressingmultitaskmodelforautonomousdrivingviapruningandknowledgedistillation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compressingsensordataforremoteassistanceofautonomousvehiclesusingdeepgenerativemodels": {
+    "verdict": "yes",
+    "url": "https://github.com/daniel-bogdoll/deep_generative_models",
+    "evidence": "Our work is divided into two parts, an offline and an online segment. In the offline part we select two state-of-the-art generative models for image and lidar compression to evaluate the compression and quality of the reconstructions and compare them to traditional approaches. We implement these app",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compressionoflargescale3dpointcloudsbasedonjointoptimizationofpointsamplingandfeatureextraction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "compromisingembodiedagentswithcontextualbackdoorattacks": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any URL or evidence of releasing its own code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computationalimagingandartificialintelligencethenextrevolutionofmobilevision": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any code links or mention of releasing its own code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computationalimagingformachineperceptiontransferringsemanticsegmentationbeyondaberrations": {
+    "verdict": "yes",
+    "url": "https://github.com/zju-jiangqi/CIADA",
+    "evidence": "The project page directly links to a GitHub repository named CIADA.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computationalinvestigationsofamulticlasstrafficflowmodelmeanfieldandmicroscopicdynamics": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computationallyefficientdensemovingobjectdetectionbasedonreducedspacedisparityestimation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computationalteachingfordrivingviamultitaskimitationlearning": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided abstract.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computationefficientandrecognitionfriendly3dpointcloudprivacyprotection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computationefficientdeeplearningforcomputervisionasurvey": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper is a survey and does not provide its own implementation of the methods discussed.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computerstereovisionforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided abstract.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computervisionaidedmmwavebeamalignmentinv2xcommunications": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computervisionforautonomousvehiclesproblemsdatasetsandstateoftheart": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide its own code implementation.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computervisioninautomatedparkingsystemsdesignimplementationandchallenges": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any code links or mention of code availability.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "computingsystemsforautonomousdrivingstateoftheartandchallenges": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided abstract.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "comtpacooperativetrajectorypredictionframeworkwithmultitemporalfusionforautonomousdriving": {
+    "verdict": "yes",
+    "url": "https://xiaomiaozhang.github.io/Co-MTP/",
+    "evidence": "Our code is available on our project website: https://xiaomiaozhang.github.io/Co-MTP/",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conceptbasedexplainabledataminingwithvlmfor3ddetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any code links or mention of code availability.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conceptframeworkforthesafetyassessmentofplatooningtrucksenabledbyv2vcommunication": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links related to the paper's method/experiments found.",
+    "n_candidate_links": 2,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conclavesecureandrobustcooperativeperceptionforcavsusingauthenticatedconsensusandtrustscoring": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "concretizationofabstracttrafficscenespecificationsusingmetaheuristicsearch": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the paper.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "concurrenttransmissionschedulingforperceptualdatasharinginmmwavevehicularnetworks": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "condacontinualunsuperviseddomainadaptationlearninginvisualperceptionforselfdrivingcars": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conditionalflowmatchingforcontinuousanomalydetectioninautonomousdrivingonamanifoldawarespectralspace": {
+    "verdict": "yes",
+    "url": "https://github",
+    "evidence": "Code and pre-trained checkpoints are available at https://github",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conditionalgoalorientedtrajectorypredictionforinteractingvehicleswithvectorizedrepresentation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conditionallatentodesformotionpredictioninautonomousdriving": {
+    "verdict": "yes",
+    "url": "https://github.com/TruongKhang/cLODE",
+    "evidence": "Our code and docker image are publicly available: https://github.com/TruongKhang/cLODE",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conditionalpermutationinvariantflows": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conditionalpredictionbysimulationforautomateddriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide a link to its own code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conditionalvehicletrajectoriespredictionincarlaurbanenvironment": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conditioninglatentspaceclustersforrealworldanomalyclassification": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code link provided by the authors.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "confidenceattentionandgeneralizationenhanceddistillationforcontinuousvideodomainadaptation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "confidencebasedfederateddistillationforvisionbasedlanecentering": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "confidenceguideddepthcompletionnetwork": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "confidenceguidedhumanaicollaborationreinforcementlearningwithdistributionalproxyvaluepropagationforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The provided URL only links to videos, not the paper's own code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "confidenceintervalsforrateestimationwithimportancesamplinginautonomousvehicleevaluation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "configurationconstrainedtubempcfortracking": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "confixgslearningtofixfeedforward3dgaussiansplattingwithconfidenceawarediffusionpriorsindrivingscenes": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conformalmetasurfacesanovelsolutionforvehicularcommunications": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability statements found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "conformalpredictionforstlruntimeverification": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
   }
 }
