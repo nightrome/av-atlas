@@ -38,14 +38,27 @@ point grinding through thousands more doomed requests.
 Safe to stop and resume any time; skips papers that already have
 authors_detail (from the citation-crawl pilot or a prior run of this script).
 
-Usage: python enrich_core_authors.py
+Also captures the per-author OpenAlex author id and ORCID (used downstream
+for identity-resolved author ranking -- see aggregate.py). `--refetch-ids`
+reprocesses OpenAlex-sourced papers that predate id capture (authors_detail
+present but no openalex_id on its entries).
+
+A title-similarity guard rejects the OpenAlex work when its title isn't
+essentially this paper's -- the search takes result #1, which for affiliation
+noise was tolerable but for author *identity* would attach the wrong
+person's id.
+
+Usage: python enrich_core_authors.py [--refetch-ids]
 """
+import argparse
 import json
 import random
+import re
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from difflib import SequenceMatcher
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
@@ -53,6 +66,20 @@ IN_FILE = BASE / "data" / "papers_full.json"
 CONTACT_EMAIL = "holger@it-caesar.com"
 BATCH_SIZE = 20
 MAX_CONSECUTIVE_FAILURES = 30
+TITLE_MATCH_MIN = 0.90
+
+
+def _nt(t):
+    return re.sub(r"[^a-z0-9]", "", (t or "").lower())
+
+
+def title_close(a, b):
+    na, nb = _nt(a), _nt(b)
+    if not na or not nb:
+        return False
+    if na == nb or (len(na) > 20 and (na in nb or nb in na)):
+        return True
+    return SequenceMatcher(None, na, nb).ratio() >= TITLE_MATCH_MIN
 
 
 def fetch_json(url, max_retries=4):
@@ -72,15 +99,22 @@ def fetch_json(url, max_retries=4):
             return None
 
 
+def _short_id(url):
+    return url.rsplit("/", 1)[-1] if url else None
+
+
 def openalex_authors(title):
     params = urllib.parse.urlencode({"search": title, "per-page": 1, "mailto": CONTACT_EMAIL})
     data = fetch_json(f"https://api.openalex.org/works?{params}")
     if not data or not data.get("results"):
         return None
     work = data["results"][0]
+    if not title_close(title, work.get("display_name") or work.get("title")):
+        return None  # search returned a different paper -- don't attach its authors
     authors_detail = []
     for a in (work.get("authorships") or []):
-        name = (a.get("author") or {}).get("display_name")
+        au = a.get("author") or {}
+        name = au.get("display_name")
         if not name:
             continue
         insts = a.get("institutions") or []
@@ -88,29 +122,46 @@ def openalex_authors(title):
             "name": name,
             "affiliations": [i.get("display_name") for i in insts if i.get("display_name")],
             "countries": [i.get("country_code") for i in insts if i.get("country_code")],
+            "openalex_id": _short_id(au.get("id")),
+            "orcid": _short_id(au.get("orcid")),
         })
     return authors_detail
 
 
-def load_pending():
-    """Re-reads the file fresh and returns (all_papers, titles still needing lookup)."""
+def _needs_ids(p):
+    ad = p.get("authors_detail") or []
+    return (p.get("authors_detail_source") == "openalex" and ad
+            and not any("openalex_id" in a for a in ad))
+
+
+def load_pending(refetch_ids):
+    """Re-reads the file fresh and returns (all_papers, titles needing lookup, core_total)."""
     papers = json.loads(IN_FILE.read_text(encoding="utf-8"))
-    pending_titles = [p["title"] for p in papers
-                       if p.get("av_relevance") == "core" and not p.get("authors_detail")]
+    core = [p for p in papers if p.get("av_relevance") == "core"]
+    if refetch_ids:
+        pending_titles = [p["title"] for p in core if _needs_ids(p)]
+    else:
+        pending_titles = [p["title"] for p in core if not p.get("authors_detail")]
     # Shuffled, not corpus order (clusters by venue/year) -- an interrupted
     # run should still leave affiliation coverage a representative slice of
     # the corpus, not just whichever venues happen to sort first
     # (user-requested, applied to every incremental crawler in this
     # pipeline).
     random.shuffle(pending_titles)
-    core_total = sum(1 for p in papers if p.get("av_relevance") == "core")
-    return papers, pending_titles, core_total
+    return papers, pending_titles, len(core)
 
 
 def main():
-    _, pending, core_total = load_pending()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--refetch-ids", action="store_true",
+                    help="reprocess OpenAlex-sourced papers whose authors_detail predates openalex_id capture")
+    args = ap.parse_args()
+    refetch_ids = args.refetch_ids
+
+    _, pending, core_total = load_pending(refetch_ids)
     total_pending = len(pending)
-    print(f"{total_pending} core papers need author-affiliation lookup (of {core_total} core total)", flush=True)
+    what = "re-fetch for author ids" if refetch_ids else "author-affiliation lookup"
+    print(f"{total_pending} core papers need {what} (of {core_total} core total)", flush=True)
 
     done = 0
     processed = 0
@@ -128,7 +179,7 @@ def main():
     attempted_this_run = set()
 
     while True:
-        papers, pending_titles, _ = load_pending()
+        papers, pending_titles, _ = load_pending(refetch_ids)
         pending_titles = [t for t in pending_titles if t not in attempted_this_run]
         if not pending_titles:
             break

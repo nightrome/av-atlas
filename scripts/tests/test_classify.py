@@ -136,6 +136,106 @@ class TestClassifyRelevance(unittest.TestCase):
             "core",
         )
 
+    # -- Expanded synonym vocabulary (fallback path; these had no abstract on
+    #    the real data and their titles matched nothing before) ------------
+    def test_automated_and_connected_vehicle_synonyms_are_core(self):
+        for title in (
+            "Decentralized Cooperative Planning for Automated Vehicles",
+            "Cooperative Adaptive Cruise Control of Connected and Automated Vehicles",
+            "Deep Reinforcement Learning Based Platooning Control for Fuel Optimization",
+            "Identification and Classification of Car-Following Behavior",
+            "A Nonlinear MPC Strategy for Autonomous Racing of Scale Vehicles",
+        ):
+            self.assertEqual(cl.classify_relevance(title, None), "core", title)
+
+    def test_title_only_terms_fire_from_the_title(self):
+        # A title-only phrase in the title is enough on its own.
+        self.assertEqual(
+            cl.classify_relevance("Perception Stack for an Intelligent Vehicle", None), "core")
+        # ...and the same phrase absent everywhere leaves a generic paper adjacent.
+        self.assertEqual(
+            cl.classify_relevance(
+                "A General Graph Neural Network for Node Classification",
+                "We evaluate on standard node-classification benchmarks.",
+            ),
+            "adjacent",
+        )
+
+    # -- Off-scope (non-road-vehicle) title guard ------------------------
+    def test_non_road_vehicle_platforms_excluded(self):
+        for title in (
+            "Autonomous Navigation of Unmanned Aerial Vehicles in GPS-Denied Environments",
+            "Self-Driving Quadrotor: Vision-Based Autonomous Flight",
+            "Autonomous Underwater Vehicle Path Planning with Reinforcement Learning",
+            "Stanford Doggo: An Open-Source Quasi-Direct-Drive Quadruped",
+            "Learning Dexterous In-Hand Manipulation with a Robotic Gripper",
+        ):
+            self.assertEqual(cl.classify_relevance(title, None), "adjacent", title)
+
+    def test_off_scope_guard_beats_llm_and_keywords(self):
+        # "autonomous ... vehicle" phrase present, LLM says core -- still
+        # adjacent, because the title is about a non-road platform.
+        self.assertEqual(
+            cl.classify_relevance(
+                "An Autonomous Aerial Vehicle for Autonomous Driving Dataset Collection",
+                "We use an autonomous vehicle and the KITTI dataset.", llm_says_core=True,
+            ),
+            "adjacent",
+        )
+
+
+class TestTrainedRelevanceModel(unittest.TestCase):
+    """classify_relevance uses data/relevance_model.json when present. Build a
+    tiny in-memory model and check the wiring (scoring, threshold, the LLM
+    OR-promotion, and that the hard pre-filters still win)."""
+
+    def setUp(self):
+        import re
+        self._saved = cl.RELEVANCE_MODEL
+        vocab = ["autonomous driving", "vehicle", "segmentation"]
+        cl.RELEVANCE_MODEL = {
+            "vocab": vocab,
+            "title_coef": {"autonomous driving": 5.0, "vehicle": 0.5, "segmentation": -1.0},
+            "abstract_coef": {"autonomous driving": 2.0, "vehicle": 0.1, "segmentation": -0.5},
+            "title_strong_coef": 3.0,
+            "intercept": -1.0,
+            "threshold": 2.0,
+            "_patterns": [(t, re.compile(r"\b" + re.escape(t) + r"s?\b", re.I)) for t in vocab],
+        }
+
+    def tearDown(self):
+        cl.RELEVANCE_MODEL = self._saved
+
+    def test_score_above_threshold_is_core(self):
+        # -1.0 + 5.0 (title "autonomous driving") = 4.0 >= 2.0
+        self.assertEqual(cl.classify_relevance("Planning for Autonomous Driving", None), "core")
+
+    def test_score_below_threshold_is_adjacent(self):
+        # -1.0 + 0.5 (title "vehicle") = -0.5 < 2.0, no LLM
+        self.assertEqual(cl.classify_relevance("A Vehicle Detector", None), "adjacent")
+
+    def test_llm_core_promotes_below_threshold(self):
+        self.assertEqual(
+            cl.classify_relevance("A Vehicle Detector", None, llm_says_core=True), "core")
+
+    def test_negative_weight_keeps_generic_paper_adjacent(self):
+        # -1.0 + 0.5 (vehicle) - 1.0 (segmentation) = -1.5
+        self.assertEqual(
+            cl.classify_relevance("Vehicle Part Segmentation", "generic segmentation"), "adjacent")
+
+    def test_off_scope_guard_still_wins_over_model(self):
+        self.assertEqual(
+            cl.classify_relevance("Autonomous Driving for a Quadrotor UAV", None), "adjacent")
+
+    def test_mechanical_guard_still_wins_over_model(self):
+        self.assertEqual(
+            cl.classify_relevance(
+                "Yaw Moment Control for Autonomous Driving",
+                "A classical anti-lock braking system and torque vectoring design.",
+            ),
+            "adjacent",
+        )
+
 
 class TestKnownDatasetTitleOverride(unittest.TestCase):
     CATEGORIES = [

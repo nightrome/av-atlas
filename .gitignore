@@ -75,3 +75,6 @@ data/labeling_candidates.json
 __pycache__/
 *.pyc
 .env
+
+# debug eyeball dump from train_relevance_classifier.py (regenerable)
+scripts/_relevance_projection_sample.txt

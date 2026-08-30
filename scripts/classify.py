@@ -34,6 +34,8 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent.parent
 CATEGORIES_FILE = BASE / "data" / "categories.json"
 LLM_LABELS_FILE = BASE / "data" / "relevance_labels_llm.json"
+LLM_LABELS_V2_FILE = BASE / "data" / "relevance_labels_llm_v2.json"
+RELEVANCE_MODEL_FILE = BASE / "data" / "relevance_model.json"
 
 
 def normalize_title(t):
@@ -41,13 +43,15 @@ def normalize_title(t):
 
 
 def load_llm_core_titles():
-    """Normalized titles the local LLM (see fetch_llm_relevance_labels.py)
-    graded 'core'. Read-only second opinion, not a replacement for the
-    keyword pass -- see av_weight_and_relevance for how it's combined."""
-    if not LLM_LABELS_FILE.exists():
-        return set()
-    labels = json.loads(LLM_LABELS_FILE.read_text(encoding="utf-8"))
-    return {key for key, v in labels.items() if v.get("label") == "core"}
+    """Normalized titles the local LLM (see fetch_llm_relevance_labels.py and
+    ..._v2.py) graded 'core'. Read-only second opinion, folded in as a
+    promotion signal -- see classify_relevance."""
+    titles = set()
+    for f in (LLM_LABELS_FILE, LLM_LABELS_V2_FILE):
+        if f.exists():
+            labels = json.loads(f.read_text(encoding="utf-8"))
+            titles |= {key for key, v in labels.items() if v.get("label") == "core"}
+    return titles
 
 # Phrases specific enough to AVs that their presence is real signal, unlike
 # generic CV terms (object detection, segmentation, etc.) which also match
@@ -65,6 +69,53 @@ AV_RELEVANCE_TERMS = [
     # driving infrastructure (unlike generic CV terms, a paper about traffic
     # lights/signs is essentially never about anything else).
     "traffic light", "traffic sign",
+    # Synonyms the original list simply didn't have. On a full venue corpus
+    # (esp. the DBLP title-only IV/ITSC/T-ITS papers with no abstract) these
+    # are where core recall was being lost -- every one is as AV-specific as
+    # "self-driving". Kept as literal phrases, still word-boundary matched.
+    "automated driving", "automated vehicle", "automated driving system",
+    "highly automated driving", "connected vehicle", "connected and automated vehicle",
+    "connected automated vehicle", "connected and autonomous vehicle",
+    "adaptive cruise control", "cooperative adaptive cruise control",
+    "automated valet parking", "car-following", "car following", "vehicle platoon",
+    "platooning", "platoon control", "truck platoon", "on-ramp merging", "ramp merging",
+    "highway merging", "autonomous racing", "autonomous race car",
+    "forward collision warning", "collision warning system", "autonomous emergency braking",
+    "automatic emergency braking", "driving automation", "end-to-end driving",
+    "end-to-end autonomous driving", "drivable area", "drivable region",
+    "free-space detection", "freespace detection", "vulnerable road user",
+    "lane keeping", "lane-keeping", "lane changing", "lane-changing", "lane departure",
+    "driver assistance system", "advanced driver-assistance", "naturalistic driving",
+]
+
+# Weaker on their own: high-precision only when they appear in the paper's
+# own TITLE (a proceedings title that says "Intelligent Vehicle" is about
+# one; an abstract that mentions it in passing is not). Fallback-path only.
+AV_TITLE_ONLY_TERMS = [
+    "intelligent vehicle", "pedestrian intention", "highway driving", "urban driving",
+    "cooperative driving", "driving simulator", "takeover request",
+]
+
+# Non-road-vehicle platforms this corpus is explicitly NOT about. A promotion
+# candidate whose own TITLE says it is about one of these is kept "adjacent"
+# regardless of any AV phrase also present ("autonomous underwater vehicle"
+# matches "autonomous ... vehicle" but is not this corpus). Title-only on
+# purpose: abstracts routinely name drones/marine/etc. as comparison domains
+# in papers that are themselves about driving.
+OFF_SCOPE_TITLE_TERMS = [
+    "unmanned aerial", "aerial vehicle", "aerial robot", "uav", "uas", "quadrotor",
+    "quadcopter", "hexacopter", "multirotor", "drone", "fixed-wing", "evtol", "vtol",
+    "micro air vehicle", "urban air mobility", "air traffic", "aircraft", "airborne",
+    "underwater vehicle", "auv", "uuv", "rov", "surface vehicle", "usv", "marine vehicle",
+    "marine robot", "maritime", "vessel", "unmanned ship", "spacecraft", "satellite",
+    "planetary rover", "lunar", "martian", "legged robot", "quadruped", "quadrupedal",
+    "hexapod", "bipedal", "humanoid", "exoskeleton", "prosthe", "manipulator",
+    "robotic arm", "robot arm", "grasping", "gripper", "drone racing", "in-hand",
+    # not road vehicles either: agricultural / field robots, and the
+    # "self-driving laboratory" (materials-science lab automation) that
+    # collides with "self-driving".
+    "agricultur", "weed control", "weeding", "crop row", "orchard", "greenhouse",
+    "harvesting robot", "livestock", "self-driving laboratory", "self-driving laboratories",
 ]
 
 # Word-boundary matched, not plain substring -- caught in practice once
@@ -98,6 +149,53 @@ AV_RELEVANCE_PATTERNS = [re.compile(r"\b" + re.escape(term) + r"s?\b") for term 
 TITLE_STRONG_PATTERNS = [re.compile(p) for p in (
     r"\bdrive\b", r"\bdrives\b", r"\bdriving\b", r"\bdriver\b", r"\bdrivers\b",
 )]
+
+AV_TITLE_ONLY_PATTERNS = [re.compile(r"\b" + re.escape(t) + r"s?\b") for t in AV_TITLE_ONLY_TERMS]
+OFF_SCOPE_TITLE_PATTERNS = [re.compile(r"\b" + re.escape(t) + r"s?\b") for t in OFF_SCOPE_TITLE_TERMS]
+
+
+def _load_relevance_model():
+    """The trained per-phrase weights + threshold from
+    train_relevance_classifier.py, if present. Optional: when the file is
+    absent, classify_relevance falls back to the expanded keyword-any pass
+    below, so the pipeline still runs on a fresh checkout without a model."""
+    if not RELEVANCE_MODEL_FILE.exists():
+        return None
+    try:
+        m = json.loads(RELEVANCE_MODEL_FILE.read_text(encoding="utf-8"))
+        m["_patterns"] = [(t, re.compile(r"\b" + re.escape(t) + r"s?\b", re.I)) for t in m["vocab"]]
+        for req in ("title_coef", "abstract_coef", "intercept", "threshold"):
+            if req not in m:
+                return None
+        return m
+    except Exception:
+        return None
+
+
+RELEVANCE_MODEL = _load_relevance_model()
+_DATA_DRIVEN_RE = re.compile(r"data[- ]driven|goal[- ]driven|model[- ]driven|event[- ]driven", re.I)
+
+
+def relevance_model_score(title, abstract):
+    """Linear score from RELEVANCE_MODEL: intercept + per-phrase weights for
+    phrases present in the title and (separately) the abstract, + a bonus for
+    a standalone driving word in the title. 'core' iff score >= threshold."""
+    m = RELEVANCE_MODEL
+    t = title or ""
+    a = abstract or ""
+    s = m["intercept"]
+    tc = m["title_coef"]
+    ac = m["abstract_coef"]
+    for term, pat in m["_patterns"]:
+        if tc.get(term) and pat.search(t):
+            s += tc[term]
+        if ac.get(term) and pat.search(a):
+            s += ac[term]
+    if m.get("title_strong_coef"):
+        clean = _DATA_DRIVEN_RE.sub(" ", t.lower())  # TITLE_STRONG_PATTERNS are case-sensitive
+        if any(p.search(clean) for p in TITLE_STRONG_PATTERNS):
+            s += m["title_strong_coef"]
+    return s
 
 # Scope decision: this corpus is about learning-based approaches and
 # software for autonomous vehicles (broadly interpreted), not automotive
@@ -154,28 +252,53 @@ def score_category(text, keywords):
 
 
 def classify_relevance(title, abstract, llm_says_core=False):
-    """Binary: is this paper about autonomous vehicles, yes or no. A paper is
-    either "core" (its own title foregrounds AVs, or an AV-specific phrase --
-    see AV_RELEVANCE_TERMS -- appears anywhere in title/abstract, or the LLM
-    second-opinion agrees) or "adjacent" (no such evidence). There is no
-    partial credit: a paper that mentions "autonomous driving" once in a list
-    of applications counts exactly the same as one whose title is "... for
-    Autonomous Driving" -- both get to say what they're about, and grading
-    "how AV-focused" a paper really is is not something a keyword match can
-    do reliably. This is still a keyword heuristic, not semantic
-    understanding -- see Methodology for its limits.
+    """Binary: is this paper about autonomous *road* vehicles, yes or no.
+
+    Layered, each layer only able to push one way:
+
+    1. Hard scope pre-filters -> "adjacent" only: the mechanical/hardware-only
+       exclusion, and the non-road-vehicle "off-scope" title guard (aerial /
+       underwater / legged / manipulation / spacecraft). Scope definitions,
+       not things to learn from noisy labels.
+    2. Keyword floor -> "core": an explicit AV-specific phrase
+       (AV_RELEVANCE_TERMS) anywhere in title/abstract, a standalone driving
+       word in the title, or a title-only phrase in the title. This is the
+       historical behavior and it is a *floor* -- the model below can add to
+       it but never overrides it, so the obvious hits can't regress.
+    3. Trained scorer (data/relevance_model.json) -> "core": learned
+       per-phrase weights (separate weight for a phrase in the title vs the
+       abstract) + a threshold, from the hand labels + the two local-LLM
+       passes. This is what makes it "more than counting" -- it catches
+       papers where several weak-ish signals add up, and it is trained with
+       negative weights on phrases that over-fire ("driving dataset",
+       "onboard", ...). Only consulted for papers the keyword floor didn't
+       already call core, so a mis-weighting can't flood core corpus-wide.
+    4. Local-LLM "core" verdict -> "core": individually-vetted promotions for
+       the generically-titled AV papers (no AV phrase, no abstract) that no
+       keyword or weight scheme can see. See fetch_llm_relevance_labels*.py.
     """
     title_l = (title or "").lower()
     abstract_l = (abstract or "").lower()
 
     if is_mechanical_hardware_only(title_l, abstract_l):
         return "adjacent"
-    if any(p.search(title_l) for p in AV_RELEVANCE_PATTERNS):
+    if any(p.search(title_l) for p in OFF_SCOPE_TITLE_PATTERNS):
+        return "adjacent"
+
+    # 2. keyword floor (never regressed by the model)
+    if any(p.search(title_l) or p.search(abstract_l) for p in AV_RELEVANCE_PATTERNS):
         return "core"
     if any(p.search(title_l) for p in TITLE_STRONG_PATTERNS):
         return "core"
-    if any(p.search(abstract_l) for p in AV_RELEVANCE_PATTERNS):
+    if any(p.search(title_l) for p in AV_TITLE_ONLY_PATTERNS):
         return "core"
+
+    # 3. trained scorer, for keyword-floor-negative papers only
+    if RELEVANCE_MODEL is not None and \
+            relevance_model_score(title, abstract) >= RELEVANCE_MODEL["threshold"]:
+        return "core"
+
+    # 4. LLM second opinion
     if llm_says_core:
         return "core"
     return "adjacent"

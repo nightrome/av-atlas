@@ -38698,5 +38698,455 @@
     "n_avail_sentences": 1,
     "model": "qwen2.5:7b-instruct",
     "checked_at": "2026-08-30"
+  },
+  "hazardawaretrafficscenegraphgeneration": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hcrmpallmhintedcontextualreinforcementlearningframeworkforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided abstract.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hdmapsarelanedetectiongeneralizersanovelgenerativeframeworkforsinglesourcedomaingeneralization": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "headabandwidthefficientcooperativeperceptionapproachforheterogeneousconnectedandautonomousvehicles": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "headtoheadautonomousracingatthelimitsofhandlinginthea2rlchallenge": {
+    "verdict": "yes",
+    "url": "https://github.com/TUMFTM/TAM__common",
+    "evidence": "The paper links to multiple GitHub repositories containing the team's software implementations.",
+    "n_candidate_links": 12,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heal3dheuristicalenhancedactivelearningfor3dobjectdetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The code for the strategy will be available upon acceptance.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hearableseareegbaseddriverfatiguedetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heatheterogeneousendtoendautonomousdrivingviatrajectoryguidedworldmodels": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper states 'We will make our code publicly available.' but no code links are provided.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heatmapbasedmethodforestimatingdriverscognitivedistraction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heatmapbasedvanishingpointboostslanedetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heightchangefeaturebasedfreespacedetection": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the paper.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heightformeramultilevelinteractionandimageadaptiveclassificationregressionnetworkformonocularheightestimationwithaerialimages": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The code will be open-sourced at https://github, but it is not available yet.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heightformerasemanticalignmentmonocular3dobjectdetectionmethodfromroadsideperspective": {
+    "verdict": "yes",
+    "url": "https://anonymous.4open.science/r/HeightFormer",
+    "evidence": "The code and pre-trained models will be released on https://anonymous.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heightformerexplicitheightmodelingwithoutextradataforcameraonly3dobjectdetectioninbirdseyeview": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "helofusionanefficientandscalableencoderformodelingheterogeneousandmultiscaleinteractionsintrajectoryprediction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "helyosacustomizedofftheshelfsolutionforautonomousdrivingapplicationsindelimitedareas": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "henethybridencodingandmultitasklearningfor3dperceptionandendtoendautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The provided code links are for datasets and not the implementation of the HENet++ method.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "herdseyeviewimprovinggameaiagentlearningwithcollaborativeperception": {
+    "verdict": "yes",
+    "url": "https://github.com/andrewnash/Herds-Eye-View",
+    "evidence": "The code is available on GitHub.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hermesaholisticendtoendriskawaremultimodalembodiedsystemwithvisionlanguagemodelsforlongtailautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hermessealzeroknowledgeassuranceforautonomousvehiclecommunications": {
+    "verdict": "yes",
+    "url": "https://github.com/mhasan08/zk-AV",
+    "evidence": "The demonstration code for this project is open source, available on Github.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hermestowardaunifieddrivingworldmodelfor3dsceneunderstandingandgeneration": {
+    "verdict": "yes",
+    "url": "https://github.com/H-EmbodVis/HERMESV2",
+    "evidence": "The model and code will be publicly released at https://github.com/H-EmbodVis/HERMESV2.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heterogeneousedgeenhancedgraphattentionnetworkformultiagenttrajectoryprediction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heterogeneousmeanfieldgameframeworkforleosatelliteassistedv2xnetworks": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heterogeneousmultiagentreinforcementlearningforzeroshotscalablecollaboration": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heterogeneousselfplayforrealistichighwaytrafficsimulation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "heterogeneousvertiportselectionoptimizationforondemandairtaxiservicesadeepreinforcementlearningapproach": {
+    "verdict": "yes",
+    "url": "https://github.com/Traffic-Alpha/UAGMC",
+    "evidence": "The related code can be found at https://github.com/Traffic-Alpha/UAGMC.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hetrodahighfidelitydronedatasetandbenchmarkforautonomousdrivinginheterogeneoustraffic": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide a code link and states there is no available code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hftliftingperspectiverepresentationsviahybridfeaturetransformation": {
+    "verdict": "yes",
+    "url": "https://github.com/JiayuZou2020/HFT",
+    "evidence": "The codes are available at https://github.com/JiayuZou2020/HFT.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hgeotopomapboostingtopologicalmappingwithhierarchicalgeometricpriors": {
+    "verdict": "yes",
+    "url": "https://github.com/lynn-yu/HGeo-TopoMap",
+    "evidence": "The source code and model weights will be made publicly available at https://github.com/lynn-yu/HGeo-TopoMap.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hgislamloopclosurewithhumanandgeometricimportancefeatures": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hgnetahierarchicalfeatureguidednetworkforoccupancyflowfieldprediction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hgpcnaheterogeneousarchitecturefore2eembeddedpointcloudinference": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hialpsanexperimentalrobustnessquantificationofsixlidarbasedobjectdetectionsystemsforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper does not provide any URL or evidence of releasing its own code.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hiddenbackdoorattackagainstsemanticsegmentationmodels": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code availability sentences found on the page.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hiddenbiasesofendtoenddrivingdatasets": {
+    "verdict": "yes",
+    "url": "https://github.com/autonomousvision/carla_garage",
+    "evidence": "Our dataset, code, and pre-trained models are publicly available at https://github.com/autonomousvision/carla_garage.",
+    "n_candidate_links": 2,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hiddengems4dradarsceneflowlearningusingcrossmodalsupervision": {
+    "verdict": "yes",
+    "url": "https://github.com/Toytiny/CMFlow",
+    "evidence": "Our source code will be available on https://github.com/Toytiny/CMFlow",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hidriveaclosedloopbenchmarkforhighlevelautonomousdriving": {
+    "verdict": "yes",
+    "url": "https://github.com/VDIGPKU/HiDrive",
+    "evidence": "The HiDrive software, source code, digital assets, and documentation are available at https://github.com/VDIGPKU/HiDrive.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicaladaptableandtransferablenetworkshatnfordrivingbehaviorprediction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalanddecoupledbevperceptionlearningframeworkforautonomousdriving": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalattentionandgraphneuralnetworkstowarddriftfreeposeestimation": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "The paper states 'The code will be made available upon completion of the review process.'",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalattentionlearningofsceneflowin3dpointclouds": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided abstract.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalautomaticlanechangingmotionplanningfromselfoptimumtolocaloptimum": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links related to the paper's method/experiments are found.",
+    "n_candidate_links": 2,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalawarenessadapterswithhybridpyramidfeaturefusionfordensedepthprediction": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicaldecisionmakingforautonomousnavigationintegratingdeepreinforcementlearningandfuzzylogicinfourwheelindependentsteeringanddrivingsystems": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicaldecisionmakingunderuncertaintyahybridmdpandchanceconstrainedmpcapproach": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "Only linked to a rule-based baseline implementation, no own code provided.",
+    "n_candidate_links": 1,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalendtoendautonomousdrivingintegratingbevperceptionwithdeepreinforcementlearning": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalfaultlocalizationforautonomousdrivingsystemswithhypothesisvalidationandintentanalysis": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links found on the page.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 1,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalfeaturelevelreversepropagationforposttrainingneuralnetworks": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalgamebasedmultiagentdecisionmakingforautonomousvehicles": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
+  },
+  "hierarchicalgametheoreticplanningforautonomousvehicles": {
+    "verdict": "no",
+    "url": null,
+    "evidence": "No code links or availability sentences found in the provided information.",
+    "n_candidate_links": 0,
+    "n_avail_sentences": 0,
+    "model": "qwen2.5:7b-instruct",
+    "checked_at": "2026-08-30"
   }
 }
