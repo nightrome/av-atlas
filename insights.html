@@ -714,7 +714,7 @@ function render(ins, stats) {
   }
   if (ins.young_researchers_cutoff_year) {
     document.getElementById('young-researchers-note').textContent =
-      `Career span ≤3 years, at least 5 papers, still active in ${ins.young_researchers_cutoff_year} ` +
+      `Career span ≤3 years, at least 5 papers, with a publication in ${ins.young_researchers_cutoff_year} ` +
       `(the last complete year), ranked by average citations per paper.`;
   }
   const youngBody = document.getElementById('young-researchers-body');

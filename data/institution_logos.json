@@ -135,7 +135,8 @@
     "source": "wikidata"
   },
   "Shanghai AI Laboratory": {
-    "logo_url": null
+    "logo_url": "assets/logos/shanghai-ai-laboratory.png",
+    "source": "manual"
   },
   "University of Chinese Academy of Sciences": {
     "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Gate_of_UCAS_Yuquanlu_Campus_%2820230906102500%29.jpg/330px-Gate_of_UCAS_Yuquanlu_Campus_%2820230906102500%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
@@ -572,7 +573,8 @@
     "source": "wikidata"
   },
   "Shanghai Artificial Intelligence Laboratory": {
-    "logo_url": null
+    "logo_url": "assets/logos/shanghai-ai-laboratory.png",
+    "source": "manual"
   },
   "Google Research University of California": {
     "logo_url": null
@@ -1145,6 +1147,7 @@
     "source": "wikipedia-summary"
   },
   "FZI Research Center for Information Technology": {
-    "logo_url": null
+    "logo_url": "assets/logos/fzi.png",
+    "source": "manual"
   }
 }

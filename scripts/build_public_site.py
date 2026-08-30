@@ -136,6 +136,20 @@ def build_public_site():
     shutil.copy2(BASE / "logo.svg", page_dir / "logo.svg")
     shutil.copy2(BASE / "og-image.png", page_dir / "og-image.png")
 
+    # Vendored static assets (institution/venue logos with no stable
+    # third-party URL, so the fetch scripts point at a local assets/... path
+    # rather than hotlinking a Google image-cache URL that rots within days).
+    # The tree is copied verbatim so the path baked into stats.json resolves.
+    # The stale-file sweep below only inspects top-level files, so nothing
+    # under assets/ needs adding to `expected`.
+    assets_src = BASE / "assets"
+    if assets_src.exists():
+        for asset in assets_src.rglob("*"):
+            if asset.is_file():
+                dst = page_dir / asset.relative_to(BASE)
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(asset, dst)
+
     # Shared static assets referenced by the HTML pages (e.g. nav.js) but not
     # matched by the *.html glob above.
     for js_path in BASE.glob("*.js"):

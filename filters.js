@@ -285,6 +285,66 @@
     return CATEGORY_LABELS[cat] || cat.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
   };
 
+  // Venue codes stored on papers are the short form used in tables. This
+  // maps each to its full name for the venue detail-page heading only.
+  // Entries whose stored code is already the full name (most journals) are
+  // deliberately absent -- venueDisplayName() then shows the code as-is.
+  window.VENUE_LONG_NAMES = {
+    '3DV': 'International Conference on 3D Vision',
+    'AAAI': 'AAAI Conference on Artificial Intelligence',
+    'ACC': 'American Control Conference',
+    'ACM MM': 'ACM International Conference on Multimedia',
+    'CDC': 'IEEE Conference on Decision and Control',
+    'CVPR': 'IEEE/CVF Conference on Computer Vision and Pattern Recognition',
+    'CVPRW': 'CVPR Workshops',
+    'CoRL': 'Conference on Robot Learning',
+    'ECCV': 'European Conference on Computer Vision',
+    'ECCVW': 'ECCV Workshops',
+    'IAVVC': 'IEEE International Automated Vehicle Validation Conference',
+    'ICASSP': 'IEEE International Conference on Acoustics, Speech and Signal Processing',
+    'ICCV': 'IEEE/CVF International Conference on Computer Vision',
+    'ICCVW': 'ICCV Workshops',
+    'ICLR': 'International Conference on Learning Representations',
+    'ICPR': 'International Conference on Pattern Recognition',
+    'ICRA': 'IEEE International Conference on Robotics and Automation',
+    'IJCAI': 'International Joint Conference on Artificial Intelligence',
+    'IJCNN': 'International Joint Conference on Neural Networks',
+    'IROS': 'IEEE/RSJ International Conference on Intelligent Robots and Systems',
+    'ITSC': 'IEEE International Conference on Intelligent Transportation Systems',
+    'IV': 'IEEE Intelligent Vehicles Symposium',
+    'NeurIPS': 'Conference on Neural Information Processing Systems',
+    'RA-L': 'IEEE Robotics and Automation Letters',
+    'SMC': 'IEEE International Conference on Systems, Man, and Cybernetics',
+    'T-CST': 'IEEE Transactions on Control Systems Technology',
+    'T-CSVT': 'IEEE Transactions on Circuits and Systems for Video Technology',
+    'T-IP': 'IEEE Transactions on Image Processing',
+    'T-ITS': 'IEEE Transactions on Intelligent Transportation Systems',
+    'T-IV': 'IEEE Transactions on Intelligent Vehicles',
+    'T-MM': 'IEEE Transactions on Multimedia',
+    'T-RO': 'IEEE Transactions on Robotics',
+    'TNNLS': 'IEEE Transactions on Neural Networks and Learning Systems',
+    'TPAMI': 'IEEE Transactions on Pattern Analysis and Machine Intelligence',
+    'TVT': 'IEEE Transactions on Vehicular Technology',
+    'WACV': 'IEEE/CVF Winter Conference on Applications of Computer Vision',
+    'WACVW': 'WACV Workshops',
+  };
+  // A handful of venues are stored under their full name but have a short
+  // code readers know them by; show "Full Name (CODE)" for those too.
+  window.VENUE_SHORT_CODES = {
+    'IEEE Transactions on Vehicular Technology': 'TVT',
+  };
+
+  // Heading text for the venue detail page: "Full Name (CODE)" when both are
+  // known, otherwise whichever single form we have.
+  window.venueDisplayName = function (venue) {
+    if (!venue) return 'Unknown venue';
+    var long = VENUE_LONG_NAMES[venue];
+    if (long) return venue === long ? long : long + ' (' + venue + ')';
+    var code = VENUE_SHORT_CODES[venue];
+    if (code) return venue + ' (' + code + ')';
+    return venue;
+  };
+
   const FILTER_KEYS = ['category', 'venue', 'year', 'country', 'institution', 'author'];
 
   window.getFilters = function () {

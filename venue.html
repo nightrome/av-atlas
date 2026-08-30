@@ -113,7 +113,7 @@ function stat(value, label, opts) {
 
 const params = new URLSearchParams(location.search);
 const name = params.get('name') || '';
-document.getElementById('name').textContent = name || 'Unknown venue';
+document.getElementById('name').textContent = window.venueDisplayName ? venueDisplayName(name) : (name || 'Unknown venue');
 
 fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
