@@ -467,14 +467,19 @@ function render(stats) {
   // author's own overall standing).
   const authorPaperStats = computeAuthorPaperStats(stats.all_papers);
   const citingAuthorCounts = {};
+  const citingAuthorYears = {};
   citing.forEach(c => (c.authors || []).forEach(a => {
     citingAuthorCounts[a] = (citingAuthorCounts[a] || 0) + 1;
+    (citingAuthorYears[a] || (citingAuthorYears[a] = [])).push(c.year);
   }));
   const citingAuthors = Object.entries(citingAuthorCounts)
     .map(([coName, count]) => {
       const coDetail = authorDetail[coName] || {};
+      // The institution whose year range overlaps the citing papers this
+      // author actually wrote, not just their most recent institution on
+      // record overall -- see filters.js's institutionForYears comment.
       const insts = coDetail.institutions || [];
-      const lastInst = insts.length ? insts[insts.length - 1] : null;
+      const lastInst = institutionForYears(insts, citingAuthorYears[coName]);
       const countries = coDetail.countries || [];
       const paperStats = authorPaperStats[coName] || {};
       return {

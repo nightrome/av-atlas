@@ -276,7 +276,10 @@ fetchStatsWithRelevance(relevance).then(stats => {
   // rebuilding the search <input> on every keystroke (as a full render(stats)
   // would) recreates the DOM node mid-typing and throws focus/cursor away.
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'index.html', {
-    search: { placeholder: 'Search paper titles…', param: 'q', onInput: v => { currentQuery = v; renderResults(); } },
+    search: [
+      { label: 'Search', placeholder: 'Search paper titles…', param: 'q', onInput: v => { currentQuery = v; renderResults(); } },
+      { label: 'Institution', id: 'search-institution-input', placeholder: 'e.g. Google…', param: 'inst', onInput: v => { currentInstQuery = v; renderResults(); } },
+    ],
     relevance: true,
     minCitations: true,
     topN: {
@@ -293,6 +296,15 @@ fetchStatsWithRelevance(relevance).then(stats => {
       bibtexName: 'av-atlas-papers.bib',
     }),
     exportContainer.firstChild);
+  // Built once per pageview here, not inside renderResults() -- it scans
+  // every paper in stats.all_papers to build the title->year map, and
+  // renderResults() re-runs on every search keystroke, filter change and
+  // Prev/Next click. Rebuilding it on each of those (user-flagged:
+  // Prev/Next visibly freezing the page for several seconds) redid the
+  // same O(all_papers) work for no reason, since stats.all_papers only
+  // actually changes via the relevance dropdown, which navigates to a new
+  // URL (a full reload) rather than re-rendering in place.
+  currentTimelineDraw = renderPapersCitationTimeline(null, buildDatasetNameByTitle(stats), stats.all_papers || []);
   renderResults();
 }).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
@@ -302,6 +314,12 @@ fetchStatsWithRelevance(relevance).then(stats => {
 // without a page reload or rebuilding the filter bar (unlike the
 // category/venue/year/sort filters, which navigate to a new URL).
 let currentQuery = new URLSearchParams(location.search).get('q') || '';
+// Free-text institution search (partial, case-insensitive) -- distinct from
+// the exact ?institution= filter that arrives via links from the
+// Institutions page. Lets a reader type "Google" and get every paper with a
+// Google-affiliated author without needing the institution's exact on-file
+// name.
+let currentInstQuery = new URLSearchParams(location.search).get('inst') || '';
 
 // Unlike every other page's timeline (which groups many papers into a
 // dimension and counts papers-per-year), the Papers page's own timeline is
@@ -419,15 +437,16 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle, allPapers) {
 
 function renderResults() {
   const stats = currentStats, filters = currentFilters;
-  currentTimelineDraw = renderPapersCitationTimeline(null, buildDatasetNameByTitle(stats), stats.all_papers || []);
   const query = currentQuery.trim().toLowerCase();
-  const anyFilter = filters.category || filters.venue || filters.year || filters.country || filters.institution || filters.author || filters.minCitations || query;
+  const instQuery = currentInstQuery.trim().toLowerCase();
+  const anyFilter = filters.category || filters.venue || filters.year || filters.country || filters.institution || filters.author || filters.minCitations || query || instQuery;
   // Always the full set, not the server's precomputed top_papers -- that's
   // capped at 50, which would silently cap "Show top 100/250" below its own
   // requested size. Client-side sort/slice over ~19k core papers is cheap
   // enough that the server-side shortcut isn't worth the conflict.
   let papers = filterPapers(stats.all_papers || [], filters);
   if (query) papers = papers.filter(p => matchesSearchQuery(p.title, query));
+  if (instQuery) papers = papers.filter(p => (p.institutions || []).some(inst => matchesSearchQuery(inst, instQuery)));
 
   // Default sort; the table header cells (via makeSortable below) are the
   // only way to re-rank from here -- no separate "Rank by" dropdown.

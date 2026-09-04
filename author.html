@@ -389,21 +389,25 @@ function render(stats) {
   // coauthored together. "Show" defaults to 10 (user-requested), persisted
   // the same way as every other small show-N control on this site.
   const coauthorCounts = {};
+  const coauthorYears = {};
   papers.forEach(p => (p.authors || []).forEach(a => {
     if (a === name) return;
     coauthorCounts[a] = (coauthorCounts[a] || 0) + 1;
+    (coauthorYears[a] || (coauthorYears[a] = [])).push(p.year);
   }));
   const authorDetail = stats.author_detail || {};
   const coauthors = Object.entries(coauthorCounts)
     .map(([coName, count]) => {
       const coDetail = authorDetail[coName] || {};
-      // "Latest" institution -- the list is already chronological (earliest
-      // first_year first, same as the tags row above), so the last entry is
-      // the most recent one on record. Country isn't tied to a year at all
-      // in author_detail (a flat, unordered list) -- same best-effort "last
+      // The institution whose year range overlaps the papers actually
+      // shared with this author -- not just whichever institution happens
+      // to be the co-author's most recent one on record, which can be
+      // years removed from the papers this table is describing (see
+      // institutionForYears' own comment). Country isn't tied to a year at
+      // all in author_detail (a flat, unordered list) -- best-effort "last
       // entry" reading, not a real claim of recency for that field.
       const insts = coDetail.institutions || [];
-      const lastInst = insts.length ? insts[insts.length - 1] : null;
+      const lastInst = institutionForYears(insts, coauthorYears[coName]);
       const countries = coDetail.countries || [];
       return {
         name: coName, papers: count,

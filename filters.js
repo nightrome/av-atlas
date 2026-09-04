@@ -464,18 +464,25 @@
       return wrap;
     }
 
-    if (opts.search) {
+    // opts.search is either one search-field config or an array of them (a
+    // page like Papers wants two independent free-text boxes -- title and
+    // institution -- side by side). Each needs its own `param` (and, when
+    // there's more than one, its own `id`, since 'search-input' is the
+    // shared default).
+    const searchFields = Array.isArray(opts.search) ? opts.search : (opts.search ? [opts.search] : []);
+    searchFields.forEach(searchOpts => {
       const wrap = document.createElement('div');
       wrap.className = 'field search-field';
       const label = document.createElement('span');
       label.className = 'field-label';
-      label.textContent = opts.search.label || 'Search';
+      label.textContent = searchOpts.label || 'Search';
       const input = document.createElement('input');
       input.type = 'search';
       input.autocomplete = 'off';
-      input.placeholder = opts.search.placeholder || 'Search…';
-      input.id = opts.search.id || 'search-input';
-      const q = new URLSearchParams(location.search).get(opts.search.param || 'q');
+      input.placeholder = searchOpts.placeholder || 'Search…';
+      input.id = searchOpts.id || 'search-input';
+      const param = searchOpts.param || 'q';
+      const q = new URLSearchParams(location.search).get(param);
       if (q) input.value = q;
       // The URL updates on every keystroke (cheap, and keeps "copy link"
       // accurate mid-typing), but the actual re-render (re-scanning the
@@ -485,8 +492,8 @@
       let debounceTimer = null;
       input.addEventListener('input', () => {
         const u = new URL(location.href);
-        if (input.value) u.searchParams.set(opts.search.param || 'q', input.value);
-        else u.searchParams.delete(opts.search.param || 'q');
+        if (input.value) u.searchParams.set(param, input.value);
+        else u.searchParams.delete(param);
         // A new query means a different (usually shorter) result set, so
         // reset every table's pagination to page 1 -- same rule withParam
         // applies to the dropdowns. Without this a reader on page 2 sees
@@ -494,12 +501,12 @@
         [...u.searchParams.keys()].forEach(k => { if (PAGE_PARAM_RE.test(k)) u.searchParams.delete(k); });
         history.replaceState(null, '', u.toString());
         clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => opts.search.onInput(input.value), 200);
+        debounceTimer = setTimeout(() => searchOpts.onInput(input.value), 200);
       });
       wrap.appendChild(label);
       wrap.appendChild(input);
       bar.appendChild(wrap);
-    }
+    });
 
     // AV-relevance dropdown ("AV relevant" / "Not AV relevant" / "Both"),
     // the same control and behavior on every page that opts in -- previously
@@ -1150,6 +1157,36 @@
   // {selfCitations, otherCitations} pair rather than a raw percentage,
   // since "no citation data at all" and "0% self-cited" both come out as 0
   // self-citations and need to stay distinguishable at render time.
+  // Picks which of an author's institutions (author_detail's chronological
+  // {name, first_year, last_year} list) to show alongside them on a table
+  // about a specific *relationship* (co-authoring with page X, citing paper
+  // Y) -- the institution whose own year range overlaps the years of the
+  // papers that relationship is actually about, not just whichever
+  // institution happens to be that author's most recent one on file. Those
+  // can be years apart (user-flagged: a co-author who wrote papers with the
+  // page's subject in 2018-2021 was shown at an institution first credited
+  // in 2023, reading like a plainly wrong "current employer" line). Falls
+  // back to the latest institution when no overlap exists, same as before.
+  window.institutionForYears = function (institutions, relevantYears) {
+    if (!institutions || !institutions.length) return null;
+    const years = (relevantYears || []).filter(y => y != null);
+    if (years.length) {
+      const minY = Math.min(...years), maxY = Math.max(...years);
+      const overlapping = institutions.filter(inst =>
+        inst.first_year != null && inst.last_year != null &&
+        inst.first_year <= maxY && inst.last_year >= minY);
+      if (overlapping.length) {
+        overlapping.sort((a, b) => {
+          const overlapA = Math.min(a.last_year, maxY) - Math.max(a.first_year, minY);
+          const overlapB = Math.min(b.last_year, maxY) - Math.max(b.first_year, minY);
+          return overlapB - overlapA || b.last_year - a.last_year;
+        });
+        return overlapping[0];
+      }
+    }
+    return institutions[institutions.length - 1];
+  };
+
   window.computeSelfCitationStats = function (ownPapers) {
     let selfCitations = 0, otherCitations = 0;
     (ownPapers || []).forEach(p => {
