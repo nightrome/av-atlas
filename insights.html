@@ -247,9 +247,18 @@
   <div class="limit-row" style="margin-top:16px;">
     Show
     <select id="disruption-limit">
-      <option value="5" selected>5</option>
-      <option value="10">10</option>
+      <option value="5">5</option>
+      <option value="10" selected>10</option>
       <option value="25">25</option>
+    </select>
+    Min. citations
+    <select id="disruption-min-citations">
+      <option value="0">Any</option>
+      <option value="10">10+</option>
+      <option value="25">25+</option>
+      <option value="50">50+</option>
+      <option value="100" selected>100+</option>
+      <option value="250">250+</option>
     </select>
   </div>
   <div style="margin-top:8px;">
@@ -793,21 +802,39 @@ function render(ins, stats) {
       list.appendChild(li);
     }
     const disruptiveList = document.getElementById('disruptive-list');
-    function renderDisruptionLists(limit) {
+    // Older stats.json builds don't carry a raw citation count on each
+    // disruption entry yet (only n_citers, the count of citers the CD score
+    // itself is based on) -- fall back to that until the next full rebuild
+    // adds "citations" to disruption_entry() in aggregate.py.
+    function paperCitations(p) { return p.citations != null ? p.citations : p.n_citers; }
+    function renderDisruptionLists(limit, minCitations) {
       disruptiveList.innerHTML = '';
-      (disruption.most_disruptive || []).slice(0, limit).forEach(p => disruptionRow(disruptiveList, p, true));
-      if (!disruption.most_disruptive || !disruption.most_disruptive.length) {
+      const rows = (disruption.most_disruptive || []).filter(p => (paperCitations(p) || 0) >= minCitations);
+      rows.slice(0, limit).forEach(p => disruptionRow(disruptiveList, p, true));
+      if (!rows.length) {
         disruptiveList.innerHTML = '<li>Not enough data yet.</li>';
       }
     }
     const disruptionLimitSel = document.getElementById('disruption-limit');
-    let disruptionLimitStored = null;
-    try { disruptionLimitStored = sessionStorage.getItem('insights-disruption-limit'); } catch (e) { /* ignore */ }
+    const disruptionMinCitationsSel = document.getElementById('disruption-min-citations');
+    let disruptionLimitStored = null, disruptionMinCitationsStored = null;
+    try {
+      disruptionLimitStored = sessionStorage.getItem('insights-disruption-limit');
+      disruptionMinCitationsStored = sessionStorage.getItem('insights-disruption-min-citations');
+    } catch (e) { /* ignore */ }
     if (disruptionLimitStored) disruptionLimitSel.value = disruptionLimitStored;
-    renderDisruptionLists(parseInt(disruptionLimitSel.value, 10));
+    if (disruptionMinCitationsStored) disruptionMinCitationsSel.value = disruptionMinCitationsStored;
+    function redrawDisruption() {
+      renderDisruptionLists(parseInt(disruptionLimitSel.value, 10), parseInt(disruptionMinCitationsSel.value, 10));
+    }
+    redrawDisruption();
     disruptionLimitSel.addEventListener('change', () => {
       try { sessionStorage.setItem('insights-disruption-limit', disruptionLimitSel.value); } catch (e) { /* ignore */ }
-      renderDisruptionLists(parseInt(disruptionLimitSel.value, 10));
+      redrawDisruption();
+    });
+    disruptionMinCitationsSel.addEventListener('change', () => {
+      try { sessionStorage.setItem('insights-disruption-min-citations', disruptionMinCitationsSel.value); } catch (e) { /* ignore */ }
+      redrawDisruption();
     });
   } else if (disruptionPanel) {
     disruptionPanel.style.display = 'none';

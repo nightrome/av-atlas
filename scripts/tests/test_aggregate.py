@@ -540,45 +540,56 @@ class TestClassifyInstitutionSector(unittest.TestCase):
 
 class TestComputeDisruptionIndex(unittest.TestCase):
     def test_mixed_disruptive_and_consolidating_citers(self):
-        # A cites R. citer1/citer2 cite only A (disruptive votes); citer3
-        # cites A AND R (a consolidating vote). All citers' own reference
-        # lists are themselves in `edges` (informative).
-        edges = {
-            "a": ["r"],
-            "citer1": ["a"],
-            "citer2": ["a"],
-            "citer3": ["a", "r"],
-        }
+        # A cites R. 7 citers cite only A (disruptive votes); 3 citers cite
+        # A AND R (consolidating votes). All citers' own reference lists are
+        # themselves in `edges` (informative). 10 citers total to clear
+        # DISRUPTION_MIN_CITERS (10).
+        edges = {"a": ["r"]}
+        for i in range(7):
+            edges[f"disruptive{i}"] = ["a"]
+        for i in range(3):
+            edges[f"consolidating{i}"] = ["a", "r"]
         result = ag.compute_disruption_index(edges)
-        self.assertEqual(result["a"]["n_citers"], 3)
-        self.assertAlmostEqual(result["a"]["cd_index"], 1 / 3, places=3)
+        self.assertEqual(result["a"]["n_citers"], 10)
+        self.assertAlmostEqual(result["a"]["cd_index"], 0.4, places=3)
 
     def test_all_disruptive_citers_score_1(self):
-        edges = {"a": [], "c1": ["a"], "c2": ["a"], "c3": ["a"]}
+        # Target A has a known (non-empty) reference list, so it's eligible
+        # to score -- none of its 10 citers also cite A's own reference.
+        edges = {"a": ["r"]}
+        for i in range(10):
+            edges[f"c{i}"] = ["a"]
         result = ag.compute_disruption_index(edges)
         self.assertEqual(result["a"]["cd_index"], 1.0)
 
     def test_all_consolidating_citers_score_negative_1(self):
-        edges = {"a": ["r"], "c1": ["a", "r"], "c2": ["a", "r"], "c3": ["a", "r"]}
+        edges = {"a": ["r"]}
+        for i in range(10):
+            edges[f"c{i}"] = ["a", "r"]
         result = ag.compute_disruption_index(edges)
         self.assertEqual(result["a"]["cd_index"], -1.0)
 
     def test_below_min_citers_threshold_excluded(self):
-        # Only 2 informative citers -- below DISRUPTION_MIN_CITERS (3), a
+        # Only 9 informative citers -- below DISRUPTION_MIN_CITERS (10), a
         # +1/-1 average that coarse isn't meaningful.
-        edges = {"a": [], "c1": ["a"], "c2": ["a"]}
+        edges = {"a": ["r"]}
+        for i in range(9):
+            edges[f"c{i}"] = ["a"]
         result = ag.compute_disruption_index(edges)
         self.assertNotIn("a", result)
 
-    def test_target_with_no_scanned_references_still_scores(self):
+    def test_target_with_no_scanned_references_is_excluded(self):
         # A's own reference list was never scanned (not a key in edges) --
-        # target_refs is then just empty, so every citer reads as
-        # disruptive (there's nothing for them to also cite). Correct
-        # behavior, not a bug: with no known references to compare against,
-        # "didn't cite any of them" is vacuously true.
-        edges = {"c1": ["a"], "c2": ["a"], "c3": ["a"]}
+        # target_refs is then empty, which used to force every citer to a
+        # +1 "disruptive" vote (a fake, guaranteed CD == 1.0 that dominated
+        # the "most disruptive" list purely by citation count, not by
+        # actually being disruptive). compute_disruption_index now skips
+        # scoring a target until its own references are actually known.
+        edges = {}
+        for i in range(10):
+            edges[f"c{i}"] = ["a"]
         result = ag.compute_disruption_index(edges)
-        self.assertEqual(result["a"]["cd_index"], 1.0)
+        self.assertNotIn("a", result)
 
 
 class TestShardIndex(unittest.TestCase):

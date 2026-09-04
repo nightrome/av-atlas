@@ -1713,6 +1713,13 @@
               if (normalize) {
                 const total = totalByYear[yr] || 0;
                 values[yr] = total && byYear[yr] ? byYear[yr] / total : (byYear[yr] ? 0 : null);
+              } else if (opts.skipZeros) {
+                // For a dimension whose "0 that year" usually means "didn't
+                // publish at all that year" rather than "had a slow year"
+                // (a biannual venue like ECCV/ICCV, which simply doesn't run
+                // on its off years) -- a plotted 0 reads as a crash-to-zero
+                // every other year instead of the gap it actually is.
+                values[yr] = byYear[yr] || null;
               } else {
                 values[yr] = byYear[yr] || 0;
               }

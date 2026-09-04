@@ -305,48 +305,8 @@
       taxonomy does not yet cover every subject area; not all of these are miscategorized, some
       simply fall outside the current category list.</li>
   <li><strong>No author disambiguation.</strong> Name-only matching merges distinct people who
-      share a name and splits one person across name-spelling variants. See Data quality notes
-      below.</li>
+      share a name and splits one person across name-spelling variants.</li>
 </ul>
-</div>
-</details>
-
-<details class="detail-section">
-<summary>Data quality notes</summary>
-<div class="detail-body">
-<h3 style="margin-top:0;">Institutions, countries &amp; researchers</h3>
-<p>
-  Author affiliations (institution and country) are looked up separately for AV-relevant papers.
-  Coverage is partial &mdash; currently around a third of AV-relevant papers have affiliation
-  data, and it is not a random third (papers with an arXiv preprint or a good external index
-  entry are far likelier to be covered), so the Institutions and Countries leaderboards are
-  biased toward well-indexed work. The pages always reflect current coverage. Both a total and a
-  per-paper average citation figure are shown for every institution/country/researcher, since
-  sample sizes can be small; neither is a substitute for the underlying paper count, which is
-  also always shown.
-</p>
-<p>
-  Affiliation text is sometimes noisy on the source's end; obviously broken entries are filtered
-  out, and known corporate-lab spelling variants are folded into one canonical name (e.g. every
-  Bosch research-lab spelling shows as "Bosch"). This cleanup is ongoing, not exhaustive.
-  Researchers are matched by name text alone. There's no author disambiguation, so two different
-  people sharing a name are shown as one, and one person publishing under different spellings is
-  shown as two.
-</p>
-<h3>Network page</h3>
-<p>
-  Each node is an author, sized by paper count; an edge connects two authors who've co-authored at
-  least one AV-relevant paper. Color groups authors into collaboration clusters found by label
-  propagation over the co-authorship graph itself, not by institution or category. "Centrality" is
-  a weighted PageRank score over that graph: multi-hop reach, not just direct collaborator count.
-</p>
-<h3>Dataset adoption chart (Insights)</h3>
-<p>
-  "Cited by" means a paper's own reference list names the dataset's paper, not a keyword match
-  against an abstract mentioning the dataset's name. Reference-list parsing hasn't yet reached the
-  full corpus, so a low count can mean "not yet processed" as easily as "genuinely unused." Treat
-  these figures as a floor, not a final tally.
-</p>
 </div>
 </details>
 
@@ -453,11 +413,34 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   // aggregate.py's venue_coverage -- never hand-typed, can't go stale). --
   const coverageBody = document.getElementById('coverage-body');
   const venueCoverage = cs.venue_coverage || {};
-  const ABSTRACT_LABEL = { full: 'Yes', partial: 'Some years', none: 'No' };
+  // Condenses a sorted list of years into "2014-2018, 2021, 2023-2024" --
+  // a run of 2+ consecutive years collapses to a range, anything else
+  // stays a bare year.
+  function formatYearRanges(years) {
+    if (!years || !years.length) return '';
+    const parts = [];
+    let start = years[0], prev = years[0];
+    for (let i = 1; i <= years.length; i++) {
+      const y = years[i];
+      if (y === prev + 1) { prev = y; continue; }
+      parts.push(start === prev ? `${start}` : `${start}-${prev}`);
+      start = prev = y;
+    }
+    return parts.join(', ');
+  }
   Object.entries(venueCoverage).forEach(([venue, d]) => {
     const tr = document.createElement('tr');
     const years = d.years.length ? `${d.years[0]} to ${d.years[d.years.length - 1]}` : 'n/a';
-    [venue, years, ABSTRACT_LABEL[d.abstract_coverage] || 'n/a'].forEach(text => {
+    let abstractLabel = 'n/a';
+    if (d.abstract_coverage === 'full') abstractLabel = 'Yes';
+    else if (d.abstract_coverage === 'none') abstractLabel = 'No';
+    else if (d.abstract_coverage === 'partial') {
+      // abstract_years isn't in every stats.json build yet -- fall back to
+      // the old vague label rather than showing a blank cell until the
+      // next full rebuild adds it.
+      abstractLabel = (d.abstract_years && d.abstract_years.length) ? formatYearRanges(d.abstract_years) : 'Some years';
+    }
+    [venue, years, abstractLabel].forEach(text => {
       const td = document.createElement('td');
       td.textContent = text;
       tr.appendChild(td);
@@ -592,13 +575,13 @@ function renderScholarChart() {
   const xAxisLabel = document.createElementNS(ns, 'text');
   xAxisLabel.setAttribute('x', (PAD_L + W - PAD_R) / 2); xAxisLabel.setAttribute('y', H - 6);
   xAxisLabel.setAttribute('text-anchor', 'middle'); xAxisLabel.setAttribute('class', 'axis-label');
-  xAxisLabel.textContent = 'This site’s internal citation count (log scale)';
+  xAxisLabel.textContent = 'Internal citations (log scale)';
   svg.appendChild(xAxisLabel);
   const yAxisLabel = document.createElementNS(ns, 'text');
   yAxisLabel.setAttribute('x', 14); yAxisLabel.setAttribute('y', (PAD_T + H - PAD_B) / 2);
   yAxisLabel.setAttribute('text-anchor', 'middle'); yAxisLabel.setAttribute('class', 'axis-label');
   yAxisLabel.setAttribute('transform', `rotate(-90, 14, ${(PAD_T + H - PAD_B) / 2})`);
-  yAxisLabel.textContent = 'Google Scholar citation count (log scale)';
+  yAxisLabel.textContent = 'Google Scholar citations (log scale)';
   svg.appendChild(yAxisLabel);
 
   const yEqX = document.createElementNS(ns, 'path');

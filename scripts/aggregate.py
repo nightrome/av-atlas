@@ -1636,6 +1636,13 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
                 "title": p["title"], "short_title": short_paper_name(p),
                 "year": p.get("year"), "venue": p.get("venue"), "cd_index": p["cd_index"],
                 "n_citers": p.get("cd_n_citers"),
+                # The paper's own in-corpus citation count -- distinct from
+                # n_citers above (only the subset of citers informative
+                # enough for the CD score itself). Lets the Insights page
+                # offer a "min citations" filter on this list without every
+                # entry silently meaning "min citers used for scoring"
+                # instead of the citation count a reader actually recognizes.
+                "citations": p.get("citations"),
             }
         # cd_index is only ever one of a handful of exact fractions (n
         # citers -> n+1 possible scores -- 3 citers can only ever land on
@@ -2743,7 +2750,7 @@ def main():
     # guess. Below the cliff isn't "wrong," just not one of this corpus's
     # target venues, and would make an unreadable 2,800+-row table if shown.
     VENUE_COVERAGE_MIN_PAPERS = 500
-    venue_coverage_acc = defaultdict(lambda: {"years": set(), "with_abstract": 0, "total": 0})
+    venue_coverage_acc = defaultdict(lambda: {"years": set(), "abstract_years": set(), "with_abstract": 0, "total": 0})
     for e in all_entries:
         v = e.get("venue")
         if not v or v == "arXiv":
@@ -2754,6 +2761,8 @@ def main():
             rec["years"].add(e["year"])
         if e.get("abstract"):
             rec["with_abstract"] += 1
+            if e.get("year"):
+                rec["abstract_years"].add(e["year"])
     venue_coverage = {
         v: {
             "years": sorted(rec["years"]),
@@ -2763,6 +2772,12 @@ def main():
                 else "none" if rec["with_abstract"] == 0
                 else "partial"
             ),
+            # Only meaningful (and only sent) for "partial" -- which specific
+            # years have at least one abstract, so About can show that list
+            # instead of a vague "Some years" (a venue with abstracts only
+            # for 2019-2021 out of a 2012-2026 run reads very differently
+            # from one missing just 2026).
+            "abstract_years": sorted(rec["abstract_years"]),
         }
         for v, rec in sorted(venue_coverage_acc.items(), key=lambda kv: -kv[1]["total"])
         if rec["total"] >= VENUE_COVERAGE_MIN_PAPERS

@@ -130,7 +130,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
       ],
     },
     topN: {
-      default: 100, storageKey: 'venues-timeline-topn',
+      default: 10, storageKey: 'venues-timeline-topn',
       onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); render(); },
     },
   });
@@ -283,6 +283,9 @@ function render() {
     rankedNames: chartRows.map(r => r.name),
     elIds: { legend: 'timeline-legend', chart: 'timeline-chart', tooltip: 'timeline-tooltip' },
     yLabel: 'Papers published per year',
+    // Several seed venues (ECCV, ICCV, ...) run every other year -- their
+    // off years are a real gap, not a 0-paper year, so don't draw one.
+    skipZeros: true,
   });
   currentTimelineDraw(filters.topN || 10);
 }
