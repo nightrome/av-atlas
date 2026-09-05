@@ -229,13 +229,21 @@ function render(stats) {
   const totalCitations = citedPapers.reduce((s, p) => s + p.citations, 0);
   const avg = citedPapers.length ? Math.round((totalCitations / citedPapers.length) * 10) / 10 : null;
 
-  // A small, manually-reviewed set of names (scholar_profiles.json) where a
-  // real search couldn't tell two-or-more different real people apart --
-  // warns a reader rather than presenting one merged identity's stats as
-  // if they reliably belonged to one person.
+  // Two independent conflation signals, both rendered as the same warning
+  // banner: `ambiguous` is a small, manually-reviewed set (scholar_profiles.json)
+  // where a real search couldn't tell two-or-more different real people
+  // apart; `identity_conflict` is computed every build from OpenAlex author
+  // ids actually seen on this name's own papers -- >=1 other id than the
+  // rest means OpenAlex's own disambiguation disagrees with this site's
+  // name-string matching. Either one warns a reader rather than presenting
+  // one merged identity's stats as if they reliably belonged to one person.
   const warningEl = document.getElementById('ambiguous-warning');
-  if (detail.ambiguous) {
-    warningEl.textContent = '⚠ There may be multiple researchers with this name. The statistics below may not all belong to the same person'
+  if (detail.ambiguous || detail.identity_conflict) {
+    const reason = detail.identity_conflict
+      ? ' (their papers carry more than one distinct author identifier)'
+      : '';
+    warningEl.textContent = '⚠ There may be multiple researchers with this name' + reason
+      + '. The statistics below may not all belong to the same person'
       + (detail.scholar_url ? ', and the linked Google Scholar profile is only one of them.' : '.');
     warningEl.style.display = '';
   } else {

@@ -405,6 +405,67 @@ def clean_author_name(name):
     return name
 
 
+# User-confirmed identity split: this pipeline has no author disambiguation
+# (see flag_ambiguous_authors.py's docstring -- authors are matched by
+# cleaned name string alone), and "Yue Wang" turned out to conflate at least
+# five distinct real people badly enough to actively misattribute credit --
+# a Zhejiang University SLAM/robotics researcher who publishes almost
+# exclusively with Rong Xiong, a Clemson University CACC/platooning
+# researcher, an NYU Abu Dhabi security researcher, an Australia-based one,
+# and the one this splits out: the MIT CSAIL -> USC 3D perception/AV
+# researcher (scholar.google.com/citations?user=v-AEFIEAAAAJ).
+#
+# YUE_WANG_VERIFIED_TITLES is every paper confirmed to be his: the papers
+# his own Scholar profile lists, plus a handful his Scholar list happens to
+# omit but that share his known recurring collaborators (Hang Zhao/Yilun
+# Wang/Tianyuan Yuan-Zhang/Yicheng Liu, or the Marco Pavone/Yan Wang/Yuxiao
+# Chen/Boyi Li group already confirmed via his own PARA-Drive and "A
+# Language Agent for Autonomous Driving"). Every OTHER "Yue Wang" paper is
+# left in one explicitly-unidentified bucket rather than guessing which of
+# the other several people it belongs to -- see the "ambiguous" flag kept on
+# that bucket's own scholar_profiles.json entry.
+YUE_WANG_VERIFIED_TITLES = {
+    "DETR3D: 3D Object Detection from Multi-view Images via 3D-to-2D Queries",
+    "GPT-Driver: Learning to Drive with GPT",
+    "HDMapNet: An Online HD Map Construction and Evaluation Framework",
+    "Occ3D: A Large-Scale 3D Occupancy Prediction Benchmark for Autonomous Driving",
+    "PARA-Drive: Parallelized Architecture for Real-time Autonomous Driving",
+    "VectorMapNet: End-to-end Vectorized HD Map Learning",
+    "FUTR3D: A Unified Sensor Fusion Framework for 3D Detection",
+    "A Language Agent for Autonomous Driving",
+    "Pillar-based Object Detection for Autonomous Driving",
+    "ViP3D: End-to-End Visual Trajectory Prediction via 3D Agent Queries",
+    "Neural Map Prior for Autonomous Driving",
+    "Towards Realistic Scene Generation with LiDAR Diffusion Models",
+    "SSCBench: A Large-Scale 3D Semantic Scene Completion Benchmark for Autonomous Driving",
+    "Object DGCNN: 3D Object Detection using Dynamic Graphs",
+    "Driving Everywhere with Large Language Model Policy Adaptation",
+    "InfiniCube: Unbounded and Controllable Dynamic 3D Driving Scene Generation with World-Guided Video Models",
+    "Multi-Robot Scene Completion: Towards Task-Agnostic Collaborative Perception",
+    "GeoMAE: Masked Geometric Target Prediction for Self-Supervised Point Cloud Pre-Training",
+    "PreSight: Enhancing Autonomous Vehicle Perception with City-Scale NeRF Priors",
+    "Extrapolated Urban View Synthesis Benchmark",
+    "Multi-Frame to Single-Frame: Knowledge Distillation for 3D Object Detection",
+    "StreamMapNet: Streaming Mapping Network for Vectorized Online HD Map Construction",
+    "MUTR3D: A Multi-camera Tracking Framework via 3D-to-2D Queries",
+    "Cross-Dataset Sensor Alignment: Making Visual 3D Object Detector Generalizable",
+    "Learning Personalized Driving Styles via Reinforcement Learning from Human Feedback",
+    "Discrete Diffusion for Reflective Vision-Language-Action Models in Autonomous Driving",
+    "ReflectDrive-2: Reinforcement-Learning-Aligned Self-Editing for Discrete Diffusion Driving",
+    "Towards Efficient and Effective Multi-Camera Encoding for End-to-End Driving",
+    "Accelerating Structured Chain-of-Thought in Autonomous Vehicles",
+}
+
+
+def resolve_ambiguous_author_identity(name, title):
+    """Applied per-paper (not inside clean_author_name, which has no title
+    context) at every site that resolves a specific paper's author list --
+    see YUE_WANG_VERIFIED_TITLES above."""
+    if name == "Yue Wang" and title not in YUE_WANG_VERIFIED_TITLES:
+        return "Yue Wang (unidentified)"
+    return name
+
+
 # An affiliation/LaTeX-formatting fragment that leaked into the author-name
 # field instead of the affiliation field (seen on real data: "[2mm] UC
 # Berkeley" -- a LaTeX vertical-spacing command glued onto an institution
@@ -1309,6 +1370,7 @@ INDUSTRY_INSTITUTION_OVERRIDES = {
     "waymo", "tesla", "nvidia", "nvidia research", "baidu", "huawei",
     "mercedes-benz", "mercedes-benz ag", "bmw", "bmw group", "motional",
     "nutonomy", "aptiv", "amazon", "google", "google research", "google deepmind",
+    "google + waymo",
     "deepmind", "microsoft", "microsoft research", "apple", "qualcomm", "uber",
     "uber atg", "uber advanced technologies group", "cruise", "cruise llc",
     "zoox", "nuro", "aurora", "aurora innovation", "argo ai", "valeo",
@@ -2029,10 +2091,12 @@ def main():
         # would both misrepresent the person and fail to match the full-name
         # keys used in author_institutions/author_countries/author_detail.
         details = e.get("authors_detail")
+        title = e.get("title")
         if details:
             authors = [clean_author_name(a["name"]) for a in details if a.get("name")]
         else:
             authors = [clean_author_name(a) for a in (e.get("authors") or "").split(",") if a.strip()]
+        authors = [resolve_ambiguous_author_identity(a, title) for a in authors]
         # This "authors" list is what the Researchers page actually aggregates
         # from client-side (all_papers, see filters.js) -- a bare surname here
         # (OpenAlex's own occasional data issue, or a mis-split "authors"
@@ -2458,6 +2522,9 @@ def main():
         lambda: {"papers": 0, "citations": 0, "first_year": None, "last_year": None}))
     country_citations = defaultdict(int)
     country_papers = defaultdict(int)
+    # name -> set of distinct OpenAlex author ids seen for that cleaned name
+    # across all their papers -- see identity_conflicts below.
+    author_openalex_ids = defaultdict(set)
 
     n_excluded = 0
     n_with_author_detail = 0
@@ -2486,11 +2553,15 @@ def main():
         co_author_names = {clean_author_name(x.get("name")) for x in details if x.get("name")}
         for a in details:
             name = clean_author_name(a.get("name"))
+            name = resolve_ambiguous_author_identity(name, e.get("title"))
             if not name or not is_full_name(name):
                 continue
             author_citations[name] += c
             author_papers[name] += 1
             author_names_enriched.add(name)
+            oaid = a.get("openalex_id")
+            if oaid:
+                author_openalex_ids[name].add(oaid)
             own_affs = author_affiliations(a, all_author_names, co_author_names)
             if not blanket_shared:
                 for aff in own_affs:
@@ -2535,6 +2606,19 @@ def main():
             country_citations[name] += c
             country_papers[name] += 1
 
+    # A cleaned name mapping to >=2 distinct OpenAlex author ids across its
+    # papers is positive evidence of a conflated identity -- OpenAlex's own
+    # author disambiguation disagreeing with this site's name-string
+    # matching, not just an absence of proof. A name with 0 or 1 ids is left
+    # alone: most of the corpus's affiliation data predates id capture
+    # (arXiv-HTML/CVF-PDF sources never had one -- see enrich_core_authors.py),
+    # so "no id" is missing evidence, not evidence of a problem, and
+    # excluding on that basis would empty the leaderboards rather than clean
+    # them. This is a second, independent signal from flag_ambiguous_authors.py's
+    # structural heuristic (collaboration clusters, affiliation churn, ...);
+    # the two don't always agree and both are surfaced.
+    identity_conflicts = {name for name, ids in author_openalex_ids.items() if len(ids) >= 2}
+
     def top(citations_d, papers_d, n=50):
         # Sorted by total citations (papers this small a sample favors, so surface
         # both: the total and the per-paper average, plus the paper count itself
@@ -2556,7 +2640,8 @@ def main():
 
     def top_authors_by_avg(citations_d, papers_d, n=50, min_papers=None):
         floor = MIN_AUTHOR_PAPERS if min_papers is None else min_papers
-        eligible = [(k, v) for k, v in citations_d.items() if papers_d[k] > floor]
+        eligible = [(k, v) for k, v in citations_d.items()
+                    if papers_d[k] > floor and k not in identity_conflicts]
         ranked = sorted(eligible, key=lambda kv: kv[1] / papers_d[kv[0]], reverse=True)[:n]
         return [{"name": k, "citations": v, "papers": papers_d[k],
                   "avg_citations": round(v / papers_d[k])} for k, v in ranked]
@@ -2657,13 +2742,22 @@ def main():
             # profile, so a reader is warned rather than shown one person's
             # merged stats as if they were reliably one identity.
             "ambiguous": bool(profile.get("ambiguous")),
+            # Automatic counterpart to "ambiguous" above: that one is a small,
+            # manually-reviewed set; this one is derived every build from
+            # OpenAlex author ids actually seen on this name's own papers
+            # (see identity_conflicts above). Independent signals, surfaced
+            # separately rather than merged into one flag.
+            "identity_conflict": name in identity_conflicts,
         }
 
     # "Most prolific" means paper count specifically, not the avg-citations
     # ranking top_authors_by_avg produces -- a separate small ranking just
-    # for that one insight.
+    # for that one insight. Same identity_conflicts exclusion as
+    # top_authors_by_avg -- a name known to conflate >=1 real people has no
+    # business anchoring a "who publishes the most" ranking either.
     top_authors_by_paper_count = sorted(
-        ({"name": k, "papers": v, "citations": author_citations[k]} for k, v in author_papers.items()),
+        ({"name": k, "papers": v, "citations": author_citations[k]}
+         for k, v in author_papers.items() if k not in identity_conflicts),
         key=lambda a: a["papers"], reverse=True,
     )[:5]
 
@@ -2729,6 +2823,7 @@ def main():
         cites = citation_count(e)
         for raw in (e.get("authors") or "").split(","):
             name = clean_author_name(raw)
+            name = resolve_ambiguous_author_identity(name, e.get("title"))
             if name and is_full_name(name):
                 non_av_paper_counts[name] += 1
                 if cites:

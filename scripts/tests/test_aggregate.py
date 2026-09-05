@@ -138,8 +138,11 @@ class TestIsValidInstitution(unittest.TestCase):
 class TestNormalizeInstitution(unittest.TestCase):
     def test_strips_trailing_country_parenthetical(self):
         self.assertEqual(ag.normalize_institution("Meta (Israel)"), "Meta")
-        self.assertEqual(ag.normalize_institution("Google (United States)"), "Google")
         self.assertEqual(ag.normalize_institution("Baidu (China)"), "Baidu")
+        # Google is also aliased to the combined "Google + Waymo" entity
+        # (see test_applies_known_aliases below), so this case exercises
+        # both the country-parenthetical strip AND that alias in sequence.
+        self.assertEqual(ag.normalize_institution("Google (United States)"), "Google + Waymo")
 
     def test_strips_trailing_period(self):
         self.assertEqual(ag.normalize_institution("Graz University of Technology."), "Graz University of Technology")
@@ -150,7 +153,9 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertEqual(ag.normalize_institution("Cooperative Medianet Innovation Center"), "Shanghai Jiao Tong University")
         self.assertEqual(ag.normalize_institution("Baidu Inc."), "Baidu")
         self.assertEqual(ag.normalize_institution("Baidu Research"), "Baidu")
-        self.assertEqual(ag.normalize_institution("Waymo LLC"), "Waymo")
+        # Waymo is merged into the combined "Google + Waymo" institution
+        # (user-requested), so this also exercises that merge alias.
+        self.assertEqual(ag.normalize_institution("Waymo LLC"), "Google + Waymo")
         # Real case, confirmed by the user: OpenAlex itself mis-splits some
         # authors' "UC Berkeley"-shaped affiliation into two institution
         # records -- "Berkeley College" is a real but unrelated small
@@ -1129,24 +1134,69 @@ class TestAggregateEndToEnd(unittest.TestCase):
     def test_institution_top_authors_only_credits_the_authors_own_affiliation(self):
         # Real case, confirmed by the user: institution.html's "top authors
         # here" used to credit EVERY author on a paper with each OTHER
-        # author's institution too -- Dragomir Anguelov (Waymo-only) was
-        # showing as a top author of Google purely because a co-author on a
-        # shared paper is Google-affiliated. institution_authors must only
-        # ever attribute an institution to the specific author whose OWN
-        # authors_detail entry names it.
+        # author's institution too -- an author at one company was showing
+        # as a top author of an unrelated co-author's company purely because
+        # they shared a paper. institution_authors must only ever attribute
+        # an institution to the specific author whose OWN authors_detail
+        # entry names it. Tesla/Nvidia here (not Google/Waymo, which are now
+        # merged into one combined institution -- see normalize_institution)
+        # since this test needs two institutions that stay distinct.
         stats = self._run([
             {"title": "Shared Paper", "year": 2020, "venue": "CVPR", "av_relevance": "core", "citations": 10,
              "authors_detail": [
-                 {"name": "Waymo Person", "affiliations": ["Waymo"]},
-                 {"name": "Google Person", "affiliations": ["Google"]},
+                 {"name": "Tesla Person", "affiliations": ["Tesla"]},
+                 {"name": "Nvidia Person", "affiliations": ["NVIDIA"]},
              ]},
         ])
-        waymo_names = {a["name"] for a in stats["institution_authors"].get("Waymo", [])}
-        google_names = {a["name"] for a in stats["institution_authors"].get("Google", [])}
-        self.assertIn("Waymo Person", waymo_names)
-        self.assertNotIn("Waymo Person", google_names)
-        self.assertIn("Google Person", google_names)
-        self.assertNotIn("Google Person", waymo_names)
+        tesla_names = {a["name"] for a in stats["institution_authors"].get("Tesla", [])}
+        nvidia_names = {a["name"] for a in stats["institution_authors"].get("NVIDIA", [])}
+        self.assertIn("Tesla Person", tesla_names)
+        self.assertNotIn("Tesla Person", nvidia_names)
+        self.assertIn("Nvidia Person", nvidia_names)
+        self.assertNotIn("Nvidia Person", tesla_names)
+
+    def test_author_with_conflicting_openalex_ids_excluded_from_ranking(self):
+        # Two of this cleaned name's papers carry two DIFFERENT OpenAlex
+        # author ids -- OpenAlex's own disambiguation says these are two
+        # different real people who happen to share a cleaned name string.
+        # Positive conflict evidence, not just an absent id, so the name is
+        # pulled out of the ranked leaderboards (still visible via
+        # author_detail, badged identity_conflict=True).
+        stats = self._run([
+            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "core", "citations": 50,
+             "authors_detail": [{"name": "Wei Wang", "affiliations": ["MIT"], "openalex_id": "A1111"}]},
+            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "core", "citations": 50,
+             "authors_detail": [{"name": "Wei Wang", "affiliations": ["Tsinghua University"], "openalex_id": "A2222"}]},
+        ])
+        names = {a["name"] for a in stats["top_authors"]}
+        self.assertNotIn("Wei Wang", names)
+        self.assertTrue(stats["author_detail"]["Wei Wang"]["identity_conflict"])
+
+    def test_author_with_one_consistent_openalex_id_is_ranked(self):
+        stats = self._run([
+            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "core", "citations": 50,
+             "authors_detail": [{"name": "Jane Doe", "affiliations": ["MIT"], "openalex_id": "A9999"}]},
+            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "core", "citations": 50,
+             "authors_detail": [{"name": "Jane Doe", "affiliations": ["MIT"], "openalex_id": "A9999"}]},
+        ])
+        names = {a["name"] for a in stats["top_authors"]}
+        self.assertIn("Jane Doe", names)
+        self.assertFalse(stats["author_detail"]["Jane Doe"]["identity_conflict"])
+
+    def test_author_with_no_openalex_id_is_not_excluded(self):
+        # Most of the corpus's affiliation data predates id capture (arXiv-
+        # HTML/CVF-PDF sources never had one -- see enrich_core_authors.py).
+        # "No id" is missing evidence, not evidence of a conflated identity,
+        # so it must never exclude anyone on its own.
+        stats = self._run([
+            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "core", "citations": 50,
+             "authors_detail": [{"name": "John Smith", "affiliations": ["MIT"]}]},
+            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "core", "citations": 50,
+             "authors_detail": [{"name": "John Smith", "affiliations": ["MIT"]}]},
+        ])
+        names = {a["name"] for a in stats["top_authors"]}
+        self.assertIn("John Smith", names)
+        self.assertFalse(stats["author_detail"]["John Smith"]["identity_conflict"])
 
     def test_author_countries_are_chronological_not_alphabetical(self):
         # user-flagged real case: an author showed "United States" as

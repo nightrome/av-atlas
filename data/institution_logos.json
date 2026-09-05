@@ -209,7 +209,8 @@
     "source": "wikidata"
   },
   "Tübingen AI Center": {
-    "logo_url": null
+    "logo_url": "assets/logos/tubingen-ai-center.png",
+    "source": "manual"
   },
   "University of Hong Kong": {
     "logo_url": "https://upload.wikimedia.org/wikipedia/en/5/5e/University_of_Hong_Kong_coat_of_arms.png",
@@ -1148,6 +1149,10 @@
   },
   "FZI Research Center for Information Technology": {
     "logo_url": "assets/logos/fzi.png",
+    "source": "manual"
+  },
+  "Motional": {
+    "logo_url": "assets/logos/motional.png",
     "source": "manual"
   }
 }
