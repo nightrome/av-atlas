@@ -72,14 +72,14 @@
 </div>
 
 <div class="panel">
-  <div class="panel-title-row"><h2 style="margin-top:0;">Leading authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top authors by the chosen metric -- as many as the All authors table below shows on one page." data-tip="The top authors by the chosen metric -- as many as the All authors table below shows on one page.">i</span></div>
+  <div class="panel-title-row"><h2 style="margin-top:0;">Leading authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top authors by the chosen metric, up to the Show top limit above -- the same cap the chart and the table use." data-tip="The top authors by the chosen metric, up to the Show top limit above -- the same cap the chart and the table use.">i</span></div>
   <div class="card-grid" id="authors-grid"></div>
 </div>
 
 <div class="panel">
   <div class="panel-title-row">
-    <h2 style="margin-top:0;">All authors</h2>
-    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Authors ranked by the chosen metric, computed from the papers left by the current filters. “Citations / paper” averages only over that author’s papers that have at least one citation." data-tip="Authors ranked by the chosen metric, computed from the papers left by the current filters. “Citations / paper” averages only over that author’s papers that have at least one citation.">i</span></div>
+    <h2 style="margin-top:0;">Top authors</h2>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="The top authors (up to the Show top limit) ranked by the chosen metric, computed from the papers left by the current filters. “Citations / paper” averages only over that author’s papers that have at least one citation." data-tip="The top authors (up to the Show top limit) ranked by the chosen metric, computed from the papers left by the current filters. “Citations / paper” averages only over that author’s papers that have at least one citation.">i</span></div>
   </div>
   <p id="authors-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
   <div id="pagination-container"></div>
@@ -241,7 +241,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
       { key: 'papers', label: 'Papers' },
     ],
     minPapers: { default: 50 },
-    topN: { default: 50, storageKey: 'authors-topn', onChange: render },
+    topN: { default: 10, storageKey: 'authors-topn', onChange: render },
   });
   render();
 }).catch(err => {
@@ -329,17 +329,16 @@ function render() {
   }[metric] || byTotal;
   authors.sort(authorSort);
 
-  // "Show top N" caps the scatter chart: it's one dot per leader, so it can
-  // carry more points than a card grid comfortably can. The "Leading
-  // authors" cards instead track the "All authors" table's own page size
-  // (default 10) -- the cards are a highlight view of the table's first
-  // page, so a 10-row table should show 10 cards, not whatever "Show top"
-  // happens to be (user-flagged: 50 cards above a 10-row table). `authors`
-  // (unsliced) feeds the table; `chartAuthors` (topN-sliced) feeds the
-  // chart; `cardAuthors` (page-size-sliced) feeds the cards.
-  const topN = filters.topN || 50;
+  // "Show top N" is the single limit for this whole page -- the scatter
+  // chart, the Leading-authors cards, and the ranked table below all show
+  // exactly the top N by the chosen metric (user-requested: one control,
+  // not a separate cap per section). Defaults to 10; raise it (up to 250)
+  // and the table pages through that top slice with Prev/Next. `matchCount`
+  // stays the full filtered total, shown in the result count so "top N of
+  // how many" is still visible.
+  const topN = filters.topN || 10;
   const matchCount = authors.length;
-  const chartAuthors = authors.slice(0, topN);
+  const topAuthors = authors.slice(0, topN);
 
   document.getElementById('result-count').textContent = `${matchCount} authors`;
   document.getElementById('authors-summary-stat').textContent =
@@ -348,19 +347,18 @@ function render() {
   // Authors with no citation-bearing paper at all have no meaningful y-value
   // for this chart -- plotting them at 0 would misrepresent "unknown" as
   // "confirmed zero impact".
-  renderScatter(document.getElementById('scatter'), chartAuthors.filter(a => a.avg_citations != null));
+  renderScatter(document.getElementById('scatter'), topAuthors.filter(a => a.avg_citations != null));
 
-  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length, { onChange: render, showSizeControl: false });
-  const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);
-
-  const cardAuthors = authors.slice(0, pagination.pageSize);
   const authorsGrid = document.getElementById('authors-grid');
-  if (!cardAuthors.length) {
+  if (!topAuthors.length) {
     renderEmptyState(authorsGrid, 'authors.html', 'No authors match the current filters. Try lowering "Min." or clearing a filter.');
   } else {
     authorsGrid.innerHTML = '';
-    cardAuthors.forEach((a, i) => authorsGrid.appendChild(authorCard(a, i + 1, detail[a.name])));
+    topAuthors.forEach((a, i) => authorsGrid.appendChild(authorCard(a, i + 1, detail[a.name])));
   }
+
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', topAuthors.length, { onChange: render, showSizeControl: false });
+  const shown = topAuthors.slice(pagination.offset, pagination.offset + pagination.pageSize);
 
   const tbody = document.getElementById('researchers-body');
   function renderBody(data) {

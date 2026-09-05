@@ -122,11 +122,11 @@ fetchStatsWithRelevance(relevance).then(stats => {
     minPapers: {
       default: 1,
       options: [
-        { value: 1, label: '1+ AV papers' },
-        { value: 10, label: '10+ AV papers' },
-        { value: 25, label: '25+ AV papers' },
-        { value: 80, label: '80+ AV papers' },
-        { value: 200, label: '200+ AV papers' },
+        { value: 1, label: '1+ papers' },
+        { value: 10, label: '10+ papers' },
+        { value: 25, label: '25+ papers' },
+        { value: 80, label: '80+ papers' },
+        { value: 200, label: '200+ papers' },
       ],
     },
     topN: {
@@ -180,7 +180,7 @@ function render() {
   if (excludePreprints && excludePreprints.checked) papers = papers.filter(p => p.venue !== 'arXiv');
 
   const totalIndexed = (stats.corpus_stats || {}).by_venue || {};
-  // filters.minPapers is inclusive ("80+ AV papers"), aggregateByDimension's
+  // filters.minPapers is inclusive ("80+ papers"), aggregateByDimension's
   // own minPapers is exclusive (> N) -- same -1 adjustment as every other
   // page with a Min. control (see institutions.html).
   let rows = aggregateByDimension(papers, p => [p.venue], { minPapers: (filters.minPapers || 1) - 1, minCitedForAvg: 3 });
