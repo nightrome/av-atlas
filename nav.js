@@ -109,6 +109,13 @@
   // search query param and clears the remembered dropdown state in
   // sessionStorage, so the page comes back exactly as it looks on a first
   // visit rather than keeping the controls where they were left.
+  //
+  // The one exception is a detail page's identity param -- author.html/
+  // institution.html/venue.html key on ?name=, paper.html on ?title=.
+  // That's not a filter, it's WHICH record the page is, so dropping it here
+  // would turn a valid link into "Unknown author" (user-reported). Those
+  // two keys are carried across the reset; everything else still goes.
+  const IDENTITY_PARAMS = ['name', 'title'];
   const reloadBtn = document.createElement('button');
   reloadBtn.id = 'hardReload';
   reloadBtn.title = 'Reset filters and reload, bypassing the browser cache';
@@ -126,6 +133,11 @@
     }
     try { sessionStorage.clear(); } catch (e) { /* ignore */ }
     const u = new URL(location.origin + location.pathname);
+    const prev = new URLSearchParams(location.search);
+    IDENTITY_PARAMS.forEach(k => {
+      const val = prev.get(k);
+      if (val) u.searchParams.set(k, val);
+    });
     u.searchParams.set('v', Date.now().toString(36));
     location.replace(u.toString());
   });

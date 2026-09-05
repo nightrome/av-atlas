@@ -72,7 +72,7 @@
 </div>
 
 <div class="panel">
-  <div class="panel-title-row"><h2 style="margin-top:0;">Leading authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top authors by the chosen metric, up to the Show top limit above -- the same cap the scatter chart uses." data-tip="The top authors by the chosen metric, up to the Show top limit above -- the same cap the scatter chart uses.">i</span></div>
+  <div class="panel-title-row"><h2 style="margin-top:0;">Leading authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top authors by the chosen metric -- as many as the All authors table below shows on one page." data-tip="The top authors by the chosen metric -- as many as the All authors table below shows on one page.">i</span></div>
   <div class="card-grid" id="authors-grid"></div>
 </div>
 
@@ -329,16 +329,14 @@ function render() {
   }[metric] || byTotal;
   authors.sort(authorSort);
 
-  // "Show top N" caps the scatter chart AND the Leading authors cards --
-  // both are a highlight view of the leaders, not a full listing, so
-  // "top N" reads naturally as "show me N of them" (user-flagged: it
-  // visibly changed the scatter but the cards stayed put). The "All
-  // authors" table below is a genuine full listing with its own Prev/Next
-  // through the complete filtered set, deliberately NOT capped by this --
-  // a table capped at whatever "Show top" happens to be rarely has a
-  // second page to go to, even though nothing about a table (unlike a
-  // chart or a card grid) needs a readability cap. `authors` (unsliced)
-  // feeds the table; `chartAuthors` (topN-sliced) feeds the chart + cards.
+  // "Show top N" caps the scatter chart: it's one dot per leader, so it can
+  // carry more points than a card grid comfortably can. The "Leading
+  // authors" cards instead track the "All authors" table's own page size
+  // (default 10) -- the cards are a highlight view of the table's first
+  // page, so a 10-row table should show 10 cards, not whatever "Show top"
+  // happens to be (user-flagged: 50 cards above a 10-row table). `authors`
+  // (unsliced) feeds the table; `chartAuthors` (topN-sliced) feeds the
+  // chart; `cardAuthors` (page-size-sliced) feeds the cards.
   const topN = filters.topN || 50;
   const matchCount = authors.length;
   const chartAuthors = authors.slice(0, topN);
@@ -352,16 +350,17 @@ function render() {
   // "confirmed zero impact".
   renderScatter(document.getElementById('scatter'), chartAuthors.filter(a => a.avg_citations != null));
 
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length, { onChange: render, showSizeControl: false });
+  const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);
+
+  const cardAuthors = authors.slice(0, pagination.pageSize);
   const authorsGrid = document.getElementById('authors-grid');
-  if (!chartAuthors.length) {
+  if (!cardAuthors.length) {
     renderEmptyState(authorsGrid, 'authors.html', 'No authors match the current filters. Try lowering "Min." or clearing a filter.');
   } else {
     authorsGrid.innerHTML = '';
-    chartAuthors.forEach((a, i) => authorsGrid.appendChild(authorCard(a, i + 1, detail[a.name])));
+    cardAuthors.forEach((a, i) => authorsGrid.appendChild(authorCard(a, i + 1, detail[a.name])));
   }
-
-  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length, { onChange: render, showSizeControl: false });
-  const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);
 
   const tbody = document.getElementById('researchers-body');
   function renderBody(data) {
