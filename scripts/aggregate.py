@@ -382,6 +382,26 @@ KNOWN_NAME_FIXES = {
     # Waslander" (~3 papers) is the same person. Confirmed one identity via
     # scholar.google.com/citations?user=jY_Bcd8AAAAJ.
     "Steven Waslander": "Steven L. Waslander",
+    # User-confirmed: every spelling of TUM's Alois Knoll found across the
+    # corpus, consolidated onto the existing canonical "Alois Knoll" (which
+    # already carries the correct Google Scholar profile,
+    # scholar.google.com/citations?user=-CA8QgwAAAAJ). "Alois C. Knoll" is
+    # actually the MORE common raw form here (59 papers vs. 54 for the bare
+    # "Alois Knoll" spelling) but the canonical key is kept as-is rather than
+    # renamed, to avoid breaking the already-correct profile/links pointing
+    # at it. "A. Knoll" confirmed the same person via shared TUM co-authors
+    # (Tobias Kessler, Klemens Esterle, Liguo Zhou, Gereon Hinz) on all 4 of
+    # its papers; "6th Alois Knoll" is a garbled OCR artifact, not a
+    # different person.
+    "Alois C. Knoll": "Alois Knoll",
+    "Alois Christian Knoll": "Alois Knoll",
+    "A. Knoll": "Alois Knoll",
+    "6th Alois Knoll": "Alois Knoll",
+    # User-confirmed: TUM's Matthias Althoff (CommonRoad, motion planning),
+    # scholar.google.com/citations?user=E3zazJAAAAAJ. NOT "Daniel Althoff"
+    # (2 papers) -- a different first name, no evidence of being the same
+    # person, left untouched.
+    "M. Althoff": "Matthias Althoff",
 }
 
 # PDF/font text extraction occasionally renders a hyphenated name's hyphen
