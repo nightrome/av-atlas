@@ -70,7 +70,6 @@ Usage: python fetch_affiliations_arxiv.py
 """
 import copy
 import json
-import random
 import re
 import time
 import urllib.error
@@ -308,18 +307,22 @@ def save_json(path, data):
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
 
 
+def _in_corpus_citations(p):
+    return ((p.get("citations_by_source") or {}).get("in_corpus") or {}).get("count") or 0
+
+
 def load_pending(already_done):
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     core = [p for p in papers if p.get("av_relevance") == "core" and not p.get("authors_detail")]
+    # Most-cited-first. Affiliation coverage is rate-limited and will plateau
+    # well short of 100%, so whatever fraction it does reach should be the
+    # papers that actually anchor the Institutions/Countries leaderboards --
+    # the top-cited ones -- not a random slice (user-requested, supersedes
+    # the earlier "random order for representativeness" call now that the
+    # ceiling is the binding constraint). papers_full.json's own order
+    # clusters by venue, so an explicit sort is needed either way.
+    core.sort(key=_in_corpus_citations, reverse=True)
     pending = [p["title"] for p in core if normalize_title(p.get("title")) not in already_done]
-    # Shuffled, not left in papers_full.json's own order -- that order
-    # clusters by venue (confirmed: the first ~250 pending titles in a real
-    # run were almost entirely CVPR/ECCV), so an interrupted run only ever
-    # gives even partial coverage of whichever venues happen to sort first,
-    # not a representative slice of the corpus (user-requested: "make sure
-    # all crawlers proceed in a random order, so that the page content
-    # already feels meaningful/representative").
-    random.shuffle(pending)
     return pending, len(core)
 
 

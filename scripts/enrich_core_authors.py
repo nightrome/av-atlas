@@ -52,7 +52,6 @@ Usage: python enrich_core_authors.py [--refetch-ids]
 """
 import argparse
 import json
-import random
 import re
 import time
 import urllib.error
@@ -134,20 +133,24 @@ def _needs_ids(p):
             and not any("openalex_id" in a for a in ad))
 
 
+def _in_corpus_citations(p):
+    return ((p.get("citations_by_source") or {}).get("in_corpus") or {}).get("count") or 0
+
+
 def load_pending(refetch_ids):
     """Re-reads the file fresh and returns (all_papers, titles needing lookup, core_total)."""
     papers = json.loads(IN_FILE.read_text(encoding="utf-8"))
     core = [p for p in papers if p.get("av_relevance") == "core"]
+    # Most-cited-first: OpenAlex's rate ceiling means coverage plateaus well
+    # short of 100%, so the papers it does reach should be the ones that
+    # anchor the Institutions/Countries leaderboards -- the top-cited ones --
+    # not a random slice (user-requested, supersedes the earlier
+    # random-order call now that the ceiling is the binding constraint).
+    core.sort(key=_in_corpus_citations, reverse=True)
     if refetch_ids:
         pending_titles = [p["title"] for p in core if _needs_ids(p)]
     else:
         pending_titles = [p["title"] for p in core if not p.get("authors_detail")]
-    # Shuffled, not corpus order (clusters by venue/year) -- an interrupted
-    # run should still leave affiliation coverage a representative slice of
-    # the corpus, not just whichever venues happen to sort first
-    # (user-requested, applied to every incremental crawler in this
-    # pipeline).
-    random.shuffle(pending_titles)
     return papers, pending_titles, len(core)
 
 
