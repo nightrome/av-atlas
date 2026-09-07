@@ -279,14 +279,15 @@
 
 <div class="panel">
   <div class="panel-title-row">
-    <h2 style="margin:0;">Which venues are actually about AV research</h2>
+    <h2 style="margin:0;">How much of each venue is AV research</h2>
     <div class="limit-row">
       Min. papers
       <select id="venue-relevance-min">
         <option value="10">10+</option>
         <option value="25">25+</option>
-        <option value="80" selected>80+</option>
-        <option value="200">200+</option>
+        <option value="50">50+</option>
+        <option value="100" selected>100+</option>
+        <option value="250">250+</option>
       </select>
     <span class="info-tip" tabindex="0" role="img" aria-label="For venues above the size threshold, the share of their total output that this site classified as AV-relevant." data-tip="For venues above the size threshold, the share of their total output that this site classified as AV-relevant.">i</span></div>
   </div>
@@ -856,7 +857,7 @@ function render(ins, stats) {
   const venueRelevanceAll = ins.venue_relevance || [];
   const venueMinSel = document.getElementById('venue-relevance-min');
   function renderVenueRelevance() {
-    const minPapers = parseInt(venueMinSel.value, 10) || 80;
+    const minPapers = parseInt(venueMinSel.value, 10) || 100;
     // By core (AV-relevant) paper count, not total -- matches what "Min.
     // papers" means everywhere else on the site (Venues' own Min. filter is
     // core-paper-count based too). Filtering by TOTAL papers instead let a

@@ -86,7 +86,7 @@
   </p>
   <p id="venues-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
   <div id="pagination-container"></div>
-  <table><thead><tr><th>Venue</th><th>Years covered</th><th class="num">Papers</th><th class="num">AV papers</th><th class="num" title="Share of this venue's total published papers that were classified AV-relevant.">AV paper ratio</th><th class="num" title="How many other papers in this corpus cite a paper from this venue. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Total citations divided by AV paper count, counted only over papers with a known citation count.">Citations / paper</th><th>Best paper</th></tr></thead>
+  <table><thead><tr><th>Venue</th><th>Years covered</th><th class="num">Papers</th><th class="num">AV papers</th><th class="num" data-term="av_paper_ratio">AV paper ratio</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th data-term="most_cited_paper">Most-cited paper</th></tr></thead>
   <tbody id="venues-body"></tbody></table>
 </div>
 
@@ -100,7 +100,6 @@ fetchStatsWithRelevance(relevance).then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'venues.html', {
     showVenue: false,
-    showYear: true,
     search: { placeholder: 'Search venue names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
     checkbox: {
@@ -110,7 +109,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
     metrics: [
       { key: 'avg', label: 'Citations / paper' },
       { key: 'papers', label: 'Papers' },
-      { key: 'best', label: "Best paper's citations" },
+      { key: 'best', label: "Most-cited paper's citations" },
     ],
     // Which venues are actually about AV research (vs. a general venue that
     // happens to publish the occasional AV-relevant paper) is a paper-count
@@ -119,16 +118,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
     // "Other" rule (still true for the Venue filter dropdown elsewhere,
     // which is a very different use case: picking one specific venue to
     // filter TO, not judging which venues count as real AV venues).
-    minPapers: {
-      default: 1,
-      options: [
-        { value: 1, label: '1+ papers' },
-        { value: 10, label: '10+ papers' },
-        { value: 25, label: '25+ papers' },
-        { value: 80, label: '80+ papers' },
-        { value: 200, label: '200+ papers' },
-      ],
-    },
+    minPapers: { default: 1 },
     topN: {
       default: 10, storageKey: 'venues-timeline-topn',
       onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); render(); },
@@ -239,7 +229,8 @@ function render() {
   document.getElementById('venues-summary-stat').textContent =
     `${rows.length} seed venues` +
     (cs.year_range ? `, spanning ${cs.year_range[0]} to ${cs.year_range[1]}` : '');
-  const pagination = renderPagination(document.getElementById('pagination-container'), 'venues.html', shownRows0.length, { onChange: render });
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'venues.html', shownRows0.length,
+    { onChange: render, pageSize: topN, showSizeControl: false });
   const shownRows = shownRows0.slice(pagination.offset, pagination.offset + pagination.pageSize);
 
   const tbody = document.getElementById('venues-body');

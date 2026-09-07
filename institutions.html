@@ -74,6 +74,8 @@
 <nav id="topnav"></nav>
 <div id="filter-bar-container"></div>
 
+<div id="coverage-note-container"></div>
+
 <div class="panel" id="timeline-panel">
   <div class="panel-title-row">
     <h2 style="margin-top:0;">Institutions over time</h2>
@@ -81,7 +83,7 @@
   <div class="timeline-controls-row">
     <label style="display:flex;align-items:center;gap:4px;">
       <input type="checkbox" id="timeline-normalize">
-      Normalize by total papers that year
+      Show as share of papers with a known institution
     </label>
   </div>
   <div class="line-chart-wrap" id="timeline-chart-wrap">
@@ -100,7 +102,7 @@
     <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Institutions ranked by the chosen metric, from papers matching the current filters. Credit comes from each author’s own stated affiliation, not every co-author’s." data-tip="Institutions ranked by the chosen metric, from papers matching the current filters. Credit comes from each author’s own stated affiliation, not every co-author’s.">i</span></div>
   </div>
   <p id="institutions-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
-  <table><thead><tr><th>#</th><th>Institution</th><th class="num">Papers</th><th class="num" title="How many other papers in this corpus cite a paper from this institution. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Institution</th><th class="num">Papers</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th></tr></thead>
   <tbody id="institutions-body"></tbody></table>
 </div>
 
@@ -202,6 +204,10 @@ fetchStatsWithRelevance(relevance).then(stats => {
 function render() {
   const stats = currentStats, filters = currentFilters;
   const papers = filterPapers(stats.all_papers || [], filters);
+  // Stated up front, not buried in About: every institution figure below is
+  // computed only over papers whose author affiliations have been resolved.
+  renderCoverageBanner(document.getElementById('coverage-note-container'), stats.all_papers || [],
+    { accessor: p => p.institutions, what: 'Author affiliations', between: 'institutions' });
   const minPapersThreshold = filters.minPapers;
   // Both thresholds dropped to 0 while searching -- same fix as
   // authors.html, for the same reason: an institution with fewer papers
@@ -237,7 +243,8 @@ function render() {
   document.getElementById('institutions-summary-stat').textContent =
     `${(stats.corpus_stats || {}).total_institutions || 0} institutions identified across the corpus`;
 
-  const pagination = renderPagination(document.getElementById('pagination-container'), 'institutions.html', institutions.length, { onChange: render });
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'institutions.html', institutions.length,
+    { onChange: render, pageSize: topN, showSizeControl: false });
   const grid = document.getElementById('institutions-grid');
   const shown = institutions.slice(pagination.offset, pagination.offset + pagination.pageSize);
   if (!institutions.length) {
@@ -280,6 +287,7 @@ function render() {
       legend: 'timeline-legend', chart: 'timeline-chart',
       tooltip: 'timeline-tooltip', normalize: 'timeline-normalize',
     },
+    normalizeUnit: 'papers with a known institution that year',
   });
   currentTimelineDraw(filters.topN || 10);
 }

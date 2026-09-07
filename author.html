@@ -31,6 +31,11 @@
   .header .tags { color: var(--muted); font-size: 0.9em; }
   .header .tags .tag-link { color: var(--accent); text-decoration: none; }
   .header .tags .tag-link:hover { text-decoration: underline; }
+  .header .tags .tag-more-btn {
+    background: none; border: 1px solid var(--border); border-radius: 10px;
+    color: var(--muted); font: inherit; font-size: 0.9em; padding: 0 7px; cursor: pointer;
+  }
+  .header .tags .tag-more-btn:hover { border-color: var(--accent); color: var(--accent); }
   .header .scholar-link { display: inline-block; margin-top: 6px; font-size: 0.9em; color: var(--accent); text-decoration: none; }
   .header .scholar-link:hover { text-decoration: underline; }
   .ambiguous-warning {
@@ -110,7 +115,7 @@
   <span class="info-tip" tabindex="0" role="img" aria-label="Authors of other corpus papers that cite this author’s work, ranked by how many citing papers each has." data-tip="Authors of other corpus papers that cite this author’s work, ranked by how many citing papers each has.">i</span></div>
   <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Authors of other papers in this corpus that cite this author's work.</p>
   <div id="citing-authors-pagination"></div>
-  <table><thead><tr><th>Author</th><th class="num">Citing instances</th>
+  <table><thead><tr><th>Author</th><th class="num" data-term="citing_instances">Citing instances</th>
   <th class="num" title="Total citations across this citing author's own papers in this corpus.">Citations</th>
   <th class="num" title="Total papers by this citing author in this corpus.">Papers</th>
   <th>Country</th><th>Institution</th></tr></thead>
@@ -131,7 +136,7 @@
     </select>
   </span></span>
   <div id="papers-pagination"></div>
-  <table><thead><tr><th>Title</th><th>Year</th><th>Venue</th><th>Category</th><th class="num" title="How many other papers in this corpus cite this paper. Counted only within this corpus, never from an external database.">Citations</th></tr></thead>
+  <table><thead><tr><th>Title</th><th>Year</th><th>Venue</th><th>Category</th><th class="num" data-term="citations">Citations</th></tr></thead>
   <tbody id="papers-body"></tbody></table>
 </div>
 
@@ -272,7 +277,16 @@ function render(stats) {
     // Institutions are already in chronological order (earliest first_year
     // first) -- show each with its year range so two entries read as "was
     // there, then moved on" rather than an unordered list of employers.
-    const parts = institutions.map(inst => {
+    //
+    // Only the most recent few are shown up front, with the rest behind a
+    // toggle. Rendering every one inline turned this line into a wall on
+    // real data: a well-published author with a long record showed nine
+    // affiliations plus a trailing list of countries, including near-
+    // duplicates of each other, as the very first thing under their name.
+    // The current affiliation is the fact a reader is nearly always here
+    // for; the full history is a click away rather than in the way.
+    const INLINE_LIMIT = 3;
+    const makeLink = inst => {
       const a = document.createElement('a');
       a.href = `institution.html?name=${encodeURIComponent(inst.name)}`;
       const yr = inst.first_year == null ? ''
@@ -281,15 +295,35 @@ function render(stats) {
       a.textContent = inst.name + yr;
       a.className = 'tag-link';
       return a;
+    };
+    // Most recent last in the stored order, so show the tail.
+    const recent = institutions.slice(-INLINE_LIMIT).reverse();
+    const earlier = institutions.slice(0, Math.max(0, institutions.length - INLINE_LIMIT)).reverse();
+    const appendList = (target, list) => list.forEach((inst, i) => {
+      if (i > 0) target.append(' · ');
+      target.appendChild(makeLink(inst));
     });
-    parts.forEach((el, i) => {
-      if (i > 0) tagsEl.append(' · ');
-      tagsEl.appendChild(el);
-    });
-    if (countries.length) {
-      if (parts.length) tagsEl.append(' · ');
-      tagsEl.append(countries.join(' · '));
+    appendList(tagsEl, recent);
+    if (earlier.length) {
+      const more = document.createElement('span');
+      more.hidden = true;
+      more.append(' · ');
+      appendList(more, earlier);
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'tag-more-btn';
+      toggle.textContent = `+${earlier.length} earlier`;
+      toggle.addEventListener('click', () => {
+        more.hidden = !more.hidden;
+        toggle.textContent = more.hidden ? `+${earlier.length} earlier` : 'Show fewer';
+      });
+      tagsEl.append(' ');
+      tagsEl.appendChild(toggle);
+      tagsEl.appendChild(more);
     }
+    // Countries used to be appended here as bare text after the institution
+    // list, which read as if they were more affiliations. They add nothing a
+    // reader can't get from the institutions themselves, so they're dropped.
   }
 
   // Only ever a real, manually-confirmed profile URL (data/scholar_profiles.json)
@@ -422,7 +456,7 @@ function render(stats) {
         institution: lastInst ? lastInst.name : null,
         institutionFirstYear: lastInst ? lastInst.first_year : null,
         institutionLastYear: lastInst ? lastInst.last_year : null,
-        country: countries.length ? countries[countries.length - 1] : null,
+        country: countryForInstitution(stats, lastInst ? lastInst.name : null, countries),
       };
     })
     .sort((a, b) => b.papers - a.papers);
@@ -507,9 +541,11 @@ function render(stats) {
         institution: lastInst ? lastInst.name : null,
         institutionFirstYear: lastInst ? lastInst.first_year : null,
         institutionLastYear: lastInst ? lastInst.last_year : null,
-        // countries is chronological (earliest first, see aggregate.py) --
-        // the last entry is genuinely this author's most recent country.
-        country: countries.length ? countries[countries.length - 1] : null,
+        // Derived from the institution shown in the neighbouring column, so
+        // the two cells can never contradict each other -- see
+        // countryForInstitution() for why the author's own country list is
+        // only a fallback here.
+        country: countryForInstitution(stats, lastInst ? lastInst.name : null, countries),
       };
     })
     .sort((a, b) => b.count - a.count);

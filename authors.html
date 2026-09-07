@@ -83,7 +83,7 @@
   </div>
   <p id="authors-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
   <div id="pagination-container"></div>
-  <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" title="Years between this author's first and last AV-relevant publication in this corpus (0 if only one year).">Career span</th><th class="num" title="How many other papers in this corpus cite a paper by this author. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th><th class="num" title="Share of this author's in-corpus citations that come from their own later papers, rather than an independent paper.">Self-citation %</th><th class="num" title="How many other papers by this author are in the corpus but not classified as AV-relevant.">Non-AV papers</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" data-term="career_span">Career span</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th class="num" data-term="self_citation_pct">Self-citation %</th><th class="num" data-term="non_av_papers">Non-AV papers</th></tr></thead>
   <tbody id="researchers-body"></tbody></table>
 </div>
 
@@ -289,6 +289,28 @@ function render() {
     : aggregateByDimension(papers, p => p.authors, { minPapers: minPapersThreshold - 1, minCitedPapers: 3 });
   if (query) authors = authors.filter(a => matchesSearchQuery(a.name, query));
 
+  // Names aggregate.py flagged as a confirmed identity conflict -- papers
+  // filed under one name that carry two or more distinct external author
+  // IDs, i.e. almost certainly several different real people merged by
+  // name-only matching. aggregate.py already excluded them from the
+  // server-side rankings it precomputes, but this page builds its own
+  // leaderboard client-side from all_papers (so it can respect the filter
+  // bar), and that path never consulted the flag -- so the exclusion the
+  // About page describes was happening only on Insights, and the two
+  // worst-affected names sat at #9 and #10 of the very leaderboard the
+  // check exists to protect.
+  //
+  // Excluded from the RANKING only, never from search: the flag can also
+  // fire when the external source has split one real person across two IDs,
+  // and someone looking up their own name must still find their page.
+  const conflicted = new Set(Object.keys(detail).filter(n => detail[n] && detail[n].identity_conflict));
+  let conflictedShown = 0;
+  if (!query) {
+    const before = authors.length;
+    authors = authors.filter(a => !conflicted.has(a.name));
+    conflictedShown = before - authors.length;
+  }
+
   // Self-citation %: how much of an author's own incoming in-corpus
   // citations come from their own later papers vs. an independent one.
   // Built from the same filtered `papers` set as everything else on this
@@ -329,20 +351,35 @@ function render() {
   }[metric] || byTotal;
   authors.sort(authorSort);
 
-  // "Show top N" is the single limit for this whole page -- the scatter
-  // chart, the Leading-authors cards, and the ranked table below all show
-  // exactly the top N by the chosen metric (user-requested: one control,
-  // not a separate cap per section). Defaults to 10; raise it (up to 250)
-  // and the table pages through that top slice with Prev/Next. `matchCount`
-  // stays the full filtered total, shown in the result count so "top N of
-  // how many" is still visible.
+  // "Show top N" is the single size control for this whole page, but it
+  // means two different things to the two kinds of section here, and that
+  // distinction is deliberate:
+  //
+  //   - The scatter chart and the Leading-authors cards are a *highlight*
+  //     of the field, so they show exactly the top N by the chosen metric.
+  //   - The ranked table is a *browsable list*, so N is its page size and
+  //     Prev/Next walk the entire filtered set.
+  //
+  // Previously the table was also hard-capped at N, which made its own
+  // pagination a lie: with the default N of 10 it read "1 to 10 of 10" and
+  // rendered a Next button that could never do anything, directly next to a
+  // filter bar reporting "1,495 authors" -- two contradictory totals on one
+  // screen, and no way to reach author 11 without changing a dropdown whose
+  // label ("Show top") gave no hint that it was the only way through. The
+  // Papers page already treated the same control as a page size over the
+  // full list; this makes the two agree.
   const topN = filters.topN || 10;
   const matchCount = authors.length;
   const topAuthors = authors.slice(0, topN);
 
   document.getElementById('result-count').textContent = `${matchCount} authors`;
   document.getElementById('authors-summary-stat').textContent =
-    `${((stats.corpus_stats || {}).total_researchers || 0).toLocaleString()} authors named across the corpus`;
+    `${((stats.corpus_stats || {}).total_researchers || 0).toLocaleString()} authors named across the corpus`
+    + (conflictedShown
+      ? `. ${conflictedShown} name${conflictedShown === 1 ? ' was' : 's were'} left out of this ranking: `
+        + `their papers carry more than one external author ID, so the name almost certainly covers `
+        + `several different people. Search still finds them.`
+      : '');
 
   // Authors with no citation-bearing paper at all have no meaningful y-value
   // for this chart -- plotting them at 0 would misrepresent "unknown" as
@@ -357,8 +394,9 @@ function render() {
     topAuthors.forEach((a, i) => authorsGrid.appendChild(authorCard(a, i + 1, detail[a.name])));
   }
 
-  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', topAuthors.length, { onChange: render, showSizeControl: false });
-  const shown = topAuthors.slice(pagination.offset, pagination.offset + pagination.pageSize);
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length,
+    { onChange: render, pageSize: topN, showSizeControl: false });
+  const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);
 
   const tbody = document.getElementById('researchers-body');
   function renderBody(data) {

@@ -86,7 +86,7 @@
   <span class="category-chip" id="category-chip"></span>
 </div>
 
-<div style="display:flex;justify-content:flex-end;position:relative;margin-bottom:-6px;"><span class="info-tip" tabindex="0" role="img" aria-label="This paper&#x27;s key figures: in-corpus and external citation counts, author count, and its disruption (CD) index." data-tip="This paper&#x27;s key figures: in-corpus and external citation counts, author count, and its disruption (CD) index.">i</span></div>
+<div style="display:flex;justify-content:flex-end;position:relative;margin-bottom:-6px;"><span class="info-tip" tabindex="0" role="img" aria-label="This paper&#x27;s key figures: how many corpus papers cite it (all papers, and AV papers only), its author count, and its disruption (CD) index." data-tip="This paper&#x27;s key figures: how many corpus papers cite it (all papers, and AV papers only), its author count, and its disruption (CD) index.">i</span></div>
 <div class="stat-grid" id="stat-grid"></div>
 
 <div class="panel" id="abstract-panel">
@@ -121,7 +121,7 @@
   <span class="info-tip" tabindex="0" role="img" aria-label="Authors of the citing papers above, ranked by how many of them cite this paper." data-tip="Authors of the citing papers above, ranked by how many of them cite this paper.">i</span></div>
   <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Authors of other papers in this corpus that cite this paper.</p>
   <div id="citing-authors-pagination"></div>
-  <table><thead><tr><th>Author</th><th class="num">Citing instances</th>
+  <table><thead><tr><th>Author</th><th class="num" data-term="citing_instances">Citing instances</th>
   <th class="num" title="Total citations across this citing author's own papers in this corpus.">Citations</th>
   <th class="num" title="Total papers by this citing author in this corpus.">Papers</th>
   <th>Country</th><th>Institution</th></tr></thead>
@@ -282,12 +282,24 @@ function render(stats) {
 
   document.getElementById('category-chip').textContent = categoryLabel(paper.category || 'uncategorized');
 
-  // Both stats below are "how many papers cite THIS one" -- from two
-  // different sources, not "cites" vs "cited by" (we don't track/show how
-  // many papers this one itself references). Labeled explicitly by source
-  // so the two numbers don't read as contradictory.
+  // Both stats below are "how many papers cite THIS one", both computed
+  // entirely from this site's own citation graph -- NEITHER is an external
+  // count (the first tile used to be labeled "external source", a leftover
+  // from when OpenAlex was still a citation source; it was dropped entirely,
+  // see DECISIONS.md's "dropped OpenAlex as a source entirely"). What
+  // actually separates them is which citers are counted: `paper.citations`
+  // counts every citing paper in the corpus, AV-relevant or not, while
+  // `citing_papers` only lists citers that are themselves AV papers (it is
+  // built by resolving each citer against this payload's own all_papers,
+  // which stats.json restricts to AV papers). Confirmed on real data:
+  // nuScenes has 2,215 in-corpus citers, of which 2,069 are AV papers and
+  // 145 are non-AV. Labeled by that distinction now, so the two numbers
+  // read as the nested counts they are instead of as a contradiction.
   const grid = document.getElementById('stat-grid');
-  grid.appendChild(stat(paper.citations ?? 'n/a', 'Cited by (external source)'));
+  const allCitersTile = stat(paper.citations ?? 'n/a', 'Cited by (all papers)');
+  allCitersTile.title = 'How many papers anywhere in this corpus cite this one -- AV papers and non-AV '
+    + 'papers together. Counted only within this corpus, never from an external citation database.';
+  grid.appendChild(allCitersTile);
   // A confirmed-zero-citers paper and a paper whose citing reference lists
   // just haven't been scanned yet BOTH show 0 here -- this site's own
   // citation-graph coverage is partial (see About's crawler-status table),
@@ -295,10 +307,10 @@ function render(stats) {
   // rather than a separate "n/a" state, since there's no reliable per-paper
   // signal for "definitely fully scanned" to switch on (user-requested:
   // state missing citation data clearly, not indistinguishable from zero).
-  const withinCorpusTile = stat((paper.citing_papers || []).length, 'Cited by (within this corpus)');
-  withinCorpusTile.title = 'How many papers in this corpus have been found citing this one so far. This '
-    + "site's own citation-graph coverage is partial, so this number can only grow over time -- it is not "
-    + 'a confirmed final count, even when it reads 0.';
+  const withinCorpusTile = stat((paper.citing_papers || []).length, 'Cited by (AV papers)');
+  withinCorpusTile.title = 'Of the citers above, how many are themselves AV papers -- the ones listed '
+    + "below. This site's own citation-graph coverage is partial, so both numbers can only grow over "
+    + 'time -- neither is a confirmed final count, even when it reads 0.';
   grid.appendChild(withinCorpusTile);
   grid.appendChild(stat(paper.authors ? paper.authors.length : 'n/a', 'Authors'));
   if (paper.cd_index != null) {
@@ -489,9 +501,11 @@ function render(stats) {
         institution: lastInst ? lastInst.name : null,
         institutionFirstYear: lastInst ? lastInst.first_year : null,
         institutionLastYear: lastInst ? lastInst.last_year : null,
-        // countries is chronological (earliest first, see aggregate.py) --
-        // the last entry is genuinely this author's most recent country.
-        country: countries.length ? countries[countries.length - 1] : null,
+        // Derived from the institution shown in the neighbouring column, so
+        // the two cells can never contradict each other -- see
+        // countryForInstitution() for why the author's own country list is
+        // only a fallback here.
+        country: countryForInstitution(stats, lastInst ? lastInst.name : null, countries),
       };
     })
     .sort((a, b) => b.count - a.count);

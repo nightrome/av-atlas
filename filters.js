@@ -25,6 +25,19 @@
        + result count, and a bottom row for "Show N" -- same structure and
        same visual language (panel/border/radius) on every page, so a reader
        who's learned one page's controls already knows every other page's. */
+    /* Coverage caveat (renderCoverageBanner). Deliberately part of the page
+       flow above the data it qualifies, not a dismissible toast and not a
+       tooltip -- a caveat a reader can close, or has to hover to find, is a
+       caveat most readers never see. */
+    .coverage-note {
+      background: var(--panel); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2); border-radius: 8px;
+      padding: 10px 14px; margin-bottom: 16px;
+      font-size: 0.85em; line-height: 1.5; color: var(--muted);
+    }
+    .coverage-note strong { color: var(--text); }
+    .coverage-note a { color: var(--accent); }
+
     .controls-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
     .filter-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; }
     .filter-bar .field { display: flex; flex-direction: column; gap: 4px; }
@@ -233,6 +246,99 @@
     (stats.top_papers || []).forEach(mutate);
     return stats;
   };
+
+  // ---- Glossary -------------------------------------------------------
+  //
+  // One canonical definition per term the site puts in front of a reader.
+  // Every table header, stat tile and info tip that names one of these
+  // pulls its wording from here via data-term="..." + applyGlossary(),
+  // instead of carrying its own hand-written title="" string. Before this,
+  // the citation-column tooltip alone was copy-pasted into nine separate
+  // files, which is exactly how they drift apart -- and several terms the
+  // UI uses as if they were self-explanatory ("Early citations", "Citing
+  // instances", "Career span") had no definition anywhere at all.
+  //
+  // `short` is the hover/tooltip text (must stand alone out of context);
+  // `label` is the human name; about.html renders the whole table as a
+  // visible glossary from this same object, so the page a reader is sent
+  // to and the tooltip they hovered can never say different things.
+  window.GLOSSARY = {
+    citations: {
+      label: 'Citations',
+      short: 'How many papers in this corpus cite this one -- AV papers and non-AV papers together. '
+        + "Counted only within this corpus, never from an external citation database, so it is far "
+        + 'lower than a Google Scholar count and measures standing within AV research specifically.',
+    },
+    citations_group: {
+      label: 'Citations',
+      short: 'How many papers in this corpus cite a paper in this group -- AV and non-AV citers '
+        + 'together. Counted only within this corpus, never from an external citation database.',
+    },
+    citations_per_paper: {
+      label: 'Citations / paper',
+      short: 'Average in-corpus citations per paper. A small group with one famous paper can score '
+        + 'very highly here, so read it alongside the paper count.',
+    },
+    early_citations: {
+      label: 'Early citations',
+      short: 'In-corpus citations received within 2 years of publication: a leading indicator of '
+        + 'uptake, not a substitute for the total. Blank for papers not yet 2 years old.',
+    },
+    career_span: {
+      label: 'Career span',
+      short: "Years between this author's first and last AV paper in this corpus (0 if both fall in "
+        + 'the same year). Not their real career length -- work before, after or outside AV is not counted.',
+    },
+    self_citation_pct: {
+      label: 'Self-citation %',
+      short: "Share of this author's in-corpus citations that come from their own later papers rather "
+        + 'than from an independent author.',
+    },
+    non_av_papers: {
+      label: 'Non-AV papers',
+      short: 'How many other papers by this author are in the corpus but were not classified as '
+        + 'AV-relevant. Shown because the corpus holds complete proceedings, not an AV-only subset.',
+    },
+    citing_instances: {
+      label: 'Citing instances',
+      short: 'How many separate papers by this author cite the work being viewed. One author citing '
+        + 'it across five of their own papers counts as five.',
+    },
+    av_paper_ratio: {
+      label: 'AV paper ratio',
+      short: "Share of this venue's collected papers that were classified AV-relevant. A measure of "
+        + "how much of the venue is about AV, not of the venue's quality or size.",
+    },
+    most_cited_paper: {
+      label: 'Most-cited paper',
+      short: 'The paper from this venue with the most in-corpus citations. Not a best-paper award.',
+    },
+    cd_index: {
+      label: 'Disruption index (CD)',
+      short: 'How later work engages with a paper: +1 means citers cite it instead of its own '
+        + 'references (disruptive); -1 means they cite it alongside those references (consolidating). '
+        + 'Funk & Owen-Smith (2017). Only computed where enough in-corpus citers exist.',
+    },
+    affiliation_coverage: {
+      label: 'Affiliation coverage',
+      short: 'Author affiliations are read from paper PDFs and preprint HTML, a process that is still '
+        + 'incomplete. Institution and country figures are computed only over papers whose affiliations '
+        + 'have been resolved, so they describe that subset, not the whole corpus.',
+    },
+  };
+
+  // Fills in title= and aria-label= from GLOSSARY for every element under
+  // `root` carrying data-term. Safe to call more than once and safe to call
+  // on a page that has no data-term elements at all.
+  window.applyGlossary = function (root) {
+    (root || document).querySelectorAll('[data-term]').forEach(el => {
+      const entry = GLOSSARY[el.getAttribute('data-term')];
+      if (!entry) return;
+      el.title = entry.short;
+      if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', `${entry.label}: ${entry.short}`);
+    });
+  };
+  document.addEventListener('DOMContentLoaded', () => applyGlossary(document));
 
   // Human-readable labels for the raw category slugs papers are tagged with
   // -- used to be duplicated (categories.html had its own private copy;
@@ -603,7 +709,14 @@
       filters.bigVenues = bigVenues;
     }
 
-    if (opts.showYear) {
+    // Year is a WHICH-papers filter like Category and Venue, so it belongs
+    // on every page that has those -- it used to be opt-in (opts.showYear:
+    // true) and, in practice, opted into by exactly one page, so "restrict
+    // to 2024" was possible on Venues and nowhere else for no reason a
+    // reader could see. Now it's on by default and pages opt OUT the same
+    // way they do for Category/Venue, which is the convention the other two
+    // already follow.
+    if (opts.showYear !== false) {
       const sel = document.createElement('select');
       sel.innerHTML = '<option value="">All years</option>';
       const years = Object.keys((stats.corpus_stats || {}).by_year || {}).sort().reverse();
@@ -694,6 +807,11 @@
     // it (a 50/100/250/All picker whose "All" could mean rendering
     // thousands of rows at once, vs. fixed 50-per-page with Prev/Next).
     if (opts.minPapers) {
+      // One ladder for every page. Pages differ only in which rung they
+      // DEFAULT to (Institutions 10+, Authors 50+, Venues 1+), never in
+      // which rungs exist -- three pages offering three different sets of
+      // thresholds for an identically-labeled control gave a reader no way
+      // to carry an intuition from one page to the next.
       const choices = opts.minPapers.options || [
         { value: 1, label: '1+ papers' },
         { value: 2, label: '2+ papers' },
@@ -701,6 +819,7 @@
         { value: 25, label: '25+ papers' },
         { value: 50, label: '50+ papers' },
         { value: 100, label: '100+ papers' },
+        { value: 250, label: '250+ papers' },
       ];
       const defaultVal = String(opts.minPapers.default != null ? opts.minPapers.default : 2);
       const current = new URLSearchParams(location.search).get('minPapers') || defaultVal;
@@ -1187,6 +1306,25 @@
     return institutions[institutions.length - 1];
   };
 
+  // The country to show next to an institution in a detail-page table.
+  //
+  // Always derived from the institution actually being displayed, so the two
+  // cells agree. Detail pages used to read the author's own flat `countries`
+  // list for this while picking the institution by year overlap -- two
+  // unrelated lookups, which on real data produced rows that contradicted
+  // themselves ("United States" beside "University of Tubingen", "Singapore"
+  // beside "Berkeley AIR"). The author's own list is only a fallback now,
+  // for an institution the country map doesn't know, and even then only when
+  // it holds exactly one country -- with two or more there is no way to tell
+  // which one goes with this institution, and guessing is what caused the
+  // original problem.
+  window.countryForInstitution = function (stats, instName, authorCountries) {
+    const map = (stats && stats.institution_countries) || {};
+    if (instName && map[instName]) return map[instName];
+    const list = authorCountries || [];
+    return list.length === 1 ? list[0] : null;
+  };
+
   window.computeSelfCitationStats = function (ownPapers) {
     let selfCitations = 0, otherCitations = 0;
     (ownPapers || []).forEach(p => {
@@ -1400,6 +1538,46 @@
       wrap.appendChild(btn);
     }
     container.appendChild(wrap);
+  };
+
+  // A persistent, always-visible coverage caveat for the pages whose whole
+  // ranking rests on a partially-resolved field.
+  //
+  // Author affiliations are read from paper PDFs and preprint HTML, which
+  // works for well under half the corpus. Until now that was disclosed in
+  // exactly one place: a collapsed <details> at the bottom of the About
+  // page. The Institutions and Countries pages -- the two whose every number
+  // is computed *only* over papers with a resolved affiliation -- said
+  // nothing at all, so a reader had no way to know that "Papers: 335" for an
+  // institution means "335 of the papers we could attribute", not "335 of
+  // this institution's papers". The percentage is computed here from the
+  // rendered data rather than written into the page, so it tracks the crawl
+  // instead of going stale the first time coverage improves.
+  window.renderCoverageBanner = function (container, papers, opts) {
+    if (!container) return null;
+    const o = opts || {};
+    const total = (papers || []).length;
+    const withValue = (papers || []).filter(p => ((o.accessor ? o.accessor(p) : p.institutions) || []).length).length;
+    if (!total) return null;
+    const pct = Math.round((withValue / total) * 100);
+    const note = document.createElement('div');
+    note.className = 'coverage-note';
+    note.setAttribute('role', 'note');
+    const strong = document.createElement('strong');
+    strong.textContent = `Based on ${withValue.toLocaleString()} of ${total.toLocaleString()} AV papers (${pct}%).`;
+    note.appendChild(strong);
+    note.appendChild(document.createTextNode(
+      ` ${o.what || 'Author affiliations'} could be resolved for that share of the corpus so far, so every `
+      + `figure on this page describes that subset, not the whole field. Coverage is not uniform -- recent `
+      + `papers and papers with a preprint are resolved more often -- so treat comparisons between `
+      + `${o.between || 'institutions'}, and trends over time, as directional. `));
+    const a = document.createElement('a');
+    a.href = 'about.html#coverage';
+    a.textContent = 'How coverage is measured';
+    note.appendChild(a);
+    container.innerHTML = '';
+    container.appendChild(note);
+    return note;
   };
 
   // Rounds a chart's data maximum up to a "nice" axis top so the 4 evenly
@@ -1652,13 +1830,33 @@
       });
     });
     const allYears = [...new Set(papers.map(p => p.year).filter(Boolean))].sort();
-    // Total papers per year across ALL groups (not just the top-N shown),
-    // used by the optional "normalize by total papers that year" toggle --
-    // otherwise an early, thin year with only 2 papers (both from the same
-    // institution) would show a misleading 100% line next to a later, much
-    // busier year's smaller share.
+    // Denominator for the optional "normalize by total papers that year"
+    // toggle: papers per year that actually HAVE a value for this dimension,
+    // not every paper in the filtered set.
+    //
+    // This was a real and badly misleading bug. Author affiliations are only
+    // resolved for about a third of the corpus, so counting every paper in
+    // the denominator while the numerator can only ever count papers with a
+    // known country/institution deflated every line by ~3x -- and, far worse,
+    // by a factor that itself changes year to year (recent arXiv-backed
+    // papers have much better affiliation coverage than 2013 ITSC papers).
+    // The "% of that year's papers" trend was therefore substantially a
+    // picture of this site's own crawl coverage rather than of the research.
+    // On Countries the toggle is on by default, so that was the default view.
+    //
+    // Dividing by papers with a known value instead makes the shares answer
+    // the question a reader actually reads them as ("of the papers we can
+    // attribute, what share is China's?") and makes them sum to ~100% across
+    // groups. Papers can carry several values for a dimension (a paper with
+    // authors in two countries counts once for each), so the shares can still
+    // exceed 100% in total -- that is inherent to the dimension, not to
+    // coverage. Callers pass `coverageNote` to state the caveat on the page.
     const totalByYear = {};
-    papers.forEach(p => { if (p.year) totalByYear[p.year] = (totalByYear[p.year] || 0) + 1; });
+    papers.forEach(p => {
+      if (!p.year) return;
+      const vals = (dimensionFn(p) || []).filter(Boolean);
+      if (vals.length) totalByYear[p.year] = (totalByYear[p.year] || 0) + 1;
+    });
 
     const normalizeCheckbox = elIds.normalize ? document.getElementById(elIds.normalize) : null;
 
@@ -1726,9 +1924,16 @@
             });
             return { name: label(g), color: TIMELINE_PALETTE[topGroups.indexOf(g) % TIMELINE_PALETTE.length], values };
           });
-        const fmt = normalize ? (v => `${(v * 100).toFixed(1)}% of that year's papers`) : (v => `${v} paper${v === 1 ? '' : 's'}`);
+        // Wording follows the denominator above, which is "papers that have
+        // a value for this dimension that year", not "all papers that year".
+        // On Countries/Institutions those differ a lot (affiliations are
+        // resolved for only part of the corpus), so the caller states which
+        // subset via opts.normalizeUnit rather than every page claiming the
+        // generic "of that year's papers" the old denominator implied.
+        const unit = opts.normalizeUnit || "that year's papers";
+        const fmt = normalize ? (v => `${(v * 100).toFixed(1)}% of ${unit}`) : (v => `${v} paper${v === 1 ? '' : 's'}`);
         const axisFmt = normalize ? (v => `${Math.round(v * 100)}%`) : undefined;
-        const yLabel = normalize ? '% of that year\'s papers' : (opts.yLabel || 'Papers per year');
+        const yLabel = normalize ? `% of ${unit}` : (opts.yLabel || 'Papers per year');
         lineChart(chart, tooltip, series, allYears, fmt, { formatAxis: axisFmt, yLabel });
       }
       if (normalizeCheckbox) normalizeCheckbox.onchange = drawSeries;

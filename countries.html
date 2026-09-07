@@ -70,6 +70,8 @@
   <div class="legend" id="legend"></div>
 </div>
 
+<div id="coverage-note-container"></div>
+
 <div class="panel" id="timeline-panel">
   <div class="panel-title-row">
     <h2 style="margin-top:0;">Countries over time</h2>
@@ -77,7 +79,7 @@
   <div class="timeline-controls-row">
     <label style="display:flex;align-items:center;gap:4px;">
       <input type="checkbox" id="timeline-normalize" checked>
-      Normalize by total papers that year
+      Show as share of papers with a known country
     </label>
     <span style="color:var(--muted);">Click a legend entry to toggle it on/off.</span>
   </div>
@@ -95,7 +97,7 @@
   </div>
   <p id="total-countries-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
   <div id="countries-pagination"></div>
-  <table><thead><tr><th>#</th><th>Country</th><th class="num">Papers</th><th class="num">Authors</th><th class="num" title="How many other papers in this corpus cite a paper from this country. Counted only within this corpus, never from an external database.">Citations</th><th class="num" title="Average in-corpus citations per paper, counted only over papers with a known citation count.">Citations / paper</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Country</th><th class="num">Papers</th><th class="num">Authors</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th></tr></thead>
   <tbody id="countries-body"></tbody></table>
 </div>
 
@@ -122,7 +124,20 @@ const COUNTRY_GRID = {
 };
 
 function hashString(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
-function initials(name) {
+// The two-letter ISO 3166-1 code for a map cell.
+//
+// Cells used to be labeled by truncating the country name to three letters,
+// which produced three outright collisions on the countries this corpus
+// actually contains -- "SA" for both Saudi Arabia and South Africa, "Ind"
+// for both India and Indonesia, "Aus" for both Australia and Austria -- plus
+// several labels that read as a different country than the one meant ("Chi"
+// for China, "Net" for the Netherlands). ISO codes are unambiguous, and
+// readers already meet them on every other bibliometric site. The map falls
+// back to the old truncation only for a country the shipped table doesn't
+// know, which should not happen for anything the corpus can produce.
+function countryCode(name, stats) {
+  const codes = (stats && stats.country_codes) || {};
+  if (codes[name]) return codes[name];
   const parts = name.trim().split(/\s+/).filter(Boolean);
   return parts.length <= 1 ? name.slice(0, 3) : parts.map(p => p[0]).join('').slice(0, 3);
 }
@@ -147,6 +162,15 @@ fetchStatsWithRelevance(relevance).then(stats => {
       { key: 'avg', label: 'Citations / paper' },
       { key: 'total', label: 'Citations' },
     ],
+    // Min. and Show top were missing here and present on every comparable
+    // page, so Countries was the one ranked page a reader could neither
+    // threshold nor resize -- while its table carried its own private
+    // "Show N" dropdown that no other page's filter bar knew about.
+    minPapers: { default: 1 },
+    topN: {
+      default: 10, storageKey: 'countries-timeline-topn',
+      onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); render(); },
+    },
   });
   render();
 }).catch(err => {
@@ -174,7 +198,11 @@ function row(cells) {
 function render() {
   const stats = currentStats, filters = currentFilters;
   const papers = filterPapers(stats.all_papers || [], filters);
-  const countries = aggregateByDimension(papers, p => p.countries, { minPapers: 0, minCitedForAvg: 3 });
+  // See institutions.html -- a country is only known when at least one
+  // author's affiliation was resolved, so the same caveat applies here.
+  renderCoverageBanner(document.getElementById('coverage-note-container'), stats.all_papers || [],
+    { accessor: p => p.countries, what: 'Author affiliations (and therefore countries)', between: 'countries' });
+  const countries = aggregateByDimension(papers, p => p.countries, { minPapers: (filters.minPapers || 1) - 1, minCitedForAvg: 3 });
   // Attributed via each author's OWN country (stats.author_detail), not
   // every country the paper as a whole touches -- a paper with authors
   // spread across 3 countries must not credit all of its authors to each
@@ -232,7 +260,7 @@ function render() {
     tile.style.gridRow = rowN + 1;
     tile.style.gridColumn = col + 1;
     tile.title = `${name}: ${c.citations} citations, ${c.papers} papers (avg ${fmtAvg(c.avg_citations)})`;
-    tile.textContent = initials(name);
+    tile.textContent = countryCode(name, currentStats);
     tile.href = `index.html?country=${encodeURIComponent(name)}`;
     const t = Math.min(1, (c[rankMetricKey] || 0) / max);
     const step = Math.min(SEQ_RAMP.length - 1, Math.round(t * (SEQ_RAMP.length - 1)));
@@ -266,7 +294,8 @@ function render() {
   }
   let pageOffset = 0;
   function renderCountriesPage() {
-    const pg = renderPagination(document.getElementById('countries-pagination'), 'countries.html', tableRows.length, { onChange: renderCountriesPage });
+    const pg = renderPagination(document.getElementById('countries-pagination'), 'countries.html', tableRows.length,
+      { onChange: renderCountriesPage, pageSize: filters.topN || 10, showSizeControl: false });
     pageOffset = pg.offset;
     const shown = tableRows.slice(pg.offset, pg.offset + pg.pageSize);
     makeSortableSafe(tbody.closest('table'), shown, [
@@ -288,8 +317,9 @@ function render() {
     papers, dimensionFn: p => p.countries, labelFor: v => v,
     rankedNames: countries.map(c => c.name),
     elIds: { legend: 'timeline-legend', chart: 'timeline-chart', tooltip: 'timeline-tooltip', normalize: 'timeline-normalize' },
+    normalizeUnit: 'papers with a known country that year',
   });
-  currentTimelineDraw(10);
+  currentTimelineDraw(filters.topN || 10);
 }
 </script>
 <script src="nav.js"></script>
