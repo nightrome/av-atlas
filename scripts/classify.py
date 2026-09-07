@@ -86,6 +86,27 @@ AV_RELEVANCE_TERMS = [
     "free-space detection", "freespace detection", "vulnerable road user",
     "lane keeping", "lane-keeping", "lane changing", "lane-changing", "lane departure",
     "driver assistance system", "advanced driver-assistance", "naturalistic driving",
+    # Radar-perception vocabulary. "automotive radar", "4D radar", "3+1D
+    # radar" and radar-camera fusion are coined by and used near-exclusively
+    # in the driving-perception literature -- as AV-specific as "adaptive
+    # cruise control". Without them a signature AV subfield (4D-radar object
+    # detection / odometry / scene flow, ~60+ papers here) fell through to
+    # "adjacent" whenever the abstract didn't also happen to say "autonomous
+    # driving" -- user-flagged via Andras Palffy's papers (RaDelft detector,
+    # 4D-RaDiff, CLRNet were all wrongly "adjacent"). "4d radar" also matches
+    # a handful of radar-based human-pose/gait papers; that's a small,
+    # accepted cost for the recall gain (the aerial-nav ones are already
+    # held out by OFF_SCOPE_TITLE_TERMS).
+    "automotive radar", "4d radar", "4d imaging radar", "3+1d radar",
+    "3d+1d radar", "radar odometry", "radar-camera fusion", "radar camera fusion",
+    "radar scene flow",
+    # Pedestrian-crossing behaviour/intention -- a "pedestrian crossing" or a
+    # "crossing pedestrian" is a driving-scene concept (89 title matches in
+    # this corpus, every one about crossing-intention prediction for
+    # driving). Catches the older abstract-less IV/ITSC papers that only say
+    # it in the title. "pedestrian intention" is already an AV_TITLE_ONLY
+    # term; these two are specific enough to trust anywhere.
+    "pedestrian crossing", "crossing pedestrian",
 ]
 
 # Weaker on their own: high-precision only when they appear in the paper's
@@ -304,6 +325,68 @@ def classify_relevance(title, abstract, llm_says_core=False):
     return "adjacent"
 
 
+# Does this title say the paper PRESENTS a dataset/benchmark, as opposed to
+# merely using or reviewing one?
+#
+# The Datasets category used to be gated the other way round: keyword scoring
+# had to rank it first, and the title check could only veto. In practice the
+# scoring almost never ranked it first, because a dataset paper's title and
+# abstract are dominated by the tasks its data supports -- so the category
+# held 31 papers out of a 25k corpus, while 755 core papers said "dataset",
+# "benchmark" or "corpus" in their own titles. A field where dataset papers
+# are among the most-cited work in it cannot plausibly have 31 of them, and
+# the ones that did land there scored an implausible 377 citations/paper,
+# because the bucket was effectively a hand-curated list of the famous ones.
+#
+# So the title check is now decisive rather than advisory: announcing a
+# dataset in the title is a direct statement about what the paper IS, and a
+# stronger signal than any count of task words. STRONG matches the shapes a
+# dataset paper's title actually takes ("NAME: A ... Dataset for ...", "...:
+# Benchmark and Baseline", a title ending in the word) and overrides the
+# negatives; NEGATIVE catches the "we used one" and "we reviewed them"
+# phrasings. Measured on the real corpus: 838 accepted, 40 rejected of the
+# titles containing the word, with the rejects being surveys/reviews and
+# papers evaluating on someone else's data.
+_DS_WORD = r"(?:datasets?|benchmarks?|corpus|corpora)"
+DATASET_TITLE_STRONG = [re.compile(p, re.I) for p in (
+    rf":\s*(?:a|an|the)\s[^:]{{0,90}}\b{_DS_WORD}\b",
+    rf":\s*{_DS_WORD}\b",
+    rf"\b{_DS_WORD}\s*(?:\(.*\))?\s*$",
+)]
+# "We evaluated on someone else's data." Checked BEFORE
+# DATASET_TITLE_STRONG, because a title like "Multi-Object Tracking on the
+# KITTI Dataset" both ends in the word (which STRONG treats as presenting
+# one) and is unambiguously a usage phrase -- the ending must not rescue it.
+DATASET_TITLE_USES_ONE = re.compile(
+    rf"\b(?:on|using|use\s+of|with|from|over|against|based\s+on|trained\s+on|evaluated\s+on"
+    rf"|pre-?training\s+with)\s+(?:the\s+|a\s+|an\s+|its\s+|open\s+|public\s+)?"
+    rf"(?:\S+\s+){{0,4}}{_DS_WORD}\b", re.I)
+
+# Weaker signals that a title is about datasets without presenting one.
+# STRONG can override these, since "NAME: A ... Dataset for ..." is
+# presenting one whatever else the title also says.
+DATASET_TITLE_NEGATIVE = [re.compile(p, re.I) for p in (
+    rf"\bbenchmark(?:ing)?\s+(?:study|studies|analys[ie]s|evaluation|results?|comparison)\b",
+    rf"\b{_DS_WORD}[- ]centric\b",
+    rf"\b{_DS_WORD}\s+(?:distillation|pruning|selection|summariz\w+|augmentation"
+    rf"|compression|cleaning|labell?ing|annotation)\b",
+    rf"\b(?:extraction|selection|augmentation|distillation|pruning|generation|synthesis"
+    rf"|compression|profiling)\s+(?:from|of)\s+.{{0,30}}\b{_DS_WORD}\b",
+    r"\b(?:survey|review|overview|biases|toolsets?)\b",
+)]
+
+
+def presents_dataset(title):
+    t = title or ""
+    if not re.search(rf"\b{_DS_WORD}\b", t, re.I):
+        return False
+    if DATASET_TITLE_USES_ONE.search(t):
+        return False
+    if any(p.search(t) for p in DATASET_TITLE_STRONG):
+        return True
+    return not any(p.search(t) for p in DATASET_TITLE_NEGATIVE)
+
+
 def classify_paper(title, abstract, categories, llm_core_titles=frozenset(), known_dataset_titles=frozenset()):
     # A dataset/benchmark paper's own abstract is dominated by the TASKS its
     # data supports (detection, tracking, ...), not by "we introduce a
@@ -315,7 +398,7 @@ def classify_paper(title, abstract, categories, llm_core_titles=frozenset(), kno
     # kept in sync with aggregate.py's DATASET_SEED_TITLES) -- forcing them
     # here keeps that page and this category consistent by construction,
     # not just by keyword luck.
-    if normalize_title(title) in known_dataset_titles:
+    if normalize_title(title) in known_dataset_titles or presents_dataset(title):
         return "dataset-benchmark-paper", classify_relevance(title, abstract, normalize_title(title) in llm_core_titles)
 
     text = f"{title} {abstract or ''}".lower()
@@ -331,11 +414,11 @@ def classify_paper(title, abstract, categories, llm_core_titles=frozenset(), kno
         # depth dataset from KITTI to evaluate its own sparse-conv layer)
         # still trips "novel dataset" in the abstract, even though the
         # paper's own subject is the method, not the data -- confirmed on
-        # real data (user-flagged). A genuine dataset paper says so in its
-        # own title (nuScenes, KITTI-360, ...); gate the category on that
-        # so an abstract-only mention falls through to the next-best
-        # category instead of stealing the classification.
-        if best_id == "dataset-benchmark-paper" and not re.search(r"\b(dataset|benchmark|corpus)\b", title.lower()):
+        # real data (user-flagged). Anything whose own title presents a
+        # dataset has already been claimed by presents_dataset() above, so
+        # reaching here with this category means the evidence was in the
+        # abstract only: fall through to the next-best category.
+        if best_id == "dataset-benchmark-paper":
             continue
         category = best_id
         break

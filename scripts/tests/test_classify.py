@@ -148,6 +148,29 @@ class TestClassifyRelevance(unittest.TestCase):
         ):
             self.assertEqual(cl.classify_relevance(title, None), "core", title)
 
+    def test_radar_perception_vocabulary_is_core(self):
+        # User-flagged via Andras Palffy's papers: radar-perception papers
+        # (a signature AV subfield) fell through to "adjacent" whenever the
+        # abstract didn't also say "autonomous driving".
+        for title, abstract in (
+            ("A Deep Automotive Radar Detector Using the RaDelft Dataset",
+             "A data-driven approach using high-resolution automotive radar."),
+            ("4D-RaDiff: Latent Diffusion for 4D Radar Point Cloud Generation", None),
+            ("Ground-Aware Automotive Radar Odometry", None),
+            ("CLRNet: Targetless Extrinsic Calibration for Camera, Lidar and 4D Radar", None),
+            ("Occlusion Aware Sensor Fusion for Early Crossing Pedestrian Detection", None),
+            ("Pedestrian Crossing Intention Prediction Using Multimodal Fusion Network", None),
+        ):
+            self.assertEqual(cl.classify_relevance(title, abstract), "core", title)
+
+    def test_aerial_radar_paper_still_held_out_by_off_scope_guard(self):
+        # "4d radar" now fires, but the off-scope title guard runs first.
+        self.assertEqual(
+            cl.classify_relevance(
+                "Robust 4D Radar-Aided Inertial Navigation for Aerial Vehicles", None),
+            "adjacent",
+        )
+
     def test_title_only_terms_fire_from_the_title(self):
         # A title-only phrase in the title is enough on its own.
         self.assertEqual(
@@ -257,12 +280,34 @@ class TestKnownDatasetTitleOverride(unittest.TestCase):
         self.assertEqual(category, "dataset-benchmark-paper")
         self.assertEqual(relevance, "core")
 
-    def test_unlisted_dataset_paper_still_scored_normally(self):
-        # The override is exact-title, not "any paper that sounds like a
-        # dataset paper" -- one not on the known list falls through to
-        # ordinary keyword scoring, same as before this feature existed.
+    def test_unlisted_dataset_paper_is_still_recognized_by_its_title(self):
+        # The known-title list is a floor, not the whole rule: a paper whose
+        # own title presents a dataset is categorized as one even when it
+        # isn't on the list. This used to fall through to keyword scoring,
+        # which is why the category held 31 papers out of 25k while 755 core
+        # papers said "dataset"/"benchmark" in their titles -- see
+        # presents_dataset() for the full reasoning.
         category, _ = cl.classify_paper(
             "Some Other Dataset Paper", "We introduce detection and tracking benchmarks. Tracking tracking.",
+            self.CATEGORIES, known_dataset_titles=frozenset(),
+        )
+        self.assertEqual(category, "dataset-benchmark-paper")
+
+    def test_paper_that_merely_uses_a_dataset_is_scored_normally(self):
+        # The other side of that rule: "on the X dataset" describes what the
+        # paper was evaluated on, not what it contributes, so it falls
+        # through to ordinary keyword scoring.
+        category, _ = cl.classify_paper(
+            "Multi-Object Tracking on the KITTI Dataset",
+            "We improve detection and tracking. Tracking tracking.",
+            self.CATEGORIES, known_dataset_titles=frozenset(),
+        )
+        self.assertEqual(category, "tracking")
+
+    def test_survey_of_datasets_is_not_a_dataset_paper(self):
+        category, _ = cl.classify_paper(
+            "Datasets for Lane Detection in Autonomous Driving: A Comprehensive Review",
+            "We survey detection and tracking datasets. Tracking tracking.",
             self.CATEGORIES, known_dataset_titles=frozenset(),
         )
         self.assertEqual(category, "tracking")

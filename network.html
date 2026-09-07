@@ -22,6 +22,7 @@
 <style>
   body { max-width: 1900px; margin: 0 auto; padding: 24px; }
   .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
+  .section-intro { color: var(--muted); font-size: 0.88em; margin: 0 0 10px; line-height: 1.5; }
   .graph-wrap { position: relative; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--panel2); cursor: grab; }
   .graph-wrap:active { cursor: grabbing; }
   .node { cursor: pointer; }
@@ -70,18 +71,19 @@
 <div class="panel">
   <div class="panel-title-row">
     <div class="controls-row" id="controls-row">
-      <input type="text" id="search-box" placeholder="Find an author…">
+      <input type="text" id="search-box" placeholder="Highlight a name in the graph…" title="Highlights matching nodes in the graph below. To narrow which authors are in the graph at all, use Search in the filter bar above.">
     </div>
     <span class="info-tip" tabindex="0" role="img" aria-label="Each dot is one of the top authors by paper count; lines are co-authored papers. Colour groups authors who mostly publish together. Drag to pan, scroll to zoom." data-tip="Each dot is one of the top authors by paper count; lines are co-authored papers. Colour groups authors who mostly publish together. Drag to pan, scroll to zoom.">i</span>
   </div>
+  <p class="section-intro" id="graph-legend"></p>
   <div class="graph-wrap">
-    <svg id="graph" viewBox="0 0 1850 1050" style="width: 100%; height: 800px; display: block;"></svg>
+    <svg id="graph" viewBox="0 0 1850 1050" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: auto; aspect-ratio: 1850 / 1050; max-height: 800px; display: block;"></svg>
   </div>
 </div>
 
 <div class="panel">
   <div class="panel-title-row">
-    <h2 style="margin-top:0;">Networking metrics</h2>
+    <h2 style="margin-top:0;">Collaboration metrics</h2>
     <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Collaboration metrics for the top authors in the co-authorship graph: distinct co-authors, cross-institution and cross-country papers, and a PageRank centrality score." data-tip="Collaboration metrics for the top authors in the co-authorship graph: distinct co-authors, cross-institution and cross-country papers, and a PageRank centrality score.">i</span></div>
   </div>
   <div id="metrics-pagination"></div>
@@ -370,7 +372,17 @@ function render() {
   });
 
   const nodes = topAuthors.map(name => ({ id: name, papers: paperCounts[name] }));
-  const { clusterOf } = detectClusters(nodes, edges);
+  const { clusterOf, clusterSizes } = detectClusters(nodes, edges);
+  // Say what the colours mean. Nothing on the page did outside a hover tip,
+  // so a reader saw a graph of coloured dots with no stated encoding.
+  const legendEl = document.getElementById('graph-legend');
+  if (legendEl) {
+    const groups = (clusterSizes || []).filter(n => n > 1).length;
+    legendEl.textContent = `Each dot is one author, sized by paper count; each line is at least one `
+      + `co-authored paper. Colour marks a collaboration group found in the graph itself `
+      + `(${groups} group${groups === 1 ? '' : 's'} here) -- it is not a country, institution or topic. `
+      + `Drag to pan, scroll to zoom.`;
+  }
 
   const maxPapers = Math.max(1, ...nodes.map(n => n.papers));
   const radius = n => 4 + Math.sqrt(n.papers / maxPapers) * 15;

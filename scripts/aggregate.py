@@ -402,6 +402,14 @@ KNOWN_NAME_FIXES = {
     # (2 papers) -- a different first name, no evidence of being the same
     # person, left untouched.
     "M. Althoff": "Matthias Althoff",
+    # NeurIPS "Lastname, Firstname" author strings, comma-split upstream so
+    # the surname "Shi" ends up as its own list entry and the given-name
+    # entry carries a leftover "Prof " honorific ("Shi, Prof Javen Qinfeng").
+    # LEADING_HONORIFIC_RE strips the title, leaving "Javen Qinfeng" -- the
+    # same person as the 24-paper "Javen Qinfeng Shi" (University of Adelaide),
+    # confirmed via shared co-authors (Zhen Zhang, Anton van den Hengel,
+    # Ehsan Abbasnejad).
+    "Javen Qinfeng": "Javen Qinfeng Shi",
 }
 
 # PDF/font text extraction occasionally renders a hyphenated name's hyphen
@@ -413,11 +421,31 @@ KNOWN_NAME_FIXES = {
 # spelling.
 UNICODE_HYPHEN_RE = re.compile(r"[‐‑‒–−]")
 
+# Some sources prepend an academic/courtesy title to the author's name
+# ("Dr. Andras Palffy", "Prof Javen Qinfeng Shi", "Professor A. R. Harish",
+# "Prof. Em. Eduardo Nebot", "Mr Zhang Guangjian") -- confirmed on real data
+# to split a person off their own untitled leaderboard entry. Strip any run
+# of leading honorifics, plus a trailing "Em[.]" (emeritus, only ever seen
+# after "Prof."). Each token has to be exactly the honorific followed by an
+# optional "." and whitespace, so an ordinary name that merely starts with
+# the same letters ("Drew ...", "Emerson ...") is untouched. "Dr." only, not
+# "Md." -- "Md."/"Mohd." are given-name abbreviations, kept. "Dame" and
+# "Sir" are deliberately NOT included: "Dame" is a real given name in this
+# corpus (Dame Seck Diop) and the damehood/knighthood titles are vanishingly
+# rare in CS/robotics venues -- not worth the false positives.
+LEADING_HONORIFIC_RE = re.compile(
+    r"^(?:(?:Prof|Professor|Dr|Dr\.-Ing|PD|Priv\.-Doz|Doz|Docent|Assoc\.?\s*Prof"
+    r"|Asst\.?\s*Prof|Mr|Mrs|Ms|Mx|Miss)\.?\s+)+(?:Em\.?\s+)?"
+)
+
 
 def clean_author_name(name):
     name = (name or "").strip()
     name = html.unescape(name)
     name = UNICODE_HYPHEN_RE.sub("-", name)
+    stripped = LEADING_HONORIFIC_RE.sub("", name).strip()
+    if stripped:  # never let a name that was *only* a title collapse to ""
+        name = stripped
     name = KNOWN_NAME_FIXES.get(name, name)
     name = DBLP_DISAMBIG_SUFFIX_RE.sub("", name).strip()
     name = FOOTNOTEMARK_SUFFIX_RE.sub("", name).strip()
@@ -1577,6 +1605,22 @@ def is_fully_processed(e):
     return bool((e.get("title") or "").strip()) and e.get("year") is not None
 
 
+def influential_citation_threshold(papers):
+    """How many in-corpus citations a paper needs before this site is willing
+    to call it influential: the 90th percentile among papers that have at
+    least one citation.
+
+    Derived from the corpus rather than fixed, because the citation graph is
+    still filling in -- a hard-coded number would quietly mean something
+    stricter every time reference-list coverage improves. Papers with no
+    citations are excluded from the percentile so that the (large, and
+    largely coverage-driven) zero bucket doesn't drag the bar to the floor.
+    """
+    counts = sorted(p["citations"] for p in papers if p.get("citations"))
+    if len(counts) < 10:
+        return 2
+    return max(2, int(statistics.quantiles(counts, n=10, method="inclusive")[8]))
+
 
 def compute_insights(papers, all_entries, citation_graph, category_stats,
                       top_authors_avg, top_authors_total, top_institutions, datasets=None,
@@ -1907,29 +1951,44 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
             if len(vals) >= MIN_AUTHORS_FOR_LIFETIME_STATS
         ]
 
-        # -- Most promising young researchers: short career span (early
-        # career, within this corpus) but already publishing at a real clip,
-        # and still active -- last publication in the last complete year,
-        # not someone who published a burst of papers years ago and stopped.
-        # Ranked by average citations per paper, same definition used
-        # everywhere else on this site (highest_impact_author above), not
-        # raw paper count. cited_papers > 0 is a technical floor, not a
-        # business rule (avoids a division by zero below).
+        # -- Early-career researchers with several influential papers: short
+        # career span (within this corpus) but already publishing at a real
+        # clip, and still active -- last publication in the last complete
+        # year, not someone who published a burst of papers years ago and
+        # stopped.
+        #
+        # The binding requirement is YOUNG_MIN_INFLUENTIAL: several papers
+        # that each clear the corpus-derived influence threshold, not one.
+        # Ranking early-career people on average citations alone made this a
+        # list of "was a co-author on one famous paper" -- every entry came
+        # off the same one or two headline papers, and average citations per
+        # paper cannot tell that apart from a consistently strong record.
+        # Requiring several such papers is the difference between the two,
+        # and it is the claim the panel is actually making.
         YOUNG_MAX_LIFETIME = 3
         YOUNG_MIN_PAPERS = 5
+        YOUNG_MIN_INFLUENTIAL = 3
+        influential_threshold = influential_citation_threshold(papers)
         last_complete_year = complete_years[-1] if complete_years else None
         young = [
             {"name": name, "papers": a["papers"], "citations": a["citations"],
              "avg_citations": round(a["citations"] / a["cited_papers"]),
+             "influential_papers": a.get("influential_papers", 0),
              "lifetime": a["lifetime"], "first_year": a["first_year"], "last_year": a["last_year"]}
             for name, a in author_lifetimes.items()
             if a["lifetime"] <= YOUNG_MAX_LIFETIME and a["papers"] >= YOUNG_MIN_PAPERS
             and a["cited_papers"] > 0
+            and a.get("influential_papers", 0) >= YOUNG_MIN_INFLUENTIAL
             and (last_complete_year is None or a["last_year"] == last_complete_year)
         ]
-        young.sort(key=lambda a: a["avg_citations"], reverse=True)
+        # Most influential papers first, average citations only as the
+        # tie-break -- so the headline ordering reflects breadth of impact
+        # rather than one outlier paper's citation count.
+        young.sort(key=lambda a: (a["influential_papers"], a["avg_citations"]), reverse=True)
         insights["most_promising_young_researchers"] = young[:5]
         insights["young_researchers_cutoff_year"] = last_complete_year
+        insights["young_researchers_min_influential"] = YOUNG_MIN_INFLUENTIAL
+        insights["influential_paper_threshold"] = influential_threshold
 
     return insights
 
@@ -2770,14 +2829,35 @@ def main():
             "identity_conflict": name in identity_conflicts,
         }
 
+    # Per-author paper and citation totals over EVERY paper, from the plain
+    # "authors" field -- not author_papers/author_citations above, which are
+    # accumulated inside the authors_detail loop and therefore only count
+    # papers whose affiliations have been resolved.
+    #
+    # That distinction was leaking onto the site as a contradiction: the
+    # Insights page's "author with most papers" tile read the enriched-only
+    # counts while the Authors page computes its own from all_papers, so the
+    # same person was reported with two different paper counts and two
+    # different citation totals on two pages (Raquel Urtasun: 68 papers /
+    # 2,649 citations on one, 96 / 6,090 on the other), and the "most papers"
+    # winner was not even the person with the most papers. Affiliation
+    # coverage is the right restriction for institution and country rollups;
+    # it is not a defensible one for "who published the most".
+    author_papers_all = defaultdict(int)
+    author_citations_all = defaultdict(int)
+    for p in papers:
+        for name in set(p.get("authors") or []):
+            author_papers_all[name] += 1
+            author_citations_all[name] += p.get("citations") or 0
+
     # "Most prolific" means paper count specifically, not the avg-citations
     # ranking top_authors_by_avg produces -- a separate small ranking just
     # for that one insight. Same identity_conflicts exclusion as
     # top_authors_by_avg -- a name known to conflate >=1 real people has no
     # business anchoring a "who publishes the most" ranking either.
     top_authors_by_paper_count = sorted(
-        ({"name": k, "papers": v, "citations": author_citations[k]}
-         for k, v in author_papers.items() if k not in identity_conflicts),
+        ({"name": k, "papers": v, "citations": author_citations_all[k]}
+         for k, v in author_papers_all.items() if k not in identity_conflicts),
         key=lambda a: a["papers"], reverse=True,
     )[:5]
 
@@ -2787,12 +2867,21 @@ def main():
     # rather than the authors_detail-only subset above -- an author with no
     # affiliation enrichment yet must still be eligible to show up as a
     # "most promising young researcher" or in the lifetime distribution.
+    #
+    # Also counts each author's "influential" papers, needed by the young-
+    # researcher ranking below. What counts as influential is derived from
+    # the corpus rather than fixed: the 90th percentile of in-corpus
+    # citations among papers that have at least one citation. A fixed
+    # threshold would drift as the citation graph fills in, and would mean
+    # something different for a 2013 paper than a 2024 one.
+    influential_threshold = influential_citation_threshold(papers)
     author_lifetimes = {}
     for p in papers:
         year = p.get("year")
         for name in set(p.get("authors") or []):
             rec = author_lifetimes.setdefault(
-                name, {"first_year": None, "last_year": None, "papers": 0, "citations": 0, "cited_papers": 0})
+                name, {"first_year": None, "last_year": None, "papers": 0, "citations": 0,
+                       "cited_papers": 0, "influential_papers": 0})
             rec["papers"] += 1
             if year is not None:
                 rec["first_year"] = year if rec["first_year"] is None else min(rec["first_year"], year)
@@ -2800,6 +2889,8 @@ def main():
             if p.get("citations") is not None:
                 rec["citations"] += p["citations"]
                 rec["cited_papers"] += 1
+                if p["citations"] >= influential_threshold:
+                    rec["influential_papers"] += 1
     for rec in author_lifetimes.values():
         rec["lifetime"] = (rec["last_year"] - rec["first_year"]) if rec["first_year"] is not None else None
     # Only authors with a known year range have a computable lifetime --
@@ -2812,7 +2903,7 @@ def main():
         # "most citations per paper" shouldn't be won by a couple of papers
         # and one lucky hit (user-requested). min_papers=9 because
         # top_authors_by_avg's own test is strictly greater-than.
-        top_authors_by_avg(author_citations, author_papers, n=5, min_papers=9),
+        top_authors_by_avg(author_citations_all, author_papers_all, n=5, min_papers=9),
         top_authors_by_paper_count,
         top(inst_citations, inst_papers, n=5),
         datasets,
@@ -2948,7 +3039,7 @@ def main():
         },
         "top_papers": papers[:50],
         "all_papers": papers,
-        "top_authors": top_authors_by_avg(author_citations, author_papers, n=100),
+        "top_authors": top_authors_by_avg(author_citations_all, author_papers_all, n=100),
         "top_institutions": top(inst_citations, inst_papers, n=100),
         "top_countries": top(country_citations, country_papers),
         # Country name -> ISO 3166-1 alpha-2, for the world map's cell

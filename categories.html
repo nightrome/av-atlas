@@ -60,6 +60,11 @@
   .tooltip-box .tt-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
   .tooltip-box .tt-val { margin-left: auto; font-variant-numeric: tabular-nums; padding-left: 10px; }
   .timeline-controls-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: -4px 0 4px; font-size: 0.85em; color: var(--muted); }
+  .uncategorized-note {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border);
+    font-size: 0.85em; color: var(--muted); line-height: 1.5;
+  }
+  .uncategorized-note a { color: var(--accent); }
 </style>
 </head>
 <body>
@@ -175,7 +180,10 @@ function computeYearAgg(papers) {
 function renderCategoryTimeline(stats, filters) {
   const allYearsPapers = withoutDatasetsIfExcluded(filterPapers(stats.all_papers || [], { ...filters, category: null }));
   const overallByYear = computeYearAgg(allYearsPapers);
-  const allYears = Object.keys(overallByYear).sort();
+  // See renderDimensionTimeline in filters.js: trend lines stop at the last
+  // complete year, so the partial current year doesn't read as a collapse.
+  const allYears = Object.keys(overallByYear)
+    .filter(y => Number(y) !== window.PARTIAL_YEAR).sort();
 
   const byCategory = {};
   allYearsPapers.forEach(p => {
@@ -283,7 +291,16 @@ function computeSectorTally(papers, institutionSector) {
 function render() {
   const stats = currentStats, filters = currentFilters;
   const papers = withoutDatasetsIfExcluded(filterPapers(stats.all_papers || [], filters));
-  const cats = aggregateByDimension(papers, p => [p.category || 'uncategorized'], { minPapers: 0 });
+  const allCats = aggregateByDimension(papers, p => [p.category || 'uncategorized'], { minPapers: 0 });
+  // "Uncategorized" is not a topic -- it is the papers the taxonomy has no
+  // bucket for yet. Ranked inline it competed with real topics as though it
+  // were one, and (being by far the largest bucket) it sat near the top of
+  // the list with a citations/paper figure that means nothing, since the
+  // papers in it have nothing in common. Split out and rendered once at the
+  // bottom, labeled for what it is. Not hidden: the size of this bucket is a
+  // real limitation of the site and readers should be able to see it.
+  const cats = allCats.filter(c => c.name !== 'uncategorized');
+  const uncategorized = allCats.find(c => c.name === 'uncategorized') || null;
   const sectorTally = computeSectorTally(papers, stats.institution_sector || {});
   cats.forEach(c => {
     const t = sectorTally[c.name];
@@ -401,6 +418,25 @@ function render() {
 
     bars.appendChild(row);
   });
+
+  // The uncategorized bucket, shown once below the ranking rather than
+  // inside it -- a count and a plain statement of what it means, with no
+  // bar and no citations/paper figure, both of which would invite reading
+  // it as a topic that can be compared with the ones above.
+  if (uncategorized && uncategorized.papers) {
+    const note = document.createElement('div');
+    note.className = 'uncategorized-note';
+    const link = document.createElement('a');
+    link.href = 'index.html?category=uncategorized';
+    link.textContent = `${uncategorized.papers.toLocaleString()} papers`;
+    note.append('Not in any category yet: ');
+    note.appendChild(link);
+    note.append(' ('
+      + Math.round(100 * uncategorized.papers / (uncategorized.papers + cats.reduce((n, c) => n + c.papers, 0)))
+      + '% of the papers matching these filters). These are papers the topic list above does not '
+      + 'cover yet, not a topic of their own, so they are left out of the ranking.');
+    bars.appendChild(note);
+  }
 
   document.getElementById('timeline-panel').style.display = filters.category ? 'none' : '';
   if (!filters.category) {

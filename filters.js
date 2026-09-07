@@ -236,7 +236,14 @@
   // client-side" section). Rather than thread the citation field through
   // every one of those call sites, mutate it in place once, right after
   // fetching stats.json and before anything renders.
+  // The newest, still-incomplete year in the corpus. Set once from
+  // corpus_stats when a page loads stats.json, so every chart applies the
+  // same rule without each page having to remember to.
+  window.PARTIAL_YEAR = null;
+
   window.applyCitationSource = function (stats) {
+    const py = (stats.corpus_stats || {}).partial_year;
+    if (py != null) window.PARTIAL_YEAR = py;
     const mutate = p => { p.citations = inCorpusCitations(p); };
     // top_papers is a server-side slice of the same underlying list as
     // all_papers, but after JSON.parse each paper that appears in both is
@@ -369,6 +376,11 @@
     'sensor-fusion': 'Sensor Fusion',
     'driver-behavior-hmi': 'Driver Behavior & Human-Machine Interaction',
     'general-cv-ml-method': 'General CV/ML Method',
+    'traffic-flow-management': 'Traffic Flow & Management',
+    'platooning-cruise-control': 'Platooning & Cruise Control',
+    'testing-validation': 'Testing, Validation & Safety Assurance',
+    'sensor-calibration': 'Sensor Calibration & Setup',
+    'vehicle-dynamics-powertrain': 'Vehicle Dynamics & Powertrain',
   };
   // Matches if every word in the (already-lowercased) query appears
   // somewhere in text, in any order -- not just as one contiguous
@@ -1325,6 +1337,15 @@
     return list.length === 1 ? list[0] : null;
   };
 
+  // Who runs this site. Used to disclose, in place, when the maintainer's
+  // own name comes out on top of one of this site's own rankings -- which it
+  // does: they are a first author on nuScenes, the most-cited paper in the
+  // corpus. The ranking is computed by the same code as every other name's
+  // and is not adjusted, but a reader has no way of knowing the person named
+  // built the thing naming them unless the page says so, and a site that
+  // ranks researchers has to be the one to volunteer that.
+  window.SITE_MAINTAINER = 'Holger Caesar';
+
   window.computeSelfCitationStats = function (ownPapers) {
     let selfCitations = 0, otherCitations = 0;
     (ownPapers || []).forEach(p => {
@@ -1829,7 +1850,15 @@
         (byGroup[v] = byGroup[v] || []).push(p);
       });
     });
-    const allYears = [...new Set(papers.map(p => p.year).filter(Boolean))].sort();
+    // Trend lines stop at the last COMPLETE year. The newest year in the
+    // corpus is always still being collected, and plotting it alongside
+    // finished years drew a cliff at the right-hand edge of every chart that
+    // is an artifact of the collection date, not a real decline -- while the
+    // Insights page, which already excluded it, disagreed with these charts
+    // about the same year. Counts and tables still include it; only the
+    // trend lines stop short. See corpus_stats.partial_year in aggregate.py.
+    const allYears = [...new Set(papers.map(p => p.year).filter(Boolean))]
+      .filter(y => y !== window.PARTIAL_YEAR).sort();
     // Denominator for the optional "normalize by total papers that year"
     // toggle: papers per year that actually HAVE a value for this dimension,
     // not every paper in the filtered set.

@@ -182,6 +182,7 @@
   <div class="panel-title-row"><h2>Leadership</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages." data-tip="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages.">i</span></div>
   <p class="section-intro">Leading people, institutions and papers in the field.</p>
   <div class="fact-grid" id="people-facts"></div>
+  <p class="section-intro" id="maintainer-disclosure" style="margin-bottom:0;" hidden></p>
 </div>
 
 <div class="panel">
@@ -212,16 +213,18 @@
   <div class="line-chart-wrap" id="lifetime-citations-chart-wrap">
     <svg id="lifetime-citations-chart"></svg>
   </div>
-  <h3>Most promising young researchers</h3>
+  <h3>Early-career researchers with several influential papers</h3>
   <p class="section-intro" style="margin-bottom:4px;" id="young-researchers-note">
-    Career span ≤3 years, at least 5 papers, ranked by average citations per paper.
+    Career span ≤3 years, at least 5 papers, several of them influential.
   </p>
   <table class="data-table" id="young-researchers-table">
     <thead>
       <tr>
         <th>Author</th><th class="num">First year</th><th class="num">Last year</th>
-        <th class="num">Career span</th><th class="num">Papers</th><th class="num">Citations</th>
-        <th class="num">Citations / paper</th>
+        <th class="num" data-term="career_span">Career span</th><th class="num">Papers</th>
+        <th class="num" id="young-influential-head">Influential papers</th>
+        <th class="num" data-term="citations">Citations</th>
+        <th class="num" data-term="citations_per_paper">Citations / paper</th>
       </tr>
     </thead>
     <tbody id="young-researchers-body"></tbody>
@@ -496,9 +499,12 @@ function renderDatasetTimeline(stats, allDatasets, topN) {
   const topDatasets = [...allDatasets].sort((a, b) => b.citing_count - a.citing_count).slice(0, topN);
   const PALETTE = TIMELINE_PALETTE;
 
+  // Same rule as every other trend line on the site (see
+  // renderDimensionTimeline in filters.js) -- the partial current year is
+  // left off rather than drawn as a drop in dataset adoption.
   const allYears = [...new Set(
     topDatasets.flatMap(d => resolveCitingYears(stats, d.citing_papers).map(c => c.year)).filter(Boolean)
-  )].sort();
+  )].filter(y => y !== window.PARTIAL_YEAR).sort();
 
   // In memory only for this pageview, not persisted -- a refresh always
   // starts with every series visible.
@@ -675,6 +681,20 @@ function render(ins, stats) {
     statTile(pf, i.name, 'Institution with most citations', `${i.papers} papers, ${i.citations} total citations.`,
       `institution.html?name=${encodeURIComponent(i.name)}`);
   }
+  // Conflict-of-interest disclosure, rendered only when it actually applies
+  // -- i.e. when this site's own maintainer is one of the names the site has
+  // just put at the top of a ranking. Checked against the rendered tiles
+  // rather than hard-coded to a position, so it appears and disappears on
+  // its own as the corpus changes.
+  const maintainerTile = [ins.most_prolific_author, ins.highest_impact_author]
+    .some(a => a && a.name === window.SITE_MAINTAINER);
+  const disclosure = document.getElementById('maintainer-disclosure');
+  if (maintainerTile && disclosure) {
+    disclosure.textContent = `Disclosure: ${window.SITE_MAINTAINER}, named above, built and maintains `
+      + `AV Atlas. That ranking is produced by the same code as every other name on this site and is `
+      + `not adjusted either way, but you should know who is counting.`;
+    disclosure.hidden = false;
+  }
   if (ins.most_cited_paper) {
     const p = ins.most_cited_paper;
     statTile(pf, p.short_title, 'Paper with most citations', `${p.citations.toLocaleString()} citations (${p.year}).`,
@@ -722,10 +742,25 @@ function render(ins, stats) {
   if (byLifetime.length) {
     errorBarChart(document.getElementById('lifetime-citations-chart'), byLifetime, { yLabel: 'Median total citations (log-scale)', log: true });
   }
+  // The binding requirement is "several influential papers", not the
+  // average -- an average alone cannot tell a consistently strong record
+  // apart from one co-authorship on a famous paper, which is what this list
+  // used to surface. Both the threshold and the required count come from
+  // aggregate.py so the description can't drift from the rule.
+  const minInfluential = ins.young_researchers_min_influential || 3;
+  const influentialAt = ins.influential_paper_threshold;
   if (ins.young_researchers_cutoff_year) {
     document.getElementById('young-researchers-note').textContent =
-      `Career span ≤3 years, at least 5 papers, with a publication in ${ins.young_researchers_cutoff_year} ` +
-      `(the last complete year), ranked by average citations per paper.`;
+      `Career span ≤3 years, at least 5 papers, still active (a publication in `
+      + `${ins.young_researchers_cutoff_year}, the last complete year), and at least `
+      + `${minInfluential} papers with ${influentialAt}+ in-corpus citations each -- the top 10% of cited `
+      + `papers in this corpus. Ranked by how many such papers, then by citations per paper.`;
+  }
+  const influentialHead = document.getElementById('young-influential-head');
+  if (influentialHead && influentialAt) {
+    influentialHead.title = `Papers by this author with at least ${influentialAt} in-corpus citations `
+      + `-- the 90th percentile of cited papers in this corpus. Recomputed every build, so it tracks `
+      + `citation-graph coverage rather than being a fixed number.`;
   }
   const youngBody = document.getElementById('young-researchers-body');
   const young = ins.most_promising_young_researchers || [];
@@ -738,12 +773,13 @@ function render(ins, stats) {
       // Each metric its own column (user-requested), not folded into one
       // "(first to last)" text string and a single combined "X cit./paper, Y
       // papers" span.
-      youngBody.appendChild(row([name, a.first_year, a.last_year, a.lifetime, a.papers, a.citations, a.avg_citations]));
+      youngBody.appendChild(row([name, a.first_year, a.last_year, a.lifetime, a.papers,
+        a.influential_papers ?? 'n/a', a.citations, a.avg_citations]));
     });
     if (!rows.length) {
       const tr = document.createElement('tr');
       const td = document.createElement('td');
-      td.colSpan = 7;
+      td.colSpan = 8;
       td.textContent = 'Not enough data yet to identify any.';
       tr.appendChild(td);
       youngBody.appendChild(tr);
@@ -755,6 +791,7 @@ function render(ins, stats) {
     { accessor: a => a.last_year, numeric: true },
     { accessor: a => a.lifetime, numeric: true },
     { accessor: a => a.papers, numeric: true },
+    { accessor: a => a.influential_papers ?? -Infinity, numeric: true },
     { accessor: a => a.citations, numeric: true },
     { accessor: a => a.avg_citations, numeric: true },
   ], renderYoungBody);

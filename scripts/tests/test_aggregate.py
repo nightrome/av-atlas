@@ -431,6 +431,34 @@ class TestCleanAuthorName(unittest.TestCase):
         self.assertEqual(ag.clean_author_name("Alice Author★"), "Alice Author")  # star
         self.assertEqual(ag.clean_author_name("Bob Builder✖"), "Bob Builder")  # heavy X
 
+    def test_strips_leading_academic_and_courtesy_titles(self):
+        # User-flagged: "Dr. Andras Palffy" (from arXiv-extracted author
+        # metadata) and "Andras Palffy" existed as two separate leaderboard
+        # entries. General honorific strip, not a per-person fix -- covers
+        # "Dr. Holger Caesar", "Professor A. R. Harish", "Prof. Em. Eduardo
+        # Nebot", "Mr Zhang Guangjian" and any future ones the same way.
+        for raw, expected in (
+            ("Dr. Andras Palffy", "Andras Palffy"),
+            ("Dr Andras Palffy", "Andras Palffy"),
+            ("Dr. Holger Caesar", "Holger Caesar"),
+            ("Professor A. R. Harish", "A. R. Harish"),
+            ("Prof. Em. Eduardo Nebot", "Eduardo Nebot"),
+            ("Prof. Dr. Xuan Zhang", "Xuan Zhang"),
+            ("Mr Zhang Guangjian", "Zhang Guangjian"),
+        ):
+            self.assertEqual(ag.clean_author_name(raw), expected, raw)
+
+    def test_honorific_strip_leaves_ordinary_names_alone(self):
+        # Anchored on the honorific being its own token -- a name that merely
+        # starts with the same letters must be untouched.
+        for name in ("Drew Barrymore", "Emerson Fittipaldi", "Mradul Sharma"):
+            self.assertEqual(ag.clean_author_name(name), name, name)
+        # "Dame" is a real given name in the corpus (Dame Seck Diop) and is
+        # deliberately not treated as an honorific -- it must survive. Same
+        # for the "Md." given-name abbreviation.
+        self.assertEqual(ag.clean_author_name("Dame Seck Diop"), "Dame Seck Diop")
+        self.assertEqual(ag.clean_author_name("Md. Azam Hossain"), "Md. Azam Hossain")
+
 
 class TestIsFullyProcessed(unittest.TestCase):
     def test_complete_record_passes(self):
@@ -1369,28 +1397,39 @@ class TestComputeInsights(unittest.TestCase):
         self.assertEqual(by_lifetime[1]["p75_citations"], 40.0)
         self.assertNotIn(5, by_lifetime, "a 2-author bucket is below the minimum sample size and must be omitted")
 
-    def test_most_promising_young_researchers_filters_and_ranks_by_avg_citations(self):
+    def test_young_researchers_require_several_influential_papers(self):
         author_lifetimes = {
-            # Short career, well-cited, enough papers, active in the last
-            # complete year -- should be selected.
+            # Short career, enough papers, active in the last complete year,
+            # and three papers over the influence threshold -- selected.
             "Rising Star": {"first_year": 2023, "last_year": 2025, "lifetime": 2,
-                             "papers": 5, "citations": 500, "cited_papers": 5},
-            # Long career -- not "young", excluded regardless of impact.
+                             "papers": 5, "citations": 500, "cited_papers": 5,
+                             "influential_papers": 3},
+            # The case this requirement exists for: an enormous average built
+            # on ONE famous paper. Ranking early-career people by average
+            # citations alone put people here purely for a single
+            # co-authorship, which is not what the panel claims to show.
+            "One Big Paper": {"first_year": 2023, "last_year": 2025, "lifetime": 2,
+                               "papers": 6, "citations": 2000, "cited_papers": 6,
+                               "influential_papers": 1},
+            # Long career -- not early-career, excluded regardless of impact.
             "Veteran": {"first_year": 2005, "last_year": 2025, "lifetime": 20,
-                        "papers": 50, "citations": 5000, "cited_papers": 50},
+                        "papers": 50, "citations": 5000, "cited_papers": 50,
+                        "influential_papers": 30},
             # Short career but below the min-papers floor -- excluded.
             "Too Few Papers": {"first_year": 2024, "last_year": 2025, "lifetime": 1,
-                                "papers": 4, "citations": 1000, "cited_papers": 4},
+                                "papers": 4, "citations": 1000, "cited_papers": 4,
+                                "influential_papers": 4},
             # Short career, enough papers, but zero citation data -- excluded
             # (cited_papers > 0 is a technical floor against a division by
             # zero when computing avg_citations, not a business rule).
             "No Citation Data": {"first_year": 2024, "last_year": 2025, "lifetime": 1,
-                                  "papers": 6, "citations": 0, "cited_papers": 0},
-            # Short career, well-cited, enough papers, but not active in the
-            # last complete year -- excluded (user-requested: only list
-            # people still active in the most recent complete year).
+                                  "papers": 6, "citations": 0, "cited_papers": 0,
+                                  "influential_papers": 0},
+            # Everything else in order but not active in the last complete
+            # year -- excluded (only people still publishing are listed).
             "Stopped Publishing": {"first_year": 2021, "last_year": 2023, "lifetime": 2,
-                                    "papers": 5, "citations": 500, "cited_papers": 5},
+                                    "papers": 5, "citations": 500, "cited_papers": 5,
+                                    "influential_papers": 5},
         }
         # Two distinct years so complete_years (which excludes the single
         # latest, still-partial year, 2026) is non-empty and its last entry,
@@ -1402,7 +1441,26 @@ class TestComputeInsights(unittest.TestCase):
         insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [], author_lifetimes=author_lifetimes)
         names = [a["name"] for a in insights["most_promising_young_researchers"]]
         self.assertEqual(names, ["Rising Star"])
+        self.assertNotIn("One Big Paper", names,
+                          "one highly-cited paper must not qualify someone on its own")
         self.assertEqual(insights["young_researchers_cutoff_year"], 2025)
+        self.assertEqual(insights["young_researchers_min_influential"], 3)
+
+    def test_young_researchers_rank_by_influential_paper_count_first(self):
+        common = {"first_year": 2023, "last_year": 2025, "lifetime": 2, "cited_papers": 5}
+        author_lifetimes = {
+            # Lower average, but more papers that each cleared the bar.
+            "Broad Record": dict(common, papers=5, citations=400, influential_papers=5),
+            # Higher average off fewer influential papers.
+            "Narrow Record": dict(common, papers=5, citations=900, influential_papers=3),
+        }
+        papers = [
+            self._paper("Anchor 2025", 2025, citations=1, authors=["Someone"]),
+            self._paper("Anchor 2026", 2026, citations=1, authors=["Someone Else"]),
+        ]
+        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [], author_lifetimes=author_lifetimes)
+        names = [a["name"] for a in insights["most_promising_young_researchers"]]
+        self.assertEqual(names, ["Broad Record", "Narrow Record"])
 
     def test_most_cited_paper_uses_the_known_dataset_short_name_when_one_exists(self):
         papers = [self._paper("nuScenes: A Multimodal Dataset for Autonomous Driving", 2020, citations=300,

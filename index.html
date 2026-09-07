@@ -396,9 +396,14 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle, allPapers) {
       countsByPaper.set(p.title, perYear);
     });
 
+    // Stops at the last complete year -- see renderDimensionTimeline in
+    // filters.js for why the newest, still-being-collected year is left off
+    // every trend line on the site.
     const allYears = [];
     if (isFinite(minYr)) {
-      for (let yr = minYr; yr <= maxYr; yr++) allYears.push(yr);
+      for (let yr = minYr; yr <= maxYr; yr++) {
+        if (yr !== window.PARTIAL_YEAR) allYears.push(yr);
+      }
     }
 
     const legend = document.getElementById('timeline-legend');
