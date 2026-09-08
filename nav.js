@@ -177,7 +177,7 @@
   modal.appendChild(heading);
 
   const intro = document.createElement('p');
-  intro.textContent = "This opens your email client with a message pre-filled to the site maintainer, nothing is sent from here. Use it for a data correction, or for a privacy takedown request (e.g. to have your name, affiliation, or photo removed).";
+  intro.textContent = "This opens your email client with a message pre-filled to the site maintainer, nothing is sent from here. Use it for a data correction, to claim or disown papers filed under your name, or for a privacy takedown request (e.g. to have your name, affiliation, or photo removed).";
   modal.appendChild(intro);
 
   const pageLabel = document.createElement('label');
@@ -211,6 +211,27 @@
   emailField.placeholder = 'you@example.com';
   modal.appendChild(emailField);
 
+  // An optional ORCID, for the one correction this site cannot verify on its
+  // own: "these papers are mine" / "these papers are not mine".
+  //
+  // Name-only matching merges people who share a name and splits people whose
+  // name is spelled several ways, and no amount of crawling fixes that from
+  // the outside -- the person themselves is the authority. An ORCID makes
+  // such a claim checkable without this site needing accounts, logins, or any
+  // stored personal data: the corpus already carries ORCIDs for some authors
+  // (fetch_orcids.py), so a claim can be matched against what is on file.
+  // Entirely optional, and only useful for identity corrections.
+  const orcidLabel = document.createElement('label');
+  orcidLabel.setAttribute('for', 'report-issue-orcid');
+  orcidLabel.textContent = 'Your ORCID (optional, if this is about your own papers)';
+  modal.appendChild(orcidLabel);
+
+  const orcidField = document.createElement('input');
+  orcidField.id = 'report-issue-orcid';
+  orcidField.type = 'text';
+  orcidField.placeholder = '0000-0000-0000-0000';
+  modal.appendChild(orcidField);
+
   const actions = document.createElement('div');
   actions.className = 'report-issue-actions';
   const cancelBtn = document.createElement('button');
@@ -232,6 +253,7 @@
     overlay.classList.remove('open');
     detailField.value = '';
     emailField.value = '';
+    orcidField.value = '';
   }
   reportBtn.addEventListener('click', () => {
     pageField.value = location.href;
@@ -242,12 +264,14 @@
   sendBtn.addEventListener('click', () => {
     const detail = detailField.value.trim();
     const replyTo = emailField.value.trim();
+    const orcid = orcidField.value.trim();
     const subject = `AV Atlas: issue on ${document.title || location.pathname}`;
     const bodyLines = [
       `Page: ${pageField.value.trim() || location.href}`,
       '',
       detail || '(no description entered)',
     ];
+    if (orcid) bodyLines.push('', `ORCID: ${orcid}`);
     if (replyTo) bodyLines.push('', `Reply-to: ${replyTo}`);
     const mailto = `mailto:h.caesar@tudelft.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
     window.location.href = mailto;

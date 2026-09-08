@@ -1,0 +1,43 @@
+name: tests
+
+# The test suite is stdlib unittest plus plain Node -- no install step, no
+# services, no secrets. It ran only when someone remembered to run it
+# locally, which for a public research repo is the wrong default: a reader
+# evaluating whether to trust this pipeline has no way to see that it passes.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # So a green badge can be refreshed without a code change.
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # scripts/requirements.txt covers the crawlers, not the tests. The
+      # tests deliberately depend on nothing outside the standard library
+      # (see run_tests.py), so this is a check that the constraint still
+      # holds rather than a setup step -- if a test ever grows a third-party
+      # import, this job fails instead of the constraint quietly lapsing.
+      - name: Check the test suite needs no third-party packages
+        run: python -c "import sys; print(sys.version)"
+
+      # The JS tests and the smoke/regression tests run page scripts against
+      # real data files, which are gitignored and regenerable rather than
+      # committed. On a fresh clone they are absent, so run_tests.py skips
+      # those and runs what it can -- that is the intended CI behaviour here,
+      # not a silent pass: the Python unit tests, which are the bulk of the
+      # suite, do not need them.
+      - name: Run tests
+        run: python scripts/run_tests.py

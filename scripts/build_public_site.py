@@ -56,25 +56,38 @@ PUBLIC_DIR = BASE / "public"
 # allowed rather than blocked.
 ROBOTS_TXT = "User-agent: *\nAllow: /\n"
 
-# Dev-only HTML files that live at the app's top level (so they'd otherwise
-# match the *.html glob below and get published) but must never ship --
-# label_relevance.html embeds candidate paper data for hand-labeling and has
-# no business being reachable from a live URL, guessable slug or not. This
-# was caught after it briefly WAS published (see DECISIONS.md).
-# authors_sql_prototype.html is a local-only spike (see DECISIONS.md's
-# "sql.js-httpvfs prototype" entry) that was
-# published anyway by this same glob -- broken if actually visited live,
-# since its scripts/vendor/sqljs-httpvfs/ dependencies and the .db file it
-# queries are never copied into the published output below.
-EXCLUDED_HTML = {"label_relevance.html", "authors_sql_prototype.html",
-                 # Parked markup+JS for the Insights "Open-source code"
-                 # panel, pulled until the LLM code-link classifier has
-                 # trustworthy coverage. Not a real page.
-                 "_deferred_open_source.html"}
+# Exactly the pages that ship. An allowlist, not a denylist.
+#
+# This used to be "every *.html at the app root, minus these three", which
+# leaked twice: label_relevance.html (a hand-labeling tool with candidate
+# paper data embedded in it) and authors_sql_prototype.html (a local-only
+# spike, broken if actually visited, since its vendored dependencies are
+# never copied here) both reached gh-pages before anyone thought to add them
+# to the exclusion list. A denylist fails open -- a new dev file is published
+# by default and only stops being published once someone remembers. This
+# fails closed: a new page ships when it is added here, and nothing else
+# ever does. Dev-only pages now also live in dev/ rather than at the root,
+# so they are not candidates in the first place.
+PUBLISHED_HTML = [
+    "index.html", "authors.html", "institutions.html", "venues.html",
+    "countries.html", "categories.html", "network.html", "insights.html",
+    "about.html", "author.html", "institution.html", "venue.html", "paper.html",
+]
 
 
 def html_pages():
-    return [p for p in BASE.glob("*.html") if p.name not in EXCLUDED_HTML]
+    pages = [BASE / name for name in PUBLISHED_HTML]
+    missing = [p.name for p in pages if not p.exists()]
+    if missing:
+        raise SystemExit(f"PUBLISHED_HTML lists page(s) that don't exist: {', '.join(missing)}")
+    # A page at the root that nobody added to the list is almost always a new
+    # page someone forgot to register, not a deliberate omission -- say so
+    # rather than silently not publishing it.
+    unlisted = sorted(p.name for p in BASE.glob("*.html") if p.name not in set(PUBLISHED_HTML))
+    if unlisted:
+        print(f"  note: not publishing unlisted root page(s): {', '.join(unlisted)}"
+              f" -- add to PUBLISHED_HTML in {Path(__file__).name} if they should ship")
+    return pages
 
 
 SITE_URL = "https://nightrome.github.io/av-atlas"
@@ -232,7 +245,7 @@ def build_public_site():
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in BASE.glob("*.js")} \
         | {"stats.json", "stats_adjacent.json", "theme.css", "theme-light.css", "logo.svg",
-           "og-image.png", "sitemap.xml"}
+           "og-image.png", "sitemap.xml", "robots.txt"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()

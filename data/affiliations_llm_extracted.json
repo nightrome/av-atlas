@@ -16923,5 +16923,88 @@
       "name": "University of Michigan - Ann Arbor",
       "matched_existing": true
     }
-  ]
+  ],
+  "organization=College of Automotive and Energy Engineering, Tongji University, city=Shanghai, postcode=201804, country=China": [
+    {
+      "name": "Tongji University",
+      "matched_existing": false
+    }
+  ],
+  "organization=School of Mechanical and Aerospace Engineering, Nanyang Technological University, city=Singapore, postcode=639798, country=Singapore": [
+    {
+      "name": "Nanyang Technological University",
+      "matched_existing": true
+    }
+  ],
+  "University of Padova , Padua , Italy": [
+    {
+      "name": "University of Padova",
+      "matched_existing": true
+    }
+  ],
+  "University of Padova , Via Trieste, 63 , Padua , Italy": [
+    {
+      "name": "University of Padova",
+      "matched_existing": true
+    }
+  ],
+  "Delft University of Technology , Mekelweg 4, 2628 CD , Delft , Netherlands": [
+    {
+      "name": "Delft University of Technology",
+      "matched_existing": true
+    }
+  ],
+  "Innova S.p.A. , Trieste , Italy": [
+    {
+      "name": "Innova S.p.A.",
+      "matched_existing": false
+    }
+  ],
+  "Department of Civil and Environmental Engineering, The Hong Kong University of Science and Technology, Hong Kong, China": [
+    {
+      "name": "The Hong Kong University of Science and Technology",
+      "matched_existing": true
+    }
+  ],
+  "Intelligent Transportation Thrust, Systems Hub, The Hong Kong University of Science and Technology (Guangzhou), Guangzhou, China": [
+    {
+      "name": "The Hong Kong University of Science and Technology (Guangzhou)",
+      "matched_existing": true
+    }
+  ],
+  "Zhen Tian, and Zhihao Lin are with the James Watt School of Engineering, University of Glasgow, Glasgow G12 8QQ, United Kingdom.": [
+    {
+      "name": "James Watt School of Engineering",
+      "matched_existing": true
+    },
+    {
+      "name": "University of Glasgow",
+      "matched_existing": true
+    }
+  ],
+  "AI, Autonomy, Resilience, Control Lab (AARC Lab) Department of Electrical & Computer Engineering The University of Alabama in Huntsville, Huntsville, USA thm0013@uah.edu, rahul.bhadani@uah.edu": [
+    {
+      "name": "The University of Alabama in Huntsville",
+      "matched_existing": false
+    }
+  ],
+  "Department of Engineering Systems and Environment, University of Virginia, Charlottesville, VA, 22904, USA": [
+    {
+      "name": "University of Virginia",
+      "matched_existing": true
+    }
+  ],
+  "Department of Civil, Structural and Environmental Engineering, University at Buffalo, State University of New York, Buffalo, NY, 14260, USA": [
+    {
+      "name": "University at Buffalo, State University of New York",
+      "matched_existing": true
+    }
+  ],
+  "Department of Civil and Environmental Engineering, Stanford University, Stanford, CA, 94305, USA": [
+    {
+      "name": "Stanford University",
+      "matched_existing": true
+    }
+  ],
+  "ah6rx@virginia.edu": []
 }

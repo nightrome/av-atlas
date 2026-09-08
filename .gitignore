@@ -69,7 +69,7 @@ data/venues/arxiv_s2_citing.json
 # papers_full.json -- neither is source. relevance_labels.json (the actual
 # hand-labeled output, once it exists) is NOT ignored -- that's real human
 # work, same treatment as scholar_profiles.json.
-label_relevance.html
+dev/label_relevance.html
 data/labeling_candidates.json
 
 __pycache__/

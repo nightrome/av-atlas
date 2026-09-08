@@ -10,7 +10,7 @@ closing the tab mid-session doesn't lose anything; an Export button
 downloads labels.json when done (or partway through -- only labeled items
 are included).
 
-Writes av-atlas/label_relevance.html (gitignored -- it's a generated
+Writes av-atlas/dev/label_relevance.html (gitignored -- it's a generated
 dev tool, not a page anyone should ever deploy).
 
 Usage: python build_labeling_tool.py
@@ -20,7 +20,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
 CANDIDATES_FILE = BASE / "data" / "labeling_candidates.json"
-OUT_FILE = BASE / "label_relevance.html"
+OUT_FILE = BASE / "dev" / "label_relevance.html"
 
 TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
@@ -201,6 +201,9 @@ render();
 def main():
     candidates = json.loads(CANDIDATES_FILE.read_text(encoding="utf-8"))
     html = TEMPLATE.replace("__CANDIDATES_JSON__", json.dumps(candidates, ensure_ascii=False))
+    # dev/ isn't tracked wholesale (the generated tool inside it is
+    # gitignored), so a fresh clone may not have the directory yet.
+    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     OUT_FILE.write_text(html, encoding="utf-8", newline="\n")
     print(f"Wrote {OUT_FILE} with {len(candidates)} candidates embedded")
 

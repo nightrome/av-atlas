@@ -206,7 +206,7 @@ examples: `select_labeling_candidates.py` draws a stratified sample (even
 counts across the three current tiers, not a flat random sample, so the
 label set actually covers the range) from those 2,340 papers;
 `build_labeling_tool.py` stamps them into a self-contained HTML tool
-(`label_relevance.html`, gitignored -- generated, not source) for a human to
+(`dev/label_relevance.html`, gitignored -- generated, not source) for a human to
 label Core/Adjacent one at a time, no server needed. Once labeled, the plan
 is to train on scikit-learn locally (instant on this hardware for a dataset
 this size) but bake the resulting coefficients back into `classify.py` as a
@@ -472,7 +472,7 @@ it to `papers_full.json`).
 
 Prototyped replacing the Authors page's "download the whole stats.json up
 front" model with a queryable SQLite file fetched over HTTP range requests
-(`scripts/build_sqlite.py` builds it, `authors_sql_prototype.html` was the
+(`scripts/build_sqlite.py` builds it, `dev/authors_sql_prototype.html` was the
 pilot page, never linked from nav or deployed). Vendored `sql.js-httpvfs`
 under `scripts/vendor/sqljs-httpvfs/` (self-hosted, required by the CSP).
 
