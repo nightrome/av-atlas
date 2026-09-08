@@ -1668,8 +1668,14 @@
       if (tr.querySelector('.compare-col')) return;
       const td = document.createElement('td');
       td.className = 'compare-col';
-      const name = nameFor(rows[i]);
-      // The totals row appended by appendSumRow has no entity behind it.
+      // `bodyRows` is every <tr> in the tbody, which includes the totals row
+      // appendSumRow appends -- `rows` (the data) has no entry for it, so
+      // rows[i] is undefined there. Guarding only the RESULT of nameFor
+      // wasn't enough: nameFor is `c => c.name`, which throws on undefined
+      // before any guard downstream can run, and the page's own top-level
+      // .catch turned that into "Could not load stats.json" with the map
+      // blanked out. Checked before the call, not after.
+      const name = rows[i] ? nameFor(rows[i]) : null;
       if (name) {
         const cb = document.createElement('input');
         cb.type = 'checkbox';

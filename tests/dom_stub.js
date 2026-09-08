@@ -90,16 +90,60 @@ function makeElement(tag) {
   return el;
 }
 function makeText(s) { return { nodeType: 3, textContent: s }; }
+// Matches a single compound selector: a tag name, .class, #id, or [attr].
+//
+// This used to strip the leading . or # and compare the remainder against
+// tagName, so '.export-row' looked for a <export-row> element and matched
+// nothing -- every class- and id-based query silently returned []. Combined
+// with the tag-only limitation below, whole code paths were "passing" tests
+// that never ran them: the compare-selection column shipped a crash on
+// countries.html (nameFor called on the totals row, which has no data entry)
+// that the smoke test could not have caught, because its
+// querySelectorAll('tbody tr') matched nothing.
+function matchesSimple(el, part) {
+  if (part === '*') return true;
+  if (part.startsWith('.')) return (el.attrs.class || '').split(/\s+/).includes(part.slice(1));
+  if (part.startsWith('#')) return el.attrs.id === part.slice(1);
+  if (part.startsWith('[')) {
+    const m = /^\[([^\]=]+)(?:=["']?([^\]"']*)["']?)?\]$/.exec(part);
+    if (!m) return false;
+    const have = el.attrs[m[1]];
+    return m[2] === undefined ? have !== undefined : have === m[2];
+  }
+  // A tag with a class or id suffix ("td.num", "input#foo").
+  const m = /^([a-zA-Z][\w-]*)(.*)$/.exec(part);
+  if (!m) return false;
+  if (el.tagName !== m[1].toUpperCase()) return false;
+  return !m[2] || matchesSimple(el, m[2]);
+}
+
+// Supports comma-separated alternatives and descendant combinators
+// ("tbody tr", "thead tr th"). Child (>), sibling and pseudo-class
+// combinators are not supported and match nothing, deliberately: silently
+// treating '>' as a descendant would make a test pass against structure it
+// never actually checked.
 function queryAll(root, sel) {
-  const tag = sel.replace(/^[.#]/, '').toUpperCase();
   const out = [];
-  (function walk(n) {
-    if (!n.children) return;
-    n.children.forEach(c => {
-      if (c.tagName === tag) out.push(c);
-      walk(c);
+  const seen = new Set();
+  sel.split(',').map(s => s.trim()).filter(Boolean).forEach(one => {
+    if (one.includes('>') || one.includes('+') || one.includes('~') || one.includes(':')) return;
+    const parts = one.split(/\s+/);
+    let current = [root];
+    parts.forEach(part => {
+      const next = [];
+      current.forEach(node => {
+        (function walk(n) {
+          if (!n.children) return;
+          n.children.forEach(c => {
+            if (matchesSimple(c, part)) next.push(c);
+            walk(c);
+          });
+        })(node);
+      });
+      current = next;
     });
-  })(root);
+    current.forEach(el => { if (!seen.has(el)) { seen.add(el); out.push(el); } });
+  });
   return out;
 }
 

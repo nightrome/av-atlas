@@ -17798,5 +17798,80 @@
       "name": "AIT Austrian Institute of Technology",
       "matched_existing": true
     }
+  ],
+  "Rochester Institute of Technology": [
+    {
+      "name": "Rochester Institute of Technology",
+      "matched_existing": true
+    }
+  ],
+  "Rochester, NY 14623": [],
+  "Zhenlong Fang is with the Department of Computer Science & Engineering, University of Minnesota, Twin Cities, Minneapolis, MN 55455, USA. Email: fang0540@umn.edu": [
+    {
+      "name": "University of Minnesota - Twin Cities",
+      "matched_existing": true
+    }
+  ],
+  "Tianyi Wang is with the Department of Mechanical Engineering & Materials Science, Yale University, New Haven, CT 06511, USA. Email: tianyi.wang.tw727@yale.edu": [
+    {
+      "name": "Yale University",
+      "matched_existing": true
+    }
+  ],
+  "Qian Zhang is with the Computer Vision, BYD COMPANY LIMITED, Shenzhen, China. Email: zhngqn@foxmail.com": [
+    {
+      "name": "BYD COMPANY LIMITED",
+      "matched_existing": false
+    }
+  ],
+  "Miao Zhang and Shuai Lu are with the Shenzhen International Graduate School, Tsinghua University, Shenzhen 518055, China. Email: zhangmiao@sz.tsinghua.edu.cn, shuai.lu@sz.tsinghua.edu.cn, wang.xq@sz.tsinghua.edu.cn": [
+    {
+      "name": "Shenzhen International Graduate School",
+      "matched_existing": true
+    },
+    {
+      "name": "Tsinghua University",
+      "matched_existing": true
+    }
+  ],
+  "Christian Ellis is a PhD Student and Lance Fiondella is an Associate Professor in the Department of Electrical and Computer Engineering at the University of Massachusetts Dartmouth, USA. cellis3, lfiondella@umassd.edu": [
+    {
+      "name": "University of Massachusetts Dartmouth",
+      "matched_existing": true
+    }
+  ],
+  "Maggie Wigness is a researcher at the United States Army Research Laboratory (ARL).": [
+    {
+      "name": "United States Army Research Laboratory",
+      "matched_existing": true
+    }
+  ],
+  "Birmingham City University , Birmingham , United Kingdom": [
+    {
+      "name": "Birmingham City University",
+      "matched_existing": false
+    }
+  ],
+  "Ying Shuai Quan and Paolo Falcone are with the Mechatronics group at the Department of Electrical Engineering, Chalmers University of Technology, Gothenburg, Sweden {quany,paolo.falcone}@chalmers.se": [
+    {
+      "name": "Chalmers University of Technology",
+      "matched_existing": true
+    }
+  ],
+  "Mohammad Jeddi, Francesco Prignoli, and Paolo Falcone are with the Dipartimento di Ingegneria “Enzo Ferrari” Università di Modena e Reggio Emilia, Italy {mohammad.jeddi, francesco.prignoli, falcone}@unimore.it": [
+    {
+      "name": "Università di Modena e Reggio Emilia",
+      "matched_existing": true
+    }
+  ],
+  "Mohammad Jeddi is also with the Dept. of Electrical and Information Engineering, Italian National Ph.D. DAUSY, Polytechnic of Bari, Italy m.jeddi@phd.poliba.it": [
+    {
+      "name": "Italian National Ph.D. DAUSY",
+      "matched_existing": true
+    },
+    {
+      "name": "Polytechnic of Bari",
+      "matched_existing": true
+    }
   ]
 }
