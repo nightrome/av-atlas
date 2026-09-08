@@ -405,7 +405,7 @@ function statTile(container, value, label, sub, href) {
 function moveRow(list, item, up) {
   const li = document.createElement('li');
   const name = document.createElement('span');
-  name.textContent = labelForCategory(item.category);
+  name.textContent = categoryLabel(item.category);
   li.appendChild(name);
   const delta = document.createElement('span');
   delta.className = 'delta ' + (up ? 'up' : 'down');
@@ -636,7 +636,7 @@ function renderCategoryCorrelation(stats) {
     papers: stats.all_papers || [],
     dimensionFn: p => [p.category],
     itemKeys: (stats.category_breakdown || []).map(c => c.category),
-    labelFor: labelForCategory,
+    labelFor: categoryLabel,
     matrixTableId: 'category-corr-matrix', bodyId: 'category-corr-body',
     paginationId: 'category-corr-pagination', exportContainerId: 'category-corr-export',
     paramKey: 'catcorr_page', exportName: 'av-atlas-category-correlation.csv',
@@ -659,21 +659,14 @@ function renderVenueCorrelation(stats) {
   });
 }
 
-const CATEGORY_LABELS = {
-  'control': 'Control', 'llm-vlm-driving': 'LLM/VLM for Driving', 'dataset-benchmark-paper': 'Datasets',
-  'simulation-benchmarking': 'Simulation', 'end-to-end-driving': 'End-to-End Driving & Planning',
-  'world-models': 'World Models', 'reinforcement-learning': 'Reinforcement Learning',
-  'domain-adaptation': 'Domain Adaptation & Generalization', 'adversarial-robustness-safety': 'Adversarial Robustness & Safety',
-  'tracking': 'Tracking', 'mapping-localization': 'Mapping & Localization', 'segmentation': 'Segmentation',
-  'occupancy': 'Occupancy Prediction', 'v2x-cooperative': 'V2X / Cooperative Perception',
-  'depth-3d-geometry': 'Depth & 3D Geometry', 'novel-view-synthesis': 'Novel View Synthesis',
-  'optical-flow': 'Optical & Scene Flow', 'object-detection': 'Object Detection',
-  'motion-prediction': 'Motion Prediction', 'uncategorized': 'Uncategorized', 'sensor-fusion': 'Sensor Fusion',
-  'driver-behavior-hmi': 'Driver Behavior & Human-Machine Interaction', 'general-cv-ml-method': 'General CV/ML Method',
-};
-function labelForCategory(cat) {
-  return CATEGORY_LABELS[cat] || cat.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
-}
+// Category labels come from filters.js's shared window.CATEGORY_LABELS /
+// categoryLabel() -- this used to be its own local, private copy (predating
+// that consolidation) which had quietly drifted 5 categories behind the
+// shared one (traffic-flow-management, platooning-cruise-control,
+// testing-validation, sensor-calibration, vehicle-dynamics-powertrain all
+// fell back to the raw-slug-title-cased default here instead of their real
+// name). Every overlapping entry's wording already matched, so there was
+// nothing to port the other way.
 
 fetch('stats.json').then(r => r.json()).then(stats => {
   const ins = stats.insights || {};
