@@ -17873,5 +17873,256 @@
       "name": "Polytechnic of Bari",
       "matched_existing": true
     }
+  ],
+  "Inria Paris, 48 rue Barrault, 75013 Paris, France {karim.essalmi, fernando.garrido-carpio, fawzi.nashashibi}@inria.fr": [
+    {
+      "name": "INRIA Paris",
+      "matched_existing": true
+    }
+  ],
+  "Valeo Mobility Tech Center, 6 rue Daniel Costantini, 94000 Créteil, France {karim.essalmi, fernando.garrido}@valeo.com": [
+    {
+      "name": "Valeo Mobility Tech Center",
+      "matched_existing": true
+    }
+  ],
+  "Xiamen University": [
+    {
+      "name": "Xiamen University",
+      "matched_existing": true
+    }
+  ],
+  "Xiamen, China": [],
+  "ylliu @ xmu.edu.cn": [],
+  "Graphcore Inc., 167 Hamilton Ave, Palo Alto, CA 94301": [
+    {
+      "name": "Graphcore Inc.",
+      "matched_existing": false
+    }
+  ],
+  "Greenfield Labs, Ford Motor Company, 3251 Hillview Ave, Palo Alto, CA 94304": [
+    {
+      "name": "Greenfield Labs",
+      "matched_existing": false
+    },
+    {
+      "name": "Ford Motor Company",
+      "matched_existing": true
+    }
+  ],
+  "The authors are with Center for Visual Information Technology (CVIT), IIIT Hyderabad, India. sangeeth.battu@research.iiit.ac.in": [
+    {
+      "name": "Center for Visual Information Technology (CVIT)",
+      "matched_existing": false
+    },
+    {
+      "name": "International Institute of Information Technology Hyderabad",
+      "matched_existing": true
+    }
+  ],
+  "The authors are with Computer Vision Center (CVC), UAB, Spain. lgomez@cvc.uab.es": [
+    {
+      "name": "Autonomous University of Barcelona (UAB)",
+      "matched_existing": true
+    }
+  ],
+  "Department of Automatic Control, School of Electrical Engineering and Computer Science, KTH Royal Institute of Technology, Stockholm, Sweden rfoli@kth.se, gpcp@kth.se, jonas1@kth.se, bo@kth.se": [
+    {
+      "name": "KTH Royal Institute of Technology",
+      "matched_existing": true
+    }
+  ],
+  "Scania, Autonomous Transport Solutions, Södertälje, Sweden pedro.lima@scania.com": [
+    {
+      "name": "Scania",
+      "matched_existing": false
+    }
+  ],
+  "Department of Construction Management University of Houston Houston, USA lgao5@central.uh.edu": [
+    {
+      "name": "University of Houston",
+      "matched_existing": false
+    }
+  ],
+  "Mathematics Department Embry-Riddle Aeronautical University Daytona Beach, USA liuy11@erau.edu": [
+    {
+      "name": "Embry-Riddle Aeronautical University",
+      "matched_existing": true
+    }
+  ],
+  "Civil Engineering Department Embry-Riddle Aeronautical University Daytona Beach, USA Hongyun.Chen@erau.edu": [
+    {
+      "name": "Embry-Riddle Aeronautical University",
+      "matched_existing": true
+    }
+  ],
+  "Department of Graduate Studies Embry-Riddle Aeronautical University Daytona Beach, USA liu89b@erau.edu": [
+    {
+      "name": "Embry-Riddle Aeronautical University",
+      "matched_existing": true
+    }
+  ],
+  "Department of Information Science Technology University of Houston Houston, USA yzhang119@uh.edu": [
+    {
+      "name": "University of Houston",
+      "matched_existing": false
+    }
+  ],
+  "Center for Transportation Research The University of Texas at Austin Austin, USA jingransun@utexas.edu": [
+    {
+      "name": "The University of Texas at Austin",
+      "matched_existing": true
+    }
+  ],
+  "Korea Institute of Science and Technology (KIST)": [
+    {
+      "name": "Korea Institute of Science and Technology (KIST)",
+      "matched_existing": true
+    }
+  ],
+  "Monash University, Australia": [
+    {
+      "name": "Monash University",
+      "matched_existing": true
+    }
+  ],
+  "RMIT University, Australia": [
+    {
+      "name": "RMIT University",
+      "matched_existing": true
+    }
+  ],
+  "Italian Institute of Artificial Intelligence for Industry (AI4I), Italy": [
+    {
+      "name": "Italian Institute of Artificial Intelligence (AI4I)",
+      "matched_existing": true
+    }
+  ],
+  "Sber Automotive Technologies": [
+    {
+      "name": "Sber Automotive Technologies",
+      "matched_existing": false
+    }
+  ],
+  "University of Sydney, NSW, Australia": [
+    {
+      "name": "University of Sydney",
+      "matched_existing": true
+    }
+  ],
+  "University of Technology Sydney, NSW, Australia": [
+    {
+      "name": "University of Technology Sydney",
+      "matched_existing": true
+    }
+  ],
+  "Università degli Studi di Napoli Federico II , Naples , Italy": [
+    {
+      "name": "Università degli Studi di Napoli Federico II",
+      "matched_existing": false
+    }
+  ],
+  "Austrian Institute of Technology , Vienna , Austria": [
+    {
+      "name": "Austrian Institute of Technology",
+      "matched_existing": true
+    }
+  ],
+  "The Italian Institute of AI for Industry , Turin , Italy": [
+    {
+      "name": "Italian Institute of Artificial Intelligence (AI4I)",
+      "matched_existing": true
+    }
+  ],
+  "Technical University of Munich , fortiss GmbH , Munich , Germany": [
+    {
+      "name": "Technical University of Munich",
+      "matched_existing": false
+    },
+    {
+      "name": "fortiss GmbH",
+      "matched_existing": true
+    }
+  ],
+  "University of Wuppertal, Gaußstraße 20, 42119 Wuppertal, Germany": [
+    {
+      "name": "University of Wuppertal",
+      "matched_existing": false
+    }
+  ],
+  "Indian Institute of Technology Bombay, 400076 Mumbai, India": [
+    {
+      "name": "Indian Institute of Technology Bombay",
+      "matched_existing": true
+    }
+  ],
+  "University of Siegen, Hölderlinstraße 3, 57076 Siegen, Germany": [
+    {
+      "name": "University of Siegen",
+      "matched_existing": true
+    }
+  ],
+  "Computer Science Department, Bar-Ilan University": [
+    {
+      "name": "Bar-Ilan University",
+      "matched_existing": true
+    }
+  ],
+  "Fujitsu Research": [
+    {
+      "name": "Fujitsu Research Ind Te i a a se",
+      "matched_existing": true
+    }
+  ],
+  "Deflt University of Technology": [
+    {
+      "name": "Deflt University of Technology",
+      "matched_existing": false
+    }
+  ],
+  "University of Florida , Gainesville , Florida , USA": [
+    {
+      "name": "University of Florida",
+      "matched_existing": false
+    }
+  ],
+  "Rensselaer Polytechnic Institute , Troy , New York , USA": [
+    {
+      "name": "Rensselaer Polytechnic Institute",
+      "matched_existing": true
+    }
+  ],
+  "pedroa@kth.se": [],
+  "podobas@kth.se": [],
+  "Department of Computer Science and": [],
+  "Department of Aerospace Engineering, University of Maryland, College Park, USA": [
+    {
+      "name": "University of Maryland, College Park",
+      "matched_existing": true
+    }
+  ],
+  "School of Computing, National University of Singapore, Singapore.": [
+    {
+      "name": "National University of Singapore",
+      "matched_existing": true
+    }
+  ],
+  "Department of Electrical and Computer Engineering, National University of Singapore, Singapore.": [
+    {
+      "name": "National University of Singapore",
+      "matched_existing": false
+    }
+  ],
+  "School of Automation, Beijing Institute of Technology, China.": [
+    {
+      "name": "Beijing Institute of Technology",
+      "matched_existing": true
+    }
+  ],
+  "School of Computer Science and Engineering, Sun Yat-Sen University, China.": [
+    {
+      "name": "Sun Yat-Sen University",
+      "matched_existing": true
+    }
   ]
 }
