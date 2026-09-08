@@ -213,9 +213,9 @@
   <div class="line-chart-wrap" id="lifetime-citations-chart-wrap">
     <svg id="lifetime-citations-chart"></svg>
   </div>
-  <h3>Early-career researchers with several influential papers</h3>
+  <h3>New names with several influential papers</h3>
   <p class="section-intro" style="margin-bottom:4px;" id="young-researchers-note">
-    Career span ≤3 years, at least 5 papers, several of them influential.
+    A short record in this corpus, at least 5 papers, several of them influential.
   </p>
   <table class="data-table" id="young-researchers-table">
     <thead>
@@ -751,10 +751,13 @@ function render(ins, stats) {
   const influentialAt = ins.influential_paper_threshold;
   if (ins.young_researchers_cutoff_year) {
     document.getElementById('young-researchers-note').textContent =
-      `Career span ≤3 years, at least 5 papers, still active (a publication in `
-      + `${ins.young_researchers_cutoff_year}, the last complete year), and at least `
-      + `${minInfluential} papers with ${influentialAt}+ in-corpus citations each -- the top 10% of cited `
-      + `papers in this corpus. Ranked by how many such papers, then by citations per paper.`;
+      `Authors whose whole record in this corpus spans 3 years or less, with at least 5 papers, a `
+      + `publication in ${ins.young_researchers_cutoff_year} (the last complete year), and at least `
+      + `${minInfluential} papers with ${influentialAt}+ in-corpus citations each -- the top 10% of `
+      + `cited papers here. Ranked by how many such papers, then by citations per paper. `
+      + `A short record here does not have to mean an early career: it also fits an established `
+      + `researcher who moved into AV recently, and a common name covering several different people, `
+      + `neither of which this site can tell apart from the real thing.`;
   }
   const influentialHead = document.getElementById('young-influential-head');
   if (influentialHead && influentialAt) {
