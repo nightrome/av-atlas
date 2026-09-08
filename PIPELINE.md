@@ -67,8 +67,7 @@ load-bearing, without losing the record of how each venue was pulled.
 
 The site only ever shows one citation count per paper: `in_corpus`, how many
 other papers already in this corpus cite it (see Methodology and
-DECISIONS.md's "Citation counts: dropped OpenAlex as a source entirely"
-entry). `papers_full.json` stores counts in `citations_by_source`
+DECISIONS.md). `papers_full.json` stores counts in `citations_by_source`
 (`{"in_corpus": {"count": N, "updated": "..."}, ...}`); `citation_count()`
 (`aggregate.py`) reads only `citations_by_source.in_corpus` and nothing
 else — no fallback to any external provider, for ranking or for display.
@@ -137,6 +136,5 @@ recur: the field is stripped from `papers_full.json` and no longer fetched.
   natively.
 - `data/seeds.json` -> `data/raw/*.json` -> `enrich.py` -> `data/enriched.json`
   — the original citation-crawl pilot (a different, non-uniform sampling
-  method; see DECISIONS.md's "Citation-crawl pilot workflow removed
-  entirely"). Excluded from `papers_full.json` for a while before being
+  method). Excluded from `papers_full.json` for a while before being
   deleted outright, since nothing ever read it once excluded.

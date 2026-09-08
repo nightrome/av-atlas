@@ -47,7 +47,7 @@ function loadFilters(searchString) {
   };
   sandbox.window = sandbox;
   vm.createContext(sandbox);
-  const code = fs.readFileSync(path.join(__dirname, '..', 'filters.js'), 'utf8');
+  const code = fs.readFileSync(path.join(__dirname, '..', 'site', 'filters.js'), 'utf8');
   vm.runInContext(code, sandbox);
   return sandbox;
 }

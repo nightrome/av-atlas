@@ -15,12 +15,19 @@ import sys
 import unittest
 from pathlib import Path
 
-from bs4 import BeautifulSoup
-
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-import fetch_affiliations_arxiv as fa
-import institution_extraction_llm as iel
+# beautifulsoup4 is a crawler dependency (scripts/requirements.txt), not part
+# of the stdlib-only test baseline the CI job checks for -- so on a bare CI
+# checkout with no `pip install`, this one module can't run. Skip it cleanly
+# there (unittest turns a module-level SkipTest during discovery into a
+# skipped test, not an error) rather than failing the whole suite.
+try:
+    from bs4 import BeautifulSoup
+    import fetch_affiliations_arxiv as fa
+    import institution_extraction_llm as iel
+except ImportError as exc:
+    raise unittest.SkipTest(f"beautifulsoup4 not installed: {exc}")
 
 
 class TestParseAr5ivAffiliations(unittest.TestCase):

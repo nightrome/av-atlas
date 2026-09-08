@@ -32,14 +32,16 @@ python scripts/deploy.py --no-main-commit
 # Run just the test suite (stdlib unittest + plain-Node JS, no install needed)
 python scripts/run_tests.py
 
-# Serve the site locally (data/stats.json must already exist -- run a build first)
-python -m http.server 8747
+# Serve the built site locally (run a build first so public/ exists)
+cd public && python -m http.server 8747
 # then open http://localhost:8747/index.html
 ```
 
-There is no CI wired up -- `scripts/deploy.py` (which runs the full build/test
-pipeline before publishing) is meant to be run locally before every push, the same way
-`scripts/run_tests.py` should be run before every commit.
+GitHub Actions (`.github/workflows/tests.yml`) runs `run_tests.py` on every push to
+`main` and every PR -- the Python unit tests only, since the smoke/regression tests
+need the gitignored `data/stats.json`. `scripts/deploy.py` still runs the full
+build/test pipeline locally before publishing, and `scripts/run_tests.py` should
+be run before every commit.
 
 **Never run `aggregate.py` or a raw build directly expecting freshly-crawled data to
 already be reflected** -- always go through `scripts/build_public_site.py` (or
@@ -56,25 +58,28 @@ the fresh merge.
 
 ## Architecture
 
-- `index.html`, `authors.html`, `institutions.html`, `venues.html`, `countries.html`,
+- `site/` -- every source file the published site is built from: `index.html`,
+  `authors.html`, `institutions.html`, `venues.html`, `countries.html`,
   `categories.html`, `network.html`, `insights.html`, `about.html`, `author.html`,
-  `institution.html`, `venue.html`, `paper.html` -- the site's pages. Each reads
-  `data/stats.json` (or `data/stats_adjacent.json` for the "include adjacent/non-core
-  papers" view) at runtime; there's no build step for the pages themselves, just for the
-  data they read.
-- `nav.js` -- shared top nav bar, injected into every page via `<nav id="topnav">`.
-- `filters.js` -- shared filter-bar component (`renderFilterBar`) used across the
+  `institution.html`, `venue.html`, `paper.html`, `compare.html` (the pages), the
+  shared JS/CSS below, `logo.svg`/`og-image.png`, and `site/assets/` (vendored
+  institution/venue logos). `build_public_site.py` copies this tree into `public/`
+  alongside a fresh `stats.json`; there's no build step for the pages themselves.
+  Each page reads `stats.json` (or `stats_adjacent.json` for the "include
+  adjacent/non-core papers" view) at runtime.
+- `site/nav.js` -- shared top nav bar, injected into every page via `<nav id="topnav">`.
+- `site/filters.js` -- shared filter-bar component (`renderFilterBar`) used across the
   listing pages.
-- `sortable.js` -- shared click-to-sort-any-column table behavior.
-- `theme.css` + `theme-light.css` -- `theme.css` defines the base CSS custom properties
-  (`--bg`, `--panel`, `--border`, `--text`, `--muted`, `--accent`, `--accent2`) and body
-  reset; `theme-light.css` layers AV Atlas's actual light/modern palette on top (indigo
-  `#4f46e5` + amber `#f59e0b`).
-- `logo.svg` -- the site mark (car + LiDAR dome + scan), used as the favicon and in the
-  nav bar brand.
-- `og-image.png` -- static 1200x630 social share card (same mark/palette as logo.svg),
-  referenced by every page's Open Graph/Twitter Card meta tags. Hand-generated, not
-  rebuilt by any script -- regenerate only if the brand mark changes.
+- `site/sortable.js` -- shared click-to-sort-any-column table behavior.
+- `site/theme.css` + `site/theme-light.css` -- `theme.css` defines the base CSS custom
+  properties (`--bg`, `--panel`, `--border`, `--text`, `--muted`, `--accent`,
+  `--accent2`) and body reset; `theme-light.css` layers AV Atlas's actual light/modern
+  palette on top (indigo `#4f46e5` + amber `#f59e0b`).
+- `site/logo.svg` -- the site mark (car + LiDAR dome + scan), used as the favicon and in
+  the nav bar brand.
+- `site/og-image.png` -- static 1200x630 social share card (same mark/palette as
+  logo.svg), referenced by every page's Open Graph/Twitter Card meta tags.
+  Hand-generated, not rebuilt by any script -- regenerate only if the brand mark changes.
 - `scripts/` -- the whole data pipeline (see README.md) plus `build_public_site.py` and
   `deploy.py`.
 - `data/` -- the crawled/derived corpus. The large derived files (`papers_full.json`,

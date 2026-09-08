@@ -3,8 +3,6 @@ title: "AV Atlas: a bibliometric index of autonomous vehicle research"
 message: "If you use AV Atlas or its data in academic work, please cite it."
 type: software
 authors:
-  # Add `orcid: "https://orcid.org/..."` here once you want it public --
-  # deliberately left out rather than guessed at.
   - family-names: Caesar
     given-names: Holger
 repository-code: "https://github.com/nightrome/av-atlas"

@@ -97,8 +97,8 @@ def deploy_gh_pages():
     # accumulated deploys were purely additive, not shrinking via reuse).
     # Squashing to one commit keeps gh-pages' contribution to repo size
     # flat at ~one snapshot, regardless of how many more times the site
-    # gets deployed -- see DECISIONS.md's "Keep GitHub repo size small"
-    # entry. No `git fetch origin gh-pages` needed anymore either, since
+    # gets deployed -- see DECISIONS.md. No `git fetch origin gh-pages`
+    # needed anymore either, since
     # nothing here reads its prior content.
     worktree = Path(tempfile.mkdtemp(prefix="av-atlas-ghp-"))
     worktree.rmdir()

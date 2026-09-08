@@ -81,7 +81,7 @@ INSTITUTION_FLAGS_LLM_FILE = BASE / "data" / "institution_flags_llm.json"
 # The hand-typed INSTITUTION_ALIASES dict below covers the common cases found
 # by eye; this is the same idea at registry scale -- an LLM review pass over
 # every currently-valid institution name, see that file's own generating
-# comment and DECISIONS.md's "Institution extraction switched..." entry.
+# comment and DECISIONS.md.
 INSTITUTION_ALIASES_LLM_FILE = BASE / "data" / "institution_aliases_llm.json"
 VENUE_LOGOS_FILE = BASE / "data" / "venue_logos.json"
 CITATION_GRAPH_FILE = BASE / "data" / "citation_graph.json"
@@ -2226,8 +2226,8 @@ def main():
         # Only included when actually checked -- omitted, not null, for the
         # majority of papers not yet reached, same convention as
         # self_citations/cd_index below (a present-but-null field on every
-        # one of ~20k papers would bloat stats.json for no reason -- see
-        # DECISIONS.md's stats.json size history). LLM verdict wins; the
+        # one of ~20k papers would bloat stats.json for no reason). LLM
+        # verdict wins; the
         # regex has_code_link (fetch_affiliations_arxiv.py) and the
         # abstract-text upgrade are fallbacks only until the classifier
         # reaches every paper.

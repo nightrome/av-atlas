@@ -50,6 +50,9 @@ import build_data_release  # noqa: E402  (needs the sys.path line above)
 
 BASE = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = Path(__file__).resolve().parent
+# The site's source files -- pages, shared JS/CSS, logo, the vendored asset
+# tree -- live under site/, not the repo root.
+SITE_DIR = BASE / "site"
 PUBLIC_DIR = BASE / "public"
 
 # This site is meant to go public and be discoverable -- indexing is
@@ -77,16 +80,16 @@ PUBLISHED_HTML = [
 
 
 def html_pages():
-    pages = [BASE / name for name in PUBLISHED_HTML]
+    pages = [SITE_DIR / name for name in PUBLISHED_HTML]
     missing = [p.name for p in pages if not p.exists()]
     if missing:
         raise SystemExit(f"PUBLISHED_HTML lists page(s) that don't exist: {', '.join(missing)}")
-    # A page at the root that nobody added to the list is almost always a new
+    # A page in site/ that nobody added to the list is almost always a new
     # page someone forgot to register, not a deliberate omission -- say so
     # rather than silently not publishing it.
-    unlisted = sorted(p.name for p in BASE.glob("*.html") if p.name not in set(PUBLISHED_HTML))
+    unlisted = sorted(p.name for p in SITE_DIR.glob("*.html") if p.name not in set(PUBLISHED_HTML))
     if unlisted:
-        print(f"  note: not publishing unlisted root page(s): {', '.join(unlisted)}"
+        print(f"  note: not publishing unlisted site/ page(s): {', '.join(unlisted)}"
               f" -- add to PUBLISHED_HTML in {Path(__file__).name} if they should ship")
     return pages
 
@@ -154,7 +157,7 @@ def write_sitemap(page_dir, stats_path):
 
 
 def build_public_site():
-    index_path = BASE / "index.html"
+    index_path = SITE_DIR / "index.html"
     stats_path = BASE / "data" / "stats.json"
     if not index_path.exists():
         raise SystemExit(f"{index_path} not found")
@@ -210,12 +213,12 @@ def build_public_site():
     adjacent_path = BASE / "data" / "stats_adjacent.json"
     if adjacent_path.exists():
         shutil.copy2(adjacent_path, page_dir / "stats_adjacent.json")
-    shutil.copy2(BASE / "theme.css", page_dir / "theme.css")
+    shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
     # see theme-light.css's own header comment.
-    shutil.copy2(BASE / "theme-light.css", page_dir / "theme-light.css")
-    shutil.copy2(BASE / "logo.svg", page_dir / "logo.svg")
-    shutil.copy2(BASE / "og-image.png", page_dir / "og-image.png")
+    shutil.copy2(SITE_DIR / "theme-light.css", page_dir / "theme-light.css")
+    shutil.copy2(SITE_DIR / "logo.svg", page_dir / "logo.svg")
+    shutil.copy2(SITE_DIR / "og-image.png", page_dir / "og-image.png")
 
     # Vendored static assets (institution/venue logos with no stable
     # third-party URL, so the fetch scripts point at a local assets/... path
@@ -223,17 +226,17 @@ def build_public_site():
     # The tree is copied verbatim so the path baked into stats.json resolves.
     # The stale-file sweep below only inspects top-level files, so nothing
     # under assets/ needs adding to `expected`.
-    assets_src = BASE / "assets"
+    assets_src = SITE_DIR / "assets"
     if assets_src.exists():
         for asset in assets_src.rglob("*"):
             if asset.is_file():
-                dst = page_dir / asset.relative_to(BASE)
+                dst = page_dir / asset.relative_to(SITE_DIR)
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(asset, dst)
 
     # Shared static assets referenced by the HTML pages (e.g. nav.js) but not
     # matched by the *.html glob above.
-    for js_path in BASE.glob("*.js"):
+    for js_path in SITE_DIR.glob("*.js"):
         shutil.copy2(js_path, page_dir / js_path.name)
 
     # page_dir persists across runs (rmtree-ing it hits a real, previously-hit
@@ -244,7 +247,7 @@ def build_public_site():
     # otherwise stay published forever. Delete anything present that isn't
     # part of the current expected output. Caught in practice: label_relevance.html
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
-    expected = {p.name for p in html_pages()} | {p.name for p in BASE.glob("*.js")} \
+    expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
         | {"stats.json", "stats_adjacent.json", "theme.css", "theme-light.css", "logo.svg",
            "og-image.png", "sitemap.xml", "robots.txt"}
     for existing in page_dir.iterdir():
@@ -259,7 +262,7 @@ def build_public_site():
     print(f"Wrote {PUBLIC_DIR}")
     for html_path in html_pages():
         print(f"  {html_path.name}")
-    for js_path in BASE.glob("*.js"):
+    for js_path in SITE_DIR.glob("*.js"):
         print(f"  {js_path.name}")
     print(f"  stats.json")
     if abstracts_dst.exists():

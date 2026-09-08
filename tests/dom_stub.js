@@ -14,6 +14,9 @@ const path = require('path');
 const vm = require('vm');
 
 const BASE = path.join(__dirname, '..');
+// The site's pages and their shared JS/CSS live under site/; data files
+// stay at the repo root's data/.
+const SITE = path.join(BASE, 'site');
 
 function drainMicrotasks() {
   return new Promise(resolve => setImmediate(resolve));
@@ -161,11 +164,11 @@ function queryAll(root, sel) {
 // try to navigate by writing location.href").
 function runPage(file, opts) {
   opts = opts || {};
-  const html = fs.readFileSync(path.join(BASE, file), 'utf-8');
+  const html = fs.readFileSync(path.join(SITE, file), 'utf-8');
   const srcScripts = [...html.matchAll(/<script src="([^"]+\.js)"><\/script>/g)]
     .map(m => m[1])
-    .filter(src => fs.existsSync(path.join(BASE, src)))
-    .map(src => fs.readFileSync(path.join(BASE, src), 'utf-8'));
+    .filter(src => fs.existsSync(path.join(SITE, src)))
+    .map(src => fs.readFileSync(path.join(SITE, src), 'utf-8'));
   const inlineScripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
   const scripts = [...srcScripts, ...inlineScripts];
   if (!inlineScripts.length) return Promise.resolve({ file, error: null, allElements: [], idRegistry: {}, sandbox: null, noInlineScript: true });

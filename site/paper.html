@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas: Paper</title>
+<meta name="description" content="A paper's details within AV Atlas: authors, venue, citations, and where it fits in autonomous vehicle research.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AV Atlas">
+<meta property="og:title" content="AV Atlas: Paper">
+<meta property="og:description" content="A paper's details within AV Atlas: authors, venue, citations, and where it fits in autonomous vehicle research.">
+<meta property="og:url" content="https://nightrome.github.io/av-atlas/paper.html">
+<meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AV Atlas: Paper">
+<meta name="twitter:description" content="A paper's details within AV Atlas: authors, venue, citations, and where it fits in autonomous vehicle research.">
+<meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme-light.css">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .header h2 { margin: 0 0 8px; line-height: 1.3; font-size: 1.5em; }
+  .header .meta { color: var(--muted); font-size: 0.92em; margin-bottom: 4px; }
+  .header .meta a { color: var(--accent); text-decoration: none; }
+  .header .meta a:hover { text-decoration: underline; }
+  .category-chip {
+    display: inline-block; font-size: 0.78em; color: var(--muted); background: var(--panel2);
+    border: 1px solid var(--border); border-radius: 10px; padding: 1px 8px; margin-top: 4px;
+  }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0; }
+  .stat-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .stat-tile .value { font-size: 1.6em; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stat-tile .label { color: var(--muted); font-size: 0.82em; margin-top: 2px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+  .panel h2 { margin-top: 0; font-size: 1.1em; }
+  .panel p.abstract { line-height: 1.6; color: var(--text); }
+  .author-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .author-card {
+    display: flex; align-items: center; gap: 8px; background: var(--panel2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 5px 12px 5px 5px; text-decoration: none; color: var(--text); font-size: 0.9em;
+  }
+  .author-card:hover { border-color: var(--accent); }
+  .author-avatar {
+    width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.75em; color: #fff; flex-shrink: 0; overflow: hidden;
+  }
+  .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover { background: var(--panel2); }
+  td a { color: var(--accent); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  .chart { display: flex; align-items: flex-end; gap: 3px; height: 90px; padding: 4px 0 0; border-bottom: 2px solid var(--border); }
+  .chart .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+  .chart .bar { width: 100%; max-width: 26px; border-radius: 4px 4px 0 0; background: var(--accent); min-height: 2px; }
+  .chart .xlabel { font-size: 0.68em; color: var(--muted); margin-top: 4px; white-space: nowrap; }
+  .chart .tooltip {
+    display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: var(--panel); font-size: 0.72em; padding: 3px 7px; border-radius: 5px;
+    white-space: nowrap; margin-bottom: 4px; z-index: 5;
+  }
+  .chart .bar-wrap:hover .tooltip { display: block; }
+  .empty-note { color: var(--muted); font-size: 0.9em; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .related-card {
+    display: block; background: var(--panel2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 12px; text-decoration: none; color: var(--text);
+  }
+  .related-card:hover { border-color: var(--accent); }
+  .related-card .rtitle { font-size: 0.9em; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
+  .related-card .rmeta { font-size: 0.78em; color: var(--muted); }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<div id="detail-back-container"></div>
+
+<div class="header">
+  <h2 id="title">…</h2>
+  <div class="meta" id="venue-meta"></div>
+  <div class="meta" id="links-meta"></div>
+  <span class="category-chip" id="category-chip"></span>
+</div>
+
+<div id="rank-badges" class="rank-badges"></div>
+
+<div style="display:flex;justify-content:flex-end;position:relative;margin-bottom:-6px;"><span class="info-tip" tabindex="0" role="img" aria-label="This paper&#x27;s key figures: how many corpus papers cite it (all papers, and AV papers only), its author count, and its disruption (CD) index." data-tip="This paper&#x27;s key figures: how many corpus papers cite it (all papers, and AV papers only), its author count, and its disruption (CD) index.">i</span></div>
+<div class="stat-grid" id="stat-grid"></div>
+
+<div class="panel" id="abstract-panel">
+  <div class="panel-title-row"><h2>Abstract</h2><span class="info-tip" tabindex="0" role="img" aria-label="The paper&#x27;s own abstract, as published." data-tip="The paper&#x27;s own abstract, as published.">i</span></div>
+  <p class="abstract" id="abstract-text"></p>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2>Authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="The paper&#x27;s authors. Each links to their page; a photo shows when a Google Scholar profile has been matched." data-tip="The paper&#x27;s authors. Each links to their page; a photo shows when a Google Scholar profile has been matched.">i</span></div>
+  <div class="author-grid" id="author-grid"></div>
+</div>
+
+<div class="panel" id="related-panel">
+  <div class="panel-title-row"><h2>Related papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="Other corpus papers close to this one by category, venue and shared citations." data-tip="Other corpus papers close to this one by category, venue and shared citations.">i</span></div>
+  <div class="related-grid" id="related-grid"></div>
+</div>
+
+<div class="panel" id="citing-panel">
+  <div class="panel-title-row">
+    <h2>Citations</h2>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Papers within this corpus whose own reference list cites this paper." data-tip="Papers within this corpus whose own reference list cites this paper.">i</span></div>
+  </div>
+  <div class="chart" id="citing-chart"></div>
+  <div id="citing-pagination-container"></div>
+  <table style="margin-top: 12px;"><thead><tr><th>Title</th><th>Venue</th><th class="num">Year</th><th>Category</th></tr></thead>
+  <tbody id="citing-body"></tbody></table>
+</div>
+
+<div class="panel" id="citing-authors-panel">
+  <div class="panel-title-row">
+    <h2>Citing authors</h2>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Authors of the citing papers above, ranked by how many of them cite this paper." data-tip="Authors of the citing papers above, ranked by how many of them cite this paper.">i</span></div>
+  <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Authors of other papers in this corpus that cite this paper.</p>
+  <p id="citing-authors-cap-note" style="margin:0 0 8px; color:var(--muted); font-size:0.85em;"></p>
+  <div id="citing-authors-pagination"></div>
+  <table><thead><tr><th>Author</th><th class="num" data-term="citing_instances">Citing instances</th>
+  <th class="num" title="Total citations across this citing author's own papers in this corpus.">Citations</th>
+  <th class="num" title="Total papers by this citing author in this corpus.">Papers</th>
+  <th>Country</th><th>Institution</th></tr></thead>
+  <tbody id="citing-authors-body"></tbody></table>
+</div>
+
+<script src="filters.js"></script>
+<script>
+const backLink = renderBackLink();
+if (backLink) document.getElementById('detail-back-container').appendChild(backLink);
+
+function hashString(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+function colorFor(name) { return `hsl(${hashString(name) % 360}, 60%, 45%)`; }
+function initials(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+// Turns bare URLs inside plain text into clickable links -- abstracts often
+// mention a project page or code repo inline (e.g. "Code: https://...").
+// Built via text nodes + DOM Text/anchor construction, not innerHTML string
+// splicing, so the rest of the abstract text is never parsed as HTML.
+const URL_RE = /https?:\/\/[^\s)]+[^\s).,;:]/g;
+function linkify(container, text) {
+  container.textContent = '';
+  let last = 0, m;
+  URL_RE.lastIndex = 0;
+  while ((m = URL_RE.exec(text))) {
+    if (m.index > last) container.appendChild(document.createTextNode(text.slice(last, m.index)));
+    const a = document.createElement('a');
+    a.href = m[0]; a.textContent = m[0]; a.target = '_blank'; a.rel = 'noopener';
+    container.appendChild(a);
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) container.appendChild(document.createTextNode(text.slice(last)));
+}
+
+function stat(value, label) {
+  const tile = document.createElement('div');
+  tile.className = 'stat-tile';
+  tile.innerHTML = `<div class="value">${value}</div><div class="label">${label}</div>`;
+  return tile;
+}
+
+function row(cells) {
+  const tr = document.createElement('tr');
+  cells.forEach((c, i) => {
+    const td = document.createElement('td');
+    if (i > 0 && typeof c === 'number') td.className = 'num';
+    if (c instanceof Node) td.appendChild(c);
+    else td.textContent = c;
+    tr.appendChild(td);
+  });
+  return tr;
+}
+
+// Same djb2-hash-mod-N as aggregate.py's shard_index() -- must stay in sync
+// by construction, not convention. Picks which abstracts/shard-NN.json this
+// paper's abstract (if any) lives in, so this page fetches ~1/64th of the
+// site's abstract text instead of stats.json bundling all of it for every
+// page's every visitor (see aggregate.py's ABSTRACTS_DIR comment).
+const ABSTRACT_SHARD_COUNT = 64;
+function shardIndex(t, numShards = ABSTRACT_SHARD_COUNT) {
+  let h = 5381;
+  for (let i = 0; i < t.length; i++) {
+    h = ((h * 33) + t.charCodeAt(i)) >>> 0;
+  }
+  return h % numShards;
+}
+
+function loadAbstract(paperTitle) {
+  // Hidden until the shard resolves, rather than showing an empty "Abstract"
+  // panel that may or may not fill in a moment later.
+  const abstractPanel = document.getElementById('abstract-panel');
+  abstractPanel.style.display = 'none';
+  const shard = String(shardIndex(paperTitle)).padStart(2, '0');
+  fetch(`abstracts/shard-${shard}.json`).then(r => r.json()).then(shardData => {
+    const abstract = shardData[paperTitle];
+    if (abstract) {
+      linkify(document.getElementById('abstract-text'), abstract);
+      abstractPanel.style.display = '';
+    }
+  }).catch(() => {});
+}
+
+const params = new URLSearchParams(location.search);
+const title = params.get('title') || '';
+document.getElementById('title').textContent = title || 'Unknown paper';
+setDetailPageMeta(title, title
+  ? `"${title}" in AV Atlas: citations within autonomous vehicle research, authors, and related papers.`
+  : null);
+
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
+  document.getElementById('title').textContent = 'Could not load stats.json: ' + err;
+});
+
+function render(stats) {
+  const paper = (stats.all_papers || []).find(p => p.title === title);
+  if (!paper) {
+    document.getElementById('venue-meta').textContent = 'No paper found on this site with that exact title.';
+    document.getElementById('abstract-panel').style.display = 'none';
+    document.getElementById('citing-panel').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('venue-meta').textContent =
+    [paper.venue, paper.year].filter(Boolean).join(' · ');
+
+  // Where this paper ranks by in-corpus citations: overall (as on the Top
+  // Papers table), and within its own venue and year.
+  try {
+    renderRankBadges(document.getElementById('rank-badges'), computeEntityRanks(stats).paper(paper.title));
+  } catch (e) { /* ranking is a top-of-page extra, never block the page for it */ }
+
+  const linksMeta = document.getElementById('links-meta');
+  const links = [];
+  // paper.doi historically doubled as an arXiv URL for papers whose only
+  // source was an arxiv*.json file (fetch_arxiv.py's own schema) -- now
+  // that arxiv_url is its own field, guard against still labeling one of
+  // those "DOI" for any paper that predates the split (merge_corpus.py
+  // fixes this going forward, but a stale cached record could still have
+  // the old shape).
+  if (paper.doi && !paper.doi.includes('arxiv.org')) {
+    const a = document.createElement('a');
+    a.href = paper.doi.startsWith('http') ? paper.doi : `https://doi.org/${paper.doi}`;
+    a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = 'DOI';
+    links.push(a);
+  }
+  if (paper.arxiv_url) {
+    const a = document.createElement('a');
+    a.href = paper.arxiv_url;
+    a.target = '_blank'; a.rel = 'noopener';
+    // Same inline arXiv logo as index.html (data URI, no separate static
+    // file to keep in sync with build_public_site.py's asset list).
+    const img = document.createElement('img');
+    img.src = 'data:image/webp;base64,UklGRhIBAABXRUJQVlA4IAYBAABwBgCdASogACAAPtE+tFooIigoFAEAGglsAMUHgB8vfHVYE6KFjlab99Uvl0brBZl5+ymS34mDHNA04AAA/vYT9liZaUUFUuYkFkZArzUgZ6OEVoANOAD8VtFzrFiHZK9C4jV5hV3PMmSLLBsp+Iz1nNCJmiPg3Wl8Xma+mkKyutSY6ZfeRIOyn6Elrr5Y/wd5PjHwnLXBEbFv7Va1PMc7paXECLUTJg2zvyzKOP/XUhD8DEHQEtW2HJmTdBdj7Bf5Oc6uZIfWDxWDoQr3lfgvlZKNSV3maujawQyTRBmWLN+xciGiJTlbD7gP3XHwCLKE5F/Q6QbGMtKjsrencFnF1TcI+4AA';
+    img.alt = 'arXiv';
+    img.style.cssText = 'width:13px;height:13px;vertical-align:middle;margin-right:4px;';
+    a.appendChild(img);
+    a.append('arXiv');
+    links.push(a);
+  }
+  if (paper.source_url) {
+    // Recorded per-paper for sources with no single predictable URL
+    // pattern -- currently the community-maintained ICRA/IROS GitHub paper
+    // lists (fetch_github_paper_lists.py), one repo per year/venue, so
+    // "where did this come from" needs a real per-paper link, not just a
+    // sentence in Methodology (user-requested).
+    const a = document.createElement('a');
+    a.href = paper.source_url;
+    a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = 'Source listing';
+    links.push(a);
+  }
+  const scholar = document.createElement('a');
+  scholar.href = `https://scholar.google.com/scholar?q=${encodeURIComponent(paper.title)}`;
+  scholar.target = '_blank'; scholar.rel = 'noopener';
+  scholar.textContent = '🎓 Google Scholar';
+  links.push(scholar);
+  links.forEach((el, i) => {
+    if (i > 0) linksMeta.append(' · ');
+    linksMeta.appendChild(el);
+  });
+
+  document.getElementById('category-chip').textContent = categoryLabel(paper.category || 'uncategorized');
+
+  // Both stats below are "how many papers cite THIS one", both computed
+  // entirely from this site's own citation graph -- NEITHER is an external
+  // count (the first tile used to be labeled "external source", a leftover
+  // from when OpenAlex was still a citation source; it was dropped entirely,
+  // see DECISIONS.md). What
+  // actually separates them is which citers are counted: `paper.citations`
+  // counts every citing paper in the corpus, AV-relevant or not, while
+  // `citing_papers` only lists citers that are themselves AV papers (it is
+  // built by resolving each citer against this payload's own all_papers,
+  // which stats.json restricts to AV papers). Confirmed on real data:
+  // nuScenes has 2,215 in-corpus citers, of which 2,069 are AV papers and
+  // 145 are non-AV. Labeled by that distinction now, so the two numbers
+  // read as the nested counts they are instead of as a contradiction.
+  const grid = document.getElementById('stat-grid');
+  const allCitersTile = stat(paper.citations ?? 'n/a', 'Cited by (all papers)');
+  allCitersTile.title = 'How many papers anywhere in this corpus cite this one -- AV papers and non-AV '
+    + 'papers together. Counted only within this corpus, never from an external citation database.';
+  grid.appendChild(allCitersTile);
+  // A confirmed-zero-citers paper and a paper whose citing reference lists
+  // just haven't been scanned yet BOTH show 0 here -- this site's own
+  // citation-graph coverage is partial (see About's crawler-status table),
+  // so 0 means "no citers found so far", not "confirmed uncited". A tooltip
+  // rather than a separate "n/a" state, since there's no reliable per-paper
+  // signal for "definitely fully scanned" to switch on (user-requested:
+  // state missing citation data clearly, not indistinguishable from zero).
+  const withinCorpusTile = stat((paper.citing_papers || []).length, 'Cited by (AV papers)');
+  withinCorpusTile.title = 'Of the citers above, how many are themselves AV papers -- the ones listed '
+    + "below. This site's own citation-graph coverage is partial, so both numbers can only grow over "
+    + 'time -- neither is a confirmed final count, even when it reads 0.';
+  grid.appendChild(withinCorpusTile);
+  grid.appendChild(stat(paper.authors ? paper.authors.length : 'n/a', 'Authors'));
+  if (paper.cd_index != null) {
+    // CD index (Funk & Owen-Smith 2017): +1 = every in-corpus citer engages
+    // with this paper but not its own references (disruptive -- treated as
+    // having superseded them); -1 = every citer cites this paper alongside
+    // the same references it built on (consolidating). Only shown once
+    // enough in-corpus citers exist for the score to mean something (see
+    // aggregate.py's DISRUPTION_MIN_CITERS).
+    const cdTile = stat(
+      (paper.cd_index > 0 ? '+' : '') + paper.cd_index.toFixed(2),
+      'Disruption index (CD)',
+    );
+    cdTile.title = 'How later work engages with this paper: +1 means citers cite it instead of its own '
+      + 'references (disruptive); -1 means citers cite it alongside those references (consolidating). '
+      + 'See About for the method.';
+    grid.appendChild(cdTile);
+  }
+
+  loadAbstract(paper.title);
+
+  const authorDetail = stats.author_detail || {};
+  const authorGrid = document.getElementById('author-grid');
+  (paper.authors || []).forEach(name => {
+    const detail = authorDetail[name] || {};
+    const a = document.createElement('a');
+    a.className = 'author-card';
+    a.href = `author.html?name=${encodeURIComponent(name)}`;
+    const avatar = document.createElement('span');
+    avatar.className = 'author-avatar';
+    if (detail.photo_url) {
+      const img = document.createElement('img');
+      img.src = detail.photo_url;
+      img.alt = name;
+      img.referrerPolicy = 'no-referrer';
+      avatar.appendChild(img);
+    } else {
+      avatar.style.background = colorFor(name);
+      avatar.textContent = initials(name);
+    }
+    a.appendChild(avatar);
+    a.append(name);
+    authorGrid.appendChild(a);
+  });
+  if (!(paper.authors || []).length) authorGrid.textContent = 'No author list recorded for this paper.';
+
+  // "Related" is scored, not just "same category" -- a shared author is a
+  // much stronger signal than a shared topic label (categories are broad
+  // keyword buckets, see Methodology), so it's weighted highest, then a
+  // shared institution, then same category, then same venue+year. Purely
+  // client-side over all_papers, no server precomputation needed.
+  const authorSet = new Set(paper.authors || []);
+  const instSet = new Set(paper.institutions || []);
+  const related = [];
+  (stats.all_papers || []).forEach(p => {
+    if (p.title === paper.title) return;
+    let score = 0;
+    (p.authors || []).forEach(a => { if (authorSet.has(a)) score += 5; });
+    (p.institutions || []).forEach(i => { if (instSet.has(i)) score += 2; });
+    if (paper.category && p.category === paper.category) score += 1;
+    if (paper.venue && p.venue === paper.venue && paper.year && p.year === paper.year) score += 1;
+    if (score > 0) related.push({ p, score });
+  });
+  related.sort((a, b) => b.score - a.score || (b.p.citations || 0) - (a.p.citations || 0));
+  const relatedGrid = document.getElementById('related-grid');
+  const relatedPanel = document.getElementById('related-panel');
+  if (!related.length) {
+    relatedPanel.style.display = 'none';
+  } else {
+    related.slice(0, 6).forEach(({ p }) => {
+      const card = document.createElement('a');
+      card.className = 'related-card';
+      card.href = `paper.html?title=${encodeURIComponent(p.title)}`;
+      const title = document.createElement('div');
+      title.className = 'rtitle';
+      title.textContent = p.title;
+      const meta = document.createElement('div');
+      meta.className = 'rmeta';
+      meta.textContent = [p.venue, p.year, categoryLabel(p.category)].filter(Boolean).join(' · ');
+      card.appendChild(title);
+      card.appendChild(meta);
+      relatedGrid.appendChild(card);
+    });
+  }
+
+  const citingPanel = document.getElementById('citing-panel');
+  // citing_papers is just a list of titles (see aggregate.py) -- each
+  // citing paper is itself a full entry in all_papers already, so resolve
+  // against that instead of the site shipping a second, denormalized copy
+  // of every citer's venue/year/category.
+  const byTitle = new Map((stats.all_papers || []).map(p => [p.title, p]));
+  const citing = (paper.citing_papers || []).map(t => byTitle.get(t)).filter(Boolean);
+  if (!citing.length) {
+    citingPanel.querySelector('table').style.display = 'none';
+    document.getElementById('citing-chart').textContent = 'None';
+    document.getElementById('citing-authors-panel').style.display = 'none';
+    return;
+  }
+
+  const yearAgg = {};
+  citing.forEach(c => { if (c.year) yearAgg[c.year] = (yearAgg[c.year] || 0) + 1; });
+  const years = Object.keys(yearAgg).sort();
+  const chart = document.getElementById('citing-chart');
+  const maxC = Math.max(1, ...years.map(y => yearAgg[y]));
+  years.forEach(y => {
+    const v = yearAgg[y];
+    const wrap = document.createElement('div');
+    wrap.className = 'bar-wrap';
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.style.height = Math.max(3, (v / maxC) * 100) + '%';
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = `${y}: ${v} citing paper${v === 1 ? '' : 's'}`;
+    wrap.appendChild(tooltip);
+    wrap.appendChild(bar);
+    const label = document.createElement('div');
+    label.className = 'xlabel';
+    label.textContent = y;
+    wrap.appendChild(label);
+    chart.appendChild(wrap);
+  });
+
+  const citingBody = document.getElementById('citing-body');
+  const citingRows = [...citing].sort((a, b) => (b.year || 0) - (a.year || 0));
+  function renderCitingBody(data) {
+    citingBody.innerHTML = '';
+    data.forEach(c => {
+      const link = document.createElement('a');
+      link.href = `paper.html?title=${encodeURIComponent(c.title)}`;
+      link.className = 'truncate-cell';
+      link.textContent = c.title;
+      link.title = c.title;
+      citingBody.appendChild(row([link, c.venue || '', c.year || '', categoryLabel(c.category || 'uncategorized')]));
+    });
+  }
+  const citingPaginationContainer = document.getElementById('citing-pagination-container');
+  function renderCitingTable() {
+    // Fixed 50-per-page + Prev/Next, same as every other table on the site
+    // -- a citation list can run into the hundreds (see paper.html's own CD
+    // index tile: a paper with a large in-corpus citer count), and this was
+    // rendering every single one into one unpaginated table (user-flagged).
+    const pagination = renderPagination(citingPaginationContainer, 'paper.html', citingRows.length, { onChange: renderCitingTable });
+    const shown = citingRows.slice(pagination.offset, pagination.offset + pagination.pageSize);
+    makeSortableSafe(citingBody.closest('table'), shown, [
+      { accessor: c => c.title, numeric: false },
+      { accessor: c => c.venue || '', numeric: false },
+      { accessor: c => c.year || 0, numeric: true },
+      { accessor: c => c.category || 'uncategorized', numeric: false },
+    ], renderCitingBody);
+  }
+  renderCitingTable();
+
+  const exportContainer = document.getElementById('export-container');
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButtons({
+    table: citingBody.closest('table'),
+    csvName: 'citing-papers.csv',
+    bibtexPapers: () => citingRows,
+    bibtexName: 'citing-papers.bib',
+  }), exportContainer.firstChild);
+
+  // Citing authors: every author of a citing paper, same table shape as
+  // author.html's own "Citing authors" panel (user-requested: design this
+  // page similarly, with the same citations/papers columns for each citing
+  // author's own overall standing).
+  const authorPaperStats = computeAuthorPaperStats(stats.all_papers);
+  const citingAuthorCounts = {};
+  const citingAuthorYears = {};
+  citing.forEach(c => (c.authors || []).forEach(a => {
+    citingAuthorCounts[a] = (citingAuthorCounts[a] || 0) + 1;
+    (citingAuthorYears[a] || (citingAuthorYears[a] = [])).push(c.year);
+  }));
+  let citingAuthors = Object.entries(citingAuthorCounts)
+    .map(([coName, count]) => {
+      const coDetail = authorDetail[coName] || {};
+      // The institution whose year range overlaps the citing papers this
+      // author actually wrote, not just their most recent institution on
+      // record overall -- see filters.js's institutionForYears comment.
+      const insts = coDetail.institutions || [];
+      const lastInst = institutionForYears(insts, citingAuthorYears[coName]);
+      const countries = coDetail.countries || [];
+      const paperStats = authorPaperStats[coName] || {};
+      return {
+        name: coName, count,
+        totalPapers: paperStats.papers || 0,
+        totalCitations: paperStats.citations || 0,
+        institution: lastInst ? lastInst.name : null,
+        institutionFirstYear: lastInst ? lastInst.first_year : null,
+        institutionLastYear: lastInst ? lastInst.last_year : null,
+        // Derived from the institution shown in the neighbouring column, so
+        // the two cells can never contradict each other -- see
+        // countryForInstitution() for why the author's own country list is
+        // only a fallback here.
+        country: countryForInstitution(stats, lastInst ? lastInst.name : null, countries),
+      };
+    })
+    .sort((a, b) => b.count - a.count);
+
+  const citingAuthorsBody = document.getElementById('citing-authors-body');
+  function renderCitingAuthorsBody(rows) {
+    citingAuthorsBody.innerHTML = '';
+    rows.forEach(c => {
+      const link = document.createElement('a');
+      link.href = `author.html?name=${encodeURIComponent(c.name)}`;
+      link.textContent = c.name;
+      let instCell = 'n/a';
+      if (c.institution) {
+        const instLink = document.createElement('a');
+        instLink.href = `institution.html?name=${encodeURIComponent(c.institution)}`;
+        const yr = c.institutionFirstYear == null ? ''
+          : c.institutionFirstYear === c.institutionLastYear ? ` (${c.institutionFirstYear})`
+          : ` (${c.institutionFirstYear} to ${c.institutionLastYear})`;
+        instLink.textContent = c.institution + yr;
+        instCell = instLink;
+      }
+      citingAuthorsBody.appendChild(row([link, c.count, c.totalCitations, c.totalPapers, c.country || 'n/a', instCell]));
+    });
+    if (!rows.length) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 6;
+      td.style.color = 'var(--muted)';
+      td.textContent = 'No citing authors found yet.';
+      tr.appendChild(td);
+      citingAuthorsBody.appendChild(tr);
+    }
+  }
+  // Capped at the top 25. Uncapped this ran to 11,632 rows on a
+  // well-cited author's page and 7,573 on a popular paper's -- a list
+  // nobody pages through, whose only real use is "who cites this work
+  // most", which the first screen already answers. The CSV export beside
+  // the heading still carries the full list for anyone who wants it.
+  const CITING_AUTHORS_SHOWN = 25;
+  const citingAuthorsAll = citingAuthors;
+  citingAuthors = citingAuthors.slice(0, CITING_AUTHORS_SHOWN);
+  const citingCapNote = document.getElementById('citing-authors-cap-note');
+  if (citingCapNote && citingAuthorsAll.length > CITING_AUTHORS_SHOWN) {
+    citingCapNote.textContent = `Showing the top ${CITING_AUTHORS_SHOWN} of `
+      + `${citingAuthorsAll.length.toLocaleString()} citing authors.`;
+  }
+  function renderCitingAuthors() {
+    const pg = renderPagination(document.getElementById('citing-authors-pagination'), 'paper.html', citingAuthors.length,
+      { paramKey: 'citing_page', onChange: renderCitingAuthors });
+    const shown = citingAuthors.slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(citingAuthorsBody.closest('table'), shown, [
+      { accessor: c => c.name, numeric: false },
+      { accessor: c => c.count, numeric: true },
+      { accessor: c => c.totalCitations, numeric: true },
+      { accessor: c => c.totalPapers, numeric: true },
+      { accessor: c => c.country || '', numeric: false },
+      { accessor: c => c.institution || '', numeric: false },
+    ], renderCitingAuthorsBody);
+  }
+  renderCitingAuthors();
+}
+</script>
+<script src="nav.js"></script>
+<script src="sortable.js"></script>
+</body>
+</html>

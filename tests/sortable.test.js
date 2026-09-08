@@ -73,7 +73,7 @@ function loadSortable() {
   };
   sandbox.window = sandbox;
   vm.createContext(sandbox);
-  const code = fs.readFileSync(path.join(__dirname, '..', 'sortable.js'), 'utf8');
+  const code = fs.readFileSync(path.join(__dirname, '..', 'site', 'sortable.js'), 'utf8');
   vm.runInContext(code, sandbox);
   return sandbox;
 }

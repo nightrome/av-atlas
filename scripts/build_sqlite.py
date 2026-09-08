@@ -6,8 +6,7 @@ queryable SQLite file, so the Authors page can pull "top 50 by citations"
 straight out of the database (via sql.js-httpvfs's HTTP-range-request
 virtual filesystem, see dev/authors_sql_prototype.html) instead of shipping
 the full all_papers array to every visitor just to compute a leaderboard
-that's mostly thrown away. See DECISIONS.md's "sql.js-httpvfs prototype"
-entry for the full context/tradeoffs.
+that's mostly thrown away. Local-only spike, not wired into the site.
 
 Deliberately does NOT import aggregate.py's own author/institution/country
 extraction (those are private closures inside its main(), and refactoring
