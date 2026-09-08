@@ -3,6 +3,9 @@ title: "AV Atlas: a bibliometric index of autonomous vehicle research"
 message: "If you use AV Atlas or its data in academic work, please cite it."
 type: software
 authors:
+  # No ORCID, deliberately. This file exists so the tool can be cited; it is
+  # not about its maintainer, and an ORCID would tie AV Atlas to a personal
+  # publication record. Don't add one.
   - family-names: Caesar
     given-names: Holger
 repository-code: "https://github.com/nightrome/av-atlas"
