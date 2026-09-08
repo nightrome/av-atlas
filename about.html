@@ -309,7 +309,7 @@
 </div>
 </details>
 
-<details class="detail-section" id="crawler-status-section">
+<details class="detail-section" id="coverage">
 <summary>What's not covered yet</summary>
 <div class="detail-body">
 <p class="section-intro">
@@ -443,6 +443,26 @@
   </div>
 </div>
 
+<script>
+// A <details> that an anchor link points at stays collapsed by default, so a
+// reader arriving from the coverage banner on Institutions or Countries would
+// land on a closed summary with no indication the answer is inside it. Open
+// whichever section the fragment names, and keep doing so if the fragment
+// changes while the page is open.
+(function () {
+  function openTarget() {
+    if (!location.hash) return;
+    const el = document.querySelector(location.hash);
+    const section = el && (el.matches('details') ? el : el.closest('details'));
+    if (section) {
+      section.open = true;
+      section.scrollIntoView({ block: 'start' });
+    }
+  }
+  window.addEventListener('hashchange', openTarget);
+  document.addEventListener('DOMContentLoaded', openTarget);
+}());
+</script>
 <script src="filters.js"></script>
 <script>
 fetch('stats.json').then(r => r.json()).then(stats => {

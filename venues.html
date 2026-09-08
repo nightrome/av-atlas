@@ -256,6 +256,10 @@ function render() {
     appendSumRow(tbody, data, [
       null, null, r => r.total, r => r.papers, null, r => r.citations, null, null,
     ]);
+    // Re-applied on every re-render (sort, page change) because this
+    // function rebuilds the whole tbody each time.
+    renderCompareSelection({ table: tbody.closest('table'), type: 'venue',
+      nameFor: r => r.name, rows: data });
   }
   makeSortableSafe(tbody.closest('table'), shownRows, [
     { accessor: r => r.name, numeric: false },

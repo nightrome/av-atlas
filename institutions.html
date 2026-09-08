@@ -271,6 +271,10 @@ function render() {
       tbody.appendChild(row([pagination.offset + i + 1, nameLink, x.papers, x.citations, fmtAvg(x.avg_citations)]));
     });
     appendSumRow(tbody, data, [null, null, x => x.papers, x => x.citations, null]);
+    // Re-applied on every re-render (sort, page change) because this
+    // function rebuilds the whole tbody each time.
+    renderCompareSelection({ table: tbody.closest('table'), type: 'institution',
+      nameFor: x => x.name, rows: data });
   }
   // Feed the table the current page's slice, not the whole list -- otherwise
   // every row renders at once and Prev/Next only move the count label.

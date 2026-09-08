@@ -72,6 +72,7 @@ PUBLISHED_HTML = [
     "index.html", "authors.html", "institutions.html", "venues.html",
     "countries.html", "categories.html", "network.html", "insights.html",
     "about.html", "author.html", "institution.html", "venue.html", "paper.html",
+    "compare.html",
 ]
 
 

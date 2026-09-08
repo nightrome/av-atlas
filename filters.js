@@ -196,6 +196,31 @@
       .filter-bar-rows { margin-top: 12px; }
     }
 
+    /* Compare selection (renderCompareSelection). The bar sits above
+       back-to-top and only appears once something is ticked, so it costs
+       nothing on a page nobody is comparing on. */
+    .compare-col { width: 26px; padding-right: 0 !important; }
+    .compare-check { cursor: pointer; }
+    .compare-bar {
+      position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%) translateY(8px);
+      z-index: 60; display: flex; align-items: center; gap: 12px;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+      padding: 10px 14px; font-size: 0.88em; box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+      opacity: 0; pointer-events: none; transition: opacity 0.15s, transform 0.15s;
+    }
+    .compare-bar.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+    .compare-bar .compare-clear {
+      background: none; border: 1px solid var(--border); border-radius: 6px;
+      color: var(--muted); font: inherit; padding: 4px 10px; cursor: pointer;
+    }
+    .compare-bar .compare-clear:hover { border-color: var(--accent); color: var(--accent); }
+    .compare-bar .compare-go {
+      background: var(--accent); color: #fff; border-radius: 6px; padding: 5px 12px;
+      text-decoration: none; font-weight: 600;
+    }
+    .compare-bar .compare-go.disabled { background: var(--border); color: var(--muted); cursor: default; }
+    @media (max-width: 480px) { .compare-bar { left: 12px; right: 12px; transform: none; } }
+
     .back-to-top-btn {
       position: fixed; right: 20px; bottom: 20px; z-index: 50;
       background: var(--panel); color: var(--text); border: 1px solid var(--border);
@@ -1530,6 +1555,120 @@
     if (instName && map[instName]) return map[instName];
     const list = authorCountries || [];
     return list.length === 1 ? list[0] : null;
+  };
+
+  // Row-selection for the Compare view (compare.html).
+  //
+  // "How do we compare to X?" is the question a reader of a leaderboard
+  // actually has, and every page here could only ever show one entity at a
+  // time -- answering it meant opening tabs and holding numbers in your head.
+  // This adds a checkbox column to a ranked table and a floating bar that
+  // appears once two rows are ticked.
+  //
+  // Selection lives in sessionStorage rather than the URL: it is a transient
+  // "I'm picking things" state, not a view worth sharing or restoring, and
+  // putting it in the URL would fight with the pagination and sort params
+  // that are already there. The comparison itself IS in a URL -- that's what
+  // the button navigates to.
+  window.renderCompareSelection = function (opts) {
+    const { table, type, nameFor, rows } = opts;
+    if (!table) return;
+    const MAX = 4;
+    const key = `av-atlas-compare-${type}`;
+    let selected;
+    try {
+      selected = new Set(JSON.parse(sessionStorage.getItem(key) || '[]'));
+    } catch (e) {
+      selected = new Set();
+    }
+    const persist = () => {
+      try { sessionStorage.setItem(key, JSON.stringify([...selected])); } catch (e) { /* ignore */ }
+    };
+
+    let bar = document.getElementById('compare-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'compare-bar';
+      bar.className = 'compare-bar';
+      document.body.appendChild(bar);
+    }
+
+    function syncBar() {
+      bar.innerHTML = '';
+      if (!selected.size) { bar.classList.remove('show'); return; }
+      bar.classList.add('show');
+      const count = document.createElement('span');
+      count.textContent = selected.size === 1
+        ? '1 selected — pick one more to compare'
+        : `${selected.size} selected`;
+      bar.appendChild(count);
+      const clear = document.createElement('button');
+      clear.type = 'button';
+      clear.className = 'compare-clear';
+      clear.textContent = 'Clear';
+      clear.addEventListener('click', () => {
+        selected.clear();
+        persist();
+        table.querySelectorAll('input.compare-check').forEach(cb => { cb.checked = false; });
+        syncBar();
+      });
+      bar.appendChild(clear);
+      const go = document.createElement('a');
+      go.className = 'compare-go';
+      go.textContent = `Compare ${selected.size}`;
+      go.href = `compare.html?type=${encodeURIComponent(type)}`
+        + `&names=${encodeURIComponent([...selected].join('|'))}`;
+      if (selected.size < 2) {
+        go.setAttribute('aria-disabled', 'true');
+        go.classList.add('disabled');
+        go.removeAttribute('href');
+      }
+      bar.appendChild(go);
+    }
+
+    // The caller re-renders its <tbody> on every sort and page change, so
+    // this re-runs against the current rows rather than wiring listeners
+    // once. Header cell added only if it isn't already there.
+    const headRow = table.querySelector('thead tr');
+    if (headRow && !headRow.querySelector('.compare-col')) {
+      const th = document.createElement('th');
+      th.className = 'compare-col';
+      th.title = `Tick up to ${MAX} rows, then use the Compare button`;
+      th.setAttribute('aria-label', 'Select for comparison');
+      headRow.insertBefore(th, headRow.firstChild);
+    }
+    const bodyRows = table.querySelectorAll('tbody tr');
+    bodyRows.forEach((tr, i) => {
+      if (tr.querySelector('.compare-col')) return;
+      const td = document.createElement('td');
+      td.className = 'compare-col';
+      const name = nameFor(rows[i]);
+      // The totals row appended by appendSumRow has no entity behind it.
+      if (name) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.className = 'compare-check';
+        cb.checked = selected.has(name);
+        cb.setAttribute('aria-label', `Compare ${name}`);
+        cb.addEventListener('change', () => {
+          if (cb.checked) {
+            if (selected.size >= MAX) {
+              cb.checked = false;
+              showToast(`Compare up to ${MAX} at a time.`);
+              return;
+            }
+            selected.add(name);
+          } else {
+            selected.delete(name);
+          }
+          persist();
+          syncBar();
+        });
+        td.appendChild(cb);
+      }
+      tr.insertBefore(td, tr.firstChild);
+    });
+    syncBar();
   };
 
   // Sets a detail page's title and description to the entity it is actually

@@ -298,6 +298,10 @@ function render() {
       tbody.appendChild(row([pageOffset + i + 1, nameLink, c.papers, c.authors, c.citations, fmtAvg(c.avg_citations)]));
     });
     appendSumRow(tbody, data, [null, null, r => r.papers, r => r.authors, r => r.citations, null]);
+    // Re-applied on every re-render (sort, page change) because this
+    // function rebuilds the whole tbody each time.
+    renderCompareSelection({ table: tbody.closest('table'), type: 'country',
+      nameFor: c => c.name, rows: data });
   }
   let pageOffset = 0;
   function renderCountriesPage() {
