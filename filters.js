@@ -1261,6 +1261,12 @@
         name: k, citations: Math.round(citations[k] || 0), papers: counts[k],
         avg_citations: (citedCounts[k] || 0) >= Math.max(1, minCitedForAvg)
           ? Math.round(citations[k] / citedCounts[k]) : null,
+        // How many papers the average is actually built from. Exposed so a
+        // table can mark a thin average rather than presenting "112
+        // citations/paper" off two data points exactly like one off fifty --
+        // the site's own About page tells readers to judge a row by its
+        // paper count, which is the wrong count for this column.
+        cited_papers: citedCounts[k] || 0,
       }));
   };
 
@@ -1570,6 +1576,23 @@
   // putting it in the URL would fight with the pagination and sort params
   // that are already there. The comparison itself IS in a URL -- that's what
   // the button navigates to.
+  // Marks a citations-per-paper cell whose average rests on very few papers
+  // with a real citation count. Not a warning icon and not a colour -- a
+  // small superscript count plus a tooltip, so a reader who cares can see
+  // the support and everyone else reads the number as before.
+  window.THIN_AVERAGE_BELOW = 5;
+  window.markThinAverage = function (cell, citedPapers, totalPapers) {
+    if (citedPapers == null || citedPapers >= THIN_AVERAGE_BELOW) return cell;
+    const mark = document.createElement('sup');
+    mark.textContent = ' *';
+    mark.style.color = 'var(--muted)';
+    cell.appendChild(mark);
+    cell.title = `Averaged over ${citedPapers} paper${citedPapers === 1 ? '' : 's'} with a citation `
+      + `count, out of ${totalPapers}. The rest have no in-corpus citer found yet, so they are left `
+      + `out of the average rather than counted as zero.`;
+    return cell;
+  };
+
   window.renderCompareSelection = function (opts) {
     const { table, type, nameFor, rows } = opts;
     if (!table) return;
@@ -1787,12 +1810,12 @@
     }).join('\n\n');
   };
 
-  function exportBadge(label, onClick) {
+  function exportBadge(label, onClick, title) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'export-badge';
     b.textContent = label;
-    b.title = `Download ${label}`;
+    b.title = title || `Download ${label}`;
     b.addEventListener('click', onClick);
     return b;
   }
@@ -1803,12 +1826,22 @@
   window.renderExportButtons = function (opts) {
     const row = document.createElement('span');
     row.className = 'export-row';
-    row.appendChild(exportBadge('CSV', () => exportTableToCsv(opts.table, opts.csvName || 'export.csv')));
+    row.appendChild(exportBadge('CSV', () => exportTableToCsv(opts.table, opts.csvName || 'export.csv'),
+      opts.csvTitle || 'Download the rows currently shown, as CSV'));
     if (opts.bibtexPapers) {
+      // The BibTeX export has always covered every paper matching the
+      // current filters, not just the rows on screen -- which makes
+      // "filter to a topic and a year, then export" a ready-made
+      // related-work bibliography. Nothing said so, so nobody could know:
+      // the button looked like a companion to the CSV one, which does
+      // export only what is shown.
       row.appendChild(exportBadge('BibTeX', () => downloadText(
         opts.bibtexName || 'export.bib',
         papersToBibtex(typeof opts.bibtexPapers === 'function' ? opts.bibtexPapers() : opts.bibtexPapers),
-        'application/x-bibtex;charset=utf-8')));
+        'application/x-bibtex;charset=utf-8'),
+        opts.bibtexTitle
+          || 'Download every paper matching the current filters as BibTeX, not just the rows shown '
+             + '-- filter to a topic and a year to get a ready-made bibliography'));
     }
     return row;
   };
@@ -2252,6 +2285,27 @@
     });
 
     const normalizeCheckbox = elIds.normalize ? document.getElementById(elIds.normalize) : null;
+    // The normalize toggle changes what the chart is showing (counts vs
+    // shares), so it belongs in the URL alongside every other control that
+    // does -- otherwise "Copy link" hands someone a link that reopens on a
+    // different chart than the one being talked about. Written with
+    // replaceState so toggling doesn't push history entries, matching how
+    // Prev/Next and the size control already behave.
+    if (normalizeCheckbox) {
+      const params = new URLSearchParams(location.search);
+      const fromUrl = params.get('norm');
+      if (fromUrl === '1') normalizeCheckbox.checked = true;
+      else if (fromUrl === '0') normalizeCheckbox.checked = false;
+      normalizeCheckbox.addEventListener('change', () => {
+        const next = new URLSearchParams(location.search);
+        // Only recorded when it differs from this page's own default, so a
+        // URL stays clean until a reader actually changes something.
+        if (normalizeCheckbox.checked === normalizeCheckbox.defaultChecked) next.delete('norm');
+        else next.set('norm', normalizeCheckbox.checked ? '1' : '0');
+        const qs = next.toString();
+        history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+      });
+    }
 
     const legend = document.getElementById(elIds.legend);
     const chart = document.getElementById(elIds.chart);

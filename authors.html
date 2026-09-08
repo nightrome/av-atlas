@@ -412,7 +412,12 @@ function render() {
       const link = document.createElement('a');
       link.href = `author.html?name=${encodeURIComponent(a.name)}`;
       link.textContent = a.name;
-      tbody.appendChild(row([pagination.offset + i + 1, link, a.papers, fmtAvg(a.lifetime), a.citations, fmtAvg(a.avg_citations), fmtPct(a.selfCitationPct), a.nonAvPapers]));
+      const tr = row([pagination.offset + i + 1, link, a.papers, fmtAvg(a.lifetime), a.citations,
+        fmtAvg(a.avg_citations), fmtPct(a.selfCitationPct), a.nonAvPapers]);
+      // Citations / paper is column 5 (0-based). Marked when the average
+      // rests on only a couple of papers that have any citation data.
+      markThinAverage(tr.children[5], a.cited_papers, a.papers);
+      tbody.appendChild(tr);
     });
     appendSumRow(tbody, data, [null, null, a => a.papers, null, a => a.citations, null, null, a => a.nonAvPapers]);
     // Re-applied on every re-render (sort, page change) because this

@@ -295,7 +295,9 @@ function render() {
       nameLink.href = `index.html?country=${encodeURIComponent(c.name)}`;
       nameLink.textContent = c.name;
       nameLink.style.color = 'var(--text)';
-      tbody.appendChild(row([pageOffset + i + 1, nameLink, c.papers, c.authors, c.citations, fmtAvg(c.avg_citations)]));
+      const tr = row([pageOffset + i + 1, nameLink, c.papers, c.authors, c.citations, fmtAvg(c.avg_citations)]);
+      markThinAverage(tr.children[5], c.cited_papers, c.papers);
+      tbody.appendChild(tr);
     });
     appendSumRow(tbody, data, [null, null, r => r.papers, r => r.authors, r => r.citations, null]);
     // Re-applied on every re-render (sort, page change) because this

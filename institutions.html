@@ -268,7 +268,9 @@ function render() {
       const nameLink = document.createElement('a');
       nameLink.href = `institution.html?name=${encodeURIComponent(x.name)}`;
       nameLink.textContent = x.name;
-      tbody.appendChild(row([pagination.offset + i + 1, nameLink, x.papers, x.citations, fmtAvg(x.avg_citations)]));
+      const tr = row([pagination.offset + i + 1, nameLink, x.papers, x.citations, fmtAvg(x.avg_citations)]);
+      markThinAverage(tr.children[4], x.cited_papers, x.papers);
+      tbody.appendChild(tr);
     });
     appendSumRow(tbody, data, [null, null, x => x.papers, x => x.citations, null]);
     // Re-applied on every re-render (sort, page change) because this
