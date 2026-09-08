@@ -186,9 +186,9 @@ fetchStatsWithRelevance(relevance).then(stats => {
     search: { placeholder: 'Search institution names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
     metrics: [
-      { key: 'avg', label: 'Citations / paper' },
       { key: 'total', label: 'Citations' },
       { key: 'papers', label: 'Papers' },
+      { key: 'avg', label: 'Citations / paper' },
     ],
     minPapers: { default: 10 },
     topN: {
@@ -219,7 +219,13 @@ function render() {
     : aggregateByDimension(papers, p => p.institutions, { minPapers: minPapersThreshold - 1, minCitedForAvg: 3 });
   if (query) institutions = institutions.filter(x => matchesSearchQuery(x.name, query));
 
-  const metric = getMetric('avg');
+  // Default is total citations, not citations/paper. Ranking by an average
+  // with a low paper floor put a 20-paper company above every university on
+  // the strength of one dataset paper, and a 31-paper journal above CVPR --
+  // technically what the metric says, and useless as a default view of the
+  // field. Citations/paper is still one click away, and the Min. control is
+  // there for readers who want to raise the floor before using it.
+  const metric = getMetric('total');
   const byAvg = (a, b) => (b.avg_citations ?? -Infinity) - (a.avg_citations ?? -Infinity);
   const sorters = {
     total: (a, b) => b.citations - a.citations,

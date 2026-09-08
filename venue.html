@@ -60,6 +60,8 @@
   <div class="tags" id="tags"></div>
 </div>
 
+<div id="rank-badges" class="rank-badges"></div>
+
 <div style="display:flex;justify-content:flex-end;position:relative;margin-bottom:-6px;"><span class="info-tip" tabindex="0" role="img" aria-label="This venue&#x27;s totals: total papers indexed, the AV-relevant share, citations, and citations per paper." data-tip="This venue&#x27;s totals: total papers indexed, the AV-relevant share, citations, and citations per paper.">i</span></div>
 <div class="stat-grid" id="stat-grid"></div>
 
@@ -114,6 +116,9 @@ function stat(value, label, opts) {
 const params = new URLSearchParams(location.search);
 const name = params.get('name') || '';
 document.getElementById('name').textContent = window.venueDisplayName ? venueDisplayName(name) : (name || 'Unknown venue');
+setDetailPageMeta(name, name
+  ? `Autonomous vehicle research published at ${name}: how much of the venue is AV work, its most-cited AV papers, and who publishes there.`
+  : null);
 
 fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
@@ -142,6 +147,12 @@ function titleLink(p) {
 
 function render(stats) {
   const papers = (stats.all_papers || []).filter(p => p.venue === name);
+
+  // Where this venue sits on the Venues overview page's default ranking
+  // (seed venues only, so a citation-graph-only venue shows no badges).
+  try {
+    renderRankBadges(document.getElementById('rank-badges'), computeEntityRanks(stats).venue(name));
+  } catch (e) { /* ranking is a top-of-page extra, never block the page for it */ }
 
   const totalIndexed = ((stats.corpus_stats || {}).by_venue || {})[name] || papers.length;
   document.getElementById('tags').textContent =

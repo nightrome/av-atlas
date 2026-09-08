@@ -115,9 +115,9 @@ fetchStatsWithRelevance('').then(stats => {
       storageKey: 'categories-exclude-datasets', onChange: () => render(),
     },
     metrics: [
-      { key: 'avg', label: 'Citations / paper' },
       { key: 'total', label: 'Citations' },
       { key: 'papers', label: 'Papers' },
+      { key: 'avg', label: 'Citations / paper' },
     ],
   });
   render();
@@ -308,7 +308,14 @@ function render() {
     c.industry_pct = total > 0 ? Math.round(100 * t.industry / total) : null;
   });
 
-  const metric = getMetric('avg');
+  // Every ranked page on this site defaults to total citations, with the
+  // same Citations / Papers / Citations-per-paper order in the dropdown.
+  // Citations-per-paper used to be the default on several pages, which put
+  // a 20-paper company above every university and a 31-paper journal above
+  // CVPR on the strength of one dataset paper each -- technically what the
+  // metric says, and a poor default view of the field. It is still one
+  // click away, with the Min. control there to raise the floor first.
+  const metric = getMetric('total');
   const byAvg = (a, b) => (b.avg_citations ?? -Infinity) - (a.avg_citations ?? -Infinity);
   const sorters = {
     total: (a, b) => b.citations - a.citations,

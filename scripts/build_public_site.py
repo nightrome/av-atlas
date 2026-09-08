@@ -36,12 +36,17 @@ Usage: python build_public_site.py
                                                     # current pages + existing stats.json
 """
 import argparse
+import json
 import re
 import shutil
 import subprocess
 import sys
 import time
+import urllib.parse
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import build_data_release  # noqa: E402  (needs the sys.path line above)
 
 BASE = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -70,6 +75,68 @@ EXCLUDED_HTML = {"label_relevance.html", "authors_sql_prototype.html",
 
 def html_pages():
     return [p for p in BASE.glob("*.html") if p.name not in EXCLUDED_HTML]
+
+
+SITE_URL = "https://nightrome.github.io/av-atlas"
+
+# How many of each kind of detail page to list in the sitemap. Every author,
+# paper, institution and venue page is a query string on one of four HTML
+# files, so a crawler has no way to discover them except by following links
+# from a listing page -- which only ever shows the current page of results.
+# The sitemap is what makes the rest reachable.
+#
+# Not everything is listed: the corpus holds ~25k papers and ~55k author
+# names, and a sitemap of 80k URLs whose long tail is single-paper authors
+# and name-collision artifacts is mostly noise, both to crawlers and to
+# anyone who lands on one. Capped at the entities substantial enough to be
+# worth landing on, ranked by citations.
+SITEMAP_LIMITS = {"papers": 5000, "authors": 3000, "institutions": 1000, "venues": 300}
+
+
+def write_sitemap(page_dir, stats_path):
+    """A sitemap.xml covering the listing pages plus the top detail pages.
+
+    Detail pages set their own <title>/description at runtime (see
+    setDetailPageMeta in filters.js); this is what gets a crawler to them in
+    the first place.
+    """
+    import xml.sax.saxutils as sx
+
+    stats = json.loads(stats_path.read_text(encoding="utf-8"))
+    urls = [f"{SITE_URL}/{p.name}" for p in sorted(html_pages(), key=lambda p: p.name)]
+
+    def add(page, key, values):
+        for v in values:
+            urls.append(f"{SITE_URL}/{page}?{key}={urllib.parse.quote(str(v), safe='')}")
+
+    papers = sorted((stats.get("all_papers") or []),
+                    key=lambda p: p.get("citations") or 0, reverse=True)
+    add("paper.html", "title",
+        [p["title"] for p in papers[:SITEMAP_LIMITS["papers"]] if p.get("title")])
+    # Authors and institutions are counted here rather than read from
+    # stats.json's top_authors/top_institutions: those are leaderboards
+    # capped at 100 entries, which would have limited the sitemap to 100
+    # author pages out of 55,000 -- the exact pages this exists to expose.
+    author_papers, inst_papers = {}, {}
+    for p in papers:
+        for name in set(p.get("authors") or []):
+            author_papers[name] = author_papers.get(name, 0) + 1
+        for inst in set(p.get("institutions") or []):
+            inst_papers[inst] = inst_papers.get(inst, 0) + 1
+    by_papers = lambda d, n: sorted(d, key=lambda k: -d[k])[:n]  # noqa: E731
+    add("author.html", "name", by_papers(author_papers, SITEMAP_LIMITS["authors"]))
+    add("institution.html", "name", by_papers(inst_papers, SITEMAP_LIMITS["institutions"]))
+    add("venue.html", "name",
+        list((stats.get("corpus_stats") or {}).get("by_venue", {}))[:SITEMAP_LIMITS["venues"]])
+
+    today = time.strftime("%Y-%m-%d")
+    body = "\n".join(
+        f"  <url><loc>{sx.escape(u)}</loc><lastmod>{today}</lastmod></url>" for u in urls)
+    (page_dir / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{body}\n</urlset>\n", encoding="utf-8", newline="\n")
+    print(f"  sitemap.xml: {len(urls)} URLs")
 
 
 def build_public_site():
@@ -164,13 +231,16 @@ def build_public_site():
     # part of the current expected output. Caught in practice: label_relevance.html
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in BASE.glob("*.js")} \
-        | {"stats.json", "stats_adjacent.json", "theme.css", "theme-light.css", "logo.svg", "og-image.png"}
+        | {"stats.json", "stats_adjacent.json", "theme.css", "theme-light.css", "logo.svg",
+           "og-image.png", "sitemap.xml"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()
             print(f"  removed stale {existing.name}")
 
-    (PUBLIC_DIR / "robots.txt").write_text(ROBOTS_TXT, encoding="utf-8", newline="\n")
+    (PUBLIC_DIR / "robots.txt").write_text(
+        ROBOTS_TXT + f"\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8", newline="\n")
+    write_sitemap(page_dir, stats_path)
 
     print(f"Wrote {PUBLIC_DIR}")
     for html_path in html_pages():
@@ -217,6 +287,14 @@ def main():
         run_step("Running tests (run_tests.py)", "run_tests.py")
     print("\n--- Publishing public site ---")
     build_public_site()
+    # The downloadable corpus, built from the same stats.json the pages read,
+    # so the download can never describe a different corpus than the site.
+    print("\n--- Building data release ---")
+    graph_path = BASE / "data" / "citation_graph.json"
+    build_data_release.build(
+        json.loads((BASE / "data" / "stats.json").read_text(encoding="utf-8")),
+        json.loads(graph_path.read_text(encoding="utf-8")) if graph_path.exists() else {},
+    )
 
 
 if __name__ == "__main__":

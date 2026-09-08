@@ -68,6 +68,8 @@
   </div>
 </div>
 
+<div id="rank-badges" class="rank-badges"></div>
+
 <div style="display:flex;justify-content:flex-end;position:relative;margin-bottom:-6px;"><span class="info-tip" tabindex="0" role="img" aria-label="This institution&#x27;s totals in the corpus: AV papers, in-corpus citations, citations per paper, and distinct authors credited." data-tip="This institution&#x27;s totals in the corpus: AV papers, in-corpus citations, citations per paper, and distinct authors credited.">i</span></div>
 <div class="stat-grid" id="stat-grid"></div>
 
@@ -129,6 +131,9 @@ function stat(value, label, opts) {
 const params = new URLSearchParams(location.search);
 const name = params.get('name') || '';
 document.getElementById('name').textContent = name || 'Unknown institution';
+setDetailPageMeta(name, name
+  ? `${name}'s autonomous vehicle research in AV Atlas: papers, citations within AV research, and the researchers behind them.`
+  : null);
 
 fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
@@ -157,6 +162,11 @@ function titleLink(p) {
 
 function render(stats) {
   const papers = (stats.all_papers || []).filter(p => (p.institutions || []).includes(name));
+
+  // Where this institution sits on the Institutions overview page's default ranking.
+  try {
+    renderRankBadges(document.getElementById('rank-badges'), computeEntityRanks(stats).institution(name));
+  } catch (e) { /* ranking is a top-of-page extra, never block the page for it */ }
 
   const avatar = document.getElementById('avatar');
   const imageUrl = (stats.institution_images || {})[name];

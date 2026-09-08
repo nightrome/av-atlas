@@ -86,6 +86,8 @@
   <span class="category-chip" id="category-chip"></span>
 </div>
 
+<div id="rank-badges" class="rank-badges"></div>
+
 <div style="display:flex;justify-content:flex-end;position:relative;margin-bottom:-6px;"><span class="info-tip" tabindex="0" role="img" aria-label="This paper&#x27;s key figures: how many corpus papers cite it (all papers, and AV papers only), its author count, and its disruption (CD) index." data-tip="This paper&#x27;s key figures: how many corpus papers cite it (all papers, and AV papers only), its author count, and its disruption (CD) index.">i</span></div>
 <div class="stat-grid" id="stat-grid"></div>
 
@@ -120,6 +122,7 @@
     <h2>Citing authors</h2>
   <span class="info-tip" tabindex="0" role="img" aria-label="Authors of the citing papers above, ranked by how many of them cite this paper." data-tip="Authors of the citing papers above, ranked by how many of them cite this paper.">i</span></div>
   <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Authors of other papers in this corpus that cite this paper.</p>
+  <p id="citing-authors-cap-note" style="margin:0 0 8px; color:var(--muted); font-size:0.85em;"></p>
   <div id="citing-authors-pagination"></div>
   <table><thead><tr><th>Author</th><th class="num" data-term="citing_instances">Citing instances</th>
   <th class="num" title="Total citations across this citing author's own papers in this corpus.">Citations</th>
@@ -212,6 +215,9 @@ function loadAbstract(paperTitle) {
 const params = new URLSearchParams(location.search);
 const title = params.get('title') || '';
 document.getElementById('title').textContent = title || 'Unknown paper';
+setDetailPageMeta(title, title
+  ? `"${title}" in AV Atlas: citations within autonomous vehicle research, authors, and related papers.`
+  : null);
 
 fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
   document.getElementById('title').textContent = 'Could not load stats.json: ' + err;
@@ -228,6 +234,12 @@ function render(stats) {
 
   document.getElementById('venue-meta').textContent =
     [paper.venue, paper.year].filter(Boolean).join(' · ');
+
+  // Where this paper ranks by in-corpus citations: overall (as on the Top
+  // Papers table), and within its own venue and year.
+  try {
+    renderRankBadges(document.getElementById('rank-badges'), computeEntityRanks(stats).paper(paper.title));
+  } catch (e) { /* ranking is a top-of-page extra, never block the page for it */ }
 
   const linksMeta = document.getElementById('links-meta');
   const links = [];
@@ -484,7 +496,7 @@ function render(stats) {
     citingAuthorCounts[a] = (citingAuthorCounts[a] || 0) + 1;
     (citingAuthorYears[a] || (citingAuthorYears[a] = [])).push(c.year);
   }));
-  const citingAuthors = Object.entries(citingAuthorCounts)
+  let citingAuthors = Object.entries(citingAuthorCounts)
     .map(([coName, count]) => {
       const coDetail = authorDetail[coName] || {};
       // The institution whose year range overlaps the citing papers this
@@ -538,6 +550,19 @@ function render(stats) {
       tr.appendChild(td);
       citingAuthorsBody.appendChild(tr);
     }
+  }
+  // Capped at the top 25. Uncapped this ran to 11,632 rows on a
+  // well-cited author's page and 7,573 on a popular paper's -- a list
+  // nobody pages through, whose only real use is "who cites this work
+  // most", which the first screen already answers. The CSV export beside
+  // the heading still carries the full list for anyone who wants it.
+  const CITING_AUTHORS_SHOWN = 25;
+  const citingAuthorsAll = citingAuthors;
+  citingAuthors = citingAuthors.slice(0, CITING_AUTHORS_SHOWN);
+  const citingCapNote = document.getElementById('citing-authors-cap-note');
+  if (citingCapNote && citingAuthorsAll.length > CITING_AUTHORS_SHOWN) {
+    citingCapNote.textContent = `Showing the top ${CITING_AUTHORS_SHOWN} of `
+      + `${citingAuthorsAll.length.toLocaleString()} citing authors.`;
   }
   function renderCitingAuthors() {
     const pg = renderPagination(document.getElementById('citing-authors-pagination'), 'paper.html', citingAuthors.length,

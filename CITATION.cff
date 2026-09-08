@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: "AV Atlas: a bibliometric index of autonomous vehicle research"
+message: "If you use AV Atlas or its data in academic work, please cite it."
+type: software
+authors:
+  # Add `orcid: "https://orcid.org/..."` here once you want it public --
+  # deliberately left out rather than guessed at.
+  - family-names: Caesar
+    given-names: Holger
+repository-code: "https://github.com/nightrome/av-atlas"
+url: "https://nightrome.github.io/av-atlas/"
+abstract: >-
+  AV Atlas indexes autonomous vehicle research across the complete,
+  unfiltered proceedings of major computer vision and robotics venues,
+  and reports who publishes, which institutions and countries are active,
+  how topics have shifted over time, and which papers are most cited within
+  AV research specifically. Papers are classified as AV-relevant or not by
+  an automated layered classifier, and citations are counted only between
+  papers in the corpus rather than taken from an external database.
+keywords:
+  - autonomous vehicles
+  - self-driving cars
+  - bibliometrics
+  - science of science
+  - computer vision
+  - robotics
+license: MIT
+license-url: "https://github.com/nightrome/av-atlas/blob/main/LICENSE"
+# The code is MIT; the collected paper metadata is CC BY-NC 4.0 and remains
+# subject to its original sources' terms -- see LICENSE-data.

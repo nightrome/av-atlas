@@ -26,8 +26,15 @@ function makeElement(tag) {
     attrs: {},
     style: {},
     dataset: {},
+    // toggle() is part of the real DOMTokenList and IS used by page code
+    // (filters.js's collapsible filter panel and its chart legends). It was
+    // missing here purely because the paths using it had only ever run
+    // inside click handlers, which these tests don't fire -- so the first
+    // page-load call to it blew up renderFilterBar before it attached
+    // anything, and every page came back empty with no clue why.
     classList: {
       add() {}, remove() {}, contains() { return false; },
+      toggle(_name, force) { return force === undefined ? true : !!force; },
     },
     _listeners: {},
     get className() { return this.attrs.class || ''; },

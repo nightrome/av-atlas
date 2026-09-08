@@ -181,6 +181,21 @@
       .filter-bar .field, .filter-bar .search-field { flex: 1 1 100%; }
     }
 
+    /* Collapsible filter panel -- see renderFilterBar's syncToggle. The
+       button is hidden entirely on wide screens, where the panel is short
+       enough that hiding it would only add a click. */
+    .filter-toggle {
+      display: none; width: 100%; text-align: left; background: var(--panel2);
+      color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+      padding: 8px 10px; font: inherit; font-size: 0.9em; font-weight: 600; cursor: pointer;
+    }
+    .filter-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    @media (max-width: 700px) {
+      .filter-toggle { display: block; }
+      .filter-bar-rows.collapsed { display: none; }
+      .filter-bar-rows { margin-top: 12px; }
+    }
+
     .back-to-top-btn {
       position: fixed; right: 20px; bottom: 20px; z-index: 50;
       background: var(--panel); color: var(--text); border: 1px solid var(--border);
@@ -190,6 +205,22 @@
     }
     .back-to-top-btn.show { opacity: 1; pointer-events: auto; }
     .back-to-top-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* Ranking pills shown near the top of every detail page (author, institution,
+       venue, paper) -- each is this entity's position on the matching overview
+       page's default ranking, and links back to it. */
+    .rank-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+    .rank-badges:empty { display: none; }
+    .rank-badge {
+      display: inline-flex; align-items: baseline; gap: 5px;
+      background: var(--panel2); border: 1px solid var(--border); border-radius: 20px;
+      padding: 3px 11px; font-size: 0.82em; color: var(--muted); text-decoration: none;
+      white-space: nowrap;
+    }
+    .rank-badge:hover { border-color: var(--accent); color: var(--accent); }
+    .rank-badge b { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 700; }
+    .rank-badge:hover b { color: var(--accent); }
+    .rank-badge .rank-of { font-size: 0.92em; opacity: 0.8; }
   `;
   document.head.appendChild(style);
 
@@ -904,8 +935,17 @@
       filters.topN = current;
     }
 
-    panel.appendChild(bar);
-    if (bar2 !== bar && bar2.children.length) panel.appendChild(bar2);
+    // Everything the toggle below collapses lives in this wrapper, which is
+    // built here rather than by reparenting the panel's children afterwards
+    // -- reparenting relies on appendChild detaching a node from its old
+    // parent, which the test harness's DOM stub does not implement.
+    const rows = document.createElement('div');
+    rows.className = 'filter-bar-rows';
+    rows.id = 'filter-bar-rows';
+    panel.appendChild(rows);
+
+    rows.appendChild(bar);
+    if (bar2 !== bar && bar2.children.length) rows.appendChild(bar2);
 
     const metaRow = document.createElement('div');
     metaRow.className = 'controls-meta-row';
@@ -974,7 +1014,38 @@
     count.id = 'result-count';
     metaRow.appendChild(count);
 
-    panel.appendChild(metaRow);
+    rows.appendChild(metaRow);
+
+    // On a narrow screen the controls stack one per row, which put six or
+    // seven full-width dropdowns between the top of the page and any actual
+    // content -- a whole phone screen of filters before the first number.
+    // Collapsed behind a toggle below 700px, expanded by default above it.
+    // The toggle summarises what's currently active so a reader can see at a
+    // glance whether anything is filtered without opening it.
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'filter-toggle';
+    toggle.setAttribute('aria-controls', 'filter-bar-rows');
+    panel.insertBefore(toggle, rows);
+
+    const activeCount = ['category', 'venue', 'year', 'country', 'institution', 'author', 'minCitations']
+      .filter(k => filters[k]).length;
+    // Guarded: the test harness's DOM stub has no matchMedia, and an
+    // exception here would abort renderFilterBar before the panel is ever
+    // attached, silently leaving every page showing only its spinner.
+    // Defaults to expanded, which is also the right answer for any
+    // environment that can't report a viewport width.
+    let open = !(window.matchMedia && window.matchMedia('(max-width: 700px)').matches);
+    const syncToggle = () => {
+      rows.classList.toggle('collapsed', !open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = open
+        ? 'Hide filters'
+        : `Filters${activeCount ? ` (${activeCount} active)` : ''}`;
+    };
+    toggle.addEventListener('click', () => { open = !open; syncToggle(); });
+    syncToggle();
+
     container.appendChild(panel);
     return filters;
   };
@@ -1168,6 +1239,130 @@
       }));
   };
 
+  // Where an entity sits on the matching overview page's ranking, so a
+  // detail page (author/institution/venue/paper) can show it up top and
+  // link back. Deliberately reproduces each overview page's *own* default
+  // ranking -- same aggregateByDimension call, same reliability floors
+  // (minCitedPapers/minCitedForAvg 3), same sorters, same identity-conflict
+  // exclusion for authors -- with only the adjustable "Min. papers" knob
+  // lowered to its floor (1), so every badge is reproducible by opening the
+  // linked overview page (the hrefs carry ?metric=&minPapers=1). Each list
+  // is built once and cached; a page only ever asks for one dimension.
+  window.computeEntityRanks = function (stats) {
+    const allPapers = stats.all_papers || [];
+    const detail = stats.author_detail || {};
+    const cache = {};
+    const sorters = {
+      total: (a, b) => b.citations - a.citations,
+      papers: (a, b) => b.papers - a.papers,
+      avg: (a, b) => (b.avg_citations == null ? -Infinity : b.avg_citations)
+                   - (a.avg_citations == null ? -Infinity : a.avg_citations),
+    };
+    const METRIC_LABEL = { total: 'by citations', papers: 'by papers', avg: 'by citations / paper' };
+
+    function byMetric(list) {
+      return { total: [...list].sort(sorters.total),
+               papers: [...list].sort(sorters.papers),
+               avg: [...list].sort(sorters.avg) };
+    }
+    function badgesFor(lists, name, overviewPage, metrics) {
+      const out = [];
+      metrics.forEach(key => {
+        const arr = lists[key];
+        const i = arr.findIndex(e => e.name === name);
+        if (i === -1) return;
+        out.push({
+          rank: i + 1, total: arr.length, label: METRIC_LABEL[key],
+          href: overviewPage + '?metric=' + key + '&minPapers=1',
+        });
+      });
+      return out;
+    }
+
+    function authorLists() {
+      if (!cache.author) {
+        let list = window.aggregateByDimension(allPapers, p => p.authors, { minPapers: 0, minCitedPapers: 3 });
+        // authors.html drops identity-conflict names from the ranking (not
+        // from search) -- match that, so a conflicted name simply shows no
+        // author-ranking badges rather than a position it doesn't hold.
+        list = list.filter(a => !(detail[a.name] && detail[a.name].identity_conflict));
+        cache.author = byMetric(list);
+      }
+      return cache.author;
+    }
+    function institutionLists() {
+      if (!cache.institution) {
+        cache.institution = byMetric(
+          window.aggregateByDimension(allPapers, p => p.institutions, { minPapers: 0, minCitedForAvg: 3 }));
+      }
+      return cache.institution;
+    }
+    function venueLists() {
+      if (!cache.venue) {
+        let list = window.aggregateByDimension(allPapers, p => [p.venue], { minPapers: 0, minCitedForAvg: 3 });
+        const seed = new Set(((stats.corpus_stats || {}).big_venues) || []);
+        if (seed.size) list = list.filter(r => seed.has(r.name));
+        cache.venue = byMetric(list);
+      }
+      return cache.venue;
+    }
+    function papersByCitations() {
+      if (!cache.paper) {
+        cache.paper = [...allPapers].sort((a, b) =>
+          (b.citations == null ? -Infinity : b.citations) - (a.citations == null ? -Infinity : a.citations));
+      }
+      return cache.paper;
+    }
+
+    return {
+      author: name => badgesFor(authorLists(), name, 'authors.html', ['total', 'papers', 'avg']),
+      institution: name => badgesFor(institutionLists(), name, 'institutions.html', ['total', 'papers', 'avg']),
+      venue: name => badgesFor(venueLists(), name, 'venues.html', ['total', 'papers', 'avg']),
+      paper(title) {
+        const list = papersByCitations();
+        const i = list.findIndex(p => p.title === title);
+        if (i === -1) return [];
+        const p = list[i];
+        const out = [{ rank: i + 1, total: list.length, label: 'by citations', href: 'index.html' }];
+        // Within its own venue / year -- the "most-cited first" paper tables
+        // on venue.html and index.html?year= are exactly these orderings.
+        if (p.venue) {
+          const sub = list.filter(q => q.venue === p.venue);
+          out.push({ rank: sub.findIndex(q => q.title === title) + 1, total: sub.length,
+            label: 'at ' + p.venue, href: 'venue.html?name=' + encodeURIComponent(p.venue) });
+        }
+        if (p.year) {
+          const sub = list.filter(q => q.year === p.year);
+          out.push({ rank: sub.findIndex(q => q.title === title) + 1, total: sub.length,
+            label: 'in ' + p.year, href: 'index.html?year=' + p.year });
+        }
+        return out;
+      },
+    };
+  };
+
+  // Renders the ranking pills into `container` (cleared first). `items` is
+  // whatever window.computeEntityRanks(stats).<dimension>(key) returned.
+  window.renderRankBadges = function (container, items) {
+    if (!container) return;
+    container.innerHTML = '';
+    container.className = 'rank-badges';
+    (items || []).forEach(it => {
+      const a = document.createElement('a');
+      a.className = 'rank-badge';
+      a.href = it.href;
+      const b = document.createElement('b');
+      b.textContent = '#' + it.rank.toLocaleString();
+      a.appendChild(b);
+      a.append(' ' + it.label + ' ');
+      const of = document.createElement('span');
+      of.className = 'rank-of';
+      of.textContent = 'of ' + it.total.toLocaleString();
+      a.appendChild(of);
+      container.appendChild(a);
+    });
+  };
+
   // Every page's render() calls renderBody(shown) once and then
   // makeSortable(table, shown, columns, renderBody) right after -- if
   // sortable.js (loaded via its own <script src>, after this file) hasn't
@@ -1335,6 +1530,36 @@
     if (instName && map[instName]) return map[instName];
     const list = authorCountries || [];
     return list.length === 1 ? list[0] : null;
+  };
+
+  // Sets a detail page's title and description to the entity it is actually
+  // showing.
+  //
+  // Every author, paper, institution and venue page is the same HTML file
+  // with a different query string, so all of them shipped one static
+  // <title>AV Atlas: Author</title> and one meta description. Consequences:
+  // a browser with several open showed four identical tabs, a bookmark or a
+  // shared link said nothing about which researcher it pointed at, and
+  // search engines had no per-entity title to index -- for a site whose main
+  // use is looking up a specific person or paper.
+  //
+  // This runs after the entity is known, so search engines that execute JS
+  // (Google does) see the real title. Link-preview crawlers generally do not
+  // run JS and will still show the site-level card; fixing that would need
+  // pre-rendered per-entity HTML, which is a much larger change.
+  window.setDetailPageMeta = function (title, description) {
+    if (!title) return;
+    document.title = `${title} — AV Atlas`;
+    const set = (selector, value) => {
+      const el = document.head && document.head.querySelector(selector);
+      if (el && value) el.setAttribute('content', value);
+    };
+    set('meta[name="description"]', description);
+    set('meta[property="og:title"]', document.title);
+    set('meta[property="og:description"]', description);
+    set('meta[property="og:url"]', location.href);
+    set('meta[name="twitter:title"]', document.title);
+    set('meta[name="twitter:description"]', description);
   };
 
   // Who runs this site. Used to disclose, in place, when the maintainer's

@@ -92,6 +92,8 @@
   </div>
 </div>
 
+<div id="rank-badges" class="rank-badges"></div>
+
 <div style="display:flex;justify-content:flex-end;position:relative;margin-bottom:-6px;"><span class="info-tip" tabindex="0" role="img" aria-label="This author&#x27;s totals: AV-relevant and other papers, in-corpus citations for each, and citations per paper." data-tip="This author&#x27;s totals: AV-relevant and other papers, in-corpus citations for each, and citations per paper.">i</span></div>
 <div class="stat-grid" id="stat-grid"></div>
 
@@ -114,6 +116,7 @@
     <h2>Citing authors</h2>
   <span class="info-tip" tabindex="0" role="img" aria-label="Authors of other corpus papers that cite this author’s work, ranked by how many citing papers each has." data-tip="Authors of other corpus papers that cite this author’s work, ranked by how many citing papers each has.">i</span></div>
   <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Authors of other papers in this corpus that cite this author's work.</p>
+  <p id="citing-authors-cap-note" style="margin:0 0 8px; color:var(--muted); font-size:0.85em;"></p>
   <div id="citing-authors-pagination"></div>
   <table><thead><tr><th>Author</th><th class="num" data-term="citing_instances">Citing instances</th>
   <th class="num" title="Total citations across this citing author's own papers in this corpus.">Citations</th>
@@ -198,6 +201,13 @@ function statPair(avValue, avLabel, nonAvValue, nonAvLabel, opts) {
 const params = new URLSearchParams(location.search);
 const name = params.get('name') || '';
 document.getElementById('name').textContent = name || 'Unknown author';
+// Title/description for this specific researcher, not the generic
+// "AV Atlas: Author" every author page used to share -- see
+// setDetailPageMeta in filters.js. Refined below once the stats are in and
+// the real paper/citation counts are known.
+setDetailPageMeta(name, name
+  ? `${name}'s autonomous vehicle research in AV Atlas: papers, citations within AV research, co-authors and career span.`
+  : null);
 
 fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
@@ -227,6 +237,11 @@ function titleLink(p) {
 function render(stats) {
   const papers = (stats.all_papers || []).filter(p => (p.authors || []).includes(name));
   const detail = (stats.author_detail || {})[name] || {};
+
+  // Where this author sits on the Authors overview page's default ranking.
+  try {
+    renderRankBadges(document.getElementById('rank-badges'), computeEntityRanks(stats).author(name));
+  } catch (e) { /* ranking is a top-of-page extra, never block the page for it */ }
   // Real total for "how many citations do their AV papers have" (informational);
   // the average is only over papers that actually have a citation count, so
   // an uncited paper doesn't silently drag the average toward zero.
@@ -527,7 +542,7 @@ function render(stats) {
   // it's the same underlying scan of all_papers regardless of how many
   // citing authors there are.
   const authorPaperStats = computeAuthorPaperStats(stats.all_papers);
-  const citingAuthors = Object.entries(citingAuthorCounts)
+  let citingAuthors = Object.entries(citingAuthorCounts)
     .map(([coName, count]) => {
       const coDetail = authorDetail[coName] || {};
       const insts = coDetail.institutions || [];
@@ -578,6 +593,19 @@ function render(stats) {
       tr.appendChild(td);
       citingAuthorsBody.appendChild(tr);
     }
+  }
+  // Capped at the top 25. Uncapped this ran to 11,632 rows on a
+  // well-cited author's page and 7,573 on a popular paper's -- a list
+  // nobody pages through, whose only real use is "who cites this work
+  // most", which the first screen already answers. The CSV export beside
+  // the heading still carries the full list for anyone who wants it.
+  const CITING_AUTHORS_SHOWN = 25;
+  const citingAuthorsAll = citingAuthors;
+  citingAuthors = citingAuthors.slice(0, CITING_AUTHORS_SHOWN);
+  const citingCapNote = document.getElementById('citing-authors-cap-note');
+  if (citingCapNote && citingAuthorsAll.length > CITING_AUTHORS_SHOWN) {
+    citingCapNote.textContent = `Showing the top ${CITING_AUTHORS_SHOWN} of `
+      + `${citingAuthorsAll.length.toLocaleString()} citing authors.`;
   }
   function renderCitingAuthors() {
     const pg = renderPagination(document.getElementById('citing-authors-pagination'), 'author.html', citingAuthors.length,

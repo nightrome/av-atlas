@@ -1,0 +1,56 @@
+# Licence for AV Atlas data
+
+This file covers the **collected paper metadata** — everything under `data/`,
+the JSON the site loads at runtime, and the CSV files under
+`public/download/`. The **code** that collects, classifies and displays it
+(the scripts, site pages and styling) is MIT-licensed; see [LICENSE](LICENSE).
+The two are deliberately separate, because they carry different obligations.
+
+## Terms
+
+The data is made available under
+**Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**:
+<https://creativecommons.org/licenses/by-nc/4.0/>
+
+You may share and adapt it for non-commercial research and reference use,
+with attribution. Commercial use is not granted here.
+
+## What this licence can and cannot grant
+
+AV Atlas does not own the underlying bibliographic facts. This release is a
+derived compilation — titles, author names, venues, years, categories
+assigned by this project, and citation relationships computed by this project
+— built from metadata published by:
+
+CVF (Computer Vision Foundation) · DBLP · OpenAlex · arXiv ·
+Semantic Scholar · ecva.net · the NeurIPS proceedings · PMLR ·
+community-maintained venue listings
+
+The CC BY-NC grant above applies to this project's own compilation and to the
+values it computed. It does not, and cannot, override:
+
+- **those sources' own terms of use**, which continue to apply to material
+  obtained from them;
+- **the rights of the papers' authors and publishers** in the papers
+  themselves. This release contains bibliographic metadata only. It contains
+  no full text and no figures. Abstracts served by the site are shown for
+  reference and remain the rights-holders' property.
+
+If you need material beyond non-commercial research or reference use, obtain
+it from the original source under that source's terms rather than from here.
+
+## Accuracy
+
+The data is produced by an automated pipeline and is not manually reviewed.
+Classification, author identity, affiliation resolution and citation counts
+are all incomplete or approximate to a degree documented on the site's About
+page and in `public/download/README.md`. It is offered as-is, with no
+warranty of accuracy or fitness for any purpose.
+
+## Corrections and removal
+
+If you are an author and your information is shown inaccurately, or you want
+your name, affiliation or photo corrected or removed, use the "Report an
+error on this page" button in the site's navigation bar. No account is
+needed, and the same route covers both a data correction and a privacy
+takedown request.

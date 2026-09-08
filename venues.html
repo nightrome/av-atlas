@@ -107,8 +107,9 @@ fetchStatsWithRelevance(relevance).then(stats => {
       storageKey: 'venues-exclude-preprints', onChange: () => render(),
     },
     metrics: [
-      { key: 'avg', label: 'Citations / paper' },
+      { key: 'total', label: 'Citations' },
       { key: 'papers', label: 'Papers' },
+      { key: 'avg', label: 'Citations / paper' },
       { key: 'best', label: "Most-cited paper's citations" },
     ],
     // Which venues are actually about AV research (vs. a general venue that
@@ -208,13 +209,20 @@ function render() {
   const query = currentQuery.trim().toLowerCase();
   let shownRows0 = query ? rows.filter(r => matchesSearchQuery(r.name, query)) : rows;
 
-  const metric = getMetric('avg');
+  // Default is total citations, not citations/paper. Ranking by an average
+  // with a low paper floor put a 20-paper company above every university on
+  // the strength of one dataset paper, and a 31-paper journal above CVPR --
+  // technically what the metric says, and useless as a default view of the
+  // field. Citations/paper is still one click away, and the Min. control is
+  // there for readers who want to raise the floor before using it.
+  const metric = getMetric('total');
   const sorters = {
+    total: (a, b) => b.citations - a.citations,
     avg: (a, b) => (b.avg_citations ?? -Infinity) - (a.avg_citations ?? -Infinity),
     best: (a, b) => (b.best ? b.best.citations || 0 : 0) - (a.best ? a.best.citations || 0 : 0),
     papers: (a, b) => b.papers - a.papers,
   };
-  shownRows0.sort(sorters[metric] || sorters.avg);
+  shownRows0.sort(sorters[metric] || sorters.total);
 
   // "Show top N" caps the timeline chart/legend only -- the table below
   // paginates through the FULL filtered set regardless (see institutions.html's
