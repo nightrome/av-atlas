@@ -388,5 +388,145 @@
     "title": "GAIA: A Transfer Learning System of Object Detection That Fits Your Needs",
     "current_weight": 0.08,
     "label": "core"
+  },
+  {
+    "id": "afastheuristicsearchapproachforenergyoptimalprofileroutingforelectricvehicles",
+    "title": "A Fast Heuristic Search Approach for Energy-Optimal Profile Routing for Electric Vehicles",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "ahybridcounterfactuallearningapproachforelectricvehiclesintegrationtopowersystemsunderdelayedcommunicationandcyberthreats",
+    "title": "A Hybrid Counterfactual Learning Approach for Electric Vehicles Integration to Power Systems Under Delayed Communication and Cyber Threats",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "aknowledgesharingevolutionaryalgorithmformultiviewelectricvehiclechargingstationlocation",
+    "title": "A Knowledge-Sharing Evolutionary Algorithm for Multi-View Electric Vehicle Charging Station Location",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "amultifidelitybasedantcolonyoptimizationalgorithmforcapacitatedelectricvehicleroutingproblems",
+    "title": "A Multifidelity-Based Ant Colony Optimization Algorithm for Capacitated Electric Vehicle Routing Problems",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "anintegratedchargingandcomputationschedulingofelectricvehiclesinedgecomputingsystem",
+    "title": "An Integrated Charging and Computation Scheduling of Electric Vehicles in Edge Computing System",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "chargingstrategyplanningforelectricbusesconsideringenroutebatteryswappingservicesandbatterydegradation",
+    "title": "Charging Strategy Planning for Electric Buses Considering En-Route Battery Swapping Services and Battery Degradation",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "competitivepricingstrategyforthewirelesscharginglaneoperatorconsideringrangeanxietyofelectricvehicleusers",
+    "title": "Competitive Pricing Strategy for the Wireless Charging Lane Operator Considering Range Anxiety of Electric Vehicle Users",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "comprehensiveframeworkforenergyconsumptionestimationinelectricvehicles",
+    "title": "Comprehensive Framework for Energy Consumption Estimation in Electric Vehicles",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "digitaltwinbasedreinforcementlearningforenergyexchangeamongelectricvehiclesandbasestationsinadisasteraffectedregion",
+    "title": "Digital Twin-Based Reinforcement Learning for Energy Exchange Among Electric Vehicles and Base Stations in a Disaster-Affected Region",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "efficientpostdisasteremergencyenergydeliveryunderdynamicconstraintsanelectricvehicleroutingapproach",
+    "title": "Efficient Post-Disaster Emergency Energy Delivery Under Dynamic Constraints: An Electric Vehicle Routing Approach",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "electricvehicleroutingoptimizationforpostaldeliveryandwastecollectioninsmartcities",
+    "title": "Electric Vehicle Routing Optimization for Postal Delivery and Waste Collection in Smart Cities",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "enhancingelectricvehicleschargingservicethroughmixedchargingatwostagedistributionallyrobustoptimizationmodel",
+    "title": "Enhancing Electric Vehicles Charging Service Through Mixed Charging: A Two-Stage Distributionally Robust Optimization Model",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "environmentawarereinforcementlearningbasedenergyconsumptionpredictionmodelforelectricvehicles",
+    "title": "Environment-Aware Reinforcement Learning-Based Energy Consumption Prediction Model for Electric Vehicles",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "integrateddesignofmobilebatteryswappingandchargingservicesforelectricvehicles",
+    "title": "Integrated Design of Mobile Battery-Swapping and Charging Services for Electric Vehicles",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "multiobjectiveplanningoptimizationofelectricvehiclechargingstationswithcoordinatedspatiotemporalchargingdemand",
+    "title": "Multi-Objective Planning Optimization of Electric Vehicle Charging Stations With Coordinated Spatiotemporal Charging Demand",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "observerbasedoptimalbrakingforcedistributionforurbanrailvehicleswithaxlecontrolledelectropneumaticbrakesystem",
+    "title": "Observer-Based Optimal Braking Force Distribution for Urban Rail Vehicles With Axle-Controlled Electro-Pneumatic Brake System",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "robotbasedautomaticchargingforelectricvehiclesusingincrementallearningandbiomimeticcontrol",
+    "title": "Robot-Based Automatic Charging for Electric Vehicles Using Incremental Learning and Biomimetic Control",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "spatiotemporalgraphbasedgridintegrationoflargescaleelectricvehiclewithheterogeneouschargingflexibilityaggregation",
+    "title": "Spatio-Temporal Graph-Based Grid Integration of Large-Scale Electric Vehicle With Heterogeneous Charging Flexibility Aggregation",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "tauritestackelbergequilibriuminblockchainedenergynetthroughelectricvehicles",
+    "title": "TAURITE: Stackelberg Equilibrium in Blockchained Energynet Through Electric Vehicles",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "understandingelectricvehiclerefuelingdemandandparkingpatternsinforecastingplanningandschedulingaliteraturereview",
+    "title": "Understanding Electric Vehicle Refueling Demand and Parking Patterns in Forecasting, Planning, and Scheduling: A Literature Review",
+    "label": "adjacent",
+    "source": "near_threshold_2026_09",
+    "category": "vehicle-dynamics-powertrain"
   }
 ]

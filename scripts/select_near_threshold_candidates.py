@@ -223,20 +223,23 @@ def score_and_match(title, abstract):
     return score, sorted(set(title_terms) | set(abstract_terms))
 
 
-def near_threshold_pool(papers, pool_size):
+def near_threshold_pool(papers, pool_size, excluded_ids=frozenset(), excluded_categories=frozenset()):
     if cl.RELEVANCE_MODEL is None:
         sys.exit("data/relevance_model.json is missing -- run train_relevance_classifier.py first.")
 
+    categories = DRIVING_SPECIFIC_CATEGORIES - excluded_categories
     pool = []
     for p in papers:
         if p.get("av_relevance") != "adjacent":
             continue
-        if p.get("category") not in DRIVING_SPECIFIC_CATEGORIES:
+        if p.get("category") not in categories:
             continue
         title, abstract = p.get("title"), p.get("abstract")
         if not title or is_hard_scope_adjacent(title, abstract):
             continue
         if not has_weak_av_signal(title):
+            continue
+        if normalize_title(title) in excluded_ids:
             continue
         pool.append(p)
 
@@ -320,7 +323,24 @@ def stratified_select(candidates, n_out):
     equal-share water-fill across DRIVING_SPECIFIC_CATEGORIES so the
     ~40%-of-the-pool traffic-flow-management category can't crowd out the
     other six, newest-first within each as the closest available proxy for
-    "an open gap worth relabeling" without a citation signal."""
+    "an open gap worth relabeling" without a citation signal.
+
+    Interleaved round-robin, NOT category blocks. The first shipped version
+    built `selected` by concatenating each category's whole slice --
+    `rank` (this function's output order) is what the labeling page's
+    queue actually walks through (orderBy("rank")), so a labeler going
+    through it in order hit one giant unbroken run of a single category
+    before seeing anything else. Confirmed on real usage: 20/20 taps in a
+    row were all vehicle-dynamics-powertrain (T-ITS EV-charging papers) --
+    and, separately, all 20 came back "adjacent", real evidence that
+    category's slots are mostly the rubric's own "EV charging-
+    infrastructure siting" hard-adjacent, not a sampling fluke. Interleaving
+    fixes the ordering bug; a labeler who wants to also downweight or drop
+    a category with a track record like that should exclude it from
+    DRIVING_SPECIFIC_CATEGORIES for future reselection (a per-run
+    --exclude-category flag, not a change to this function -- category mix
+    is a data question the caller answers, not something to hard-code
+    here)."""
     by_cat = {}
     for c in candidates:
         by_cat.setdefault(c["category"], []).append(c)
@@ -347,9 +367,15 @@ def stratified_select(candidates, n_out):
         if not progressed:
             break
 
+    cursor = {cat: 0 for cat in by_cat}
     selected = []
-    for cat, q in quota.items():
-        selected.extend(by_cat[cat][:q])
+    remaining_cats = [cat for cat, q in quota.items() if q > 0]
+    while remaining_cats:
+        for cat in list(remaining_cats):
+            selected.append(by_cat[cat][cursor[cat]])
+            cursor[cat] += 1
+            if cursor[cat] >= quota[cat]:
+                remaining_cats.remove(cat)
     return selected, quota
 
 
@@ -361,10 +387,23 @@ def main():
     ap.add_argument("--use-openalex", action="store_true",
                      help="rank by OpenAlex citation count instead of the stratified/recency fallback -- "
                           "only for a checkout that isn't behind an egress policy blocking api.openalex.org")
+    ap.add_argument("--exclude-ids-file", type=Path,
+                     help="JSON array of normalized-title ids to leave out (e.g. papers already shown/labeled "
+                          "in a previous selection) -- for a top-up reselection, not the first run")
+    ap.add_argument("--exclude-category", action="append", default=[], choices=sorted(DRIVING_SPECIFIC_CATEGORIES),
+                     help="drop this category from the pool entirely for this run (repeatable) -- e.g. after "
+                          "real labels show it's mostly correctly-adjacent and not worth more slots")
     args = ap.parse_args()
 
+    excluded_ids = frozenset()
+    if args.exclude_ids_file:
+        excluded_ids = frozenset(json.loads(args.exclude_ids_file.read_text(encoding="utf-8")))
+        print(f"excluding {len(excluded_ids)} already-seen ids from {args.exclude_ids_file}")
+    if args.exclude_category:
+        print(f"excluding categories entirely: {', '.join(args.exclude_category)}")
+
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    pool = near_threshold_pool(papers, args.pool_size)
+    pool = near_threshold_pool(papers, args.pool_size, excluded_ids, frozenset(args.exclude_category))
     print(f"candidate pool: {len(pool)} adjacent papers in a driving-named category, "
           f"with vehicle/traffic framing, not hard-scope-excluded")
 
