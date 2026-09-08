@@ -82,6 +82,7 @@
     <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Every author matching the current filters, ranked by the chosen metric, “Show top” per page. “Citations / paper” averages only over that author’s papers that have at least one citation." data-tip="Every author matching the current filters, ranked by the chosen metric, “Show top” per page. “Citations / paper” averages only over that author’s papers that have at least one citation.">i</span></div>
   </div>
   <p id="authors-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
+  <p id="authors-thin-note" style="color: var(--muted); font-size: 0.8em; margin: -8px 0 12px;"></p>
   <div id="pagination-container"></div>
   <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" data-term="career_span">Career span</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th class="num" data-term="self_citation_pct">Self-citation %</th><th class="num" data-term="non_av_papers">Non-AV papers</th></tr></thead>
   <tbody id="researchers-body"></tbody></table>
@@ -133,7 +134,7 @@ function authorCard(a, rank, detail) {
 
   const meta = document.createElement('div');
   meta.className = 'meta';
-  meta.textContent = `avg ${fmtAvg(a.avg_citations)} cit./paper · ${a.papers} papers · ${a.citations} total citations`;
+  meta.textContent = `${a.papers} papers · ${a.citations} total citations`;
   card.appendChild(meta);
 
   return card;
@@ -241,6 +242,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
       { key: 'avg', label: 'Citations / paper' },
     ],
     minPapers: { default: 50 },
+    minCareerSpan: { default: 0 },
     topN: { default: 10, storageKey: 'authors-topn', onChange: render },
   });
   render();
@@ -342,6 +344,14 @@ function render() {
     a.lifetime = firstYear == null ? null : lastYear - firstYear;
   });
 
+  // Dropped while searching, same reasoning as the identity-conflict
+  // exclusion and the minPapers/minCitedPapers floors above: a name search
+  // must always be able to find a real match regardless of what the
+  // adjustable filters currently require.
+  if (!query && filters.minCareerSpan) {
+    authors = authors.filter(a => a.lifetime != null && a.lifetime >= filters.minCareerSpan);
+  }
+
   // Every ranked page on this site defaults to total citations, with the
   // same Citations / Papers / Citations-per-paper order in the dropdown.
   // Citations-per-paper used to be the default on several pages, which put
@@ -419,6 +429,11 @@ function render() {
       markThinAverage(tr.children[5], a.cited_papers, a.papers);
       tbody.appendChild(tr);
     });
+    const thinNote = document.getElementById('authors-thin-note');
+    if (thinNote) {
+      thinNote.textContent = thinAverageNoteText(
+        data.filter(a => a.cited_papers != null && a.cited_papers < THIN_AVERAGE_BELOW).length);
+    }
     appendSumRow(tbody, data, [null, null, a => a.papers, null, a => a.citations, null, null, a => a.nonAvPapers]);
     // Re-applied on every re-render (sort, page change) because this
     // function rebuilds the whole tbody each time.

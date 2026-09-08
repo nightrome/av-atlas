@@ -96,6 +96,7 @@
     <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Countries by AV-relevant paper count, distinct authors, and total in-corpus citations, for the current filters." data-tip="Countries by AV-relevant paper count, distinct authors, and total in-corpus citations, for the current filters.">i</span></div>
   </div>
   <p id="total-countries-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
+  <p id="countries-thin-note" style="color: var(--muted); font-size: 0.8em; margin: -8px 0 12px;"></p>
   <div id="countries-pagination"></div>
   <table><thead><tr><th>#</th><th>Country</th><th class="num">Papers</th><th class="num">Authors</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th></tr></thead>
   <tbody id="countries-body"></tbody></table>
@@ -142,7 +143,9 @@ function countryCode(name, stats) {
   return parts.length <= 1 ? name.slice(0, 3) : parts.map(p => p[0]).join('').slice(0, 3);
 }
 
-const SEQ_RAMP = ['#cde2fb', '#9ec5f4', '#6da7ec', '#3987e5', '#256abf', '#184f95', '#0d366b'];
+// SEQ_RAMP is now shared globally (see filters.js) so other heat-shaded
+// grids on the site (the correlation matrices on insights.html) use the
+// exact same sequential scale as this page's world map.
 
 // null means no paper from that country has a citation count at all (as
 // opposed to a real average of 0) -- show "n/a", not a misleading number.
@@ -299,6 +302,11 @@ function render() {
       markThinAverage(tr.children[5], c.cited_papers, c.papers);
       tbody.appendChild(tr);
     });
+    const thinNote = document.getElementById('countries-thin-note');
+    if (thinNote) {
+      thinNote.textContent = thinAverageNoteText(
+        data.filter(c => c.cited_papers != null && c.cited_papers < THIN_AVERAGE_BELOW).length);
+    }
     appendSumRow(tbody, data, [null, null, r => r.papers, r => r.authors, r => r.citations, null]);
     // Re-applied on every re-render (sort, page change) because this
     // function rebuilds the whole tbody each time.
