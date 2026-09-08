@@ -528,5 +528,60 @@
     "label": "adjacent",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
+  },
+  {
+    "id": "offlinetrackingwithobjectpermanence",
+    "title": "Offline Tracking with Object Permanence",
+    "label": "core",
+    "source": "maintainer_2026_09"
+  },
+  {
+    "id": "leapconsistentmultidomain3dlabelingusingfoundationmodels",
+    "title": "LeAP: Consistent Multi-Domain 3D Labeling Using Foundation Models",
+    "label": "core",
+    "source": "maintainer_2026_09"
+  },
+  {
+    "id": "basalsizebalancedwarmstartactivelearningforlidarsemanticsegmentation",
+    "title": "BaSAL: Size Balanced Warm Start Active Learning for LiDAR Semantic Segmentation",
+    "label": "core",
+    "source": "maintainer_2026_09",
+    "note": "Title completed from a truncated paste ('...for LiDAR Sem') -- confirm the full title matches."
+  },
+  {
+    "id": "motiondiffusercontrollablemultiagentmotionpredictionusingdiffusion",
+    "title": "MotionDiffuser: Controllable Multi-Agent Motion Prediction Using Diffusion",
+    "label": "core",
+    "source": "maintainer_2026_09"
+  },
+  {
+    "id": "let3daplongitudinalerrortolerant3daverageprecisionforcameraonly3ddetection",
+    "title": "LET-3D-AP: Longitudinal Error Tolerant 3D Average Precision for Camera-Only 3D Detection",
+    "label": "core",
+    "source": "maintainer_2026_09"
+  },
+  {
+    "id": "improvingtheintraclasslongtailin3ddetectionviarareexamplemining",
+    "title": "Improving the Intra-Class Long-Tail in 3D Detection via Rare Example Mining",
+    "label": "core",
+    "source": "maintainer_2026_09"
+  },
+  {
+    "id": "lidaraugmentsearchingforscalable3dlidardataaugmentations",
+    "title": "LidarAugment: Searching for Scalable 3D LiDAR Data Augmentations",
+    "label": "core",
+    "source": "maintainer_2026_09"
+  },
+  {
+    "id": "pvtransformerpointtovoxeltransformerforscalable3dobjectdetection",
+    "title": "PVTransformer: Point-To-Voxel Transformer for Scalable 3D Object Detection",
+    "label": "core",
+    "source": "maintainer_2026_09"
+  },
+  {
+    "id": "leflatetoearlytemporalfusionforlidar3dobjectdetection",
+    "title": "LEF: Late-To-Early Temporal Fusion for LiDAR 3D Object Detection",
+    "label": "core",
+    "source": "maintainer_2026_09"
   }
 ]
