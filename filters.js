@@ -330,12 +330,15 @@
       label: 'Citations',
       short: 'How many papers in this corpus cite this one -- AV papers and non-AV papers together. '
         + "Counted only within this corpus, never from an external citation database, so it is far "
-        + 'lower than a Google Scholar count and measures standing within AV research specifically.',
+        + 'lower than a Google Scholar count and measures standing within AV research specifically. '
+        + 'Reference lists have been parsed for part of the corpus, not all of it, so this is a '
+        + 'lower bound that only grows -- 0 means no citer found yet, not confirmed uncited.',
     },
     citations_group: {
       label: 'Citations',
       short: 'How many papers in this corpus cite a paper in this group -- AV and non-AV citers '
-        + 'together. Counted only within this corpus, never from an external citation database.',
+        + 'together. Counted only within this corpus, never from an external citation database, and '
+        + 'a lower bound: reference lists have been parsed for part of the corpus, not all of it.',
     },
     citations_per_paper: {
       label: 'Citations / paper',

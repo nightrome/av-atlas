@@ -1624,7 +1624,7 @@ def influential_citation_threshold(papers):
 
 def compute_insights(papers, all_entries, citation_graph, category_stats,
                       top_authors_avg, top_authors_total, top_institutions, datasets=None,
-                      author_lifetimes=None):
+                      author_lifetimes=None, conflicted_authors=frozenset()):
     """Everything in here is a genuinely computed finding over the real
     corpus, not a canned template -- see insights.html for how each field
     renders. Kept as a standalone function (not inlined into main()) so it's
@@ -1979,6 +1979,12 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
             if a["lifetime"] <= YOUNG_MAX_LIFETIME and a["papers"] >= YOUNG_MIN_PAPERS
             and a["cited_papers"] > 0
             and a.get("influential_papers", 0) >= YOUNG_MIN_INFLUENTIAL
+            # Same exclusion the other author rankings apply. This list is
+            # the most vulnerable of them to a conflated name: several
+            # different people's papers merged under one common name look
+            # exactly like one person with a short, prolific, well-cited
+            # record, which is precisely what this panel selects for.
+            and name not in conflicted_authors
             and (last_complete_year is None or a["last_year"] == last_complete_year)
         ]
         # Most influential papers first, average citations only as the
@@ -2908,6 +2914,7 @@ def main():
         top(inst_citations, inst_papers, n=5),
         datasets,
         author_lifetimes,
+        identity_conflicts,
     )
 
     # Not-AV-relevant paper count per author (user-requested, shown on
@@ -3000,6 +3007,15 @@ def main():
             "by_year": {str(y): n for y, n in sorted(year_counts.items())},
             "venues_covered": len(venue_counts),
             "year_range": [min(year_counts), max(year_counts)] if year_counts else None,
+            # The most recent year in the corpus is always still being
+            # collected, and every page needs to agree on how to treat it.
+            # The Insights page already dropped it from its growth figures
+            # (see compute_insights' docstring) while every other chart
+            # plotted it like any other year, so the same partial year showed
+            # as a cliff on one page and was absent from the next. Shipped so
+            # the client charts can apply one rule: trend lines stop at the
+            # last complete year, tables and totals still count every paper.
+            "partial_year": max(year_counts) if year_counts else None,
             "total_researchers": total_researchers,
             "total_institutions": total_institutions_all,
             "total_countries": len(country_papers),

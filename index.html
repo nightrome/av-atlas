@@ -106,6 +106,7 @@
     <div class="export-buttons" id="export-container">
     <span class="info-tip" tabindex="0" role="img" aria-label="Every paper matching the current filters, ranked by in-corpus citations. Click a column header to re-sort. Citations count only other papers in this corpus that cite it." data-tip="Every paper matching the current filters, ranked by in-corpus citations. Click a column header to re-sort. Citations count only other papers in this corpus that cite it.">i</span></div>
   </div>
+  <p id="citation-coverage-note" style="color:var(--muted);font-size:0.85em;margin:-4px 0 10px;"></p>
   <div id="pagination-container"></div>
   <div class="table-scroll">
   <table><thead><tr><th>#</th><th>Title</th><th>Category</th><th>Year</th><th>Venue</th><th>Source</th><th class="num" data-term="citations">Citations</th><th class="num" data-term="early_citations">Early citations</th></tr></thead>
@@ -465,6 +466,19 @@ function renderResults() {
     ? `${papers.length} paper${papers.length === 1 ? '' : 's'} match`
     : `${papers.length} papers`;
   currentExportPapers = papers;
+
+  // The whole page is a citation ranking, so how complete the citation graph
+  // is belongs on it rather than only in a collapsed section of About. Read
+  // from the corpus so it tracks the crawl instead of going stale.
+  const cov = (currentStats.corpus_stats || {}).citation_graph_coverage;
+  const note = document.getElementById('citation-coverage-note');
+  if (note && cov && cov.core_total) {
+    const scanned = (cov.cvf_scanned || 0) + (cov.arxiv_scanned || 0);
+    note.textContent = `Ranked by citations from other papers in this corpus. Reference lists have `
+      + `been read for ${scanned.toLocaleString()} of ${cov.core_total.toLocaleString()} AV papers `
+      + `(${Math.round(100 * scanned / cov.core_total)}%), so every count here is a lower bound that `
+      + `only grows, and the shortfall is not spread evenly across papers.`;
+  }
 
   const pagination = renderPagination(document.getElementById('pagination-container'), 'index.html', papers.length,
     { onChange: renderResults, pageSize: filters.topN || 10, showSizeControl: false });

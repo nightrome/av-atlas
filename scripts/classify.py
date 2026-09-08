@@ -402,9 +402,47 @@ def classify_paper(title, abstract, categories, llm_core_titles=frozenset(), kno
         return "dataset-benchmark-paper", classify_relevance(title, abstract, normalize_title(title) in llm_core_titles)
 
     text = f"{title} {abstract or ''}".lower()
-    scores = [(score_category(text, [k.lower() for k in cat["keywords"]]), cat["id"])
-              for cat in categories]
-    scores.sort(reverse=True)
+    title_l = (title or "").lower()
+    # Ties are common -- two or three categories matching twice each is the
+    # normal case for a paper that touches several topics -- so how a tie is
+    # broken decides a lot of the taxonomy.
+    #
+    # It used to be broken by sorting (score, id) descending, i.e. reverse
+    # alphabetical order of the category slug, which is arbitrary and biased:
+    # "simulation-benchmarking" beat "sensor-fusion" beat "end-to-end-driving"
+    # every single time, whatever the paper was about. TransFuser -- a
+    # sensor-fusion method for end-to-end driving, with none of those words
+    # in its abstract more than the others -- came out as "Simulation".
+    #
+    # A title match breaks the tie instead. A paper's title states what it is
+    # about; its abstract mentions everything it touches. Longest matching
+    # keyword is the second tiebreak, preferring the more specific phrase,
+    # with the slug last only so the result stays deterministic.
+    # The title score leads, not just as a tiebreak. A title states what the
+    # paper IS; an abstract mentions everything it touches, and the abstract
+    # is several times longer, so raw counts over the combined text
+    # systematically favour whatever a paper discusses most rather than what
+    # it contributes. "PointPainting: Sequential Fusion for 3D Object
+    # Detection" scored 4 on segmentation (its method paints segmentation
+    # output onto points) against 2 on object detection, which its own title
+    # names twice.
+    #
+    # Most titles match no category keyword at all, and those fall through to
+    # the combined score exactly as before -- this only changes papers whose
+    # title does name a topic, which is where the title should win.
+    def rank(cat):
+        keywords = [k.lower() for k in cat["keywords"]]
+        return (
+            score_category(title_l, keywords),
+            score_category(text, keywords),
+            max((len(k) for k in keywords if k in text), default=0),
+            cat["id"],
+        )
+
+    ranked = sorted((rank(cat) for cat in categories), reverse=True)
+    # Downstream only needs "did anything match at all" plus the id, and a
+    # match anywhere counts -- so the combined score, not the title one.
+    scores = [(r[1], r[3]) for r in ranked]
     category = "uncategorized"
     for best_score, best_id in scores:
         if best_score <= 0:

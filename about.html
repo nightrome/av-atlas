@@ -193,12 +193,14 @@
   <li><strong>2. Merge &amp; classify.</strong> Dedupe across sources by normalized title. Assign
       a <strong>category</strong> (topic, e.g. object detection, planning) from keyword matching,
       and an <strong>AV-relevance</strong> label independently, against a written rubric: a paper
-      is <em>core</em> if its own contribution or evaluation is about automating a road vehicle or
-      the driving task, and <em>adjacent</em> if it only names autonomous driving as one possible
-      application. A layered classifier decides it: hard scope filters first exclude non-road
+      is an <em>AV paper</em> if its own contribution or evaluation is about automating a road
+      vehicle or the driving task, and a <em>non-AV paper</em> if it only names autonomous driving
+      as one possible application. (The code and the rubric call these two <em>core</em> and
+      <em>adjacent</em>; they are the same two labels the “Show” control offers.) A layered
+      classifier decides it: hard scope filters first exclude non-road
       platforms (aerial, underwater, legged, manipulation) and pure vehicle-hardware papers; then
       an explicit AV-specific phrase in the title or abstract, or a standalone driving word in the
-      title, marks a paper core; then a small model of learned per-phrase weights (trained on hand
+      title, marks a paper as AV; then a small model of learned per-phrase weights (trained on hand
       labels plus labels from a locally-run language model, with negative weights on phrases that
       over-fire) and a verdict from that same local language model get the last say on the rest. A paper's category never
       feeds this decision, since category keywords are generic CV/robotics terms that match
