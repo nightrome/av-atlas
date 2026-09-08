@@ -79,6 +79,12 @@ data/venues/arxiv_s2_citing.json
 # work, same treatment as scholar_profiles.json.
 dev/label_relevance.html
 data/labeling_candidates.json
+# select_near_threshold_candidates.py's output -- a regenerable (fixed-seed
+# shuffle, deterministic stratified selection) triage sample of
+# papers_full.json, same treatment as labeling_candidates.json above. The
+# labels a human actually assigns from it belong in relevance_labels.json
+# (tracked, real work), not this intermediate.
+data/near_threshold_candidates.json
 
 __pycache__/
 *.pyc
