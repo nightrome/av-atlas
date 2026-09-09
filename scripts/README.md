@@ -92,6 +92,7 @@ Not part of a build. These produced the trained model and the labels
 | `fetch_llm_relevance_labels.py`, `..._v2.py` | Local-LLM labelling passes (Ollama). |
 | `evaluate_llm_relevance.py` | Grades those labels against hand-labelled ground truth. |
 | `select_labeling_candidates.py`, `build_labeling_tool.py` | Pick a sample and stamp it into the hand-labelling page (now `dev/label_relevance.html`). |
+| `select_near_threshold_candidates.py` | Recall-focused triage sample: "adjacent" papers in a driving-named category with real vehicle/traffic framing, for a targeted hand-labelling pass -- not a general training sample like the two scripts above. |
 | `flag_ambiguous_authors.py` | Flags name-keyed records that likely conflate several people. |
 | `classify_code_links_llm.py`, `audit_code_links_llm.py` | The `has_code_link` classifier and an audit of it. Its Insights panel is parked until coverage is trustworthy. |
 

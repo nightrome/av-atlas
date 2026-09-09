@@ -199,6 +199,57 @@ test('preserves existing header markup instead of collapsing it to plain text', 
   assert.ok(th.children.includes(subSpan), 'th-sub span must survive untouched');
 });
 
+test('calling makeSortable again on the same table does not stack a second indicator or listener', () => {
+  // Real bug: every page's render() calls makeSortableSafe/makeSortable
+  // again on the SAME <table> on every search keystroke, pagination click,
+  // topN change, etc. -- only <tbody> gets rebuilt, <thead>/<th> persist.
+  // The old code re-appended a fresh indicator span and a fresh click
+  // listener on every call, so after N renders a header carried N
+  // indicators (user-reported: "the triangle symbol occurs 6 times") and a
+  // click fired N listeners at once.
+  const sandbox = loadSortable();
+  const citTh = fakeHeaderCell('Citations');
+  const table = makeTable([citTh]);
+  const columns = [{ accessor: r => r.citations, numeric: true }];
+  let renderCount = 0;
+  const renderBody = () => { renderCount++; };
+  sandbox.makeSortable(table, [{ citations: 1 }], columns, renderBody);
+  sandbox.makeSortable(table, [{ citations: 2 }], columns, renderBody);
+  const indicators = citTh.children.filter(c => c && c.className === 'sort-indicator');
+  assert.strictEqual(indicators.length, 1, 'a second makeSortable call must not append a second indicator span');
+  renderCount = 0;
+  citTh.click();
+  assert.strictEqual(renderCount, 1, 'a click must invoke renderBody exactly once, not once per stacked listener');
+});
+
+test('a second makeSortable call operates on the freshly-passed data, not the stale data from the first call', () => {
+  const sandbox = loadSortable();
+  const citTh = fakeHeaderCell('Citations');
+  const table = makeTable([citTh]);
+  const columns = [{ accessor: r => r.citations, numeric: true }];
+  let rendered = null;
+  const renderBody = (sorted) => { rendered = sorted; };
+  sandbox.makeSortable(table, [{ citations: 999 }], columns, renderBody);
+  sandbox.makeSortable(table, [{ citations: 10 }, { citations: 90 }], columns, renderBody);
+  citTh.click();
+  assert.deepStrictEqual(Array.from(rendered, r => r.citations), [90, 10],
+    'must sort the data from the LATEST makeSortable call, not an earlier one');
+});
+
+test('an already-active sort is re-applied to fresh data on the next render, without a fresh click', () => {
+  const sandbox = loadSortable();
+  const citTh = fakeHeaderCell('Citations');
+  const table = makeTable([citTh]);
+  const columns = [{ accessor: r => r.citations, numeric: true }];
+  let rendered = null;
+  const renderBody = (sorted) => { rendered = sorted; };
+  sandbox.makeSortable(table, [{ citations: 10 }, { citations: 90 }], columns, renderBody);
+  citTh.click(); // descending: 90, 10 -- this column is now the active sort
+  sandbox.makeSortable(table, [{ citations: 5 }, { citations: 50 }, { citations: 1 }], columns, renderBody);
+  assert.deepStrictEqual(Array.from(rendered, r => r.citations), [50, 5, 1],
+    "the new render's data must come back already sorted by the previously-active column/direction");
+});
+
 if (failures > 0) {
   console.log(`\n${failures} test(s) failed`);
   process.exit(1);

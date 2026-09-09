@@ -17,9 +17,54 @@
   document.head.appendChild(style);
 
   window.makeSortable = function (table, data, columns, renderBody) {
+    // Every page's render() calls this again on the SAME <table> element on
+    // every search keystroke, pagination click, topN change, etc. -- only
+    // the <tbody> gets rebuilt each time, the <thead>/<th> nodes persist.
+    // Re-running the setup below on an already-wired table appended a
+    // second indicator span and a second click listener on top of the
+    // first, a third on top of that, and so on -- each with its OWN
+    // independent {idx, dir} state, and each click firing every stacked
+    // listener at once. Concretely: a header's clear-all-other-indicators
+    // step only ever finds the FIRST indicator span via querySelector, so
+    // later ones never got cleared and stayed lit (user-reported: "the
+    // triangle symbol occurs 6 times"); which listener's renderBody(sorted)
+    // call won the race depended on registration order, so a click could
+    // as easily appear to do nothing as sort correctly (user-reported:
+    // "sorting Venues by paper is not possible"); and on a page where the
+    // header never happened to end up with an active-looking survivor, no
+    // triangle showed at all (user-reported on All countries). Guarding
+    // re-entry and swapping the live data/columns/renderBody into the one
+    // state object already on the table fixes all three at the root.
+    if (table._sortableState) {
+      const state = table._sortableState;
+      state.data = data;
+      state.columns = columns;
+      state.renderBody = renderBody;
+      if (state.idx != null) state.resort(); else renderBody(data);
+      return;
+    }
+
     table.classList.add('sortable');
     const ths = table.querySelectorAll('thead th');
-    const state = { idx: null, dir: 1 };
+    const state = { idx: null, dir: 1, data, columns, renderBody };
+    table._sortableState = state;
+
+    state.resort = function () {
+      const col = state.columns[state.idx];
+      const sorted = [...state.data].sort((a, b) => {
+        let av = col.accessor(a);
+        let bv = col.accessor(b);
+        if (col.numeric) {
+          av = av == null ? -Infinity : av;
+          bv = bv == null ? -Infinity : bv;
+          return (av - bv) * state.dir;
+        }
+        av = av == null ? '' : String(av);
+        bv = bv == null ? '' : String(bv);
+        return av.localeCompare(bv) * state.dir;
+      });
+      state.renderBody(sorted);
+    };
 
     ths.forEach((th, idx) => {
       const col = columns[idx];
@@ -62,20 +107,7 @@
         th.classList.add('sort-active');
         indicator.classList.add('active');
         indicator.textContent = state.dir === 1 ? '▲' : '▼';
-
-        const sorted = [...data].sort((a, b) => {
-          let av = col.accessor(a);
-          let bv = col.accessor(b);
-          if (col.numeric) {
-            av = av == null ? -Infinity : av;
-            bv = bv == null ? -Infinity : bv;
-            return (av - bv) * state.dir;
-          }
-          av = av == null ? '' : String(av);
-          bv = bv == null ? '' : String(bv);
-          return av.localeCompare(bv) * state.dir;
-        });
-        renderBody(sorted);
+        state.resort();
       });
     });
   };

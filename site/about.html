@@ -126,20 +126,10 @@
   through all five stages itself.
 </p>
 <p>
-  The paper listings come from a few public bibliographic sources. Most venues are pulled from
-  their own proceedings site (CVF for CVPR/ICCV/ECCV/WACV, the NeurIPS and PMLR proceedings for
-  NeurIPS/ICML/CoRL, and so on). Three sources fill specific gaps:
+  The paper listings come from the venues themselves &mdash; each covered conference, workshop,
+  or journal's own complete accepted-papers record for that year &mdash; plus arXiv for
+  preprints.
 </p>
-<ul>
-  <li><strong>DBLP</strong> &mdash; title/author/year listings (no abstracts) for venues with no
-      scrapable proceedings site: <strong>RSS, ICLR, AAAI</strong>, and the journals
-      <strong>TPAMI, IJCV, IJRR, RA&#8209;L, TRO, T&#8209;ITS</strong>. Also backfills CVF years
-      whose own listing is broken.</li>
-  <li><strong>OpenAlex</strong> &mdash; bulk metadata for the IEEE robotics conferences
-      <strong>ICRA and IROS</strong>, whose publisher site cannot be scraped.</li>
-  <li><strong>Semantic Scholar</strong> &mdash; not a venue source. It provides the citation
-      links between papers and the author IDs used to look up ORCIDs.</li>
-</ul>
 <div class="pipeline-wrap">
 <svg viewBox="0 0 1160 170" role="img" aria-label="Five-stage pipeline: Collect, Merge and classify, Enrich, Citation graph, Aggregate, with a feedback arrow from Citation graph back to Collect.">
   <defs>
@@ -206,11 +196,11 @@
       feeds this decision, since category keywords are generic CV/robotics terms that match
       plenty of non-AV papers.</li>
   <li><strong>3. Enrich.</strong> For AV-relevant papers only: author affiliations (read from the
-      CVF PDF, or from the HTML version of the arXiv preprint), ORCID and Semantic Scholar author
-      identifiers (stable IDs that tell apart authors who share a name), and profile photos for
+      paper's own PDF, or from the HTML version of its arXiv preprint), ORCID and other stable
+      author identifiers (to tell apart authors who share a name), and profile photos for
       top-ranked authors.</li>
-  <li><strong>4. Citation graph.</strong> Reference lists parsed from CVF PDFs and arXiv HTML
-      record which corpus papers cite which. A separate Semantic Scholar query finds papers
+  <li><strong>4. Citation graph.</strong> Reference lists parsed from each paper's PDF or arXiv
+      HTML record which corpus papers cite which. A separate lookup finds papers
       <em>outside</em> the corpus that cite a corpus paper; those re-enter at stage&nbsp;1 (the
       feedback loop above).</li>
   <li><strong>5. Aggregate.</strong> Leaderboards, per-author/institution/country rollups, and

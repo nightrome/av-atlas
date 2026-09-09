@@ -2916,6 +2916,14 @@ def main():
         author_lifetimes,
         identity_conflicts,
     )
+    # Shipped alongside highest_impact_author so insights.html can state the
+    # actual floor rather than a hardcoded guess that could silently drift
+    # from the min_papers literal above -- same pattern as
+    # young_researchers_min_influential below. This ranking's own floor (10
+    # papers) is stricter than the Authors page's adjustable one (default
+    # 50, but adjustable down to 1), which is exactly why the same author
+    # can show a different rank in each place (user-reported).
+    insights["highest_impact_author_min_papers"] = 10
 
     # Not-AV-relevant paper count per author (user-requested, shown on
     # author.html and the Authors table) -- has to be computed here, not

@@ -84,6 +84,7 @@
   <div class="meta" id="venue-meta"></div>
   <div class="meta" id="links-meta"></div>
   <span class="category-chip" id="category-chip"></span>
+  <span class="category-chip" id="relevance-chip" style="display:none;"></span>
 </div>
 
 <div id="rank-badges" class="rank-badges"></div>
@@ -219,17 +220,46 @@ setDetailPageMeta(title, title
   ? `"${title}" in AV Atlas: citations within autonomous vehicle research, authors, and related papers.`
   : null);
 
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
+function notFound() {
+  document.getElementById('venue-meta').textContent = 'No paper found on this site with that exact title.';
+  document.getElementById('abstract-panel').style.display = 'none';
+  document.getElementById('citing-panel').style.display = 'none';
+}
+
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => {
+  const paper = (stats.all_papers || []).find(p => p.title === title);
+  if (paper) { renderPaper(stats, paper, false); return; }
+  // Not in the AV-relevant set -- before giving up, also check the much
+  // larger non-AV set (see filters.js's fetchStatsWithRelevance for why
+  // that's a separate, lazily-fetched file, never bundled into
+  // stats.all_papers by default). A paper can legitimately be adjacent and
+  // still be part of this corpus -- e.g. discovered purely because some AV
+  // paper's own reference list cites it -- so "not in all_papers" isn't
+  // the same claim as "not on this site" (user-reported: a real non-AV
+  // paper reachable this way showed the generic "not found" message,
+  // indistinguishable from a genuine typo or a paper this site has never
+  // seen at all).
+  document.getElementById('venue-meta').textContent = 'Looking for this paper among non-AV papers…';
+  fetch('stats_adjacent.json').then(r => r.json()).then(adjacent => {
+    const adjPaper = (adjacent || []).find(p => p.title === title);
+    if (!adjPaper) { notFound(); return; }
+    adjPaper.citations = ((adjPaper.citations_by_source || {}).in_corpus || {}).count || 0;
+    renderPaper(stats, adjPaper, true);
+  }).catch(notFound);
+}).catch(err => {
   document.getElementById('title').textContent = 'Could not load stats.json: ' + err;
 });
 
-function render(stats) {
-  const paper = (stats.all_papers || []).find(p => p.title === title);
-  if (!paper) {
-    document.getElementById('venue-meta').textContent = 'No paper found on this site with that exact title.';
-    document.getElementById('abstract-panel').style.display = 'none';
-    document.getElementById('citing-panel').style.display = 'none';
-    return;
+function renderPaper(stats, paper, isAdjacent) {
+  const relevanceChip = document.getElementById('relevance-chip');
+  if (isAdjacent) {
+    relevanceChip.textContent = 'Non-AV paper';
+    relevanceChip.title = 'This site classified this paper as not about autonomous road vehicles, so it '
+      + "is excluded from every leaderboard, category, and the AV-relevant download -- it's shown here "
+      + 'because the paper itself is still part of the corpus (e.g. reachable through the citation graph).';
+    relevanceChip.style.display = '';
+  } else {
+    relevanceChip.style.display = 'none';
   }
 
   document.getElementById('venue-meta').textContent =

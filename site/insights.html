@@ -111,6 +111,25 @@
   .tooltip-box .tt-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
   .tooltip-box .tt-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
   .tooltip-box .tt-val { margin-left: auto; font-variant-numeric: tabular-nums; padding-left: 10px; }
+
+  /* Correlation matrices. Columns are numbered rather than label-rotated --
+     robust against long category names at 27+ columns, where rotated text
+     would overlap its neighbors; the row headers (which have the room)
+     carry the same number, so "column 7" is read off the row list. Wrapped
+     in .table-scroll automatically (see filters.js's autoWrapTables), which
+     is what makes a 40+-column grid usable on a phone at all. */
+  table.corr-matrix { font-size: 0.72em; border-collapse: collapse; }
+  table.corr-matrix th, table.corr-matrix td {
+    padding: 3px 6px; text-align: center; white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+  }
+  table.corr-matrix thead th { color: var(--muted); font-weight: 600; cursor: help; }
+  table.corr-matrix tbody th {
+    text-align: left; color: var(--text); font-weight: 600; white-space: nowrap;
+    position: sticky; left: 0; background: var(--panel);
+  }
+  table.corr-matrix td { font-variant-numeric: tabular-nums; cursor: default; }
+  table.corr-matrix td.self { background: var(--panel2) !important; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -167,6 +186,24 @@
 
 <div class="panel">
   <div class="panel-title-row">
+    <h2 style="margin-top:0;">Category correlation</h2>
+  <span class="info-tip" tabindex="0" role="img" aria-label="If an author published in the row category, what share of them also published in the column category -- counting every author with at least one AV paper in each. Columns are numbered to match the row list; the diagonal is left blank." data-tip="If an author published in the row category, what share of them also published in the column category -- counting every author with at least one AV paper in each. Columns are numbered to match the row list; the diagonal is left blank.">i</span></div>
+  <p class="section-intro">
+    Read a row: of authors who published in that category, the % who also published in each
+    numbered column category. Tap or hover a cell for the exact count.
+  </p>
+  <table class="corr-matrix" id="category-corr-matrix"><thead></thead><tbody></tbody></table>
+  <div class="panel-title-row" style="margin-top: 18px;">
+    <h3 style="margin: 0;">All category pairs</h3>
+    <div id="category-corr-export"></div>
+  </div>
+  <div id="category-corr-pagination"></div>
+  <table><thead><tr><th>Published in</th><th>Also published in</th><th class="num">Share of authors</th><th class="num">Authors</th></tr></thead>
+  <tbody id="category-corr-body"></tbody></table>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
     <h2 style="margin-top:0;">Dataset adoption over time</h2>
     <div id="dataset-topn-container"><span class="info-tip" tabindex="0" role="img" aria-label="How many papers per year cite each of the most-used AV datasets, from those papers&#x27; own reference lists." data-tip="How many papers per year cite each of the most-used AV datasets, from those papers&#x27; own reference lists.">i</span></div>
   </div>
@@ -179,7 +216,7 @@
 </div>
 
 <div class="panel">
-  <div class="panel-title-row"><h2>Leadership</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages." data-tip="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages.">i</span></div>
+  <div class="panel-title-row"><h2>Leadership</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top author, institution and paper by a few different measures, from the same underlying data as the Authors and Institutions pages -- though some cards use a stricter minimum-papers floor than those pages default to, noted on the card where it applies." data-tip="The top author, institution and paper by a few different measures, from the same underlying data as the Authors and Institutions pages -- though some cards use a stricter minimum-papers floor than those pages default to, noted on the card where it applies.">i</span></div>
   <p class="section-intro">Leading people, institutions and papers in the field.</p>
   <div class="fact-grid" id="people-facts"></div>
   <p class="section-intro" id="maintainer-disclosure" style="margin-bottom:0;" hidden></p>
@@ -310,6 +347,24 @@
   </div>
 </div>
 
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Venue correlation</h2>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Same idea as the category correlation matrix, for the seed venues: if an author published at the row venue, what share of them also published at the column venue. Restricted to seed venues to keep the grid readable." data-tip="Same idea as the category correlation matrix, for the seed venues: if an author published at the row venue, what share of them also published at the column venue. Restricted to seed venues to keep the grid readable.">i</span></div>
+  <p class="section-intro">
+    Same idea as the category matrix above, restricted to seed venues (the same set Venues' own
+    table uses) so the grid stays a manageable size. Tap or hover a cell for the exact count.
+  </p>
+  <table class="corr-matrix" id="venue-corr-matrix"><thead></thead><tbody></tbody></table>
+  <div class="panel-title-row" style="margin-top: 18px;">
+    <h3 style="margin: 0;">All venue pairs</h3>
+    <div id="venue-corr-export"></div>
+  </div>
+  <div id="venue-corr-pagination"></div>
+  <table><thead><tr><th>Published at</th><th>Also published at</th><th class="num">Share of authors</th><th class="num">Authors</th></tr></thead>
+  <tbody id="venue-corr-body"></tbody></table>
+</div>
+
 <script src="filters.js"></script>
 <script>
 const PALETTE = ['#e6614f', '#3987e5', '#3fae6a', '#e6a53f', '#9366d9'];
@@ -350,7 +405,7 @@ function statTile(container, value, label, sub, href) {
 function moveRow(list, item, up) {
   const li = document.createElement('li');
   const name = document.createElement('span');
-  name.textContent = labelForCategory(item.category);
+  name.textContent = categoryLabel(item.category);
   li.appendChild(name);
   const delta = document.createElement('span');
   delta.className = 'delta ' + (up ? 'up' : 'down');
@@ -442,21 +497,176 @@ function renderCategoryTrends(stats) {
   draw();
 }
 
-const CATEGORY_LABELS = {
-  'control': 'Control', 'llm-vlm-driving': 'LLM/VLM for Driving', 'dataset-benchmark-paper': 'Datasets',
-  'simulation-benchmarking': 'Simulation', 'end-to-end-driving': 'End-to-End Driving & Planning',
-  'world-models': 'World Models', 'reinforcement-learning': 'Reinforcement Learning',
-  'domain-adaptation': 'Domain Adaptation & Generalization', 'adversarial-robustness-safety': 'Adversarial Robustness & Safety',
-  'tracking': 'Tracking', 'mapping-localization': 'Mapping & Localization', 'segmentation': 'Segmentation',
-  'occupancy': 'Occupancy Prediction', 'v2x-cooperative': 'V2X / Cooperative Perception',
-  'depth-3d-geometry': 'Depth & 3D Geometry', 'novel-view-synthesis': 'Novel View Synthesis',
-  'optical-flow': 'Optical & Scene Flow', 'object-detection': 'Object Detection',
-  'motion-prediction': 'Motion Prediction', 'uncategorized': 'Uncategorized', 'sensor-fusion': 'Sensor Fusion',
-  'driver-behavior-hmi': 'Driver Behavior & Human-Machine Interaction', 'general-cv-ml-method': 'General CV/ML Method',
-};
-function labelForCategory(cat) {
-  return CATEGORY_LABELS[cat] || cat.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
+// -- Correlation matrices (category and venue) --------------------------
+//
+// "If you published in X, did you also publish in Y?" -- per-author set of
+// whichever dimension (category or venue) they've published in, across
+// their own AV papers, then a row-normalized co-occurrence count: cell
+// (X, Y) is the share of X's authors who ALSO have Y somewhere in their own
+// set. Deliberately not symmetric (share of X who also do Y differs from
+// share of Y who also do X unless X and Y have the same total), which is
+// exactly what a reader asking this question wants -- a plain symmetric
+// count would answer a different, less useful question.
+function buildCorrelationMatrix(papers, dimensionFn, itemKeys) {
+  const allowed = new Set(itemKeys);
+  const byAuthor = {};
+  papers.forEach(p => {
+    const vals = (dimensionFn(p) || []).filter(v => allowed.has(v));
+    if (!vals.length) return;
+    (p.authors || []).forEach(a => {
+      const set = byAuthor[a] || (byAuthor[a] = new Set());
+      vals.forEach(v => set.add(v));
+    });
+  });
+  const totals = {}, co = {};
+  itemKeys.forEach(k => {
+    totals[k] = 0;
+    co[k] = {};
+    itemKeys.forEach(k2 => { co[k][k2] = 0; });
+  });
+  Object.values(byAuthor).forEach(set => {
+    const arr = [...set];
+    arr.forEach(k => { totals[k] += 1; });
+    arr.forEach(k1 => arr.forEach(k2 => { if (k1 !== k2) co[k1][k2] += 1; }));
+  });
+  return { totals, co };
 }
+
+// Renders both halves of one correlation panel: the heat-shaded grid (a
+// real <table>, so filters.js's autoWrapTables gives it horizontal scroll
+// for free, and the row header can go position:sticky) and, below it, a
+// sortable/paginated/exportable list of every ordered pair -- the
+// accessible non-grid view, and where CSV export lives, same as every
+// other table-plus-export panel on this site.
+function renderCorrelationPanel(opts) {
+  const { totals, co } = buildCorrelationMatrix(opts.papers, opts.dimensionFn, opts.itemKeys);
+  // Drop anything with zero authors entirely -- an all-empty row/column is
+  // dead weight in a grid a reader has to scroll past for nothing.
+  const activeKeys = opts.itemKeys.filter(k => totals[k] > 0);
+  const matrixTable = document.getElementById(opts.matrixTableId);
+  const thead = matrixTable.querySelector('thead');
+  const tbody = matrixTable.querySelector('tbody');
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+  if (!activeKeys.length) return;
+
+  const headRow = document.createElement('tr');
+  headRow.appendChild(document.createElement('th'));
+  activeKeys.forEach((k, i) => {
+    const th = document.createElement('th');
+    th.textContent = String(i + 1);
+    th.title = opts.labelFor(k);
+    headRow.appendChild(th);
+  });
+  thead.appendChild(headRow);
+
+  activeKeys.forEach((rowKey, i) => {
+    const tr = document.createElement('tr');
+    const rowHead = document.createElement('th');
+    rowHead.textContent = `${i + 1}. ${opts.labelFor(rowKey)}`;
+    tr.appendChild(rowHead);
+    activeKeys.forEach(colKey => {
+      const td = document.createElement('td');
+      if (rowKey === colKey) {
+        td.textContent = '—';
+        td.className = 'self';
+      } else {
+        const pct = Math.round((100 * co[rowKey][colKey]) / totals[rowKey]);
+        td.textContent = String(pct);
+        const step = Math.min(SEQ_RAMP.length - 1, Math.round((pct / 100) * (SEQ_RAMP.length - 1)));
+        td.style.background = SEQ_RAMP[step];
+        td.style.color = step <= 2 ? '#0b0b0b' : '#ffffff';
+        td.title = `${opts.labelFor(rowKey)} → ${opts.labelFor(colKey)}: ${pct}% `
+          + `(${co[rowKey][colKey]} of ${totals[rowKey]} authors)`;
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  const pairs = [];
+  activeKeys.forEach(rowKey => {
+    activeKeys.forEach(colKey => {
+      if (rowKey === colKey) return;
+      pairs.push({
+        from: opts.labelFor(rowKey), to: opts.labelFor(colKey),
+        pct: Math.round((100 * co[rowKey][colKey]) / totals[rowKey]),
+        authors: co[rowKey][colKey],
+      });
+    });
+  });
+  pairs.sort((a, b) => b.pct - a.pct);
+
+  const bodyEl = document.getElementById(opts.bodyId);
+  function renderBody(data) {
+    bodyEl.innerHTML = '';
+    data.forEach(p => {
+      const tr = document.createElement('tr');
+      [p.from, p.to, `${p.pct}%`, p.authors].forEach((c, i) => {
+        const td = document.createElement('td');
+        if (i >= 2) td.className = 'num';
+        td.textContent = c;
+        tr.appendChild(td);
+      });
+      bodyEl.appendChild(tr);
+    });
+  }
+  function renderPage() {
+    const pg = renderPagination(document.getElementById(opts.paginationId), 'insights.html', pairs.length,
+      { paramKey: opts.paramKey, onChange: renderPage });
+    const shown = pairs.slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(bodyEl.closest('table'), shown, [
+      { accessor: p => p.from, numeric: false },
+      { accessor: p => p.to, numeric: false },
+      { accessor: p => p.pct, numeric: true },
+      { accessor: p => p.authors, numeric: true },
+    ], renderBody);
+  }
+  renderPage();
+
+  const exportContainer = document.getElementById(opts.exportContainerId);
+  if (exportContainer) {
+    exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+    exportContainer.insertBefore(renderExportButton(bodyEl.closest('table'), opts.exportName), exportContainer.firstChild);
+  }
+}
+
+function renderCategoryCorrelation(stats) {
+  renderCorrelationPanel({
+    papers: stats.all_papers || [],
+    dimensionFn: p => [p.category],
+    itemKeys: (stats.category_breakdown || []).map(c => c.category),
+    labelFor: categoryLabel,
+    matrixTableId: 'category-corr-matrix', bodyId: 'category-corr-body',
+    paginationId: 'category-corr-pagination', exportContainerId: 'category-corr-export',
+    paramKey: 'catcorr_page', exportName: 'av-atlas-category-correlation.csv',
+  });
+}
+
+function renderVenueCorrelation(stats) {
+  renderCorrelationPanel({
+    papers: stats.all_papers || [],
+    dimensionFn: p => [p.venue],
+    // Seed venues only (same set Venues' own table defaults to) -- the
+    // corpus otherwise carries ~1,100 distinct venue strings, almost all
+    // single citation-graph-discovered papers, which would blow this grid
+    // up the same way it used to blow up the Venue filter dropdown.
+    itemKeys: (stats.corpus_stats || {}).big_venues || [],
+    labelFor: v => v,
+    matrixTableId: 'venue-corr-matrix', bodyId: 'venue-corr-body',
+    paginationId: 'venue-corr-pagination', exportContainerId: 'venue-corr-export',
+    paramKey: 'venuecorr_page', exportName: 'av-atlas-venue-correlation.csv',
+  });
+}
+
+// Category labels come from filters.js's shared window.CATEGORY_LABELS /
+// categoryLabel() -- this used to be its own local, private copy (predating
+// that consolidation) which had quietly drifted 5 categories behind the
+// shared one (traffic-flow-management, platooning-cruise-control,
+// testing-validation, sensor-calibration, vehicle-dynamics-powertrain all
+// fell back to the raw-slug-title-cased default here instead of their real
+// name). Every overlapping entry's wording already matched, so there was
+// nothing to port the other way.
 
 fetch('stats.json').then(r => r.json()).then(stats => {
   const ins = stats.insights || {};
@@ -673,7 +883,19 @@ function render(ins, stats) {
   }
   if (ins.highest_impact_author) {
     const a = ins.highest_impact_author;
-    statTile(pf, a.name, 'Author with most citations per paper', `${a.avg_citations} citations/paper across ${a.papers} papers.`,
+    // This ranking uses its own, stricter floor (see
+    // highest_impact_author_min_papers, aggregate.py) than the Authors
+    // page's adjustable one -- stated explicitly because otherwise this
+    // author's rank badge on their own page, computed with a much lower
+    // floor, can show a very different position with no visible reason
+    // why (user-reported: Oscar Beijbom read #1 here but #7 on his own
+    // page).
+    const minP = ins.highest_impact_author_min_papers;
+    statTile(pf, a.name, 'Author with most citations per paper',
+      `${a.avg_citations} citations/paper across ${a.papers} papers`
+      + (minP ? ` -- among authors with ${minP}+ papers, a stricter floor than the Authors page's own `
+        + `adjustable one. Their rank badge elsewhere on the site may differ, since that uses a lower floor.`
+        : '.'),
       `author.html?name=${encodeURIComponent(a.name)}`);
   }
   if (ins.leading_institution) {
@@ -705,6 +927,7 @@ function render(ins, stats) {
   // field) so the "compared to N years earlier" dropdown can recompute
   // instantly instead of needing a fixed set of server-precomputed windows.
   renderCategoryTrends(stats);
+  renderCategoryCorrelation(stats);
 
   // -- Collaboration -- (link to the paper, but no title text -- the point
   // here is the number, and a long title crowds the card; click through if
@@ -922,6 +1145,7 @@ function render(ins, stats) {
     });
   }
   renderVenueRelevance();
+  renderVenueCorrelation(stats);
 }
 
 // Shared line-chart renderer (same as every other timeline on this site).
