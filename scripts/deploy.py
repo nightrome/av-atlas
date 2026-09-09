@@ -144,6 +144,16 @@ def deploy_gh_pages():
         run(["git", "branch", "-D", "gh-pages-publish"], check=False)
 
 
+def backup_corpus():
+    print("\n--- Backing up papers_full.json + citation_graph.json ---")
+    # Best-effort and non-fatal (check=False): the site is already live by
+    # the time this runs (deploy_gh_pages() above already succeeded), so a
+    # backup problem -- no token configured, a transient GitHub API error --
+    # shouldn't be reported as a failed deploy. backup_corpus.py itself
+    # prints why it skipped or failed; nothing to duplicate here.
+    subprocess.run([sys.executable, "backup_corpus.py"], cwd=BASE / "scripts", check=False)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-main-commit", action="store_true",
@@ -159,6 +169,7 @@ def main():
     if not args.no_main_commit:
         commit_sources("Update AV Atlas")
     deploy_gh_pages()
+    backup_corpus()
     print("\nDone.")
 
 
