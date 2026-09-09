@@ -168,12 +168,32 @@ AV_RELEVANCE_PATTERNS = [re.compile(r"\b" + re.escape(term) + r"s?\b") for term 
 # puts "drive"/"driving" in its own title is essentially never about
 # something else. Word-boundary matched so "data-driven" (a completely
 # different, extremely common ML phrase) never matches "driven".
-TITLE_STRONG_PATTERNS = [re.compile(p) for p in (
-    r"\bdrive\b", r"\bdrives\b", r"\bdriving\b", r"\bdriver\b", r"\bdrivers\b",
-)]
+TITLE_STRONG_TERM_PATTERNS = (r"\bdrive\b", r"\bdrives\b", r"\bdriving\b", r"\bdriver\b", r"\bdrivers\b")
+TITLE_STRONG_PATTERNS = [re.compile(p) for p in TITLE_STRONG_TERM_PATTERNS]
 
 AV_TITLE_ONLY_PATTERNS = [re.compile(r"\b" + re.escape(t) + r"s?\b") for t in AV_TITLE_ONLY_TERMS]
 OFF_SCOPE_TITLE_PATTERNS = [re.compile(r"\b" + re.escape(t) + r"s?\b") for t in OFF_SCOPE_TITLE_TERMS]
+
+
+def _combined_word_pattern(terms, plural_s=True):
+    """One compiled alternation standing in for a list of individually-
+    compiled `\\bterm\\b`-shaped patterns, for the hot "does ANY of these
+    terms appear" checks below. `any(p.search(text) for p in patterns)`
+    makes the regex engine re-scan text from the start once per term (up to
+    ~90 times for AV_RELEVANCE_TERMS alone, on every one of ~235k papers,
+    confirmed via profiling as most of merge_corpus.py's runtime); one
+    combined pattern does it in a single pass. Same \\b...s?\\b shape as
+    each source list already uses, so this changes performance, not which
+    papers match -- the *_PATTERNS lists themselves are untouched (kept for
+    select_near_threshold_candidates.py, which iterates them directly)."""
+    suffix = "s?" if plural_s else ""
+    return re.compile(r"\b(?:" + "|".join(re.escape(t) for t in terms) + r")" + suffix + r"\b")
+
+
+AV_RELEVANCE_COMBINED = _combined_word_pattern(AV_RELEVANCE_TERMS)
+TITLE_STRONG_COMBINED = re.compile("|".join(TITLE_STRONG_TERM_PATTERNS))
+AV_TITLE_ONLY_COMBINED = _combined_word_pattern(AV_TITLE_ONLY_TERMS)
+OFF_SCOPE_TITLE_COMBINED = _combined_word_pattern(OFF_SCOPE_TITLE_TERMS)
 
 
 def _load_relevance_model():
@@ -243,6 +263,7 @@ MECHANICAL_EXCLUSION_TERMS = [
     "hydraulic actuator", "vehicle stability control", "wheel torque distribution",
 ]
 MECHANICAL_EXCLUSION_PATTERNS = [re.compile(r"\b" + re.escape(t) + r"\b") for t in MECHANICAL_EXCLUSION_TERMS]
+MECHANICAL_EXCLUSION_COMBINED = _combined_word_pattern(MECHANICAL_EXCLUSION_TERMS, plural_s=False)
 
 LEARNING_SIGNAL_TERMS = [
     "learning", "neural network", "neural net", "deep learning", "reinforcement learning",
@@ -250,17 +271,33 @@ LEARNING_SIGNAL_TERMS = [
     "neural", "supervised", "unsupervised",
 ]
 LEARNING_SIGNAL_PATTERNS = [re.compile(r"\b" + re.escape(t) + r"\b") for t in LEARNING_SIGNAL_TERMS]
+LEARNING_SIGNAL_COMBINED = _combined_word_pattern(LEARNING_SIGNAL_TERMS, plural_s=False)
 
 
 def is_mechanical_hardware_only(title_l, abstract_l):
     text = f"{title_l} {abstract_l}"
-    if not any(p.search(text) for p in MECHANICAL_EXCLUSION_PATTERNS):
+    if not MECHANICAL_EXCLUSION_COMBINED.search(text):
         return False
-    return not any(p.search(text) for p in LEARNING_SIGNAL_PATTERNS)
+    return not LEARNING_SIGNAL_COMBINED.search(text)
 
 
 def score_category(text, keywords):
     return sum(text.count(kw) for kw in keywords)
+
+
+def score_and_max_matched_len(text, keywords):
+    """(score_category(text, keywords), longest matching keyword's length),
+    in one pass over keywords instead of two separate ones -- both derive
+    from the same per-keyword count, so there's no need to re-scan text a
+    second time just to ask "did this keyword appear at all"."""
+    score, max_len = 0, 0
+    for kw in keywords:
+        c = text.count(kw)
+        if c:
+            score += c
+            if len(kw) > max_len:
+                max_len = len(kw)
+    return score, max_len
 
 
 # A local LLM (qwen2.5:7b-instruct, see fetch_llm_relevance_labels.py) graded
@@ -304,15 +341,15 @@ def classify_relevance(title, abstract, llm_says_core=False):
 
     if is_mechanical_hardware_only(title_l, abstract_l):
         return "adjacent"
-    if any(p.search(title_l) for p in OFF_SCOPE_TITLE_PATTERNS):
+    if OFF_SCOPE_TITLE_COMBINED.search(title_l):
         return "adjacent"
 
     # 2. keyword floor (never regressed by the model)
-    if any(p.search(title_l) or p.search(abstract_l) for p in AV_RELEVANCE_PATTERNS):
+    if AV_RELEVANCE_COMBINED.search(title_l) or AV_RELEVANCE_COMBINED.search(abstract_l):
         return "core"
-    if any(p.search(title_l) for p in TITLE_STRONG_PATTERNS):
+    if TITLE_STRONG_COMBINED.search(title_l):
         return "core"
-    if any(p.search(title_l) for p in AV_TITLE_ONLY_PATTERNS):
+    if AV_TITLE_ONLY_COMBINED.search(title_l):
         return "core"
 
     # 3. trained scorer, for keyword-floor-negative papers only
@@ -432,11 +469,12 @@ def classify_paper(title, abstract, categories, llm_core_titles=frozenset(), kno
     # the combined score exactly as before -- this only changes papers whose
     # title does name a topic, which is where the title should win.
     def rank(cat):
-        keywords = [k.lower() for k in cat["keywords"]]
+        keywords = cat["keywords"]  # pre-lowercased once in merge_corpus.py's main()
+        combined_score, max_len = score_and_max_matched_len(text, keywords)
         return (
             score_category(title_l, keywords),
-            score_category(text, keywords),
-            max((len(k) for k in keywords if k in text), default=0),
+            combined_score,
+            max_len,
             cat["id"],
         )
 

@@ -112,6 +112,14 @@ def discovery_source(filename):
 def main():
     taxonomy_full = json.loads(CATEGORIES_FILE.read_text(encoding="utf-8"))
     taxonomy = taxonomy_full["categories"]
+    # Lowercased once here rather than inside classify_paper's per-category
+    # rank() -- that used to rebuild this same list from scratch for every
+    # paper (rank() runs once per category per paper), ~466 keywords x
+    # 235k+ papers of pure repeated .lower() work for a value that never
+    # changes across the run. Confirmed via profiling as a meaningful slice
+    # of merge_corpus.py's ~6-minute runtime.
+    for cat in taxonomy:
+        cat["keywords"] = [k.lower() for k in cat["keywords"]]
     known_dataset_titles = frozenset(cl.normalize_title(t) for t in taxonomy_full.get("known_dataset_papers", []))
     llm_core_titles = cl.load_llm_core_titles()
 
