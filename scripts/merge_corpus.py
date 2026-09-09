@@ -82,12 +82,6 @@ def discovery_source(filename):
     # A paper's "source" field records HOW it entered the corpus, not just
     # that it did -- lets a reader tell a venue's own official proceedings
     # listing apart from a discovery path with different reliability.
-    #
-    # A prior version of this also tagged an "arxiv_citing_discovery" path
-    # (fetch_arxiv_citing.py, an abstract-mention text match -- arXiv itself
-    # has no citation graph to search) -- removed, along with its output and
-    # the script itself, once fetch_semanticscholar_citing.py's verified
-    # citation edges made it both redundant and the weaker of the two.
     if filename.startswith("arxiv_s2_citing"):
         return "arxiv_s2_citing_discovery"  # verified citation edge (Semantic Scholar)
     if filename.startswith("arxiv"):

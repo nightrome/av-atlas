@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Real reverse-citation discovery. An earlier version of this pipeline had no
-citation graph to work with (arXiv's own API has none at all -- confirmed
-live) and fell back to searching other papers' abstracts for a seed paper's
-short name -- a real but approximate signal (a mention isn't necessarily a
-citation), removed once this script made it both redundant and the weaker
-of the two. This uses Semantic Scholar's actual citation graph -- given a
-seed paper, "/paper/{id}/citations" returns every paper that genuinely
-cites it, verified edges, not text matches.
+Real reverse-citation discovery, using Semantic Scholar's actual citation
+graph -- given a seed paper, "/paper/{id}/citations" returns every paper
+that genuinely cites it, verified edges, not text matches.
 
 Requires SEMANTIC_SCHOLAR_API_KEY in av-atlas/.env (gitignored, never
 commit it) -- Semantic Scholar's anonymous tier 429'd on every attempt when
