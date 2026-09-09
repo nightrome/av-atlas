@@ -66,7 +66,7 @@ the fresh merge.
   institution/venue logos). `build_public_site.py` copies this tree into `public/`
   alongside a fresh `stats.json`; there's no build step for the pages themselves.
   Each page reads `stats.json` (or `stats_adjacent.json` for the "include
-  adjacent/non-core papers" view) at runtime.
+  non-AV papers" view) at runtime.
 - `site/nav.js` -- shared top nav bar, injected into every page via `<nav id="topnav">`.
 - `site/filters.js` -- shared filter-bar component (`renderFilterBar`) used across the
   listing pages.

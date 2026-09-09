@@ -274,6 +274,11 @@ COUNTRY_MISLABELS = {
     # wrong institution name, keyed on the raw pre-alias name since that's
     # what's actually stored in a.get("affiliations") at lookup time.
     ("Nutrasource", "CA"),
+    # OpenAlex mis-linked the whole "LingoQA" byline (a Wayve / UK paper) to
+    # "United Way", a US charity -- the wrong "US" came along with it. Keyed
+    # on the raw pre-alias name (aggregate aliases "United Way" -> "Wayve"
+    # above, but a.get("affiliations") still holds the raw string here).
+    ("United Way", "US"),
 }
 
 

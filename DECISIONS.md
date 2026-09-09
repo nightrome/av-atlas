@@ -27,17 +27,18 @@ distinction. Display falls back to "—", never a misleading "0".
 
 ## AV-relevance is a layered, auditable classifier
 
-`classify.py` decides core vs. adjacent from title + abstract text, in layers
-that each push only one way:
+`classify.py` decides AV vs. non-AV from title + abstract text, in layers
+that each push only one way (the two labels are stored in `av_relevance` and
+`data/relevance_labels*.json` as `core` / `adjacent`):
 
 1. Hard scope filters (mechanical/hardware-only papers, non-road platforms like
-   aerial/underwater/legged robots) → `adjacent`.
+   aerial/underwater/legged robots) → non-AV.
 2. Keyword floor: an AV-specific phrase anywhere, or a standalone driving word
-   in the title → `core`. A floor later layers can add to but never override.
+   in the title → AV. A floor later layers can add to but never override.
 3. A small linear model (`data/relevance_model.json`: per-phrase weights plus a
-   threshold, trained on hand labels) → `core`, only for papers the keyword
+   threshold, trained on hand labels) → AV, only for papers the keyword
    floor missed.
-4. A local-LLM "core" verdict, folded in as a promotion-only signal.
+4. A local-LLM "it's AV" verdict, folded in as a promotion-only signal.
 
 The classifier stays grep-able end to end — any paper's result can be explained
 from the code. The LLM is a second opinion, graded against a hand-labeled eval
