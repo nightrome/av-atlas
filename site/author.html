@@ -43,7 +43,8 @@
     display: flex; align-items: center; gap: 5px;
   }
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 20px 0; }
-  .stat-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .stat-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; position: relative; }
+  .stat-tile .info-tip { position: absolute; top: 10px; right: 10px; }
   .stat-tile .value { font-size: 1.6em; font-weight: 700; font-variant-numeric: tabular-nums; }
   .stat-tile .label { color: var(--muted); font-size: 0.82em; margin-top: 2px; }
   .stat-tile .pair-row { display: flex; gap: 16px; }
@@ -94,8 +95,15 @@
 
 <div id="rank-badges" class="rank-badges"></div>
 
-<div style="display:flex;justify-content:flex-end;position:relative;margin-bottom:-6px;"><span class="info-tip" tabindex="0" role="img" aria-label="This author&#x27;s totals: AV-relevant and other papers, in-corpus citations for each, and citations per paper." data-tip="This author&#x27;s totals: AV-relevant and other papers, in-corpus citations for each, and citations per paper.">i</span></div>
 <div class="stat-grid" id="stat-grid"></div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Affiliations</h2>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Every institution this author has been affiliated with, in the corpus, with the years seen and whether it&#x27;s academic or industry." data-tip="Every institution this author has been affiliated with, in the corpus, with the years seen and whether it&#x27;s academic or industry.">i</span></div>
+  <table><thead><tr><th>Institution</th><th class="num">First year</th><th class="num">Last year</th><th>Type</th></tr></thead>
+  <tbody id="affiliations-body"></tbody></table>
+</div>
 
 <div class="panel">
   <div class="panel-title-row"><h2 style="margin-top:0;">Citations by year of publication</h2><span class="info-tip" tabindex="0" role="img" aria-label="Each bar is the in-corpus citations received by this author’s papers published that year. Hover a bar for the paper count." data-tip="Each bar is the in-corpus citations received by this author’s papers published that year. Hover a bar for the paper count.">i</span></div>
@@ -341,6 +349,46 @@ function render(stats) {
     // reader can't get from the institutions themselves, so they're dropped.
   }
 
+  // Full affiliation history as a proper table (user-requested: name,
+  // year(s), and academic-vs-industry type) -- the tags row above is a
+  // compact "what's current" summary, this is the complete, sortable
+  // record. Type comes from stats.institution_sector, the same
+  // classify_institution_sector() heuristic categories.html's Industry
+  // column already uses; an institution absent from that map (too
+  // ambiguous to classify either way) shows "n/a" rather than a guess.
+  const sectorLabels = { academic: 'Academic', industry: 'Industry' };
+  function sectorLabel(instName) {
+    return sectorLabels[(stats.institution_sector || {})[instName]] || 'n/a';
+  }
+  const affiliationsBody = document.getElementById('affiliations-body');
+  function renderAffiliationsBody(rows) {
+    affiliationsBody.innerHTML = '';
+    rows.forEach(inst => {
+      const link = document.createElement('a');
+      link.href = `institution.html?name=${encodeURIComponent(inst.name)}`;
+      link.textContent = inst.name;
+      affiliationsBody.appendChild(row([link, inst.first_year ?? 'n/a', inst.last_year ?? 'n/a', sectorLabel(inst.name)]));
+    });
+    if (!rows.length) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 4;
+      td.style.color = 'var(--muted)';
+      td.textContent = 'No affiliation data yet.';
+      tr.appendChild(td);
+      affiliationsBody.appendChild(tr);
+    }
+  }
+  // Most recent first -- same "what's true now matters most" ordering as
+  // the compact tag summary above, not the raw stored chronological order.
+  const affiliationsSorted = [...institutions].reverse();
+  makeSortableSafe(affiliationsBody.closest('table'), affiliationsSorted, [
+    { accessor: inst => inst.name, numeric: false },
+    { accessor: inst => inst.first_year ?? -1, numeric: true },
+    { accessor: inst => inst.last_year ?? -1, numeric: true },
+    { accessor: inst => sectorLabel(inst.name), numeric: false },
+  ], renderAffiliationsBody);
+
   // Only ever a real, manually-confirmed profile URL (data/scholar_profiles.json)
   // -- never a live "search Scholar for this name" link. A name-based search
   // link looks confirmed but usually isn't (common names collide, "profile
@@ -401,6 +449,16 @@ function render(stats) {
     nonAvAvg == null ? 'n/a' : nonAvAvg, 'Non-AV citations / paper',
     { decimals: 1 }
   ));
+  // Was its own floating icon above the grid, in the page's bare background
+  // rather than inside any bordered box (user-reported: "the i logo must be
+  // inside the white box"). Nesting it in the first tile, which is always
+  // the top-left/top-right corner regardless of how many tiles the current
+  // viewport width fits per row, keeps it deterministically inside a real
+  // box instead of floating over an unpredictable grid cell.
+  if (grid.firstElementChild) {
+    grid.firstElementChild.appendChild(infoTip(
+      "This author's totals: AV-relevant and other papers, in-corpus citations for each, and citations per paper."));
+  }
 
   const yearAgg = {};
   papers.forEach(p => {
@@ -513,8 +571,10 @@ function render(stats) {
     makeSortableSafe(coauthorsBody.closest('table'), shown, [
       { accessor: c => c.name, numeric: false },
       { accessor: c => c.papers, numeric: true },
-      { accessor: c => c.country || '', numeric: false },
-      { accessor: c => c.institution || '', numeric: false },
+      // '￿' sorts after any real name, so rows with no country/
+      // institution land at the bottom of an A-Z sort instead of the top.
+      { accessor: c => c.country || '￿', numeric: false },
+      { accessor: c => c.institution || '￿', numeric: false },
     ], renderCoauthorsBody);
   }
   renderCoauthors();
@@ -616,8 +676,10 @@ function render(stats) {
       { accessor: c => c.count, numeric: true },
       { accessor: c => c.totalCitations, numeric: true },
       { accessor: c => c.totalPapers, numeric: true },
-      { accessor: c => c.country || '', numeric: false },
-      { accessor: c => c.institution || '', numeric: false },
+      // '￿' sorts after any real name, so rows with no country/
+      // institution land at the bottom of an A-Z sort instead of the top.
+      { accessor: c => c.country || '￿', numeric: false },
+      { accessor: c => c.institution || '￿', numeric: false },
     ], renderCitingAuthorsBody);
   }
   renderCitingAuthors();

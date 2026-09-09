@@ -132,6 +132,12 @@ fetchStatsWithRelevance(relevance).then(stats => {
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'network.html', {
     search: { placeholder: 'Search author names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
+    // A floor on paper count before "Show top" caps the result, same
+    // combination Authors already offers (user-requested: "add a MIN
+    // papers counter similar to Authors"). Default 1 is a no-op -- every
+    // author here has published at least one paper -- so this doesn't
+    // change what the graph shows until a reader raises it.
+    minPapers: { default: 1 },
     // "authors by paper count" (not a timeline series count like every
     // other page's topN) -- same field, same place, higher ceiling to match
     // this control's previous native <select>, which already went to 250.
@@ -338,14 +344,20 @@ function layoutForceGraph(nodes, edges, clusterOf, width, height, iterations, ra
 
 function render() {
   const stats = currentStats;
-  const topN = (currentFilters && currentFilters.topN) || 100;
-  const papers = filterPapers(stats.all_papers || [], currentFilters || {});
+  const filters = currentFilters || {};
+  const topN = filters.topN || 100;
+  const papers = filterPapers(stats.all_papers || [], filters);
 
   const paperCounts = {};
   papers.forEach(p => (p.authors || []).forEach(a => { paperCounts[a] = (paperCounts[a] || 0) + 1; }));
   const query = currentQuery.trim().toLowerCase();
   let candidateNames = Object.keys(paperCounts);
+  // Dropped entirely while searching, same fix as authors.html/institutions.html
+  // and for the same reason: an author below the current Min. floor must
+  // still be findable by exact name search rather than never entering the
+  // candidate pool at all.
   if (query) candidateNames = candidateNames.filter(a => matchesSearchQuery(a, query));
+  else candidateNames = candidateNames.filter(a => paperCounts[a] >= (filters.minPapers || 1));
   const topAuthors = candidateNames.sort((a, b) => paperCounts[b] - paperCounts[a]).slice(0, topN);
   const topSet = new Set(topAuthors);
 

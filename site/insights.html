@@ -111,6 +111,25 @@
   .tooltip-box .tt-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
   .tooltip-box .tt-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
   .tooltip-box .tt-val { margin-left: auto; font-variant-numeric: tabular-nums; padding-left: 10px; }
+
+  /* Correlation matrices. Columns are numbered rather than label-rotated --
+     robust against long category names at 27+ columns, where rotated text
+     would overlap its neighbors; the row headers (which have the room)
+     carry the same number, so "column 7" is read off the row list. Wrapped
+     in .table-scroll automatically (see filters.js's autoWrapTables), which
+     is what makes a 40+-column grid usable on a phone at all. */
+  table.corr-matrix { font-size: 0.72em; border-collapse: collapse; }
+  table.corr-matrix th, table.corr-matrix td {
+    padding: 3px 6px; text-align: center; white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+  }
+  table.corr-matrix thead th { color: var(--muted); font-weight: 600; cursor: help; }
+  table.corr-matrix tbody th {
+    text-align: left; color: var(--text); font-weight: 600; white-space: nowrap;
+    position: sticky; left: 0; background: var(--panel);
+  }
+  table.corr-matrix td { font-variant-numeric: tabular-nums; cursor: default; }
+  table.corr-matrix td.self { background: var(--panel2) !important; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -167,6 +186,17 @@
 
 <div class="panel">
   <div class="panel-title-row">
+    <h2 style="margin-top:0;">Category correlation</h2>
+  <span class="info-tip" tabindex="0" role="img" aria-label="If an author published in the row category, what share of them also published in the column category -- counting every author with at least one AV paper in each. Columns are numbered to match the row list; the diagonal is left blank." data-tip="If an author published in the row category, what share of them also published in the column category -- counting every author with at least one AV paper in each. Columns are numbered to match the row list; the diagonal is left blank.">i</span></div>
+  <p class="section-intro">
+    Read a row: of authors who published in that category, the % who also published in each
+    numbered column category. Tap or hover a cell for the exact count.
+  </p>
+  <table class="corr-matrix" id="category-corr-matrix"><thead></thead><tbody></tbody></table>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
     <h2 style="margin-top:0;">Dataset adoption over time</h2>
     <div id="dataset-topn-container"><span class="info-tip" tabindex="0" role="img" aria-label="How many papers per year cite each of the most-used AV datasets, from those papers&#x27; own reference lists." data-tip="How many papers per year cite each of the most-used AV datasets, from those papers&#x27; own reference lists.">i</span></div>
   </div>
@@ -179,7 +209,7 @@
 </div>
 
 <div class="panel">
-  <div class="panel-title-row"><h2>Leadership</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages." data-tip="The top author, institution and paper by a few different measures, computed the same way as the Authors and Institutions pages.">i</span></div>
+  <div class="panel-title-row"><h2>Leadership</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top author, institution and paper by a few different measures, from the same underlying data as the Authors and Institutions pages -- though some cards use a stricter minimum-papers floor than those pages default to, noted on the card where it applies." data-tip="The top author, institution and paper by a few different measures, from the same underlying data as the Authors and Institutions pages -- though some cards use a stricter minimum-papers floor than those pages default to, noted on the card where it applies.">i</span></div>
   <p class="section-intro">Leading people, institutions and papers in the field.</p>
   <div class="fact-grid" id="people-facts"></div>
   <p class="section-intro" id="maintainer-disclosure" style="margin-bottom:0;" hidden></p>
@@ -310,9 +340,27 @@
   </div>
 </div>
 
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Venue correlation</h2>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Same idea as the category correlation matrix, for the seed venues (the venues AV Atlas pulls complete proceedings from): if an author published at the row venue, what share of them also published at the column venue." data-tip="Same idea as the category correlation matrix, for the seed venues (the venues AV Atlas pulls complete proceedings from): if an author published at the row venue, what share of them also published at the column venue.">i</span></div>
+  <p class="section-intro">
+    Same idea as the category matrix above, restricted to the seed venues &mdash; the venues AV Atlas
+    pulls complete proceedings from. Tap or hover a cell for the exact count.
+  </p>
+  <table class="corr-matrix" id="venue-corr-matrix"><thead></thead><tbody></tbody></table>
+</div>
+
 <script src="filters.js"></script>
 <script>
 const PALETTE = ['#e6614f', '#3987e5', '#3fae6a', '#e6a53f', '#9366d9'];
+
+// Heat ramp for the correlation matrices only. Deliberately higher-contrast
+// than the shared blue SEQ_RAMP (filters.js) -- a magma-style yellow -> coral
+// -> magenta -> deep-purple progression separates adjacent buckets far more
+// clearly than a single-hue blue ramp does, which matters on a dense grid
+// where most cells sit in the low-to-mid range.
+const CORR_RAMP = ['#fcfdbf', '#feb078', '#f8765c', '#d3436e', '#982d80', '#5f187f', '#1c1044'];
 
 function row(cells) {
   const tr = document.createElement('tr');
@@ -350,7 +398,7 @@ function statTile(container, value, label, sub, href) {
 function moveRow(list, item, up) {
   const li = document.createElement('li');
   const name = document.createElement('span');
-  name.textContent = labelForCategory(item.category);
+  name.textContent = categoryLabel(item.category);
   li.appendChild(name);
   const delta = document.createElement('span');
   delta.className = 'delta ' + (up ? 'up' : 'down');
@@ -442,21 +490,128 @@ function renderCategoryTrends(stats) {
   draw();
 }
 
-const CATEGORY_LABELS = {
-  'control': 'Control', 'llm-vlm-driving': 'LLM/VLM for Driving', 'dataset-benchmark-paper': 'Datasets',
-  'simulation-benchmarking': 'Simulation', 'end-to-end-driving': 'End-to-End Driving & Planning',
-  'world-models': 'World Models', 'reinforcement-learning': 'Reinforcement Learning',
-  'domain-adaptation': 'Domain Adaptation & Generalization', 'adversarial-robustness-safety': 'Adversarial Robustness & Safety',
-  'tracking': 'Tracking', 'mapping-localization': 'Mapping & Localization', 'segmentation': 'Segmentation',
-  'occupancy': 'Occupancy Prediction', 'v2x-cooperative': 'V2X / Cooperative Perception',
-  'depth-3d-geometry': 'Depth & 3D Geometry', 'novel-view-synthesis': 'Novel View Synthesis',
-  'optical-flow': 'Optical & Scene Flow', 'object-detection': 'Object Detection',
-  'motion-prediction': 'Motion Prediction', 'uncategorized': 'Uncategorized', 'sensor-fusion': 'Sensor Fusion',
-  'driver-behavior-hmi': 'Driver Behavior & Human-Machine Interaction', 'general-cv-ml-method': 'General CV/ML Method',
-};
-function labelForCategory(cat) {
-  return CATEGORY_LABELS[cat] || cat.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
+// -- Correlation matrices (category and venue) --------------------------
+//
+// "If you published in X, did you also publish in Y?" -- per-author set of
+// whichever dimension (category or venue) they've published in, across
+// their own AV papers, then a row-normalized co-occurrence count: cell
+// (X, Y) is the share of X's authors who ALSO have Y somewhere in their own
+// set. Deliberately not symmetric (share of X who also do Y differs from
+// share of Y who also do X unless X and Y have the same total), which is
+// exactly what a reader asking this question wants -- a plain symmetric
+// count would answer a different, less useful question.
+function buildCorrelationMatrix(papers, dimensionFn, itemKeys) {
+  const allowed = new Set(itemKeys);
+  const byAuthor = {};
+  papers.forEach(p => {
+    const vals = (dimensionFn(p) || []).filter(v => allowed.has(v));
+    if (!vals.length) return;
+    (p.authors || []).forEach(a => {
+      const set = byAuthor[a] || (byAuthor[a] = new Set());
+      vals.forEach(v => set.add(v));
+    });
+  });
+  const totals = {}, co = {};
+  itemKeys.forEach(k => {
+    totals[k] = 0;
+    co[k] = {};
+    itemKeys.forEach(k2 => { co[k][k2] = 0; });
+  });
+  Object.values(byAuthor).forEach(set => {
+    const arr = [...set];
+    arr.forEach(k => { totals[k] += 1; });
+    arr.forEach(k1 => arr.forEach(k2 => { if (k1 !== k2) co[k1][k2] += 1; }));
+  });
+  return { totals, co };
 }
+
+// Renders one correlation panel: the heat-shaded grid, a real <table> so
+// filters.js's autoWrapTables gives it horizontal scroll for free and the
+// row header can go position:sticky.
+function renderCorrelationPanel(opts) {
+  const { totals, co } = buildCorrelationMatrix(opts.papers, opts.dimensionFn, opts.itemKeys);
+  // Drop anything with zero authors entirely -- an all-empty row/column is
+  // dead weight in a grid a reader has to scroll past for nothing.
+  const activeKeys = opts.itemKeys.filter(k => totals[k] > 0);
+  const matrixTable = document.getElementById(opts.matrixTableId);
+  const thead = matrixTable.querySelector('thead');
+  const tbody = matrixTable.querySelector('tbody');
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+  if (!activeKeys.length) return;
+
+  const headRow = document.createElement('tr');
+  headRow.appendChild(document.createElement('th'));
+  activeKeys.forEach((k, i) => {
+    const th = document.createElement('th');
+    th.textContent = String(i + 1);
+    th.title = opts.labelFor(k);
+    headRow.appendChild(th);
+  });
+  thead.appendChild(headRow);
+
+  activeKeys.forEach((rowKey, i) => {
+    const tr = document.createElement('tr');
+    const rowHead = document.createElement('th');
+    rowHead.textContent = `${i + 1}. ${opts.labelFor(rowKey)}`;
+    tr.appendChild(rowHead);
+    activeKeys.forEach(colKey => {
+      const td = document.createElement('td');
+      if (rowKey === colKey) {
+        td.textContent = '—';
+        td.className = 'self';
+      } else {
+        const pct = Math.round((100 * co[rowKey][colKey]) / totals[rowKey]);
+        td.textContent = String(pct);
+        const step = Math.min(CORR_RAMP.length - 1, Math.round((pct / 100) * (CORR_RAMP.length - 1)));
+        td.style.background = CORR_RAMP[step];
+        td.style.color = step <= 1 ? '#0b0b0b' : '#ffffff';
+        td.title = `${opts.labelFor(rowKey)} → ${opts.labelFor(colKey)}: ${pct}% `
+          + `(${co[rowKey][colKey]} of ${totals[rowKey]} authors)`;
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+function renderCategoryCorrelation(stats) {
+  renderCorrelationPanel({
+    papers: stats.all_papers || [],
+    dimensionFn: p => [p.category],
+    // "Uncategorized" is a catch-all, not a topic -- an author "also
+    // publishing in Uncategorized" says nothing, so it's left out of the grid.
+    itemKeys: (stats.category_breakdown || [])
+      .map(c => c.category)
+      .filter(c => c && c !== 'uncategorized'),
+    labelFor: categoryLabel,
+    matrixTableId: 'category-corr-matrix',
+  });
+}
+
+function renderVenueCorrelation(stats) {
+  renderCorrelationPanel({
+    papers: stats.all_papers || [],
+    dimensionFn: p => [p.venue],
+    // Seed venues only -- the venues AV Atlas pulls complete proceedings from
+    // (corpus_stats.venue_coverage, the same set the About page's coverage
+    // table lists). arXiv is dropped explicitly: it's a preprint server, not
+    // a venue, and it isn't in venue_coverage anyway.
+    itemKeys: Object.keys((stats.corpus_stats || {}).venue_coverage || {})
+      .filter(v => v !== 'arXiv'),
+    labelFor: v => v,
+    matrixTableId: 'venue-corr-matrix',
+  });
+}
+
+// Category labels come from filters.js's shared window.CATEGORY_LABELS /
+// categoryLabel() -- this used to be its own local, private copy (predating
+// that consolidation) which had quietly drifted 5 categories behind the
+// shared one (traffic-flow-management, platooning-cruise-control,
+// testing-validation, sensor-calibration, vehicle-dynamics-powertrain all
+// fell back to the raw-slug-title-cased default here instead of their real
+// name). Every overlapping entry's wording already matched, so there was
+// nothing to port the other way.
 
 fetch('stats.json').then(r => r.json()).then(stats => {
   const ins = stats.insights || {};
@@ -673,7 +828,19 @@ function render(ins, stats) {
   }
   if (ins.highest_impact_author) {
     const a = ins.highest_impact_author;
-    statTile(pf, a.name, 'Author with most citations per paper', `${a.avg_citations} citations/paper across ${a.papers} papers.`,
+    // This ranking uses its own, stricter floor (see
+    // highest_impact_author_min_papers, aggregate.py) than the Authors
+    // page's adjustable one -- stated explicitly because otherwise this
+    // author's rank badge on their own page, computed with a much lower
+    // floor, can show a very different position with no visible reason
+    // why (user-reported: Oscar Beijbom read #1 here but #7 on his own
+    // page).
+    const minP = ins.highest_impact_author_min_papers;
+    statTile(pf, a.name, 'Author with most citations per paper',
+      `${a.avg_citations} citations/paper across ${a.papers} papers`
+      + (minP ? ` -- among authors with ${minP}+ papers, a stricter floor than the Authors page's own `
+        + `adjustable one. Their rank badge elsewhere on the site may differ, since that uses a lower floor.`
+        : '.'),
       `author.html?name=${encodeURIComponent(a.name)}`);
   }
   if (ins.leading_institution) {
@@ -705,6 +872,7 @@ function render(ins, stats) {
   // field) so the "compared to N years earlier" dropdown can recompute
   // instantly instead of needing a fixed set of server-precomputed windows.
   renderCategoryTrends(stats);
+  renderCategoryCorrelation(stats);
 
   // -- Collaboration -- (link to the paper, but no title text -- the point
   // here is the number, and a long title crowds the card; click through if
@@ -922,6 +1090,7 @@ function render(ins, stats) {
     });
   }
   renderVenueRelevance();
+  renderVenueCorrelation(stats);
 }
 
 // Shared line-chart renderer (same as every other timeline on this site).

@@ -75,16 +75,10 @@
 
 <div class="panel">
   <div class="panel-title-row">
-    <h2 style="margin-top:0;">Seed venues</h2>
-    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="The venues whose complete proceedings AV Atlas pulls as its starting corpus, ranked by the chosen metric. Individual papers can also enter the corpus through the citation graph (a scanned reference list naming a title from some other venue), so paper listings elsewhere on the site include work from many venues not on this list." data-tip="The venues whose complete proceedings AV Atlas pulls as its starting corpus, ranked by the chosen metric. Individual papers can also enter the corpus through the citation graph (a scanned reference list naming a title from some other venue), so paper listings elsewhere on the site include work from many venues not on this list.">i</span></div>
+    <h2 style="margin-top:0;">Venues</h2>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Venues ranked by the chosen metric, with each one's AV-relevant paper count and in-corpus citations. The Venues filter switches between the core set of fully-indexed venues and every venue that appears anywhere in the corpus." data-tip="Venues ranked by the chosen metric, with each one's AV-relevant paper count and in-corpus citations. The Venues filter switches between the core set of fully-indexed venues and every venue that appears anywhere in the corpus.">i</span></div>
   </div>
-  <p class="section-intro" style="margin: -4px 0 12px;">
-    These are the venues AV Atlas pulls complete proceedings from as its starting point. Papers
-    from other venues also appear across the site: a scanned reference list can name a paper
-    that no seed venue published, and it then enters the corpus like any other. So an author,
-    institution or "cited by" page can show papers from venues that are not here.
-  </p>
-  <p id="venues-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
+  <p id="venues-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: 0 0 12px;"></p>
   <div id="pagination-container"></div>
   <table><thead><tr><th>Venue</th><th>Years covered</th><th class="num">Papers</th><th class="num">AV papers</th><th class="num" data-term="av_paper_ratio">AV paper ratio</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th data-term="most_cited_paper">Most-cited paper</th></tr></thead>
   <tbody id="venues-body"></tbody></table>
@@ -102,10 +96,22 @@ fetchStatsWithRelevance(relevance).then(stats => {
     showVenue: false,
     search: { placeholder: 'Search venue names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
-    checkbox: {
-      id: 'exclude-preprints', dropdownLabel: 'PREPRINTS',
-      storageKey: 'venues-exclude-preprints', onChange: () => render(),
-    },
+    checkbox: [
+      {
+        id: 'exclude-preprints', dropdownLabel: 'PREPRINTS',
+        storageKey: 'venues-exclude-preprints', onChange: () => render(),
+      },
+      // "Seed" (default) restricts the table to the core set of venues AV
+      // Atlas indexes in full; "All" lifts that and shows every venue string
+      // in the corpus (~1,100, almost all single citation-graph-discovered
+      // papers). Same underlying excludeNonSeed boolean as before -- only the
+      // option labels changed.
+      {
+        id: 'exclude-nonseed-venues', key: 'excludeNonSeed', dropdownLabel: 'VENUES',
+        labels: { include: 'All', exclude: 'Seed' },
+        storageKey: 'venues-exclude-nonseed', defaultExcluded: true, onChange: () => render(),
+      },
+    ],
     metrics: [
       { key: 'total', label: 'Citations' },
       { key: 'papers', label: 'Papers' },
@@ -121,7 +127,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
     // filter TO, not judging which venues count as real AV venues).
     minPapers: { default: 1 },
     topN: {
-      default: 10, storageKey: 'venues-timeline-topn',
+      default: 50, storageKey: 'venues-timeline-topn',
       onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); render(); },
     },
   });
@@ -167,21 +173,42 @@ function fmtRatio(papers, total) { return total ? `${((papers / total) * 100).to
 function render() {
   const stats = currentStats, filters = currentFilters;
   let papers = filterPapers(stats.all_papers || [], filters);
-  const excludePreprints = document.getElementById('exclude-preprints');
-  if (excludePreprints && excludePreprints.checked) papers = papers.filter(p => p.venue !== 'arXiv');
+  // filters.checkbox/filters.excludeNonSeed are already correct booleans
+  // computed by renderFilterBar -- this used to read a DOM element's
+  // .checked property, but that element is the <select> the checkbox block
+  // actually builds, not a checkbox <input>; .checked on a <select> is
+  // always undefined, so this exclusion silently never applied.
+  if (filters.checkbox) papers = papers.filter(p => p.venue !== 'arXiv');
 
   const totalIndexed = (stats.corpus_stats || {}).by_venue || {};
+  // AV paper ratio needs the true AV-relevant count for each venue
+  // regardless of the "Show" toggle above -- `papers` IS core+adjacent
+  // under "Both" and adjacent-only under "Non-AV papers", so using it as
+  // the ratio's numerator too made every venue read ~100% AV under "Both"
+  // (numerator and denominator became the same total-papers count) and an
+  // inverted number under "Non-AV papers". stats.core_papers (see
+  // fetchStatsWithRelevance in filters.js) is always the AV-relevant set
+  // alone; filtered the same way (search/category/year/preprints) so it
+  // still respects everything except the relevance toggle itself.
+  let corePapers = filterPapers(stats.core_papers || [], filters);
+  if (filters.checkbox) corePapers = corePapers.filter(p => p.venue !== 'arXiv');
+  const avPapersByVenue = {};
+  corePapers.forEach(p => { if (p.venue) avPapersByVenue[p.venue] = (avPapersByVenue[p.venue] || 0) + 1; });
+
   // filters.minPapers is inclusive ("80+ papers"), aggregateByDimension's
   // own minPapers is exclusive (> N) -- same -1 adjustment as every other
   // page with a Min. control (see institutions.html).
   let rows = aggregateByDimension(papers, p => [p.venue], { minPapers: (filters.minPapers || 1) - 1, minCitedForAvg: 3 });
-  // Only the seed venues (complete-proceedings pulls). Every other venue
-  // string in the corpus is a single citation-graph-discovered paper, not
-  // a venue AV Atlas tracks -- listing those here overstated the venue
-  // count (46 vs ~1,100). big_venues is the same set the Venue filter
-  // dropdown uses.
-  const seedVenues = new Set((stats.corpus_stats || {}).big_venues || []);
-  if (seedVenues.size) rows = rows.filter(r => seedVenues.has(r.name));
+  // "Seed" (the default) restricts the table to the venues AV Atlas pulls
+  // complete proceedings from -- corpus_stats.venue_coverage, the exact set
+  // the About page's Data coverage table lists and the same set the venue
+  // correlation matrix on Insights uses. "All" lifts the filter and shows
+  // every venue string in the corpus (~1,100, almost all single
+  // citation-graph-discovered papers). NOT big_venues, which also counts
+  // any venue with >25 core papers (IEEE Access, Neurocomputing, ...) that
+  // isn't actually a seed venue.
+  const seedVenues = new Set(Object.keys((stats.corpus_stats || {}).venue_coverage || {}));
+  if (seedVenues.size && filters.excludeNonSeed) rows = rows.filter(r => seedVenues.has(r.name));
   const bestByVenue = {};
   const yearRangeByVenue = {};
   papers.forEach(p => {
@@ -200,6 +227,7 @@ function render() {
   const corpusStartYear = (stats.corpus_stats || {}).year_range ? stats.corpus_stats.year_range[0] : null;
   rows.forEach(r => {
     r.best = bestByVenue[r.name]; r.total = totalIndexed[r.name] || 0;
+    r.avPapers = avPapersByVenue[r.name] || 0;
     const yr = yearRangeByVenue[r.name];
     const startYear = corpusStartYear != null ? corpusStartYear : (yr ? yr[0] : null);
     const endYear = yr ? yr[1] : null;
@@ -230,12 +258,17 @@ function render() {
   // `chartRows` (topN-sliced) feeds only the chart.
   const topN = filters.topN || 100;
   const matchCount = shownRows0.length;
-  const chartRows = shownRows0.slice(0, topN);
+  // The chart plots papers per year, so it ranks by paper count regardless
+  // of the table's own "Sort by" metric above (user-requested: T-ITS, the
+  // single most prolific seed venue by paper count, should lead this chart
+  // even on the citations-sorted default view, since raw volume is what
+  // the chart is actually showing).
+  const chartRows = [...shownRows0].sort((a, b) => b.papers - a.papers).slice(0, topN);
 
-  document.getElementById('result-count').textContent = `${matchCount} seed venues`;
+  document.getElementById('result-count').textContent = `${matchCount} venues`;
   const cs = stats.corpus_stats || {};
   document.getElementById('venues-summary-stat').textContent =
-    `${rows.length} seed venues` +
+    `${rows.length} venues` +
     (cs.year_range ? `, spanning ${cs.year_range[0]} to ${cs.year_range[1]}` : '');
   const pagination = renderPagination(document.getElementById('pagination-container'), 'venues.html', shownRows0.length,
     { onChange: render, pageSize: topN, showSizeControl: false });
@@ -249,7 +282,7 @@ function render() {
       nameCell.href = `venue.html?name=${encodeURIComponent(r.name)}`;
       nameCell.textContent = r.name;
       tbody.appendChild(row([
-        nameCell, r.yearRange, r.total, r.papers, fmtRatio(r.papers, r.total), r.citations, fmtAvg(r.avg_citations),
+        nameCell, r.yearRange, r.total, r.papers, fmtRatio(r.avPapers, r.total), r.citations, fmtAvg(r.avg_citations),
         bestPaperCell(r.best),
       ], [4, 6]));
     });
@@ -266,7 +299,7 @@ function render() {
     { accessor: r => r.yearRange, numeric: false },
     { accessor: r => r.total, numeric: true },
     { accessor: r => r.papers, numeric: true },
-    { accessor: r => r.total ? r.papers / r.total : -1, numeric: true },
+    { accessor: r => r.total ? r.avPapers / r.total : -1, numeric: true },
     { accessor: r => r.citations, numeric: true },
     { accessor: r => r.avg_citations ?? -Infinity, numeric: true },
     { accessor: r => r.best ? r.best.title : '', numeric: false },

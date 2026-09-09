@@ -74,8 +74,28 @@ def conference_and_year_for_file(filename):
     return conference, year
 
 
+# A leading "ACRONYM: " (a single, space-free token followed by a colon) is
+# usually a paper's own coined short-name for itself, not part of what makes
+# the paper distinct from its other listings -- the same paper is routinely
+# titled with the prefix by one source (its own arXiv listing, say) and
+# without it by another (confirmed on real data: ECCV's own proceedings
+# listing of "Generative End-to-End Autonomous Driving" carries no "GenAD:"
+# at all, while a citation-graph-discovered copy of the same paper does,
+# leaving two un-deduped entries for one real paper -- user-reported).
+# Stripped only when the prefix is a single word (no internal space), so a
+# genuine descriptive lead-in ("Learning to Drive: A Survey") is untouched
+# -- a multi-word phrase is far more likely to coincidentally share a
+# generic remainder with some unrelated paper than a coined method/dataset
+# name is, and two DIFFERENT papers that happen to reuse the same acronym
+# (a real, separate collision: CVPR'24 also has an unrelated "GenAD:
+# Generalized Predictive Model for Autonomous Driving") stay distinct here
+# regardless, since their remainders after stripping still differ.
+_ACRONYM_PREFIX_RE = re.compile(r"^\s*[a-z0-9][a-z0-9+_-]{1,14}\s*:\s+", re.I)
+
+
 def normalize_title(t):
-    return re.sub(r"[^a-z0-9]", "", (t or "").lower())
+    t = _ACRONYM_PREFIX_RE.sub("", t or "", count=1)
+    return re.sub(r"[^a-z0-9]", "", t.lower())
 
 
 def discovery_source(filename):

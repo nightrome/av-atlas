@@ -30,7 +30,8 @@
   .header h2 { margin: 0 0 4px; font-size: 1.5em; }
   .header .tags { color: var(--muted); font-size: 0.9em; }
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0; }
-  .stat-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .stat-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; position: relative; }
+  .stat-tile .info-tip { position: absolute; top: 10px; right: 10px; }
   .stat-tile .value { font-size: 1.6em; font-weight: 700; font-variant-numeric: tabular-nums; }
   .stat-tile .label { color: var(--muted); font-size: 0.82em; margin-top: 2px; }
   .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
@@ -70,7 +71,6 @@
 
 <div id="rank-badges" class="rank-badges"></div>
 
-<div style="display:flex;justify-content:flex-end;position:relative;margin-bottom:-6px;"><span class="info-tip" tabindex="0" role="img" aria-label="This institution&#x27;s totals in the corpus: AV papers, in-corpus citations, citations per paper, and distinct authors credited." data-tip="This institution&#x27;s totals in the corpus: AV papers, in-corpus citations, citations per paper, and distinct authors credited.">i</span></div>
 <div class="stat-grid" id="stat-grid"></div>
 
 <div class="panel">
@@ -89,6 +89,12 @@
     <table><thead><tr><th>Category</th><th class="num">Papers</th></tr></thead>
     <tbody id="categories-body"></tbody></table>
   </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2>Other affiliations of members</h2><span class="info-tip" tabindex="0" role="img" aria-label="Every OTHER institution this institution&#x27;s own authors have also been affiliated with in the corpus, and how many distinct members that covers -- e.g. how many people here also have MIT in their history." data-tip="Every OTHER institution this institution&#x27;s own authors have also been affiliated with in the corpus, and how many distinct members that covers -- e.g. how many people here also have MIT in their history.">i</span></div>
+  <table><thead><tr><th>Institution</th><th class="num">Members</th></tr></thead>
+  <tbody id="other-affiliations-body"></tbody></table>
 </div>
 
 <div class="panel">
@@ -181,9 +187,17 @@ function render(stats) {
     avatar.textContent = initials(name);
   }
 
-  const countries = new Set();
-  papers.forEach(p => (p.countries || []).forEach(c => countries.add(c)));
-  document.getElementById('tags').textContent = [...countries].join(' · ') || 'Country not yet resolved';
+  // stats.institution_countries is this institution's single resolved
+  // country (see aggregate.py -- sourced from the curated
+  // data/institution_countries.json, not per-paper text parsing). Used to
+  // union p.countries across every paper crediting this institution
+  // instead, which meant one mis-parsed affiliation address on any single
+  // paper (out of what can be hundreds for a large institution) polluted
+  // this line permanently (user-reported: "the countries of Tsinghua
+  // University are a mess"). Same fix already applied to the coauthor/
+  // citing-author Country columns elsewhere on the site, for the same
+  // "two independent lookups can disagree" reason.
+  document.getElementById('tags').textContent = (stats.institution_countries || {})[name] || 'Country not yet resolved';
 
   const citedPapers = papers.filter(p => p.citations != null);
   const totalCitations = citedPapers.reduce((s, p) => s + p.citations, 0);
@@ -204,6 +218,13 @@ function render(stats) {
   grid.appendChild(stat(totalCitations, 'Citations'));
   grid.appendChild(stat(avg == null ? 'n/a' : avg, 'Citations / paper', { decimals: 1 }));
   grid.appendChild(stat(authorSet.size, 'Distinct authors credited'));
+  // Nested inside the first tile rather than floating above the grid in
+  // the page's bare background -- see author.html's identical fix for why
+  // (same "i logo must be inside the white box" issue, same markup).
+  if (grid.firstElementChild) {
+    grid.firstElementChild.appendChild(infoTip(
+      "This institution's totals in the corpus: AV papers, in-corpus citations, citations per paper, and distinct authors credited."));
+  }
 
   const yearAgg = {};
   papers.forEach(p => {
@@ -287,6 +308,53 @@ function render(stats) {
     { accessor: a => a.papers, numeric: true },
     { accessor: a => a.citations, numeric: true },
   ], renderAuthorsBody);
+
+  // Other affiliations of THIS institution's own members (user-requested:
+  // "how many people in Google are from MIT etc."), from `authors` (the
+  // full member list above, already using the precise per-author source
+  // when available -- reusing it keeps the same "don't credit a co-author's
+  // affiliation to this institution" guarantee the Top-authors table
+  // relies on) and each member's OWN full affiliation history
+  // (author_detail[name].institutions), which the corpus already carries
+  // for every author regardless of this page. Counts distinct MEMBERS, not
+  // occurrences, so someone with two stints elsewhere still counts once.
+  const authorDetail = stats.author_detail || {};
+  const otherAffMembers = {};
+  authors.forEach(a => {
+    const insts = (authorDetail[a.name] || {}).institutions || [];
+    const seen = new Set();
+    insts.forEach(inst => {
+      if (inst.name === name || seen.has(inst.name)) return;
+      seen.add(inst.name);
+      (otherAffMembers[inst.name] = otherAffMembers[inst.name] || new Set()).add(a.name);
+    });
+  });
+  const otherAffRows = Object.entries(otherAffMembers).map(([instName, members]) => ({ name: instName, members: members.size }));
+  otherAffRows.sort((a, b) => b.members - a.members);
+  const otherAffTop15 = otherAffRows.slice(0, 15);
+  const otherAffBody = document.getElementById('other-affiliations-body');
+  function renderOtherAffBody(rows) {
+    otherAffBody.innerHTML = '';
+    rows.forEach(r => {
+      const link = document.createElement('a');
+      link.href = `institution.html?name=${encodeURIComponent(r.name)}`;
+      link.textContent = r.name;
+      otherAffBody.appendChild(row([link, r.members]));
+    });
+    if (!rows.length) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 2;
+      td.style.color = 'var(--muted)';
+      td.textContent = 'No affiliation-history overlap found yet.';
+      tr.appendChild(td);
+      otherAffBody.appendChild(tr);
+    }
+  }
+  makeSortableSafe(otherAffBody.closest('table'), otherAffTop15, [
+    { accessor: r => r.name, numeric: false },
+    { accessor: r => r.members, numeric: true },
+  ], renderOtherAffBody);
 
   const cats = aggregateByDimension(papers, p => [p.category || 'uncategorized'], { minPapers: 0 });
   cats.sort((a, b) => b.papers - a.papers);

@@ -562,6 +562,14 @@
     const statsFetch = fetch('stats.json').then(r => r.json()).then(applyCitationSource);
     const adjacentFetch = relevance ? fetch('stats_adjacent.json').then(r => r.json()) : Promise.resolve(null);
     return Promise.all([statsFetch, adjacentFetch]).then(([stats, adjacent]) => {
+      // The true AV-relevant-only paper list, kept around under its own key
+      // regardless of what the "Show" toggle does to stats.all_papers below.
+      // A per-venue/category/etc. "AV paper ratio" only means anything
+      // against this count specifically -- computing it from all_papers
+      // instead made every ratio read ~100% under "Both" (numerator and
+      // denominator became the same total-papers count) and an inverted
+      // number under "Non-AV papers" (see venues.html for the actual use).
+      stats.core_papers = stats.all_papers;
       if (relevance === 'adjacent') {
         stats.all_papers = adjacent || [];
       } else if (relevance === 'both') {
@@ -828,19 +836,40 @@
     // change here does not navigate -- it persists to sessionStorage and
     // calls onChange directly, since the caller already has what it needs
     // to redraw in memory.
-    // One optional include/exclude control, rendered as a labelled Yes/No
-    // dropdown so it matches every other field in the bar (was a lone
-    // checkbox). cbOpts.dropdownLabel is the short field label (e.g.
-    // "DATASETS", "PREPRINTS"); "Yes" means include those papers, "No"
-    // means exclude them. filters.checkbox stays true == "exclude" so
-    // callers don't change.
-    if (opts.checkbox) {
-      const cbOpts = opts.checkbox;
-      let excluded = false;
-      if (cbOpts.storageKey) { try { excluded = sessionStorage.getItem(cbOpts.storageKey) === '1'; } catch (e) { /* ignore */ } }
+    // One or more optional include/exclude controls, each rendered as a
+    // labelled Yes/No dropdown so it matches every other field in the bar
+    // (was a lone checkbox). opts.checkbox is either one config object or
+    // an array of them (same either-one-or-many normalization as
+    // opts.search above -- Venues needs a second one, for "seed venues
+    // only", alongside its existing "PREPRINTS" toggle). cbOpts.dropdownLabel
+    // is the short field label (e.g. "DATASETS", "PREPRINTS"); "Yes" means
+    // include those papers, "No" means exclude them. Each writes to
+    // filters[cbOpts.key || 'checkbox'] (true == "exclude"), defaulting to
+    // the original single-checkbox key so existing callers don't change.
+    // cbOpts.defaultExcluded (default false, i.e. "Yes"/include) picks the
+    // pre-storage default -- Venues' seed-venues toggle wants to default to
+    // "No" (seed-only), matching what the page always did before this was
+    // made adjustable.
+    const checkboxFields = Array.isArray(opts.checkbox) ? opts.checkbox : (opts.checkbox ? [opts.checkbox] : []);
+    checkboxFields.forEach(cbOpts => {
+      const key = cbOpts.key || 'checkbox';
+      let excluded = !!cbOpts.defaultExcluded;
+      if (cbOpts.storageKey) {
+        try {
+          const stored = sessionStorage.getItem(cbOpts.storageKey);
+          if (stored === '1') excluded = true;
+          else if (stored === '0') excluded = false;
+        } catch (e) { /* ignore */ }
+      }
       const sel = document.createElement('select');
       sel.id = cbOpts.id;
-      [['yes', 'Yes'], ['no', 'No']].forEach(([v, t]) => {
+      // Default option text is Yes (include) / No (exclude); cbOpts.labels
+      // lets a caller name the two states in the reader's own terms instead
+      // (Venues: "All" vs "Seed"). The stored/returned meaning is unchanged
+      // -- "no" still means exclude, whatever it's labelled.
+      const includeLabel = (cbOpts.labels && cbOpts.labels.include) || 'Yes';
+      const excludeLabel = (cbOpts.labels && cbOpts.labels.exclude) || 'No';
+      [['yes', includeLabel], ['no', excludeLabel]].forEach(([v, t]) => {
         const o = document.createElement('option');
         o.value = v; o.textContent = t;
         if ((v === 'no') === excluded) o.selected = true;
@@ -849,12 +878,12 @@
       sel.addEventListener('change', () => {
         const nowExcluded = sel.value === 'no';
         if (cbOpts.storageKey) { try { sessionStorage.setItem(cbOpts.storageKey, nowExcluded ? '1' : '0'); } catch (e) { /* ignore */ } }
-        filters.checkbox = nowExcluded;
+        filters[key] = nowExcluded;
         if (cbOpts.onChange) cbOpts.onChange(nowExcluded);
       });
       bar.appendChild(field(cbOpts.dropdownLabel || 'Include', sel));
-      filters.checkbox = excluded;
-    }
+      filters[key] = excluded;
+    });
 
     if (opts.metrics && opts.metrics.length) {
       const sel = document.createElement('select');
@@ -910,6 +939,42 @@
       minField.title = sel.title;
       bar2.appendChild(minField);
       filters.minPapers = parseInt(current, 10);
+    }
+
+    // Min. career span (years) -- a ranking/thresholding control like Min.
+    // papers just above, not a WHICH-papers filter: career span is a
+    // property of the aggregated author (first-to-last AV paper year),
+    // not of any one paper, so it can't be applied inside filterPapers.
+    // The calling page (currently only authors.html) applies
+    // filters.minCareerSpan itself once it has computed each row's own
+    // lifetime -- same division of labour as Min. papers above.
+    if (opts.minCareerSpan) {
+      const choices = opts.minCareerSpan.options || [
+        { value: 0, label: 'Any' },
+        { value: 1, label: '1+ years' },
+        { value: 3, label: '3+ years' },
+        { value: 5, label: '5+ years' },
+        { value: 10, label: '10+ years' },
+        { value: 15, label: '15+ years' },
+      ];
+      const defaultVal = String(opts.minCareerSpan.default != null ? opts.minCareerSpan.default : 0);
+      const current = new URLSearchParams(location.search).get('minSpan') || defaultVal;
+      const sel = document.createElement('select');
+      choices.forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = String(o.value);
+        opt.textContent = o.label;
+        if (String(o.value) === current) opt.selected = true;
+        sel.appendChild(opt);
+      });
+      sel.addEventListener('change', () => {
+        location.href = withParam(page, 'minSpan', sel.value === defaultVal ? null : sel.value);
+      });
+      sel.title = 'Only show authors whose first-to-last AV paper span is at least this many years';
+      const spanField = field('Career span', sel);
+      spanField.title = sel.title;
+      bar2.appendChild(spanField);
+      filters.minCareerSpan = parseInt(current, 10);
     }
 
     // "Show top N" for a page's adoption-over-time chart (or, on Network,
@@ -1596,6 +1661,21 @@
     return cell;
   };
 
+  // markThinAverage's own explanation is a hover title="" -- invisible on
+  // touch, where there's no hover to trigger it at all (user-reported: the
+  // "*" is "not explained and looks bad", on a page checked from a phone).
+  // A persistent, visible caption works regardless of input method. Callers
+  // compute how many of the CURRENTLY shown rows actually got marked (not
+  // the whole unfiltered list) and set it into their own small note element
+  // each time their table body redraws, so it stays accurate through
+  // sorting and pagination; empty string when nothing shown is marked.
+  window.thinAverageNoteText = function (thinCount) {
+    return thinCount
+      ? `* ${thinCount} of the Citations / paper figures shown ${thinCount === 1 ? 'is' : 'are'} based on `
+        + `fewer than ${THIN_AVERAGE_BELOW} papers with a citation count.`
+      : '';
+  };
+
   window.renderCompareSelection = function (opts) {
     const { table, type, nameFor, rows } = opts;
     if (!table) return;
@@ -1902,6 +1982,12 @@
     '#d9527a', '#7a9e3f', '#c98e3f', '#5f7de6', '#4fa88a', '#c95fd0',
   ];
   window.TIMELINE_PALETTE = TIMELINE_PALETTE;
+
+  // Sequential (magnitude, one hue, light->dark) ramp -- shared so every
+  // heat-shaded grid on the site (countries.html's world map, the
+  // correlation matrices on insights.html) reads the same "darker means
+  // more" scale instead of each picking its own.
+  window.SEQ_RAMP = ['#cde2fb', '#9ec5f4', '#6da7ec', '#3987e5', '#256abf', '#184f95', '#0d366b'];
 
   // Builds a legend-item's content (color swatch + a text label sourced from
   // scraped third-party data -- an institution/venue/country/category/paper
@@ -2446,13 +2532,14 @@
     initBackToTop();
   }
 
-  // A column header's title="" attribute (e.g. "Self-citation %", Network's
-  // "Centrality") is invisible on touch devices -- there's no hover to
-  // trigger it. Tapping a header with an explanation shows it as a toast
-  // instead, the same confirmation surface exports already use.
+  // A header or cell's title="" attribute (e.g. "Self-citation %", Network's
+  // "Centrality", a correlation-matrix cell's exact reading) is invisible on
+  // touch devices -- there's no hover to trigger it. Tapping one with an
+  // explanation shows it as a toast instead, the same confirmation surface
+  // exports already use.
   document.addEventListener('touchend', ev => {
-    const th = ev.target && ev.target.closest && ev.target.closest('th[title]');
-    if (!th) return;
-    showToast(th.getAttribute('title'));
+    const cell = ev.target && ev.target.closest && ev.target.closest('th[title], td[title]');
+    if (!cell) return;
+    showToast(cell.getAttribute('title'));
   }, { passive: true });
 })();

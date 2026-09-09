@@ -2490,12 +2490,30 @@ def main():
     cvf_core_total = sum(1 for e in entries if (e.get("venue") or "") in CVF_CITATION_GRAPH_VENUES)
     arxiv_eligible_total = sum(1 for e in entries if e.get("arxiv_url"))
     sources_scanned = citation_graph.get("sources_scanned") or {}
+
+    # Combined, source-agnostic "reference lookup" progress -- deduplicated
+    # across the CVF and arXiv paths so a paper reachable by both isn't
+    # counted twice. A core paper is "done" once its own reference list has
+    # been scanned and matched (it shows up as a citer in the graph's
+    # edges); the denominator is every core paper some source could reach
+    # (CVF-hosted or with a known arXiv preprint) -- a paper with neither
+    # can never be reached, so counting it would make 100% unreachable.
+    core_keys = {normalize_title(e["title"]) for e in entries}
+    edge_keys = set((citation_graph.get("edges") or {}).keys())
+    refs_any_scanned = len(core_keys & edge_keys)
+    refs_any_eligible = sum(
+        1 for e in entries
+        if (e.get("venue") or "") in CVF_CITATION_GRAPH_VENUES or e.get("arxiv_url")
+    )
+
     citation_graph_coverage = {
         "cvf_scanned": sources_scanned.get("cvf", 0),
         "cvf_permanent_failures": citation_graph.get("cvf_permanent_failures", 0),
         "cvf_core_total": cvf_core_total,
         "arxiv_scanned": sources_scanned.get("arxiv", 0),
         "arxiv_eligible_total": arxiv_eligible_total,
+        "refs_any_scanned": refs_any_scanned,
+        "refs_any_eligible": refs_any_eligible,
         "core_total": len(entries),
     }
 
@@ -2916,6 +2934,14 @@ def main():
         author_lifetimes,
         identity_conflicts,
     )
+    # Shipped alongside highest_impact_author so insights.html can state the
+    # actual floor rather than a hardcoded guess that could silently drift
+    # from the min_papers literal above -- same pattern as
+    # young_researchers_min_influential below. This ranking's own floor (10
+    # papers) is stricter than the Authors page's adjustable one (default
+    # 50, but adjustable down to 1), which is exactly why the same author
+    # can show a different rank in each place (user-reported).
+    insights["highest_impact_author_min_papers"] = 10
 
     # Not-AV-relevant paper count per author (user-requested, shown on
     # author.html and the Authors table) -- has to be computed here, not

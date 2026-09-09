@@ -102,6 +102,7 @@
     <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Institutions ranked by the chosen metric, from papers matching the current filters. Credit comes from each author’s own stated affiliation, not every co-author’s." data-tip="Institutions ranked by the chosen metric, from papers matching the current filters. Credit comes from each author’s own stated affiliation, not every co-author’s.">i</span></div>
   </div>
   <p id="institutions-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
+  <p id="institutions-thin-note" style="color: var(--muted); font-size: 0.8em; margin: -8px 0 12px;"></p>
   <table><thead><tr><th>#</th><th>Institution</th><th class="num">Papers</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th></tr></thead>
   <tbody id="institutions-body"></tbody></table>
 </div>
@@ -196,10 +197,51 @@ fetchStatsWithRelevance(relevance).then(stats => {
       onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); render(); },
     },
   });
+  addInstitutionFilters(stats);
   render();
 }).catch(err => {
   document.getElementById('institutions-grid').textContent = 'Could not load stats.json: ' + err;
 });
+
+// Country and academic/industry-type filters (user-requested). Both are a
+// property of the INSTITUTION itself (stats.institution_countries /
+// stats.institution_sector), not of any one paper, so they don't fit
+// renderFilterBar's paper-level filterPapers pipeline the way Category/Venue/
+// Year do -- applied directly to the aggregated `institutions` list in
+// render() below instead. Their own URL params (instCountry/instType) so
+// they don't collide with the paper-level `country` chip param used
+// elsewhere on the site (arriving via links from other pages).
+function addInstitutionFilters(stats) {
+  const bar2 = document.querySelector('#filter-bar-rows .filter-bar-secondary')
+    || document.querySelector('#filter-bar-rows .filter-bar');
+  if (!bar2) return;
+  function addField(labelText, selectId, options, paramKey) {
+    const current = new URLSearchParams(location.search).get(paramKey) || '';
+    const wrap = document.createElement('div');
+    wrap.className = 'field';
+    const label = document.createElement('span');
+    label.className = 'field-label';
+    label.textContent = labelText;
+    const sel = document.createElement('select');
+    sel.id = selectId;
+    options.forEach(([value, text]) => {
+      const opt = document.createElement('option');
+      opt.value = value;
+      opt.textContent = text;
+      if (value === current) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener('change', () => { location.href = withParam('institutions.html', paramKey, sel.value); });
+    wrap.appendChild(label);
+    wrap.appendChild(sel);
+    bar2.appendChild(wrap);
+  }
+  const countries = [...new Set(Object.values(stats.institution_countries || {}))].sort();
+  addField('Country', 'inst-country-filter',
+    [['', 'All countries'], ...countries.map(c => [c, c])], 'instCountry');
+  addField('Type', 'inst-type-filter',
+    [['', 'All types'], ['academic', 'Academic'], ['industry', 'Industry']], 'instType');
+}
 
 function render() {
   const stats = currentStats, filters = currentFilters;
@@ -218,6 +260,14 @@ function render() {
     ? aggregateByDimension(papers, p => p.institutions, { minPapers: 0, minCitedForAvg: 0 })
     : aggregateByDimension(papers, p => p.institutions, { minPapers: minPapersThreshold - 1, minCitedForAvg: 3 });
   if (query) institutions = institutions.filter(x => matchesSearchQuery(x.name, query));
+
+  // Country/Type: categorical filters like Category/Venue elsewhere, so
+  // they stay in effect while searching rather than being dropped the way
+  // the Min. floors above are.
+  const instCountry = new URLSearchParams(location.search).get('instCountry') || '';
+  const instType = new URLSearchParams(location.search).get('instType') || '';
+  if (instCountry) institutions = institutions.filter(x => (stats.institution_countries || {})[x.name] === instCountry);
+  if (instType) institutions = institutions.filter(x => (stats.institution_sector || {})[x.name] === instType);
 
   // Default is total citations, not citations/paper. Ranking by an average
   // with a low paper floor put a 20-paper company above every university on
@@ -272,6 +322,11 @@ function render() {
       markThinAverage(tr.children[4], x.cited_papers, x.papers);
       tbody.appendChild(tr);
     });
+    const thinNote = document.getElementById('institutions-thin-note');
+    if (thinNote) {
+      thinNote.textContent = thinAverageNoteText(
+        data.filter(x => x.cited_papers != null && x.cited_papers < THIN_AVERAGE_BELOW).length);
+    }
     appendSumRow(tbody, data, [null, null, x => x.papers, x => x.citations, null]);
     // Re-applied on every re-render (sort, page change) because this
     // function rebuilds the whole tbody each time.

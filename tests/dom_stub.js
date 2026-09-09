@@ -46,6 +46,7 @@ function makeElement(tag) {
     set textContent(v) { this._text = String(v); this.children = []; },
     get innerHTML() { return this._html || ''; },
     set innerHTML(v) { this._html = String(v); this.children = []; },
+    insertAdjacentHTML() {},
     setAttribute(k, v) { this.attrs[k] = v; },
     getAttribute(k) { return this.attrs[k]; },
     removeAttribute(k) { delete this.attrs[k]; },
@@ -81,7 +82,20 @@ function makeElement(tag) {
       if (!this._closestCache[sel]) this._closestCache[sel] = makeElement(tagSel.toLowerCase());
       return this._closestCache[sel];
     },
-    querySelector(sel) { return queryAll(this, sel)[0] || null; },
+    querySelector(sel) {
+      const hit = queryAll(this, sel)[0];
+      if (hit) return hit;
+      // A page that looks a <table> up by id and then reaches for its
+      // <thead>/<tbody> (insights.html's correlation matrices) always has
+      // both in the static markup. document.getElementById() already
+      // auto-vivifies the table element itself on a miss; mirror that for
+      // the two sections it ships with, so the lookup doesn't come back
+      // null and crash on the first .innerHTML assignment. Class/attr
+      // selectors stay null when absent -- real code (filters.js's
+      // compare-column and info-tip guards) depends on that.
+      if (sel === 'thead' || sel === 'tbody') return this.appendChild(makeElement(sel));
+      return null;
+    },
     querySelectorAll(sel) { return queryAll(this, sel); },
     appendTo(parent) { parent.appendChild(this); return this; },
   };
