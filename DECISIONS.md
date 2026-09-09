@@ -121,14 +121,37 @@ the corpus, documented as such under Methodology's "Known gaps".
 
 ## Derived data is not tracked; `gh-pages` is a single squashed commit
 
-`data/papers_full.json`, `data/stats.json`, `data/stats_adjacent.json`, and the
-abstract shards are gitignored — fully regenerable (`merge_corpus.py` then
-`aggregate.py`), and tracking a leaderboard dump bloats every diff with numbers
-that change on every corpus update and aren't reviewable anyway. Always rebuild
-locally before publishing. `deploy.py` force-pushes `gh-pages` as one orphan
-commit each time rather than committing on its history: the branch is 100%
-generated output, and appending multi-MB non-delta snapshots would grow the repo
-forever.
+`data/stats.json`, `data/stats_adjacent.json`, and the abstract shards are
+gitignored — cheaply regenerable from `data/papers_full.json` by `aggregate.py`
+alone (well under a minute), and tracking a leaderboard dump bloats every diff
+with numbers that change on every corpus update and aren't reviewable anyway.
+`deploy.py` force-pushes `gh-pages` as one orphan commit each time rather than
+committing on its history: the branch is 100% generated output, and appending
+multi-MB non-delta snapshots would grow the repo forever.
+
+**`data/papers_full.json` and `data/citation_graph.json` are a different
+case, and "fully regenerable" used to overstate what's actually true of
+them.** `merge_corpus.py` only *classifies* papers from scratch correctly
+(that part really is fully regenerable, from the tracked `data/venues/*.json`
++ `classify.py`); it carries author affiliations, `citations_by_source`,
+abstracts and arXiv links forward from whatever `papers_full.json` already
+exists, rather than re-deriving them. On a checkout with no prior
+`papers_full.json` — confirmed directly, not assumed: a fresh clone rebuilt
+this way produces the right paper list and classification but zero author,
+institution, or country data — recovering that enrichment for real means
+re-running the CVF/arXiv affiliation scrapers and the Semantic
+Scholar/ORCID lookups, which is exactly the "weeks of crawling plus API
+keys" `build_data_release.py`'s own docstring describes elsewhere.
+`citation_graph.json` is a second, separate gap: `aggregate.py` reads its
+`edges` directly for the disruption index and the citation-graph coverage
+table, and losing that file alone (even with `papers_full.json` intact)
+silently blanks those features on the next rebuild — nothing in
+`papers_full.json`'s carry-forward list protects it. Neither file is
+tracked in git (see the size/diff reasoning above), so right now each one
+has exactly one live copy and no backup: whichever machine holds the only
+`papers_full.json` with real enrichment in it is a single point of
+failure. The fix is to snapshot both files somewhere durable after every
+deploy, not to keep believing a fresh rebuild reproduces them.
 
 ## By-hand data corrections are scripts, not one-off edits
 
