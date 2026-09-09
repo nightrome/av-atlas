@@ -603,8 +603,10 @@ function renderPaper(stats, paper, isAdjacent) {
       { accessor: c => c.count, numeric: true },
       { accessor: c => c.totalCitations, numeric: true },
       { accessor: c => c.totalPapers, numeric: true },
-      { accessor: c => c.country || '', numeric: false },
-      { accessor: c => c.institution || '', numeric: false },
+      // '￿' sorts after any real name, so rows with no country/
+      // institution land at the bottom of an A-Z sort instead of the top.
+      { accessor: c => c.country || '￿', numeric: false },
+      { accessor: c => c.institution || '￿', numeric: false },
     ], renderCitingAuthorsBody);
   }
   renderCitingAuthors();
