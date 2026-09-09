@@ -36,10 +36,38 @@ CATEGORIES_FILE = BASE / "data" / "categories.json"
 LLM_LABELS_FILE = BASE / "data" / "relevance_labels_llm.json"
 LLM_LABELS_V2_FILE = BASE / "data" / "relevance_labels_llm_v2.json"
 RELEVANCE_MODEL_FILE = BASE / "data" / "relevance_model.json"
+RELEVANCE_LABELS_FILE = BASE / "data" / "relevance_labels.json"
 
 
 def normalize_title(t):
     return re.sub(r"[^a-z0-9]", "", (t or "").lower())
+
+
+def load_hard_labels():
+    """Maintainer-confirmed ground truth from data/relevance_labels.json that
+    should OVERRIDE the heuristic stack outright, not just nudge the trained
+    scorer's threshold (the rest of that file is held-out eval / weak
+    supervision -- see train_relevance_classifier.py). Only entries flagged
+    "hard": true count here. Returns ({AV titles}, {non-AV titles}), keyed by
+    normalize_title(). A title in both (shouldn't happen) resolves to non-AV,
+    since classify_relevance checks the non-AV set first."""
+    hard_av, hard_non_av = set(), set()
+    if RELEVANCE_LABELS_FILE.exists():
+        try:
+            for row in json.loads(RELEVANCE_LABELS_FILE.read_text(encoding="utf-8")):
+                if not row.get("hard"):
+                    continue
+                key = row.get("id") or normalize_title(row.get("title"))
+                if row.get("label") == "core":
+                    hard_av.add(key)
+                elif row.get("label") == "adjacent":
+                    hard_non_av.add(key)
+        except Exception:
+            pass
+    return hard_av, hard_non_av
+
+
+HARD_AV_TITLES, HARD_NON_AV_TITLES = load_hard_labels()
 
 
 def load_llm_core_titles():
@@ -278,6 +306,10 @@ def classify_relevance(title, abstract, llm_says_core=False):
 
     Layered, each layer only able to push one way:
 
+    0. Maintainer hard labels (data/relevance_labels.json, "hard": true) ->
+       either way. Confirmed ground truth wins over every heuristic below;
+       this is the only layer that can force "adjacent" -> "core" or the
+       reverse for a specific title.
     1. Hard scope pre-filters -> "adjacent" only: the mechanical/hardware-only
        exclusion, and the non-road-vehicle "off-scope" title guard (aerial /
        underwater / legged / manipulation / spacecraft). Scope definitions,
@@ -299,6 +331,13 @@ def classify_relevance(title, abstract, llm_says_core=False):
        the generically-titled AV papers (no AV phrase, no abstract) that no
        keyword or weight scheme can see. See fetch_llm_relevance_labels*.py.
     """
+    # 0. maintainer hard labels -- confirmed ground truth, overrides all of it
+    key = normalize_title(title)
+    if key in HARD_NON_AV_TITLES:
+        return "adjacent"
+    if key in HARD_AV_TITLES:
+        return "core"
+
     title_l = (title or "").lower()
     abstract_l = (abstract or "").lower()
 

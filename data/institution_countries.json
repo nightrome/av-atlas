@@ -451,5 +451,6 @@
   "Zoox": "US",
   "_readme": "Institution name (as it appears verbatim in an ar5iv affiliation string) -> ISO country code. Hand-curated: fetch_affiliations_arxiv.py only gets institution NAMES from arXiv/ar5iv, not country codes the way OpenAlex's authors_detail does, so this fills that gap. Entries are added as real institution names show up in data/affiliations_arxiv.json -- verified via web search, not guessed, same 'no unverified claims' standard as the Scholar profile lookups (see DECISIONS.md).",
   "valeo.ai": "FR",
-  "École nationale des ponts et chaussées": "FR"
+  "École nationale des ponts et chaussées": "FR",
+  "Wayve": "GB"
 }

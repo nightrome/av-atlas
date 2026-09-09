@@ -936,6 +936,16 @@ INSTITUTION_ALIASES = {
     "Cooperative Medianet Innovation Center": "Shanghai Jiao Tong University",
     "Baidu Inc": "Baidu",  # trailing "." already stripped before this lookup runs
     "Baidu Research": "Baidu",
+    # OpenAlex mis-linked the entire byline of "LingoQA: Video Question
+    # Answering for Autonomous Driving" (2024) -- a Wayve paper -- to
+    # "United Way" (a US charity of a vaguely similar sound), country US.
+    # Same InternetLab/Nutrasource class of OpenAlex disambiguation error.
+    # "United Way" appears on no other paper in the corpus; aliasing it to
+    # Wayve is safe and also drops the bogus US country tag (Wayve resolves
+    # to the UK via institution_countries.json).
+    "United Way": "Wayve",
+    "Wayve Technologies Ltd": "Wayve",
+    "Wayve Technologies": "Wayve",
     "Waymo LLC": "Waymo",
     "Alibaba Inc": "Alibaba",
     "Alibaba Group": "Alibaba",

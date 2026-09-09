@@ -220,12 +220,20 @@ function sourceCell(p) {
     a.title = 'arXiv (exact link not yet resolved)';
     links.appendChild(a);
   }
-  const scholar = document.createElement('a');
-  scholar.href = `https://scholar.google.com/scholar?q=${encodeURIComponent(p.title)}`;
-  scholar.target = '_blank'; scholar.rel = 'noopener';
-  scholar.textContent = '🎓';
-  scholar.title = 'Google Scholar';
-  links.appendChild(scholar);
+  // Only offer a Google Scholar title search for a paper we actually have a
+  // bibliographic record for -- at least one author, or an arXiv/DOI id. A
+  // citation-graph stub that is nothing but a title string scavenged from
+  // someone else's reference list has no established identity to look up,
+  // and a Scholar query on a fragment ("Adaptive", a bare venue name) just
+  // returns noise (user-reported).
+  if ((p.authors && p.authors.length) || p.arxiv_url || p.doi) {
+    const scholar = document.createElement('a');
+    scholar.href = `https://scholar.google.com/scholar?q=${encodeURIComponent(p.title)}`;
+    scholar.target = '_blank'; scholar.rel = 'noopener';
+    scholar.textContent = '🎓';
+    scholar.title = 'Google Scholar';
+    links.appendChild(scholar);
+  }
   return links;
 }
 

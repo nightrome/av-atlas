@@ -312,11 +312,18 @@ function renderPaper(stats, paper, isAdjacent) {
     a.textContent = 'Source listing';
     links.push(a);
   }
-  const scholar = document.createElement('a');
-  scholar.href = `https://scholar.google.com/scholar?q=${encodeURIComponent(paper.title)}`;
-  scholar.target = '_blank'; scholar.rel = 'noopener';
-  scholar.textContent = '🎓 Google Scholar';
-  links.push(scholar);
+  // Only when we hold a real bibliographic record for this paper -- an
+  // author list, or an arXiv/DOI id. A citation-graph stub that is only a
+  // title string lifted from another paper's reference list has no
+  // established identity, and a Scholar query on it just returns noise
+  // (user-reported).
+  if ((paper.authors && paper.authors.length) || paper.arxiv_url || paper.doi) {
+    const scholar = document.createElement('a');
+    scholar.href = `https://scholar.google.com/scholar?q=${encodeURIComponent(paper.title)}`;
+    scholar.target = '_blank'; scholar.rel = 'noopener';
+    scholar.textContent = '🎓 Google Scholar';
+    links.push(scholar);
+  }
   links.forEach((el, i) => {
     if (i > 0) linksMeta.append(' · ');
     linksMeta.appendChild(el);

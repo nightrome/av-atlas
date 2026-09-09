@@ -533,54 +533,182 @@
     "id": "offlinetrackingwithobjectpermanence",
     "title": "Offline Tracking with Object Permanence",
     "label": "core",
-    "source": "maintainer_2026_09"
+    "source": "maintainer_2026_09",
+    "hard": true
   },
   {
     "id": "leapconsistentmultidomain3dlabelingusingfoundationmodels",
     "title": "LeAP: Consistent Multi-Domain 3D Labeling Using Foundation Models",
     "label": "core",
-    "source": "maintainer_2026_09"
+    "source": "maintainer_2026_09",
+    "hard": true
   },
   {
     "id": "basalsizebalancedwarmstartactivelearningforlidarsemanticsegmentation",
     "title": "BaSAL: Size Balanced Warm Start Active Learning for LiDAR Semantic Segmentation",
     "label": "core",
-    "source": "maintainer_2026_09"
+    "source": "maintainer_2026_09",
+    "hard": true
   },
   {
     "id": "motiondiffusercontrollablemultiagentmotionpredictionusingdiffusion",
     "title": "MotionDiffuser: Controllable Multi-Agent Motion Prediction Using Diffusion",
     "label": "core",
-    "source": "maintainer_2026_09"
+    "source": "maintainer_2026_09",
+    "hard": true
   },
   {
     "id": "let3daplongitudinalerrortolerant3daverageprecisionforcameraonly3ddetection",
     "title": "LET-3D-AP: Longitudinal Error Tolerant 3D Average Precision for Camera-Only 3D Detection",
     "label": "core",
-    "source": "maintainer_2026_09"
+    "source": "maintainer_2026_09",
+    "hard": true
   },
   {
     "id": "improvingtheintraclasslongtailin3ddetectionviarareexamplemining",
     "title": "Improving the Intra-Class Long-Tail in 3D Detection via Rare Example Mining",
     "label": "core",
-    "source": "maintainer_2026_09"
+    "source": "maintainer_2026_09",
+    "hard": true
   },
   {
     "id": "lidaraugmentsearchingforscalable3dlidardataaugmentations",
     "title": "LidarAugment: Searching for Scalable 3D LiDAR Data Augmentations",
     "label": "core",
-    "source": "maintainer_2026_09"
+    "source": "maintainer_2026_09",
+    "hard": true
   },
   {
     "id": "pvtransformerpointtovoxeltransformerforscalable3dobjectdetection",
     "title": "PVTransformer: Point-To-Voxel Transformer for Scalable 3D Object Detection",
     "label": "core",
-    "source": "maintainer_2026_09"
+    "source": "maintainer_2026_09",
+    "hard": true
   },
   {
     "id": "leflatetoearlytemporalfusionforlidar3dobjectdetection",
     "title": "LEF: Late-To-Early Temporal Fusion for LiDAR 3D Object Detection",
     "label": "core",
-    "source": "maintainer_2026_09"
+    "source": "maintainer_2026_09",
+    "hard": true
+  },
+  {
+    "id": "thecityscapesdatasetforsemanticurbansceneunderstanding",
+    "title": "The Cityscapes Dataset for Semantic Urban Scene Understanding",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "bevfusionmultitaskmultisensorfusionwithunifiedbirdseyeviewrepresentation",
+    "title": "BEVFusion: Multi-Task Multi-Sensor Fusion with Unified Bird's-Eye View Representation",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "bevdepthacquisitionofreliabledepthformultiview3dobjectdetection",
+    "title": "BEVDepth: Acquisition of Reliable Depth for Multi-View 3D Object Detection",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "loamlidarodometryandmappinginrealtime",
+    "title": "LOAM: Lidar Odometry and Mapping in Real-time",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "thehighddatasetadronedatasetofnaturalisticvehicletrajectoriesongermanhighwaysforvalidationofhighlyautomateddrivingsystems",
+    "title": "The highD Dataset: A Drone Dataset of Naturalistic Vehicle Trajectories on German Highways for Validation of Highly Automated Driving Systems",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "learningtosimulate",
+    "title": "Learning To Simulate",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "themapillaryvistasdatasetforsemanticunderstandingofstreetscenes",
+    "title": "The Mapillary Vistas Dataset for Semantic Understanding of Street Scenes",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "voxformersparsevoxeltransformerforcamerabased3dsemanticscenecompletion",
+    "title": "VoxFormer: Sparse Voxel Transformer for Camera-Based 3D Semantic Scene Completion",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "partingwithmisconceptionsaboutlearningbasedvehiclemotionplanning",
+    "title": "Parting with Misconceptions about Learning-based Vehicle Motion Planning",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "hydramdpendtoendmultimodalplanningwithmultitargethydradistillation",
+    "title": "Hydra-MDP: End-to-end Multimodal Planning with Multi-target Hydra-Distillation",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "microscopictrafficsimulationusingsumo",
+    "title": "Microscopic Traffic Simulation using SUMO",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "rangenetfastandaccuratelidarsemanticsegmentation",
+    "title": "RangeNet++: Fast and Accurate LiDAR Semantic Segmentation",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "voxelrcnntowardshighperformancevoxelbased3dobjectdetection",
+    "title": "Voxel R-CNN: Towards High Performance Voxel-based 3D Object Detection",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "frompointstoparts3dobjectdetectionfrompointcloudwithpartawareandpartaggregationnetwork",
+    "title": "From Points to Parts: 3D Object Detection From Point Cloud With Part-Aware and Part-Aggregation Network",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "monoscenemonocular3dsemanticscenecompletion",
+    "title": "MonoScene: Monocular 3D Semantic Scene Completion",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "multitasklearningusinguncertaintytoweighlossesforscenegeometryandsemantics",
+    "title": "Multi-Task Learning Using Uncertainty to Weigh Losses for Scene Geometry and Semantics",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
+  },
+  {
+    "id": "orthographicfeaturetransformformonocular3dobjectdetection",
+    "title": "Orthographic Feature Transform for Monocular 3D Object Detection",
+    "label": "core",
+    "source": "top_cited_review_2026_09",
+    "hard": true
   }
 ]
