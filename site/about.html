@@ -126,20 +126,13 @@
   through all five stages itself.
 </p>
 <p>
-  The paper listings come from a few public bibliographic sources. Most venues are pulled from
-  their own proceedings site (CVF for CVPR/ICCV/ECCV/WACV, the NeurIPS and PMLR proceedings for
-  NeurIPS/ICML/CoRL, and so on). Three sources fill specific gaps:
+  Paper listings come from each venue's own official proceedings pages wherever possible. When a
+  venue's own pages can't be read automatically, or are missing for some years, a public backup
+  listing of the same proceedings is used instead &mdash; for a handful of venues and journals,
+  that backup only has title, authors and year, with no abstract (see Data coverage below for
+  exactly which). A separate public lookup, not a venue listing itself, provides the citation links
+  between papers and the stable author IDs used later on.
 </p>
-<ul>
-  <li><strong>DBLP</strong> &mdash; title/author/year listings (no abstracts) for venues with no
-      scrapable proceedings site: <strong>RSS, ICLR, AAAI</strong>, and the journals
-      <strong>TPAMI, IJCV, IJRR, RA&#8209;L, TRO, T&#8209;ITS</strong>. Also backfills CVF years
-      whose own listing is broken.</li>
-  <li><strong>OpenAlex</strong> &mdash; bulk metadata for the IEEE robotics conferences
-      <strong>ICRA and IROS</strong>, whose publisher site cannot be scraped.</li>
-  <li><strong>Semantic Scholar</strong> &mdash; not a venue source. It provides the citation
-      links between papers and the author IDs used to look up ORCIDs.</li>
-</ul>
 <div class="pipeline-wrap">
 <svg viewBox="0 0 1160 170" role="img" aria-label="Five-stage pipeline: Collect, Merge and classify, Enrich, Citation graph, Aggregate, with a feedback arrow from Citation graph back to Collect.">
   <defs>
@@ -205,26 +198,26 @@
       over-fire) and a verdict from that same local language model get the last say on the rest. A paper's category never
       feeds this decision, since category keywords are generic CV/robotics terms that match
       plenty of non-AV papers.</li>
-  <li><strong>3. Enrich.</strong> For AV-relevant papers only: author affiliations (read from the
-      CVF PDF, or from the HTML version of the arXiv preprint), ORCID and Semantic Scholar author
-      identifiers (stable IDs that tell apart authors who share a name), and profile photos for
-      top-ranked authors.</li>
-  <li><strong>4. Citation graph.</strong> Reference lists parsed from CVF PDFs and arXiv HTML
-      record which corpus papers cite which. A separate Semantic Scholar query finds papers
-      <em>outside</em> the corpus that cite a corpus paper; those re-enter at stage&nbsp;1 (the
-      feedback loop above).</li>
+  <li><strong>3. Enrich.</strong> For AV-relevant papers only: each author's affiliation and a
+      stable ID that tells apart authors who share a name are looked up where that information can
+      be found, plus profile photos for top-ranked authors.</li>
+  <li><strong>4. Citation graph.</strong> For every paper whose full text is available, its
+      reference list is checked against the rest of the corpus to work out which papers cite which.
+      Separately, we check whether any paper that isn't in the corpus yet cites one that already is.
+      If a full copy of that new paper can also be found, it's added and goes through the same
+      process as every other paper (the feedback loop above). If no full copy can be found, neither
+      the paper nor its citation is added &mdash; there'd be no way to say anything reliable about
+      a paper we can't actually read.</li>
   <li><strong>5. Aggregate.</strong> Leaderboards, per-author/institution/country rollups, and
       category breakdowns are computed and published to every page on this site.</li>
 </ul>
 <p>
-  <strong>Why arXiv is treated differently.</strong> The conferences and journals above are
-  peer-reviewed, each with a fixed set of accepted papers per year &mdash; that is what stage&nbsp;1
-  collects. arXiv is a <em>preprint</em> server: authors post papers themselves, with no peer
-  review and no yearly proceedings, so the pipeline never bulk-collects it. arXiv is used only in
-  two narrow ways: as a source of full text (affiliations, reference lists) for papers that were
-  <em>also</em> published at a covered venue, and as the home of papers discovered through the
-  citation graph in stage&nbsp;4. A paper that exists only as an arXiv preprint is included only
-  if something already in the corpus cites it.
+  <strong>A note on preprints.</strong> Conferences and journals each publish a fixed, known set of
+  accepted papers every year &mdash; that fixed list is what stage&nbsp;1 collects, in full. Papers
+  that only ever appeared as preprints, with no peer review and no such fixed list, are not
+  collected that way. A preprint is only included if it was also published at a covered venue (as a
+  source of full text), or if it's found through the citation graph in stage&nbsp;4 because
+  something already in the corpus cites it.
 </p>
 </div>
 </details>
