@@ -199,13 +199,15 @@ function render() {
   // own minPapers is exclusive (> N) -- same -1 adjustment as every other
   // page with a Min. control (see institutions.html).
   let rows = aggregateByDimension(papers, p => [p.venue], { minPapers: (filters.minPapers || 1) - 1, minCitedForAvg: 3 });
-  // "Seed" (the default) restricts the table to the core set of fully-indexed
-  // venues. Every other venue string in the corpus is a single
-  // citation-graph-discovered paper, not a venue AV Atlas tracks -- showing
-  // all of them overstates the venue count (~50 vs ~1,100), which is why the
-  // Venues filter defaults to "Seed". big_venues is the same set the Venue
-  // filter dropdown uses.
-  const seedVenues = new Set((stats.corpus_stats || {}).big_venues || []);
+  // "Seed" (the default) restricts the table to the venues AV Atlas pulls
+  // complete proceedings from -- corpus_stats.venue_coverage, the exact set
+  // the About page's Data coverage table lists and the same set the venue
+  // correlation matrix on Insights uses. "All" lifts the filter and shows
+  // every venue string in the corpus (~1,100, almost all single
+  // citation-graph-discovered papers). NOT big_venues, which also counts
+  // any venue with >25 core papers (IEEE Access, Neurocomputing, ...) that
+  // isn't actually a seed venue.
+  const seedVenues = new Set(Object.keys((stats.corpus_stats || {}).venue_coverage || {}));
   if (seedVenues.size && filters.excludeNonSeed) rows = rows.filter(r => seedVenues.has(r.name));
   const bestByVenue = {};
   const yearRangeByVenue = {};

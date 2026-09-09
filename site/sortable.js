@@ -45,7 +45,13 @@
     }
 
     table.classList.add('sortable');
-    const ths = table.querySelectorAll('thead th');
+    // renderCompareSelection() (filters.js) prepends its own <th class="compare-col">
+    // to the header row on pages with row-comparison checkboxes. It carries no
+    // data and isn't in the `columns` array the caller passes, so it must not
+    // be counted here -- otherwise every real column's click handler is wired
+    // to the NEXT column's accessor (user-reported: sorting Venues by Citations
+    // actually sorted by Citations / paper).
+    const ths = [...table.querySelectorAll('thead th')].filter(th => !th.classList.contains('compare-col'));
     const state = { idx: null, dir: 1, data, columns, renderBody };
     table._sortableState = state;
 
