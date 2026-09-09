@@ -863,7 +863,13 @@
       }
       const sel = document.createElement('select');
       sel.id = cbOpts.id;
-      [['yes', 'Yes'], ['no', 'No']].forEach(([v, t]) => {
+      // Default option text is Yes (include) / No (exclude); cbOpts.labels
+      // lets a caller name the two states in the reader's own terms instead
+      // (Venues: "All" vs "Seed"). The stored/returned meaning is unchanged
+      // -- "no" still means exclude, whatever it's labelled.
+      const includeLabel = (cbOpts.labels && cbOpts.labels.include) || 'Yes';
+      const excludeLabel = (cbOpts.labels && cbOpts.labels.exclude) || 'No';
+      [['yes', includeLabel], ['no', excludeLabel]].forEach(([v, t]) => {
         const o = document.createElement('option');
         o.value = v; o.textContent = t;
         if ((v === 'no') === excluded) o.selected = true;

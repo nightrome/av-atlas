@@ -75,16 +75,10 @@
 
 <div class="panel">
   <div class="panel-title-row">
-    <h2 style="margin-top:0;">Seed venues</h2>
-    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="The venues whose complete proceedings AV Atlas pulls as its starting corpus, ranked by the chosen metric. Individual papers can also enter the corpus through the citation graph (a scanned reference list naming a title from some other venue), so paper listings elsewhere on the site include work from many venues not on this list." data-tip="The venues whose complete proceedings AV Atlas pulls as its starting corpus, ranked by the chosen metric. Individual papers can also enter the corpus through the citation graph (a scanned reference list naming a title from some other venue), so paper listings elsewhere on the site include work from many venues not on this list.">i</span></div>
+    <h2 style="margin-top:0;">Venues</h2>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Venues ranked by the chosen metric, with each one's AV-relevant paper count and in-corpus citations. The Venues filter switches between the core set of fully-indexed venues and every venue that appears anywhere in the corpus." data-tip="Venues ranked by the chosen metric, with each one's AV-relevant paper count and in-corpus citations. The Venues filter switches between the core set of fully-indexed venues and every venue that appears anywhere in the corpus.">i</span></div>
   </div>
-  <p class="section-intro" style="margin: -4px 0 12px;">
-    These are the venues AV Atlas pulls complete proceedings from as its starting point. Papers
-    from other venues also appear across the site: a scanned reference list can name a paper
-    that no seed venue published, and it then enters the corpus like any other. So an author,
-    institution or "cited by" page can show papers from venues that are not here.
-  </p>
-  <p id="venues-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
+  <p id="venues-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: 0 0 12px;"></p>
   <div id="pagination-container"></div>
   <table><thead><tr><th>Venue</th><th>Years covered</th><th class="num">Papers</th><th class="num">AV papers</th><th class="num" data-term="av_paper_ratio">AV paper ratio</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th data-term="most_cited_paper">Most-cited paper</th></tr></thead>
   <tbody id="venues-body"></tbody></table>
@@ -107,11 +101,14 @@ fetchStatsWithRelevance(relevance).then(stats => {
         id: 'exclude-preprints', dropdownLabel: 'PREPRINTS',
         storageKey: 'venues-exclude-preprints', onChange: () => render(),
       },
-      // Was a hard-coded restriction with no way to see anything else
-      // (user-requested: make it a real dropdown). Defaults to "No" (seed
-      // venues only), matching what this table always showed before.
+      // "Seed" (default) restricts the table to the core set of venues AV
+      // Atlas indexes in full; "All" lifts that and shows every venue string
+      // in the corpus (~1,100, almost all single citation-graph-discovered
+      // papers). Same underlying excludeNonSeed boolean as before -- only the
+      // option labels changed.
       {
-        id: 'exclude-nonseed-venues', key: 'excludeNonSeed', dropdownLabel: 'ALL VENUES',
+        id: 'exclude-nonseed-venues', key: 'excludeNonSeed', dropdownLabel: 'VENUES',
+        labels: { include: 'All', exclude: 'Seed' },
         storageKey: 'venues-exclude-nonseed', defaultExcluded: true, onChange: () => render(),
       },
     ],
@@ -130,7 +127,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
     // filter TO, not judging which venues count as real AV venues).
     minPapers: { default: 1 },
     topN: {
-      default: 10, storageKey: 'venues-timeline-topn',
+      default: 50, storageKey: 'venues-timeline-topn',
       onChange: n => { if (currentTimelineDraw) currentTimelineDraw(n); render(); },
     },
   });
@@ -202,11 +199,12 @@ function render() {
   // own minPapers is exclusive (> N) -- same -1 adjustment as every other
   // page with a Min. control (see institutions.html).
   let rows = aggregateByDimension(papers, p => [p.venue], { minPapers: (filters.minPapers || 1) - 1, minCitedForAvg: 3 });
-  // Only the seed venues (complete-proceedings pulls) by default. Every
-  // other venue string in the corpus is a single citation-graph-discovered
-  // paper, not a venue AV Atlas tracks -- including those here overstates
-  // the venue count (46 vs ~1,100), which is why "ALL VENUES" defaults to
-  // No. big_venues is the same set the Venue filter dropdown uses.
+  // "Seed" (the default) restricts the table to the core set of fully-indexed
+  // venues. Every other venue string in the corpus is a single
+  // citation-graph-discovered paper, not a venue AV Atlas tracks -- showing
+  // all of them overstates the venue count (~50 vs ~1,100), which is why the
+  // Venues filter defaults to "Seed". big_venues is the same set the Venue
+  // filter dropdown uses.
   const seedVenues = new Set((stats.corpus_stats || {}).big_venues || []);
   if (seedVenues.size && filters.excludeNonSeed) rows = rows.filter(r => seedVenues.has(r.name));
   const bestByVenue = {};
@@ -265,10 +263,10 @@ function render() {
   // the chart is actually showing).
   const chartRows = [...shownRows0].sort((a, b) => b.papers - a.papers).slice(0, topN);
 
-  document.getElementById('result-count').textContent = `${matchCount} seed venues`;
+  document.getElementById('result-count').textContent = `${matchCount} venues`;
   const cs = stats.corpus_stats || {};
   document.getElementById('venues-summary-stat').textContent =
-    `${rows.length} seed venues` +
+    `${rows.length} venues` +
     (cs.year_range ? `, spanning ${cs.year_range[0]} to ${cs.year_range[1]}` : '');
   const pagination = renderPagination(document.getElementById('pagination-container'), 'venues.html', shownRows0.length,
     { onChange: render, pageSize: topN, showSizeControl: false });

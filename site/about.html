@@ -318,9 +318,6 @@
   <tbody id="crawler-status-body"></tbody>
 </table>
 <ul>
-  <li><strong>Several general ML/CV venues aren't covered yet:</strong> ICPR, ICASSP, ICIP, and
-      ACM Transactions on Graphics, found by checking which venues this corpus's own papers cite
-      most often.</li>
   <li><strong>Some venues have no abstracts at all</strong> (see the Abstracts column under Data
       coverage). AV-relevance and category for those rest on title text alone, a weaker signal
       than the rest of the corpus.</li>
@@ -555,16 +552,23 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   const statusBody = document.getElementById('crawler-status-body');
   if (statusBody) {
     const stages = cs.pipeline_stages || {};
-    addRow(statusBody, 'Papers discovered (AV-relevant)', stages['1_discovered'] || 0, coreTotal);
-    addRow(statusBody, 'Abstract search complete', stages['3_abstract'] || 0, coreTotal);
-    // A confirmed-404 paper counts as done (nothing more to fetch), not
-    // pending -- see aggregate.py's citation_graph_coverage comment.
-    addRow(statusBody, 'Citation graph: CVPR/ICCV/WACV reference lists',
-      (cov.cvf_scanned || 0) + (cov.cvf_permanent_failures || 0), cov.cvf_core_total || 0);
-    // Denominator is papers with a known arXiv preprint, not every core
-    // paper -- a paper with no preprint could never be reached this way.
-    addRow(statusBody, 'Citation graph: arXiv preprint reference lists', cov.arxiv_scanned || 0, cov.arxiv_eligible_total || 0);
-    addRow(statusBody, 'Author affiliation lookup', verif.papers_with_author_detail || 0, coreTotal);
+    // Every discovered paper is classified at merge time, so this is a
+    // done-by-construction 100% -- kept as a row so the reader can see the
+    // stage exists and isn't the thing holding anything back.
+    addRow(statusBody, 'AV classification', stages['2_classified'] || stages['1_discovered'] || 0, coreTotal);
+    addRow(statusBody, 'Abstract lookup', stages['3_abstract'] || 0, coreTotal);
+    // Both reference sources (CVF PDFs and arXiv preprints) combined and
+    // deduplicated by aggregate.py. Denominator is every core paper some
+    // source could reach; older stats.json builds without the combined
+    // field fall back to summing the two per-source counts.
+    const refsScanned = cov.refs_any_scanned != null
+      ? cov.refs_any_scanned
+      : (cov.cvf_scanned || 0) + (cov.cvf_permanent_failures || 0) + (cov.arxiv_scanned || 0);
+    const refsEligible = cov.refs_any_eligible != null
+      ? cov.refs_any_eligible
+      : (cov.cvf_core_total || 0) + (cov.arxiv_eligible_total || 0);
+    addRow(statusBody, 'Reference lookup', refsScanned, refsEligible);
+    addRow(statusBody, 'Affiliation lookup', verif.papers_with_author_detail || 0, coreTotal);
   }
 }).catch(() => {});
 

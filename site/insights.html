@@ -193,13 +193,6 @@
     numbered column category. Tap or hover a cell for the exact count.
   </p>
   <table class="corr-matrix" id="category-corr-matrix"><thead></thead><tbody></tbody></table>
-  <div class="panel-title-row" style="margin-top: 18px;">
-    <h3 style="margin: 0;">All category pairs</h3>
-    <div id="category-corr-export"></div>
-  </div>
-  <div id="category-corr-pagination"></div>
-  <table><thead><tr><th>Published in</th><th>Also published in</th><th class="num">Share of authors</th><th class="num">Authors</th></tr></thead>
-  <tbody id="category-corr-body"></tbody></table>
 </div>
 
 <div class="panel">
@@ -350,24 +343,24 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2 style="margin-top:0;">Venue correlation</h2>
-  <span class="info-tip" tabindex="0" role="img" aria-label="Same idea as the category correlation matrix, for the seed venues: if an author published at the row venue, what share of them also published at the column venue. Restricted to seed venues to keep the grid readable." data-tip="Same idea as the category correlation matrix, for the seed venues: if an author published at the row venue, what share of them also published at the column venue. Restricted to seed venues to keep the grid readable.">i</span></div>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Same idea as the category correlation matrix, for the seed venues (the venues AV Atlas pulls complete proceedings from): if an author published at the row venue, what share of them also published at the column venue." data-tip="Same idea as the category correlation matrix, for the seed venues (the venues AV Atlas pulls complete proceedings from): if an author published at the row venue, what share of them also published at the column venue.">i</span></div>
   <p class="section-intro">
-    Same idea as the category matrix above, restricted to seed venues (the same set Venues' own
-    table uses) so the grid stays a manageable size. Tap or hover a cell for the exact count.
+    Same idea as the category matrix above, restricted to the seed venues &mdash; the venues AV Atlas
+    pulls complete proceedings from. Tap or hover a cell for the exact count.
   </p>
   <table class="corr-matrix" id="venue-corr-matrix"><thead></thead><tbody></tbody></table>
-  <div class="panel-title-row" style="margin-top: 18px;">
-    <h3 style="margin: 0;">All venue pairs</h3>
-    <div id="venue-corr-export"></div>
-  </div>
-  <div id="venue-corr-pagination"></div>
-  <table><thead><tr><th>Published at</th><th>Also published at</th><th class="num">Share of authors</th><th class="num">Authors</th></tr></thead>
-  <tbody id="venue-corr-body"></tbody></table>
 </div>
 
 <script src="filters.js"></script>
 <script>
 const PALETTE = ['#e6614f', '#3987e5', '#3fae6a', '#e6a53f', '#9366d9'];
+
+// Heat ramp for the correlation matrices only. Deliberately higher-contrast
+// than the shared blue SEQ_RAMP (filters.js) -- a magma-style yellow -> coral
+// -> magenta -> deep-purple progression separates adjacent buckets far more
+// clearly than a single-hue blue ramp does, which matters on a dense grid
+// where most cells sit in the low-to-mid range.
+const CORR_RAMP = ['#fcfdbf', '#feb078', '#f8765c', '#d3436e', '#982d80', '#5f187f', '#1c1044'];
 
 function row(cells) {
   const tr = document.createElement('tr');
@@ -532,12 +525,9 @@ function buildCorrelationMatrix(papers, dimensionFn, itemKeys) {
   return { totals, co };
 }
 
-// Renders both halves of one correlation panel: the heat-shaded grid (a
-// real <table>, so filters.js's autoWrapTables gives it horizontal scroll
-// for free, and the row header can go position:sticky) and, below it, a
-// sortable/paginated/exportable list of every ordered pair -- the
-// accessible non-grid view, and where CSV export lives, same as every
-// other table-plus-export panel on this site.
+// Renders one correlation panel: the heat-shaded grid, a real <table> so
+// filters.js's autoWrapTables gives it horizontal scroll for free and the
+// row header can go position:sticky.
 function renderCorrelationPanel(opts) {
   const { totals, co } = buildCorrelationMatrix(opts.papers, opts.dimensionFn, opts.itemKeys);
   // Drop anything with zero authors entirely -- an all-empty row/column is
@@ -573,9 +563,9 @@ function renderCorrelationPanel(opts) {
       } else {
         const pct = Math.round((100 * co[rowKey][colKey]) / totals[rowKey]);
         td.textContent = String(pct);
-        const step = Math.min(SEQ_RAMP.length - 1, Math.round((pct / 100) * (SEQ_RAMP.length - 1)));
-        td.style.background = SEQ_RAMP[step];
-        td.style.color = step <= 2 ? '#0b0b0b' : '#ffffff';
+        const step = Math.min(CORR_RAMP.length - 1, Math.round((pct / 100) * (CORR_RAMP.length - 1)));
+        td.style.background = CORR_RAMP[step];
+        td.style.color = step <= 1 ? '#0b0b0b' : '#ffffff';
         td.title = `${opts.labelFor(rowKey)} → ${opts.labelFor(colKey)}: ${pct}% `
           + `(${co[rowKey][colKey]} of ${totals[rowKey]} authors)`;
       }
@@ -583,63 +573,19 @@ function renderCorrelationPanel(opts) {
     });
     tbody.appendChild(tr);
   });
-
-  const pairs = [];
-  activeKeys.forEach(rowKey => {
-    activeKeys.forEach(colKey => {
-      if (rowKey === colKey) return;
-      pairs.push({
-        from: opts.labelFor(rowKey), to: opts.labelFor(colKey),
-        pct: Math.round((100 * co[rowKey][colKey]) / totals[rowKey]),
-        authors: co[rowKey][colKey],
-      });
-    });
-  });
-  pairs.sort((a, b) => b.pct - a.pct);
-
-  const bodyEl = document.getElementById(opts.bodyId);
-  function renderBody(data) {
-    bodyEl.innerHTML = '';
-    data.forEach(p => {
-      const tr = document.createElement('tr');
-      [p.from, p.to, `${p.pct}%`, p.authors].forEach((c, i) => {
-        const td = document.createElement('td');
-        if (i >= 2) td.className = 'num';
-        td.textContent = c;
-        tr.appendChild(td);
-      });
-      bodyEl.appendChild(tr);
-    });
-  }
-  function renderPage() {
-    const pg = renderPagination(document.getElementById(opts.paginationId), 'insights.html', pairs.length,
-      { paramKey: opts.paramKey, onChange: renderPage });
-    const shown = pairs.slice(pg.offset, pg.offset + pg.pageSize);
-    makeSortableSafe(bodyEl.closest('table'), shown, [
-      { accessor: p => p.from, numeric: false },
-      { accessor: p => p.to, numeric: false },
-      { accessor: p => p.pct, numeric: true },
-      { accessor: p => p.authors, numeric: true },
-    ], renderBody);
-  }
-  renderPage();
-
-  const exportContainer = document.getElementById(opts.exportContainerId);
-  if (exportContainer) {
-    exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
-    exportContainer.insertBefore(renderExportButton(bodyEl.closest('table'), opts.exportName), exportContainer.firstChild);
-  }
 }
 
 function renderCategoryCorrelation(stats) {
   renderCorrelationPanel({
     papers: stats.all_papers || [],
     dimensionFn: p => [p.category],
-    itemKeys: (stats.category_breakdown || []).map(c => c.category),
+    // "Uncategorized" is a catch-all, not a topic -- an author "also
+    // publishing in Uncategorized" says nothing, so it's left out of the grid.
+    itemKeys: (stats.category_breakdown || [])
+      .map(c => c.category)
+      .filter(c => c && c !== 'uncategorized'),
     labelFor: categoryLabel,
-    matrixTableId: 'category-corr-matrix', bodyId: 'category-corr-body',
-    paginationId: 'category-corr-pagination', exportContainerId: 'category-corr-export',
-    paramKey: 'catcorr_page', exportName: 'av-atlas-category-correlation.csv',
+    matrixTableId: 'category-corr-matrix',
   });
 }
 
@@ -647,15 +593,14 @@ function renderVenueCorrelation(stats) {
   renderCorrelationPanel({
     papers: stats.all_papers || [],
     dimensionFn: p => [p.venue],
-    // Seed venues only (same set Venues' own table defaults to) -- the
-    // corpus otherwise carries ~1,100 distinct venue strings, almost all
-    // single citation-graph-discovered papers, which would blow this grid
-    // up the same way it used to blow up the Venue filter dropdown.
-    itemKeys: (stats.corpus_stats || {}).big_venues || [],
+    // Seed venues only -- the venues AV Atlas pulls complete proceedings from
+    // (corpus_stats.venue_coverage, the same set the About page's coverage
+    // table lists). arXiv is dropped explicitly: it's a preprint server, not
+    // a venue, and it isn't in venue_coverage anyway.
+    itemKeys: Object.keys((stats.corpus_stats || {}).venue_coverage || {})
+      .filter(v => v !== 'arXiv'),
     labelFor: v => v,
-    matrixTableId: 'venue-corr-matrix', bodyId: 'venue-corr-body',
-    paginationId: 'venue-corr-pagination', exportContainerId: 'venue-corr-export',
-    paramKey: 'venuecorr_page', exportName: 'av-atlas-venue-correlation.csv',
+    matrixTableId: 'venue-corr-matrix',
   });
 }
 
