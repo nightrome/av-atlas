@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Labels papers "core" (about AVs) vs "adjacent" (not) using a local LLM via
+Labels papers "AV" (about AVs) vs "non-AV" (not) using a local LLM via
 Ollama (http://localhost:11434), as a second opinion alongside the
 keyword-heuristic tiers in classify.py -- see DECISIONS.md for why this
 runs locally rather than a paid API (standing preference, no per-call cost)
@@ -71,7 +71,7 @@ Title: {title}
 
 Abstract: {abstract}
 
-Respond with ONLY a compact JSON object, no other text: {{"label": "core", "reason": "<one short sentence>"}} or {{"label": "adjacent", "reason": "<one short sentence>"}}"""
+Respond with ONLY a compact JSON object, no other text: {{"label": "AV", "reason": "<one short sentence>"}} or {{"label": "non-AV", "reason": "<one short sentence>"}}"""
 
 
 def call_ollama(model, prompt, timeout=120):
@@ -85,13 +85,13 @@ def parse_label(raw_response):
     try:
         obj = json.loads(raw_response)
         label = str(obj.get("label", "")).strip().lower()
-        if label in ("core", "adjacent"):
+        if label in ("AV", "non-AV"):
             return label, obj.get("reason", "")
     except Exception:
         pass
     # Fallback for a model that didn't respect format=json strictly enough --
     # look for the bare word rather than discarding a usable answer.
-    m = re.search(r"\b(core|adjacent)\b", raw_response.lower())
+    m = re.search(r"(non-?av|av)", raw_response.lower())
     return (m.group(1), "") if m else (None, raw_response[:200])
 
 

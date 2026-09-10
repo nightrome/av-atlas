@@ -8,17 +8,17 @@ av-atlas/data/stats.json, consumed by index.html and authors.html.
 
 The main leaderboards (top papers/authors/institutions/countries,
 category breakdown, best-by-year/venue) are computed over av_relevance ==
-"core" only -- the corpus is mostly general CV/ML/robotics proceedings, not
+"AV" only -- the corpus is mostly general CV/ML/robotics proceedings, not
 AV research, so ranking the unfiltered corpus would just surface generic
 vision papers again (this was confirmed during merge testing: DINOv2 etc.
-topped the raw list). "core" was assigned by classify.py's explicit
+topped the raw list). "AV" was assigned by classify.py's explicit
 AV-specific phrase matching, not generic category keywords, precisely so
 this filter is defensible rather than a content-based inclusion filter --
 every paper in papers_full.json is present regardless of relevance, only
 the *label* is used to choose what these leaderboards rank.
 
-Author/institution/country data is only available for av_relevance=="core"
-papers that have been through affiliation enrichment (enrich_core_authors.py
+Author/institution/country data is only available for av_relevance=="AV"
+papers that have been through affiliation enrichment (enrich_av_authors.py
 via OpenAlex, or the CVF/arXiv alternatives for papers OpenAlex misses --
 fetch_cvf_affiliations.py, fetch_affiliations_arxiv.py). The venue-listing
 pulls themselves only capture plain author-name strings, not affiliations.
@@ -40,14 +40,14 @@ BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
 OUT_FILE = BASE / "data" / "stats.json"
 # Separate from stats.json (not a field inside it) because of scale: ~212k
-# adjacent (not core-AV-relevant) papers at even a slimmed-down ~160
-# bytes/record is ~34MB, versus stats.json's own size for the ~17k core
+# non-AV (not AV) papers at even a slimmed-down ~160
+# bytes/record is ~34MB, versus stats.json's own size for the ~17k AV
 # papers everything else on the site is built from. Bundling that into the
 # page every reader loads by default would make every page slower for a
 # feature only some readers want (user-requested "list the non-AV
 # papers"). Fetched lazily by index.html only when its AV-relevance filter
 # is switched away from the "AV relevant" default.
-ADJACENT_OUT_FILE = BASE / "data" / "stats_adjacent.json"
+NON_AV_OUT_FILE = BASE / "data" / "stats_non_av.json"
 # Abstracts are ~20MB of the ~70MB stats.json (raw), but only paper.html
 # ever reads one, one paper at a time -- every other page pays that weight
 # on every load for a field it never touches. Sharded into ABSTRACT_SHARD_COUNT
@@ -657,7 +657,7 @@ EARLY_CITATION_WINDOW_YEARS = 2
 # like 'code' in the abstract"). has_code_link's primary source
 # (fetch_affiliations_arxiv.py's detect_code_link, see its own comment) only
 # ever reaches papers with a resolved arXiv ID and a successful ar5iv fetch
-# -- this runs over every core paper's ABSTRACT instead, which exists for
+# -- this runs over every AV paper's ABSTRACT instead, which exists for
 # almost the whole corpus regardless of arXiv status, so it can upgrade a
 # paper straight from "never checked" to a confirmed release. Deliberately
 # one-directional -- an abstract that DOESN'T mention code says nothing
@@ -1656,7 +1656,7 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
     years_present = sorted({p["year"] for p in papers if p.get("year")})
     latest_year = years_present[-1] if years_present else None
     complete_years = [y for y in years_present if y != latest_year]
-    core_by_year = Counter(p["year"] for p in papers if p.get("year"))
+    av_by_year = Counter(p["year"] for p in papers if p.get("year"))
     total_by_year = Counter(e["year"] for e in all_entries if e.get("year"))
 
     # -- Growth: average annual growth rate over the last several COMPLETE
@@ -1672,12 +1672,12 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
     growth_years = complete_years[-GROWTH_WINDOW_YEARS:]
     insights["corpus_growth"] = {
         "years": growth_years,
-        "core_papers": [core_by_year[y] for y in growth_years],
+        "av_papers": [av_by_year[y] for y in growth_years],
         "total_papers": [total_by_year.get(y, 0) for y in growth_years],
     }
-    if len(growth_years) >= 2 and core_by_year[growth_years[0]]:
+    if len(growth_years) >= 2 and av_by_year[growth_years[0]]:
         n_intervals = len(growth_years) - 1
-        cagr = (core_by_year[growth_years[-1]] / core_by_year[growth_years[0]]) ** (1 / n_intervals) - 1
+        cagr = (av_by_year[growth_years[-1]] / av_by_year[growth_years[0]]) ** (1 / n_intervals) - 1
         insights["avg_annual_growth"] = {
             "from_year": growth_years[0], "to_year": growth_years[-1],
             "pct": round(cagr * 100, 1),
@@ -1893,8 +1893,8 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
     # discovery, see the pipeline in About), so its AV-relevance ratio isn't
     # comparable to a venue whose full membership was actually collected. --
     venue_totals = Counter(e["venue"] for e in all_entries if e.get("venue") and e["venue"] != "arXiv")
-    venue_core = Counter(e["venue"] for e in all_entries if e.get("venue") and e["venue"] != "arXiv"
-                          and e.get("av_relevance") == "core")
+    venue_av = Counter(e["venue"] for e in all_entries if e.get("venue") and e["venue"] != "arXiv"
+                          and e.get("av_relevance") == "AV")
     # Ships the full list (not just top/bottom 3) at a shippable floor of 10
     # total papers -- Insights' own "how many papers" threshold is an
     # adjustable dropdown (user-requested, default 80), not a fixed cutoff,
@@ -1902,8 +1902,8 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
     # the dropdown's choices, not just whatever was highest/lowest at one
     # fixed threshold.
     venue_relevance = [
-        {"venue": v, "total_papers": n, "core_papers": venue_core.get(v, 0),
-         "av_relevance_pct": round(100 * venue_core.get(v, 0) / n, 1)}
+        {"venue": v, "total_papers": n, "av_papers": venue_av.get(v, 0),
+         "av_relevance_pct": round(100 * venue_av.get(v, 0) / n, 1)}
         for v, n in venue_totals.items() if n >= 10
     ]
     venue_relevance.sort(key=lambda v: v["av_relevance_pct"], reverse=True)
@@ -2031,11 +2031,11 @@ def main():
     for e in all_entries:
         if e.get("venue"):
             e["venue"] = normalize_venue(e["venue"])
-    entries = [e for e in all_entries if e.get("av_relevance") == "core"]
+    entries = [e for e in all_entries if e.get("av_relevance") == "AV"]
     n_before_completeness = len(entries)
     entries = [e for e in entries if is_fully_processed(e)]
     if len(entries) != n_before_completeness:
-        print(f"  excluded {n_before_completeness - len(entries)} core papers as not fully processed "
+        print(f"  excluded {n_before_completeness - len(entries)} AV papers as not fully processed "
               f"(missing title/abstract/year)")
 
     # Every real author name in the corpus, computed up front (before any
@@ -2380,18 +2380,18 @@ def main():
         # hallucinated title would never surface at all.
         #
         # Not every title added here actually shows up on the Datasets
-        # page, though: `papers` here is core-AV-relevant papers ONLY (see
+        # page, though: `papers` here is AV papers ONLY (see
         # `by_norm_title` below), and several genuinely real, exact-title
         # matches -- Cityscapes, MulRan, the Oxford Radar RobotCar Dataset,
         # highD/inD/rounD/exiD, CommonRoad, D2-City, A9-Dataset, IPS300+,
         # WOMD-LiDAR, ParisLuco3D, STCrowd, DeepScenario, MAN TruckScenes,
         # DDAD, Ford Multi-AV Seasonal Dataset -- are in papers_full.json
-        # but classified "adjacent", not "core", by classify.py's own
+        # but classified "non-AV", not "AV", by classify.py's own
         # AV-relevance rules (confirmed by checking each one directly, not
         # assumed). That's a genuine scope boundary of what this site calls
         # AV-relevant, not a title-matching bug, so they're listed here
         # anyway (title matching costs nothing extra) in case a future
-        # classify.py change reclassifies any of them as core. Real count
+        # classify.py change reclassifies any of them as AV. Real count
         # landed: 59 titles actually resolve to a row on Datasets today,
         # not 100 -- further growth needs either more verified titles or a
         # classify.py change, not a round number asserted without checking.
@@ -2493,24 +2493,24 @@ def main():
     # knowable and honest to show: how much of the corpus has actually had
     # its own reference list extracted and scanned for in-corpus citations
     # -- build_citation_graph.py's sources_scanned count, against the
-    # denominator of papers that source could ever reach: CVF-hosted core
+    # denominator of papers that source could ever reach: CVF-hosted AV
     # papers for the PDF path (cvf_done also counts a confirmed-404 paper as
     # done -- it will never be fetchable, so it shouldn't read as pending
-    # forever), and only core papers with a known arXiv preprint for the
+    # forever), and only AV papers with a known arXiv preprint for the
     # arXiv path (arxiv_eligible_total) -- a paper with no preprint at all
     # could never be reached this way, so counting it in the denominator
     # made 100% structurally unreachable even once every real preprint was
     # scanned. Surfaced on About so "no citation data" reads as "not yet
     # verifiable" rather than "confirmed zero."
-    cvf_core_total = sum(1 for e in entries if (e.get("venue") or "") in CVF_CITATION_GRAPH_VENUES)
+    cvf_av_total = sum(1 for e in entries if (e.get("venue") or "") in CVF_CITATION_GRAPH_VENUES)
     arxiv_eligible_total = sum(1 for e in entries if e.get("arxiv_url"))
     sources_scanned = citation_graph.get("sources_scanned") or {}
 
     # Combined, source-agnostic "reference lookup" progress -- deduplicated
     # across the CVF and arXiv paths so a paper reachable by both isn't
-    # counted twice. A core paper is "done" once its own reference list has
+    # counted twice. A AV paper is "done" once its own reference list has
     # been scanned and matched (it shows up as a citer in the graph's
-    # edges); the denominator is every core paper some source could reach
+    # edges); the denominator is every AV paper some source could reach
     # (CVF-hosted or with a known arXiv preprint) -- a paper with neither
     # can never be reached, so counting it would make 100% unreachable.
     core_keys = {normalize_title(e["title"]) for e in entries}
@@ -2524,12 +2524,12 @@ def main():
     citation_graph_coverage = {
         "cvf_scanned": sources_scanned.get("cvf", 0),
         "cvf_permanent_failures": citation_graph.get("cvf_permanent_failures", 0),
-        "cvf_core_total": cvf_core_total,
+        "cvf_av_total": cvf_av_total,
         "arxiv_scanned": sources_scanned.get("arxiv", 0),
         "arxiv_eligible_total": arxiv_eligible_total,
         "refs_any_scanned": refs_any_scanned,
         "refs_any_eligible": refs_any_eligible,
-        "core_total": len(entries),
+        "av_total": len(entries),
     }
 
     # Corpus-wide counts (unfiltered by av_relevance) for the overview banner --
@@ -2551,19 +2551,19 @@ def main():
     # Counted over CORE (av_relevant) papers specifically, regardless of
     # which relevance view a page is currently showing, since "> 25 AV
     # relevant papers" is what was asked for -- a venue's standing here
-    # doesn't change just because someone switched to browsing adjacent
+    # doesn't change just because someone switched to browsing non-AV
     # papers. Shipped as a plain name list rather than re-derived client-side
     # so every page buckets the exact same way.
     BIG_VENUE_MIN_PAPERS = 25
-    core_venue_counts = Counter(e["venue"] for e in entries if e.get("venue"))
+    av_venue_counts = Counter(e["venue"] for e in entries if e.get("venue"))
     big_venues = sorted(
-        (v for v, c in core_venue_counts.items() if c > BIG_VENUE_MIN_PAPERS),
-        key=lambda v: -core_venue_counts[v],
+        (v for v, c in av_venue_counts.items() if c > BIG_VENUE_MIN_PAPERS),
+        key=lambda v: -av_venue_counts[v],
     )
 
     # all_author_names itself is computed once, up front (see the top of
     # main()) -- reused here for the overview stat tile too, so "researchers
-    # tracked" reflects the whole core corpus rather than being capped at
+    # tracked" reflects the whole AV corpus rather than being capped at
     # the top-50 leaderboard length. Imprecise (name-string dedup, no
     # disambiguation of same-named authors) but far more honest than a
     # number that's actually just "len(top_authors)".
@@ -2729,7 +2729,7 @@ def main():
     # author disambiguation disagreeing with this site's name-string
     # matching, not just an absence of proof. A name with 0 or 1 ids is left
     # alone: most of the corpus's affiliation data predates id capture
-    # (arXiv-HTML/CVF-PDF sources never had one -- see enrich_core_authors.py),
+    # (arXiv-HTML/CVF-PDF sources never had one -- see enrich_av_authors.py),
     # so "no id" is missing evidence, not evidence of a problem, and
     # excluding on that basis would empty the leaderboards rather than clean
     # them. This is a second, independent signal from flag_ambiguous_authors.py's
@@ -2960,7 +2960,7 @@ def main():
 
     # Not-AV-relevant paper count per author (user-requested, shown on
     # author.html and the Authors table) -- has to be computed here, not
-    # derived client-side, because stats_adjacent.json deliberately carries
+    # derived client-side, because stats_non_av.json deliberately carries
     # no author field at all (it's ~212k records; adding one would meaningfully
     # grow an already-58MB file for a client-side page that would then have
     # to fetch and scan all of it just to count matches for one name). A
@@ -2969,12 +2969,12 @@ def main():
     # "authors" string (this is server-side, reading the full corpus, not
     # the slimmed client file), so no separate enrichment pass is needed.
     adjacent_entries = [e for e in all_entries
-                         if e.get("av_relevance") == "adjacent" and is_fully_processed(e)]
+                         if e.get("av_relevance") == "non-AV" and is_fully_processed(e)]
     non_av_paper_counts = defaultdict(int)
     # Same reasoning, same shape, for citations rather than paper count --
     # author.html's stat tiles pair "AV citations" with "Non-AV citations"
     # (user-requested), and that pairing needs both numbers available
-    # synchronously on page load, not behind the lazy stats_adjacent.json
+    # synchronously on page load, not behind the lazy stats_non_av.json
     # fetch the Papers table below only triggers once a reader actually
     # switches the SHOW filter.
     non_av_paper_citations = defaultdict(int)
@@ -2990,7 +2990,7 @@ def main():
 
     # Per-venue collection completeness for the About page's Data coverage
     # table -- computed from the actual corpus (all_entries, not just
-    # av_relevance=="core", since this is about how completely each venue's
+    # av_relevance=="AV", since this is about how completely each venue's
     # proceedings were collected, not which papers turned out AV-relevant),
     # so it can never drift out of sync the way a hand-typed table would.
     # arXiv is excluded: it's a keyword search against arXiv's own API, not
@@ -3040,7 +3040,7 @@ def main():
     stats = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "generated_from": len(all_entries),
-        "core_relevant": len(entries),
+        "av_relevant": len(entries),
         "corpus_stats": {
             "by_venue": dict(sorted(venue_counts.items(), key=lambda kv: -kv[1])),
             "venue_coverage": venue_coverage,
@@ -3061,14 +3061,14 @@ def main():
             "total_institutions": total_institutions_all,
             "total_countries": len(country_papers),
             "citation_graph_coverage": citation_graph_coverage,
-            # How many core papers came from each discovery path -- see the
+            # How many AV papers came from each discovery path -- see the
             # "source" field on each paper for what these mean. Surfaced so
             # each path's contribution is auditable without having to dig
             # through raw data.
             "by_source": dict(Counter(p["source"] for p in papers)),
             # One sequential answer to "how many papers are where in the
             # pipeline" (user-requested), instead of having to piece it
-            # together from several separately-shaped stats. Every core
+            # together from several separately-shaped stats. Every AV
             # paper passes through classify.py immediately on merge (stage
             # 1 == stage 0, always, by construction -- kept as its own
             # stage anyway so a reader doesn't have to know that), then
@@ -3177,13 +3177,13 @@ def main():
         },
         "insights": insights,
     }
-    # No indent -- same reasoning as stats_adjacent.json/the abstract shards
+    # No indent -- same reasoning as stats_non_av.json/the abstract shards
     # just below (indent=2's per-key newline+spacing roughly doubled this
     # file's size at corpus scale, which is what pushed it over GitHub's
     # 100MB file limit and got a gh-pages push rejected outright).
     OUT_FILE.write_text(json.dumps(stats, ensure_ascii=False), encoding="utf-8", newline="\n")
     print(f"Wrote {OUT_FILE}")
-    print(f"  {len(all_entries)} total papers, {len(entries)} core AV-relevant")
+    print(f"  {len(all_entries)} total papers, {len(entries)} AV")
     print(f"  {len(papers)} ranked papers, {len(author_citations)} authors, "
           f"{len(inst_citations)} institutions, {len(country_citations)} countries")
     print(f"  papers_with_author_detail={n_with_author_detail} verified={n_verified} excluded_mismatch={n_excluded}")
@@ -3209,8 +3209,8 @@ def main():
         shard_path.write_text(json.dumps(shard, ensure_ascii=False), encoding="utf-8", newline="\n")
     print(f"Wrote {ABSTRACTS_DIR}: {n_abstracts} abstracts across {ABSTRACT_SHARD_COUNT} shards")
 
-    # Separate, lazily-fetched file for adjacent (not core-AV-relevant)
-    # papers -- see ADJACENT_OUT_FILE's own comment for why this isn't part
+    # Separate, lazily-fetched file for non-AV (not AV)
+    # papers -- see NON_AV_OUT_FILE's own comment for why this isn't part
     # of stats.json. No per-paper detail page link (user-requested: no
     # paper.html pages generated for these, "too many"). adjacent_entries
     # itself is computed further up, alongside non_av_paper_counts.
@@ -3224,24 +3224,24 @@ def main():
     # pages silently showed "0 results" the moment a reader switched to
     # "Not AV relevant" -- the dropdown looked wired up but did nothing.
     # institutions/countries will legitimately come back empty for most
-    # adjacent papers (affiliation enrichment targets core AV papers only,
+    # non-AV papers (affiliation enrichment targets AV papers only,
     # so authors_detail is rarely present here) -- that's honest, not a bug.
-    adjacent_papers = []
+    non_av_papers = []
     for e in adjacent_entries:
         adj_countries, adj_institutions = paper_countries_institutions(e)
-        adjacent_papers.append({
+        non_av_papers.append({
             "title": e.get("title"), "year": e.get("year"), "venue": e.get("venue"),
             "category": e.get("category"), "citations": citation_count(e),
             "doi": e.get("doi"), "arxiv_url": e.get("arxiv_url"),
             "source": e.get("source") or "venue_listing",
-            "av_relevance": "adjacent",
+            "av_relevance": "non-AV",
             "authors": paper_authors(e),
             "countries": adj_countries,
             "institutions": adj_institutions,
         })
-    ADJACENT_OUT_FILE.write_text(json.dumps(adjacent_papers, ensure_ascii=False), encoding="utf-8", newline="\n")
-    print(f"Wrote {ADJACENT_OUT_FILE}: {len(adjacent_papers)} adjacent papers "
-          f"({ADJACENT_OUT_FILE.stat().st_size / 1e6:.1f} MB)")
+    NON_AV_OUT_FILE.write_text(json.dumps(non_av_papers, ensure_ascii=False), encoding="utf-8", newline="\n")
+    print(f"Wrote {NON_AV_OUT_FILE}: {len(non_av_papers)} non-AV papers "
+          f"({NON_AV_OUT_FILE.stat().st_size / 1e6:.1f} MB)")
 
 
 if __name__ == "__main__":

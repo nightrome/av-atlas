@@ -15,7 +15,7 @@ data/papers_full.json
 data/stats.json
 # Same reasoning as stats.json above -- regenerable, not reviewable as a
 # diff.
-data/stats_adjacent.json
+data/stats_non_av.json
 # Sharded abstract text split out of stats.json (regenerate with
 # scripts/aggregate.py) -- same reasoning as stats.json above.
 data/abstracts/
@@ -25,7 +25,7 @@ data/abstracts/
 # by deploy.py's `git add -A`. The real copies are data/ (source of truth)
 # and public/ (the built site); nothing should write these at the root.
 /stats.json
-/stats_adjacent.json
+/stats_non_av.json
 /abstracts/
 # One-off evaluation artifact from scripts/audit_code_links_llm.py (LLM
 # second opinion on the has_code_link heuristic) -- rerun to regenerate,

@@ -28,8 +28,7 @@ distinction. Display falls back to "—", never a misleading "0".
 ## AV-relevance is a layered, auditable classifier
 
 `classify.py` decides AV vs. non-AV from title + abstract text, in layers
-that each push only one way (the two labels are stored in `av_relevance` and
-`data/relevance_labels*.json` as `core` / `adjacent`):
+that each push only one way:
 
 1. Hard scope filters (mechanical/hardware-only papers, non-road platforms like
    aerial/underwater/legged robots) → non-AV.
@@ -122,7 +121,7 @@ the corpus, documented as such under Methodology's "Known gaps".
 
 ## Derived data is not tracked; `gh-pages` is a single squashed commit
 
-`data/papers_full.json`, `data/stats.json`, `data/stats_adjacent.json`, and the
+`data/papers_full.json`, `data/stats.json`, `data/stats_non_av.json`, and the
 abstract shards are gitignored — fully regenerable (`merge_corpus.py` then
 `aggregate.py`), and tracking a leaderboard dump bloats every diff with numbers
 that change on every corpus update and aren't reviewable anyway. Always rebuild

@@ -440,6 +440,9 @@
     'testing-validation': 'Testing, Validation & Safety Assurance',
     'sensor-calibration': 'Sensor Calibration & Setup',
     'vehicle-dynamics-powertrain': 'Vehicle Dynamics & Powertrain',
+    'radar-perception': 'Radar Perception',
+    'planning-decision-making': 'Planning & Decision-Making',
+    'traffic-sign-signal-perception': 'Traffic Sign & Signal Perception',
   };
   // Matches if every word in the (already-lowercased) query appears
   // somewhere in text, in any order -- not just as one contiguous
@@ -550,9 +553,9 @@
     return page + (p.toString() ? '?' + p.toString() : '');
   };
 
-  // Fetches stats.json (always) and stats_adjacent.json (only when a page
+  // Fetches stats.json (always) and stats_non_av.json (only when a page
   // has actually switched away from the default "AV relevant" view, since
-  // adjacent is a large separate file -- see the ADJACENT_OUT_FILE comment
+  // the non-AV set is a large separate file -- see the NON_AV_OUT_FILE comment
   // in aggregate.py), then swaps stats.all_papers to whichever set the
   // relevance param asks for. Centralized here so every listing page's
   // Show dropdown behaves identically instead of each page re-implementing
@@ -560,8 +563,8 @@
   // first shipped, before the dropdown moved into the shared filter bar).
   window.fetchStatsWithRelevance = function (relevance) {
     const statsFetch = fetch('stats.json').then(r => r.json()).then(applyCitationSource);
-    const adjacentFetch = relevance ? fetch('stats_adjacent.json').then(r => r.json()) : Promise.resolve(null);
-    return Promise.all([statsFetch, adjacentFetch]).then(([stats, adjacent]) => {
+    const nonAvFetch = relevance ? fetch('stats_non_av.json').then(r => r.json()) : Promise.resolve(null);
+    return Promise.all([statsFetch, nonAvFetch]).then(([stats, nonAv]) => {
       // The true AV-relevant-only paper list, kept around under its own key
       // regardless of what the "Show" toggle does to stats.all_papers below.
       // A per-venue/category/etc. "AV paper ratio" only means anything
@@ -569,20 +572,20 @@
       // instead made every ratio read ~100% under "Both" (numerator and
       // denominator became the same total-papers count) and an inverted
       // number under "Non-AV papers" (see venues.html for the actual use).
-      stats.core_papers = stats.all_papers;
-      if (relevance === 'adjacent') {
-        stats.all_papers = adjacent || [];
+      stats.av_papers = stats.all_papers;
+      if (relevance === 'non-AV') {
+        stats.all_papers = nonAv || [];
       } else if (relevance === 'both') {
-        stats.all_papers = [...(stats.all_papers || []), ...(adjacent || [])];
+        stats.all_papers = [...(stats.all_papers || []), ...(nonAv || [])];
       } else {
         return stats;
       }
       // renderResults()-style code on some pages reads stats.top_papers (a
-      // server-precomputed, core-only top-50) instead of stats.all_papers
+      // server-precomputed, AV-only top-50) instead of stats.all_papers
       // whenever no filter is active, as a size optimization -- recomputed
       // the same way aggregate.py builds it (already-citation-sorted top
       // 50) from whatever all_papers now actually is, so that shortcut
-      // doesn't silently keep showing (only) core papers after the swap.
+      // doesn't silently keep showing (only) AV papers after the swap.
       stats.top_papers = [...stats.all_papers]
         .sort((a, b) => (b.citations != null) - (a.citations != null) || (b.citations || 0) - (a.citations || 0))
         .slice(0, 50);
@@ -699,21 +702,21 @@
     // Papers page, above the whole filter bar including SEARCH (user-
     // requested: move it down into the filter bar, below SEARCH, and reuse
     // it on every listing page for a consistent place/behavior). Adjacent
-    // (not core-AV-relevant) papers are shipped as a separate stats_adjacent.json
-    // (see aggregate.py's ADJACENT_OUT_FILE comment for the size reasoning);
+    // (not AV) papers are shipped as a separate stats_non_av.json
+    // (see aggregate.py's NON_AV_OUT_FILE comment for the size reasoning);
     // fetchStatsWithRelevance below does the actual fetch-and-swap.
     // "Both" (re-added, user-requested) unions the two sets -- category/venue/
     // year counts and chart series computed client-side from the resulting
     // all_papers describe that union same as any other selection; the one
-    // place that stays core-only regardless is the Category dropdown's own
+    // place that stays AV-only regardless is the Category dropdown's own
     // per-option counts below (stats.category_breakdown is a server-side
-    // precomputation over core papers only -- recomputing it for every
+    // precomputation over AV papers only -- recomputing it for every
     // possible relevance selection wasn't worth it for a count next to an
     // option label, not a hard filter).
     if (opts.relevance) {
       const relValue = new URLSearchParams(location.search).get('relevance') || '';
       const sel = document.createElement('select');
-      [['', 'AV papers'], ['adjacent', 'Non-AV papers'], ['both', 'Both']].forEach(([value, text]) => {
+      [['', 'AV papers'], ['non-AV', 'Non-AV papers'], ['both', 'Both']].forEach(([value, text]) => {
         const opt = document.createElement('option');
         opt.value = value;
         opt.textContent = text;
@@ -743,7 +746,7 @@
       const sel = document.createElement('select');
       sel.innerHTML = '<option value="">All venues</option>';
       // Only venues aggregate.py already flagged as common enough to list
-      // individually (corpus_stats.big_venues, >25 core AV-relevant papers)
+      // individually (corpus_stats.big_venues, >25 AV papers)
       // get their own option -- everything else collapses into one "Other"
       // entry. Replaces reading every distinct venue straight off
       // corpus_stats.by_venue, which blew this dropdown from ~60 entries to
@@ -751,8 +754,8 @@
       // per-paper venues for ~68k citation-discovered papers (user-reported:
       // "the All Venues menu is messed up (too long)"). Counts shown are
       // still from the CURRENTLY ACTIVE paper set (stats.all_papers, which
-      // already respects the core/adjacent "Show" toggle above) -- only
-      // which venues QUALIFY for their own row is fixed by the core count.
+      // already respects the AV / non-AV "Show" toggle above) -- only
+      // which venues QUALIFY for their own row is fixed by the AV count.
       const bigVenues = new Set((stats.corpus_stats || {}).big_venues || []);
       const venueCounts = {};
       let otherCount = 0;

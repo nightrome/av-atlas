@@ -58,8 +58,8 @@ can run at once without racing over the same file.
 | --- | --- |
 | `fetch_cvf_affiliations.py` → `apply_cvf_affiliations.py` | Affiliations from page 1 of CVF PDFs. |
 | `fetch_affiliations_arxiv.py` → `apply_affiliations_arxiv.py` | Affiliations from arXiv HTML. |
-| `enrich_core_authors.py` | Affiliations + author IDs via OpenAlex title search. Writes `papers_full.json` directly. |
-| `enrich_core_authors_by_doi.py` | The same, batched 50 DOIs per request. Much cheaper where a DOI exists. |
+| `enrich_av_authors.py` | Affiliations + author IDs via OpenAlex title search. Writes `papers_full.json` directly. |
+| `enrich_av_authors_by_doi.py` | The same, batched 50 DOIs per request. Much cheaper where a DOI exists. |
 | `fetch_arxiv_links.py` → `apply_arxiv_links.py` | An arXiv link for each core paper. |
 | `mine_abstracts.py` → `apply_abstracts_arxiv.py` | Abstracts for papers whose venue source had none. |
 | `fetch_s2_author_ids.py`, `fetch_orcids.py` | Stable author identifiers. |
@@ -67,8 +67,8 @@ can run at once without racing over the same file.
 | `fetch_institution_logos.py`, `fetch_venue_logos.py` | Logos, via Wikipedia pageimages. |
 | `institution_extraction_llm.py` | Clean institution names out of raw affiliation text, using a local LLM against a registry. |
 
-**Never run two `papers_full.json` writers at once.** `enrich_core_authors.py`,
-`enrich_core_authors_by_doi.py` and every `apply_*.py` write it directly; the
+**Never run two `papers_full.json` writers at once.** `enrich_av_authors.py`,
+`enrich_av_authors_by_doi.py` and every `apply_*.py` write it directly; the
 `fetch_*` scripts only write their own side files and are safe to run
 alongside.
 

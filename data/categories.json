@@ -33,13 +33,8 @@
         "bounding box",
         "detector",
         "detection network",
-        "traffic sign detection",
-        "traffic sign recognition",
-        "traffic light detection",
-        "traffic light recognition",
         "pedestrian detection",
         "vehicle detection",
-        "sign recognition",
         "small object detection",
         "3d object detection",
         "vulnerable road user",
@@ -99,7 +94,14 @@
         "forecasting",
         "intention prediction",
         "lane change prediction",
-        "behavior prediction"
+        "behavior prediction",
+        "pedestrian trajectory prediction",
+        "crossing prediction",
+        "pedestrian crossing prediction",
+        "maneuver prediction",
+        "manoeuvre prediction",
+        "intention estimation",
+        "agent forecasting"
       ]
     },
     {
@@ -281,7 +283,12 @@
         "digital twin",
         "scenario generation",
         "critical scenario",
-        "traffic simulation"
+        "traffic simulation",
+        "scene generation",
+        "traffic scenario generation",
+        "controllable generation",
+        "driving scene generation",
+        "data generation for driving"
       ]
     },
     {
@@ -290,8 +297,7 @@
       "keywords": [
         "sensor fusion",
         "multimodal fusion",
-        "camera-lidar",
-        "radar fusion"
+        "camera-lidar"
       ]
     },
     {
@@ -350,7 +356,10 @@
         "road information",
         "crowdsourced map",
         "lane-level map",
-        "lane-level localization"
+        "lane-level localization",
+        "odometry",
+        "wheel odometry",
+        "monte carlo localization"
       ]
     },
     {
@@ -463,7 +472,13 @@
         "motion sickness",
         "passenger comfort",
         "pedestrian behavior",
-        "pedestrian crossing behavior"
+        "pedestrian crossing behavior",
+        "teleoperation",
+        "remote driving",
+        "remote operation",
+        "external hmi",
+        "ehmi",
+        "trust calibration"
       ]
     },
     {
@@ -604,7 +619,21 @@
         "formal verification",
         "runtime monitoring",
         "simulation-based testing",
-        "virtual test"
+        "virtual test",
+        "hazard analysis",
+        "stpa",
+        "fmea",
+        "minimum risk maneuver",
+        "minimal risk maneuver",
+        "minimum risk manoeuvre",
+        "fallback strategy",
+        "fail-operational",
+        "fail operational",
+        "iso 26262",
+        "safety of the intended functionality",
+        "sotif",
+        "assurance case",
+        "safety argument"
       ]
     },
     {
@@ -649,6 +678,106 @@
         "actuator dynamics",
         "steering actuator",
         "brake system"
+      ]
+    },
+    {
+      "id": "radar-perception",
+      "label": "Radar Perception",
+      "keywords": [
+        "radar",
+        "automotive radar",
+        "mmwave radar",
+        "mm-wave radar",
+        "fmcw radar",
+        "4d radar",
+        "4d imaging radar",
+        "imaging radar",
+        "scanning radar",
+        "doppler radar",
+        "micro-doppler",
+        "radar odometry",
+        "radar slam",
+        "radar detection",
+        "radar perception",
+        "radar point cloud",
+        "radar-based perception",
+        "radar-only",
+        "radar signal processing",
+        "radar tensor",
+        "range-doppler",
+        "range-azimuth",
+        "radar cross section",
+        "radar interference",
+        "radar-camera fusion",
+        "radar-lidar fusion",
+        "radar semantic",
+        "radar occupancy",
+        "radar ghost",
+        "radar clutter",
+        "spinning radar"
+      ]
+    },
+    {
+      "id": "planning-decision-making",
+      "label": "Planning & Decision-Making",
+      "keywords": [
+        "monte carlo tree search",
+        "mcts",
+        "reachability analysis",
+        "reachable set",
+        "frenet frame",
+        "lattice planner",
+        "sampling-based planning",
+        "rrt",
+        "rrt*",
+        "hybrid a*",
+        "state lattice",
+        "belief space planning",
+        "pomdp",
+        "game-theoretic planning",
+        "game theoretic",
+        "game-theoretic",
+        "receding horizon planning",
+        "nonlinear model predictive",
+        "occupancy prediction for planning",
+        "cooperative planning",
+        "tactical planning",
+        "strategic planning",
+        "contingency planning",
+        "trajectory optimization",
+        "motion planning",
+        "decision-making under uncertainty",
+        "behavioural planning",
+        "behavior arbitration",
+        "rule-based planner",
+        "optimization-based planning",
+        "safe planning",
+        "risk-aware planning",
+        "interaction-aware planning",
+        "social force planning"
+      ]
+    },
+    {
+      "id": "traffic-sign-signal-perception",
+      "label": "Traffic Sign & Signal Perception",
+      "keywords": [
+        "traffic sign",
+        "traffic sign detection",
+        "traffic sign recognition",
+        "traffic sign classification",
+        "traffic light detection",
+        "traffic light recognition",
+        "traffic light state",
+        "traffic signal recognition",
+        "traffic light perception",
+        "road sign",
+        "road sign detection",
+        "road marking detection",
+        "lane marking detection",
+        "pavement marking",
+        "sign recognition",
+        "tsr",
+        "countdown timer traffic light"
       ]
     }
   ]

@@ -178,7 +178,7 @@ def build_sample(n, seed):
     affil = json.loads(AFFIL_FILE.read_text(encoding="utf-8"))
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     year_by_title = {norm_title(p.get("title")): p.get("year")
-                     for p in papers if p.get("av_relevance") == "core"}
+                     for p in papers if p.get("av_relevance") == "AV"}
     core_titles = set(year_by_title)
 
     pool = []

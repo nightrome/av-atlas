@@ -23,16 +23,15 @@ load-bearing, without losing the record of how each venue was pulled.
 
 - `merge_corpus.py` — dedupes by normalized title across every `data/venues/*.json`
   file, classifies each paper's `category` (topic) and `av_relevance`
-  (AV / non-AV, stored as `core`/`adjacent`) via `classify.py`, writes
-  `data/papers_full.json`.
+  (AV / non-AV) via `classify.py`, writes `data/papers_full.json`.
 - `classify.py` — keyword-matching category assignment (`data/categories.json`,
   a living taxonomy, not fixed) + AV-relevance decided by an explicit
   AV-specific phrase list (`AV_RELEVANCE_TERMS`), independent of category —
   category keywords are generic CV/robotics terms that also match plenty of
   non-AV papers, so category membership alone was never a valid relevance signal.
-- `enrich_core_authors.py` — the venue-listing pulls only ever captured a plain
+- `enrich_av_authors.py` — the venue-listing pulls only ever captured a plain
   author-name string, not affiliations. This backfills OpenAlex author/
-  institution/country data for every AV paper (`av_relevance == "core"`) (not the
+  institution/country data for every AV paper (`av_relevance == "AV"`) (not the
   full corpus — no reason to spend OpenAlex's rate budget on papers that were
   never going to be ranked).
 - `fetch_affiliations_arxiv.py` — a second, independent source for the same

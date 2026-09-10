@@ -22,8 +22,8 @@ robotics, etc.) once the corpus is a full, unfiltered venue proceeding
 rather than a pre-filtered AV citation crawl -- so category membership
 alone is NOT used to decide relevance. Instead av_relevance requires an
 explicit AV-specific phrase (below) to appear in the title/abstract.
-Papers can be "core" and "uncategorized" (topic didn't match any category
-but the paper is clearly about AVs) or "adjacent" with a category (a
+Papers can be "AV" and "uncategorized" (topic didn't match any category
+but the paper is clearly about AVs) or "non-AV" with a category (a
 general CV method paper that happens to be about e.g. segmentation but
 isn't about driving).
 """
@@ -58,9 +58,9 @@ def load_hard_labels():
                 if not row.get("hard"):
                     continue
                 key = row.get("id") or normalize_title(row.get("title"))
-                if row.get("label") == "core":
+                if row.get("label") == "AV":
                     hard_av.add(key)
-                elif row.get("label") == "adjacent":
+                elif row.get("label") == "non-AV":
                     hard_non_av.add(key)
         except Exception:
             pass
@@ -70,15 +70,15 @@ def load_hard_labels():
 HARD_AV_TITLES, HARD_NON_AV_TITLES = load_hard_labels()
 
 
-def load_llm_core_titles():
+def load_llm_av_titles():
     """Normalized titles the local LLM (see fetch_llm_relevance_labels.py and
-    ..._v2.py) graded 'core'. Read-only second opinion, folded in as a
+    ..._v2.py) graded 'AV'. Read-only second opinion, folded in as a
     promotion signal -- see classify_relevance."""
     titles = set()
     for f in (LLM_LABELS_FILE, LLM_LABELS_V2_FILE):
         if f.exists():
             labels = json.loads(f.read_text(encoding="utf-8"))
-            titles |= {key for key, v in labels.items() if v.get("label") == "core"}
+            titles |= {key for key, v in labels.items() if v.get("label") == "AV"}
     return titles
 
 # Phrases specific enough to AVs that their presence is real signal, unlike
@@ -100,7 +100,7 @@ AV_RELEVANCE_TERMS = [
     "traffic light", "traffic sign",
     # Synonyms the original list simply didn't have. On a full venue corpus
     # (esp. the DBLP title-only IV/ITSC/T-ITS papers with no abstract) these
-    # are where core recall was being lost -- every one is as AV-specific as
+    # are where AV recall was being lost -- every one is as AV-specific as
     # "self-driving". Kept as literal phrases, still word-boundary matched.
     "automated driving", "automated vehicle", "automated driving system",
     "highly automated driving", "connected vehicle", "connected and automated vehicle",
@@ -120,9 +120,9 @@ AV_RELEVANCE_TERMS = [
     # in the driving-perception literature -- as AV-specific as "adaptive
     # cruise control". Without them a signature AV subfield (4D-radar object
     # detection / odometry / scene flow, ~60+ papers here) fell through to
-    # "adjacent" whenever the abstract didn't also happen to say "autonomous
+    # "non-AV" whenever the abstract didn't also happen to say "autonomous
     # driving" -- user-flagged via Andras Palffy's papers (RaDelft detector,
-    # 4D-RaDiff, CLRNet were all wrongly "adjacent"). "4d radar" also matches
+    # 4D-RaDiff, CLRNet were all wrongly "non-AV"). "4d radar" also matches
     # a handful of radar-based human-pose/gait papers; that's a small,
     # accepted cost for the recall gain (the aerial-nav ones are already
     # held out by OFF_SCOPE_TITLE_TERMS).
@@ -147,7 +147,7 @@ AV_TITLE_ONLY_TERMS = [
 ]
 
 # Non-road-vehicle platforms this corpus is explicitly NOT about. A promotion
-# candidate whose own TITLE says it is about one of these is kept "adjacent"
+# candidate whose own TITLE says it is about one of these is kept "non-AV"
 # regardless of any AV phrase also present ("autonomous underwater vehicle"
 # matches "autonomous ... vehicle" but is not this corpus). Title-only on
 # purpose: abstracts routinely name drones/marine/etc. as comparison domains
@@ -171,7 +171,7 @@ OFF_SCOPE_TITLE_TERMS = [
 # Word-boundary matched, not plain substring -- caught in practice once
 # ICLR (an optimizer-heavy ML venue) was added: "adas" as a bare substring
 # matched "AdaShift" and "Adasum" (both optimizer names with nothing to do
-# with Advanced Driver Assistance Systems), wrongly marking them "core".
+# with Advanced Driver Assistance Systems), wrongly marking them "AV".
 # Multi-word phrases ("autonomous driving", "carla simulator", ...) were
 # never at real risk of this -- only "adas" is short enough to collide -- but
 # matching everything the same way is one rule to reason about instead of a
@@ -229,7 +229,7 @@ _DATA_DRIVEN_RE = re.compile(r"data[- ]driven|goal[- ]driven|model[- ]driven|eve
 def relevance_model_score(title, abstract):
     """Linear score from RELEVANCE_MODEL: intercept + per-phrase weights for
     phrases present in the title and (separately) the abstract, + a bonus for
-    a standalone driving word in the title. 'core' iff score >= threshold."""
+    a standalone driving word in the title. 'AV' iff score >= threshold."""
     m = RELEVANCE_MODEL
     t = title or ""
     a = abstract or ""
@@ -253,7 +253,7 @@ def relevance_model_score(title, abstract):
 # and powertrain hardware design belong to a different field even when the
 # paper is nominally "about" a vehicle. Confirmed on real data this was
 # actually happening: "Handling and Stability Integrated Control of AFS and
-# DYC for Distributed Drive Electric Vehicle" was marked "core" purely
+# DYC for Distributed Drive Electric Vehicle" was marked "AV" purely
 # because TITLE_STRONG_PATTERNS matched "Drive" inside "Distributed Drive"
 # (a drivetrain configuration, nothing to do with driving a car).
 #
@@ -292,77 +292,77 @@ def score_category(text, keywords):
 
 
 # A local LLM (qwen2.5:7b-instruct, see fetch_llm_relevance_labels.py) graded
-# a sample of papers "core"/"adjacent" against the same core-vs-adjacent
+# a sample of papers "AV"/"non-AV" against the same AV-vs-non-AV
 # definition used here, and scored 100% precision / 67% recall against 65
-# hand-labeled papers: when it says core, it's right, but it's conservative
-# and misses about a third of true core papers. That precision/recall shape
+# hand-labeled papers: when it says AV, it's right, but it's conservative
+# and misses about a third of true AV papers. That precision/recall shape
 # is exactly what makes it useful as a *promotion* signal on top of the
 # keyword pass (catch keyword misses) rather than a replacement for it
 # (its recall gap would silently drop papers the keywords already catch).
 
 
-def classify_relevance(title, abstract, llm_says_core=False):
+def classify_relevance(title, abstract, llm_says_av=False):
     """Binary: is this paper about autonomous *road* vehicles, yes or no.
 
     Layered, each layer only able to push one way:
 
     0. Maintainer hard labels (data/relevance_labels.json, "hard": true) ->
        either way. Confirmed ground truth wins over every heuristic below;
-       this is the only layer that can force "adjacent" -> "core" or the
+       this is the only layer that can force "non-AV" -> "AV" or the
        reverse for a specific title.
-    1. Hard scope pre-filters -> "adjacent" only: the mechanical/hardware-only
+    1. Hard scope pre-filters -> "non-AV" only: the mechanical/hardware-only
        exclusion, and the non-road-vehicle "off-scope" title guard (aerial /
        underwater / legged / manipulation / spacecraft). Scope definitions,
        not things to learn from noisy labels.
-    2. Keyword floor -> "core": an explicit AV-specific phrase
+    2. Keyword floor -> "AV": an explicit AV-specific phrase
        (AV_RELEVANCE_TERMS) anywhere in title/abstract, a standalone driving
        word in the title, or a title-only phrase in the title. This is the
        historical behavior and it is a *floor* -- the model below can add to
        it but never overrides it, so the obvious hits can't regress.
-    3. Trained scorer (data/relevance_model.json) -> "core": learned
+    3. Trained scorer (data/relevance_model.json) -> "AV": learned
        per-phrase weights (separate weight for a phrase in the title vs the
        abstract) + a threshold, from the hand labels + the two local-LLM
        passes. This is what makes it "more than counting" -- it catches
        papers where several weak-ish signals add up, and it is trained with
        negative weights on phrases that over-fire ("driving dataset",
        "onboard", ...). Only consulted for papers the keyword floor didn't
-       already call core, so a mis-weighting can't flood core corpus-wide.
-    4. Local-LLM "core" verdict -> "core": individually-vetted promotions for
+       already call AV, so a mis-weighting can't flood AV corpus-wide.
+    4. Local-LLM "AV" verdict -> "AV": individually-vetted promotions for
        the generically-titled AV papers (no AV phrase, no abstract) that no
        keyword or weight scheme can see. See fetch_llm_relevance_labels*.py.
     """
     # 0. maintainer hard labels -- confirmed ground truth, overrides all of it
     key = normalize_title(title)
     if key in HARD_NON_AV_TITLES:
-        return "adjacent"
+        return "non-AV"
     if key in HARD_AV_TITLES:
-        return "core"
+        return "AV"
 
     title_l = (title or "").lower()
     abstract_l = (abstract or "").lower()
 
     if is_mechanical_hardware_only(title_l, abstract_l):
-        return "adjacent"
+        return "non-AV"
     if any(p.search(title_l) for p in OFF_SCOPE_TITLE_PATTERNS):
-        return "adjacent"
+        return "non-AV"
 
     # 2. keyword floor (never regressed by the model)
     if any(p.search(title_l) or p.search(abstract_l) for p in AV_RELEVANCE_PATTERNS):
-        return "core"
+        return "AV"
     if any(p.search(title_l) for p in TITLE_STRONG_PATTERNS):
-        return "core"
+        return "AV"
     if any(p.search(title_l) for p in AV_TITLE_ONLY_PATTERNS):
-        return "core"
+        return "AV"
 
     # 3. trained scorer, for keyword-floor-negative papers only
     if RELEVANCE_MODEL is not None and \
             relevance_model_score(title, abstract) >= RELEVANCE_MODEL["threshold"]:
-        return "core"
+        return "AV"
 
     # 4. LLM second opinion
-    if llm_says_core:
-        return "core"
-    return "adjacent"
+    if llm_says_av:
+        return "AV"
+    return "non-AV"
 
 
 # Does this title say the paper PRESENTS a dataset/benchmark, as opposed to
@@ -372,7 +372,7 @@ def classify_relevance(title, abstract, llm_says_core=False):
 # had to rank it first, and the title check could only veto. In practice the
 # scoring almost never ranked it first, because a dataset paper's title and
 # abstract are dominated by the tasks its data supports -- so the category
-# held 31 papers out of a 25k corpus, while 755 core papers said "dataset",
+# held 31 papers out of a 25k corpus, while 755 AV papers said "dataset",
 # "benchmark" or "corpus" in their own titles. A field where dataset papers
 # are among the most-cited work in it cannot plausibly have 31 of them, and
 # the ones that did land there scored an implausible 377 citations/paper,
@@ -427,7 +427,35 @@ def presents_dataset(title):
     return not any(p.search(t) for p in DATASET_TITLE_NEGATIVE)
 
 
-def classify_paper(title, abstract, categories, llm_core_titles=frozenset(), known_dataset_titles=frozenset()):
+# Radar papers otherwise scatter into object-detection / segmentation /
+# mapping-localization / sensor-fusion, because a radar method paper co-mentions
+# "detection", "point cloud", "odometry", "fusion" as much as its sensor. So
+# radar-perception is a GATE (like presents_dataset above), not just a keyword
+# list: a paper whose title says "radar", or whose abstract is radar-dense,
+# is radar-perception outright -- keeping every radar paper in one bucket
+# (user-requested). Non-automotive radars (GPR / SAR / weather) are excluded.
+_RADAR_NON_AUTOMOTIVE = re.compile(
+    r"\b(ground[- ]penetrating radar|gpr\b|synthetic aperture radar|\bsar imag|"
+    r"through[- ]wall radar|over[- ]the[- ]horizon radar)", re.I)
+_RADAR_TITLE = re.compile(r"\bradars?\b", re.I)
+_RADAR_STRONG = re.compile(
+    r"\b(automotive radar|mmwave radar|mm-wave radar|fmcw radar|4d radar|4d imaging radar|"
+    r"imaging radar|scanning radar|spinning radar|radar odometry|radar point cloud|"
+    r"radar-based|radar sensor|radar spectr\w+|range-doppler|range-azimuth|micro-doppler|"
+    r"radar tensor|radar cube|radar detection)\b", re.I)
+
+
+def is_radar_paper(title, abstract):
+    t = title or ""
+    ab = abstract or ""
+    if _RADAR_NON_AUTOMOTIVE.search(f"{t} {ab}"):
+        return False
+    if _RADAR_TITLE.search(t):
+        return True
+    return len(_RADAR_STRONG.findall(ab)) >= 2 or ab.lower().count("radar") >= 4
+
+
+def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known_dataset_titles=frozenset()):
     # A dataset/benchmark paper's own abstract is dominated by the TASKS its
     # data supports (detection, tracking, ...), not by "we introduce a
     # dataset" phrasing repeated often enough to outscore those -- confirmed
@@ -439,7 +467,12 @@ def classify_paper(title, abstract, categories, llm_core_titles=frozenset(), kno
     # here keeps that page and this category consistent by construction,
     # not just by keyword luck.
     if normalize_title(title) in known_dataset_titles or presents_dataset(title):
-        return "dataset-benchmark-paper", classify_relevance(title, abstract, normalize_title(title) in llm_core_titles)
+        return "dataset-benchmark-paper", classify_relevance(title, abstract, normalize_title(title) in llm_av_titles)
+
+    # Radar gate (see is_radar_paper) -- runs after the dataset gate so a
+    # "Radar Dataset for ..." title still lands in dataset-benchmark-paper.
+    if is_radar_paper(title, abstract):
+        return "radar-perception", classify_relevance(title, abstract, normalize_title(title) in llm_av_titles)
 
     text = f"{title} {abstract or ''}".lower()
     title_l = (title or "").lower()
@@ -500,6 +533,6 @@ def classify_paper(title, abstract, categories, llm_core_titles=frozenset(), kno
             continue
         category = best_id
         break
-    llm_says_core = normalize_title(title) in llm_core_titles
-    relevance = classify_relevance(title, abstract, llm_says_core)
+    llm_says_av = normalize_title(title) in llm_av_titles
+    relevance = classify_relevance(title, abstract, llm_says_av)
     return category, relevance

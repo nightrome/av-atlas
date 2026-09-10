@@ -141,8 +141,8 @@
   </div>
   <span id="papers-relevance-holder" hidden><span class="page-size">Papers
     <select id="papers-relevance">
-      <option value="core" selected>AV papers</option>
-      <option value="adjacent">Non-AV papers</option>
+      <option value="AV" selected>AV papers</option>
+      <option value="non-AV">Non-AV papers</option>
       <option value="both">Both</option>
     </select>
   </span></span>
@@ -429,8 +429,8 @@ function render(stats) {
   }
 
   // Not itself an AV paper/citation figure -- computed server-side
-  // (aggregate.py) from the full corpus, not from all_papers (core-only)
-  // here, since stats_adjacent.json deliberately carries no author field to
+  // (aggregate.py) from the full corpus, not from all_papers (AV-only)
+  // here, since stats_non_av.json deliberately carries no author field to
   // search client-side (see non_av_paper_counts/non_av_paper_citations'
   // own comment in aggregate.py).
   const nonAvCount = (stats.non_av_paper_counts || {})[name] || 0;
@@ -685,16 +685,16 @@ function render(stats) {
   renderCitingAuthors();
 
   // Not-AV-relevant papers aren't in stats.all_papers at all (see
-  // aggregate.py's ADJACENT_OUT_FILE comment) -- fetched lazily, only once
+  // aggregate.py's NON_AV_OUT_FILE comment) -- fetched lazily, only once
   // the reader actually switches away from the default "AV relevant" view,
   // same reasoning as the shared filter bar's own relevance dropdown
   // (fetchStatsWithRelevance in filters.js). Cached after the first fetch
-  // so switching back and forth doesn't refetch stats_adjacent.json (a
+  // so switching back and forth doesn't refetch stats_non_av.json (a
   // large file) every time.
   let adjacentPapersForAuthor = null;
-  function fetchAdjacentPapersForAuthor() {
+  function fetchNonAvPapersForAuthor() {
     if (adjacentPapersForAuthor) return Promise.resolve(adjacentPapersForAuthor);
-    return fetch('stats_adjacent.json').then(r => r.json()).then(all => {
+    return fetch('stats_non_av.json').then(r => r.json()).then(all => {
       adjacentPapersForAuthor = (all || []).filter(p => (p.authors || []).includes(name));
       return adjacentPapersForAuthor;
     });
@@ -734,16 +734,16 @@ function render(stats) {
     renderPapersPage();
   }
   function renderPapers() {
-    // Defaults to 'core' for anything other than an explicit 'adjacent'/
+    // Defaults to 'AV' for anything other than an explicit 'non-AV'/
     // 'both' -- not just the empty string from a page load before the
     // select's own HTML default has taken effect, but also (in the test
     // harness's DOM stub) an id declared only in static markup, which comes
     // back as a generic auto-vivified element with no real .value at all.
     const relevance = document.getElementById('papers-relevance').value;
-    if (relevance === 'adjacent') {
-      fetchAdjacentPapersForAuthor().then(drawPapersTable);
+    if (relevance === 'non-AV') {
+      fetchNonAvPapersForAuthor().then(drawPapersTable);
     } else if (relevance === 'both') {
-      fetchAdjacentPapersForAuthor().then(adjacent => drawPapersTable([...papers, ...adjacent]));
+      fetchNonAvPapersForAuthor().then(nonAv => drawPapersTable([...papers, ...nonAv]));
     } else {
       drawPapersTable(papers);
     }

@@ -185,8 +185,7 @@
       and an <strong>AV-relevance</strong> label independently, against a written rubric: a paper
       is an <em>AV paper</em> if its own contribution or evaluation is about automating a road
       vehicle or the driving task, and a <em>non-AV paper</em> if it only names autonomous driving
-      as one possible application. (The code and the rubric call these two <em>core</em> and
-      <em>adjacent</em>; they are the same two labels the “Show” control offers.) A layered
+      as one possible application. A layered
       classifier decides it: hard scope filters first exclude non-road
       platforms (aerial, underwater, legged, manipulation) and pure vehicle-hardware papers; then
       an explicit AV-specific phrase in the title or abstract, or a standalone driving word in the
@@ -473,7 +472,7 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   const cs = stats.corpus_stats || {};
   const cov = cs.citation_graph_coverage || {};
   const verif = stats.verification || {};
-  const coreTotal = stats.core_relevant || 0;
+  const coreTotal = stats.av_relevant || 0;
 
   // -- Intro fact tiles --
   const intro = document.getElementById('intro-facts');
@@ -558,7 +557,7 @@ fetch('stats.json').then(r => r.json()).then(stats => {
     addRow(statusBody, 'AV classification', stages['2_classified'] || stages['1_discovered'] || 0, coreTotal);
     addRow(statusBody, 'Abstract lookup', stages['3_abstract'] || 0, coreTotal);
     // Both reference sources (CVF PDFs and arXiv preprints) combined and
-    // deduplicated by aggregate.py. Denominator is every core paper some
+    // deduplicated by aggregate.py. Denominator is every AV paper some
     // source could reach; older stats.json builds without the combined
     // field fall back to summing the two per-source counts.
     const refsScanned = cov.refs_any_scanned != null
@@ -566,7 +565,7 @@ fetch('stats.json').then(r => r.json()).then(stats => {
       : (cov.cvf_scanned || 0) + (cov.cvf_permanent_failures || 0) + (cov.arxiv_scanned || 0);
     const refsEligible = cov.refs_any_eligible != null
       ? cov.refs_any_eligible
-      : (cov.cvf_core_total || 0) + (cov.arxiv_eligible_total || 0);
+      : (cov.cvf_av_total || 0) + (cov.arxiv_eligible_total || 0);
     addRow(statusBody, 'Reference lookup', refsScanned, refsEligible);
     addRow(statusBody, 'Affiliation lookup', verif.papers_with_author_detail || 0, coreTotal);
   }

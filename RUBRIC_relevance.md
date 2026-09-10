@@ -1,9 +1,7 @@
 # AV-relevance labelling rubric (v1)
 
 The single question every paper in this corpus gets: **is this paper about
-autonomous *road* vehicles?** Answer is binary: **AV** or **non-AV**. (These are stored in
-`data/relevance_labels*.json` and `av_relevance` as `core`/`adjacent`
-respectively, kept for historical reasons.)
+autonomous *road* vehicles?** Answer is binary: **AV** or **non-AV**.
 This rubric is the spec. The automated classifier (`scripts/classify.py`)
 and every human label (`data/relevance_labels*.json`) are measured against
 it. If a real paper doesn't fit cleanly here, the rubric is wrong -- fix

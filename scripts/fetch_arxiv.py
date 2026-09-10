@@ -12,7 +12,7 @@ rate-limited (429) by arXiv's API, compounded by fetch_affiliations_arxiv.py
 already hitting the same domain concurrently. This is the opposite shape:
 ~100 small, targeted per-author queries (one arXiv author-search call each),
 for the top AV researchers already ranked in this corpus by paper count
-(data/stats.json's all_papers, core-relevant only) -- a researcher who
+(data/stats.json's all_papers, AV-relevant only) -- a researcher who
 already has several AV papers in the corpus is likely to have more on arXiv
 that haven't reached a tracked venue yet (or won't -- a preprint under
 review, an industry technical report). 100 requests at arXiv's own
@@ -24,8 +24,8 @@ Like every per-author or per-keyword pull (as opposed to a venue's complete
 proceedings), this is a recall net, not a precision filter: classify.py's
 real relevance check still runs on every fetched paper during
 merge_corpus.py, on its usual terms, so a top author's non-AV papers (they
-all have some) end up "adjacent" like any other non-AV paper, not silently
-forced "core" just for showing up here.
+all have some) end up "non-AV" like any other non-AV paper, not silently
+forced "AV" just for showing up here.
 
 Writes av-atlas/data/venues/arxiv_authors.json, same schema as every
 other venue file ("conference": "arXiv preprint", so it renders with the

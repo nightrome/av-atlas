@@ -47,7 +47,7 @@ be run before every commit.
 already be reflected** -- always go through `scripts/build_public_site.py` (or
 `scripts/deploy.py`, which calls it), since that's the one command that reruns
 `merge_corpus.py` first. Crawler scripts (`mine_abstracts.py`,
-`backfill_citing_venues.py`, `enrich_core_authors.py`, ...) write straight into
+`backfill_citing_venues.py`, `enrich_av_authors.py`, ...) write straight into
 `data/papers_full.json` or `data/venues/*.json` and stop there -- nothing about running
 one guarantees its results reach `stats.json` or the live site on its own.
 
@@ -65,7 +65,7 @@ the fresh merge.
   shared JS/CSS below, `logo.svg`/`og-image.png`, and `site/assets/` (vendored
   institution/venue logos). `build_public_site.py` copies this tree into `public/`
   alongside a fresh `stats.json`; there's no build step for the pages themselves.
-  Each page reads `stats.json` (or `stats_adjacent.json` for the "include
+  Each page reads `stats.json` (or `stats_non_av.json` for the "include
   non-AV papers" view) at runtime.
 - `site/nav.js` -- shared top nav bar, injected into every page via `<nav id="topnav">`.
 - `site/filters.js` -- shared filter-bar component (`renderFilterBar`) used across the
@@ -83,7 +83,7 @@ the fresh merge.
 - `scripts/` -- the whole data pipeline (see README.md) plus `build_public_site.py` and
   `deploy.py`.
 - `data/` -- the crawled/derived corpus. The large derived files (`papers_full.json`,
-  `stats.json`, `stats_adjacent.json`, `abstracts/shard-NN.json`, citation-graph side
+  `stats.json`, `stats_non_av.json`, `abstracts/shard-NN.json`, citation-graph side
   files, reference-list dumps) are gitignored -- regenerable from the smaller tracked
   source files (`data/venues/*.json`, `scholar_profiles.json`, `orcids.json`, ...), not
   worth the repo bloat or unreviewable diffs. `data/abstracts/` is sharded out of

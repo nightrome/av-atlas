@@ -76,7 +76,7 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2 style="margin-top:0;">Venues</h2>
-    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Venues ranked by the chosen metric, with each one's AV-relevant paper count and in-corpus citations. The Venues filter switches between the core set of fully-indexed venues and every venue that appears anywhere in the corpus." data-tip="Venues ranked by the chosen metric, with each one's AV-relevant paper count and in-corpus citations. The Venues filter switches between the core set of fully-indexed venues and every venue that appears anywhere in the corpus.">i</span></div>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Venues ranked by the chosen metric, with each one's AV-relevant paper count and in-corpus citations. The Venues filter switches between the AV set of fully-indexed venues and every venue that appears anywhere in the corpus." data-tip="Venues ranked by the chosen metric, with each one's AV-relevant paper count and in-corpus citations. The Venues filter switches between the AV set of fully-indexed venues and every venue that appears anywhere in the corpus.">i</span></div>
   </div>
   <p id="venues-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: 0 0 12px;"></p>
   <div id="pagination-container"></div>
@@ -101,7 +101,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
         id: 'exclude-preprints', dropdownLabel: 'PREPRINTS',
         storageKey: 'venues-exclude-preprints', onChange: () => render(),
       },
-      // "Seed" (default) restricts the table to the core set of venues AV
+      // "Seed" (default) restricts the table to the AV set of venues AV
       // Atlas indexes in full; "All" lifts that and shows every venue string
       // in the corpus (~1,100, almost all single citation-graph-discovered
       // papers). Same underlying excludeNonSeed boolean as before -- only the
@@ -182,15 +182,15 @@ function render() {
 
   const totalIndexed = (stats.corpus_stats || {}).by_venue || {};
   // AV paper ratio needs the true AV-relevant count for each venue
-  // regardless of the "Show" toggle above -- `papers` IS core+adjacent
-  // under "Both" and adjacent-only under "Non-AV papers", so using it as
+  // regardless of the "Show" toggle above -- `papers` IS AV+non-AV
+  // under "Both" and non-AV-only under "Non-AV papers", so using it as
   // the ratio's numerator too made every venue read ~100% AV under "Both"
   // (numerator and denominator became the same total-papers count) and an
-  // inverted number under "Non-AV papers". stats.core_papers (see
+  // inverted number under "Non-AV papers". stats.av_papers (see
   // fetchStatsWithRelevance in filters.js) is always the AV-relevant set
   // alone; filtered the same way (search/category/year/preprints) so it
   // still respects everything except the relevance toggle itself.
-  let corePapers = filterPapers(stats.core_papers || [], filters);
+  let corePapers = filterPapers(stats.av_papers || [], filters);
   if (filters.checkbox) corePapers = corePapers.filter(p => p.venue !== 'arXiv');
   const avPapersByVenue = {};
   corePapers.forEach(p => { if (p.venue) avPapersByVenue[p.venue] = (avPapersByVenue[p.venue] || 0) + 1; });
@@ -205,7 +205,7 @@ function render() {
   // correlation matrix on Insights uses. "All" lifts the filter and shows
   // every venue string in the corpus (~1,100, almost all single
   // citation-graph-discovered papers). NOT big_venues, which also counts
-  // any venue with >25 core papers (IEEE Access, Neurocomputing, ...) that
+  // any venue with >25 AV papers (IEEE Access, Neurocomputing, ...) that
   // isn't actually a seed venue.
   const seedVenues = new Set(Object.keys((stats.corpus_stats || {}).venue_coverage || {}));
   if (seedVenues.size && filters.excludeNonSeed) rows = rows.filter(r => seedVenues.has(r.name));

@@ -16,12 +16,12 @@ Runs, in order, and aborts (non-zero exit) if any step fails:
      reproduces the same corpus: both patch papers_full.json directly, which
      step 1 rebuilds from data/venues/*.json alone and would otherwise
      silently drop them.
-  3. aggregate.py -- rebuilds data/stats.json + data/stats_adjacent.json.
+  3. aggregate.py -- rebuilds data/stats.json + data/stats_non_av.json.
   4. run_tests.py -- the full test suite (Python + JS + smoke + regression).
   5. build_public_site() below -- publishes the built HTML/stats.
 
 This exists because crawler scripts (mine_abstracts.py,
-backfill_citing_venues.py, enrich_core_authors.py, ...) write straight into
+backfill_citing_venues.py, enrich_av_authors.py, ...) write straight into
 data/papers_full.json or data/venues/*.json and stop there -- nothing about
 running one used to guarantee its results ever reached stats.json or the
 live site. That happened for real: a session mined ~1,400 new abstracts,
@@ -210,9 +210,9 @@ def build_public_site():
     # one yet (aggregate.py writes it, but an older stats.json could still
     # be lying around from before that existed), so this copy is optional,
     # unlike stats.json itself above.
-    adjacent_path = BASE / "data" / "stats_adjacent.json"
-    if adjacent_path.exists():
-        shutil.copy2(adjacent_path, page_dir / "stats_adjacent.json")
+    non_av_path = BASE / "data" / "stats_non_av.json"
+    if non_av_path.exists():
+        shutil.copy2(non_av_path, page_dir / "stats_non_av.json")
     shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
     # see theme-light.css's own header comment.
@@ -248,7 +248,7 @@ def build_public_site():
     # part of the current expected output. Caught in practice: label_relevance.html
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
-        | {"stats.json", "stats_adjacent.json", "theme.css", "theme-light.css", "logo.svg",
+        | {"stats.json", "stats_non_av.json", "theme.css", "theme-light.css", "logo.svg",
            "og-image.png", "sitemap.xml", "robots.txt"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-The small, precise counterpart to enrich_core_authors.py's title-search
-lookup: for the av_relevance=="core" papers that still have no
+The small, precise counterpart to enrich_av_authors.py's title-search
+lookup: for the av_relevance=="AV" papers that still have no
 authors_detail but DO carry a DOI, resolve them against OpenAlex in
 batches of 50 via `filter=doi:a|b|c|...` -- one request per 50 papers
 instead of one per paper. ~900 such papers today => ~19 requests total, so
@@ -12,17 +12,17 @@ see that script).
 
 Writes authors_detail (name + affiliations + country codes + OpenAlex
 author id + ORCID) straight onto papers_full.json, stamped
-authors_detail_source="openalex", exactly like enrich_core_authors.py --
+authors_detail_source="openalex", exactly like enrich_av_authors.py --
 only touches papers with no authors_detail at all, never overwrites a
 richer existing source. Re-reads the file immediately before writing so a
 concurrent merge_corpus.py rerun isn't clobbered.
 
-Do NOT run this at the same time as enrich_core_authors.py or
+Do NOT run this at the same time as enrich_av_authors.py or
 apply_affiliations_arxiv.py -- all three write papers_full.json directly.
 (fetch_affiliations_arxiv.py only writes its own side files, so THAT is
 fine to have running alongside this.)
 
-Usage: python enrich_core_authors_by_doi.py
+Usage: python enrich_av_authors_by_doi.py
 """
 import json
 import re
@@ -90,13 +90,13 @@ def main():
     papers = json.loads(IN_FILE.read_text(encoding="utf-8"))
     targets = {}  # bare doi -> normalized title (first paper wins per doi)
     for p in papers:
-        if p.get("av_relevance") != "core" or p.get("authors_detail"):
+        if p.get("av_relevance") != "AV" or p.get("authors_detail"):
             continue
         d = norm_doi(p.get("doi"))
         if d and d not in targets:
             targets[d] = p["title"]
     dois = list(targets)
-    print(f"{len(dois)} core papers with a DOI and no authors_detail", flush=True)
+    print(f"{len(dois)} AV papers with a DOI and no authors_detail", flush=True)
     if not dois:
         return
 
@@ -124,7 +124,7 @@ def main():
     papers = json.loads(IN_FILE.read_text(encoding="utf-8"))
     n = 0
     for p in papers:
-        if p.get("av_relevance") != "core" or p.get("authors_detail"):
+        if p.get("av_relevance") != "AV" or p.get("authors_detail"):
             continue
         ad = found.get(norm_doi(p.get("doi")))
         if ad:

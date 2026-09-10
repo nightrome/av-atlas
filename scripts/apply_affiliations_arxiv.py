@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Folds fetch_affiliations_arxiv.py's side file (data/affiliations_arxiv.json)
-into papers_full.json's authors_detail -- the same field enrich_core_authors.py
+into papers_full.json's authors_detail -- the same field enrich_av_authors.py
 (OpenAlex) writes, so both sources feed the Institutions/Countries pages
 uniformly. Only applied to papers that still have no authors_detail at all;
 a paper OpenAlex already enriched keeps that richer data (OpenAlex includes

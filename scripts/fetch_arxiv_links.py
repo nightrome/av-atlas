@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Finds an arXiv link for every core paper, even ones already published at a
+Finds an arXiv link for every AV paper, even ones already published at a
 real venue -- most conference papers have an arXiv preprint too, but until
 now this corpus only ever showed an arXiv icon for papers whose ONLY source
 was an arxiv*.json venue file (see index.html's sourceCell(), which gated
@@ -53,7 +53,7 @@ def save_json(path, data):
 
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    core = [p for p in papers if p.get("av_relevance") == "core" and not p.get("arxiv_url")]
+    av = [p for p in papers if p.get("av_relevance") == "AV" and not p.get("arxiv_url")]
 
     ids = load_json(OUT_FILE, {})
 
@@ -73,8 +73,8 @@ def main():
         print(f"Reused {n_reused} arxiv_id lookups already done by fetch_affiliations_arxiv.py (no network cost)",
               flush=True)
 
-    pending = [p for p in core if normalize_title(p["title"]) not in ids]
-    print(f"{len(pending)} core papers left to search on arXiv (of {len(core)} still missing a link)", flush=True)
+    pending = [p for p in av if normalize_title(p["title"]) not in ids]
+    print(f"{len(pending)} AV papers left to search on arXiv (of {len(av)} still missing a link)", flush=True)
 
     processed = 0
     found = 0

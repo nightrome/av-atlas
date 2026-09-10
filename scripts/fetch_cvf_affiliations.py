@@ -3,7 +3,7 @@
 """
 Extracts author affiliations from page 1 of CVF-hosted PDFs (CVPR/ICCV/WACV
 -- predictable URL, no rate limit), as a free alternative to OpenAlex for
-core papers that don't have an arXiv preprint (fetch_affiliations_arxiv.py
+AV papers that don't have an arXiv preprint (fetch_affiliations_arxiv.py
 already covers the ones that do -- see that script's docstring for why
 arXiv's ar5iv HTML is preferred over raw PDF text when both exist: cleaner
 markup, no PDF-layout noise).
@@ -147,7 +147,7 @@ def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     pending_keys = {
         normalize_title(p["title"]) for p in papers
-        if p.get("av_relevance") == "core" and (p.get("venue") or "") in CVF_VENUES
+        if p.get("av_relevance") == "AV" and (p.get("venue") or "") in CVF_VENUES
         and not p.get("authors_detail")
     }
     pdf_url_index = build_cvf_pdf_url_index()
@@ -158,8 +158,8 @@ def main():
     # Shuffled, not corpus order -- see build_citation_graph.py's matching
     # fix for why (user-requested, applied to every incremental crawler).
     random.shuffle(pending)
-    print(f"{len(pending)} core CVF papers left to check for affiliations "
-          f"(of {len(pending_keys)} core CVF papers still missing authors_detail)", flush=True)
+    print(f"{len(pending)} AV CVF papers left to check for affiliations "
+          f"(of {len(pending_keys)} AV CVF papers still missing authors_detail)", flush=True)
 
     processed = 0
     got_affiliations = 0

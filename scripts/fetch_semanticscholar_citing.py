@@ -37,10 +37,10 @@ arxiv*.json as lowest-priority fill, and tags this file's papers with the
 "arxiv_s2_citing_discovery" source (see discovery_source() there).
 
 Usage: python fetch_semanticscholar_citing.py [N|all]   # top N most-cited
-                                                           # core papers as
+                                                           # AV papers as
                                                            # seeds (default
                                                            # 150), or "all"
-                                                           # for every core
+                                                           # for every AV
                                                            # paper
 """
 import json
@@ -81,7 +81,7 @@ def normalize_title(t):
 
 
 def top_seed_titles(n):
-    # n=None means every core paper, not just ones with an in-corpus
+    # n=None means every AV paper, not just ones with an in-corpus
     # citation already -- a paper with zero IN-corpus citations can easily
     # still have real citations Semantic Scholar knows about that we don't,
     # which is the whole point of seeding from it.

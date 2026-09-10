@@ -31,7 +31,7 @@ TEMPLATE = """<!DOCTYPE html>
   :root {
     --bg: #0b0f19; --panel: #141a29; --panel2: #1b2333; --border: #26304a;
     --text: #e6ebf5; --muted: #8b95ac; --accent: #5eead4; --accent2: #818cf8;
-    --core: #4ade80; --adjacent: #f97373;
+    --av: #4ade80; --non-av: #f97373;
   }
   * { box-sizing: border-box; }
   body {
@@ -68,8 +68,8 @@ TEMPLATE = """<!DOCTYPE html>
   }
   button:hover { transform: translateY(-1px); }
   button:active { transform: translateY(0); }
-  #btnCore { border-color: var(--core); color: var(--core); }
-  #btnAdjacent { border-color: var(--adjacent); color: var(--adjacent); }
+  #btnAV { border-color: var(--av); color: var(--av); }
+  #btnNonAV { border-color: var(--non-av); color: var(--non-av); }
   #btnSkip { color: var(--muted); flex: 0.5; }
   .hint { text-align: center; font-size: 11px; color: var(--muted); margin-top: 10px; }
 
@@ -143,15 +143,15 @@ function render() {
       <p class="abstract">${highlight(c.abstract, c.matched_terms)}</p>
       <div class="terms">matched terms: ${c.matched_terms.map(t => "<code>" + t + "</code>").join(" ")}</div>
       <div class="actions">
-        <button id="btnCore" title="C">✓ Core — genuinely about AVs</button>
-        <button id="btnAdjacent" title="A">✗ Adjacent — not really about AVs</button>
+        <button id="btnAV" title="C">✓ Core — genuinely about AVs</button>
+        <button id="btnNonAV" title="A">✗ Adjacent — not really about AVs</button>
         <button id="btnSkip" title="S">Skip</button>
       </div>
-      <p class="hint">keyboard: C = core, A = adjacent, S = skip</p>
+      <p class="hint">keyboard: A = AV, N = non-AV, S = skip</p>
     </div>
   `;
-  document.getElementById("btnCore").onclick = () => label("core");
-  document.getElementById("btnAdjacent").onclick = () => label("adjacent");
+  document.getElementById("btnAV").onclick = () => label("AV");
+  document.getElementById("btnNonAV").onclick = () => label("non-AV");
   document.getElementById("btnSkip").onclick = () => skip();
 }
 
@@ -168,8 +168,8 @@ function skip() {
 
 document.addEventListener("keydown", e => {
   if (!order.length) return;
-  if (e.key.toLowerCase() === "c") label("core");
-  else if (e.key.toLowerCase() === "a") label("adjacent");
+  if (e.key.toLowerCase() === "c") label("AV");
+  else if (e.key.toLowerCase() === "a") label("non-AV");
   else if (e.key.toLowerCase() === "s") skip();
 });
 

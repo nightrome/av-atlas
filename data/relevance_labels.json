@@ -3,711 +3,711 @@
     "id": "fairscenelearningclassdisentangled2d3drepresentationsforsemanticscenecompletion",
     "title": "FairScene: Learning Class-Disentangled 2D/3D Representations for Semantic Scene Completion",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "ndcsceneboostmonocular3dsemanticscenecompletioninnormalizeddevicecoordinatesspace",
     "title": "NDC-Scene: Boost Monocular 3D Semantic Scene Completion in Normalized Device Coordinates Space",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "prooodprototypeguidedoutofdistribution3doccupancyprediction",
     "title": "ProOOD: Prototype-Guided Out-of-Distribution 3D Occupancy Prediction",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "efficientpointcloudsegmentationwithgeometryawaresparsenetworks",
     "title": "Efficient Point Cloud Segmentation with Geometry-Aware Sparse Networks",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "magicdrive3dcontrollable3dgenerationforanyviewrenderinginstreetscenes",
     "title": "MagicDrive3D: Controllable 3D Generation for Any-View Rendering in Street Scenes",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "fshnetfullysparsehybridnetworkfor3dobjectdetection",
     "title": "FSHNet: Fully Sparse Hybrid Network for 3D Object Detection",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "monocular3dobjectdetectionleveragingaccurateproposalsandshapereconstruction",
     "title": "Monocular 3D Object Detection Leveraging Accurate Proposals and Shape Reconstruction",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "trafficsimlearningtosimulaterealisticmultiagentbehaviors",
     "title": "TrafficSim: Learning To Simulate Realistic Multi-Agent Behaviors",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "narrowingthecoordinateframegapinbehaviorpredictionmodelsdistillationforefficientandaccuratescenecentricmotionforecasting",
     "title": "Narrowing the coordinate-frame gap in behavior prediction models: Distillation for efficient and accurate scene-centric motion forecasting",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "geometryuncertaintyprojectionnetworkformonocular3dobjectdetection",
     "title": "Geometry Uncertainty Projection Network for Monocular 3D Object Detection",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "healswinavisiontransformeronthesphere",
     "title": "HEAL-SWIN: A Vision Transformer On The Sphere",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "sparsealignafullysparseframeworkforcooperativeobjectdetection",
     "title": "SparseAlign: a Fully Sparse Framework for Cooperative Object Detection",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "parametricdepthbasedfeaturerepresentationlearningforobjectdetectionandsegmentationinbirdx27seyeview",
     "title": "Parametric Depth Based Feature Representation Learning for Object Detection and Segmentation in Bird&#x27;s-Eye View",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "perldiffcontrollablestreetviewsynthesisusingperspectivelayoutdiffusionmodel",
     "title": "PerLDiff: Controllable Street View Synthesis Using Perspective-Layout Diffusion Model",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "voxelmambagroupfreestatespacemodelsforpointcloudbased3dobjectdetection",
     "title": "Voxel Mamba: Group-Free State Space Models for Point Cloud based 3D Object Detection",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "hdmapgenahierarchicalgraphgenerativemodelofhighdefinitionmaps",
     "title": "HDMapGen: A Hierarchical Graph Generative Model of High Definition Maps",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "weaklysupervisedspatiotemporalvideogroundingwithvariationalcrossmodalalignment",
     "title": "Weakly-Supervised Spatio-Temporal Video Grounding with Variational Cross-Modal Alignment",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "mbptrackimproving3dpointcloudtrackingwithmemorynetworksandboxpriors",
     "title": "MBPTrack: Improving 3D Point Cloud Tracking with Memory Networks and Box Priors",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "semmaesemanticguidedmaskingforlearningmaskedautoencoders",
     "title": "SemMAE: Semantic-Guided Masking for Learning Masked Autoencoders",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "deepmulticapperformancecaptureofmultiplecharactersusingsparsemultiviewcameras",
     "title": "DeepMultiCap: Performance Capture of Multiple Characters Using Sparse Multiview Cameras",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "longcontexttuningforvideogeneration",
     "title": "Long Context Tuning for Video Generation",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "opticalflowestimationforspikingcamera",
     "title": "Optical Flow Estimation for Spiking Camera",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "mask2mapvectorizedhdmapconstructionusingbirdseyeviewsegmentationmasks",
     "title": "Mask2Map: Vectorized HD Map Construction Using Bird's Eye View Segmentation Masks",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "bevsegformerbirdx27seyeviewsemanticsegmentationfromarbitrarycamerarigs",
     "title": "BEVSegFormer: Bird&#x27;s Eye View Semantic Segmentation From Arbitrary Camera Rigs",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "seplutseparableimageadaptivelookuptablesforrealtimeimageenhancement",
     "title": "SepLUT: Separable Image-Adaptive Lookup Tables for Real-Time Image Enhancement",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "qmagfacesimpleandaccuratequalityawarefacerecognition",
     "title": "QMagFace: Simple and Accurate Quality-Aware Face Recognition",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "thedevilisinattentionsharingimprovingcomplexnonrigidimageeditingfaithfulnessviaattentionsynergy",
     "title": "The Devil is in Attention Sharing: Improving Complex Non-rigid Image Editing Faithfulness via Attention Synergy",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "lidar4ddynamicneuralfieldsfornovelspacetimeviewlidarsynthesis",
     "title": "LiDAR4D: Dynamic Neural Fields for Novel Space-time View LiDAR Synthesis",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "kinematic3dobjectdetectioninmonocularvideo",
     "title": "Kinematic 3D Object Detection in Monocular Video",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "vetaditvarianceequalizedandtemporallyadaptivequantizationforefficient4bitdiffusiontransformers",
     "title": "VETA-DiT: Variance-Equalized and Temporally Adaptive Quantization for Efficient 4-bit Diffusion Transformers",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "monitoringobjectdetectionabnormalitiesviadatalabelandpostalgorithmabstractions",
     "title": "Monitoring Object Detection Abnormalities via Data-Label and Post-Algorithm Abstractions",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "leveragingtemporalcuesforsemisupervisedmultiview3dobjectdetection",
     "title": "Leveraging Temporal Cues for Semi-Supervised Multi-View 3D Object Detection",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "arecarsjust3dboxesjointlyestimatingthe3dshapeofmultipleobjects",
     "title": "Are Cars Just 3D Boxes? - Jointly Estimating the 3D Shape of Multiple Objects",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "bayesianmodelselectionapproachtoboundarydetectionwithnonlocalpriors",
     "title": "Bayesian Model Selection Approach to Boundary Detection with Non-Local Priors",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "pixellevelandsemanticleveladjustablesuperresolutionadualloraapproach",
     "title": "Pixel-level and Semantic-level Adjustable Super-resolution: A Dual-LoRA Approach",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "heterogeneousagenttrajectoryforecastingincorporatingclassuncertainty",
     "title": "Heterogeneous-Agent Trajectory Forecasting Incorporating Class Uncertainty",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "amapdistillingfuturepriorsforaheadawareonlinehdmapconstruction",
     "title": "AMap: Distilling Future Priors for Ahead-Aware Online HD Map Construction",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "multispacealignmentstowardsuniversallidarsegmentation",
     "title": "Multi-Space Alignments Towards Universal LiDAR Segmentation",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "aunifiedvariancereducedacceleratedgradientmethodforconvexoptimization",
     "title": "A unified variance-reduced accelerated gradient method for convex optimization",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "rangeldmfastrealisticlidarpointcloudgeneration",
     "title": "RangeLDM: Fast Realistic LiDAR Point Cloud Generation",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "lightstructurefrompinmotionsimpleandaccuratepointlightcalibrationforphysicsbasedmodeling",
     "title": "Light Structure from Pin Motion: Simple and Accurate Point Light Calibration for Physics-based Modeling",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "gohomegraphorientedheatmapoutputforfuturemotionestimation",
     "title": "GOHOME: Graph-Oriented Heatmap Output for future Motion Estimation",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "miningmotionatomsandphrasesforcomplexactionrecognition",
     "title": "Mining Motion Atoms and Phrases for Complex Action Recognition",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "multimodallidarcameranovelviewsynthesiswithunifiedposefreeneuralfields",
     "title": "Multimodal LiDAR-Camera Novel View Synthesis with Unified Pose-free Neural Fields",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "empoweringlowlightimageenhancerthroughcustomizedlearnablepriors",
     "title": "Empowering Low-Light Image Enhancer through Customized Learnable Priors",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "largedisplacement3dobjecttrackingwithhybridnonlocaloptimization",
     "title": "Large-Displacement 3D Object Tracking with Hybrid Non-local Optimization",
     "current_weight": 0,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "automaticconstructionoflanelevelhdmapsforurbanscenes",
     "title": "Automatic Construction of Lane-level HD Maps for Urban Scenes",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "spnasserialtoparallelbackbonesearchforobjectdetection",
     "title": "SP-NAS: Serial-to-Parallel Backbone Search for Object Detection",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "secondorderoptimizationunderheavytailednoisehessianclippingandsamplecomplexitylimits",
     "title": "Second-order Optimization under Heavy-Tailed Noise: Hessian Clipping and Sample Complexity Limits",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "personalizedfederatedlearningunderlocalsupervision",
     "title": "Personalized Federated Learning under Local Supervision",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "shift3dsynthesizinghardinputsfortricking3ddetectors",
     "title": "SHIFT3D: Synthesizing Hard Inputs For Tricking 3D Detectors",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "aframeworkofrehabilitationassistedrobotskillrepresentationlearningandmodulationviamanifoldmappingsandgaussianprocesses",
     "title": "A Framework of Rehabilitation-assisted Robot Skill Representation, Learning, and Modulation via Manifold-Mappings and Gaussian Processes",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "lookbeforeyoufuse2dguidedcrossmodalalignmentforrobust3ddetection",
     "title": "Look Before You Fuse: 2D-Guided Cross-Modal Alignment for Robust 3D Detection",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "tccdettemporarilyconsistentcuesforweaklysupervised3ddetection",
     "title": "TCC-Det: Temporarily consistent cues for weakly-supervised 3D detection",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "graphi2pimagetopointcloudregistrationwithexploringpatternofcorrespondenceviagraphlearning",
     "title": "GraphI2P: Image-to-Point Cloud Registration with Exploring Pattern of Correspondence via Graph Learning",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "monocular3dobjectdetectionanextrinsicparameterfreeapproach",
     "title": "Monocular 3D Object Detection: An Extrinsic Parameter Free Approach",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "feelingthepressuretheinfluenceofvibrotactilepatternsonfeedbackperception",
     "title": "Feeling the Pressure: The Influence of Vibrotactile Patterns on Feedback Perception",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "loopdaconstructingselfloopstoadaptnighttimesemanticsegmentation",
     "title": "LoopDA: Constructing Self-Loops To Adapt Nighttime Semantic Segmentation",
     "current_weight": 0.2,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "dysetadynamicmaskedselfdistillationapproachforrobusttrajectoryprediction",
     "title": "DySeT: a Dynamic Masked Self-distillation Approach for Robust Trajectory Prediction",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "gazetargetdetectionbasedonheadlocalglobalcoordination",
     "title": "Gaze Target Detection Based on Head-Local-Global Coordination",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "predmapnetfutureandhistoricalreasoningforconsistentonlinehdvectorizedmapconstruction",
     "title": "PredMapNet: Future and Historical Reasoning for Consistent Online HD Vectorized Map Construction",
     "current_weight": 0.5,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "banetbilateralaggregationnetworkformobilestereomatching",
     "title": "BANet: Bilateral Aggregation Network for Mobile Stereo Matching",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "seeingunseendiscovernovelbiomedicalconceptsviageometryconstrainedprobabilisticmodeling",
     "title": "Seeing Unseen: Discover Novel Biomedical Concepts via Geometry-Constrained Probabilistic Modeling",
     "current_weight": 0,
-    "label": "adjacent"
+    "label": "non-AV"
   },
   {
     "id": "deepfittingdegreescoringnetworkformonocular3dobjectdetection",
     "title": "Deep Fitting Degree Scoring Network for Monocular 3D Object Detection",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "gaiaatransferlearningsystemofobjectdetectionthatfitsyourneeds",
     "title": "GAIA: A Transfer Learning System of Object Detection That Fits Your Needs",
     "current_weight": 0.08,
-    "label": "core"
+    "label": "AV"
   },
   {
     "id": "afastheuristicsearchapproachforenergyoptimalprofileroutingforelectricvehicles",
     "title": "A Fast Heuristic Search Approach for Energy-Optimal Profile Routing for Electric Vehicles",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "ahybridcounterfactuallearningapproachforelectricvehiclesintegrationtopowersystemsunderdelayedcommunicationandcyberthreats",
     "title": "A Hybrid Counterfactual Learning Approach for Electric Vehicles Integration to Power Systems Under Delayed Communication and Cyber Threats",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "aknowledgesharingevolutionaryalgorithmformultiviewelectricvehiclechargingstationlocation",
     "title": "A Knowledge-Sharing Evolutionary Algorithm for Multi-View Electric Vehicle Charging Station Location",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "amultifidelitybasedantcolonyoptimizationalgorithmforcapacitatedelectricvehicleroutingproblems",
     "title": "A Multifidelity-Based Ant Colony Optimization Algorithm for Capacitated Electric Vehicle Routing Problems",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "anintegratedchargingandcomputationschedulingofelectricvehiclesinedgecomputingsystem",
     "title": "An Integrated Charging and Computation Scheduling of Electric Vehicles in Edge Computing System",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "chargingstrategyplanningforelectricbusesconsideringenroutebatteryswappingservicesandbatterydegradation",
     "title": "Charging Strategy Planning for Electric Buses Considering En-Route Battery Swapping Services and Battery Degradation",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "competitivepricingstrategyforthewirelesscharginglaneoperatorconsideringrangeanxietyofelectricvehicleusers",
     "title": "Competitive Pricing Strategy for the Wireless Charging Lane Operator Considering Range Anxiety of Electric Vehicle Users",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "comprehensiveframeworkforenergyconsumptionestimationinelectricvehicles",
     "title": "Comprehensive Framework for Energy Consumption Estimation in Electric Vehicles",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "digitaltwinbasedreinforcementlearningforenergyexchangeamongelectricvehiclesandbasestationsinadisasteraffectedregion",
     "title": "Digital Twin-Based Reinforcement Learning for Energy Exchange Among Electric Vehicles and Base Stations in a Disaster-Affected Region",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "efficientpostdisasteremergencyenergydeliveryunderdynamicconstraintsanelectricvehicleroutingapproach",
     "title": "Efficient Post-Disaster Emergency Energy Delivery Under Dynamic Constraints: An Electric Vehicle Routing Approach",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "electricvehicleroutingoptimizationforpostaldeliveryandwastecollectioninsmartcities",
     "title": "Electric Vehicle Routing Optimization for Postal Delivery and Waste Collection in Smart Cities",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "enhancingelectricvehicleschargingservicethroughmixedchargingatwostagedistributionallyrobustoptimizationmodel",
     "title": "Enhancing Electric Vehicles Charging Service Through Mixed Charging: A Two-Stage Distributionally Robust Optimization Model",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "environmentawarereinforcementlearningbasedenergyconsumptionpredictionmodelforelectricvehicles",
     "title": "Environment-Aware Reinforcement Learning-Based Energy Consumption Prediction Model for Electric Vehicles",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "integrateddesignofmobilebatteryswappingandchargingservicesforelectricvehicles",
     "title": "Integrated Design of Mobile Battery-Swapping and Charging Services for Electric Vehicles",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "multiobjectiveplanningoptimizationofelectricvehiclechargingstationswithcoordinatedspatiotemporalchargingdemand",
     "title": "Multi-Objective Planning Optimization of Electric Vehicle Charging Stations With Coordinated Spatiotemporal Charging Demand",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "observerbasedoptimalbrakingforcedistributionforurbanrailvehicleswithaxlecontrolledelectropneumaticbrakesystem",
     "title": "Observer-Based Optimal Braking Force Distribution for Urban Rail Vehicles With Axle-Controlled Electro-Pneumatic Brake System",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "robotbasedautomaticchargingforelectricvehiclesusingincrementallearningandbiomimeticcontrol",
     "title": "Robot-Based Automatic Charging for Electric Vehicles Using Incremental Learning and Biomimetic Control",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "spatiotemporalgraphbasedgridintegrationoflargescaleelectricvehiclewithheterogeneouschargingflexibilityaggregation",
     "title": "Spatio-Temporal Graph-Based Grid Integration of Large-Scale Electric Vehicle With Heterogeneous Charging Flexibility Aggregation",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "tauritestackelbergequilibriuminblockchainedenergynetthroughelectricvehicles",
     "title": "TAURITE: Stackelberg Equilibrium in Blockchained Energynet Through Electric Vehicles",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "understandingelectricvehiclerefuelingdemandandparkingpatternsinforecastingplanningandschedulingaliteraturereview",
     "title": "Understanding Electric Vehicle Refueling Demand and Parking Patterns in Forecasting, Planning, and Scheduling: A Literature Review",
-    "label": "adjacent",
+    "label": "non-AV",
     "source": "near_threshold_2026_09",
     "category": "vehicle-dynamics-powertrain"
   },
   {
     "id": "offlinetrackingwithobjectpermanence",
     "title": "Offline Tracking with Object Permanence",
-    "label": "core",
+    "label": "AV",
     "source": "maintainer_2026_09",
     "hard": true
   },
   {
     "id": "leapconsistentmultidomain3dlabelingusingfoundationmodels",
     "title": "LeAP: Consistent Multi-Domain 3D Labeling Using Foundation Models",
-    "label": "core",
+    "label": "AV",
     "source": "maintainer_2026_09",
     "hard": true
   },
   {
     "id": "basalsizebalancedwarmstartactivelearningforlidarsemanticsegmentation",
     "title": "BaSAL: Size Balanced Warm Start Active Learning for LiDAR Semantic Segmentation",
-    "label": "core",
+    "label": "AV",
     "source": "maintainer_2026_09",
     "hard": true
   },
   {
     "id": "motiondiffusercontrollablemultiagentmotionpredictionusingdiffusion",
     "title": "MotionDiffuser: Controllable Multi-Agent Motion Prediction Using Diffusion",
-    "label": "core",
+    "label": "AV",
     "source": "maintainer_2026_09",
     "hard": true
   },
   {
     "id": "let3daplongitudinalerrortolerant3daverageprecisionforcameraonly3ddetection",
     "title": "LET-3D-AP: Longitudinal Error Tolerant 3D Average Precision for Camera-Only 3D Detection",
-    "label": "core",
+    "label": "AV",
     "source": "maintainer_2026_09",
     "hard": true
   },
   {
     "id": "improvingtheintraclasslongtailin3ddetectionviarareexamplemining",
     "title": "Improving the Intra-Class Long-Tail in 3D Detection via Rare Example Mining",
-    "label": "core",
+    "label": "AV",
     "source": "maintainer_2026_09",
     "hard": true
   },
   {
     "id": "lidaraugmentsearchingforscalable3dlidardataaugmentations",
     "title": "LidarAugment: Searching for Scalable 3D LiDAR Data Augmentations",
-    "label": "core",
+    "label": "AV",
     "source": "maintainer_2026_09",
     "hard": true
   },
   {
     "id": "pvtransformerpointtovoxeltransformerforscalable3dobjectdetection",
     "title": "PVTransformer: Point-To-Voxel Transformer for Scalable 3D Object Detection",
-    "label": "core",
+    "label": "AV",
     "source": "maintainer_2026_09",
     "hard": true
   },
   {
     "id": "leflatetoearlytemporalfusionforlidar3dobjectdetection",
     "title": "LEF: Late-To-Early Temporal Fusion for LiDAR 3D Object Detection",
-    "label": "core",
+    "label": "AV",
     "source": "maintainer_2026_09",
     "hard": true
   },
   {
     "id": "thecityscapesdatasetforsemanticurbansceneunderstanding",
     "title": "The Cityscapes Dataset for Semantic Urban Scene Understanding",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "bevfusionmultitaskmultisensorfusionwithunifiedbirdseyeviewrepresentation",
     "title": "BEVFusion: Multi-Task Multi-Sensor Fusion with Unified Bird's-Eye View Representation",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "bevdepthacquisitionofreliabledepthformultiview3dobjectdetection",
     "title": "BEVDepth: Acquisition of Reliable Depth for Multi-View 3D Object Detection",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "loamlidarodometryandmappinginrealtime",
     "title": "LOAM: Lidar Odometry and Mapping in Real-time",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "thehighddatasetadronedatasetofnaturalisticvehicletrajectoriesongermanhighwaysforvalidationofhighlyautomateddrivingsystems",
     "title": "The highD Dataset: A Drone Dataset of Naturalistic Vehicle Trajectories on German Highways for Validation of Highly Automated Driving Systems",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "learningtosimulate",
     "title": "Learning To Simulate",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "themapillaryvistasdatasetforsemanticunderstandingofstreetscenes",
     "title": "The Mapillary Vistas Dataset for Semantic Understanding of Street Scenes",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "voxformersparsevoxeltransformerforcamerabased3dsemanticscenecompletion",
     "title": "VoxFormer: Sparse Voxel Transformer for Camera-Based 3D Semantic Scene Completion",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "partingwithmisconceptionsaboutlearningbasedvehiclemotionplanning",
     "title": "Parting with Misconceptions about Learning-based Vehicle Motion Planning",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "hydramdpendtoendmultimodalplanningwithmultitargethydradistillation",
     "title": "Hydra-MDP: End-to-end Multimodal Planning with Multi-target Hydra-Distillation",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "microscopictrafficsimulationusingsumo",
     "title": "Microscopic Traffic Simulation using SUMO",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "rangenetfastandaccuratelidarsemanticsegmentation",
     "title": "RangeNet++: Fast and Accurate LiDAR Semantic Segmentation",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "voxelrcnntowardshighperformancevoxelbased3dobjectdetection",
     "title": "Voxel R-CNN: Towards High Performance Voxel-based 3D Object Detection",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "frompointstoparts3dobjectdetectionfrompointcloudwithpartawareandpartaggregationnetwork",
     "title": "From Points to Parts: 3D Object Detection From Point Cloud With Part-Aware and Part-Aggregation Network",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "monoscenemonocular3dsemanticscenecompletion",
     "title": "MonoScene: Monocular 3D Semantic Scene Completion",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "multitasklearningusinguncertaintytoweighlossesforscenegeometryandsemantics",
     "title": "Multi-Task Learning Using Uncertainty to Weigh Losses for Scene Geometry and Semantics",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   },
   {
     "id": "orthographicfeaturetransformformonocular3dobjectdetection",
     "title": "Orthographic Feature Transform for Monocular 3D Object Detection",
-    "label": "core",
+    "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
   }

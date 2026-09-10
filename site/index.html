@@ -149,12 +149,12 @@ function arxivIcon() {
 function titleCell(p) {
   const wrap = document.createElement('div');
   wrap.className = 'title-cell';
-  // Adjacent (not core-AV-relevant) papers have no paper.html detail page
+  // Adjacent (not AV) papers have no paper.html detail page
   // generated for them at all (user-requested: "too many" to build one
-  // per paper the way core papers get) -- plain text, not a dead link.
-  const span = document.createElement(p.av_relevance === 'core' ? 'a' : 'span');
+  // per paper the way AV papers get) -- plain text, not a dead link.
+  const span = document.createElement(p.av_relevance === 'AV' ? 'a' : 'span');
   span.className = 'title-text';
-  if (p.av_relevance === 'core') {
+  if (p.av_relevance === 'AV') {
     span.href = `paper.html?title=${encodeURIComponent(p.title)}`;
     span.style.color = 'inherit';
     span.style.textDecoration = 'none';
@@ -456,7 +456,7 @@ function renderResults() {
   const anyFilter = filters.category || filters.venue || filters.year || filters.country || filters.institution || filters.author || filters.minCitations || query || instQuery;
   // Always the full set, not the server's precomputed top_papers -- that's
   // capped at 50, which would silently cap "Show top 100/250" below its own
-  // requested size. Client-side sort/slice over ~19k core papers is cheap
+  // requested size. Client-side sort/slice over ~19k AV papers is cheap
   // enough that the server-side shortcut isn't worth the conflict.
   let papers = filterPapers(stats.all_papers || [], filters);
   if (query) papers = papers.filter(p => matchesSearchQuery(p.title, query));
@@ -480,11 +480,11 @@ function renderResults() {
   // from the corpus so it tracks the crawl instead of going stale.
   const cov = (currentStats.corpus_stats || {}).citation_graph_coverage;
   const note = document.getElementById('citation-coverage-note');
-  if (note && cov && cov.core_total) {
+  if (note && cov && cov.av_total) {
     const scanned = (cov.cvf_scanned || 0) + (cov.arxiv_scanned || 0);
     note.textContent = `Ranked by citations from other papers in this corpus. Reference lists have `
-      + `been read for ${scanned.toLocaleString()} of ${cov.core_total.toLocaleString()} AV papers `
-      + `(${Math.round(100 * scanned / cov.core_total)}%), so every count here is a lower bound that `
+      + `been read for ${scanned.toLocaleString()} of ${cov.av_total.toLocaleString()} AV papers `
+      + `(${Math.round(100 * scanned / cov.av_total)}%), so every count here is a lower bound that `
       + `only grows, and the shortfall is not spread evenly across papers.`;
   }
 

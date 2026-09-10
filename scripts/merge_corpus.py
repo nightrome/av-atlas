@@ -119,10 +119,10 @@ def main():
     taxonomy_full = json.loads(CATEGORIES_FILE.read_text(encoding="utf-8"))
     taxonomy = taxonomy_full["categories"]
     known_dataset_titles = frozenset(cl.normalize_title(t) for t in taxonomy_full.get("known_dataset_papers", []))
-    llm_core_titles = cl.load_llm_core_titles()
+    llm_av_titles = cl.load_llm_av_titles()
 
     # This script used to be safe to re-run at any time, but several other
-    # scripts (enrich_core_authors.py, fetch_citations_openalex.py, the
+    # scripts (enrich_av_authors.py, fetch_citations_openalex.py, the
     # in-corpus citation-graph builder) patch enrichment directly onto the
     # *output* of this script (papers_full.json) rather than onto
     # venues/*.json -- so a naive rebuild-from-sources silently discards that
@@ -232,14 +232,14 @@ def main():
     papers = list(merged.values())
     for p in papers:
         category, relevance = cl.classify_paper(
-            p.get("title", ""), p.get("abstract"), taxonomy, llm_core_titles, known_dataset_titles)
+            p.get("title", ""), p.get("abstract"), taxonomy, llm_av_titles, known_dataset_titles)
         p["category"] = category
         p["av_relevance"] = relevance
 
     OUT_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
     print(f"Wrote {len(papers)} unique papers to {OUT_FILE}")
-    n_core = sum(1 for p in papers if p["av_relevance"] == "core")
-    print(f"  core={n_core} adjacent={len(papers) - n_core}")
+    n_av = sum(1 for p in papers if p["av_relevance"] == "AV")
+    print(f"  AV={n_av} non-AV={len(papers) - n_av}")
     if n_carried_over:
         print(f"  carried over {n_carried_over} enrichment fields from the previous run")
 

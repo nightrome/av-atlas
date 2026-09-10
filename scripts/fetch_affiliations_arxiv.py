@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Alternative to enrich_core_authors.py's OpenAlex per-paper lookup, for
-av_relevance=="core" papers that still lack authors_detail: resolves each
+Alternative to enrich_av_authors.py's OpenAlex per-paper lookup, for
+av_relevance=="AV" papers that still lack authors_detail: resolves each
 paper's arXiv ID via arXiv's own search API (no rate limit issue like
 OpenAlex -- arXiv just asks for a few seconds between requests), then fetches
 ar5iv.labs.arxiv.org's full-text HTML rendering of that paper (LaTeX -> HTML,
@@ -26,7 +26,7 @@ Coverage tradeoff vs OpenAlex: only works for papers with an arXiv preprint
 that has affiliations in its LaTeX source (common but not universal -- some
 papers use anonymous/no-affiliation templates, some never get an arXiv
 version). Where it works, it's much faster and has zero rate-limit budget to
-run out of, so it's meant to run alongside enrich_core_authors.py, not
+run out of, so it's meant to run alongside enrich_av_authors.py, not
 replace it.
 
 Important limitation: ar5iv's affiliation text is the institution NAME, not
@@ -313,7 +313,7 @@ def _in_corpus_citations(p):
 
 def load_pending(already_done):
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    core = [p for p in papers if p.get("av_relevance") == "core" and not p.get("authors_detail")]
+    av = [p for p in papers if p.get("av_relevance") == "AV" and not p.get("authors_detail")]
     # Most-cited-first. Affiliation coverage is rate-limited and will plateau
     # well short of 100%, so whatever fraction it does reach should be the
     # papers that actually anchor the Institutions/Countries leaderboards --
@@ -321,9 +321,9 @@ def load_pending(already_done):
     # the earlier "random order for representativeness" call now that the
     # ceiling is the binding constraint). papers_full.json's own order
     # clusters by venue, so an explicit sort is needed either way.
-    core.sort(key=_in_corpus_citations, reverse=True)
-    pending = [p["title"] for p in core if normalize_title(p.get("title")) not in already_done]
-    return pending, len(core)
+    av.sort(key=_in_corpus_citations, reverse=True)
+    pending = [p["title"] for p in av if normalize_title(p.get("title")) not in already_done]
+    return pending, len(av)
 
 
 def main():
@@ -338,8 +338,8 @@ def main():
     # second Ollama call.
     registry = set(iel.load_registry())
     cache = iel.load_cache()
-    pending, core_total = load_pending(affs)
-    print(f"{len(pending)} core papers without authors_detail to try via arXiv (of {core_total} missing total)", flush=True)
+    pending, av_total = load_pending(affs)
+    print(f"{len(pending)} AV papers without authors_detail to try via arXiv (of {av_total} missing total)", flush=True)
 
     done_with_affs = 0
     done_no_match = 0
