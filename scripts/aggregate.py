@@ -316,9 +316,13 @@ FOOTNOTEMARK_SUFFIX_RE = re.compile(r"[�†‡*§¶✉]?\d*footnotemark:?\s*\d
 TRAILING_NAME_MARKER_PUNCTUATION = set("†‡*§¶")
 
 
+_TRAILING_SUPERSCRIPT_DIGITS = set("⁰¹²³⁴⁵⁶⁷⁸⁹₀₁₂₃₄₅₆₇₈₉")
+
+
 def strip_trailing_symbol_markers(name):
     while name and (name[-1] in TRAILING_NAME_MARKER_PUNCTUATION
-                    or unicodedata.category(name[-1]) in ("So", "Sk", "Sm")):
+                    or name[-1] in _TRAILING_SUPERSCRIPT_DIGITS
+                    or unicodedata.category(name[-1]) in ("So", "Sk", "Sm", "No")):
         name = name[:-1].rstrip()
     return name
 
@@ -356,6 +360,11 @@ KNOWN_NAME_FIXES = {
     # correctly-accented spelling is confirmed from this same person's other
     # papers' authors_detail).
     "Santiago Montiel-Mar'in": "Santiago Montiel-Marín",
+    # Same ASCII-apostrophe-for-é mojibake, on the Berkeley/traffic-flow
+    # researcher who also shows up all-caps ("NATHAN LICHTLÉ") in the same
+    # papers -- correctly-accented spelling confirmed from his own other
+    # papers' author lists.
+    "Nathan Lichtl'e": "Nathan Lichtlé",
     # User-requested: consolidate every spelling of this one person found
     # across the corpus into the fully-written-out form (per the site's
     # general preference for full names over abbreviations) -- the
@@ -410,6 +419,14 @@ KNOWN_NAME_FIXES = {
     # confirmed via shared co-authors (Zhen Zhang, Anton van den Hengel,
     # Ehsan Abbasnejad).
     "Javen Qinfeng": "Javen Qinfeng Shi",
+    # User-confirmed: University of Bonn's Cyrill Stachniss (LiDAR SLAM,
+    # robot perception; scholar.google.com/citations?user=8vib2lAAAAAJ). The
+    # abbreviated "C. Stachniss" is how the Semantic Scholar citing-paper
+    # metadata (data/venues/arxiv_s2_citing.json) renders him on ~30 papers,
+    # splitting him off the full "Cyrill Stachniss" spelling the DBLP venue
+    # listings use. Affiliation/country (University of Bonn, Germany) follow
+    # automatically from his enriched papers once the two names are merged.
+    "C. Stachniss": "Cyrill Stachniss",
 }
 
 # PDF/font text extraction occasionally renders a hyphenated name's hyphen
@@ -420,6 +437,12 @@ KNOWN_NAME_FIXES = {
 # same person). Normalized to ASCII hyphen so every source agrees on one
 # spelling.
 UNICODE_HYPHEN_RE = re.compile(r"[‐‑‒–−]")
+
+# An apostrophe / prime between a letter and a lower-case letter (or the end)
+# is a romanization artifact -- dropped outright, not spaced ("Ze'an Liu" ->
+# "Zean Liu", "Shin'ichi" -> "Shinichi"). One followed by a CAPITAL is a
+# real name particle and is kept ("O'Connor", "d'Alembert", "Marc'Aurelio").
+APOSTROPHE_RE = re.compile(r"['’‘ʼ`´ʹ](?![A-ZÀ-Þ])")
 
 # Some sources prepend an academic/courtesy title to the author's name
 # ("Dr. Andras Palffy", "Prof Javen Qinfeng Shi", "Professor A. R. Harish",
@@ -438,19 +461,226 @@ LEADING_HONORIFIC_RE = re.compile(
     r"|Asst\.?\s*Prof|Mr|Mrs|Ms|Mx|Miss)\.?\s+)+(?:Em\.?\s+)?"
 )
 
+# ---------------------------------------------------------------------------
+# Comma-in-name normalization. A manual pass over every author name that
+# still contained a "," after all the cleaning above turned up a handful of
+# recurring, mechanical causes (none of them a real person's name), grouped
+# into the rules below. Each is deliberately shape-anchored so an ordinary
+# name is never touched.
+# ---------------------------------------------------------------------------
+
+# LaTeX author-block / email-dump debris glued onto a name with no space:
+# "{}^{\textbf{1,2}}", "\affilnums1,2", "\authorrefmark1", or a raw
+# "Name{a.b,c.d}@place.edu" email list. None of "\{}@" ever appears in a
+# real person's name, so the name is truncated at the first one; if that
+# leaves nothing, it wasn't a name at all.
+LATEX_EMAIL_DEBRIS_RE = re.compile(r"[\\{}@].*$", re.S)
+
+# IEEE conference author blocks number each author "1st Firstname Lastname",
+# "2nd ...", and citing-paper metadata sometimes keeps the "and" before the
+# last author. Case-sensitive on the "and"/"AND" spelling so a name like
+# "Andrea" (which does not start with the *token* "and") is left alone.
+LEADING_ORDINAL_RE = re.compile(r"^(?:\d+(?:st|nd|rd|th)\s+|and\s+|AND\s+)+")
+
+# Trailing academic-degree suffix ("Jane Doe, PhD" / ", Ph.D.").
+TRAILING_DEGREE_RE = re.compile(r"\s*,\s*Ph\.?\s*D\.?\s*$", re.I)
+
+# IEEE membership grade attached as if it were part of the name -- either
+# glued onto a real one ("Fernando Garcia Member, IEEE") or, very often,
+# leaked in as its own standalone "author" ("Senior Member, IEEE",
+# "Student Member, IEEE, and"). The grade phrase is stripped; if nothing
+# name-like is left, the whole token is dropped.
+IEEE_MEMBERSHIP_RE = re.compile(
+    r"[\s,]*(?:Life|Senior|Student|Graduate)?[\s,]*(?:Student)?[\s,]*"
+    r"(?:Members?|Fellow)\s*(?:,\s*(?:IEEE)?|\s+IEEE)\s*,?\s*(?:and)?\s*$",
+    re.I,
+)
+
+# Trailing affiliation-superscript / correspondence-marker run: a mix of
+# digits, commas, spaces and footnote glyphs hanging off the end of a name
+# ("Raquel Urtasun1,2", "JONATHAN W. LEE*,1", "NATHAN LICHTLÉ*,†,2",
+# "Andrea Stocco 2,4"), plus a short run of digits glued straight onto the
+# last word ("Duc-Khai Lam23"). Only stripped when the trailing run holds a
+# digit and no letters, so a real name is never shortened.
+TRAILING_AFFIL_MARKS_RE = re.compile(r"[\s*∗†‡§¶‖·,，\d]+$")
+GLUED_TRAILING_DIGITS_RE = re.compile(r"(?<=[^\W\d_])\d{1,3}$")
+
+# "Lastname, Firstname" written the wrong way round in a single field
+# (DBLP-style, seen on real venue-listing authors_detail: "Yang, Ming-Hsuan",
+# "Qi, Shengxiang", "Keil, C"). Only flipped when it is unambiguously ONE
+# reversed name and not two names that got joined -- i.e. the surname side is
+# a single word (or two words with a lone given name on the other side).
+_NAME_TOK = r"[^\W\d_][\w.'\-]*"
+_NAME_SIDE = rf"{_NAME_TOK}(?: +{_NAME_TOK})*"
+_NAME_SIDE_MULTI = rf"{_NAME_TOK}(?: +{_NAME_TOK}){{1,3}}"
+REVERSED_NAME_RE = re.compile(rf"^\s*({_NAME_SIDE}),\s*({_NAME_SIDE})\s*$")
+
+# Two full names ("Firstname Lastname, Firstname Lastname") joined into one
+# authors_detail entry -- split back into separate authors. Each side must be
+# 2-4 words of plain name text; a single-word side would be a reversed name
+# (handled above) or an initial, not a second person.
+JOINED_PAIR_RE = re.compile(rf"^\s*({_NAME_SIDE_MULTI}),\s*({_NAME_SIDE_MULTI})\s*$")
+
+
+def _strip_trailing_affiliation_marks(name):
+    m = TRAILING_AFFIL_MARKS_RE.search(name)
+    if m and any(ch.isdigit() for ch in m.group()):
+        name = name[: m.start()].strip().rstrip(",").strip()
+    name = GLUED_TRAILING_DIGITS_RE.sub("", name).strip()
+    return name
+
+
+def _titlecase_token(word):
+    out, start = [], True
+    for ch in word:
+        if ch in "-'’.":
+            out.append(ch)
+            start = True
+        elif start and ch.isalpha():
+            out.append(ch.upper())
+            start = False
+        else:
+            out.append(ch.lower())
+    return "".join(out)
+
+
+# A run of >=2 capitals glued straight onto the end of a lower-case word is
+# an institution acronym stuck to the name ("Artem SavkinTUM", "...WangHKUST")
+# -- cut it, and anything after it, off.
+GLUED_UPPER_ACRONYM_RE = re.compile(r"(?<=[a-zß-öø-ÿ])[A-ZÀ-ÖØ-Þ]{2,}.*$")
+
+
+_ROMAN_SUFFIXES = {"II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"}
+
+
+def _normalize_caps(name):
+    """Fold ALL-CAPS names / name parts to normal case. arXiv LaTeX author
+    blocks are often typeset entirely in capitals ("NATHAN LICHTLE",
+    "JONATHAN W. LEE"), and single all-caps surnames turn up mixed into an
+    otherwise normal name ("Shaocheng JIA"). A one-letter token (an initial)
+    and a trailing generational suffix ("... III") are left alone. Also
+    strips an institution acronym glued onto a name."""
+    toks = []
+    for t in name.split():
+        t = GLUED_UPPER_ACRONYM_RE.sub("", t)
+        if not t:
+            continue
+        if toks and t in _ROMAN_SUFFIXES:  # keep "John W. Fisher III" as-is
+            toks.append(t)
+            continue
+        letters = [c for c in t if c.isalpha()]
+        if len(letters) >= 2 and all(c.isupper() for c in letters):
+            t = _titlecase_token(t)
+        toks.append(t)
+    return " ".join(toks)
+
+
+# Non-name material that ends up in the author field: role/footnote labels,
+# and "X and Y" citation-sentence fragments. Either one means the whole
+# entry is not a person's name.
+NON_NAME_PHRASE_RE = re.compile(
+    r"(?i)\b(correspond|equal\s+contrib|contributed\s+equally|co[-\s]?first"
+    r"|project\s+lead|these\s+authors|senior\s+author|first\s+author"
+    r"|contribution)\b|\band\b"
+)
+# After every other rule has run, a name may contain ONLY Latin letters
+# (any diacritic variant), spaces, hyphens and periods. Anything else -- a
+# non-Latin script (Greek, Cyrillic, CJK, ...), an emoji, a stray symbol, a
+# digit, a comma -- means it is not a usable name.
+_ALLOWED_NAME_PUNCT = set(" .-'’")
+
+
+def _is_plain_latin_name(name):
+    for ch in name:
+        if ch in _ALLOWED_NAME_PUNCT or "̀" <= ch <= "ͯ":
+            continue
+        if not unicodedata.category(ch).startswith("L"):
+            return False
+        if "LATIN" not in unicodedata.name(ch, ""):
+            return False
+    return True
+
 
 def clean_author_name(name):
     name = (name or "").strip()
     name = html.unescape(name)
     name = UNICODE_HYPHEN_RE.sub("-", name)
+    name = LATEX_EMAIL_DEBRIS_RE.sub("", name).strip()
+    if not name:
+        return ""
+    name = LEADING_ORDINAL_RE.sub("", name).strip()
     stripped = LEADING_HONORIFIC_RE.sub("", name).strip()
     if stripped:  # never let a name that was *only* a title collapse to ""
         name = stripped
+    name = TRAILING_DEGREE_RE.sub("", name).strip()
+    membership_stripped = IEEE_MEMBERSHIP_RE.sub("", name).strip()
+    if membership_stripped != name:
+        # Nothing but the grade phrase (and maybe a stray "and") -> not a
+        # person; drop it rather than keep a one-word fragment.
+        if len(membership_stripped.split()) < 2:
+            return ""
+        name = membership_stripped
+    if "," in name:
+        name = _strip_trailing_affiliation_marks(name)
+        m = REVERSED_NAME_RE.match(name)
+        if m and (
+            (len(m.group(1).split()) == 1 and 1 <= len(m.group(2).split()) <= 3)
+            or (
+                len(m.group(1).split()) == 2 and len(m.group(2).split()) == 1
+                and not m.group(2).isupper() and "." not in m.group(2)
+            )
+        ):
+            name = f"{m.group(2).strip()} {m.group(1).strip()}"
+        else:
+            # Not a reversed name (two-names-joined is split upstream, before
+            # clean_author_name) -> the comma and everything after it is
+            # affiliation/footnote junk ("Artem SavkinTUM, BMW", "Wang,
+            # Senior Member").
+            name = name.split(",", 1)[0].strip()
+    else:
+        name = _strip_trailing_affiliation_marks(name)
+    # Drop a parenthesised / quoted nickname in place ("Chun-Fu (Richard)
+    # Chen" -> "Chun-Fu Chen"), not just a trailing one.
+    name = re.sub(r'\s*[(\[{"“][^)\]}"”]*[)\]}"”]?', " ", name)
+    name = re.sub(r"\s{2,}", " ", name).strip()
+    name = KNOWN_NAME_FIXES.get(name, name)  # some fix keys still carry an apostrophe
+    name = APOSTROPHE_RE.sub("", name)  # "Ze'an Liu" -> "Zean Liu"
+    name = re.sub(r"(^|\s)['’‘ʼ`´ʹ]+", r"\1", name)  # ...and any leading one
+    name = _normalize_caps(name)
     name = KNOWN_NAME_FIXES.get(name, name)
     name = DBLP_DISAMBIG_SUFFIX_RE.sub("", name).strip()
     name = FOOTNOTEMARK_SUFFIX_RE.sub("", name).strip()
     name = strip_trailing_symbol_markers(name).strip()
+    name = name.strip().strip(",").strip()
+    # Final whitelist: only plain Latin letters / spaces / "-" / "." / "'"
+    # survive, and no role-label or "X and Y" fragment.
+    if not name or NON_NAME_PHRASE_RE.search(name):
+        return ""
+    if not _is_plain_latin_name(name):
+        return ""
     return name
+
+
+# Two names run together with no separator at all (a missing comma in the
+# source author string) -- can't be split by shape without wrecking real
+# 3-4 word names, so only the confirmed cases are listed.
+KNOWN_AUTHOR_SPLITS = {
+    # eccv2020.json: "..., Han Xue, Zheng Zhang Raquel Urtasun, Liwei Wang, ..."
+    "Zheng Zhang Raquel Urtasun": ["Zheng Zhang", "Raquel Urtasun"],
+}
+
+
+def split_joined_authors(name):
+    """One authors_detail entry that is really two names joined together
+    ("Dawei Chen, Kyungtae Han", or the comma-less "Zheng Zhang Raquel
+    Urtasun") -> the list of names. Returns [name] when it is not that
+    shape, so callers can flat-map unconditionally."""
+    if name in KNOWN_AUTHOR_SPLITS:
+        return list(KNOWN_AUTHOR_SPLITS[name])
+    m = JOINED_PAIR_RE.match(name or "")
+    if not m:
+        return [name]
+    return [m.group(1).strip(), m.group(2).strip()]
 
 
 # User-confirmed identity split: this pipeline has no author disambiguation
@@ -960,14 +1190,51 @@ INSTITUTION_ALIASES = {
     # the country-code side.
     "Nutrasource": "Motional",
     # User-requested: every KIT spelling variant found in the raw data
-    # (parenthetical abbreviation, hyphenated "KIT -", bare "KIT" prefix)
-    # collapsed to one canonical name. Leaked-footnote-sentence variants
+    # collapsed to one canonical name. Per the "for very well known acronyms,
+    # add them in parentheses" request, the canonical form here now CARRIES
+    # the "(KIT)" abbreviation (so does TUM below); everything else -- the
+    # bare English name, the German name, the hyphenated/prefixed forms, the
+    # bare acronym -- maps onto it. Leaked-footnote-sentence variants
     # ("Authors are with the Karlsruhe Institute of Technology", "Eric Sax
     # is with...") are handled by the corresponding-author/footnote strip in
     # normalize_institution() instead, not listed here individually.
-    "Karlsruhe Institute of Technology (KIT)": "Karlsruhe Institute of Technology",
-    "KIT Karlsruhe Institute of Technology": "Karlsruhe Institute of Technology",
-    "KIT - Karlsruhe Institute of Technology": "Karlsruhe Institute of Technology",
+    "Karlsruhe Institute of Technology": "Karlsruhe Institute of Technology (KIT)",
+    "KIT Karlsruhe Institute of Technology": "Karlsruhe Institute of Technology (KIT)",
+    "KIT - Karlsruhe Institute of Technology": "Karlsruhe Institute of Technology (KIT)",
+    "Karlsruher Institut für Technologie": "Karlsruhe Institute of Technology (KIT)",
+    "Karlsruher Institut für Technologie (KIT)": "Karlsruhe Institute of Technology (KIT)",
+    "KIT": "Karlsruhe Institute of Technology (KIT)",
+    # Technical University of Munich -- same "carry the acronym" treatment,
+    # folding the German name, the "TU Munich"/"TU München" short forms, the
+    # missing-"of" typo, and the bare acronym.
+    "Technical University of Munich": "Technical University of Munich (TUM)",
+    "Technical University Munich": "Technical University of Munich (TUM)",
+    "Technische Universität München": "Technical University of Munich (TUM)",
+    "Technische Universitat Munchen": "Technical University of Munich (TUM)",
+    "TU Munich": "Technical University of Munich (TUM)",
+    "TU München": "Technical University of Munich (TUM)",
+    "TUM": "Technical University of Munich (TUM)",
+    "Technical University of Munich (TUM)": "Technical University of Munich (TUM)",
+    # Technion -- drop the "– Israel Institute of Technology" apposition
+    # (en-dash already normalized to a hyphen by normalize_institution) so
+    # every form collapses to the one name it is universally known by.
+    "Technion - Israel Institute of Technology": "Technion",
+    "Technion – Israel Institute of Technology": "Technion",
+    "Technion—Israel Institute of Technology": "Technion",
+    "Technion-Israel Institute of Technology": "Technion",
+    "Technion–Israel Institute of Technology": "Technion",
+    "Technion Israel Institute of Technology": "Technion",
+    "Technion Israel Institute of Technology (IIT)": "Technion",
+    # User-requested one-off merges.
+    "Barcelona Supercomputing Center (BSC)": "Barcelona Supercomputing Center",
+    "Autolab": "AutoLab",
+    "Carnegie Mellon University Pittsburgh": "Carnegie Mellon University",
+    # Every BMW spelling -> one row. Canonical "BMW" (the short brand), which
+    # is also what data/institution_aliases_llm.json already folds "BMW
+    # Group" onto -- keep the two consistent.
+    "BMW Group": "BMW", "BMW AG": "BMW", "BMW Car IT GmbH": "BMW",
+    "BMW Group Research": "BMW", "BMW Group BMW Group": "BMW",
+    "BMW Group, Munich": "BMW", "BMW Technology": "BMW",
     "The Chinese University of Hong Kong (Shenzhen)": "The Chinese University of Hong Kong",
     "Chinese University of Hong Kong": "The Chinese University of Hong Kong",
     "Shanghai Jiaotong": "Shanghai Jiao Tong University",
@@ -1325,6 +1592,57 @@ def is_concatenated_multi_institution(name):
     return len(DOUBLE_UNIVERSITY_RE.findall(name)) >= 2
 
 
+# Two organisations glued into one affiliation string with a separator left
+# intact -- "NVIDIA & University of Ottawa", "Bosch ...; Carnegie Mellon
+# ...". Split on ";" and " & ", but ONLY when every resulting part is itself
+# institution-shaped: " & " very often sits inside one real name ("William &
+# Mary", "Science & Technology", "Engineering & Technology"). " and " is
+# never a generic separator; it is split only when the left side is a bare
+# acronym or a known alias key ("TUM and Artisense").
+_INSTITUTION_SEPARATOR_RE = re.compile(r"\s*;\s*|\s+&\s+")
+# Multi-org strings with NO separator at all -- can't be shape-detected
+# safely, so only the confirmed cases are listed (parallel to
+# KNOWN_AUTHOR_SPLITS).
+KNOWN_INSTITUTION_SPLITS = {
+    "Technical University Munich BMW Group BMW Group":
+        ["Technical University of Munich (TUM)", "BMW"],
+}
+
+
+def _is_institution_shaped(part):
+    p = part.strip()
+    if len(p) < 3 or p.count("(") != p.count(")"):
+        return False
+    return bool(
+        p in INSTITUTION_ALIASES
+        or re.fullmatch(r"[A-Z]{3,6}", p)  # bare acronym (3+, so "AI"/"MI"/"PA" don't qualify)
+        or classify_institution_sector(p) is not None
+        or _LOOKS_ACADEMICISH_RE.search(p)
+    )
+
+
+def split_institution(name):
+    """A raw affiliation string that is really several organisations ->
+    the list of them. Returns [name] unchanged when it is a single org, so
+    callers can flat-map unconditionally."""
+    raw = (name or "").strip()
+    if raw in KNOWN_INSTITUTION_SPLITS:
+        return list(KNOWN_INSTITUTION_SPLITS[raw])
+    if raw in INSTITUTION_ALIASES or raw in INSTITUTION_ALIASES_LLM:
+        return [raw]  # a known variant of ONE institution -- never split
+    # "<acronym / alias key> and <rest>" -- trusted, no per-part shape gate.
+    m = re.match(r"(.+?)\s+and\s+(.+)", raw)
+    if m and (m.group(1).strip() in INSTITUTION_ALIASES
+              or re.fullmatch(r"[A-Z]{2,6}", m.group(1).strip())):
+        return [m.group(1).strip(), m.group(2).strip()]
+    # ";" / " & " -- only when EVERY resulting part is institution-shaped
+    # (" & " very often sits inside one real name: "William & Mary").
+    parts = [p.strip() for p in _INSTITUTION_SEPARATOR_RE.split(raw) if p.strip()]
+    if len(parts) >= 2 and all(_is_institution_shaped(p) for p in parts):
+        return parts
+    return [raw]
+
+
 def strip_trailing_footnote_junk(name):
     """Removes a "Corresponding author"/\\dagger/� footnote glued onto
     the end of a real institution name. Below MIN_STRIPPED_INSTITUTION_LENGTH,
@@ -1351,9 +1669,42 @@ def strip_trailing_footnote_junk(name):
     return prefix if marker_delimited or len(prefix) >= MIN_STRIPPED_INSTITUTION_LENGTH else name
 
 
+# A raw LaTeX macro name leaking through unrendered, glued onto the front of
+# the real text with no space ("\addrDepartment of Informatics",
+# "\affilnum1School of Computing") -- strip the macro so what's left
+# ("Department of Informatics", a bare sub-unit) reaches the normal
+# sub-unit / validity checks.
+LATEX_MACRO_PREFIX_RE = re.compile(r"^\\[A-Za-z]+?\d*(?=[A-Z][a-z])")
+# A field label ("Emails:", ". E-mails:") or a bare email / cut-off email
+# domain ("... l.name@tudelft.nl", "... foo.ac.uk") trailing an otherwise
+# real institution name -- strip it, keep the name.
+TRAILING_EMAIL_LABEL_RE = re.compile(r"\s*[.,;:]?\s*e-?mails?\s*:.*$", re.I)
+TRAILING_EMAIL_RE = re.compile(
+    r"\s+\S*@\S+$|\s+[\w.\-]+\.(?:ac\.[a-z]{2}|edu|edu\.[a-z]{2}|com|org|net|"
+    r"de|nl|uk|fr|cn|jp|kr|ch|se|it|es)\b\S*$", re.I)
+# "Univ. of X" / "Univ of X" -- the English abbreviation, expanded only in
+# the unambiguous "of" pattern. Bare "Univ Lyon" / "Univ. Bordeaux" are
+# left for the alias tables (they canonicalize to the local-language name),
+# and "Université"/"Universität"/"Universidad" are never touched.
+UNIV_ABBREV_RE = re.compile(r"\bUniv\.?(?=\s+of\s)")
+
+
 def normalize_institution(name):
     name = html.unescape((name or "").strip()).strip().rstrip(".").strip()
     name = fix_mojibake_diacritics(name)
+    name = LATEX_MACRO_PREFIX_RE.sub("", name).strip()
+    name = TRAILING_EMAIL_LABEL_RE.sub("", name).strip().rstrip(".,;:").strip()
+    name = TRAILING_EMAIL_RE.sub("", name).strip()
+    # "o f" -> "of" (a PDF-extraction word-break typo). En/em-dash -> ASCII
+    # hyphen is done AFTER the alias lookups (some alias keys carry an
+    # en-dash), as a final cosmetic pass.
+    name = re.sub(r"\bo f\b", "of", name)
+    name = UNIV_ABBREV_RE.sub("University", name)
+    # Leading punctuation debris from a comma/footnote split ("-University of
+    # California", ". Shanghai Jiao Tong University") and a trailing dangling
+    # "and" / dash ("Carleton University and", "University of Wisconsin -").
+    name = re.sub(r"^[-.,;·•\s]+", "", name)
+    name = re.sub(r"(\s+and|\s*[-–—]+)\s*$", "", name).strip()
     name = TRAILING_COUNTRY_RE.sub("", name).strip()
     name = FOOTNOTE_MARKER_RE.sub("", name).strip()
     name = strip_trailing_footnote_junk(name).strip()
@@ -1375,7 +1726,14 @@ def normalize_institution(name):
     name = name.replace("_", " ")
     name = re.sub(r"\s+", " ", name).strip()
     name = INSTITUTION_ALIASES.get(name, name)
-    return INSTITUTION_ALIASES_LLM.get(name, name)
+    name = INSTITUTION_ALIASES_LLM.get(name, name)
+    # Re-apply the hand dict: the LLM pass may land on a form the hand dict
+    # canonicalizes further (e.g. LLM "... -> Technical University of Munich",
+    # hand "Technical University of Munich -> ... (TUM)").
+    name = INSTITUTION_ALIASES.get(name, name)
+    # Final cosmetic pass: en/em-dash -> ASCII hyphen, now that every alias
+    # key (some of which carry an en-dash) has had its chance to match.
+    return name.replace("–", "-").replace("—", "-")
 
 
 # A keyword strongly indicating a degree-granting or public-research
@@ -1462,7 +1820,23 @@ def classify_institution_sector(name):
     return None
 
 
+# A hand-curated INSTITUTION_ALIASES canonical target is a real institution
+# by construction -- it must not be second-guessed by the LLM invalid-flags
+# list (which has false positives, e.g. it flags "Technion" and "Technical
+# University of Munich (TUM)").
+_ALIAS_CANONICALS = frozenset(INSTITUTION_ALIASES.values())
+# A word that vouches for a string being an institution rather than an
+# address / person / country fragment -- broader than ACADEMIC_KEYWORD_RE
+# (which is tuned for sector classification and deliberately omits a bare
+# "University").
+_LOOKS_ACADEMICISH_RE = re.compile(
+    r"universi|college|institut|polytechnic|\bschool\b|academ|"
+    r"laborator|\bresearch\b|\bcentre\b|\bcenter\b|hochschule|\blab\b", re.I)
+
+
 def is_valid_institution(name):
+    if name in _ALIAS_CANONICALS:
+        return True
     if not name or name in INVALID_INSTITUTIONS or name in INVALID_INSTITUTIONS_LLM:
         return False
     if "http://" in name or "https://" in name:
@@ -1541,6 +1915,42 @@ def is_valid_institution(name):
     # the trailing "*", exposing the dangling "(" it was attached to).
     if name.count("(") != name.count(")"):
         return False
+    # Unmatched square bracket, same cause as the paren check above
+    # ("Spain[[ahmed.manzour" -- a mis-split "affiliation[email" fragment).
+    if name.count("[") != name.count("]"):
+        return False
+    # A raw LaTeX command still in the string after the prefix strip in
+    # normalize_institution -- "\dagger", "\\", a mid-string "\addr..." --
+    # is never part of a real name.
+    if "\\" in name:
+        return False
+    # A run of 6+ digits -- a matriculation / phone / cut-off-email-user
+    # number ("Taiwan. yp201141413.en11"), never a real institution name
+    # (the longest real numeric run in this corpus is a 5-digit postcode,
+    # already rejected above).
+    if re.search(r"\d{6}", name):
+        return False
+    # A Canadian postal code ("T6G 1H9") or a Belgian/German "B-1050
+    # Brussels" zip+city fragment -- an address, not an institution.
+    if re.match(r"^[A-Za-z]\d[A-Za-z]\s*\d[A-Za-z]\d$", name):
+        return False
+    if re.match(r"^[A-Z]-\d{4,5}\s+[A-Z][a-zà-ÿ]", name):
+        return False
+    # "Word 8" / "Technická 8" -- a single word plus a low street number.
+    if re.match(r"^[A-Za-zÀ-ÿ.]+\s+\d{1,4}$", name) and not _LOOKS_ACADEMICISH_RE.search(name):
+        return False
+    # A "City, Country" (or "City, Taiwan / R.O.C") fragment, or a bare
+    # country name leading a short non-academic string ("Taipei, Taiwan",
+    # "Taiwan R.O.C", "Australia Baosheng Yu") -- comma-split address debris.
+    if not _LOOKS_ACADEMICISH_RE.search(name) and classify_institution_sector(name) is None:
+        country_words = set(COUNTRY_NAMES.values()) | {"Taiwan", "USA", "UK", "Korea", "R.O.C"}
+        tail = re.split(r"\s*,\s*", name)[-1].rstrip(".")
+        first = name.split(None, 1)[0].rstrip(".,")
+        if tail in country_words and "," in name:
+            return False
+        if first in country_words and len(name.split()) <= 4 \
+                and name not in COUNTRY_NAMES.values():
+            return False
     return True
 
 
@@ -1564,7 +1974,11 @@ def _looks_like_a_coauthor_with_garbage_suffix(candidate, co_author_names):
 
 
 def author_affiliations(a, all_author_names=None, co_author_names=None):
-    normalized = (normalize_institution(aff) for aff in (a.get("affiliations") or []))
+    normalized = (
+        normalize_institution(part)
+        for aff in (a.get("affiliations") or [])
+        for part in split_institution(aff)
+    )
     candidates = (n for n in normalized if is_valid_institution(n))
     # A person's name leaking into an "institution" field -- confirmed on
     # real data as a systemic pattern, not a one-off: a garbled
@@ -2178,9 +2592,15 @@ def main():
         details = e.get("authors_detail")
         title = e.get("title")
         if details:
-            authors = [clean_author_name(a["name"]) for a in details if a.get("name")]
+            raw_names = [a["name"] for a in details if a.get("name")]
         else:
-            authors = [clean_author_name(a) for a in (e.get("authors") or "").split(",") if a.strip()]
+            raw_names = [a for a in (e.get("authors") or "").split(",") if a.strip()]
+        # split two-names-joined-in-one-field entries FIRST (clean_author_name
+        # rejects any comma left in a name), then clean each part.
+        authors = []
+        for raw in raw_names:
+            for part in split_joined_authors(raw):
+                authors.append(clean_author_name(part))
         authors = [resolve_ambiguous_author_identity(a, title) for a in authors]
         # This "authors" list is what the Researchers page actually aggregates
         # from client-side (all_papers, see filters.js) -- a bare surname here

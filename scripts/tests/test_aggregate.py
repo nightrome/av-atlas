@@ -74,9 +74,13 @@ class TestIsValidInstitution(unittest.TestCase):
         # convention as test_rejects_entries_flagged_by_the_llm_review_pass.
         self.assertGreater(len(ag.INSTITUTION_ALIASES_LLM), 0, "the real data file should be present and non-empty")
         for variant, canonical in [
-            ("TUM", "Technical University of Munich"),
-            ("Technical University Munich", "Technical University of Munich"),
-            ("Technische Universität München", "Technical University of Munich"),
+            # TUM's canonical form carries the "(TUM)" abbreviation (see the
+            # "very well known acronyms" request); every variant resolves to
+            # it, whether via the hand dict, the LLM dict, or both.
+            ("TUM", "Technical University of Munich (TUM)"),
+            ("Technical University Munich", "Technical University of Munich (TUM)"),
+            ("Technische Universität München", "Technical University of Munich (TUM)"),
+            ("Technical University of Munich", "Technical University of Munich (TUM)"),
             ("ETH Zurich", "ETH Zürich"),
             ("Valeo.ai", "Valeo"),
             ("Los Angeles (UCLA)", "University of California, Los Angeles"),
@@ -365,7 +369,11 @@ class TestNormalizeInstitution(unittest.TestCase):
         # parent-company merge, same pattern as the Bosch/Xiaomi ones
         # user-requested) -- still exercises the legal-suffix-stripping
         # regex under test, just against its post-alias canonical form.
-        self.assertEqual(ag.normalize_institution("Aptiv Services Deutschland GmbH"), "Aptiv")
+        # "Aptiv Services Deutschland" -> "Aptiv" (LLM regional-subsidiary
+        # merge) -> "Motional" (hand-dict corporate-lineage merge, re-applied
+        # after the LLM pass so hand canonicalization stays authoritative).
+        # Still exercises the GmbH-stripping regex under test.
+        self.assertEqual(ag.normalize_institution("Aptiv Services Deutschland GmbH"), "Motional")
         self.assertEqual(ag.normalize_institution("Zoox Inc"), "Zoox")
         # "Ltd"/"Co." are deliberately left alone (see the bare-"Ltd" comment
         # in INVALID_INSTITUTIONS) -- only LLC/Inc/GmbH are stripped.
@@ -400,6 +408,110 @@ class TestNormalizeInstitution(unittest.TestCase):
         # cause as the bare countries/cities already in INVALID_INSTITUTIONS.
         for city in ("Eindhoven", "Waterloo"):
             self.assertFalse(ag.is_valid_institution(city), city)
+
+    def test_typos_dashes_and_email_tails_are_cleaned(self):
+        for raw, expected in (
+            ("Technical University o f Munich", "Technical University of Munich (TUM)"),
+            ("Technical University of Munich. Emails:", "Technical University of Munich (TUM)"),
+            ("Technion – Israel Institute of Technology", "Technion"),
+            ("Univ. of Toronto", "University of Toronto"),
+            ("Univ of Oxford", "University of Oxford"),
+        ):
+            self.assertEqual(ag.normalize_institution(raw), expected, raw)
+
+    def test_well_known_acronym_added_in_parentheses(self):
+        for raw in ("KIT", "Karlsruhe Institute of Technology",
+                    "Karlsruher Institut für Technologie"):
+            self.assertEqual(ag.normalize_institution(raw),
+                             "Karlsruhe Institute of Technology (KIT)", raw)
+
+    def test_bmw_spellings_merge(self):
+        for raw in ("BMW", "BMW Group", "BMW AG", "BMW Group Research"):
+            self.assertEqual(ag.normalize_institution(raw), "BMW", raw)
+
+    def test_one_off_merges(self):
+        self.assertEqual(ag.normalize_institution("Barcelona Supercomputing Center (BSC)"),
+                         "Barcelona Supercomputing Center")
+        self.assertEqual(ag.normalize_institution("Autolab"), "AutoLab")
+
+    def test_university_spelling_variants_merge(self):
+        # A clustering pass over the distinct institution list: University /
+        # Université / Univ. / word-order / "of" / diacritic / case variants
+        # of one institution, folded (via data/institution_aliases_llm.json).
+        for variant, canonical in (
+            ("Oxford University", "University of Oxford"),
+            ("Universität Hamburg", "University of Hamburg"),
+            ("Univ. Grenoble Alpes", "Université Grenoble Alpes"),
+            ("University Grenoble Alpes", "Université Grenoble Alpes"),
+            ("Univ. Bordeaux", "Université de Bordeaux"),
+            ("University of Sao Paulo", "University of São Paulo"),
+            ("HuaZhong University of Science and Technology",
+             "Huazhong University of Science and Technology"),
+            ("University of California Irvine", "University of California, Irvine"),
+        ):
+            self.assertEqual(ag.normalize_institution(variant), canonical, variant)
+        # Guardrail: NOT merged -- these are genuinely different institutions.
+        self.assertNotEqual(ag.normalize_institution("York University"),
+                            ag.normalize_institution("University of York"))
+        self.assertEqual(ag.normalize_institution("University of Southern California"),
+                         "University of Southern California")
+
+    def test_strips_leading_punctuation_and_dangling_and(self):
+        self.assertEqual(ag.normalize_institution("-University of California"),
+                         "University of California")
+        self.assertEqual(ag.normalize_institution(". Shanghai Jiao Tong University"),
+                         "Shanghai Jiao Tong University")
+        self.assertEqual(ag.normalize_institution("Carleton University and"), "Carleton University")
+
+    def test_latex_macro_prefix_stripped_not_the_word_after_it(self):
+        self.assertEqual(ag.normalize_institution("\\NEXTAFFStanford University"),
+                         "Stanford University")
+        # \addr / \affilnumN eat only the macro, leaving a bare sub-unit
+        # that is then rejected by is_valid_institution.
+        for raw in ("\\addrDepartment of Informatics",
+                    "\\affilnum1School of Information and Electronics"):
+            self.assertFalse(ag.is_valid_institution(ag.normalize_institution(raw)), raw)
+
+
+class TestSplitInstitution(unittest.TestCase):
+    def test_splits_on_semicolon_and_ampersand(self):
+        self.assertEqual(
+            ag.split_institution("NVIDIA & University of Ottawa"),
+            ["NVIDIA", "University of Ottawa"])
+        self.assertEqual(
+            ag.split_institution(
+                "Bosch Center for Artificial Intelligence; Carnegie Mellon University Pittsburgh"),
+            ["Bosch Center for Artificial Intelligence", "Carnegie Mellon University Pittsburgh"])
+
+    def test_and_splits_only_for_an_acronym_or_alias_left_side(self):
+        self.assertEqual(ag.split_institution("TUM and Artisense"), ["TUM", "Artisense"])
+        # A real name that merely contains " and " is left whole.
+        for whole in ("University of Science and Technology of China",
+                      "Beijing University of Posts and Telecommunications"):
+            self.assertEqual(ag.split_institution(whole), [whole])
+
+    def test_known_separatorless_multi_org_split(self):
+        self.assertEqual(
+            ag.split_institution("Technical University Munich BMW Group BMW Group"),
+            ["Technical University of Munich (TUM)", "BMW"])
+
+    def test_single_org_is_returned_unchanged(self):
+        self.assertEqual(ag.split_institution("Stanford University"), ["Stanford University"])
+
+
+class TestIsValidInstitutionAddressJunk(unittest.TestCase):
+    def test_rejects_address_country_and_latex_fragments(self):
+        for raw in (
+            "T6G 1H9", "Taipei, Taiwan", "Taiwan R.O.C", "Taiwan. yp201141413.en11",
+            "Spain[[ahmed.manzour", "Australia Baosheng Yu", "Australia Dacheng Tao",
+            "B-1050 Brussels", "B-3001 Leuven", "Technická 8",
+        ):
+            self.assertFalse(ag.is_valid_institution(ag.normalize_institution(raw)), raw)
+
+    def test_country_led_check_spares_real_institutions(self):
+        for raw in ("Singapore Management University", "Korea University",
+                    "China Agricultural University", "Australian National University"):
+            self.assertTrue(ag.is_valid_institution(ag.normalize_institution(raw)), raw)
 
 
 class TestCleanAuthorName(unittest.TestCase):
@@ -458,6 +570,185 @@ class TestCleanAuthorName(unittest.TestCase):
         # for the "Md." given-name abbreviation.
         self.assertEqual(ag.clean_author_name("Dame Seck Diop"), "Dame Seck Diop")
         self.assertEqual(ag.clean_author_name("Md. Azam Hossain"), "Md. Azam Hossain")
+
+
+class TestCleanAuthorNameCommaCases(unittest.TestCase):
+    """A manual pass over every author name that still contained a comma
+    after the other cleaning rules turned up these recurring mechanical
+    causes -- none of them a real person's name."""
+
+    def test_ieee_membership_grade_pseudo_authors_are_dropped(self):
+        # IEEE conference author blocks list membership grade as if it were a
+        # person; it leaked in as its own leaderboard "author" (90+ papers
+        # across "Senior Member, IEEE" / "Member, IEEE" / "Fellow, IEEE" /
+        # "Graduate Student Member, IEEE" / "Life Fellow, IEEE").
+        for raw in (
+            "Senior Member, IEEE", "Student Member, IEEE", "Member, IEEE",
+            "Fellow, IEEE", "Graduate Student Member, IEEE", "Life Fellow, IEEE",
+            "Student Member, IEEE, and", "Member, IEEE, and", "Member IEEE",
+        ):
+            self.assertEqual(ag.clean_author_name(raw), "", raw)
+
+    def test_ieee_membership_grade_stripped_off_a_real_name(self):
+        for raw, expected in (
+            ("Mohamed Sabry Member, IEEE", "Mohamed Sabry"),
+            ("Fernando García Member, IEEE", "Fernando García"),
+            ("Jiankun Wang Member, IEEE", "Jiankun Wang"),
+            # LaTeX-garbled variants ("\;" spacing, "\emph{}" repeat) --
+            # truncated at the backslash, then the ",<grade>Member," tail.
+            (r"Mert Albaba,StudentMember,\;Student\;Member", "Mert Albaba"),
+            (r"Yildiray Yildiz,SeniorMember,\;Senior\;Member", "Yildiray Yildiz"),
+        ):
+            self.assertEqual(ag.clean_author_name(raw), expected, raw)
+
+    def test_reversed_lastname_firstname_is_flipped(self):
+        # DBLP-style "Lastname, Firstname" in a single authors_detail entry
+        # (real cases from AAAI/CoRL/ECCV/WACV venue listings). Only flipped
+        # when it is unambiguously one reversed name.
+        for raw, expected in (
+            ("Yang, Ming-Hsuan", "Ming-Hsuan Yang"),
+            ("Qi, Shengxiang", "Shengxiang Qi"),
+            ("Keil, C", "C Keil"),
+            ("Khan, Muhammad Haris", "Muhammad Haris Khan"),
+            ("Gaitán, Miguel Gutiérrez", "Miguel Gutiérrez Gaitán"),
+            ("Salami Pargoo, Navid", "Navid Salami Pargoo"),
+        ):
+            self.assertEqual(ag.clean_author_name(raw), expected, raw)
+
+    def test_two_names_joined_in_one_field_are_split(self):
+        # "Firstname Lastname, Firstname Lastname" fused into one
+        # authors_detail entry (real: Semantic-Scholar citing-paper metadata).
+        # Split runs on the RAW name, before clean_author_name (which rejects
+        # any comma left in a name).
+        self.assertEqual(
+            ag.split_joined_authors("Dawei Chen, Kyungtae Han"),
+            ["Dawei Chen", "Kyungtae Han"],
+        )
+        self.assertEqual(
+            ag.split_joined_authors("Sam Schofield, Richard Green"),
+            ["Sam Schofield", "Richard Green"],
+        )
+        # Comma-less run of two names -- only the confirmed cases (a general
+        # shape rule would wreck real 3-4 word names).
+        self.assertEqual(
+            ag.split_joined_authors("Zheng Zhang Raquel Urtasun"),
+            ["Zheng Zhang", "Raquel Urtasun"],
+        )
+        # A single reversed name must NOT be treated as a joined pair.
+        self.assertEqual(ag.split_joined_authors("Ming-Hsuan Yang"), ["Ming-Hsuan Yang"])
+
+    def test_trailing_affiliation_superscripts_are_stripped(self):
+        # A trailing run of digits / commas / footnote glyphs (LaTeX
+        # author-block extraction) split people off their own entry.
+        for raw, expected in (
+            ("Raquel Urtasun1,2", "Raquel Urtasun"),
+            ("Jiaya Jia2,4", "Jiaya Jia"),
+            # (also all-caps -> title-cased, see the dedicated test below)
+            ("A. A. MALIKOPOULOS1,2", "A. A. Malikopoulos"),
+            ("JONATHAN W. LEE*,1", "Jonathan W. Lee"),
+            ("NATHAN LICHTLÉ*,†,2", "Nathan Lichtlé"),
+            ("Andrea Stocco 2,4", "Andrea Stocco"),
+            ("Han Lu1,", "Han Lu"),
+        ):
+            self.assertEqual(ag.clean_author_name(raw), expected, raw)
+
+    def test_all_caps_names_are_folded_to_title_case(self):
+        # arXiv LaTeX author blocks sometimes typeset every author in
+        # capitals -- a formatting choice that split them off their
+        # normally-cased leaderboard entry.
+        for raw, expected in (
+            ("NATHAN LICHTLÉ*,†,2", "Nathan Lichtlé"),
+            ("JONATHAN W. LEE*,1", "Jonathan W. Lee"),
+            ("FANG-CHIEH CHOU*,††,3", "Fang-Chieh Chou"),
+            ("HOSSEIN NICK ZINAT MATIN*,3", "Hossein Nick Zinat Matin"),
+        ):
+            self.assertEqual(ag.clean_author_name(raw), expected, raw)
+        # A normally-cased name (or one with initials) is left exactly as-is.
+        for name in ("Nathan Lichtlé", "Jonathan W. Lee", "A. R. Harish", "Zhuoran Li"):
+            self.assertEqual(ag.clean_author_name(name), name, name)
+
+    def test_leading_ordinal_and_conjunction_are_stripped(self):
+        # IEEE "1st Firstname Lastname" author numbering, and a leftover
+        # "and" / "AND" before the last author in citing-paper metadata.
+        for raw, expected in (
+            ("1st Andrea Matteazzi1,2", "Andrea Matteazzi"),
+            ("and Cyrill Stachniss2,3", "Cyrill Stachniss"),
+            (r"AND Pratik Satam\authorrefmark1,2", "Pratik Satam"),
+        ):
+            self.assertEqual(ag.clean_author_name(raw), expected, raw)
+        # A name that merely starts with those letters is untouched.
+        for name in ("Andrea Vedaldi", "Andrew Ng", "Anding Zhu"):
+            self.assertEqual(ag.clean_author_name(name), name, name)
+
+    def test_trailing_degree_suffix_is_stripped(self):
+        self.assertEqual(ag.clean_author_name("Stephanie Ivey, Ph.D"), "Stephanie Ivey")
+        self.assertEqual(ag.clean_author_name("3rd Sushanta Das, PhD"), "Sushanta Das")
+
+    def test_latex_and_email_debris_is_removed(self):
+        self.assertEqual(
+            ag.clean_author_name(r"Zhuoran Li\affilnums1,2"), "Zhuoran Li")
+        self.assertEqual(
+            ag.clean_author_name("Jonas Frey1,{}^{\\textbf{1,}}2"), "Jonas Frey")
+        # A bare "{...}@host" email list is not a person at all.
+        self.assertEqual(
+            ag.clean_author_name("{zaechj,dai,vangool}@vision.ee.ethz.ch"), "")
+        # ...but a real name with an email appended keeps the name.
+        self.assertEqual(
+            ag.clean_author_name("Raquel Urtasun{james.tu,mren3}@uber.com"),
+            "Raquel Urtasun")
+
+    def test_ordinary_names_with_no_comma_are_untouched(self):
+        for name in (
+            "Cyrill Stachniss", "Kai-Wei Chang", "A. R. Harish",
+            "Julian Francisco Pieter Kooij", "Marius Zöllner",
+        ):
+            self.assertEqual(ag.clean_author_name(name), name, name)
+
+
+class TestCleanAuthorNameLatinOnly(unittest.TestCase):
+    """A name may contain ONLY Latin letters (any diacritic), spaces,
+    hyphens and periods -- anything else means it is not a usable name."""
+
+    def test_non_latin_scripts_and_symbols_are_rejected(self):
+        for raw in (
+            "何 良华", "彬 今田", "振东 孙", "Γεώργιος Κόντες", "Бо Лю",
+            "М. А. Likhachev", "Ольга Василівна Борисова", "💣️ Bomb",
+            "∗ Corresponding authors", "∗. TianfuWang", "⋄† J.DiegoCaporale",
+            "♣. Amin", "† Project Leader", "†Equal contribution",
+            "‡. JaiVardhan", "‡Corresponding author", "•. Thrupthi",
+        ):
+            self.assertEqual(ag.clean_author_name(raw), "", raw)
+
+    def test_names_with_the_word_and_are_rejected(self):
+        for raw in ("Zheng and Gao", "Zheng and Moo Yi", "Zheng and Wang"):
+            self.assertEqual(ag.clean_author_name(raw), "", raw)
+        # ...but a name that merely contains the letters is fine.
+        for name in ("Sander Anderson", "Fernando Durand", "Anand Rangarajan"):
+            self.assertEqual(ag.clean_author_name(name), name, name)
+
+    def test_latin_diacritics_are_preserved(self):
+        for name in ("Zavia Gordić", "José García", "Jürgen Schmidhuber",
+                     "Sølve Eidnes", "Łukasz Kaiser"):
+            self.assertEqual(ag.clean_author_name(name), name, name)
+        # A trailing superscript marker is stripped, the accented name kept.
+        self.assertEqual(ag.clean_author_name("Zdeněk Krňoul⁹"), "Zdeněk Krňoul")
+
+    def test_apostrophes_are_removed(self):
+        self.assertEqual(ag.clean_author_name("Ze'an Liu"), "Zean Liu")
+        self.assertEqual(ag.clean_author_name("Ze’an Liu"), "Zean Liu")
+
+    def test_parentheses_and_their_contents_are_removed(self):
+        self.assertEqual(ag.clean_author_name("Wenxiao Wang(✉)"), "Wenxiao Wang")
+        self.assertEqual(
+            ag.clean_author_name("Andreas A. Malikopoulos (amaliko"),
+            "Andreas A. Malikopoulos")
+
+    def test_glued_uppercase_acronym_is_cut_off(self):
+        # "Any sequence of uppercase letters is suspicious": an institution
+        # acronym stuck to the surname (and its trailing ", BMW").
+        self.assertEqual(ag.clean_author_name("Artem SavkinTUM, BMW"), "Artem Savkin")
+        # A lone all-caps surname mixed into a normal name is folded, not cut.
+        self.assertEqual(ag.clean_author_name("Shaocheng JIA"), "Shaocheng Jia")
 
 
 class TestIsFullyProcessed(unittest.TestCase):
