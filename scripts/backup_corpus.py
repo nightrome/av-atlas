@@ -116,7 +116,8 @@ def get_or_create_release(token):
                 "scripts/restore_corpus.py. Overwritten on every backup_corpus.py run -- see DECISIONS.md.",
         "draft": True,
     }).encode("utf-8")
-    status, body = api_request("POST", f"{API_BASE}/releases", token, data=payload)
+    status, body = api_request("POST", f"{API_BASE}/releases", token, data=payload,
+                                headers={"Content-Type": "application/json"})
     if status != 201:
         raise SystemExit(f"Creating the {BACKUP_TAG} release failed ({status}): {body}")
     print(f"  created draft release '{BACKUP_TAG}'")
