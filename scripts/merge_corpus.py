@@ -74,27 +74,66 @@ def conference_and_year_for_file(filename):
     return conference, year
 
 
-# A leading "ACRONYM: " (a single, space-free token followed by a colon) is
-# usually a paper's own coined short-name for itself, not part of what makes
-# the paper distinct from its other listings -- the same paper is routinely
-# titled with the prefix by one source (its own arXiv listing, say) and
-# without it by another (confirmed on real data: ECCV's own proceedings
-# listing of "Generative End-to-End Autonomous Driving" carries no "GenAD:"
-# at all, while a citation-graph-discovered copy of the same paper does,
-# leaving two un-deduped entries for one real paper -- user-reported).
-# Stripped only when the prefix is a single word (no internal space), so a
-# genuine descriptive lead-in ("Learning to Drive: A Survey") is untouched
-# -- a multi-word phrase is far more likely to coincidentally share a
-# generic remainder with some unrelated paper than a coined method/dataset
-# name is, and two DIFFERENT papers that happen to reuse the same acronym
-# (a real, separate collision: CVPR'24 also has an unrelated "GenAD:
-# Generalized Predictive Model for Autonomous Driving") stay distinct here
-# regardless, since their remainders after stripping still differ.
-_ACRONYM_PREFIX_RE = re.compile(r"^\s*[a-z0-9][a-z0-9+_-]{1,14}\s*:\s+", re.I)
+# A community paper-list sometimes stores a title as a raw markdown link,
+# "[Real Title](https://arxiv.org/abs/....)" (confirmed: ~600 IROS 2024
+# entries via fetch_github_paper_lists.py) -- or wraps the whole title in
+# literal quotes (several ECCV listings). Either leaves the paper un-deduped
+# against its clean copy from another source, and shows the raw markup on
+# the site. clean_title() strips both; it feeds the STORED display title as
+# well as normalize_title() below.
+_MARKDOWN_LINK_TITLE_RE = re.compile(r"^\s*\[([^\]]+)\]\((?:https?|ftp)://[^)]*\)\s*$")
+_SUPERSCRIPT_DIGITS = str.maketrans(
+    "¹²³⁴⁵⁶⁷⁸⁹⁰"
+    "₀₁₂₃₄₅₆₇₈₉",
+    "12345678900123456789")
+
+
+def clean_title(t):
+    t = (t or "").strip()
+    m = _MARKDOWN_LINK_TITLE_RE.match(t)
+    if m:
+        t = m.group(1).strip()
+    for q in ('"', "'", "“", "”"):
+        t = t.strip(q).strip()
+    return re.sub(r"\s{2,}", " ", t).strip()
+
+
+# A leading "ACRONYM: " (a single, space-free token, then a colon or -- as a
+# GitHub-list rendering artifact -- a spaced dash) is usually a paper's own
+# coined short-name for itself, not part of what makes the paper distinct
+# from its other listings: the same paper is routinely titled with the
+# prefix by one source and without it by another (confirmed on real data:
+# ECCV's own listing of "Generative End-to-End Autonomous Driving" carries
+# no "GenAD:", a citation-graph-discovered copy does). Stripped only when
+# the prefix is a single word, so a descriptive lead-in ("Learning to
+# Drive: A Survey") is untouched -- a multi-word phrase is far likelier to
+# coincidentally share a generic remainder with an unrelated paper than a
+# coined name is, and two DIFFERENT papers reusing the same acronym stay
+# distinct here regardless (their remainders still differ). The dash form
+# ("MVX-Net - Multimodal VoxelNet ...", ICRA's GitHub lists, vs everyone
+# else's "MVX-Net: ...") is only accepted for a clearly coined leading
+# token (internal capital / digit / separator, not "2D"/"3D") AND a
+# substantial remainder, so "2D - X" / "3D - X" can't collapse together.
+_ACRONYM_PREFIX_RE = re.compile(
+    r"^\s*(?P<w>[A-Za-z0-9][A-Za-z0-9+._-]{1,19})\s*"
+    r"(?P<sep>:|(?<=\s)[\-–—])\s*(?=\S)")
+
+
+def _acronym_prefix_ok(w, sep, rest):
+    if sep == ":":
+        return True
+    coined = not re.fullmatch(r"\d+[Dd]", w) and any(
+        c.isupper() or c.isdigit() or c in "-+_" for c in w[1:])
+    return coined and len(re.sub(r"[^a-z0-9]", "", rest.lower())) >= 25
 
 
 def normalize_title(t):
-    t = _ACRONYM_PREFIX_RE.sub("", t or "", count=1)
+    t = clean_title(t).translate(_SUPERSCRIPT_DIGITS)
+    for ch in "^${}\\":  # LaTeX math glue: "A$^2$-Net" / "A^2-Net" -> "A2-Net"
+        t = t.replace(ch, "")
+    m = _ACRONYM_PREFIX_RE.match(t)
+    if m and _acronym_prefix_ok(m.group("w"), m.group("sep"), t[m.end():]):
+        t = t[m.end():]
     return re.sub(r"[^a-z0-9]", "", t.lower())
 
 
@@ -197,7 +236,7 @@ def main():
             arxiv_url = p.get("doi") if is_arxiv_file else None
             if key not in merged:
                 merged[key] = {
-                    "title": p.get("title"),
+                    "title": clean_title(p.get("title")),
                     "authors": p.get("authors"),
                     "abstract": p.get("abstract"),
                     "venue": p.get("conference") or file_conference,

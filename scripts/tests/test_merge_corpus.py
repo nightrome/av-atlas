@@ -31,6 +31,47 @@ class TestNormalizeTitle(unittest.TestCase):
     def test_none_title_does_not_crash(self):
         self.assertEqual(mc.normalize_title(None), "")
 
+    def test_latex_and_superscript_notation_folds_together(self):
+        # Same paper, one listing uses LaTeX math / a superscript glyph.
+        for a, b in (
+            ("A^2-Net: Molecular Structure Estimation", "A2-Net: Molecular Structure Estimation"),
+            ("D$^3$RoMa: Disparity Diffusion Depth Sensing", "D3RoMa: Disparity Diffusion Depth Sensing"),
+            ("VIENA²: A Driving Anticipation Dataset", "VIENA2: A Driving Anticipation Dataset"),
+            ("$360+x$: A Panoptic Scene Dataset", "360+x: A Panoptic Scene Dataset"),
+        ):
+            self.assertEqual(mc.normalize_title(a), mc.normalize_title(b), (a, b))
+
+    def test_missing_space_after_acronym_colon_folds(self):
+        self.assertEqual(mc.normalize_title("ADBA: Approximation Decision Boundary Approach"),
+                         mc.normalize_title("ADBA:Approximation Decision Boundary Approach"))
+
+    def test_spaced_dash_acronym_separator_folds_like_a_colon(self):
+        # ICRA's community lists render "NAME: Subtitle" as "NAME - Subtitle".
+        self.assertEqual(
+            mc.normalize_title("MVX-Net - Multimodal VoxelNet for 3D Object Detection"),
+            mc.normalize_title("MVX-Net: Multimodal VoxelNet for 3D Object Detection"))
+        # ...but a plain descriptive lead-in, or a bare "2D"/"3D", is NOT a
+        # coined name -- these must stay distinct.
+        self.assertNotEqual(
+            mc.normalize_title("2D - Object Detection in the Wild for Autonomous Cars"),
+            mc.normalize_title("3D - Object Detection in the Wild for Autonomous Cars"))
+        self.assertNotEqual(
+            mc.normalize_title("Deep Learning - A Survey of Methods for Self Driving"),
+            mc.normalize_title("Reinforcement Learning - A Survey of Methods for Self Driving"))
+
+    def test_markdown_link_and_wrapping_quotes_are_stripped(self):
+        self.assertEqual(
+            mc.clean_title("[Learning Agile Locomotion on Risky Terrains](https://arxiv.org/abs/2311.10484)"),
+            "Learning Agile Locomotion on Risky Terrains")
+        self.assertEqual(mc.clean_title('"ShAPO: Implicit Representations"'), "ShAPO: Implicit Representations")
+        self.assertEqual(
+            mc.normalize_title("[ShAPO: Implicit Representations for Shape](https://arxiv.org/abs/2207.13691)"),
+            mc.normalize_title("ShAPO: Implicit Representations for Shape"))
+
+    def test_descriptive_colon_lead_in_is_still_untouched(self):
+        self.assertNotEqual(mc.normalize_title("Learning to Drive: A Survey"),
+                            mc.normalize_title("A Survey"))
+
 
 class TestConferenceAndYearForFile(unittest.TestCase):
     def test_derives_conference_and_year_from_a_per_venue_year_filename(self):

@@ -156,6 +156,12 @@ def parse_table(text, author_format):
         if title_col is None or title_col >= len(cells):
             continue  # haven't seen a header yet, or a malformed row
         title = cells[title_col]
+        # Some lists put the title cell as a markdown link,
+        # "[Real Title](https://arxiv.org/abs/...)" (IROS2024) -- keep only
+        # the link text.
+        md = re.match(r"^\s*\[([^\]]+)\]\((?:https?|ftp)://[^)]*\)\s*$", title)
+        if md:
+            title = md.group(1).strip()
         if not title:
             continue
         authors_raw = cells[authors_col] if authors_col is not None and authors_col < len(cells) else ""

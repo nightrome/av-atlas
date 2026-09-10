@@ -91,8 +91,23 @@ CODE_LINKS_LLM_FILE = BASE / "data" / "code_links_llm.json"
 CVF_CITATION_GRAPH_VENUES = {"CVPR", "ICCV", "WACV"}
 
 
+# Kept deliberately in step with merge_corpus.py's title cleaning (minus its
+# acronym-prefix strip, which is a dedup-key concern) -- this one is the
+# citation-graph join key, so a citing paper written "A$^2$-Net" must land
+# on the same key as the corpus's "A2-Net".
+_MARKDOWN_LINK_TITLE_RE = re.compile(r"^\s*\[([^\]]+)\]\((?:https?|ftp)://[^)]*\)\s*$")
+_SUPERSCRIPT_DIGITS = str.maketrans("¹²³⁴⁵⁶⁷⁸⁹⁰₀₁₂₃₄₅₆₇₈₉", "12345678900123456789")
+
+
 def normalize_title(t):
-    return re.sub(r"[^a-z0-9]", "", (t or "").lower())
+    t = (t or "").strip()
+    m = _MARKDOWN_LINK_TITLE_RE.match(t)
+    if m:
+        t = m.group(1)
+    t = t.translate(_SUPERSCRIPT_DIGITS)
+    for ch in "^${}\\":
+        t = t.replace(ch, "")
+    return re.sub(r"[^a-z0-9]", "", t.lower())
 
 COUNTRY_NAMES = {
     "US": "United States", "CN": "China", "DE": "Germany", "GB": "United Kingdom",
