@@ -19,6 +19,9 @@ data/stats_adjacent.json
 # Sharded abstract text split out of stats.json (regenerate with
 # scripts/aggregate.py) -- same reasoning as stats.json above.
 data/abstracts/
+# Per-author non-AV publication tallies, another ~80MB regenerable dump the
+# Insights page loads lazily -- same reasoning as stats.json above.
+data/stats_non_av.json
 
 # Belt-and-braces against a stray root copy of the generated data (an old
 # habit, or a hand-run of aggregate.py with the wrong cwd) getting swept in

@@ -93,10 +93,14 @@ CVF_CITATION_GRAPH_VENUES = {"CVPR", "ICCV", "WACV"}
 
 # Kept deliberately in step with merge_corpus.py's title cleaning (minus its
 # acronym-prefix strip, which is a dedup-key concern) -- this one is the
-# citation-graph join key, so a citing paper written "A$^2$-Net" must land
-# on the same key as the corpus's "A2-Net".
+# citation-graph join key, so a citing paper written "A$^2$-Net" / "🎧MOSPA"
+# / "... Networks" must land on the same key as the corpus's "A2-Net" /
+# "MOSPA" / "... Network".
 _MARKDOWN_LINK_TITLE_RE = re.compile(r"^\s*\[([^\]]+)\]\((?:https?|ftp)://[^)]*\)\s*$")
 _SUPERSCRIPT_DIGITS = str.maketrans("¹²³⁴⁵⁶⁷⁸⁹⁰₀₁₂₃₄₅₆₇₈₉", "12345678900123456789")
+_EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF☀-➿⬀-⯿⌀-⏿️]")
+_TITLE_MATH_RE = re.compile(r"\s*[\^\$\{\}\\]+\s*")
+_TRAILING_PLURAL_S_RE = re.compile(r"(?<=[a-z]{4})s$")
 
 
 def normalize_title(t):
@@ -104,10 +108,9 @@ def normalize_title(t):
     m = _MARKDOWN_LINK_TITLE_RE.match(t)
     if m:
         t = m.group(1)
-    t = t.translate(_SUPERSCRIPT_DIGITS)
-    for ch in "^${}\\":
-        t = t.replace(ch, "")
-    return re.sub(r"[^a-z0-9]", "", t.lower())
+    t = _TITLE_MATH_RE.sub("", _EMOJI_RE.sub("", t.translate(_SUPERSCRIPT_DIGITS)))
+    key = re.sub(r"[^a-z0-9]", "", t.lower())
+    return key if key.endswith("ss") else _TRAILING_PLURAL_S_RE.sub("", key)
 
 COUNTRY_NAMES = {
     "US": "United States", "CN": "China", "DE": "Germany", "GB": "United Kingdom",

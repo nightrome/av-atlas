@@ -72,6 +72,24 @@ class TestNormalizeTitle(unittest.TestCase):
         self.assertNotEqual(mc.normalize_title("Learning to Drive: A Survey"),
                             mc.normalize_title("A Survey"))
 
+    def test_decorative_emoji_in_the_title_is_ignored(self):
+        for a, b in (
+            ("🏘️ ProcTHOR: Large-Scale Embodied AI", "ProcTHOR: Large-Scale Embodied AI"),
+            ("PooDLe🐩: Pooled dense self-supervised learning", "PooDLe: Pooled dense self-supervised learning"),
+            ("⚡FLARES⚡: Fast LiDAR Semantic Segmentation", "FLARES: Fast LiDAR Semantic Segmentation"),
+        ):
+            self.assertEqual(mc.normalize_title(a), mc.normalize_title(b), (a, b))
+
+    def test_final_word_singular_plural_folds(self):
+        self.assertEqual(
+            mc.normalize_title("Container: Context Aggregation Network"),
+            mc.normalize_title("Container: Context Aggregation Networks"))
+        self.assertEqual(
+            mc.normalize_title("Feature Priors from Multi-View Image"),
+            mc.normalize_title("Feature Priors from Multi-View Images"))
+        # a real "-ss" word is not stemmed, so these stay distinct
+        self.assertNotEqual(mc.normalize_title("Progress"), mc.normalize_title("Progres"))
+
 
 class TestConferenceAndYearForFile(unittest.TestCase):
     def test_derives_conference_and_year_from_a_per_venue_year_filename(self):

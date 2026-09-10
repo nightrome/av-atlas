@@ -86,6 +86,19 @@ _SUPERSCRIPT_DIGITS = str.maketrans(
     "¹²³⁴⁵⁶⁷⁸⁹⁰"
     "₀₁₂₃₄₅₆₇₈₉",
     "12345678900123456789")
+# A decorative emoji dropped into a title ("🏘️ ProcTHOR: ...", "PooDLe🐩:",
+# "⚡FLARES⚡: ...") -- always author whimsy, never part of the name, and it
+# left the paper un-deduped against its plain copy.
+_EMOJI_RE = re.compile(
+    "[\U0001F000-\U0001FAFF☀-➿⬀-⯿⌀-⏿️]")
+# LaTeX math glue plus any whitespace it sat next to, so "R $^2$ Former" ->
+# "R2Former" and "VIENA ^2 :" -> "VIENA2:".
+_TITLE_MATH_RE = re.compile(r"\s*[\^\$\{\}\\]+\s*")
+# A trailing plural "s" on the flattened key -- the citing-paper metadata
+# routinely drops or adds it on the last word ("... Multi-View Image[s]",
+# "... Spiking Neural Network[s]"). Folded so singular/plural of one paper
+# collapse; "...ss" (address, progress) is left alone.
+_TRAILING_PLURAL_S_RE = re.compile(r"(?<=[a-z]{4})s$")
 
 
 def clean_title(t):
@@ -128,13 +141,15 @@ def _acronym_prefix_ok(w, sep, rest):
 
 
 def normalize_title(t):
-    t = clean_title(t).translate(_SUPERSCRIPT_DIGITS)
-    for ch in "^${}\\":  # LaTeX math glue: "A$^2$-Net" / "A^2-Net" -> "A2-Net"
-        t = t.replace(ch, "")
+    t = _EMOJI_RE.sub("", clean_title(t).translate(_SUPERSCRIPT_DIGITS))
+    t = _TITLE_MATH_RE.sub("", t)
+    t = re.sub(r"\s+:", ":", t)  # "FG2 :" -> "FG2:"
+    t = re.sub(r"^[^0-9A-Za-z(\"']+", "", t).strip()  # leading symbol/marker junk
     m = _ACRONYM_PREFIX_RE.match(t)
     if m and _acronym_prefix_ok(m.group("w"), m.group("sep"), t[m.end():]):
         t = t[m.end():]
-    return re.sub(r"[^a-z0-9]", "", t.lower())
+    key = re.sub(r"[^a-z0-9]", "", t.lower())
+    return key if key.endswith("ss") else _TRAILING_PLURAL_S_RE.sub("", key)
 
 
 def discovery_source(filename):
