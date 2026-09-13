@@ -102,7 +102,17 @@ def pdf_url_from_path(path):
     # "content_cvpr_2015/html/..." instead of "/content/CVPR2015/html/..."
     # (same quirk fetch_cvf.py works around) -- always join with exactly one
     # slash rather than relying on the path already having one.
-    return f"{CVF_BASE}/{path.lstrip('/')}".replace("/html/", "/papers/").replace(".html", ".pdf")
+    pdf_path = path.replace("/html/", "/papers/").replace(".html", ".pdf")
+    # ICCV 2017 specifically directories its PDFs under "content_ICCV_2017"
+    # even though its own html/ listing pages live under lowercase
+    # "content_iccv_2017" -- every other year keeps html/ and papers/ under
+    # the same-cased directory. Confirmed live: the stored "content_iccv_2017/
+    # html/<slug>.html" path 200s, but naively lowercasing papers/ 404s,
+    # while the html page's own outgoing PDF link is "../../content_ICCV_2017/
+    # papers/<slug>.pdf" -- caught because every one of that year's fetches
+    # in fetch_cvf_affiliations.py/build_citation_graph.py was 404ing.
+    pdf_path = pdf_path.replace("content_iccv_2017/papers/", "content_ICCV_2017/papers/")
+    return f"{CVF_BASE}/{pdf_path.lstrip('/')}"
 
 
 def build_cvf_pdf_url_index():

@@ -4,6 +4,27 @@ How the corpus in `data/` was built, script by script. Written down here so the
 fetch scripts (many, built iteratively) can be pruned to just what's actually
 load-bearing, without losing the record of how each venue was pulled.
 
+## DBLP now hard-blocks scripted access (as of 2026-09-13)
+
+Every row below that names `fetch_dblp_listing.py` as its source (RSS/ICLR/AAAI,
+ICML/BMVC/ACCV/ICPR/ICASSP/ICIP, ITSC/IV, T-ITS/TOG) is currently unfetchable,
+and so is the CVPR 2018-2020 / WACV 2013-2019 DBLP fallback in the CVPR/ICCV/WACV
+row. dblp.org now serves every `db/conf/...` and `db/journals/...` page —
+including years that fetched fine before — from behind
+[Anubis](https://github.com/TecharoHQ/anubis), a proof-of-work bot challenge:
+the response is `200 OK` with a JS challenge page (`"Making sure you're not a
+bot!"`), not a `403`/`503` `fetch_common.py`'s retry logic could catch or back
+off from. Confirmed live against both a previously-unfetched year (ACCV 2020)
+and an already-successfully-fetched one (ACCV 2018) — both now return the
+challenge page instead of a listing. This is a real anti-bot gate, not a
+rate-limit; solving it would mean automating past bot-detection, which this
+project won't do. The per-venue table below also had a stale claim from
+before this block started ("ACCV only reached 2012") that undercounted what
+had actually been fetched by then (ACCV 2012-2018) — corrected there.
+Revisit `fetch_dblp_listing.py` only if DBLP's access policy changes; until
+then, treat every DBLP-sourced row as frozen at what's already in
+`data/venues/`.
+
 ## Per-venue scripts (current, in use)
 
 | Venue | Script | Source | Notes |
@@ -14,10 +35,10 @@ load-bearing, without losing the record of how each venue was pulled.
 | CoRL | `fetch_corl_history.py` | proceedings.mlr.press | PMLR volume number per year is hardcoded (`CORL_VOLUMES` dict) — not derivable from the year, had to be looked up per edition. |
 | ICRA / IROS | `fetch_github_paper_lists.py` | Community-maintained GitHub paper lists | IEEE Xplore itself returns HTTP 418 to any direct request (bot-blocked). OpenAlex (`fetch_ieee_openalex.py`, still used for ICRA2022/IROS2021-2022's title+authors+abstract) has since moved to a paid/budget-limited API (confirmed 2026-08-17: `"Insufficient budget"`, `dailyRemainingUsd: 0`) and per this project's no-paid-APIs rule isn't used to widen coverage further. Found via `hrjp/ICRA-IROS-PaperList`, an index of per-year community repos (title+authors only, no abstract) covering 2019-2025 for both conferences — three different repo-family formats (plain bullets under `## Category` headings, a comma-separated-authors markdown table, a semicolon-separated `Last, First` table), each confirmed by reading the raw file directly since assuming one family's format from another's led to real corruption during development (see the script's own docstring and tests/test_fetch_github_paper_lists.py). Every paper carries `source_url` (the exact repo it came from) through merge_corpus.py onto papers_full.json, shown on paper.html. 2013-2018 and 2026 still have no known source. |
 | RSS / ICLR / AAAI | `fetch_dblp_listing.py` | DBLP | Same title+authors+year-only, no-abstract tier as the CVPR gap-fill above, but the primary source here for all three, not a fallback. RSS's own proceedings site (roboticsproceedings.org) has titles/authors but no reliable volume-to-year mapping from the site itself; ICLR's OpenReview bulk API now requires a browser-solvable challenge (`403 ChallengeRequiredError`); AAAI's ojs.aaai.org archive page is JS-rendered, not scrapable via a plain HTTP fetch. DBLP indexes all three with a stable per-year URL (`dblp.org/db/conf/<key>/<key><year>.html`), same page structure the CVPR gap-fill already parsed. |
-| ICML / BMVC / ACCV / ICPR / ICASSP / ICIP | `fetch_dblp_listing.py` | DBLP | Found not by a coverage gap in the venue list itself, but by mining `data/reference_lists_cvf.json`/`reference_lists_arxiv.json` (raw extracted reference text from this corpus's own papers) for parenthetical venue codes cited often but not yet covered (user-requested) -- ICML alone showed 207 raw citations. Same generic DBLP path as RSS/ICLR/AAAI; ACCV/ICPR are DBLP multi-part years (`accv2024-1.html` .. `-N.html`), already handled by the existing ECCV-style pagination fallback in `fetch_year()`. ICML and BMVC are fully fetched (2012-2024); ACCV only reached 2012 and ICPR/ICASSP/ICIP haven't started -- DBLP began returning `RemoteDisconnected` mid-fetch (confirmed via a direct connection test, not something retries could paper over) after this session's cumulative request volume, so the remaining fetches are paused rather than retried immediately. `fetch_common.py`'s `fetch()` now also retries on a bare `ConnectionError`, not just `HTTPError`, after this was caught losing an in-progress 15-year ICML fetch on year 14. |
+| ICML / BMVC / ACCV / ICPR / ICASSP / ICIP | `fetch_dblp_listing.py` | DBLP | Found not by a coverage gap in the venue list itself, but by mining `data/reference_lists_cvf.json`/`reference_lists_arxiv.json` (raw extracted reference text from this corpus's own papers) for parenthetical venue codes cited often but not yet covered (user-requested) -- ICML alone showed 207 raw citations. Same generic DBLP path as RSS/ICLR/AAAI; ACCV/ICPR are DBLP multi-part years (`accv2024-1.html` .. `-N.html`), already handled by the existing ECCV-style pagination fallback in `fetch_year()`. ICML and BMVC are fully fetched (2012-2024); ACCV reached 2012-2018 (2020/2022/2024 still missing) and ICPR/ICASSP/ICIP haven't started at all -- see "DBLP now hard-blocks scripted access" above for why none of these can be continued right now. (Earlier pause reason, now superseded: DBLP began returning `RemoteDisconnected` mid-fetch after this session's cumulative request volume; `fetch_common.py`'s `fetch()` now also retries on a bare `ConnectionError`, not just `HTTPError`, after this was caught losing an in-progress 15-year ICML fetch on year 14 -- that fix is still correct, it just no longer matters until the Anubis block lifts.) |
 | ITSC / IV | `fetch_dblp_listing.py` | DBLP | Same generic DBLP path as RSS/ICLR/AAAI, fully fetched. IV is a real gotcha: DBLP's `conf/iv/` is NOT the IEEE Intelligent Vehicles Symposium -- it's the unrelated "International Conference on Information Visualisation" (confirmed live: `conf/iv`'s own DBLP page is entirely treemap/word-cloud/graph-layout papers). DBLP disambiguates the actual vehicles symposium as `conf/ivs/` instead. Using `iv` here previously pulled 1131 Information-Visualisation papers under the "IV" venue label (user-reported: "IV has only 0.4% AV-relevant papers... it is literally called Intelligent Vehicles"), and the real IV Symposium's papers were never fetched at all -- fixed by mapping "IV" to DBLP's `ivs` directory instead (`CONF_DBLP_PATH` in `fetch_dblp_listing.py`). |
 | T-ITS (IEEE Trans. on Intelligent Transportation Systems) | `fetch_dblp_listing.py --journal` | DBLP | Same `--journal` volume-walking path as TOG below, fully fetched. |
-| TOG (ACM Trans. on Graphics) | `fetch_dblp_listing.py --journal` | DBLP | Same reference-mining discovery as above; not yet fetched (see the note above). |
+| TOG (ACM Trans. on Graphics) | `fetch_dblp_listing.py --journal` | DBLP | Same reference-mining discovery as above; not yet fetched -- blocked, see "DBLP now hard-blocks scripted access" above. |
 
 ## Merge, classify, enrich, aggregate
 

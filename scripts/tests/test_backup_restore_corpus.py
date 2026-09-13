@@ -116,6 +116,40 @@ class TestLoadGithubToken(unittest.TestCase):
         self.assertEqual(rc.load_github_token(), "github_pat_xyz")
 
 
+class TestSelectReleasesByTag(unittest.TestCase):
+    # Regression coverage for the bug fixed alongside this test: GitHub's
+    # GET /releases/tags/{tag} 404s for draft releases, so both scripts
+    # list all releases and filter client-side instead. Before this fix,
+    # that lookup didn't exist at all and every backup run created a new
+    # draft release rather than reusing the existing one.
+    def test_no_match_returns_none(self):
+        newest, stale = bc.select_releases_by_tag(
+            [{"tag_name": "other", "created_at": "2026-01-01T00:00:00Z", "id": 1}], "corpus-backup")
+        self.assertIsNone(newest)
+        self.assertEqual(stale, [])
+
+    def test_single_match_has_no_stale(self):
+        release = {"tag_name": "corpus-backup", "created_at": "2026-01-01T00:00:00Z", "id": 1}
+        newest, stale = bc.select_releases_by_tag([release], "corpus-backup")
+        self.assertEqual(newest, release)
+        self.assertEqual(stale, [])
+
+    def test_multiple_matches_picks_most_recently_created_and_lists_rest_as_stale(self):
+        old = {"tag_name": "corpus-backup", "created_at": "2026-09-10T09:09:42Z", "id": 1}
+        newer = {"tag_name": "corpus-backup", "created_at": "2026-09-10T20:58:16Z", "id": 2}
+        newest_release = {"tag_name": "corpus-backup", "created_at": "2026-09-13T08:28:56Z", "id": 3}
+        unrelated = {"tag_name": "v1.0", "created_at": "2026-09-12T00:00:00Z", "id": 4}
+        newest, stale = bc.select_releases_by_tag([old, newest_release, newer, unrelated], "corpus-backup")
+        self.assertEqual(newest, newest_release)
+        self.assertEqual(stale, [newer, old])
+
+    def test_restore_side_selection_matches_backup_side(self):
+        old = {"tag_name": "corpus-backup", "created_at": "2026-09-10T09:09:42Z", "id": 1}
+        newest_release = {"tag_name": "corpus-backup", "created_at": "2026-09-13T08:28:56Z", "id": 3}
+        self.assertEqual(rc.select_latest_release_by_tag([old, newest_release], "corpus-backup"), newest_release)
+        self.assertIsNone(rc.select_latest_release_by_tag([old], "no-such-tag"))
+
+
 class TestUploadUrlTemplateStripping(unittest.TestCase):
     # GitHub's release object gives upload_url as an RFC 6570 URI template
     # ("...assets{?name,label}"); upload_asset() strips the template suffix

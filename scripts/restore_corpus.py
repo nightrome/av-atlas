@@ -98,9 +98,29 @@ def download_asset(asset_api_url, token):
             return resp.read()
 
 
+def select_latest_release_by_tag(releases, tag):
+    """Pure selection logic, testable without a live API call -- see
+    backup_corpus.py's select_releases_by_tag for why this can't just be
+    a GET .../releases/tags/{tag} call."""
+    matches = [r for r in releases if r.get("tag_name") == tag]
+    if not matches:
+        return None
+    matches.sort(key=lambda r: r["created_at"], reverse=True)
+    return matches[0]
+
+
 def find_asset(token):
-    status, body = api_get(f"{API_BASE}/releases/tags/{BACKUP_TAG}", token)
-    release = json.loads(body)
+    # GitHub's "get release by tag" endpoint (/releases/tags/{tag}) only
+    # resolves *published* releases -- the backup release is a draft (no
+    # real tag ref), so it 404s there even when the release exists. Listing
+    # and filtering client-side is the only way to find a draft by tag; see
+    # the matching note in backup_corpus.py's select_releases_by_tag.
+    status, body = api_get(f"{API_BASE}/releases?per_page=100", token)
+    releases = json.loads(body)
+    release = select_latest_release_by_tag(releases, BACKUP_TAG)
+    if release is None:
+        raise SystemExit(f"No '{BACKUP_TAG}' release found -- "
+                          "has scripts/backup_corpus.py ever run successfully?")
     for asset in release.get("assets", []):
         if asset["name"] == ARCHIVE_NAME:
             return asset

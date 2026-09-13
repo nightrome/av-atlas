@@ -103,12 +103,47 @@ def api_request(method, url, token, data=None, headers=None):
         return e.code, json.loads(e.read() or b"{}")
 
 
+def select_releases_by_tag(releases, tag):
+    """Pure selection logic split out of find_existing_release so it's
+    testable without a live API call. Returns (newest, stale) where newest
+    is the most recently created release with this tag_name, or (None, [])
+    if there's no match. Client-side filtering because GitHub's "get
+    release by tag" endpoint (/releases/tags/{tag}) only resolves
+    *published* releases -- a draft has no real tag ref, so it 404s there
+    even when a draft with this tag_name exists."""
+    matches = [r for r in releases if r.get("tag_name") == tag]
+    if not matches:
+        return None, []
+    matches.sort(key=lambda r: r["created_at"], reverse=True)
+    return matches[0], matches[1:]
+
+
+def find_existing_release(token):
+    """Without the fix in select_releases_by_tag, get_or_create_release
+    always fell through to "create", silently piling up one new draft per
+    backup run instead of reusing the one this module's docstring promises
+    -- confirmed on the live repo, 4 accumulated 'corpus-backup' drafts
+    before this fix."""
+    status, body = api_request("GET", f"{API_BASE}/releases?per_page=100", token)
+    if status != 200:
+        raise SystemExit(f"Listing releases failed ({status}): {body}")
+    newest, stale = select_releases_by_tag(body, BACKUP_TAG)
+    if newest is None:
+        return None
+    for release in stale:
+        # Self-heals the pre-fix duplicate-draft pile-up described above --
+        # deletes drafts this same lookup would otherwise never reuse.
+        status, resp_body = api_request("DELETE", f"{API_BASE}/releases/{release['id']}", token)
+        if status != 204:
+            raise SystemExit(f"Deleting stale '{BACKUP_TAG}' draft {release['id']} failed ({status}): {resp_body}")
+        print(f"  removed stale duplicate draft release {release['id']} ({release['created_at']})")
+    return newest
+
+
 def get_or_create_release(token):
-    status, body = api_request("GET", f"{API_BASE}/releases/tags/{BACKUP_TAG}", token)
-    if status == 200:
-        return body
-    if status != 404:
-        raise SystemExit(f"GET release failed ({status}): {body}")
+    existing = find_existing_release(token)
+    if existing is not None:
+        return existing
     payload = json.dumps({
         "tag_name": BACKUP_TAG,
         "name": "Corpus data backup (not a real release, do not download for site use)",
