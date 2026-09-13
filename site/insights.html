@@ -908,7 +908,7 @@ function render(ins, stats) {
   }
   const byLifetime = ins.citations_by_researcher_lifetime || [];
   if (byLifetime.length) {
-    errorBarChart(document.getElementById('lifetime-citations-chart'), byLifetime, { yLabel: 'Median total citations (log-scale)', log: true });
+    errorBarChart(document.getElementById('lifetime-citations-chart'), byLifetime, { yLabel: 'Median total citations', log: false });
   }
   // The binding requirement is "several influential papers", not the
   // average -- an average alone cannot tell a consistently strong record

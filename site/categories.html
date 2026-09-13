@@ -80,6 +80,10 @@
       <input type="checkbox" id="category-normalize" checked>
       Normalize by total papers that year
     </label>
+    <label style="display:flex;align-items:center;gap:4px;">
+      <input type="checkbox" id="category-exclude-misc">
+      Exclude Misc
+    </label>
   </div>
   <div class="line-chart-wrap" id="category-chart-wrap">
     <svg id="category-chart"></svg>
@@ -201,9 +205,11 @@ function renderCategoryTimeline(stats, filters) {
   const hidden = new Set();
 
   const normalizeCheckbox = document.getElementById('category-normalize');
+  const excludeMiscCheckbox = document.getElementById('category-exclude-misc');
 
   function rebuild(topN) {
     let topCategories = Object.entries(byCategory)
+      .filter(([cat]) => !(excludeMiscCheckbox.checked && cat === 'misc'))
       .sort((a, b) => b[1].length - a[1].length)
       .slice(0, topN)
       .map(kv => kv[0]);
@@ -257,6 +263,12 @@ function renderCategoryTimeline(stats, filters) {
         series, allYears, fmt, { formatAxis: axisFmt, yLabel });
     }
     normalizeCheckbox.onchange = draw;
+    // Unlike normalize (which only changes how an already-chosen category's
+    // values are computed), excluding Misc changes WHICH categories qualify
+    // for the top-N cut -- e.g. dropping the largest category should let an
+    // 11th-place one take its spot -- so this re-runs the whole selection,
+    // not just draw().
+    excludeMiscCheckbox.onchange = () => rebuild(topN);
     draw();
   }
 
