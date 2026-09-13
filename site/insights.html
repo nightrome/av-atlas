@@ -779,7 +779,7 @@ function render(ins, stats) {
     const intervals = lastIdx - fromIdx;
     const cagr = (a, b) => (a > 0 && intervals > 0) ? (Math.pow(b / a, 1 / intervals) - 1) * 100 : null;
     const tip = `Compound annual growth rate, ${gYears[fromIdx]} to ${gYears[lastIdx]} (complete years only).`;
-    const avPct = cagr(growth.core_papers[fromIdx], growth.core_papers[lastIdx]);
+    const avPct = cagr(growth.av_papers[fromIdx], growth.av_papers[lastIdx]);
     const allPct = cagr(growth.total_papers[fromIdx], growth.total_papers[lastIdx]);
     if (avPct != null) growthTile(gf, `${avPct > 0 ? '+' : ''}${avPct.toFixed(1)}%`, 'AV paper growth', tip);
     if (allPct != null) growthTile(gf, `${allPct > 0 ? '+' : ''}${allPct.toFixed(1)}%`, 'All paper growth', tip);
@@ -801,7 +801,7 @@ function render(ins, stats) {
 
   if (gYears.length) {
     const series = [
-      { name: 'AV papers', color: PALETTE[0], values: Object.fromEntries(gYears.map((y, i) => [y, growth.core_papers[i]])) },
+      { name: 'AV papers', color: PALETTE[0], values: Object.fromEntries(gYears.map((y, i) => [y, growth.av_papers[i]])) },
       { name: 'All papers', color: PALETTE[1], values: Object.fromEntries(gYears.map((y, i) => [y, growth.total_papers[i]])) },
     ];
     const legend = document.getElementById('growth-legend');
@@ -1050,7 +1050,7 @@ function render(ins, stats) {
   function venueRow(list, v) {
     const li = document.createElement('li');
     const name = document.createElement('span');
-    name.textContent = `${v.venue} (${v.core_papers.toLocaleString()} / ${v.total_papers.toLocaleString()})`;
+    name.textContent = `${v.venue} (${v.av_papers.toLocaleString()} / ${v.total_papers.toLocaleString()})`;
     li.appendChild(name);
     const pct = document.createElement('span');
     pct.className = 'pct';
@@ -1063,15 +1063,15 @@ function render(ins, stats) {
   const venueMinSel = document.getElementById('venue-relevance-min');
   function renderVenueRelevance() {
     const minPapers = parseInt(venueMinSel.value, 10) || 100;
-    // By core (AV-relevant) paper count, not total -- matches what "Min.
+    // By AV paper count, not total -- matches what "Min.
     // papers" means everywhere else on the site (Venues' own Min. filter is
-    // core-paper-count based too). Filtering by TOTAL papers instead let a
+    // AV-paper-count based too). Filtering by TOTAL papers instead let a
     // venue with zero real AV output (e.g. MICCAI, a medical-imaging
     // conference with a couple of tangentially-discovered papers) clear an
     // 80-total-paper bar despite not being an AV venue at all -- user-
     // reported: "I don't believe it has 80 AV relevant papers. It is not
     // shown on Venues."
-    const filtered = venueRelevanceAll.filter(v => v.core_papers >= minPapers);
+    const filtered = venueRelevanceAll.filter(v => v.av_papers >= minPapers);
     vh.innerHTML = ''; vl.innerHTML = '';
     filtered.slice(0, 5).forEach(v => venueRow(vh, v));
     [...filtered].slice(-5).reverse().forEach(v => venueRow(vl, v));

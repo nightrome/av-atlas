@@ -20,19 +20,19 @@ class TestClassifyRelevance(unittest.TestCase):
     def test_title_mention_is_core(self):
         self.assertEqual(
             cl.classify_relevance("PlanNet: Planning for Autonomous Driving", "A method for planning."),
-            "core",
+            "AV",
         )
 
     def test_driving_as_a_standalone_title_word_is_core(self):
         # DriveLM: the compound "DriveLM" itself doesn't match any
         # AV_RELEVANCE_TERMS phrase, but "Driving" appears standalone
-        # elsewhere in the title -- this must not fall through to "adjacent".
+        # elsewhere in the title -- this must not fall through to "non-AV".
         self.assertEqual(
             cl.classify_relevance(
                 "DriveLM: Driving with Graph Visual Question Answering",
                 "A framework connecting perception to planning.",
             ),
-            "core",
+            "AV",
         )
 
     def test_data_driven_does_not_false_positive_on_driven(self):
@@ -43,7 +43,7 @@ class TestClassifyRelevance(unittest.TestCase):
                 "A Data-Driven Approach to Image Classification",
                 "We classify images using a data-driven neural network.",
             ),
-            "adjacent",
+            "non-AV",
         )
 
     def test_single_abstract_mention_is_core(self):
@@ -55,59 +55,59 @@ class TestClassifyRelevance(unittest.TestCase):
                 "Depth Anything: A Foundation Model",
                 "Our model is applicable to robotics, autonomous driving, and augmented reality.",
             ),
-            "core",
+            "AV",
         )
 
     def test_no_av_terms_is_adjacent(self):
         self.assertEqual(
             cl.classify_relevance("Fast Image Classification", "We classify images of cats and dogs."),
-            "adjacent",
+            "non-AV",
         )
 
     def test_missing_abstract_does_not_crash(self):
-        self.assertEqual(cl.classify_relevance("Some Paper", None), "adjacent")
+        self.assertEqual(cl.classify_relevance("Some Paper", None), "non-AV")
 
     def test_traffic_light_and_sign_count_as_av_relevant(self):
         # user-flagged real miss: "A VT-HMM-Based Framework for Countdown
         # Timer Traffic Light State Estimation" had no abstract and no other
-        # AV-specific phrase in its title, so it fell through to "adjacent"
+        # AV-specific phrase in its title, so it fell through to "non-AV"
         # despite being unambiguously about real-world driving
         # infrastructure.
         self.assertEqual(
             cl.classify_relevance("Countdown Timer Traffic Light State Estimation", None),
-            "core",
+            "AV",
         )
         self.assertEqual(
             cl.classify_relevance("Robust Traffic Sign Recognition in Adverse Weather", None),
-            "core",
+            "AV",
         )
 
     def test_dataset_name_alone_counts_as_av_relevant(self):
         self.assertEqual(
             cl.classify_relevance("A New Benchmark", "We evaluate on nuScenes and compare to prior work."),
-            "core",
+            "AV",
         )
 
     def test_llm_core_promotes_a_keyword_adjacent_paper(self):
         self.assertEqual(
             cl.classify_relevance(
-                "Fast Image Classification", "We classify images of cats and dogs.", llm_says_core=True,
+                "Fast Image Classification", "We classify images of cats and dogs.", llm_says_av=True,
             ),
-            "core",
+            "AV",
         )
 
     def test_llm_adjacent_does_not_promote(self):
         self.assertEqual(
             cl.classify_relevance(
-                "Fast Image Classification", "We classify images of cats and dogs.", llm_says_core=False,
+                "Fast Image Classification", "We classify images of cats and dogs.", llm_says_av=False,
             ),
-            "adjacent",
+            "non-AV",
         )
 
     # -- Ground-truth regression cases (real papers, user-confirmed) --------
 
     def test_mechanical_chassis_control_paper_excluded(self):
-        # Real paper, confirmed by the user: was wrongly "core" purely
+        # Real paper, confirmed by the user: was wrongly "AV" purely
         # because the title-strength check matched "Drive" inside
         # "Distributed Drive" (a drivetrain configuration, not a person
         # driving). Scope decision: mechanical/hardware vehicle engineering
@@ -119,7 +119,7 @@ class TestClassifyRelevance(unittest.TestCase):
                 "direct yaw moment control (DYC) for a distributed drive electric vehicle to improve handling "
                 "and stability.",
             ),
-            "adjacent",
+            "non-AV",
         )
 
     def test_learning_based_chassis_control_still_included(self):
@@ -133,7 +133,7 @@ class TestClassifyRelevance(unittest.TestCase):
                 "We propose a deep reinforcement learning policy for active front steering (AFS) and direct "
                 "yaw moment control (DYC) of a distributed drive electric vehicle for autonomous driving.",
             ),
-            "core",
+            "AV",
         )
 
     # -- Expanded synonym vocabulary (fallback path; these had no abstract on
@@ -146,11 +146,11 @@ class TestClassifyRelevance(unittest.TestCase):
             "Identification and Classification of Car-Following Behavior",
             "A Nonlinear MPC Strategy for Autonomous Racing of Scale Vehicles",
         ):
-            self.assertEqual(cl.classify_relevance(title, None), "core", title)
+            self.assertEqual(cl.classify_relevance(title, None), "AV", title)
 
     def test_radar_perception_vocabulary_is_core(self):
         # User-flagged via Andras Palffy's papers: radar-perception papers
-        # (a signature AV subfield) fell through to "adjacent" whenever the
+        # (a signature AV subfield) fell through to "non-AV" whenever the
         # abstract didn't also say "autonomous driving".
         for title, abstract in (
             ("A Deep Automotive Radar Detector Using the RaDelft Dataset",
@@ -161,27 +161,27 @@ class TestClassifyRelevance(unittest.TestCase):
             ("Occlusion Aware Sensor Fusion for Early Crossing Pedestrian Detection", None),
             ("Pedestrian Crossing Intention Prediction Using Multimodal Fusion Network", None),
         ):
-            self.assertEqual(cl.classify_relevance(title, abstract), "core", title)
+            self.assertEqual(cl.classify_relevance(title, abstract), "AV", title)
 
     def test_aerial_radar_paper_still_held_out_by_off_scope_guard(self):
         # "4d radar" now fires, but the off-scope title guard runs first.
         self.assertEqual(
             cl.classify_relevance(
                 "Robust 4D Radar-Aided Inertial Navigation for Aerial Vehicles", None),
-            "adjacent",
+            "non-AV",
         )
 
     def test_title_only_terms_fire_from_the_title(self):
         # A title-only phrase in the title is enough on its own.
         self.assertEqual(
-            cl.classify_relevance("Perception Stack for an Intelligent Vehicle", None), "core")
+            cl.classify_relevance("Perception Stack for an Intelligent Vehicle", None), "AV")
         # ...and the same phrase absent everywhere leaves a generic paper adjacent.
         self.assertEqual(
             cl.classify_relevance(
                 "A General Graph Neural Network for Node Classification",
                 "We evaluate on standard node-classification benchmarks.",
             ),
-            "adjacent",
+            "non-AV",
         )
 
     # -- Off-scope (non-road-vehicle) title guard ------------------------
@@ -193,7 +193,7 @@ class TestClassifyRelevance(unittest.TestCase):
             "Stanford Doggo: An Open-Source Quasi-Direct-Drive Quadruped",
             "Learning Dexterous In-Hand Manipulation with a Robotic Gripper",
         ):
-            self.assertEqual(cl.classify_relevance(title, None), "adjacent", title)
+            self.assertEqual(cl.classify_relevance(title, None), "non-AV", title)
 
     def test_off_scope_guard_beats_llm_and_keywords(self):
         # "autonomous ... vehicle" phrase present, LLM says core -- still
@@ -201,9 +201,9 @@ class TestClassifyRelevance(unittest.TestCase):
         self.assertEqual(
             cl.classify_relevance(
                 "An Autonomous Aerial Vehicle for Autonomous Driving Dataset Collection",
-                "We use an autonomous vehicle and the KITTI dataset.", llm_says_core=True,
+                "We use an autonomous vehicle and the KITTI dataset.", llm_says_av=True,
             ),
-            "adjacent",
+            "non-AV",
         )
 
 
@@ -231,24 +231,24 @@ class TestTrainedRelevanceModel(unittest.TestCase):
 
     def test_score_above_threshold_is_core(self):
         # -1.0 + 5.0 (title "autonomous driving") = 4.0 >= 2.0
-        self.assertEqual(cl.classify_relevance("Planning for Autonomous Driving", None), "core")
+        self.assertEqual(cl.classify_relevance("Planning for Autonomous Driving", None), "AV")
 
     def test_score_below_threshold_is_adjacent(self):
         # -1.0 + 0.5 (title "vehicle") = -0.5 < 2.0, no LLM
-        self.assertEqual(cl.classify_relevance("A Vehicle Detector", None), "adjacent")
+        self.assertEqual(cl.classify_relevance("A Vehicle Detector", None), "non-AV")
 
     def test_llm_core_promotes_below_threshold(self):
         self.assertEqual(
-            cl.classify_relevance("A Vehicle Detector", None, llm_says_core=True), "core")
+            cl.classify_relevance("A Vehicle Detector", None, llm_says_av=True), "AV")
 
     def test_negative_weight_keeps_generic_paper_adjacent(self):
         # -1.0 + 0.5 (vehicle) - 1.0 (segmentation) = -1.5
         self.assertEqual(
-            cl.classify_relevance("Vehicle Part Segmentation", "generic segmentation"), "adjacent")
+            cl.classify_relevance("Vehicle Part Segmentation", "generic segmentation"), "non-AV")
 
     def test_off_scope_guard_still_wins_over_model(self):
         self.assertEqual(
-            cl.classify_relevance("Autonomous Driving for a Quadrotor UAV", None), "adjacent")
+            cl.classify_relevance("Autonomous Driving for a Quadrotor UAV", None), "non-AV")
 
     def test_mechanical_guard_still_wins_over_model(self):
         self.assertEqual(
@@ -256,7 +256,7 @@ class TestTrainedRelevanceModel(unittest.TestCase):
                 "Yaw Moment Control for Autonomous Driving",
                 "A classical anti-lock braking system and torque vectoring design.",
             ),
-            "adjacent",
+            "non-AV",
         )
 
 
@@ -278,7 +278,7 @@ class TestKnownDatasetTitleOverride(unittest.TestCase):
             known_dataset_titles={cl.normalize_title("nuScenes: A Multimodal Dataset for Autonomous Driving")},
         )
         self.assertEqual(category, "dataset-benchmark-paper")
-        self.assertEqual(relevance, "core")
+        self.assertEqual(relevance, "AV")
 
     def test_unlisted_dataset_paper_is_still_recognized_by_its_title(self):
         # The known-title list is a floor, not the whole rule: a paper whose
@@ -353,17 +353,17 @@ class TestClassifyPaper(unittest.TestCase):
             "Autonomous Driving Survey", "A survey of autonomous driving methods.", self.CATEGORIES
         )
         self.assertEqual(category, "uncategorized")
-        self.assertEqual(relevance, "core")
+        self.assertEqual(relevance, "AV")
 
     def test_category_independent_of_relevance(self):
         # A generic segmentation paper with no AV terms at all: categorized,
-        # but not core -- category keywords must never leak into relevance.
+        # but not AV -- category keywords must never leak into relevance.
         category, relevance = cl.classify_paper(
             "Semantic Segmentation of Indoor Scenes", "We segment rooms into furniture classes.",
             self.CATEGORIES,
         )
         self.assertEqual(category, "segmentation")
-        self.assertEqual(relevance, "adjacent")
+        self.assertEqual(relevance, "non-AV")
 
     def test_returns_two_values(self):
         result = cl.classify_paper("X", "Y", self.CATEGORIES)
@@ -372,9 +372,9 @@ class TestClassifyPaper(unittest.TestCase):
     def test_looks_up_llm_titles_by_normalized_title(self):
         category, relevance = cl.classify_paper(
             "Fast Image Classification", "We classify images of cats and dogs.",
-            self.CATEGORIES, llm_core_titles={cl.normalize_title("Fast Image Classification")},
+            self.CATEGORIES, llm_av_titles={cl.normalize_title("Fast Image Classification")},
         )
-        self.assertEqual(relevance, "core")
+        self.assertEqual(relevance, "AV")
 
     def test_motion_planner_matches_planner_not_just_planning(self):
         # Real case, confirmed by the user: "End-To-End Interpretable Neural

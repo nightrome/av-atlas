@@ -4,8 +4,8 @@
 Round 2 of local-LLM relevance labeling (see fetch_llm_relevance_labels.py
 for the original). That first pass only ever looked at papers that HAVE an
 abstract (`by_norm = {... for p in papers if p.get("abstract")}`), so it
-never saw the ~16k currently-"adjacent" DBLP/title-only papers from
-IV/ITSC/T-ITS/IROS/... that are exactly where core recall is being lost --
+never saw the ~16k currently-"non-AV" DBLP/title-only papers from
+IV/ITSC/T-ITS/IROS/... that are exactly where AV recall is being lost --
 a paper with no abstract could not be labeled at all.
 
 This pass labels from the TITLE ALONE when there's no abstract (the same
@@ -14,10 +14,10 @@ sample that is NOT venue-conditioned -- every venue is drawn from the same
 way, the strata are about how much weak keyword signal the title carries
 and what the current classifier already decided:
 
-  1. weak-signal + currently adjacent + NO abstract   (the recall gap)
-  2. weak-signal + currently adjacent + has abstract
-  3. currently core (any)                              (precision audit)
-  4. random no-keyword adjacent                        (negative calibration)
+  1. weak-signal + currently non-AV + NO abstract   (the recall gap)
+  2. weak-signal + currently non-AV + has abstract
+  3. currently AV (any)                              (precision audit)
+  4. random no-keyword non-AV                        (negative calibration)
 
 "weak signal" = the title contains at least one of a broad vehicle/driving/
 traffic vocabulary (see WEAK_TITLE_RE) -- deliberately loose, this is the
@@ -28,7 +28,7 @@ the human ground truth in relevance_labels.json). Small-batch, re-read
 before each batch, resumable -- same pattern as every other backfill.
 
 Usage: python fetch_llm_relevance_labels_v2.py [--model qwen2.5:7b-instruct]
-         [--n-gap 3800] [--n-gap-abs 1200] [--n-core 800] [--n-neg 500]
+         [--n-gap 3800] [--n-gap-abs 1200] [--n-av 800] [--n-neg 500]
 """
 import argparse
 import json
@@ -70,7 +70,7 @@ Title: {title}
 
 Abstract: {abstract}
 
-Respond with ONLY a compact JSON object, no other text: {{"label": "core", "reason": "<=8 words"}} or {{"label": "adjacent", "reason": "<=8 words"}}"""
+Respond with ONLY a compact JSON object, no other text: {{"label": "AV", "reason": "<=8 words"}} or {{"label": "non-AV", "reason": "<=8 words"}}"""
 
 
 def normalize_title(t):
@@ -88,11 +88,11 @@ def parse_label(raw):
     try:
         obj = json.loads(raw)
         label = str(obj.get("label", "")).strip().lower()
-        if label in ("core", "adjacent"):
+        if label in ("AV", "non-AV"):
             return label, str(obj.get("reason", ""))[:120]
     except Exception:
         pass
-    m = re.search(r"\b(core|adjacent)\b", raw.lower())
+    m = re.search(r"(non-?av|av)", raw.lower())
     return (m.group(1), "") if m else (None, raw[:160])
 
 
@@ -120,15 +120,15 @@ def build_pools(args):
     rng = random.Random(SEED)
     weak = lambda p: bool(WEAK_TITLE_RE.search(p.get("title") or ""))
 
-    gap, gap_abs, cur_core, neg = [], [], [], []
+    gap, gap_abs, cur_av, neg = [], [], [], []
     for k, p in by_norm.items():
         if k in already:
             continue
         rel = p.get("av_relevance")
         has_abs = bool(p.get("abstract"))
-        if rel == "core":
-            cur_core.append(k)
-        elif rel == "adjacent":
+        if rel == "AV":
+            cur_av.append(k)
+        elif rel == "non-AV":
             if weak(p) and not has_abs:
                 gap.append(k)
             elif weak(p) and has_abs:
@@ -136,12 +136,12 @@ def build_pools(args):
             else:
                 neg.append(k)
 
-    for lst in (gap, gap_abs, cur_core, neg):
+    for lst in (gap, gap_abs, cur_av, neg):
         rng.shuffle(lst)
 
     pool = ([(k, "gap_noabs") for k in gap[:args.n_gap]]
             + [(k, "gap_abs") for k in gap_abs[:args.n_gap_abs]]
-            + [(k, "core_audit") for k in cur_core[:args.n_core]]
+            + [(k, "core_audit") for k in cur_av[:args.n_av]]
             + [(k, "neg_random") for k in neg[:args.n_neg]])
     rng.shuffle(pool)
     return by_norm, pool
@@ -152,7 +152,7 @@ def main():
     ap.add_argument("--model", default="qwen2.5:7b-instruct")
     ap.add_argument("--n-gap", type=int, default=3800)
     ap.add_argument("--n-gap-abs", type=int, default=1200)
-    ap.add_argument("--n-core", type=int, default=800)
+    ap.add_argument("--n-av", type=int, default=800)
     ap.add_argument("--n-neg", type=int, default=500)
     args = ap.parse_args()
 
@@ -191,8 +191,8 @@ def main():
         by_pool = {}
         for r in results.values():
             by_pool[r["pool"]] = by_pool.get(r["pool"], 0) + 1
-        n_core = sum(1 for r in results.values() if r["label"] == "core")
-        print(f"  [{processed}/{len(pending)}] saved {len(results)} (core={n_core}) — "
+        n_av = sum(1 for r in results.values() if r["label"] == "AV")
+        print(f"  [{processed}/{len(pending)}] saved {len(results)} (AV={n_av}) — "
               + ", ".join(f"{a}={b}" for a, b in sorted(by_pool.items())), flush=True)
         if fails >= MAX_CONSECUTIVE_FAILURES:
             print("Stopping: too many consecutive failures. Rerun to resume.", flush=True)

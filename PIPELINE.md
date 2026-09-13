@@ -23,19 +23,19 @@ load-bearing, without losing the record of how each venue was pulled.
 
 - `merge_corpus.py` — dedupes by normalized title across every `data/venues/*.json`
   file, classifies each paper's `category` (topic) and `av_relevance`
-  (`core`/`adjacent`) via `classify.py`, writes `data/papers_full.json`.
+  (AV / non-AV) via `classify.py`, writes `data/papers_full.json`.
 - `classify.py` — keyword-matching category assignment (`data/categories.json`,
   a living taxonomy, not fixed) + AV-relevance decided by an explicit
   AV-specific phrase list (`AV_RELEVANCE_TERMS`), independent of category —
   category keywords are generic CV/robotics terms that also match plenty of
   non-AV papers, so category membership alone was never a valid relevance signal.
-- `enrich_core_authors.py` — the venue-listing pulls only ever captured a plain
+- `enrich_av_authors.py` — the venue-listing pulls only ever captured a plain
   author-name string, not affiliations. This backfills OpenAlex author/
-  institution/country data for every `av_relevance == "core"` paper (not the
+  institution/country data for every AV paper (`av_relevance == "AV"`) (not the
   full corpus — no reason to spend OpenAlex's rate budget on papers that were
   never going to be ranked).
 - `fetch_affiliations_arxiv.py` — a second, independent source for the same
-  `authors_detail` field, for core papers OpenAlex hasn't reached yet.
+  `authors_detail` field, for AV papers OpenAlex hasn't reached yet.
   Resolves each paper's arXiv ID via arXiv's own search API, then parses
   ar5iv's full-text HTML rendering for each author's institution (no rate
   limit like OpenAlex, but only covers papers with an arXiv preprint that
@@ -49,7 +49,7 @@ load-bearing, without losing the record of how each venue was pulled.
   citation backfills below — `apply_affiliations_arxiv.py` is the single
   writer onto `papers_full.json`, and only applies to papers OpenAlex
   hasn't already enriched (OpenAlex's data is richer, never overwritten).
-- `fetch_cvf_affiliations.py` — a third, free source, for CVF-hosted core
+- `fetch_cvf_affiliations.py` — a third, free source, for CVF-hosted AV
   papers (CVPR/ICCV/WACV) that still have no `authors_detail` after the two
   above: extracts institution-shaped phrases from page 1 of the paper's own
   CVF PDF (no per-author linkage the way OpenAlex/arXiv give — every one of
@@ -59,7 +59,7 @@ load-bearing, without losing the record of how each venue was pulled.
   is the single writer onto `papers_full.json`, stamping
   `authors_detail_source="cvf-pdf"`.
 - `aggregate.py` — reads `data/papers_full.json`, writes `data/stats.json`
-  (what the UI actually consumes). Leaderboards rank `core`-only. Also writes
+  (what the UI actually consumes). Leaderboards rank AV-only. Also writes
   `data/abstracts/shard-NN.json` — abstracts sharded out of `stats.json`
   itself so only `paper.html` pays for them (see DECISIONS.md).
 
@@ -86,7 +86,7 @@ recur: the field is stripped from `papers_full.json` and no longer fetched.
 - `build_citation_graph.py` / `fetch_affiliations_arxiv.py` — a different
   signal: how much AV papers in this corpus cite *each other*, not a global
   count. Two raw-reference sources feed one match step:
-    - `build_citation_graph.py` downloads the PDF for each `core`
+    - `build_citation_graph.py` downloads the PDF for each AV
       CVPR/ICCV/WACV paper (CVF-hosted, no rate limit) and extracts the
       references section (pdfplumber) — noisy, PDF-layout-dependent text.
     - `fetch_affiliations_arxiv.py` (see above) already fetches ar5iv's

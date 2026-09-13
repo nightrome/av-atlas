@@ -231,7 +231,7 @@ class TestMergeCorpusEndToEnd(unittest.TestCase):
         papers = self._run(venue_papers)
         self.assertIn("category", papers[0])
         self.assertIn("av_relevance", papers[0])
-        self.assertEqual(papers[0]["av_relevance"], "core")
+        self.assertEqual(papers[0]["av_relevance"], "AV")
 
     def test_icra_and_iros_papers_are_included(self):
         venue_papers = [

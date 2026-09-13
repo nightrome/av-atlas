@@ -1044,23 +1044,23 @@ class TestAggregateEndToEnd(unittest.TestCase):
             graph_file.write_text(json.dumps(citation_graph), encoding="utf-8")
 
         orig_in, orig_out, orig_adjacent, orig_profiles, orig_graph, orig_abstracts = (
-            ag.IN_FILE, ag.OUT_FILE, ag.ADJACENT_OUT_FILE, ag.SCHOLAR_PROFILES_FILE,
+            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_OUT_FILE, ag.SCHOLAR_PROFILES_FILE,
             ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR)
         ag.IN_FILE, ag.OUT_FILE = in_file, out_file
         # Patched to a tmp path same as OUT_FILE -- without this, every test
-        # run would silently overwrite the real ~34MB data/stats_adjacent.json
+        # run would silently overwrite the real ~34MB data/stats_non_av.json
         # with whatever tiny fixture the current test happens to pass.
-        ag.ADJACENT_OUT_FILE = Path(tmpdir.name) / "stats_adjacent.json"
+        ag.NON_AV_OUT_FILE = Path(tmpdir.name) / "stats_non_av.json"
         ag.SCHOLAR_PROFILES_FILE = Path(tmpdir.name) / "scholar_profiles.json"  # deliberately absent
         ag.CITATION_GRAPH_FILE = graph_file  # absent unless citation_graph was passed
-        # Same reasoning as ADJACENT_OUT_FILE above -- without this, every
+        # Same reasoning as NON_AV_OUT_FILE above -- without this, every
         # test run would rmtree+rewrite the real data/abstracts/ directory.
         ag.ABSTRACTS_DIR = Path(tmpdir.name) / "abstracts"
         try:
             ag.main()
-            self.last_adjacent_papers = json.loads(ag.ADJACENT_OUT_FILE.read_text(encoding="utf-8"))
+            self.last_adjacent_papers = json.loads(ag.NON_AV_OUT_FILE.read_text(encoding="utf-8"))
         finally:
-            ag.IN_FILE, ag.OUT_FILE, ag.ADJACENT_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, \
+            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, \
                 ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR = (
                 orig_in, orig_out, orig_adjacent, orig_profiles, orig_graph, orig_abstracts)
 
@@ -1068,23 +1068,23 @@ class TestAggregateEndToEnd(unittest.TestCase):
 
     def test_adjacent_papers_file_excludes_core_and_incomplete_entries(self):
         self._run([
-            {"title": "A Core Paper", "year": 2023, "venue": "CVPR", "av_relevance": "core"},
-            {"title": "An Adjacent Paper", "year": 2022, "venue": "NeurIPS", "av_relevance": "adjacent",
+            {"title": "A Core Paper", "year": 2023, "venue": "CVPR", "av_relevance": "AV"},
+            {"title": "An Adjacent Paper", "year": 2022, "venue": "NeurIPS", "av_relevance": "non-AV",
              "category": "general-cv-ml-method"},
-            {"title": "", "year": 2021, "venue": "ICML", "av_relevance": "adjacent"},  # no title
-            {"title": "No Year Adjacent", "venue": "ICML", "av_relevance": "adjacent"},  # no year
+            {"title": "", "year": 2021, "venue": "ICML", "av_relevance": "non-AV"},  # no title
+            {"title": "No Year Adjacent", "venue": "ICML", "av_relevance": "non-AV"},  # no year
         ])
         titles = [p["title"] for p in self.last_adjacent_papers]
         self.assertEqual(titles, ["An Adjacent Paper"])
         p = self.last_adjacent_papers[0]
-        self.assertEqual(p["av_relevance"], "adjacent")
+        self.assertEqual(p["av_relevance"], "non-AV")
         self.assertEqual(p["venue"], "NeurIPS")
         self.assertEqual(p["category"], "general-cv-ml-method")
 
     def test_best_by_year_omits_years_with_no_citation_data(self):
         stats = self._run([
-            {"title": "Uncited AV Paper", "year": 2015, "venue": "CVPR", "av_relevance": "core"},
-            {"title": "Cited AV Paper", "year": 2023, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Uncited AV Paper", "year": 2015, "venue": "CVPR", "av_relevance": "AV"},
+            {"title": "Cited AV Paper", "year": 2023, "venue": "CVPR", "av_relevance": "AV",
              "citations_by_source": {"in_corpus": {"count": 50}}},
         ])
         self.assertNotIn("2015", stats["best_by_year"])
@@ -1094,9 +1094,9 @@ class TestAggregateEndToEnd(unittest.TestCase):
     def test_best_by_year_ranks_by_citations(self):
         stats = self._run([
             {"title": "Fewer citations", "year": 2024, "venue": "CVPR",
-             "av_relevance": "core", "citations_by_source": {"in_corpus": {"count": 200}}},
+             "av_relevance": "AV", "citations_by_source": {"in_corpus": {"count": 200}}},
             {"title": "More citations", "year": 2024, "venue": "CVPR",
-             "av_relevance": "core", "citations_by_source": {"in_corpus": {"count": 300}}},
+             "av_relevance": "AV", "citations_by_source": {"in_corpus": {"count": 300}}},
         ])
         self.assertEqual(stats["best_by_year"]["2024"]["title"], "More citations")
 
@@ -1105,7 +1105,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # a keyword search for things like 'code' in the abstract" -- covers
         # papers has_code_link's ar5iv-based primary source never reaches.
         stats = self._run([
-            {"title": "Code Released Paper", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Code Released Paper", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "abstract": "We present a new method for 3D detection. Our code is available at "
                           "our project page."},
         ])
@@ -1116,14 +1116,14 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # read as a confirmed absence -- only the ar5iv full-text check can
         # supply a real False, see ABSTRACT_CODE_AVAILABILITY_RE's comment.
         stats = self._run([
-            {"title": "No Signal Paper", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "No Signal Paper", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "abstract": "We implement our approach in code and evaluate on KITTI."},
         ])
         self.assertNotIn("has_code_link", stats["all_papers"][0])
 
     def test_ar5iv_false_is_not_overridden_by_a_weak_abstract_mention(self):
         stats = self._run([
-            {"title": "Checked No Code Paper", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Checked No Code Paper", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "abstract": "We implement our approach in code and evaluate on KITTI.",
              "has_code_link": False},
         ])
@@ -1132,25 +1132,25 @@ class TestAggregateEndToEnd(unittest.TestCase):
     def test_venue_names_normalized_in_output(self):
         stats = self._run([
             {"title": "A", "year": 2024, "venue": "Advances in Neural Information Processing Systems",
-             "av_relevance": "core", "citations": 10},
+             "av_relevance": "AV", "citations": 10},
         ])
         self.assertIn("NeurIPS", stats["corpus_stats"]["by_venue"])
         self.assertNotIn("Advances in Neural Information Processing Systems", stats["corpus_stats"]["by_venue"])
 
     def test_adjacent_papers_excluded_from_leaderboards(self):
         stats = self._run([
-            {"title": "Not AV at all", "year": 2024, "venue": "CVPR", "av_relevance": "adjacent",
+            {"title": "Not AV at all", "year": 2024, "venue": "CVPR", "av_relevance": "non-AV",
              "citations": 99999},
         ])
-        self.assertEqual(stats["core_relevant"], 0)
+        self.assertEqual(stats["av_relevant"], 0)
         self.assertEqual(len(stats["all_papers"]), 0)
 
     def test_citing_papers_lists_who_cites_a_paper_within_the_corpus(self):
         stats = self._run(
             [
-                {"title": "Cited Paper", "year": 2020, "venue": "CVPR", "av_relevance": "core"},
-                {"title": "Citer One", "year": 2022, "venue": "CVPR", "av_relevance": "core"},
-                {"title": "Citer Two", "year": 2021, "venue": "CVPR", "av_relevance": "core"},
+                {"title": "Cited Paper", "year": 2020, "venue": "CVPR", "av_relevance": "AV"},
+                {"title": "Citer One", "year": 2022, "venue": "CVPR", "av_relevance": "AV"},
+                {"title": "Citer Two", "year": 2021, "venue": "CVPR", "av_relevance": "AV"},
             ],
             citation_graph={"generated_at": "2026-01-01", "edges": {
                 "citerone": ["citedpaper"], "citertwo": ["citedpaper"],
@@ -1171,10 +1171,10 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # can on the Authors page's own (much looser) ranking.
         entries = []
         for i in range(2):
-            entries.append({"title": f"Lucky Hit {i}", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            entries.append({"title": f"Lucky Hit {i}", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
                              "citations": 1000, "authors_detail": [{"name": "Lucky Author", "affiliations": []}]})
         for i in range(11):
-            entries.append({"title": f"Steady Paper {i}", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            entries.append({"title": f"Steady Paper {i}", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
                              "citations": 10, "authors_detail": [{"name": "Steady Author", "affiliations": []}]})
         stats = self._run(entries)
         self.assertEqual(stats["insights"]["highest_impact_author"]["name"], "Steady Author")
@@ -1188,7 +1188,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         many_fake_authors = [{"name": f"Fake Author {i}", "affiliations": ["Nowhere University"]}
                               for i in range(100)]
         stats = self._run([
-            {"title": "Real Small Paper", "year": 2025, "venue": "CoRL", "av_relevance": "core",
+            {"title": "Real Small Paper", "year": 2025, "venue": "CoRL", "av_relevance": "AV",
              "authors": "Rachel Luo, Heng Yang, Michael Watson", "authors_detail": many_fake_authors},
         ])
         paper = stats["all_papers"][0]
@@ -1205,7 +1205,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         real_authors = [{"name": f"Real Author {i}", "affiliations": ["MIT"]} for i in range(12)]
         raw_names = ", ".join(f"Real Author {i}" for i in range(12))
         stats = self._run([
-            {"title": "Big Team Paper", "year": 2025, "venue": "CoRL", "av_relevance": "core",
+            {"title": "Big Team Paper", "year": 2025, "venue": "CoRL", "av_relevance": "AV",
              "authors": raw_names, "authors_detail": real_authors},
         ])
         paper = stats["all_papers"][0]
@@ -1225,7 +1225,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
             {"name": "Kay Axhausen", "affiliations": ["ETH Zurich"], "countries": ["CH"]},
         ]
         stats = self._run([
-            {"title": "Driving with Advice", "year": 2026, "venue": "AAAI", "av_relevance": "core",
+            {"title": "Driving with Advice", "year": 2026, "venue": "AAAI", "av_relevance": "AV",
              "authors": "Junyin Wang, Jinlei Yu, Hao Lin", "authors_detail": wrong_paper_authors},
         ])
         paper = stats["all_papers"][0]
@@ -1251,7 +1251,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
             {"name": "Carol Blanket", "affiliations": ["NVIDIA Research", "Stanford University"]},
         ]
         stats = self._run([
-            {"title": "Blanket Affiliation Paper", "year": 2025, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Blanket Affiliation Paper", "year": 2025, "venue": "CVPR", "av_relevance": "AV",
              "authors": "Alice Blanket, Bob Blanket, Carol Blanket", "authors_detail": blanket_authors},
         ])
         paper = stats["all_papers"][0]
@@ -1273,7 +1273,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # only >1 authors uniformly sharing a SET of 2+ institutions is. Must
         # not become collateral damage from the blanket-shared clearing.
         stats = self._run([
-            {"title": "Same Lab Paper", "year": 2025, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Same Lab Paper", "year": 2025, "venue": "CVPR", "av_relevance": "AV",
              "authors": "Dave Samelab, Erin Samelab",
              "authors_detail": [
                  {"name": "Dave Samelab", "affiliations": ["ETH Zürich"]},
@@ -1290,7 +1290,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # not trip the blanket-shared guard, which only fires when the
         # SHARED set has 2+ institutions.
         stats = self._run([
-            {"title": "Real Per-Author Paper", "year": 2025, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Real Per-Author Paper", "year": 2025, "venue": "CVPR", "av_relevance": "AV",
              "authors": "Frank Diff, Grace Diff",
              "authors_detail": [
                  {"name": "Frank Diff", "affiliations": ["Carnegie Mellon University"]},
@@ -1309,11 +1309,11 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # silently excluding them.
         stats = self._run(
             [
-                {"title": "Cited Paper", "year": 2020, "venue": "CVPR", "av_relevance": "core",
+                {"title": "Cited Paper", "year": 2020, "venue": "CVPR", "av_relevance": "AV",
                  "authors": "Alice Smith, Bob Jones"},
-                {"title": "Self Citer", "year": 2022, "venue": "CVPR", "av_relevance": "core",
+                {"title": "Self Citer", "year": 2022, "venue": "CVPR", "av_relevance": "AV",
                  "authors": "Alice Smith, Carol White"},
-                {"title": "Independent Citer", "year": 2021, "venue": "CVPR", "av_relevance": "core",
+                {"title": "Independent Citer", "year": 2021, "venue": "CVPR", "av_relevance": "AV",
                  "authors": "Dave Green"},
             ],
             citation_graph={"edges": {
@@ -1328,16 +1328,16 @@ class TestAggregateEndToEnd(unittest.TestCase):
 
     def test_citing_papers_absent_when_nothing_cites_it(self):
         stats = self._run(
-            [{"title": "Uncited Paper", "year": 2020, "venue": "CVPR", "av_relevance": "core"}],
+            [{"title": "Uncited Paper", "year": 2020, "venue": "CVPR", "av_relevance": "AV"}],
             citation_graph={"edges": {}},
         )
         self.assertNotIn("citing_papers", stats["all_papers"][0])
 
     def test_citing_papers_ignores_a_citer_not_in_the_ranked_corpus(self):
-        # A citer key with no matching core paper (e.g. it cites something
+        # A citer key with no matching AV paper (e.g. it cites something
         # adjacent/excluded) must not crash the lookup.
         stats = self._run(
-            [{"title": "Cited Paper", "year": 2020, "venue": "CVPR", "av_relevance": "core"}],
+            [{"title": "Cited Paper", "year": 2020, "venue": "CVPR", "av_relevance": "AV"}],
             citation_graph={"edges": {"someunmatchedpaper": ["citedpaper"]}},
         )
         self.assertNotIn("citing_papers", stats["all_papers"][0])
@@ -1349,15 +1349,15 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # "Citation graph: CVPR/ICCV/WACV reference lists" row on About can
         # never reach 100% even once every real paper has been scanned.
         stats = self._run(
-            [{"title": "A", "year": 2024, "venue": "CVPR", "av_relevance": "core"},
-             {"title": "B", "year": 2024, "venue": "CVPR", "av_relevance": "core"}],
+            [{"title": "A", "year": 2024, "venue": "CVPR", "av_relevance": "AV"},
+             {"title": "B", "year": 2024, "venue": "CVPR", "av_relevance": "AV"}],
             citation_graph={"edges": {}, "sources_scanned": {"cvf": 1, "arxiv": 0},
                              "cvf_permanent_failures": 1},
         )
         cov = stats["corpus_stats"]["citation_graph_coverage"]
         self.assertEqual(cov["cvf_scanned"], 1)
         self.assertEqual(cov["cvf_permanent_failures"], 1)
-        self.assertEqual(cov["cvf_core_total"], 2)
+        self.assertEqual(cov["cvf_av_total"], 2)
 
     def test_arxiv_eligible_total_only_counts_papers_with_a_known_preprint(self):
         # A paper with no arXiv preprint at all could never be reached by
@@ -1365,9 +1365,9 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # About must exclude it, or 100% is structurally unreachable even
         # once every real preprint has been scanned.
         stats = self._run([
-            {"title": "Has Preprint", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Has Preprint", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "arxiv_url": "https://arxiv.org/abs/2401.00001"},
-            {"title": "No Preprint", "year": 2024, "venue": "CVPR", "av_relevance": "core"},
+            {"title": "No Preprint", "year": 2024, "venue": "CVPR", "av_relevance": "AV"},
         ])
         cov = stats["corpus_stats"]["citation_graph_coverage"]
         self.assertEqual(cov["arxiv_eligible_total"], 1)
@@ -1379,14 +1379,14 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # "Abstract search complete" row so a genuinely-unavailable abstract
         # doesn't read as still pending forever.
         stats = self._run([
-            {"title": "Has Abstract", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Has Abstract", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "abstract": "Some abstract text."},
-            {"title": "Confirmed No Match", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Confirmed No Match", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "abstract": "", "abstract_search_exhausted": True},
             # Explicit "" defeats _run's own placeholder-abstract default
             # (see _run's setdefault comment) -- this fixture needs a real
             # "genuinely has neither" case, not the auto-filled one.
-            {"title": "Not Yet Searched", "year": 2024, "venue": "CVPR", "av_relevance": "core", "abstract": ""},
+            {"title": "Not Yet Searched", "year": 2024, "venue": "CVPR", "av_relevance": "AV", "abstract": ""},
         ])
         self.assertEqual(stats["corpus_stats"]["pipeline_stages"]["3_abstract"], 2)
 
@@ -1395,10 +1395,10 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # 2017 (year + EARLY_CITATION_WINDOW_YEARS=2) count; 2018 doesn't.
         stats = self._run(
             [
-                {"title": "Old Paper", "year": 2015, "venue": "CVPR", "av_relevance": "core"},
-                {"title": "Same Year Citer", "year": 2015, "venue": "CVPR", "av_relevance": "core"},
-                {"title": "Within Window Citer", "year": 2017, "venue": "CVPR", "av_relevance": "core"},
-                {"title": "Outside Window Citer", "year": 2018, "venue": "CVPR", "av_relevance": "core"},
+                {"title": "Old Paper", "year": 2015, "venue": "CVPR", "av_relevance": "AV"},
+                {"title": "Same Year Citer", "year": 2015, "venue": "CVPR", "av_relevance": "AV"},
+                {"title": "Within Window Citer", "year": 2017, "venue": "CVPR", "av_relevance": "AV"},
+                {"title": "Outside Window Citer", "year": 2018, "venue": "CVPR", "av_relevance": "AV"},
             ],
             citation_graph={"edges": {
                 "sameyearciter": ["oldpaper"],
@@ -1414,7 +1414,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # early citations yet -- must not show 0 (which would read as
         # "confirmed no early citations" rather than "too soon to tell").
         current_year = datetime.now(timezone.utc).year
-        stats = self._run([{"title": "Brand New Paper", "year": current_year, "venue": "CVPR", "av_relevance": "core"}])
+        stats = self._run([{"title": "Brand New Paper", "year": current_year, "venue": "CVPR", "av_relevance": "AV"}])
         self.assertNotIn("early_citations", stats["all_papers"][0])
 
     def test_bare_surname_authors_excluded_from_researcher_stats(self):
@@ -1423,7 +1423,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # papers each, clearly not one identifiable person. A surname alone
         # must never accumulate researcher-leaderboard/detail stats.
         stats = self._run([
-            {"title": "Paper A", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Paper A", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "citations": 10,
              "authors_detail": [
                  {"name": "Wang", "affiliations": ["Some University"]},
@@ -1439,9 +1439,9 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # top_authors/author_detail -- this is the field that actually needs
         # filtering for a bare surname to disappear from the Researchers page.
         stats = self._run([
-            {"title": "Paper B", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Paper B", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "authors_detail": [{"name": "Li"}, {"name": "Wei Li"}]},
-            {"title": "Paper C", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Paper C", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "authors": "Yu, Full Name"},
         ])
         all_authors = {a for p in stats["all_papers"] for a in p["authors"]}
@@ -1461,7 +1461,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # merged into one combined institution -- see normalize_institution)
         # since this test needs two institutions that stay distinct.
         stats = self._run([
-            {"title": "Shared Paper", "year": 2020, "venue": "CVPR", "av_relevance": "core", "citations": 10,
+            {"title": "Shared Paper", "year": 2020, "venue": "CVPR", "av_relevance": "AV", "citations": 10,
              "authors_detail": [
                  {"name": "Tesla Person", "affiliations": ["Tesla"]},
                  {"name": "Nvidia Person", "affiliations": ["NVIDIA"]},
@@ -1482,9 +1482,9 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # pulled out of the ranked leaderboards (still visible via
         # author_detail, badged identity_conflict=True).
         stats = self._run([
-            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "core", "citations": 50,
+            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "AV", "citations": 50,
              "authors_detail": [{"name": "Wei Wang", "affiliations": ["MIT"], "openalex_id": "A1111"}]},
-            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "core", "citations": 50,
+            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "AV", "citations": 50,
              "authors_detail": [{"name": "Wei Wang", "affiliations": ["Tsinghua University"], "openalex_id": "A2222"}]},
         ])
         names = {a["name"] for a in stats["top_authors"]}
@@ -1493,9 +1493,9 @@ class TestAggregateEndToEnd(unittest.TestCase):
 
     def test_author_with_one_consistent_openalex_id_is_ranked(self):
         stats = self._run([
-            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "core", "citations": 50,
+            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "AV", "citations": 50,
              "authors_detail": [{"name": "Jane Doe", "affiliations": ["MIT"], "openalex_id": "A9999"}]},
-            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "core", "citations": 50,
+            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "AV", "citations": 50,
              "authors_detail": [{"name": "Jane Doe", "affiliations": ["MIT"], "openalex_id": "A9999"}]},
         ])
         names = {a["name"] for a in stats["top_authors"]}
@@ -1504,13 +1504,13 @@ class TestAggregateEndToEnd(unittest.TestCase):
 
     def test_author_with_no_openalex_id_is_not_excluded(self):
         # Most of the corpus's affiliation data predates id capture (arXiv-
-        # HTML/CVF-PDF sources never had one -- see enrich_core_authors.py).
+        # HTML/CVF-PDF sources never had one -- see enrich_av_authors.py).
         # "No id" is missing evidence, not evidence of a conflated identity,
         # so it must never exclude anyone on its own.
         stats = self._run([
-            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "core", "citations": 50,
+            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "AV", "citations": 50,
              "authors_detail": [{"name": "John Smith", "affiliations": ["MIT"]}]},
-            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "core", "citations": 50,
+            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "AV", "citations": 50,
              "authors_detail": [{"name": "John Smith", "affiliations": ["MIT"]}]},
         ])
         names = {a["name"] for a in stats["top_authors"]}
@@ -1526,9 +1526,9 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # LAST array entry expecting it to mean "most recent" (matching how
         # `institutions` already behaves).
         stats = self._run([
-            {"title": "Earlier US Paper", "year": 2020, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Earlier US Paper", "year": 2020, "venue": "CVPR", "av_relevance": "AV",
              "authors_detail": [{"name": "Chrono Author", "affiliations": ["Motional"], "countries": ["US"]}]},
-            {"title": "Later NL Paper", "year": 2024, "venue": "CVPR", "av_relevance": "core",
+            {"title": "Later NL Paper", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "authors_detail": [{"name": "Chrono Author", "affiliations": ["TU Delft"], "countries": ["NL"]}]},
         ])
         self.assertEqual(stats["author_detail"]["Chrono Author"]["countries"],
@@ -1543,11 +1543,11 @@ class TestAggregateEndToEnd(unittest.TestCase):
         stats = self._run(
             [
                 {"title": "Are we ready for autonomous driving? The KITTI vision benchmark suite",
-                 "year": 2012, "venue": "CVPR", "av_relevance": "core"},
+                 "year": 2012, "venue": "CVPR", "av_relevance": "AV"},
                 {"title": "Vision meets robotics: The KITTI dataset",
-                 "year": 2013, "venue": "IJRR", "av_relevance": "core"},
-                {"title": "Cites The 2012 Paper", "year": 2015, "venue": "CVPR", "av_relevance": "core"},
-                {"title": "Cites The 2013 Paper", "year": 2016, "venue": "CVPR", "av_relevance": "core"},
+                 "year": 2013, "venue": "IJRR", "av_relevance": "AV"},
+                {"title": "Cites The 2012 Paper", "year": 2015, "venue": "CVPR", "av_relevance": "AV"},
+                {"title": "Cites The 2013 Paper", "year": 2016, "venue": "CVPR", "av_relevance": "AV"},
             ],
             citation_graph={"edges": {
                 "citesthe2012paper": ["arewereadyforautonomousdrivingthekittivisionbenchmarksuite"],
@@ -1772,11 +1772,11 @@ class TestComputeInsights(unittest.TestCase):
 
     def test_venue_relevance_excludes_small_venues_and_arxiv(self):
         all_entries = (
-            [{"venue": "CVPR", "av_relevance": "core"}] * 20
-            + [{"venue": "CVPR", "av_relevance": "adjacent"}] * 80
-            + [{"venue": "TinyWorkshop", "av_relevance": "core"}] * 5  # under the 50-paper floor
-            + [{"venue": "arXiv", "av_relevance": "core"}] * 90  # excluded: a cherry-picked sample, not a real venue
-            + [{"venue": "arXiv", "av_relevance": "adjacent"}] * 10
+            [{"venue": "CVPR", "av_relevance": "AV"}] * 20
+            + [{"venue": "CVPR", "av_relevance": "non-AV"}] * 80
+            + [{"venue": "TinyWorkshop", "av_relevance": "AV"}] * 5  # under the 50-paper floor
+            + [{"venue": "arXiv", "av_relevance": "AV"}] * 90  # excluded: a cherry-picked sample, not a real venue
+            + [{"venue": "arXiv", "av_relevance": "non-AV"}] * 10
         )
         insights = ag.compute_insights([], all_entries, {"edges": {}}, {}, [], [], [])
         # venue_relevance ships the full list (not just top/bottom 3) -- the

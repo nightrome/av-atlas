@@ -232,7 +232,7 @@ fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => 
   // Not in the AV-relevant set -- before giving up, also check the much
   // larger non-AV set (see filters.js's fetchStatsWithRelevance for why
   // that's a separate, lazily-fetched file, never bundled into
-  // stats.all_papers by default). A paper can legitimately be adjacent and
+  // stats.all_papers by default). A paper can legitimately be non-AV and
   // still be part of this corpus -- e.g. discovered purely because some AV
   // paper's own reference list cites it -- so "not in all_papers" isn't
   // the same claim as "not on this site" (user-reported: a real non-AV
@@ -240,8 +240,8 @@ fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => 
   // indistinguishable from a genuine typo or a paper this site has never
   // seen at all).
   document.getElementById('venue-meta').textContent = 'Looking for this paper among non-AV papers…';
-  fetch('stats_adjacent.json').then(r => r.json()).then(adjacent => {
-    const adjPaper = (adjacent || []).find(p => p.title === title);
+  fetch('stats_non_av.json').then(r => r.json()).then(nonAv => {
+    const adjPaper = (nonAv || []).find(p => p.title === title);
     if (!adjPaper) { notFound(); return; }
     adjPaper.citations = ((adjPaper.citations_by_source || {}).in_corpus || {}).count || 0;
     renderPaper(stats, adjPaper, true);
@@ -312,11 +312,18 @@ function renderPaper(stats, paper, isAdjacent) {
     a.textContent = 'Source listing';
     links.push(a);
   }
-  const scholar = document.createElement('a');
-  scholar.href = `https://scholar.google.com/scholar?q=${encodeURIComponent(paper.title)}`;
-  scholar.target = '_blank'; scholar.rel = 'noopener';
-  scholar.textContent = '🎓 Google Scholar';
-  links.push(scholar);
+  // Only when we hold a real bibliographic record for this paper -- an
+  // author list, or an arXiv/DOI id. A citation-graph stub that is only a
+  // title string lifted from another paper's reference list has no
+  // established identity, and a Scholar query on it just returns noise
+  // (user-reported).
+  if ((paper.authors && paper.authors.length) || paper.arxiv_url || paper.doi) {
+    const scholar = document.createElement('a');
+    scholar.href = `https://scholar.google.com/scholar?q=${encodeURIComponent(paper.title)}`;
+    scholar.target = '_blank'; scholar.rel = 'noopener';
+    scholar.textContent = '🎓 Google Scholar';
+    links.push(scholar);
+  }
   links.forEach((el, i) => {
     if (i > 0) linksMeta.append(' · ');
     linksMeta.appendChild(el);

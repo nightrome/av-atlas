@@ -27,17 +27,17 @@ distinction. Display falls back to "—", never a misleading "0".
 
 ## AV-relevance is a layered, auditable classifier
 
-`classify.py` decides core vs. adjacent from title + abstract text, in layers
+`classify.py` decides AV vs. non-AV from title + abstract text, in layers
 that each push only one way:
 
 1. Hard scope filters (mechanical/hardware-only papers, non-road platforms like
-   aerial/underwater/legged robots) → `adjacent`.
+   aerial/underwater/legged robots) → non-AV.
 2. Keyword floor: an AV-specific phrase anywhere, or a standalone driving word
-   in the title → `core`. A floor later layers can add to but never override.
+   in the title → AV. A floor later layers can add to but never override.
 3. A small linear model (`data/relevance_model.json`: per-phrase weights plus a
-   threshold, trained on hand labels) → `core`, only for papers the keyword
+   threshold, trained on hand labels) → AV, only for papers the keyword
    floor missed.
-4. A local-LLM "core" verdict, folded in as a promotion-only signal.
+4. A local-LLM "it's AV" verdict, folded in as a promotion-only signal.
 
 The classifier stays grep-able end to end — any paper's result can be explained
 from the code. The LLM is a second opinion, graded against a hand-labeled eval
@@ -121,7 +121,7 @@ the corpus, documented as such under Methodology's "Known gaps".
 
 ## Derived data is not tracked; `gh-pages` is a single squashed commit
 
-`data/stats.json`, `data/stats_adjacent.json`, and the abstract shards are
+`data/stats.json`, `data/stats_non_av.json`, and the abstract shards are
 gitignored — cheaply regenerable from `data/papers_full.json` by `aggregate.py`
 alone (well under a minute), and tracking a leaderboard dump bloats every diff
 with numbers that change on every corpus update and aren't reviewable anyway.

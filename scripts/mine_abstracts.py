@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Mines missing abstracts from arXiv for core papers that don't have one --
+Mines missing abstracts from arXiv for AV papers that don't have one --
 mostly venue-listing sources (ICRA, IROS, RSS, ICLR, AAAI, IV, ITSC, GCPR,
 ICML, BMVC, IJCV, RA-L, T-RO, TPAMI, IJRR, T-ITS) that only ever carried
 title+authors, no abstract, so classification for those has always run on
@@ -151,9 +151,9 @@ def main():
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     cache = load_cache()
-    core = [e for e in papers if e.get("av_relevance") == "core"]
+    av = [e for e in papers if e.get("av_relevance") == "AV"]
 
-    # Also target a narrow, well-justified slice of "adjacent" papers: those
+    # Also target a narrow, well-justified slice of "non-AV" papers: those
     # from a venue that is EXCLUSIVELY about intelligent vehicles/transportation
     # (IV, ITSC, T-ITS -- unlike CVPR/ICRA/etc., these venues carry no non-AV
     # content at all in the first place) AND whose category score already
@@ -167,7 +167,7 @@ def main():
     # even though the SAME title, run through the richer category-keyword
     # scorer, already matched a real AV-specific category (confirming the
     # signal was there, just not in the narrower relevance term list).
-    # Deliberately NOT every "adjacent, no abstract" paper (~110k of them,
+    # Deliberately NOT every "non-AV, no abstract" paper (~110k of them,
     # genuinely off-topic across the full unfiltered venue proceedings this
     # corpus is built from) -- this venue+category combination is a real,
     # bounded slice, not a blanket re-check. Worst case for a false-positive
@@ -175,18 +175,18 @@ def main():
     # changes its classification if the abstract text itself now matches,
     # nothing here forces a relabel.
     AV_ONLY_VENUES = {"IV", "ITSC", "T-ITS"}
-    adjacent_recheck = [
+    non_av_recheck = [
         e for e in papers
-        if e.get("av_relevance") == "adjacent"
+        if e.get("av_relevance") == "non-AV"
         and e.get("venue") in AV_ONLY_VENUES
         and e.get("category") not in (None, "uncategorized")
     ]
-    print(f"{len(adjacent_recheck)} adjacent papers from AV-only venues with a real category match "
+    print(f"{len(non_av_recheck)} non-AV papers from AV-only venues with a real category match "
           f"(likely miscategorized for lack of an abstract) added to the mining pool")
-    core = core + adjacent_recheck
+    av = av + non_av_recheck
 
-    missing = [e for e in core if not already_known(e, cache)]
-    print(f"{len(core)} papers in the mining pool (core + the adjacent-recheck slice above), "
+    missing = [e for e in av if not already_known(e, cache)]
+    print(f"{len(av)} papers in the mining pool (AV + the non-AV-recheck slice above), "
           f"{len(missing)} missing an abstract")
 
     with_url = [e for e in missing if e.get("arxiv_url")]

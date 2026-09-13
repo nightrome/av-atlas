@@ -88,7 +88,7 @@ def deploy_gh_pages():
 
     # Always publishes as a single fresh orphan commit, force-pushed --
     # never builds on top of gh-pages' existing history. gh-pages is 100%
-    # generated build output (stats.json/stats_adjacent.json, mostly, ~140MB
+    # generated build output (stats.json/stats_non_av.json, mostly, ~140MB
     # per snapshot) with no reviewable diffs and no reason anyone would ever
     # want an old commit back; committing on top of history the normal way
     # made every deploy add a genuinely new, largely non-delta-compressible

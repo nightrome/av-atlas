@@ -101,10 +101,10 @@ let currentStats = null, currentFilters = null;
 let currentTimelineDraw = null;
 // No "Show" (relevance) filter -- user-requested: a non-AV-relevant paper
 // isn't meaningfully categorized in the first place (category alone, per
-// About's own Method section, isn't what decides AV-relevance; the adjacent
+// About's own Method section, isn't what decides AV-relevance; the non-AV
 // set is mostly generic CV/ML work the taxonomy's broad keywords still match
 // something in), so browsing it by category doesn't answer a real question
-// the way it does for Papers/Authors/Institutions. Always the core set.
+// the way it does for Papers/Authors/Institutions. Always the AV set.
 fetchStatsWithRelevance('').then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'categories.html', {

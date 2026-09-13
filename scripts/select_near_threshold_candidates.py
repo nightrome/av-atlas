@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Picks a citation-prioritized sample of "adjacent" papers plausibly worth a
+Picks a citation-prioritized sample of "non-AV" papers plausibly worth a
 second, human look for AV relevance -- a targeted recall-improvement pass,
 not a general classifier-training sample (select_labeling_candidates.py
 already does that, and predates the current model-based classify_
@@ -13,29 +13,29 @@ reads "not AV-relevant" on their own author page).
 WHY NOT JUST "closest to the model's decision threshold"
 ----------------------------------------------------------
 The first version of this script ranked every non-hard-scope-excluded
-"adjacent" paper by classify.relevance_model_score() distance below
+"non-AV" paper by classify.relevance_model_score() distance below
 data/relevance_model.json's threshold. Checked against the real corpus,
 that ranking is degenerate: threshold (-0.660) sits only ~0.022 above the
 model's bare intercept (-0.683), so EVERY paper matching zero of the
 model's ~70 vocab phrases scores exactly at the intercept and ties for
 "closest" -- and, separately, matching even one of those phrases is
-usually already enough to cross the gap and be called "core", so almost no
-"adjacent" paper matches any of them at all (confirmed: 0 matches across
+usually already enough to cross the gap and be called "AV", so almost no
+"non-AV" paper matches any of them at all (confirmed: 0 matches across
 165,923 candidates on the real corpus). train_relevance_classifier.py's
 threshold search deliberately picks the LOWEST threshold that holds target
 precision, i.e. it already spends all the recall its known vocabulary can
 safely buy -- so distance-to-threshold within that vocabulary mostly
 measures nothing. What actually predicts a real miss, per the radar story
 in classify.py's AV_RELEVANCE_TERMS comment (~60+ 4D-radar papers were
-wrongly "adjacent" until "automotive radar" etc. were added), is AV
+wrongly "non-AV" until "automotive radar" etc. were added), is AV
 vocabulary the model doesn't have at all -- which by definition its own
 score can't see.
 
 SELECTION (see near_threshold_pool)
 ------------------------------------
-1. av_relevance == "adjacent", title present, and not something classify.
+1. av_relevance == "non-AV", title present, and not something classify.
    py's hard scope filters would exclude on their own (mechanical/
-   hardware-only, non-road-platform) -- those are correctly adjacent per
+   hardware-only, non-road-platform) -- those are correctly non-AV per
    RUBRIC_relevance.md's "Hard adjacents"; relabeling them just re-confirms
    the classifier already got it right.
 2. category in DRIVING_SPECIFIC_CATEGORIES -- categories.json's taxonomy
@@ -47,7 +47,7 @@ SELECTION (see near_threshold_pool)
    driver-behavior-hmi, traffic-flow-management, vehicle-dynamics-
    powertrain) -- rather than every category, or none -- is the same
    "plausible-looking to a labeler" logic select_labeling_candidates.py's
-   hard-negative pool used, aimed at the specific slice of "adjacent"
+   hard-negative pool used, aimed at the specific slice of "non-AV"
    where a real miss is most likely to live.
 3. A soft vehicle/traffic word (WEAK_AV_TERMS -- "vehicle", "road",
    "driver", "pedestrian", "lane", ... deliberately excluded from the
@@ -134,7 +134,7 @@ DRIVING_SPECIFIC_CATEGORIES = {
 
 # Deliberately the ambiguous, corpus-wide-risky words train_relevance_
 # classifier.py's WEAK_VOCAB comment keeps OUT of the trained model (they'd
-# flood "core" applied blindly across the whole corpus). Fine, even useful,
+# flood "AV" applied blindly across the whole corpus). Fine, even useful,
 # as a soft filter INSIDE the already-narrow DRIVING_SPECIFIC_CATEGORIES
 # pool: here they separate genuine vehicle/traffic framing from a paper
 # that just won a driving-named category on unrelated keyword overlap.
@@ -230,7 +230,7 @@ def near_threshold_pool(papers, pool_size, excluded_ids=frozenset(), excluded_ca
     categories = DRIVING_SPECIFIC_CATEGORIES - excluded_categories
     pool = []
     for p in papers:
-        if p.get("av_relevance") != "adjacent":
+        if p.get("av_relevance") != "non-AV":
             continue
         if p.get("category") not in categories:
             continue
@@ -332,9 +332,9 @@ def stratified_select(candidates, n_out):
     through it in order hit one giant unbroken run of a single category
     before seeing anything else. Confirmed on real usage: 20/20 taps in a
     row were all vehicle-dynamics-powertrain (T-ITS EV-charging papers) --
-    and, separately, all 20 came back "adjacent", real evidence that
+    and, separately, all 20 came back "non-AV", real evidence that
     category's slots are mostly the rubric's own "EV charging-
-    infrastructure siting" hard-adjacent, not a sampling fluke. Interleaving
+    infrastructure siting" hard-non-AV, not a sampling fluke. Interleaving
     fixes the ordering bug; a labeler who wants to also downweight or drop
     a category with a track record like that should exclude it from
     DRIVING_SPECIFIC_CATEGORIES for future reselection (a per-run
@@ -392,7 +392,7 @@ def main():
                           "in a previous selection) -- for a top-up reselection, not the first run")
     ap.add_argument("--exclude-category", action="append", default=[], choices=sorted(DRIVING_SPECIFIC_CATEGORIES),
                      help="drop this category from the pool entirely for this run (repeatable) -- e.g. after "
-                          "real labels show it's mostly correctly-adjacent and not worth more slots")
+                          "real labels show it's mostly correctly-non-AV and not worth more slots")
     args = ap.parse_args()
 
     excluded_ids = frozenset()
@@ -404,7 +404,7 @@ def main():
 
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     pool = near_threshold_pool(papers, args.pool_size, excluded_ids, frozenset(args.exclude_category))
-    print(f"candidate pool: {len(pool)} adjacent papers in a driving-named category, "
+    print(f"candidate pool: {len(pool)} non-AV papers in a driving-named category, "
           f"with vehicle/traffic framing, not hard-scope-excluded")
 
     if args.use_openalex:

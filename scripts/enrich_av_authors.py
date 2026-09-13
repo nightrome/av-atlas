@@ -7,11 +7,11 @@ pulled from venue proceedings only ever captured a plain author-name string,
 never affiliations. That's why the institution/country leaderboards looked
 implausible (huge numbers from a tiny, non-representative sample).
 
-This fixes the root cause: looks up each av_relevance=="core" paper in
+This fixes the root cause: looks up each av_relevance=="AV" paper in
 papers_full.json against OpenAlex (same source already used for ICRA/IROS)
 to fill in authors_detail (name + affiliations + country codes), then
-overwrites papers_full.json in place. Only touches "core" papers -- the
-other ~63.7k "adjacent" papers were never going to be ranked anyway, so
+overwrites papers_full.json in place. Only touches "AV" papers -- the
+other ~63.7k "non-AV" papers were never going to be ranked anyway, so
 there's no reason to spend OpenAlex's rate budget on them.
 
 Stamps authors_detail_source="openalex" alongside the detail, so every
@@ -48,7 +48,7 @@ essentially this paper's -- the search takes result #1, which for affiliation
 noise was tolerable but for author *identity* would attach the wrong
 person's id.
 
-Usage: python enrich_core_authors.py [--refetch-ids]
+Usage: python enrich_av_authors.py [--refetch-ids]
 """
 import argparse
 import json
@@ -138,20 +138,20 @@ def _in_corpus_citations(p):
 
 
 def load_pending(refetch_ids):
-    """Re-reads the file fresh and returns (all_papers, titles needing lookup, core_total)."""
+    """Re-reads the file fresh and returns (all_papers, titles needing lookup, av_total)."""
     papers = json.loads(IN_FILE.read_text(encoding="utf-8"))
-    core = [p for p in papers if p.get("av_relevance") == "core"]
+    av = [p for p in papers if p.get("av_relevance") == "AV"]
     # Most-cited-first: OpenAlex's rate ceiling means coverage plateaus well
     # short of 100%, so the papers it does reach should be the ones that
     # anchor the Institutions/Countries leaderboards -- the top-cited ones --
     # not a random slice (user-requested, supersedes the earlier
     # random-order call now that the ceiling is the binding constraint).
-    core.sort(key=_in_corpus_citations, reverse=True)
+    av.sort(key=_in_corpus_citations, reverse=True)
     if refetch_ids:
-        pending_titles = [p["title"] for p in core if _needs_ids(p)]
+        pending_titles = [p["title"] for p in av if _needs_ids(p)]
     else:
-        pending_titles = [p["title"] for p in core if not p.get("authors_detail")]
-    return papers, pending_titles, len(core)
+        pending_titles = [p["title"] for p in av if not p.get("authors_detail")]
+    return papers, pending_titles, len(av)
 
 
 def main():
@@ -161,10 +161,10 @@ def main():
     args = ap.parse_args()
     refetch_ids = args.refetch_ids
 
-    _, pending, core_total = load_pending(refetch_ids)
+    _, pending, av_total = load_pending(refetch_ids)
     total_pending = len(pending)
     what = "re-fetch for author ids" if refetch_ids else "author-affiliation lookup"
-    print(f"{total_pending} core papers need {what} (of {core_total} core total)", flush=True)
+    print(f"{total_pending} AV papers need {what} (of {av_total} av total)", flush=True)
 
     done = 0
     processed = 0
@@ -211,7 +211,7 @@ def main():
                   flush=True)
             return
 
-    print(f"Done: enriched {done}/{total_pending} core papers with author affiliations", flush=True)
+    print(f"Done: enriched {done}/{total_pending} AV papers with author affiliations", flush=True)
 
 
 if __name__ == "__main__":

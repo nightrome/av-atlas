@@ -94,7 +94,7 @@ def build(stats, citation_graph):
         ["paper_id", "title", "year", "venue", "category", "av_relevance",
          "in_corpus_citations", "doi", "institutions", "countries"],
         ([normalize_title(p.get("title")), p.get("title"), p.get("year"), p.get("venue"),
-          p.get("category"), p.get("av_relevance") or "core", p.get("citations"),
+          p.get("category"), p.get("av_relevance") or "AV", p.get("citations"),
           p.get("doi") or "",
           "; ".join(p.get("institutions") or []),
           "; ".join(p.get("countries") or [])]

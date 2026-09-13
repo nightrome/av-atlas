@@ -98,14 +98,14 @@ def save_json(path, data):
 
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    core = [p for p in papers if p.get("av_relevance") == "core" and p.get("authors")]
+    av = [p for p in papers if p.get("av_relevance") == "AV" and p.get("authors")]
     # Shuffled, not sorted by author-list length -- the previous "most
     # papers first" ordering systematically resolved large-team-paper
     # authors before anyone else on every partial/interrupted run, leaving
     # ORCID/S2-ID coverage skewed toward big collaborations rather than a
     # representative slice of the corpus (user-requested, applied to every
     # incremental crawler in this pipeline).
-    random.shuffle(core)
+    random.shuffle(av)
 
     ids = load_json(IDS_FILE, {})
     checked = set(load_json(CHECKED_FILE, []))
@@ -113,8 +113,8 @@ def main():
     def unresolved_authors(p):
         return [a for a in p["authors"] if normalize_name(a) not in ids]
 
-    pending = [p for p in core if normalize_title(p["title"]) not in checked and unresolved_authors(p)]
-    print(f"{len(pending)} core papers left to check (of {len(core)} core papers with an author list, "
+    pending = [p for p in av if normalize_title(p["title"]) not in checked and unresolved_authors(p)]
+    print(f"{len(pending)} AV papers left to check (of {len(av)} AV papers with an author list, "
           f"{len(ids)} authors already resolved)", flush=True)
 
     processed = 0

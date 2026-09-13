@@ -14,7 +14,7 @@ Draws from four pools, not just one:
     keyword -- object detection, segmentation, tracking, ...): zero AV-term
     match, but plausible-*looking* to a labeler skimming the abstract. This
     was missing from the first version of this script and it showed: every
-    label came back "core", because every candidate already had at least
+    label came back "AV", because every candidate already had at least
     one AV-specific phrase in its abstract by construction. Real negative
     examples only exist in the zero-match pool, and random zero-match
     papers (usually NLP, medical imaging, totally unrelated fields) are too

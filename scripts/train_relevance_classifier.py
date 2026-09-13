@@ -7,11 +7,11 @@ WHY THIS EXISTS
 ---------------
 classify.py's relevance decision used to be pure keyword counting: a fixed
 list of ~30 AV phrases, every one weighted the same, and *any* single match
--> "core". That has two failure modes on a full, unfiltered venue corpus:
+-> "AV". That has two failure modes on a full, unfiltered venue corpus:
   * recall: obvious synonyms were simply missing from the list
     ("automated vehicle", "connected vehicle", "adaptive cruise control",
     "platooning", "car-following", ...), so ~thousands of DBLP title-only
-    IV/ITSC/T-ITS papers with no abstract fell through to "adjacent";
+    IV/ITSC/T-ITS papers with no abstract fell through to "non-AV";
   * precision: a term that is *usually* but not *always* AV ("vehicle",
     "traffic", "trajectory", "routing") counted exactly as hard as
     "self-driving", so generic transportation / vehicular-network /
@@ -102,14 +102,14 @@ STRONG_VOCAB = [
 # Ambiguous / weak terms ("vehicle", "traffic", "slam", "camera", ...) are
 # deliberately NOT in the vocabulary. They appear on huge numbers of non-AV
 # papers corpus-wide, but the training labels come from keyword-gated pools
-# where they *do* correlate with core -- so a model given them as features
-# learns a spuriously large positive weight and floods core when applied to
+# where they *do* correlate with AV -- so a model given them as features
+# learns a spuriously large positive weight and floods AV when applied to
 # the whole corpus (confirmed: at a recall-competitive threshold, ~72% of
 # "vehicle"/"slam"/"camera"-driven promotions were false positives -- edge
 # detection, orthopedic robots, NLP OOD detection). Only phrases specific
 # enough that their presence is real AV signal are features here. Recall on
 # generically-titled AV papers is recovered instead via the local-LLM
-# "core" verdict, which classify.py ORs on top of this model.
+# "AV" verdict, which classify.py ORs on top of this model.
 WEAK_VOCAB = []
 VOCAB = list(STRONG_VOCAB)
 PATTERNS = [re.compile(r"\b" + re.escape(t) + r"s?\b", re.I) for t in VOCAB]
@@ -145,7 +145,7 @@ def load_labels():
     # Per-pool sample weight. The v2 "neg_random" / "core_audit" pools are
     # drawn uniformly from the real corpus, so they -- not the keyword-gated
     # "gap_*" pools -- are what stops the model from over-learning that a bare
-    # "vehicle"/"car" in a title means core (true inside the gated pool,
+    # "vehicle"/"car" in a title means AV (true inside the gated pool,
     # false corpus-wide). Upweight them.
     POOL_W = {"neg_random": 4.0, "core_audit": 2.5, "zero_match": 3.0,
               "gap_noabs": 1.0, "gap_abs": 1.0, "abstract_tier": 1.0,
@@ -156,7 +156,7 @@ def load_labels():
         if not f.exists():
             continue
         for k, v in json.loads(f.read_text(encoding="utf-8")).items():
-            if v.get("label") in ("core", "adjacent"):
+            if v.get("label") in ("AV", "non-AV"):
                 weak[k] = (v["label"], v.get("pool", "gap_noabs"))
 
     train, hold = [], []
@@ -167,12 +167,12 @@ def load_labels():
         if w <= 0:
             continue
         p = by_norm[k]
-        train.append((featurize(p.get("title"), p.get("abstract")), 1 if lab == "core" else 0, w))
+        train.append((featurize(p.get("title"), p.get("abstract")), 1 if lab == "AV" else 0, w))
     for k, lab in hand.items():
         if k not in by_norm:
             continue
         p = by_norm[k]
-        hold.append((featurize(p.get("title"), p.get("abstract")), 1 if lab == "core" else 0))
+        hold.append((featurize(p.get("title"), p.get("abstract")), 1 if lab == "AV" else 0))
     return by_norm, train, hold
 
 
@@ -212,10 +212,10 @@ def main():
 
     Xtr = np.array([f for f, _, _ in train]); ytr = np.array([y for _, y, _ in train])
     wtr = np.array([w for _, _, w in train])
-    print(f"train: {len(ytr)} rows ({int(ytr.sum())} core / {int(len(ytr)-ytr.sum())} adjacent), "
-          f"weighted core frac { 100*wtr[ytr==1].sum()/wtr.sum():.0f}%   "
+    print(f"train: {len(ytr)} rows ({int(ytr.sum())} AV / {int(len(ytr)-ytr.sum())} non-AV), "
+          f"weighted AV frac { 100*wtr[ytr==1].sum()/wtr.sum():.0f}%   "
           f"features: {Xtr.shape[1]} ({len(VOCAB)} title + {len(VOCAB)} abstract + 1 title-strong)")
-    print(f"holdout (hand labels): {len(hold)} ({sum(y for _,y in hold)} core / {sum(1-y for _,y in hold)} adjacent)")
+    print(f"holdout (hand labels): {len(hold)} ({sum(y for _,y in hold)} AV / {sum(1-y for _,y in hold)} non-AV)")
 
     # sklearn 1.8+ deprecated penalty=; L1 is now l1_ratio=1 with the saga
     # solver. L1 keeps the model sparse == auditable (a short weight list).
@@ -284,7 +284,7 @@ def main():
                     "score = intercept + sum(title_coef[t] for phrase t in the title) "
                     "+ sum(abstract_coef[t] for phrase t in the abstract) "
                     "+ title_strong_coef if a standalone driving word is in the title; "
-                    "core iff score >= threshold (after classify.py's hard pre-filters).",
+                    "AV iff score >= threshold (after classify.py's hard pre-filters).",
         "vocab": kept_vocab,
         "title_coef": title_coef,
         "abstract_coef": abs_coef,
@@ -304,14 +304,14 @@ def main():
     feats = np.array([featurize(p.get("title"), p.get("abstract")) for p in sample])
     allsc = model.decision_function(feats)
     frac = float((allsc >= chosen).mean())
-    print(f"corpus projection (sample n={len(sample)}): ~{100*frac:.1f}% score core by the model alone "
-          f"=> ~{int(frac*len(papers))} / {len(papers)}  (before LLM-core OR-promotion)")
+    print(f"corpus projection (sample n={len(sample)}): ~{100*frac:.1f}% score AV by the model alone "
+          f"=> ~{int(frac*len(papers))} / {len(papers)}  (before LLM-AV OR-promotion)")
     hits = [sample[i] for i in np.argsort(-allsc)[: (allsc >= chosen).sum()]]
     rng.shuffle(hits)
     with open(BASE / "scripts" / "_relevance_projection_sample.txt", "w", encoding="utf-8") as fh:
         for p in hits[:250]:
             fh.write(f"[{p.get('venue')}] ({p.get('year')}) {p.get('title')}\n")
-    print("  wrote scripts/_relevance_projection_sample.txt (250 random model-core titles to eyeball)")
+    print("  wrote scripts/_relevance_projection_sample.txt (250 random model-AV titles to eyeball)")
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ Builds an in-corpus citation graph -- "how much do AV papers in this corpus
 cite each other", a signal OpenAlex/Semantic Scholar can't give us -- from
 two raw-reference sources:
 
-  1. This script fetches PDFs for av_relevance=="core" papers hosted on CVF
+  1. This script fetches PDFs for av_relevance=="AV" papers hosted on CVF
      (CVPR/ICCV/WACV -- predictable URL, no rate limit), extracts just the
      references section (pdfplumber, stopping once past it, never touching
      figures), and splits it into raw entries.
@@ -19,7 +19,7 @@ Fetching (network-bound, slow) and matching (local string comparison,
 fast) are deliberately two separate phases, not one pass that fetches-and-
 matches-then-forgets:
 
-  - Phase 1 (fetch): download each core CVF paper's PDF once, extract and
+  - Phase 1 (fetch): download each AV CVF paper's PDF once, extract and
     save its RAW reference entries to data/reference_lists_cvf.json --
     every entry, whether or not it currently matches anything in the
     corpus. Skips papers already fetched (successfully or not -- failures
@@ -227,10 +227,10 @@ def save_json(path, data):
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
 
 
-def fetch_phase(core_cvf_titles, pdf_url_index):
+def fetch_phase(av_cvf_titles, pdf_url_index):
     refs = load_refs_cvf()
     succeeded = set(refs["succeeded"])
-    pending = [k for k in core_cvf_titles if k in pdf_url_index and k not in succeeded]
+    pending = [k for k in av_cvf_titles if k in pdf_url_index and k not in succeeded]
     # Shuffled, not left in corpus order (which clusters by venue/year) --
     # an interrupted or session-limited run should still leave the
     # extracted reference-list coverage a representative slice of every
@@ -239,7 +239,7 @@ def fetch_phase(core_cvf_titles, pdf_url_index):
     # pipeline, not just this one).
     random.shuffle(pending)
     n_retrying = sum(1 for k in pending if k in refs["failed"])
-    print(f"{len(pending)} core CVF papers left to fetch (of {len(core_cvf_titles)} core CVF total), "
+    print(f"{len(pending)} AV CVF papers left to fetch (of {len(av_cvf_titles)} AV CVF total), "
           f"including {n_retrying} retrying a previous failure", flush=True)
 
     processed = 0
@@ -337,14 +337,14 @@ def match_phase(word_index):
 
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    core_cvf_titles = {
+    av_cvf_titles = {
         normalize_title(p["title"]) for p in papers
-        if p.get("av_relevance") == "core" and (p.get("venue") or "") in CVF_VENUES
+        if p.get("av_relevance") == "AV" and (p.get("venue") or "") in CVF_VENUES
     }
     pdf_url_index = build_cvf_pdf_url_index()
     word_index = build_corpus_match_index(papers)
 
-    fetch_phase(core_cvf_titles, pdf_url_index)
+    fetch_phase(av_cvf_titles, pdf_url_index)
     match_phase(word_index)
 
 

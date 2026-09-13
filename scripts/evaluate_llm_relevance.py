@@ -37,11 +37,11 @@ def main():
     for pid in overlap:
         truth = ground_truth[pid]
         pred = llm_eval[pid]["label"]
-        if truth == "core" and pred == "core":
+        if truth == "AV" and pred == "AV":
             tp += 1
-        elif truth == "adjacent" and pred == "adjacent":
+        elif truth == "non-AV" and pred == "non-AV":
             tn += 1
-        elif truth == "adjacent" and pred == "core":
+        elif truth == "non-AV" and pred == "AV":
             fp += 1
         else:
             fn += 1
@@ -55,12 +55,12 @@ def main():
     f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else float("nan")
 
     print(f"\nAccuracy:  {accuracy:.1%}")
-    print(f"Precision: {precision:.1%}  (of papers the LLM called 'core', how many really are)")
-    print(f"Recall:    {recall:.1%}  (of papers that really are 'core', how many the LLM caught)")
+    print(f"Precision: {precision:.1%}  (of papers the LLM called 'AV', how many really are)")
+    print(f"Recall:    {recall:.1%}  (of papers that really are 'AV', how many the LLM caught)")
     print(f"F1:        {f1:.1%}")
     print(f"\nConfusion matrix:")
-    print(f"                  predicted core   predicted adjacent")
-    print(f"  actually core   {tp:>13}   {fn:>18}")
+    print(f"                  predicted AV   predicted non-AV")
+    print(f"  actually AV   {tp:>13}   {fn:>18}")
     print(f"  actually adj.   {fp:>13}   {tn:>18}")
 
     if disagreements:

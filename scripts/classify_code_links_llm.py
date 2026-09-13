@@ -9,7 +9,7 @@ rate around 40% -- dataset/leaderboard links on HuggingFace, third-party
 baseline repos named in the body, and a loose "code ... available" text
 match that also fires on "code is NOT available".
 
-For every core, arXiv-sourced paper this re-fetches the ar5iv page, pulls
+For every AV, arXiv-sourced paper this re-fetches the ar5iv page, pulls
 out the title, abstract, every candidate code URL with its surrounding
 sentence, and any code-availability sentence, and asks a local Ollama model
 the narrow question: does THIS paper release ITS OWN source code? The
@@ -192,15 +192,15 @@ def load_targets():
     regex detector runs over, so this is a like-for-like replacement."""
     affil = json.loads(AFFIL_FILE.read_text(encoding="utf-8"))
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    core = {norm_title(p.get("title")): p.get("title")
-            for p in papers if p.get("av_relevance") == "core"}
+    av = {norm_title(p.get("title")): p.get("title")
+            for p in papers if p.get("av_relevance") == "AV"}
     out = []
     for key, v in affil.items():
-        if not isinstance(v, dict) or key not in core:
+        if not isinstance(v, dict) or key not in av:
             continue
         aid = v.get("arxiv_id")
         if aid:
-            out.append((key, aid, core[key]))
+            out.append((key, aid, av[key]))
     out.sort()
     return out
 
@@ -220,7 +220,7 @@ def main():
     skip = {k for k, r in done.items()
             if not (args.redo_unclear and r.get("verdict") == "unclear")}
     pending = [t for t in targets if t[0] not in skip]
-    print(f"{len(targets)} core arXiv papers; {len(done)} already classified; "
+    print(f"{len(targets)} AV arXiv papers; {len(done)} already classified; "
           f"{len(pending)} to go this run (model={args.model})", flush=True)
 
     fails = 0
