@@ -84,6 +84,17 @@ def parse_label(raw, valid_ids):
         cat = str(cat).strip() if cat not in (None, "null", "") else None
         if cat is None or cat in valid_ids:
             return True, cat, str(obj.get("reason", ""))[:120]
+        if cat is not None:
+            # The model sometimes paraphrases an id instead of copying it
+            # verbatim (confirmed live: "simulation" for
+            # "simulation-benchmarking") -- a real category signal, not
+            # worth discarding just because the string isn't an exact
+            # match. Accept it if it's an unambiguous prefix of exactly one
+            # valid id; anything less certain still falls through to a
+            # genuine parse failure below rather than guessing.
+            prefix_matches = [v for v in valid_ids if v.startswith(cat) or cat.startswith(v)]
+            if len(prefix_matches) == 1:
+                return True, prefix_matches[0], str(obj.get("reason", ""))[:120]
     except Exception:
         pass
     return False, None, raw[:160]
@@ -132,12 +143,20 @@ def main():
 
     processed = 0
     fails = 0
+    # Same fix as build_citation_graph.py's identical loop shape -- without
+    # this, a paper whose response never parses (confirmed live: the model
+    # can keep making the same unrecoverable mistake, e.g. inventing a
+    # category id not in valid_ids and not a clean prefix match either)
+    # gets re-selected into every subsequent batch for the rest of THIS
+    # run, burning inference time on a call already known to fail.
+    attempted_this_run = set()
     while pending:
         results = load_results()
-        batch = [k for k in pending if k not in results][:BATCH_SIZE]
+        batch = [k for k in pending if k not in results and k not in attempted_this_run][:BATCH_SIZE]
         if not batch:
             break
         for k in batch:
+            attempted_this_run.add(k)
             p = by_norm[k]
             try:
                 prompt = PROMPT_TEMPLATE.format(category_list=category_list, title=p["title"])
