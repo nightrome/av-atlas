@@ -226,7 +226,7 @@ function notFound() {
   document.getElementById('citing-panel').style.display = 'none';
 }
 
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => {
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(fetchStatsDetail).then(stats => {
   const paper = (stats.all_papers || []).find(p => p.title === title);
   if (paper) { renderPaper(stats, paper, false); return; }
   // Not in the AV-relevant set -- before giving up, also check the much

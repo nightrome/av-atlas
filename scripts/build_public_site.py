@@ -213,6 +213,12 @@ def build_public_site():
     non_av_path = BASE / "data" / "stats_non_av.json"
     if non_av_path.exists():
         shutil.copy2(non_av_path, page_dir / "stats_non_av.json")
+    # Lazily fetched by author.html/authors.html/countries.html/institution.html/
+    # paper.html only -- see aggregate.py's DETAIL_OUT_FILE comment. Same
+    # optional-copy reasoning as stats_non_av.json above.
+    detail_path = BASE / "data" / "stats_detail.json"
+    if detail_path.exists():
+        shutil.copy2(detail_path, page_dir / "stats_detail.json")
     shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
     # see theme-light.css's own header comment.
@@ -248,8 +254,8 @@ def build_public_site():
     # part of the current expected output. Caught in practice: label_relevance.html
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
-        | {"stats.json", "stats_non_av.json", "theme.css", "theme-light.css", "logo.svg",
-           "og-image.png", "sitemap.xml", "robots.txt"}
+        | {"stats.json", "stats_non_av.json", "stats_detail.json", "theme.css", "theme-light.css",
+           "logo.svg", "og-image.png", "sitemap.xml", "robots.txt"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()

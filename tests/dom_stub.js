@@ -188,6 +188,12 @@ function runPage(file, opts) {
   if (!inlineScripts.length) return Promise.resolve({ file, error: null, allElements: [], idRegistry: {}, sandbox: null, noInlineScript: true });
 
   const statsRaw = opts.statsRaw || fs.readFileSync(path.join(BASE, 'data', 'stats.json'), 'utf-8');
+  // author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors
+  // live in their own lazily-fetched file now (aggregate.py's
+  // DETAIL_OUT_FILE) -- see filters.js's fetchStatsDetail. Same
+  // real-file-on-disk default as statsRaw above, with the same
+  // opts override hook for a future test that wants specific detail data.
+  const detailRaw = opts.detailRaw || fs.readFileSync(path.join(BASE, 'data', 'stats_detail.json'), 'utf-8');
   const idRegistry = {};
   const body = makeElement('body');
 
@@ -258,6 +264,9 @@ function runPage(file, opts) {
     URLSearchParams,
     URL,
     fetch(url) {
+      if (String(url).includes('stats_detail.json')) {
+        return Promise.resolve({ json: () => Promise.resolve(JSON.parse(detailRaw)) });
+      }
       if (String(url).includes('stats.json')) {
         return Promise.resolve({ json: () => Promise.resolve(JSON.parse(statsRaw)) });
       }

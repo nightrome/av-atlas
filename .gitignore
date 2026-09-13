@@ -22,6 +22,11 @@ data/abstracts/
 # Per-author non-AV publication tallies, another ~80MB regenerable dump the
 # Insights page loads lazily -- same reasoning as stats.json above.
 data/stats_non_av.json
+# author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors,
+# split out of stats.json (regenerate with scripts/aggregate.py) since
+# they're ~32% of it by size but only needed by author/authors/countries/
+# institution/paper.html -- same reasoning as stats.json above.
+data/stats_detail.json
 
 # Belt-and-braces against a stray root copy of the generated data (an old
 # habit, or a hand-run of aggregate.py with the wrong cwd) getting swept in
@@ -29,6 +34,7 @@ data/stats_non_av.json
 # and public/ (the built site); nothing should write these at the root.
 /stats.json
 /stats_non_av.json
+/stats_detail.json
 /abstracts/
 # One-off evaluation artifact from scripts/audit_code_links_llm.py (LLM
 # second opinion on the has_code_link heuristic) -- rerun to regenerate,

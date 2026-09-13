@@ -596,6 +596,23 @@
     });
   };
 
+  // author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors
+  // used to live in stats.json itself -- split into their own lazily-fetched
+  // file (aggregate.py's DETAIL_OUT_FILE) since they're ~32% of it by size
+  // but only read by author.html, authors.html, countries.html,
+  // institution.html and paper.html, not the other listing pages. Merges
+  // straight onto the stats object passed in, mirroring how
+  // fetchStatsWithRelevance's relevance swap mutates stats.all_papers in
+  // place, so callers keep reading e.g. stats.author_detail exactly as
+  // before -- only the page's own load sequence (calling this too, wherever
+  // it wasn't before) changes.
+  window.fetchStatsDetail = function (stats) {
+    return fetch('stats_detail.json').then(r => r.json()).then(detail => {
+      Object.assign(stats, detail);
+      return stats;
+    });
+  };
+
   window.filterPapers = function (papers, filters) {
     let out = papers;
     if (filters.category) out = out.filter(p => p.category === filters.category);

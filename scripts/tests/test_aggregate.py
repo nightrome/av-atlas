@@ -1043,14 +1043,17 @@ class TestAggregateEndToEnd(unittest.TestCase):
         if citation_graph is not None:
             graph_file.write_text(json.dumps(citation_graph), encoding="utf-8")
 
-        orig_in, orig_out, orig_adjacent, orig_profiles, orig_graph, orig_abstracts = (
-            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_OUT_FILE, ag.SCHOLAR_PROFILES_FILE,
+        orig_in, orig_out, orig_adjacent, orig_detail, orig_profiles, orig_graph, orig_abstracts = (
+            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_OUT_FILE, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE,
             ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR)
         ag.IN_FILE, ag.OUT_FILE = in_file, out_file
         # Patched to a tmp path same as OUT_FILE -- without this, every test
         # run would silently overwrite the real ~34MB data/stats_non_av.json
         # with whatever tiny fixture the current test happens to pass.
         ag.NON_AV_OUT_FILE = Path(tmpdir.name) / "stats_non_av.json"
+        # Same reasoning as NON_AV_OUT_FILE -- without this, every test run
+        # would overwrite the real data/stats_detail.json.
+        ag.DETAIL_OUT_FILE = Path(tmpdir.name) / "stats_detail.json"
         ag.SCHOLAR_PROFILES_FILE = Path(tmpdir.name) / "scholar_profiles.json"  # deliberately absent
         ag.CITATION_GRAPH_FILE = graph_file  # absent unless citation_graph was passed
         # Same reasoning as NON_AV_OUT_FILE above -- without this, every
@@ -1059,10 +1062,11 @@ class TestAggregateEndToEnd(unittest.TestCase):
         try:
             ag.main()
             self.last_adjacent_papers = json.loads(ag.NON_AV_OUT_FILE.read_text(encoding="utf-8"))
+            self.last_detail = json.loads(ag.DETAIL_OUT_FILE.read_text(encoding="utf-8"))
         finally:
-            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, \
+            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_OUT_FILE, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, \
                 ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR = (
-                orig_in, orig_out, orig_adjacent, orig_profiles, orig_graph, orig_abstracts)
+                orig_in, orig_out, orig_adjacent, orig_detail, orig_profiles, orig_graph, orig_abstracts)
 
         return json.loads(out_file.read_text(encoding="utf-8"))
 
@@ -1259,7 +1263,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # INSTITUTION_ALIASES_LLM (user-requested), incidental to what this
         # test actually checks.
         self.assertEqual(paper["institutions"], ["NVIDIA", "Stanford University"])
-        author_detail = stats["author_detail"]
+        author_detail = self.last_detail["author_detail"]
         # No institutions, no countries, no Scholar profile, no ORCID --
         # author_detail skips creating an entry at all rather than one with
         # nothing useful in it (see the "not institutions and not countries
@@ -1280,7 +1284,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
                  {"name": "Erin Samelab", "affiliations": ["ETH Zürich"]},
              ]},
         ])
-        author_detail = stats["author_detail"]
+        author_detail = self.last_detail["author_detail"]
         self.assertEqual([i["name"] for i in author_detail["Dave Samelab"]["institutions"]], ["ETH Zürich"])
         self.assertEqual([i["name"] for i in author_detail["Erin Samelab"]["institutions"]], ["ETH Zürich"])
 
@@ -1297,7 +1301,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
                  {"name": "Grace Diff", "affiliations": ["University of Oxford"]},
              ]},
         ])
-        author_detail = stats["author_detail"]
+        author_detail = self.last_detail["author_detail"]
         self.assertEqual([i["name"] for i in author_detail["Frank Diff"]["institutions"]], ["Carnegie Mellon University"])
         self.assertEqual([i["name"] for i in author_detail["Grace Diff"]["institutions"]], ["University of Oxford"])
 
@@ -1430,8 +1434,8 @@ class TestAggregateEndToEnd(unittest.TestCase):
                  {"name": "Xin Wang", "affiliations": ["Some University"]},
              ]},
         ])
-        self.assertNotIn("Wang", stats["author_detail"])
-        self.assertIn("Xin Wang", stats["author_detail"])
+        self.assertNotIn("Wang", self.last_detail["author_detail"])
+        self.assertIn("Xin Wang", self.last_detail["author_detail"])
 
     def test_bare_surname_excluded_from_paper_level_authors_list(self):
         # researchers.html aggregates its leaderboard client-side from each
@@ -1467,8 +1471,8 @@ class TestAggregateEndToEnd(unittest.TestCase):
                  {"name": "Nvidia Person", "affiliations": ["NVIDIA"]},
              ]},
         ])
-        tesla_names = {a["name"] for a in stats["institution_authors"].get("Tesla", [])}
-        nvidia_names = {a["name"] for a in stats["institution_authors"].get("NVIDIA", [])}
+        tesla_names = {a["name"] for a in self.last_detail["institution_authors"].get("Tesla", [])}
+        nvidia_names = {a["name"] for a in self.last_detail["institution_authors"].get("NVIDIA", [])}
         self.assertIn("Tesla Person", tesla_names)
         self.assertNotIn("Tesla Person", nvidia_names)
         self.assertIn("Nvidia Person", nvidia_names)
@@ -1489,7 +1493,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         ])
         names = {a["name"] for a in stats["top_authors"]}
         self.assertNotIn("Wei Wang", names)
-        self.assertTrue(stats["author_detail"]["Wei Wang"]["identity_conflict"])
+        self.assertTrue(self.last_detail["author_detail"]["Wei Wang"]["identity_conflict"])
 
     def test_author_with_one_consistent_openalex_id_is_ranked(self):
         stats = self._run([
@@ -1500,7 +1504,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         ])
         names = {a["name"] for a in stats["top_authors"]}
         self.assertIn("Jane Doe", names)
-        self.assertFalse(stats["author_detail"]["Jane Doe"]["identity_conflict"])
+        self.assertFalse(self.last_detail["author_detail"]["Jane Doe"]["identity_conflict"])
 
     def test_author_with_no_openalex_id_is_not_excluded(self):
         # Most of the corpus's affiliation data predates id capture (arXiv-
@@ -1515,7 +1519,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         ])
         names = {a["name"] for a in stats["top_authors"]}
         self.assertIn("John Smith", names)
-        self.assertFalse(stats["author_detail"]["John Smith"]["identity_conflict"])
+        self.assertFalse(self.last_detail["author_detail"]["John Smith"]["identity_conflict"])
 
     def test_author_countries_are_chronological_not_alphabetical(self):
         # user-flagged real case: an author showed "United States" as
@@ -1531,7 +1535,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
             {"title": "Later NL Paper", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "authors_detail": [{"name": "Chrono Author", "affiliations": ["TU Delft"], "countries": ["NL"]}]},
         ])
-        self.assertEqual(stats["author_detail"]["Chrono Author"]["countries"],
+        self.assertEqual(self.last_detail["author_detail"]["Chrono Author"]["countries"],
                           ["United States", "Netherlands"])
 
     def test_dataset_with_two_introducing_papers_merges_citations(self):
@@ -1736,6 +1740,41 @@ class TestComputeInsights(unittest.TestCase):
                           "one highly-cited paper must not qualify someone on its own")
         self.assertEqual(insights["young_researchers_cutoff_year"], 2025)
         self.assertEqual(insights["young_researchers_min_influential"], 3)
+
+    def test_young_researchers_excludes_a_researcher_whose_overall_career_is_long(self):
+        # Real case, user-flagged: "Yu Qiao" showed as a 3-year, 38-paper
+        # "rising star" -- correct as far as AV-relevant papers go, but the
+        # same name has ~300 more non-AV papers here back to 2012, a 13+
+        # year research career that recently pivoted into AV, not a new
+        # researcher. author_lifetimes is AV-only by construction (a paper
+        # has to BE AV-relevant to count toward that career span), so
+        # global_first_year -- the same name's earliest year across the
+        # WHOLE corpus, stamped onto author_lifetimes separately -- is what
+        # catches this.
+        author_lifetimes = {
+            "Genuinely New": {"first_year": 2023, "last_year": 2025, "lifetime": 2,
+                               "papers": 5, "citations": 500, "cited_papers": 5,
+                               "influential_papers": 3, "global_first_year": 2023},
+            "Established Researcher, New To AV": {
+                "first_year": 2023, "last_year": 2025, "lifetime": 2,
+                "papers": 5, "citations": 500, "cited_papers": 5,
+                "influential_papers": 3, "global_first_year": 2012},
+            # No global_first_year at all (e.g. this name never appeared
+            # outside the AV-only pass) must not be treated as a red flag --
+            # missing data isn't evidence of a long career.
+            "No Global Data": {"first_year": 2023, "last_year": 2025, "lifetime": 2,
+                                "papers": 5, "citations": 500, "cited_papers": 5,
+                                "influential_papers": 3},
+        }
+        papers = [
+            self._paper("Anchor 2025", 2025, citations=1, authors=["Someone"]),
+            self._paper("Anchor 2026", 2026, citations=1, authors=["Someone Else"]),
+        ]
+        insights = ag.compute_insights(papers, [], {"edges": {}}, {}, [], [], [], author_lifetimes=author_lifetimes)
+        names = [a["name"] for a in insights["most_promising_young_researchers"]]
+        self.assertIn("Genuinely New", names)
+        self.assertIn("No Global Data", names)
+        self.assertNotIn("Established Researcher, New To AV", names)
 
     def test_young_researchers_rank_by_influential_paper_count_first(self):
         common = {"first_year": 2023, "last_year": 2025, "lifetime": 2, "cited_papers": 5}

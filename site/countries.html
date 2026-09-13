@@ -155,7 +155,7 @@ let currentStats = null, currentFilters = null;
 let currentQuery = new URLSearchParams(location.search).get('q') || '';
 let currentTimelineDraw = null;
 const relevance = new URLSearchParams(location.search).get('relevance') || '';
-fetchStatsWithRelevance(relevance).then(stats => {
+fetchStatsWithRelevance(relevance).then(fetchStatsDetail).then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'countries.html', {
     search: { placeholder: 'Search country names…', param: 'q', onInput: v => { currentQuery = v; render(); } },

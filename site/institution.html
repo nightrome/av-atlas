@@ -141,7 +141,7 @@ setDetailPageMeta(name, name
   ? `${name}'s autonomous vehicle research in AV Atlas: papers, citations within AV research, and the researchers behind them.`
   : null);
 
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(fetchStatsDetail).then(render).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
 });
 

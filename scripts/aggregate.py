@@ -48,6 +48,18 @@ OUT_FILE = BASE / "data" / "stats.json"
 # papers"). Fetched lazily by index.html only when its AV-relevance filter
 # is switched away from the "AV relevant" default.
 NON_AV_OUT_FILE = BASE / "data" / "stats_non_av.json"
+# author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors
+# together are ~14MB (~32%) of stats.json (raw) but are only read by
+# author.html, authors.html, countries.html, institution.html and
+# paper.html -- every OTHER listing page (index, venues, network,
+# categories, insights, compare) downloaded and JSON.parse'd all of it on
+# every load without ever touching it (confirmed: grepped for each field
+# across every page). Same reasoning as ABSTRACTS_DIR/NON_AV_OUT_FILE
+# above, just for these four fields together rather than one each --
+# they're needed by an overlapping set of pages, so one extra fetch
+# reaches all four instead of a page needing several needing to make
+# several small requests for the same reason.
+DETAIL_OUT_FILE = BASE / "data" / "stats_detail.json"
 # Abstracts are ~20MB of the ~70MB stats.json (raw), but only paper.html
 # ever reads one, one paper at a time -- every other page pays that weight
 # on every load for a field it never touches. Sharded into ABSTRACT_SHARD_COUNT
@@ -2415,6 +2427,21 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
         YOUNG_MAX_LIFETIME = 3
         YOUNG_MIN_PAPERS = 5
         YOUNG_MIN_INFLUENTIAL = 3
+        # author_lifetimes (and YOUNG_MAX_LIFETIME above) are AV-only by
+        # construction -- a paper has to BE AV-relevant to count toward an
+        # AV career span -- so this panel can't tell "genuinely new to
+        # research" from "established researcher whose lab/career recently
+        # pivoted into AV". Confirmed real case (user-flagged): "Yu Qiao"
+        # showed a 3-year AV career (38 papers, first one 2022, matching
+        # Shanghai AI Lab's autonomous-driving push) but the same name has
+        # 299 more non-AV papers here back to 2012 -- 13+ years of research,
+        # not a new researcher. global_first_year (set on author_lifetimes
+        # above) is the same name's earliest year across the WHOLE corpus,
+        # any relevance; capping the overall span at double the AV-only one
+        # allows a normal pre-AV ramp-up (a PhD student's first year or two
+        # in general CV before specializing) without admitting a decade-long
+        # career pivot.
+        YOUNG_MAX_OVERALL_LIFETIME = YOUNG_MAX_LIFETIME * 2
         influential_threshold = influential_citation_threshold(papers)
         last_complete_year = complete_years[-1] if complete_years else None
         young = [
@@ -2433,6 +2460,8 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
             # record, which is precisely what this panel selects for.
             and name not in conflicted_authors
             and (last_complete_year is None or a["last_year"] == last_complete_year)
+            and (a.get("global_first_year") is None
+                 or a["last_year"] - a["global_first_year"] <= YOUNG_MAX_OVERALL_LIFETIME)
         ]
         # Most influential papers first, average citations only as the
         # tie-break -- so the headline ordering reflects breadth of impact
@@ -3352,6 +3381,27 @@ def main():
     # threshold would drift as the citation graph fills in, and would mean
     # something different for a 2013 paper than a 2024 one.
     influential_threshold = influential_citation_threshold(papers)
+
+    # An author's EARLIEST year in the whole corpus (every relevance, not
+    # just AV) -- needed below to tell a genuinely new researcher from an
+    # established one who only recently started publishing AV-relevant work.
+    # Confirmed real case (user-flagged): "Yu Qiao" showed as a "rising
+    # star" with a 3-year AV career and 38 papers -- correct as far as
+    # AV-relevant papers go (first one in 2022, matching Shanghai AI Lab's
+    # autonomous-driving push), but the same name has 299 more non-AV papers
+    # here going back to 2012, i.e. a 10+ year research career that simply
+    # pivoted into AV recently, not a new researcher. author_lifetimes below
+    # is deliberately AV-only (a paper needs to BE AV-relevant to count
+    # toward an AV career span), so it can't see this on its own.
+    global_first_year = {}
+    for e in all_entries:
+        year = e.get("year")
+        if year is None:
+            continue
+        for name in set(paper_authors(e)):
+            if name not in global_first_year or year < global_first_year[name]:
+                global_first_year[name] = year
+
     author_lifetimes = {}
     for p in papers:
         year = p.get("year")
@@ -3368,8 +3418,9 @@ def main():
                 rec["cited_papers"] += 1
                 if p["citations"] >= influential_threshold:
                     rec["influential_papers"] += 1
-    for rec in author_lifetimes.values():
+    for name, rec in author_lifetimes.items():
         rec["lifetime"] = (rec["last_year"] - rec["first_year"]) if rec["first_year"] is not None else None
+        rec["global_first_year"] = global_first_year.get(name)
     # Only authors with a known year range have a computable lifetime --
     # drop the rest rather than let them collapse into a fake "lifetime 0".
     author_lifetimes = {k: v for k, v in author_lifetimes.items() if v["lifetime"] is not None}
@@ -3599,6 +3650,22 @@ def main():
         },
         "category_breakdown": [{"category": cat, **vals}
                                 for cat, vals in sorted(category_stats.items(), key=lambda kv: -kv[1]["citations"])],
+        "insights": insights,
+    }
+    # No indent -- same reasoning as stats_non_av.json/the abstract shards
+    # just below (indent=2's per-key newline+spacing roughly doubled this
+    # file's size at corpus scale, which is what pushed it over GitHub's
+    # 100MB file limit and got a gh-pages push rejected outright).
+    OUT_FILE.write_text(json.dumps(stats, ensure_ascii=False), encoding="utf-8", newline="\n")
+    print(f"Wrote {OUT_FILE}")
+    print(f"  {len(all_entries)} total papers, {len(entries)} AV")
+    print(f"  {len(papers)} ranked papers, {len(author_citations)} authors, "
+          f"{len(inst_citations)} institutions, {len(country_citations)} countries")
+    print(f"  papers_with_author_detail={n_with_author_detail} verified={n_verified} excluded_mismatch={n_excluded}")
+
+    # See DETAIL_OUT_FILE's comment above -- these four used to live in
+    # stats.json itself.
+    detail = {
         "author_detail": author_detail,
         "non_av_paper_counts": dict(non_av_paper_counts),
         "non_av_paper_citations": dict(non_av_paper_citations),
@@ -3613,18 +3680,9 @@ def main():
             ]
             for inst, authors in institution_authors.items()
         },
-        "insights": insights,
     }
-    # No indent -- same reasoning as stats_non_av.json/the abstract shards
-    # just below (indent=2's per-key newline+spacing roughly doubled this
-    # file's size at corpus scale, which is what pushed it over GitHub's
-    # 100MB file limit and got a gh-pages push rejected outright).
-    OUT_FILE.write_text(json.dumps(stats, ensure_ascii=False), encoding="utf-8", newline="\n")
-    print(f"Wrote {OUT_FILE}")
-    print(f"  {len(all_entries)} total papers, {len(entries)} AV")
-    print(f"  {len(papers)} ranked papers, {len(author_citations)} authors, "
-          f"{len(inst_citations)} institutions, {len(country_citations)} countries")
-    print(f"  papers_with_author_detail={n_with_author_detail} verified={n_verified} excluded_mismatch={n_excluded}")
+    DETAIL_OUT_FILE.write_text(json.dumps(detail, ensure_ascii=False), encoding="utf-8", newline="\n")
+    print(f"Wrote {DETAIL_OUT_FILE} ({DETAIL_OUT_FILE.stat().st_size / 1e6:.1f} MB)")
 
     # Sharded abstracts -- see ABSTRACTS_DIR's comment above. The shard set
     # is fixed (always exactly ABSTRACT_SHARD_COUNT files, fixed names) and

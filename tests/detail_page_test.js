@@ -29,6 +29,10 @@ function findAll(root, predicate, out) {
 }
 
 const stats = JSON.parse(fs.readFileSync(path.join(BASE, 'data', 'stats.json'), 'utf-8'));
+// institution_authors (used below to pick a real institution to test
+// against) lives in its own lazily-fetched file now -- see filters.js's
+// fetchStatsDetail and aggregate.py's DETAIL_OUT_FILE.
+Object.assign(stats, JSON.parse(fs.readFileSync(path.join(BASE, 'data', 'stats_detail.json'), 'utf-8')));
 
 const failures = [];
 function check(label, cond) {

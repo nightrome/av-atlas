@@ -231,7 +231,7 @@ function renderScatter(container, authors) {
 let currentStats = null, currentFilters = null;
 let currentQuery = new URLSearchParams(location.search).get('q') || '';
 const relevance = new URLSearchParams(location.search).get('relevance') || '';
-fetchStatsWithRelevance(relevance).then(stats => {
+fetchStatsWithRelevance(relevance).then(fetchStatsDetail).then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'authors.html', {
     search: { placeholder: 'Search author names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
