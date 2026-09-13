@@ -119,6 +119,104 @@ only title + year for these, and `classify.py` falls back to title-only keyword
 matching. These papers carry a weaker relevance/category signal than the rest of
 the corpus, documented as such under Methodology's "Known gaps".
 
+## Misc vs uncategorized
+
+`classify_paper()` (`classify.py`) used to leave every paper that matched no
+category keyword as `"uncategorized"`, whether or not it was AV-relevant —
+`categories.json`'s own `_readme` called this out as deliberate ("a signal the
+taxonomy needs a new category, not that the paper doesn't have one"). In
+practice this meant 3,647 of 25,664 AV papers (14.2%) sat in `"uncategorized"`,
+which `categories.html` hides from the ranked table and shows once as a
+footnote instead — a large, permanently-growing slice of the AV corpus with no
+real visibility (user-requested: "make sure very few papers are uncategorized
+... discern uncategorized papers from misc papers").
+
+The fix splits the same fallback in two by `av_relevance`, computed right
+before the split so both values are in hand: an AV paper falls to `"misc"`
+(it already matched an explicit AV-relevance phrase, so it's confirmed
+on-topic — not fitting a specific category doesn't make it any less real, so
+it gets a normal, ranked, browsable bucket like any of the other 30) while a
+non-AV paper still falls to `"uncategorized"` (relevance itself is the
+weaker signal there, and non-AV papers are never shown in the ranked UI
+anyway, so tracking a missing category for them isn't useful the same way).
+This is a pure post-processing split of the existing fallback, not a new
+matching path — nothing about how a category keyword match is scored
+changed. Confirmed on real data: after this change, AV-side `"uncategorized"`
+is exactly 0 (all of it moved to `"misc"`), and `"misc"` never appears on a
+non-AV paper.
+
+`"misc"` is intentionally NOT listed in `categories.json`'s `categories`
+array — it isn't keyword-matched, so it can't be extended by adding keywords
+the way a real category can, and listing it there would invite exactly that.
+Alongside this split, ~215 papers that used to fall through were reclaimed
+into real categories by extending several categories' keyword lists with
+phrasings a direct audit of the (then-3,647-paper) uncategorized set showed
+were common but unmatched — plurals ("traffic lights control" vs the
+existing "traffic light control"), synonyms ("scene understanding" alongside
+"segmentation"), and missing but unambiguous terms ("kalman filter",
+"valet parking", "emergency braking", "ramp merging", "lane change",
+"temporal logic", "driver activity"/"activity recognition"). `"misc"` at
+13.4% of AV papers was, at that point, the single largest bucket, larger than
+any one real category — a sign the taxonomy still had room to grow, not that
+the job was finished (see the next two entries for what came out of actually
+growing it, which brought `"misc"` down to 12.8%).
+
+## Surveys/reviews are a paper-type gate, same tier as Datasets
+
+A direct audit of `"misc"` (spot-checking `index.html?category=misc`, sorted
+by citations to prioritize what's most visible) found "A Survey of X" among
+its most-cited entries and, checked corpus-wide, 541 AV papers with
+`\bsurvey\b|\breview\b` in the title — already scattered across every one of
+the other 30 categories by keyword luck, the exact "topic keywords describe
+what a paper covers, not what it IS" problem `dataset-benchmark-paper`
+already exists to solve for dataset papers (see `presents_dataset()`).
+`is_survey_or_review_paper()` (`classify.py`) is the same kind of title gate,
+checked right after the dataset and radar gates (so a radar survey still
+lands in `radar-perception` and a dataset survey still lands in
+`dataset-benchmark-paper`, both by design) and before the topic-keyword
+ranking. It's a bare-word check (`survey`/`review`, not a curated phrase
+list) because auditing all 541 matches turned up only 2 false positives —
+both the *other* sense of "survey" (a questionnaire, not a literature
+review): "An Online Survey" and "...a driver activity survey" — both
+explicitly excluded rather than guessed at generically. `"survey-review-paper"`
+carries no real keywords of its own in `categories.json` (unlike
+`dataset-benchmark-paper`, which also catches a weaker abstract-only
+mention) — not worth the added complexity for a paper type this reliably
+title-detectable.
+
+## Explainability had to be a last-resort category, not a normal one
+
+Added alongside Surveys/Reviews (same audit, same user request) to cover the
+"Interpretable X" / "Explainable X" cluster in `"misc"` — but a first attempt
+adding it as a normal competing category (like all the other real ones)
+immediately reproduced, in a new form, exactly the bare-word problem
+`categories.json`'s own `_readme` warns about for keyword *phrases*: 193
+papers landed in `"explainability"`, but most of them weren't from
+`"misc"` at all -- they were pulled OUT of a more specific, already-correct
+category. Confirmed on real data: "Hint-AD: Holistically Aligned
+Interpretability in End-to-End Autonomous Driving" (an end-to-end-driving
+paper) and "Interpretable Self-Aware Neural Networks for Robust Trajectory
+Prediction" (a motion-prediction paper) both lost their specific category,
+because an XAI-flavored paper's abstract repeats "interpretable"/"explainable"
+several times as a matter of course, and `score_category()`'s raw occurrence
+count has no defense against a short, frequently-repeated word outscoring a
+topic phrase that only appears once or twice. A multi-word phrase (the
+project's usual mitigation) doesn't fix this one, because the concept
+genuinely doesn't have a longer, more specific phrasing to prefer.
+
+Fixed by giving `explainability` a different PRIORITY, not different
+keywords: `LAST_RESORT_CATEGORY_IDS` (`classify.py`) pulls it out of the
+normal ranking pass entirely and only ranks it in a second pass, run only
+when the first pass matched nothing at all. This isn't a scoring tiebreak —
+a last-resort category is never even evaluated against a paper that a
+normal category already claims, so no repeat count can ever let it win one
+away. Dropped the count from 193 to 57 (all previously-miscategorized
+papers listed above went back to their original correct category), which is
+much closer to what a category meant to catch only the "misc" residue
+should look like. Keywords stay in `categories.json` as the single source of
+truth; only the ranking-pass membership is hardcoded, in one small
+`frozenset` in `classify.py`.
+
 ## Derived data is not tracked; `gh-pages` is a single squashed commit
 
 `data/stats.json`, `data/stats_non_av.json`, and the abstract shards are
@@ -170,3 +268,24 @@ before publishing if any step fails. Crawler scripts write into
 `data/papers_full.json` and stop there; folding every downstream step into the
 one command (the same one `deploy.py` calls) makes "crawled but never published"
 structurally impossible rather than a step to remember.
+
+## Finding the backup release by tag needs a list-and-filter, not the tags endpoint
+
+`backup_corpus.py` / `restore_corpus.py` look up the `corpus-backup` release by
+tag using `GET /repos/.../releases` and filtering client-side, not
+`GET /repos/.../releases/tags/corpus-backup` (the endpoint that looks like the
+right one). GitHub's "get release by tag" only resolves *published* releases —
+a **draft** release has no real git tag ref, so that endpoint 404s even when a
+draft with that tag_name exists. Confirmed on the live repo: with the old
+tags-endpoint lookup, `get_or_create_release` always 404'd and fell through to
+"create new release", so every `backup_corpus.py` run over this project's
+history silently created a fresh draft instead of reusing the existing one —
+4 duplicate `corpus-backup` drafts had piled up on GitHub, directly
+contradicting this module's own "one fixed tag, one asset, always replaced"
+docstring claim. `restore_corpus.py` had the same tags-endpoint lookup with
+no fallback at all, so it was flatly broken -- every restore attempt raised
+an uncaught `HTTPError: 404` instead of downloading anything, confirmed
+live. Fixed by listing all releases and matching on `tag_name`
+client-side; `backup_corpus.py` also now deletes any stale duplicates it
+finds beyond the most recent, so a repo affected by the old bug self-heals
+on its next backup rather than needing manual cleanup.

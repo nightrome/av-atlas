@@ -1,5 +1,5 @@
 {
-  "_readme": "Living taxonomy, not a fixed enum. classify.py prefers matching an existing category via its keywords; add new categories here (with a keyword list) if a cluster of papers doesn't fit any existing one well and is large enough to deserve its own bucket -- rerun classify.py (via merge_corpus.py) after editing. 'uncategorized' is not a real category, it's what unmatched papers get until the taxonomy is extended to cover them. Prefer specific multi-word phrases over generic bare words as keywords: score_category() counts raw occurrences per keyword with no length weighting, so a common bare word (e.g. 'tracking', 'benchmark', 'planning') tends to win purely on frequency even in papers where that's not really the topic, crowding out the category that's actually the best fit -- confirmed on real data (see DECISIONS.md).",
+  "_readme": "Living taxonomy, not a fixed enum. classify.py prefers matching an existing category via its keywords; add new categories here (with a keyword list) if a cluster of papers doesn't fit any existing one well and is large enough to deserve its own bucket -- rerun classify.py (via merge_corpus.py) after editing. Neither 'uncategorized' nor 'misc' is a real category listed here -- both are classify_paper()'s own fallback for a paper that matched no category keyword at all, split by av_relevance: an AV paper falls to 'misc' (it's confirmed on-topic, it just doesn't fit any specific bucket yet -- a real, stable classification outcome, shown in the UI like any other category), a non-AV paper falls to 'uncategorized' (relevance itself is the weaker signal there, so a missing category isn't worth tracking the same way). See DECISIONS.md's 'Misc vs uncategorized' entry. Prefer specific multi-word phrases over generic bare words as keywords: score_category() counts raw occurrences per keyword with no length weighting, so a common bare word (e.g. 'tracking', 'benchmark', 'planning') tends to win purely on frequency even in papers where that's not really the topic, crowding out the category that's actually the best fit -- confirmed on real data (see DECISIONS.md).",
   "known_dataset_papers": [
     "Are we ready for autonomous driving? The KITTI vision benchmark suite",
     "Vision meets robotics: The KITTI dataset",
@@ -67,7 +67,10 @@
         "segmentation",
         "semantic segmentation",
         "panoptic segmentation",
-        "instance segmentation"
+        "instance segmentation",
+        "scene understanding",
+        "road scene understanding",
+        "traffic scene understanding"
       ]
     },
     {
@@ -140,7 +143,10 @@
         "in-wheel motor",
         "electric vehicle control",
         "speed control",
-        "cruise controller"
+        "cruise controller",
+        "emergency braking",
+        "automatic emergency braking",
+        "autonomous emergency braking"
       ]
     },
     {
@@ -196,7 +202,17 @@
         "driving stack",
         "planner",
         "ego trajectory",
-        "ego-trajectory"
+        "ego-trajectory",
+        "lane change",
+        "lane changing",
+        "lane-change",
+        "ramp merging",
+        "on-ramp merging",
+        "merging behavior",
+        "merging conflict",
+        "lane-merging",
+        "valet parking",
+        "automated valet parking"
       ]
     },
     {
@@ -359,7 +375,9 @@
         "lane-level localization",
         "odometry",
         "wheel odometry",
-        "monte carlo localization"
+        "monte carlo localization",
+        "kalman filter",
+        "extended kalman filter"
       ]
     },
     {
@@ -478,7 +496,9 @@
         "remote operation",
         "external hmi",
         "ehmi",
-        "trust calibration"
+        "trust calibration",
+        "driver activity",
+        "activity recognition"
       ]
     },
     {
@@ -494,6 +514,11 @@
         "novel dataset",
         "new benchmark dataset"
       ]
+    },
+    {
+      "id": "survey-review-paper",
+      "label": "Surveys & Reviews",
+      "keywords": []
     },
     {
       "id": "general-cv-ml-method",
@@ -522,6 +547,17 @@
       ]
     },
     {
+      "id": "explainability",
+      "label": "Explainability & Interpretability",
+      "keywords": [
+        "explainable",
+        "explainability",
+        "interpretable",
+        "interpretability",
+        "xai"
+      ]
+    },
+    {
       "id": "traffic-flow-management",
       "label": "Traffic Flow & Management",
       "keywords": [
@@ -531,6 +567,13 @@
         "signal timing",
         "signal control",
         "traffic light control",
+        "traffic lights control",
+        "traffic lights timing",
+        "traffic light timing",
+        "traffic light signaling",
+        "traffic lights signaling",
+        "adaptive traffic light",
+        "adaptive traffic lights",
         "ramp metering",
         "traffic assignment",
         "traffic management",
@@ -617,6 +660,7 @@
         "impact assessment",
         "fuzzing",
         "formal verification",
+        "temporal logic",
         "runtime monitoring",
         "simulation-based testing",
         "virtual test",
@@ -777,7 +821,10 @@
         "pavement marking",
         "sign recognition",
         "tsr",
-        "countdown timer traffic light"
+        "countdown timer traffic light",
+        "traffic lights detection",
+        "traffic lights recognition",
+        "traffic lights tracking"
       ]
     }
   ]

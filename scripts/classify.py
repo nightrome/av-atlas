@@ -10,10 +10,21 @@ This is a keyword-matching first pass, not real semantic classification --
 title+abstract text is scored against each category's keyword list and the
 best match wins. It's meant as a fast, free, rerunnable baseline; category
 assignments should be spot-checked (and the taxonomy in categories.json
-extended) as real content comes in, rather than trusted blindly. Papers that
-don't match any category's keywords are left "uncategorized" rather than
-forced into a catch-all bucket -- that's a signal the taxonomy needs a new
-category, not that the paper doesn't have one.
+extended) as real content comes in, rather than trusted blindly.
+
+A paper that matches no category's keywords at all falls to one of two
+places, chosen by av_relevance (computed below, independently -- see next
+paragraph): "misc" for an AV paper (it's confirmed on-topic, it just isn't
+covered by an existing category *yet* -- shown in the UI like any other
+category, not hidden the way "uncategorized" is) or "uncategorized" for a
+non-AV one (relevance itself is the weaker signal there, so tracking a
+missing category isn't as useful). This split matters for keeping the two
+readable as different signals: "misc" should stay a small-but-real slice of
+the AV corpus (extend categories.json when a cluster inside it is big enough
+to deserve its own bucket -- see categories.json's own _readme), while
+"uncategorized" should stay close to zero for AV papers specifically, since
+every one of them already matched an explicit AV phrase and just needs a
+topic. See DECISIONS.md's "Misc vs uncategorized" entry.
 
 av_relevance is judged independently of category: category keywords are
 broad CV/robotics topic terms (e.g. "object detection", "segmentation")
@@ -22,10 +33,10 @@ robotics, etc.) once the corpus is a full, unfiltered venue proceeding
 rather than a pre-filtered AV citation crawl -- so category membership
 alone is NOT used to decide relevance. Instead av_relevance requires an
 explicit AV-specific phrase (below) to appear in the title/abstract.
-Papers can be "AV" and "uncategorized" (topic didn't match any category
-but the paper is clearly about AVs) or "non-AV" with a category (a
-general CV method paper that happens to be about e.g. segmentation but
-isn't about driving).
+Papers can be "AV" and "misc" (topic didn't match any category but the
+paper is clearly about AVs) or "non-AV" with a real category (a general CV
+method paper that happens to be about e.g. segmentation but isn't about
+driving).
 """
 import json
 import re
@@ -37,6 +48,11 @@ LLM_LABELS_FILE = BASE / "data" / "relevance_labels_llm.json"
 LLM_LABELS_V2_FILE = BASE / "data" / "relevance_labels_llm_v2.json"
 RELEVANCE_MODEL_FILE = BASE / "data" / "relevance_model.json"
 RELEVANCE_LABELS_FILE = BASE / "data" / "relevance_labels.json"
+
+# Category ids ranked only after every other category in categories.json has
+# failed to match at all -- see the comment above classify_paper()'s second
+# ranking pass for why explainability specifically needs this.
+LAST_RESORT_CATEGORY_IDS = frozenset({"explainability"})
 
 
 def normalize_title(t):
@@ -492,6 +508,28 @@ def is_radar_paper(title, abstract):
     return len(_RADAR_STRONG.findall(ab)) >= 2 or ab.lower().count("radar") >= 4
 
 
+# A survey/review's own abstract is dominated by whatever topics it surveys,
+# the same "topic keywords describe what a paper covers, not what it IS"
+# problem presents_dataset() exists for above -- confirmed on real data: 541
+# AV papers have "survey"/"review" in the title, already scattered across
+# every one of the 30 topic categories by keyword luck (user-requested: a
+# dedicated bucket instead, same paper-type gate as dataset-benchmark-paper).
+# Bare word, not a phrase list -- of 541 titles matching \bsurvey\b|\breview\b,
+# only 2 turned out to be the OTHER sense of "survey" (a questionnaire, not a
+# literature review): both explicitly excluded below rather than guessed at.
+_SURVEY_REVIEW_QUESTIONNAIRE = re.compile(
+    r"online survey|household survey|travel survey|activity survey|"
+    r"survey (?:of|among) (?:participants|respondents|drivers|users)\b", re.I)
+_SURVEY_REVIEW_TITLE = re.compile(r"\bsurvey\b|\breview\b", re.I)
+
+
+def is_survey_or_review_paper(title):
+    t = title or ""
+    if _SURVEY_REVIEW_QUESTIONNAIRE.search(t):
+        return False
+    return bool(_SURVEY_REVIEW_TITLE.search(t))
+
+
 def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known_dataset_titles=frozenset()):
     # A dataset/benchmark paper's own abstract is dominated by the TASKS its
     # data supports (detection, tracking, ...), not by "we introduce a
@@ -510,6 +548,17 @@ def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known
     # "Radar Dataset for ..." title still lands in dataset-benchmark-paper.
     if is_radar_paper(title, abstract):
         return "radar-perception", classify_relevance(title, abstract, normalize_title(title) in llm_av_titles)
+
+    # Survey/review gate -- runs after dataset+radar so "A Survey of Radar
+    # Perception Methods" still lands in radar-perception (user-requested:
+    # keep every radar paper in one bucket regardless of paper type, same
+    # reasoning as the radar gate's own comment above) and a literature
+    # review OF a dataset still lands in dataset-benchmark-paper if it
+    # otherwise qualifies -- but runs before the topic keyword ranking below
+    # so a survey doesn't get claimed by whichever topic it happens to
+    # mention most.
+    if is_survey_or_review_paper(title):
+        return "survey-review-paper", classify_relevance(title, abstract, normalize_title(title) in llm_av_titles)
 
     text = f"{title} {abstract or ''}".lower()
     title_l = (title or "").lower()
@@ -550,7 +599,27 @@ def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known
             cat["id"],
         )
 
-    ranked = sorted((rank(cat) for cat in categories), reverse=True)
+    # LAST_RESORT_CATEGORY_IDS sit out of the normal ranking below and are
+    # only consulted once every normal category has failed to match at all
+    # (see the second ranking pass further down). A normal category's raw
+    # keyword-occurrence score already skews toward whatever a paper
+    # discusses most, not what it contributes (see the title-score-leads
+    # comment above) -- tolerable for a specific multi-word phrase, but
+    # "explainability" only has short, single-word keywords ("explainable",
+    # "interpretable") that a paper *about* some other topic still repeats
+    # often enough in its own abstract to outscore that topic's own,
+    # rarer-repeated phrase. Confirmed on real data: with explainability
+    # ranked normally, papers like "Interpretable Self-Aware Neural Networks
+    # for Robust Trajectory Prediction" (a motion-prediction paper) and
+    # "Hint-AD: Holistically Aligned Interpretability in End-to-End
+    # Autonomous Driving" (an end-to-end-driving paper) lost their specific,
+    # more useful category to the generic one. Held back to last resort
+    # instead: a paper keeps whatever specific category it already earns,
+    # and explainability only catches the ones nothing else claims.
+    normal_categories = [cat for cat in categories if cat["id"] not in LAST_RESORT_CATEGORY_IDS]
+    last_resort_categories = [cat for cat in categories if cat["id"] in LAST_RESORT_CATEGORY_IDS]
+
+    ranked = sorted((rank(cat) for cat in normal_categories), reverse=True)
     # Downstream only needs "did anything match at all" plus the id, and a
     # match anywhere counts -- so the combined score, not the title one.
     scores = [(r[1], r[3]) for r in ranked]
@@ -571,6 +640,23 @@ def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known
             continue
         category = best_id
         break
+
+    # Last-resort categories only get a turn once nothing normal matched --
+    # see LAST_RESORT_CATEGORY_IDS above for why explainability lives here
+    # instead of in the main ranking.
+    if category == "uncategorized" and last_resort_categories:
+        last_resort_ranked = sorted((rank(cat) for cat in last_resort_categories), reverse=True)
+        if last_resort_ranked[0][1] > 0:
+            category = last_resort_ranked[0][3]
+
     llm_says_av = normalize_title(title) in llm_av_titles
     relevance = classify_relevance(title, abstract, llm_says_av)
+    # "uncategorized" only means "no category keyword matched" up to here --
+    # for a paper already confirmed AV-relevant, that's not a pipeline gap,
+    # it's a real (if unclassified-by-topic) AV paper, so it gets its own
+    # visible bucket instead of hiding in the same fallback a non-AV paper
+    # with no signal at all would. See the module docstring and DECISIONS.md's
+    # "Misc vs uncategorized" entry.
+    if category == "uncategorized" and relevance == "AV":
+        category = "misc"
     return category, relevance

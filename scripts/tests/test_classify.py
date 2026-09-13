@@ -305,12 +305,17 @@ class TestKnownDatasetTitleOverride(unittest.TestCase):
         self.assertEqual(category, "tracking")
 
     def test_survey_of_datasets_is_not_a_dataset_paper(self):
+        # Not a dataset paper (presents_dataset()'s own review/survey
+        # exclusion) -- but it IS a review, which the survey-review-paper
+        # gate (checked after this one) now claims instead of falling
+        # through to keyword scoring. See TestIsSurveyOrReviewPaper below
+        # for that gate's own tests.
         category, _ = cl.classify_paper(
             "Datasets for Lane Detection in Autonomous Driving: A Comprehensive Review",
             "We survey detection and tracking datasets. Tracking tracking.",
             self.CATEGORIES, known_dataset_titles=frozenset(),
         )
-        self.assertEqual(category, "tracking")
+        self.assertEqual(category, "survey-review-paper")
 
     def test_method_paper_deriving_a_dataset_is_not_categorized_as_dataset(self):
         # Real case, user-flagged: "Sparsity Invariant CNNs" derives a depth
@@ -342,17 +347,112 @@ class TestKnownDatasetTitleOverride(unittest.TestCase):
         self.assertEqual(category, "dataset-benchmark-paper")
 
 
+class TestIsSurveyOrReviewPaper(unittest.TestCase):
+    # Pure gate-detection tests, no categories/keyword scoring involved --
+    # see TestClassifyPaper.test_survey_gate_* below for how it interacts
+    # with the dataset/radar gates and the misc/uncategorized fallback.
+    def test_survey_in_title_detected(self):
+        self.assertTrue(cl.is_survey_or_review_paper("A Survey of Motion Planning for Autonomous Vehicles"))
+
+    def test_review_in_title_detected(self):
+        self.assertTrue(cl.is_survey_or_review_paper("Review of exteroceptive sensors for autonomous driving"))
+
+    def test_no_survey_or_review_word_not_detected(self):
+        self.assertFalse(cl.is_survey_or_review_paper("PointPillars: Fast Encoders for Object Detection"))
+
+    def test_online_survey_is_a_questionnaire_not_a_review(self):
+        # Real corpus case: an empirical user study, not a literature
+        # review -- of 541 AV papers matching \bsurvey\b|\breview\b in the
+        # title, this and the "activity survey" case below were the only
+        # two that turned out to mean the other sense of "survey".
+        self.assertFalse(cl.is_survey_or_review_paper(
+            "What are Social Norms for Low-speed Autonomous Vehicle Navigation in Crowded Environments? "
+            "An Online Survey"))
+
+    def test_activity_survey_is_a_questionnaire_not_a_review(self):
+        self.assertFalse(cl.is_survey_or_review_paper(
+            "Next-generation freight vehicle surveys: Supplementing truck GPS tracking with a driver "
+            "activity survey"))
+
+
 class TestClassifyPaper(unittest.TestCase):
     CATEGORIES = [
         {"id": "object-detection", "keywords": ["object detection", "detector"]},
         {"id": "segmentation", "keywords": ["segmentation", "segment"]},
     ]
 
-    def test_uncategorized_when_no_keywords_match(self):
+    def test_av_paper_with_no_category_match_becomes_misc_not_uncategorized(self):
+        # An AV paper is confirmed on-topic (it matched an explicit AV
+        # phrase) even when no category keyword fits -- "misc" is a real,
+        # visible bucket for that, distinct from "uncategorized" (see
+        # DECISIONS.md's "Misc vs uncategorized" entry). Before this
+        # fallback existed, this case landed in "uncategorized" instead.
         category, relevance = cl.classify_paper(
-            "Autonomous Driving Survey", "A survey of autonomous driving methods.", self.CATEGORIES
+            "Notes on Autonomous Driving", "Some notes about autonomous driving methods.", self.CATEGORIES
+        )
+        self.assertEqual(category, "misc")
+        self.assertEqual(relevance, "AV")
+
+    def test_non_av_paper_with_no_category_match_stays_uncategorized(self):
+        # The opposite case: no category keyword AND no AV signal at all --
+        # relevance itself is the weaker signal here, so this stays
+        # "uncategorized" rather than being promoted to a real bucket.
+        category, relevance = cl.classify_paper(
+            "Notes on Widget Sorting Methods", "Some notes about ways to sort widgets.", self.CATEGORIES
         )
         self.assertEqual(category, "uncategorized")
+        self.assertEqual(relevance, "non-AV")
+
+    def test_survey_gate_wins_over_topic_keywords(self):
+        # "A Survey of Object Detection" mentions "detection" enough that
+        # ordinary keyword scoring would otherwise claim it for
+        # object-detection -- the survey gate runs first (see
+        # classify_paper's docstring for the priority order).
+        category, _ = cl.classify_paper(
+            "A Survey of Object Detection Methods for Autonomous Driving",
+            "This survey reviews detector architectures. Detector, detector, detection.",
+            self.CATEGORIES,
+        )
+        self.assertEqual(category, "survey-review-paper")
+
+    def test_survey_gate_yields_to_radar_gate(self):
+        # The radar gate runs BEFORE the survey gate -- a radar survey stays
+        # in radar-perception, consistent with is_radar_paper's own "keep
+        # every radar paper in one bucket" reasoning (see classify_paper).
+        category, _ = cl.classify_paper(
+            "A Survey of Automotive Radar Perception Methods",
+            "We review automotive radar-based perception.",
+            self.CATEGORIES,
+        )
+        self.assertEqual(category, "radar-perception")
+
+    def test_last_resort_category_yields_to_a_normal_category_match(self):
+        # Real case that motivated LAST_RESORT_CATEGORY_IDS: a last-resort
+        # category is never even scored against the normal ones -- it's
+        # ranked in a wholly separate second pass, only reached when the
+        # first pass matched nothing at all. So no repeat-count of
+        # "explainable"/"interpretable" in the abstract can outscore a
+        # normal category's topic phrase, however many times it appears
+        # (here: 3x "interpretable" + 2x "explainable" vs. 1x "object
+        # detection"). See classify_paper's own comment on the second pass.
+        categories = self.CATEGORIES + [
+            {"id": "explainability", "keywords": ["explainable", "interpretable"]},
+        ]
+        category, _ = cl.classify_paper(
+            "Interpretable Object Detection",
+            "We propose an interpretable, explainable, and interpretable object detector. "
+            "Our interpretable method is explainable.",
+            categories,
+        )
+        self.assertEqual(category, "object-detection")
+
+    def test_last_resort_category_used_when_nothing_else_matches(self):
+        category, relevance = cl.classify_paper(
+            "An Explainable Approach for Autonomous Driving",
+            "We propose an interpretable and explainable approach for autonomous driving.",
+            self.CATEGORIES + [{"id": "explainability", "keywords": ["explainable", "interpretable"]}],
+        )
+        self.assertEqual(category, "explainability")
         self.assertEqual(relevance, "AV")
 
     def test_category_independent_of_relevance(self):

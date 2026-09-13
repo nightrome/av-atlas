@@ -710,5 +710,54 @@
     "label": "AV",
     "source": "top_cited_review_2026_09",
     "hard": true
+  },
+  {
+    "id": "thalesformulatingandestimatingarchitecturalvulnerabilityfactorsfordnnaccelerators",
+    "title": "Thales: Formulating and Estimating Architectural Vulnerability Factors for DNN Accelerators",
+    "label": "non-AV",
+    "source": "relevance_audit_2026_09",
+    "hard": true
+  },
+  {
+    "id": "shouldmyblockchainlearntodriveastudyofhyperledgerfabric",
+    "title": "Should my Blockchain Learn to Drive? A Study of Hyperledger Fabric",
+    "label": "non-AV",
+    "source": "relevance_audit_2026_09",
+    "hard": true
+  },
+  {
+    "id": "characterizingandunderstandingsoftwaresecurityvulnerabilitiesinmachinelearninglibraries",
+    "title": "Characterizing and Understanding Software Security Vulnerabilities in Machine Learning Libraries",
+    "label": "non-AV",
+    "source": "relevance_audit_2026_09",
+    "hard": true
+  },
+  {
+    "id": "adversarialonlinelearningwithvariableplaysinthepursuitevasiongametheoreticalfoundationsandapplicationinconnectedandautomatedvehiclecybersecurity",
+    "title": "Adversarial Online Learning with Variable Plays in the Pursuit-Evasion Game: Theoretical Foundations and Application in Connected and Automated Vehicle Cybersecurity",
+    "label": "non-AV",
+    "source": "relevance_audit_2026_09",
+    "hard": true
+  },
+  {
+    "id": "ridepoolingwithtripchaininginasharedvehiclemobilityondemandsystem",
+    "title": "Ridepooling with trip-chaining in a shared-vehicle mobility-on-demand system",
+    "label": "non-AV",
+    "source": "relevance_audit_2026_09",
+    "hard": true
+  },
+  {
+    "id": "thedialarideproblemconsideringtheinvehiclecrowdinginconvenienceduetocovid19",
+    "title": "The Dial-A-Ride Problem considering the in-vehicle crowding inconvenience due to COVID-19",
+    "label": "non-AV",
+    "source": "relevance_audit_2026_09",
+    "hard": true
+  },
+  {
+    "id": "discoveringimplicitworkingpaceofonlineridehailingdriversanexploratorystudy",
+    "title": "Discovering Implicit Working Pace of Online Ride-Hailing Drivers: An Exploratory Study",
+    "label": "non-AV",
+    "source": "relevance_audit_2026_09",
+    "hard": true
   }
 ]
