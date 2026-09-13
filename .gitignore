@@ -61,6 +61,10 @@ data/reference_lists_arxiv.json
 # set the day this file was introduced, not just newly-mined ones -- see
 # DECISIONS.md), not reviewable as a diff.
 data/abstracts_arxiv.json
+# fetch_abstracts_semanticscholar.py's side file (folded into
+# papers_full.json by apply_abstracts_semanticscholar.py) -- same reasoning
+# as abstracts_arxiv.json above.
+data/abstracts_semanticscholar.json
 # fetch_arxiv_links.py's resumability cache -- its output is folded into
 # papers_full.json's arxiv_url field by apply_arxiv_links.py, same pattern
 # as every other fetch/apply side-file pair above.

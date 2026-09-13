@@ -87,7 +87,17 @@ def s2_get(path, params):
 def fetch_abstract(title):
     """Returns the abstract string, or None if S2 has no exact-title match
     or no abstract on file for it."""
-    data = s2_get("/paper/search/match", {"query": title, "fields": "title,abstract"})
+    try:
+        data = s2_get("/paper/search/match", {"query": title, "fields": "title,abstract"})
+    except urllib.error.HTTPError as e:
+        # search/match responds 404 (not 200 + an empty data array) when
+        # NOTHING matches the query at all -- confirmed live -- so this is
+        # a clean "no match", the same outcome as an empty results list
+        # below, not a real failure worth counting toward
+        # consecutive_failures or retrying next run.
+        if e.code == 404:
+            return None
+        raise
     results = data.get("data") or []
     if not results:
         return None

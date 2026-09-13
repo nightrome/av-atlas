@@ -79,6 +79,36 @@ then, treat every DBLP-sourced row as frozen at what's already in
   its own side file (`data/affiliations_cvf.json`); `apply_cvf_affiliations.py`
   is the single writer onto `papers_full.json`, stamping
   `authors_detail_source="cvf-pdf"`.
+- `mine_abstracts.py` — backfills missing abstracts from arXiv, for AV papers
+  whose venue only ever carried title+authors (DBLP-sourced venues never
+  had abstracts to begin with — see DECISIONS.md's "DBLP-sourced venues
+  have no abstracts"). Direct arXiv-ID lookup where `fetch_arxiv_links.py`
+  already resolved one, else a title search (same exact-match standard as
+  `fetch_affiliations_arxiv.py`'s). A clean search with no match is recorded
+  as exhausted, not retried forever. Writes its own side file
+  (`data/abstracts_arxiv.json`); `apply_abstracts_arxiv.py` is the single
+  writer onto `papers_full.json`'s `abstract`/`abstract_search_exhausted`
+  fields, never overwriting a real abstract from a richer source.
+- `fetch_abstracts_semanticscholar.py` — a second, independent source for
+  the same gap, including the majority of it that `mine_abstracts.py`
+  confirms has no arXiv preprint at all (T-ITS/ITSC/IV papers are often
+  applied transportation-engineering work, not the arXiv-heavy CS/ML
+  crowd) — Semantic Scholar indexes published venue metadata directly, not
+  just preprints. One `/paper/search/match?fields=title,abstract` call per
+  paper resolves title and abstract together; confirmed live at a ~78% hit
+  rate on the DBLP-sourced backlog. Same API key/rate limit as
+  `fetch_semanticscholar_citing.py`. Writes its own side file
+  (`data/abstracts_semanticscholar.json`); `apply_abstracts_semanticscholar.py`
+  is the single writer, same never-overwrite-a-real-abstract rule.
+- `fetch_llm_category_labels.py` — for the title-only papers still left in
+  "misc" after both abstract backfills above (an abstract that doesn't
+  exist anywhere can't be mined) and after every keyword-based category
+  path in `classify.py` — a local LLM's per-title best-guess category, the
+  weakest signal `classify_paper()` consults and only ever reached once
+  nothing else has matched anything at all. `category: null` (the model's
+  own "none of these fit") is a real, deliberately-not-overridden answer,
+  not a failure. Reads the category list straight from `categories.json`
+  at runtime, so it can't drift out of sync with the taxonomy.
 - `aggregate.py` — reads `data/papers_full.json`, writes `data/stats.json`
   (what the UI actually consumes). Leaderboards rank AV-only. Also writes
   `data/abstracts/shard-NN.json` — abstracts sharded out of `stats.json`

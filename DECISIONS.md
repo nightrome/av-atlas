@@ -217,6 +217,43 @@ should look like. Keywords stay in `categories.json` as the single source of
 truth; only the ranking-pass membership is hardcoded, in one small
 `frozenset` in `classify.py`.
 
+## An LLM category guess is the last thing consulted, weaker than any keyword
+
+`fetch_llm_category_labels.py` handles the residue neither keyword matching
+nor a real abstract can reach: title-only papers (DBLP-sourced venues never
+had abstracts — see "DBLP-sourced venues have no abstracts") still stuck in
+`"misc"` after every keyword-based path, including the last-resort tier
+above, has had its turn. `classify_paper()` only ever consults it when
+`category` is still `"uncategorized"` at that point — a single local
+model's single-title guess must never outrank a real keyword match the way
+`explainability`'s bare words accidentally did (see above), so this isn't
+folded into the ranking at all, just checked as the very last fallback
+before the misc/uncategorized split.
+
+Spot-checking the first batch found real value ("A Statistical GPS Error
+Model for Autonomous Driving" → `mapping-localization`, "Real-Time
+Prediction of Multi-Class Lane-Changing Intentions" → `motion-prediction`)
+alongside real imprecision ("Traffic-Responsive Control Technique for
+Fully-Actuated Coordinated Signal..." → `control`, when the paper is about
+traffic-SIGNAL control and belongs in `traffic-flow-management` — the
+model sees only each category's `{id, label}` pair, not enough to
+disambiguate "control" the vehicle-dynamics sense from "control" the
+traffic-signal sense every time). Accepted as a known, bounded tradeoff:
+this tier only ever touches papers that had zero topic signal at all
+before it ran, so a right-ish-but-imprecise guess is still a net
+improvement over an unbroken "misc", and it's the weakest, most clearly
+provisional signal in the whole classification stack — never promoted
+above a real keyword match, and revisit the prompt's category descriptions
+if a specific confusion like this one turns out to be common rather than
+one-off.
+
+`category: null` (the model's own "none of these fit") is written to
+`data/category_labels_llm.json` and deliberately excluded from what
+`classify.py` reads back — a real, useful answer (don't force a category
+that doesn't exist), but one that must resolve to the same "misc" outcome
+as a paper this pass hasn't looked at yet, not something worth
+distinguishing at the classification layer.
+
 ## Derived data is not tracked; `gh-pages` is a single squashed commit
 
 `data/stats.json`, `data/stats_non_av.json`, and the abstract shards are

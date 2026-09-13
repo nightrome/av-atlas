@@ -46,6 +46,7 @@ BASE = Path(__file__).resolve().parent.parent
 CATEGORIES_FILE = BASE / "data" / "categories.json"
 LLM_LABELS_FILE = BASE / "data" / "relevance_labels_llm.json"
 LLM_LABELS_V2_FILE = BASE / "data" / "relevance_labels_llm_v2.json"
+CATEGORY_LABELS_LLM_FILE = BASE / "data" / "category_labels_llm.json"
 RELEVANCE_MODEL_FILE = BASE / "data" / "relevance_model.json"
 RELEVANCE_LABELS_FILE = BASE / "data" / "relevance_labels.json"
 
@@ -96,6 +97,22 @@ def load_llm_av_titles():
             labels = json.loads(f.read_text(encoding="utf-8"))
             titles |= {key for key, v in labels.items() if v.get("label") == "AV"}
     return titles
+
+
+def load_llm_category_labels():
+    """Normalized title -> category id, from fetch_llm_category_labels.py.
+    Read-only, last-resort signal for classify_paper() -- see its own
+    comment on where this ranks relative to every other source. A
+    `category: null` entry (the LLM's own "none of these fit") is
+    deliberately excluded here, not mapped to anything: classify_paper()
+    only checks this dict when it already has nothing else, so an absent
+    key and an explicit null both correctly fall through to misc either
+    way, but skipping nulls keeps this dict's only content the entries
+    that can actually change the outcome."""
+    if not CATEGORY_LABELS_LLM_FILE.exists():
+        return {}
+    labels = json.loads(CATEGORY_LABELS_LLM_FILE.read_text(encoding="utf-8"))
+    return {key: v["category"] for key, v in labels.items() if v.get("category")}
 
 # Phrases specific enough to AVs that their presence is real signal, unlike
 # generic CV terms (object detection, segmentation, etc.) which also match
@@ -530,7 +547,8 @@ def is_survey_or_review_paper(title):
     return bool(_SURVEY_REVIEW_TITLE.search(t))
 
 
-def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known_dataset_titles=frozenset()):
+def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known_dataset_titles=frozenset(),
+                    llm_category_labels=None):
     # A dataset/benchmark paper's own abstract is dominated by the TASKS its
     # data supports (detection, tracking, ...), not by "we introduce a
     # dataset" phrasing repeated often enough to outscore those -- confirmed
@@ -648,6 +666,17 @@ def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known
         last_resort_ranked = sorted((rank(cat) for cat in last_resort_categories), reverse=True)
         if last_resort_ranked[0][1] > 0:
             category = last_resort_ranked[0][3]
+
+    # Weaker still than even the last-resort categories above: one local
+    # LLM's single-title guess (see fetch_llm_category_labels.py), only for
+    # the title-only papers no keyword-based signal -- real or last-resort
+    # -- could reach at all. A `category: null` entry (the LLM's own "none
+    # of these fit") is a real answer, correctly left as misc below, not a
+    # missing lookup.
+    if category == "uncategorized" and llm_category_labels:
+        llm_category = llm_category_labels.get(normalize_title(title))
+        if llm_category:
+            category = llm_category
 
     llm_says_av = normalize_title(title) in llm_av_titles
     relevance = classify_relevance(title, abstract, llm_says_av)

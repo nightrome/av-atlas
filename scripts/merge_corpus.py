@@ -176,6 +176,7 @@ def main():
         cat["keywords"] = [k.lower() for k in cat["keywords"]]
     known_dataset_titles = frozenset(cl.normalize_title(t) for t in taxonomy_full.get("known_dataset_papers", []))
     llm_av_titles = cl.load_llm_av_titles()
+    llm_category_labels = cl.load_llm_category_labels()
 
     # This script used to be safe to re-run at any time, but several other
     # scripts (enrich_av_authors.py, fetch_citations_openalex.py, the
@@ -288,7 +289,8 @@ def main():
     papers = list(merged.values())
     for p in papers:
         category, relevance = cl.classify_paper(
-            p.get("title", ""), p.get("abstract"), taxonomy, llm_av_titles, known_dataset_titles)
+            p.get("title", ""), p.get("abstract"), taxonomy, llm_av_titles, known_dataset_titles,
+            llm_category_labels)
         p["category"] = category
         p["av_relevance"] = relevance
 

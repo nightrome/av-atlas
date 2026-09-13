@@ -8,6 +8,7 @@ Usage: python -m unittest discover -s av-atlas/scripts/tests
 """
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -375,6 +376,30 @@ class TestIsSurveyOrReviewPaper(unittest.TestCase):
             "activity survey"))
 
 
+class TestLoadLlmCategoryLabels(unittest.TestCase):
+    def setUp(self):
+        self.tmpdir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmpdir.cleanup)
+        self.labels_file = Path(self.tmpdir.name) / "category_labels_llm.json"
+        self._orig_file = cl.CATEGORY_LABELS_LLM_FILE
+        cl.CATEGORY_LABELS_LLM_FILE = self.labels_file
+        self.addCleanup(setattr, cl, "CATEGORY_LABELS_LLM_FILE", self._orig_file)
+
+    def test_missing_file_returns_empty_dict(self):
+        self.assertEqual(cl.load_llm_category_labels(), {})
+
+    def test_null_category_entries_are_excluded(self):
+        # A `category: null` entry is the LLM's own "none of these fit" --
+        # a real answer, but not one that should ever override anything, so
+        # it's excluded from the dict classify_paper() checks (an absent
+        # key and an explicit null both fall through to misc the same way).
+        self.labels_file.write_text(json.dumps({
+            "somepaper": {"category": "object-detection"},
+            "otherpaper": {"category": None},
+        }), encoding="utf-8")
+        self.assertEqual(cl.load_llm_category_labels(), {"somepaper": "object-detection"})
+
+
 class TestClassifyPaper(unittest.TestCase):
     CATEGORIES = [
         {"id": "object-detection", "keywords": ["object detection", "detector"]},
@@ -475,6 +500,23 @@ class TestClassifyPaper(unittest.TestCase):
             self.CATEGORIES, llm_av_titles={cl.normalize_title("Fast Image Classification")},
         )
         self.assertEqual(relevance, "AV")
+
+    def test_llm_category_label_used_only_when_nothing_else_matches(self):
+        # See fetch_llm_category_labels.py: a last-resort signal, weaker
+        # than even the explainability tier, for title-only papers no
+        # keyword-based path -- real or last-resort -- could reach.
+        category, _ = cl.classify_paper(
+            "Some Unmatchable AV Paper Title", None, self.CATEGORIES,
+            llm_category_labels={cl.normalize_title("Some Unmatchable AV Paper Title"): "object-detection"},
+        )
+        self.assertEqual(category, "object-detection")
+
+    def test_llm_category_label_does_not_override_a_real_keyword_match(self):
+        category, _ = cl.classify_paper(
+            "Semantic Segmentation of Road Scenes", "We segment the road.", self.CATEGORIES,
+            llm_category_labels={cl.normalize_title("Semantic Segmentation of Road Scenes"): "object-detection"},
+        )
+        self.assertEqual(category, "segmentation")
 
     def test_motion_planner_matches_planner_not_just_planning(self):
         # Real case, confirmed by the user: "End-To-End Interpretable Neural
