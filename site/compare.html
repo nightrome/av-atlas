@@ -46,11 +46,21 @@
   }
   .subject-chip button:hover { color: var(--accent); background: var(--panel); }
   .line-chart-wrap { position: relative; }
+  .line-chart-wrap svg { width: 100%; height: auto; display: block; }
+  .series-line { fill: none; stroke-width: 2.5; opacity: 0.9; }
+  .series-dot { cursor: pointer; }
+  .axis-line { stroke: var(--border); }
+  .axis-label { fill: var(--muted); font-size: 10.5px; }
+  .crosshair { stroke: var(--muted); stroke-dasharray: 3 3; pointer-events: none; }
   .tooltip-box {
     position: absolute; background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
     padding: 6px 10px; font-size: 0.8em; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
     display: none; z-index: 10; white-space: nowrap;
   }
+  .tooltip-box .tt-year { font-weight: 700; margin-bottom: 4px; }
+  .tooltip-box .tt-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .tooltip-box .tt-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .tooltip-box .tt-val { margin-left: auto; font-variant-numeric: tabular-nums; padding-left: 10px; }
   .legend-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; font-size: 0.82em; color: var(--muted); }
   .empty-note { color: var(--muted); font-size: 0.9em; }
   .table-scroll { overflow-x: auto; }
