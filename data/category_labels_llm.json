@@ -1111,5 +1111,495 @@
     "reason": "title too generic",
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
+  },
+  "vsgrapidadaptationinautonomousdrivingviavehicleskillgraph": {
+    "title": "VSG: Rapid Adaptation in Autonomous Driving via Vehicle Skill Graph",
+    "category": "domain-adaptation",
+    "reason": "Rapid adaptation suggests domain generalization",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "optimizingadrivingstrategybyitssensorcoverageofrelevantenvironmentinformation": {
+    "title": "Optimizing a driving strategy by its sensor coverage of relevant environment information",
+    "category": "sensor-fusion",
+    "reason": "sensor coverage of environment",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "jointoptimalschedulingforamixedbusfleetundermicrodrivingconditions": {
+    "title": "Joint Optimal Scheduling for a Mixed Bus Fleet Under Micro Driving Conditions",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "intelligentenvironmentfriendlyvehiclesconceptandcasestudies": {
+    "title": "Intelligent Environment-Friendly Vehicles: Concept and Case Studies",
+    "category": null,
+    "reason": "Too generic title",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "mggctamotionguidedgraphconvolutionaltransformerfortrafficgesturerecognition": {
+    "title": "MG-GCT: A Motion-Guided Graph Convolutional Transformer for Traffic Gesture Recognition",
+    "category": "motion-prediction",
+    "reason": "motion-guided for traffic gesture",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "unitenbvuncertaintydrivenandinformationenhancedgainestimationfornextbestview": {
+    "title": "UNITE-NBV: Uncertainty-Driven and Information-Enhanced Gain Estimation for Next Best View",
+    "category": null,
+    "reason": "Unclear AV-specific focus",
+    "venue": "RA-L",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "varyingroadsurfaceconditionestimationinegoandadjacentlanes": {
+    "title": "Varying Road Surface Condition Estimation in Ego and Adjacent Lanes",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "falconawideanddeeponboardactivevisionsystem": {
+    "title": "Falcon: A Wide-And-Deep Onboard Active Vision System",
+    "category": "sensor-fusion",
+    "reason": "onboard active vision system",
+    "venue": "IROS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "endtoendselfdrivingapproachindependentofirrelevantroadsideobjectswithautoencoder": {
+    "title": "End-to-End Self-Driving Approach Independent of Irrelevant Roadside Objects With Auto-Encoder",
+    "category": "end-to-end-driving",
+    "reason": "End-to-end self-driving approach",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "towardroadsafetyrecommendersystemsformalconceptsandtechnicalbasics": {
+    "title": "Toward Road Safety Recommender Systems: Formal Concepts and Technical Basics",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "maximizingsafetyandefficiencyforcooperativelanechangingaminimallydisruptiveapproach": {
+    "title": "Maximizing Safety and Efficiency for Cooperative Lane-Changing: A Minimally Disruptive Approach",
+    "category": "v2x-cooperative",
+    "reason": "V2X / Cooperative Perception",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "resilientoptimaloutputregulationunderdenialofserviceattackswithanapplicationtoautonomousvehicles": {
+    "title": "Resilient Optimal Output Regulation under Denial-of-Service Attacks with an Application to Autonomous Vehicles",
+    "category": "adversarial-robustness-safety",
+    "reason": "denial-of-service attacks",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "predictingperceivedvisualandcognitivedistractionsofdriverswithmultimodalfeatures": {
+    "title": "Predicting Perceived Visual and Cognitive Distractions of Drivers With Multimodal Features",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "formalisationandalgorithmicapproachtotheautomateddrivingvalidationproblem": {
+    "title": "Formalisation and algorithmic approach to the automated driving validation problem",
+    "category": "testing-validation",
+    "reason": "validation problem",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "torqueestimationforroboticjointwithharmonicdrivetransmissionbasedonpositionmeasurements": {
+    "title": "Torque Estimation for Robotic Joint With Harmonic Drive Transmission Based on Position Measurements",
+    "category": null,
+    "reason": "not AV-specific",
+    "venue": "T-RO",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "howdodriversobservesurroundingvehiclesinrealworldtrafficestimatingthedriversprimaryobservedtrafficobjects": {
+    "title": "How Do Drivers Observe Surrounding Vehicles in Real-World Traffic? Estimating the Drivers Primary Observed Traffic Objects",
+    "category": "driver-behavior-hmi",
+    "reason": "focus on driver observation",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "exploringspatialandtemporalpatternsoflargescalesmartphonebaseddangerousdrivingeventdata": {
+    "title": "Exploring Spatial and Temporal Patterns of Large-scale Smartphone-based Dangerous Driving Event Data",
+    "category": null,
+    "reason": "Not AV-specific",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "ahumanlikevisualperceptionsystemforautonomousvehiclesusinganeurontriggeredhybridunsuperviseddeeplearningmethod": {
+    "title": "A Human-Like Visual Perception System for Autonomous Vehicles Using a Neuron-Triggered Hybrid Unsupervised Deep Learning Method",
+    "category": "llm-vlm-driving",
+    "reason": "LLM/VLM for Driving",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "ageneralizablesemanticgraphlearningframeworkforroadnetworkrepresentation": {
+    "title": "A Generalizable Semantic Graph Learning Framework for Road Network Representation",
+    "category": null,
+    "reason": "topic unclear from title",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "computingthedrivableareaofautonomousroadvehiclesindynamicroadscenes": {
+    "title": "Computing the Drivable Area of Autonomous Road Vehicles in Dynamic Road Scenes",
+    "category": "mapping-localization",
+    "reason": "computing drivable area",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "semvecnetgeneralizablevectormapgenerationforarbitrarysensorconfigurations": {
+    "title": "SemVecNet: Generalizable Vector Map Generation for Arbitrary Sensor Configurations",
+    "category": "mapping-localization",
+    "reason": "vector map generation for localization",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "atransformationaggregationframeworkforstaterepresentationofautonomousdrivingsystems": {
+    "title": "A Transformation-Aggregation Framework for State Representation of Autonomous Driving Systems",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "robustconstructionofspatialtemporalscenegraphconsideringperceptionfailuresforautonomousdriving": {
+    "title": "Robust Construction of Spatial-Temporal Scene Graph Considering Perception Failures for Autonomous Driving",
+    "category": "sensor-fusion",
+    "reason": "spatial-temporal scene graph for perception",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "ecologicaldrivingsystemforconnectedautomatedvehiclesusingatwostagecontrolhierarchy": {
+    "title": "Ecological Driving System for Connected/Automated Vehicles Using a Two-Stage Control Hierarchy",
+    "category": "control",
+    "reason": "two-stage control hierarchy",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "dynamicdiscriminationpricingandfreelancedriverstorebalancemixedfleetcarsharingsystems": {
+    "title": "Dynamic Discrimination Pricing and Freelance Drivers to Rebalance Mixed-Fleet Carsharing Systems",
+    "category": null,
+    "reason": "not AV-specific",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "parkpredictmotionandintentpredictionofvehiclesinparkinglots": {
+    "title": "ParkPredict: Motion and Intent Prediction of Vehicles in Parking Lots",
+    "category": "motion-prediction",
+    "reason": "motion and intent prediction",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "weaklysupervisedroadconditionclassificationusingautomaticallygeneratedlabels": {
+    "title": "Weakly-supervised Road Condition Classification Using Automatically Generated Labels",
+    "category": null,
+    "reason": "topic unclear from title",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "theconceptofstimuliinducedequilibriumpointanditsapplicationinrampmergingcontrol": {
+    "title": "The Concept of Stimuli-Induced Equilibrium Point and Its Application in Ramp-Merging Control",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "improvingdriverperformanceandexperienceinassistedandautomateddrivingwithvisualcuesinthesteeringwheel": {
+    "title": "Improving Driver Performance and Experience in Assisted and Automated Driving With Visual Cues in the Steering Wheel",
+    "category": "driver-behavior-hmi",
+    "reason": "driver performance and experience with visual cues",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "subjectivetrafficsafetyexpertsknowledgefordrivingriskdefinition": {
+    "title": "Subjective Traffic Safety Experts' Knowledge for Driving-Risk Definition",
+    "category": null,
+    "reason": "not specific to AV categories",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "effectofvisualinstructionondriversreactionpatterninlateralconflicts": {
+    "title": "Effect of Visual Instruction on Drivers' Reaction Pattern in Lateral Conflicts",
+    "category": null,
+    "reason": "not AV-specific",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "towardsafedrivingefficientdetectionofsmallblurredsignsinrealworldscenarios": {
+    "title": "Toward Safe Driving: Efficient Detection of Small Blurred Signs in Real-World Scenarios",
+    "category": "traffic-sign-signal-perception",
+    "reason": "Traffic sign detection",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "performanceboundaryidentificationfortheevaluationofautomatedvehiclesusinggaussianprocessclassification": {
+    "title": "Performance Boundary Identification for the Evaluation of Automated Vehicles using Gaussian Process Classification",
+    "category": "testing-validation",
+    "reason": "evaluation performance methods",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "aflexiblemodelingapproachforrobustmultilaneroadestimation": {
+    "title": "A flexible modeling approach for robust multi-lane road estimation",
+    "category": "mapping-localization",
+    "reason": "road estimation, mapping & localization",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "studyondrivingfatigueevaluationsystembasedonshorttimeperiodecgsignal": {
+    "title": "Study on Driving Fatigue Evaluation System Based on Short Time Period ECG Signal",
+    "category": null,
+    "reason": "not AV-specific",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "perceptionmetricsforintelligentvehiclesanapplicationfocusedevaluation": {
+    "title": "Perception Metrics for Intelligent Vehicles: An Application-Focused Evaluation",
+    "category": "sensor-fusion",
+    "reason": "metrics for intelligent vehicles",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "learningdrivingscenepredictionfromenvironmentalperceptionofvehiclefleetdata": {
+    "title": "Learning Driving Scene Prediction from Environmental Perception of Vehicle Fleet Data",
+    "category": "motion-prediction",
+    "reason": "Driving scene prediction",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "anovelconceptoftrafficdatacollectionandutilizationautonomousvehiclesasasensor": {
+    "title": "A Novel Concept of Traffic Data Collection and Utilization: Autonomous Vehicles as a Sensor",
+    "category": "sensor-fusion",
+    "reason": "sensor data collection and utilization",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "statisticalbehaviormodelingfordriveradaptiveprecrashsystems": {
+    "title": "Statistical Behavior Modeling for Driver-Adaptive Precrash Systems",
+    "category": "driver-behavior-hmi",
+    "reason": "Driver behavior modeling",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "drivertorquesteeringassistingcontrolconsideringtheuncertaintiesofthedriversbehaviorinfollowinglargecurvaturepath": {
+    "title": "Driver torque steering assisting control considering the uncertainties of the driver's behavior in following large curvature path",
+    "category": "control",
+    "reason": "steering control specifics",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "efficientcollectivespatialkeywordqueryprocessingonroadnetworks": {
+    "title": "Efficient Collective Spatial Keyword Query Processing on Road Networks",
+    "category": null,
+    "reason": "title too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "proudpublicroadurbandriverlesstestarchitectureandresults": {
+    "title": "PROUD-Public road urban driverless test: Architecture and results",
+    "category": "end-to-end-driving",
+    "reason": "public road test results",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "stereobasedroisgenerationfordetectingpedestriansincloseproximity": {
+    "title": "Stereo based ROIs generation for detecting pedestrians in close proximity",
+    "category": "object-detection",
+    "reason": "Stereo based ROI generation for pedestrian detection",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "memoryguidedcollaborativeattentionfornighttimethermalinfraredimagecolorizationoftrafficscenes": {
+    "title": "Memory-Guided Collaborative Attention for Nighttime Thermal Infrared Image Colorization of Traffic Scenes",
+    "category": null,
+    "reason": "generic title",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "drivableregioncompletionviaa3dlidar": {
+    "title": "Drivable Region Completion via a 3D LiDAR",
+    "category": "mapping-localization",
+    "reason": "3D LiDAR for drivable region",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "queuelengthestimationatisolatedintersectionsbasedonintelligentvehicleinfrastructurecooperationsystems": {
+    "title": "Queue length estimation at isolated intersections based on intelligent vehicle infrastructure cooperation systems",
+    "category": "v2x-cooperative",
+    "reason": "V2I cooperation systems",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "nonparametrictechniquebasedhighspeedroadsurfacedetection": {
+    "title": "Nonparametric Technique Based High-Speed Road Surface Detection",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "hypovigilanceinlimitedselfdrivingautomationperipheralvisualstimulusforabalancedlevelofautomationandcognitiveworkload": {
+    "title": "Hypovigilance in limited self-driving automation: Peripheral visual stimulus for a balanced level of automation and cognitive workload",
+    "category": "driver-behavior-hmi",
+    "reason": "driver behavior & workload",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "estimatingfuturetravelcostsforautonomousvehiclesavsandsharedautonomousvehiclessavs": {
+    "title": "Estimating Future Travel Costs for Autonomous Vehicles (AVs) and Shared Autonomous Vehicles (SAVs)",
+    "category": null,
+    "reason": "topic not specific enough",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "guesteditorialintroductiontothespecialissueonrobustandefficientvisiontechniquesforintelligentvehicles": {
+    "title": "Guest Editorial Introduction to the Special Issue on Robust and Efficient Vision Techniques for Intelligent Vehicles",
+    "category": null,
+    "reason": "title too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "reconstructingfixedtimetrafficlightcyclesbycameradataanalytics": {
+    "title": "Reconstructing fixed time traffic light cycles by camera data analytics",
+    "category": "traffic-sign-signal-perception",
+    "reason": "traffic light cycle reconstruction",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "observerbaseddoubleclosedloopcontrolformixedvehiclegroupsamacroandmicroperspective": {
+    "title": "Observer-Based Double Closed-Loop Control for Mixed Vehicle Groups: A Macro and Micro Perspective",
+    "category": "control",
+    "reason": "double closed-loop control",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "abargaininggamebasedhumanmachineshareddrivingcontrolauthorityallocationstrategy": {
+    "title": "A Bargaining Game-Based Human-Machine Shared Driving Control Authority Allocation Strategy",
+    "category": null,
+    "reason": "not AV-specific",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "realtimemitigationoflidarmutualinterference": {
+    "title": "Real-Time Mitigation of LiDAR Mutual Interference",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "evidentialdeeplearningbasedmultimodalenvironmentperceptionforintelligentvehicles": {
+    "title": "Evidential deep learning-based multi-modal environment perception for intelligent vehicles",
+    "category": "sensor-fusion",
+    "reason": "multi-modal environment perception",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "aroadcrackdetectionmodelintegratingglmanetandefpn": {
+    "title": "A Road Crack Detection Model Integrating GLMANet and EFPN",
+    "category": null,
+    "reason": "title too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "simultaneousestimationofvehiclepositionanddatadelaysusinggaussianprocessbasedmovinghorizonestimation": {
+    "title": "Simultaneous Estimation of Vehicle Position and Data Delays Using Gaussian Process Based Moving Horizon Estimation",
+    "category": "mapping-localization",
+    "reason": "estimating position and delays",
+    "venue": "IROS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "doautomatedvehiclesreducetheriskofcrashesdreamorreality": {
+    "title": "Do Automated Vehicles Reduce the Risk of Crashes-Dream or Reality?",
+    "category": "adversarial-robustness-safety",
+    "reason": "crash risk safety",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "acontextawareandvideobasedriskdescriptorforcyclists": {
+    "title": "A context aware and video-based risk descriptor for cyclists",
+    "category": "occupancy",
+    "reason": "risk descriptor for cyclists",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "rgdrrewardguideddomainrandomizationforautonomousdriving": {
+    "title": "RGDR: Reward-Guided Domain Randomization for Autonomous Driving",
+    "category": "domain-adaptation",
+    "reason": "Reward-guided domain randomization for adaptation",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "howfastyouwilldrivepredictingspeedofcustomizedpathsbydeepneuralnetwork": {
+    "title": "How Fast You Will Drive? Predicting Speed of Customized Paths By Deep Neural Network",
+    "category": "motion-prediction",
+    "reason": "predicting speed of paths",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "certifiableevaluationforautonomousvehicleperceptionsystemsusingdeepimportancesamplingdeepis": {
+    "title": "Certifiable Evaluation for Autonomous Vehicle Perception Systems using Deep Importance Sampling (Deep IS)",
+    "category": "adversarial-robustness-safety",
+    "reason": "Certifiable evaluation for perception systems",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "bayesiantrafficlightparametertrackingbasedonsemihiddenmarkovmodels": {
+    "title": "Bayesian Traffic Light Parameter Tracking Based on Semi-Hidden Markov Models",
+    "category": "tracking",
+    "reason": "Traffic light parameter tracking",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "amethodologyformodelbasedvalidationofautonomousvehiclesystems": {
+    "title": "A Methodology for Model-Based Validation of Autonomous Vehicle Systems",
+    "category": "testing-validation",
+    "reason": "validation methodology for AV systems",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "safeandefficientruntimeresourcemanagementinheterogeneoussystemsforautomateddriving": {
+    "title": "Safe and Efficient Runtime Resource Management in Heterogeneous Systems for Automated Driving",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "supervisionconceptforsituatedhumandrivingappliedtoinlandshipping": {
+    "title": "Supervision concept for situated human driving applied to inland shipping",
+    "category": null,
+    "reason": "topic not specific to AV categories",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "typeosteerreimaginingthesteeringwheelforproductivenondrivingrelatedtasksinconditionallyautomatedvehicles": {
+    "title": "Type-o-Steer: Reimagining the Steering Wheel for Productive Non-Driving Related Tasks in Conditionally Automated Vehicles",
+    "category": "driver-behavior-hmi",
+    "reason": "HMI for non-driving tasks",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "headingmeasurementframebasedonatmosphericscatteringbeamsforintelligentvehicle": {
+    "title": "Heading Measurement Frame Based on Atmospheric Scattering Beams for Intelligent Vehicle",
+    "category": null,
+    "reason": "title too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "sensorbasedpredictionofhumandrivingdecisionsusingfeedforwardneuralnetworksforintelligentvehicles": {
+    "title": "Sensor based Prediction of Human Driving Decisions using Feed forward Neural Networks for Intelligent Vehicles",
+    "category": "motion-prediction",
+    "reason": "driving decisions prediction",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "stginanuncertaintyquantificationapproachintrafficdataimputationwithspatiotemporalgraphattentionandbidirectionalrecurrentunitedneuralnetworks": {
+    "title": "ST-GIN: An Uncertainty Quantification Approach in Traffic Data Imputation with Spatio-Temporal Graph Attention and Bidirectional Recurrent United Neural Networks",
+    "category": null,
+    "reason": "Unclear AV relevance",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
   }
 }
