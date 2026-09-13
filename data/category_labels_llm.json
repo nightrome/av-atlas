@@ -10141,5 +10141,495 @@
     "reason": "focus on pedestrian safety",
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
+  },
+  "weaklysupervisedbilinearconvolutionalneuralnetworkforfinegrainedvehicleclassification": {
+    "title": "Weakly Supervised Bilinear Convolutional Neural Network for Fine-Grained Vehicle Classification",
+    "category": null,
+    "reason": "title too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "enhancingthedriverawarenessofpedestrianusingaugmentedrealitycues": {
+    "title": "Enhancing the driver awareness of pedestrian using augmented reality cues",
+    "category": null,
+    "reason": "topic not specific to any category",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "technologiesforriskmitigationandsupportofimpaireddrivers": {
+    "title": "Technologies for Risk Mitigation and Support of Impaired Drivers",
+    "category": null,
+    "reason": "not AV-specific",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "evaluationofdecentralizedalgorithmsforcoordinationofautonomousvehiclesatintersections": {
+    "title": "Evaluation of Decentralized Algorithms for Coordination of Autonomous Vehicles at Intersections",
+    "category": "planning-decision-making",
+    "reason": "intersection coordination",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "drivingauthorityallocationstrategybasedondrivingauthorityrealtimeallocationdomain": {
+    "title": "Driving Authority Allocation Strategy Based on Driving Authority Real-Time Allocation Domain",
+    "category": "planning-decision-making",
+    "reason": "authority allocation for driving",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "speedplanningforanautonomousvehiclewithconflictmovingobjects": {
+    "title": "Speed Planning for an Autonomous Vehicle with Conflict Moving Objects",
+    "category": "control",
+    "reason": "speed planning for control",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "comparisonofvehiclelateralmovementmodelsforautomateddrivingfunctionvalidation": {
+    "title": "Comparison of Vehicle Lateral Movement Models for Automated Driving Function Validation",
+    "category": "motion-prediction",
+    "reason": "vehicle lateral movement models",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "trainingengineersinautonomousdrivingtechnologiesusingautoware": {
+    "title": "Training Engineers in Autonomous Driving Technologies using Autoware",
+    "category": null,
+    "reason": "generic title",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "autonomousdrivingdecisionalgorithmforcomplexmultivehicleinteractionsanefficientapproachbasedonglobalsortingandlocalgaming": {
+    "title": "Autonomous Driving Decision Algorithm for Complex Multi-Vehicle Interactions: An Efficient Approach Based on Global Sorting and Local Gaming",
+    "category": "planning-decision-making",
+    "reason": "focuses on decision algorithm",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "corsetofineroadextractionbasedonlocaldirichletmixturemodelsandmultiscalehighorderdeeplearning": {
+    "title": "Corse-to-Fine Road Extraction Based on Local Dirichlet Mixture Models and Multiscale-High-Order Deep Learning",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "curvaturemapbasedmagneticguidanceforautomatedvehiclesinanurbanenvironment": {
+    "title": "Curvature Map-Based Magnetic Guidance for Automated Vehicles in an Urban Environment",
+    "category": null,
+    "reason": "title too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "predictingroadaccidentsusingmachinelearningmodels": {
+    "title": "Predicting Road Accidents Using Machine Learning Models",
+    "category": null,
+    "reason": "too generic, no specific AV focus",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "improvedtrackingofarticulatedvehiclesinselfdrivingapplicationsusingphantomobservations": {
+    "title": "Improved Tracking of Articulated Vehicles in Self-Driving Applications Using Phantom Observations",
+    "category": "tracking",
+    "reason": "Focuses on improved tracking",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "impactofautonomousvehiclesonpedestrianssafety": {
+    "title": "Impact of autonomous vehicles on pedestrians' safety",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "realtimeautonomousvehiclenavigationunderunknowndynamics": {
+    "title": "Real-time Autonomous Vehicle Navigation under Unknown Dynamics",
+    "category": "control",
+    "reason": "real-time autonomous navigation",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "isgreecereadyforautonomousvehiclesamethodologicalapproach": {
+    "title": "Is Greece Ready for Autonomous Vehicles? A Methodological Approach",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "overcomingfearoftheunknownocclusionawaremodelpredictiveplanningforautomatedvehiclesusingriskfields": {
+    "title": "Overcoming Fear of the Unknown: Occlusion-Aware Model-Predictive Planning for Automated Vehicles Using Risk Fields",
+    "category": "motion-prediction",
+    "reason": "occlusion-aware planning",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "amodelforautomaticcollectionanddynamictransmissionoftrafficinformationbasedonvanet": {
+    "title": "A model for automatic collection and dynamic transmission of traffic information based on VANET",
+    "category": "v2x-cooperative",
+    "reason": "VANET for traffic info",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "structuredoutputpredictionforsemanticperceptioninautonomousvehicles": {
+    "title": "Structured Output Prediction for Semantic Perception in Autonomous Vehicles",
+    "category": "segmentation",
+    "reason": "Semantic Perception",
+    "venue": "AAAI",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "placementoptimizationofmultiplelidarsensorsforautonomousvehicles": {
+    "title": "Placement Optimization of Multiple Lidar Sensors for Autonomous Vehicles",
+    "category": "sensor-fusion",
+    "reason": "Lidar sensor placement for fusion",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "synthesisofa2doflinearquadraticgaussianpositioncontrolforasteerbywiresysteminhighlyautomateddrivingapplications": {
+    "title": "Synthesis of a 2DOF Linear Quadratic Gaussian Position Control for a Steer-by-Wire System in Highly Automated Driving Applications",
+    "category": "control",
+    "reason": "position control system",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "coherentonlineroadtopologyestimationandreasoningwithstandarddefinitionmaps": {
+    "title": "Coherent Online Road Topology Estimation and Reasoning with Standard-Definition Maps",
+    "category": "mapping-localization",
+    "reason": "road topology estimation",
+    "venue": "IROS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "recsaldeeprecursivesupervisionforvisualsaliencyprediction": {
+    "title": "RecSal : Deep Recursive Supervision for Visual Saliency Prediction",
+    "category": null,
+    "reason": "topic not specific",
+    "venue": "BMVC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "intersectioncoordinationwithprioritybasedsearchforautonomousvehicles": {
+    "title": "Intersection Coordination with Priority-Based Search for Autonomous Vehicles",
+    "category": "planning-decision-making",
+    "reason": "priority-based search for coordination",
+    "venue": "AAAI",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "analysisofdriverbrakebehaviorundercriticalcutinscenarios": {
+    "title": "Analysis of Driver Brake Behavior Under Critical Cut-in Scenarios",
+    "category": "driver-behavior-hmi",
+    "reason": "driver brake behavior analysis",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "cameraorientationestimationusingmotionbasedvanishingpointdetectionforadvanceddriverassistancesystems": {
+    "title": "Camera Orientation Estimation Using Motion-Based Vanishing Point Detection for Advanced Driver-Assistance Systems",
+    "category": "optical-flow",
+    "reason": "vanishing point detection",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "detectionofdriversinattentionarealtimedeeplearningapproach": {
+    "title": "Detection of driver's inattention: a real-time deep learning approach",
+    "category": null,
+    "reason": "not AV-specific",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "accuratepriorcentricmonocularpositioningwithofflinelidarfusion": {
+    "title": "Accurate Prior-Centric Monocular Positioning with Offline LiDAR Fusion",
+    "category": "sensor-fusion",
+    "reason": "LiDAR fusion for positioning",
+    "venue": "ICRA",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "avmaestroacentralizedpolicyenforcementframeworkforsafeautonomousdrivingenvironments": {
+    "title": "AVMaestro: A Centralized Policy Enforcement Framework for Safe Autonomous-driving Environments",
+    "category": "control",
+    "reason": "policy enforcement for safety",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "quantifyingtheimpactofdrivercomplianceontheeffectivenessofvariablespeedlimitsandlanecontrolsystems": {
+    "title": "Quantifying the impact of driver compliance on the effectiveness of variable speed limits and lane control systems",
+    "category": null,
+    "reason": "not AV-specific",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "classificationofdrivingdirectionintrafficsurveillanceusingmagnetometers": {
+    "title": "Classification of Driving Direction in Traffic Surveillance Using Magnetometers",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "multiobjectiveoptimizationforrobotaxidispatchwithsafetycarpoolingmodeinpandemicera": {
+    "title": "Multi-Objective Optimization for Robotaxi Dispatch With Safety-Carpooling Mode in Pandemic Era",
+    "category": "planning-decision-making",
+    "reason": "multi-objective optimization for dispatch",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "effectsofuserinstructiononacceptanceandtrustinautomateddriving": {
+    "title": "Effects of User Instruction on Acceptance and Trust in Automated Driving",
+    "category": null,
+    "reason": "generic title",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "drivingvisualsaliencypredictionofdynamicnightscenesviaaspatiotemporaldualencodernetwork": {
+    "title": "Driving Visual Saliency Prediction of Dynamic Night Scenes via a Spatio-Temporal Dual-Encoder Network",
+    "category": "motion-prediction",
+    "reason": "saliency prediction for dynamic scenes",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "anovelframeworkforidentifyingdrivingheterogeneitythroughactionpatterns": {
+    "title": "A Novel Framework for Identifying Driving Heterogeneity Through Action Patterns",
+    "category": "driver-behavior-hmi",
+    "reason": "Driving heterogeneity through action patterns",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "riskinspiredaerialactiveexplorationforenhancingautonomousdrivingofugvinunknownoffroadenvironments": {
+    "title": "Risk-Inspired Aerial Active Exploration for Enhancing Autonomous Driving of UGV in Unknown Off-Road Environments",
+    "category": "planning-decision-making",
+    "reason": "risk-inspired exploration for planning",
+    "venue": "ICRA",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "sumofsquaresbasedvehicledynamicstabilitymethodanditsapplicationsinadas": {
+    "title": "Sum-Of-Squares Based Vehicle Dynamic Stability Method and Its Applications in ADAS",
+    "category": "vehicle-dynamics-powertrain",
+    "reason": "focuses on vehicle dynamics",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "maptreebeatingoptimaldecisiontreeswithbayesiandecisiontrees": {
+    "title": "MAPTree: Beating \"Optimal\" Decision Trees with Bayesian Decision Trees",
+    "category": null,
+    "reason": "generic title",
+    "venue": "AAAI",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "coordinationofautomatedvehiclesatintersectionsdecisionefficiencyandcontrol": {
+    "title": "Coordination of Automated Vehicles at Intersections: Decision, Efficiency and Control",
+    "category": "planning-decision-making",
+    "reason": "focus on coordination, decision",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "collaborativecomputationinintegratedsensingcommunicationandcomputationsystemforautonomousdriving": {
+    "title": "Collaborative Computation in Integrated Sensing, Communication, and Computation System for Autonomous Driving",
+    "category": "sensor-fusion",
+    "reason": "Integrated sensing and computation",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "urbanroaduserclassificationframeworkusinglocalfeaturedescriptorsandhmm": {
+    "title": "Urban road user classification framework using local feature descriptors and HMM",
+    "category": null,
+    "reason": "Title too generic",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "mapbasedpathandposeinformationforautomatedandassisteddrivingoftrams": {
+    "title": "Map-Based Path and Pose Information for Automated and Assisted Driving of Trams",
+    "category": "mapping-localization",
+    "reason": "map-based path and pose information",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "detectionandclassificationofbicyclistgroupbehaviorforautomatedvehicleapplications": {
+    "title": "Detection and Classification of Bicyclist Group Behavior for Automated Vehicle Applications",
+    "category": "object-detection",
+    "reason": "bicyclist detection and classification",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "vehicletrajectoryestimationusingahighgainmultioutputnonlinearobserver": {
+    "title": "Vehicle Trajectory Estimation Using a High-Gain Multi-Output Nonlinear Observer",
+    "category": "motion-prediction",
+    "reason": "vehicle trajectory estimation",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "ahighintegrityandlowcostnavigationsystemforautonomousvehicles": {
+    "title": "A High-Integrity and Low-Cost Navigation System for Autonomous Vehicles",
+    "category": "mapping-localization",
+    "reason": "Navigation system implies mapping & localization",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "cyclistsstartingbehavioratintersections": {
+    "title": "Cyclists' starting behavior at intersections",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "columbusevaluatingcognitivelateralunderstandingthroughmultiplechoicerebuses": {
+    "title": "COLUMBUS: Evaluating COgnitive Lateral Understanding Through Multiple-Choice reBUSes",
+    "category": null,
+    "reason": "Title is too generic",
+    "venue": "AAAI",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "samplingbasedtrajectoryrepairingforautonomousvehicles": {
+    "title": "Sampling-Based Trajectory Repairing for Autonomous Vehicles",
+    "category": null,
+    "reason": "title too generic",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "ensuringdrivabilityofplannedmotionsusingformalmethods": {
+    "title": "Ensuring drivability of planned motions using formal methods",
+    "category": "planning-decision-making",
+    "reason": "focus on planned motions",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "decentralizedoptimalcontrolofconnectedandautomatedvehiclesinacorridor": {
+    "title": "Decentralized Optimal Control of Connected and Automated Vehicles in a Corridor",
+    "category": "control",
+    "reason": "decentralized optimal control",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "socialbehaviorrecognitionincontinuousvideo": {
+    "title": "Social behavior recognition in continuous video",
+    "category": "driver-behavior-hmi",
+    "reason": "social behavior recognition",
+    "venue": "CVPR",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "responsestotakeoverrequestinautonomousvehicleseffectsofenvironmentalconditionsandcues": {
+    "title": "Responses to Take-Over Request in Autonomous Vehicles: Effects of Environmental Conditions and Cues",
+    "category": "testing-validation",
+    "reason": "Take-over request responses involve validation",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "crossingornotcontextbasedrecognitionofpedestriancrossingintentionintheurbanenvironment": {
+    "title": "Crossing or Not? Context-Based Recognition of Pedestrian Crossing Intention in the Urban Environment",
+    "category": "driver-behavior-hmi",
+    "reason": "pedestrian crossing intention",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "perceptionawareautonomousexplorationinfeaturelimitedenvironments": {
+    "title": "Perception-Aware Autonomous Exploration in Feature-Limited Environments",
+    "category": null,
+    "reason": "Too generic title",
+    "venue": "RA-L",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "intelligentchargerateoptimizationofphevsincorporatingdriversatisfactionandgridconstraints": {
+    "title": "Intelligent Charge Rate Optimization of PHEVs Incorporating Driver Satisfaction and Grid Constraints",
+    "category": null,
+    "reason": "not AV-specific",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "relocationstrategiesandalgorithmsforfreefloatingcarsharingsystems": {
+    "title": "Relocation strategies and algorithms for free-floating Car Sharing Systems",
+    "category": null,
+    "reason": "topic not specific enough",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "evaluationandoptimizationoflaneallocationatisolatedintersectionsusingtrajectorydata": {
+    "title": "Evaluation and Optimization of Lane Allocation at Isolated Intersections Using Trajectory Data",
+    "category": "planning-decision-making",
+    "reason": "trajectory data for lane allocation",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "driverprofilingusinglongshorttermmemorylstmandconvolutionalneuralnetworkcnnmethods": {
+    "title": "Driver Profiling Using Long Short Term Memory (LSTM) and Convolutional Neural Network (CNN) Methods",
+    "category": "driver-behavior-hmi",
+    "reason": "Driver behavior profiling",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "beyondrmsedomachinelearnedmodelsofroaduserinteractionproducehumanlikebehavior": {
+    "title": "Beyond RMSE: Do Machine-Learned Models of Road User Interaction Produce Human-Like Behavior?",
+    "category": "planning-decision-making",
+    "reason": "behavior prediction",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "deeplearningforgpsdeniedsarimagefocusingandvehicletrajectoryestimation": {
+    "title": "Deep Learning for GPS-Denied SAR Image Focusing and Vehicle Trajectory Estimation",
+    "category": null,
+    "reason": "title is too generic",
+    "venue": "BMVC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "robustandefficientrelativeposewithamulticamerasystemforautonomousdrivinginhighlydynamicenvironments": {
+    "title": "Robust and Efficient Relative Pose With a Multi-Camera System for Autonomous Driving in Highly Dynamic Environments",
+    "category": "sensor-fusion",
+    "reason": "multi-camera system for relative pose",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "realtimemonocularjointperceptionnetworkforautonomousdriving": {
+    "title": "Real-Time Monocular Joint Perception Network for Autonomous Driving",
+    "category": "sensor-fusion",
+    "reason": "joint perception network",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "attentionaldemandestimationwithattentivedrivingmodels": {
+    "title": "Attentional demand estimation with attentive driving models",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "BMVC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "buildingasmartworkzoneusingroadsidelidar": {
+    "title": "Building a Smart Work Zone Using Roadside LiDAR",
+    "category": "sensor-calibration",
+    "reason": "LiDAR calibration for work zone",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "adrivingscenariorepresentationforscalablerealdataanalyticswithneuralnetworks": {
+    "title": "A Driving Scenario Representation for Scalable Real-Data Analytics with Neural Networks",
+    "category": "dataset-benchmark-paper",
+    "reason": "scenario representation for analytics",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "nonlinearmovinghorizonestimationforlargescaleurbanroadnetworks": {
+    "title": "Nonlinear Moving Horizon Estimation for Large-Scale Urban Road Networks",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "thekinematicbicyclemodelaconsistentmodelforplanningfeasibletrajectoriesforautonomousvehicles": {
+    "title": "The kinematic bicycle model: A consistent model for planning feasible trajectories for autonomous vehicles?",
+    "category": "planning-decision-making",
+    "reason": "trajectory planning for AVs",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "multidimensionalparticlefilterforlongtermvisualteachandrepeatinchangingenvironments": {
+    "title": "Multidimensional Particle Filter for Long-Term Visual Teach and Repeat in Changing Environments",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "IROS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "omniptunleashingthepotentialoflargevisionlanguagemodelsforpedestriantrackingandunderstanding": {
+    "title": "OmniPT: Unleashing the Potential of Large Vision Language Models for Pedestrian Tracking and Understanding",
+    "category": "tracking",
+    "reason": "Pedestrian tracking",
+    "venue": "AAAI",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "modelingandpredictionofhumanbehaviorsbasedondrivingdatausingmultilayerhmms": {
+    "title": "Modeling and Prediction of Human Behaviors based on Driving Data using Multi-Layer HMMs",
+    "category": "driver-behavior-hmi",
+    "reason": "focuses on human behaviors in driving",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
   }
 }
