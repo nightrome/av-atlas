@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas: Insights</title>
+<meta name="description" content="Trends in autonomous vehicle research: rising and declining topics, researcher careers, citation patterns, and collaboration.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AV Atlas">
+<meta property="og:title" content="AV Atlas: Insights">
+<meta property="og:description" content="Trends in autonomous vehicle research: rising and declining topics, researcher careers, citation patterns, and collaboration.">
+<meta property="og:url" content="https://nightrome.github.io/av-atlas/insights.html">
+<meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AV Atlas: Insights">
+<meta name="twitter:description" content="Trends in autonomous vehicle research: rising and declining topics, researcher careers, citation patterns, and collaboration.">
+<meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css?v=1789288051">
+<link rel="stylesheet" href="theme-light.css?v=1789288051">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  /* Page-wide fallback so ANY link here, not just the two kinds this file
+     happens to style specifically below (.fact-card, table.data-table td a),
+     defaults to the same color as surrounding text instead of the browser's
+     own blue -- belt-and-suspenders after this being reported twice; every
+     link measured on the live page already matched body text, so this is
+     insurance against a link type this file doesn't know about yet, not a
+     fix for a reproduced case. */
+  a { color: var(--text); }
+  a:link, a:visited { color: var(--text); }
+  h2 { font-size: 1.15em; margin: 0 0 4px; }
+  h3 { font-size: 1em; margin: 20px 0 8px; }
+  p { line-height: 1.6; }
+  .section-intro { color: var(--muted); font-size: 0.88em; margin: 0 0 16px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin: 20px 0; }
+  .panel-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  .fact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 10px; }
+  .fact-card {
+    background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
+    position: relative;
+  }
+  .fact-card .info-tip { position: absolute; top: 8px; right: 8px; margin: 0; }
+  .fact-card .big { font-size: 1.7em; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .fact-card .big.accent { color: var(--accent); }
+  .fact-card .label { color: var(--muted); font-size: 0.85em; margin-top: 4px; }
+  .fact-card .sub { color: var(--muted); font-size: 0.78em; margin-top: 6px; line-height: 1.4; }
+  /* statTile() makes the .fact-card itself an <a> when it links somewhere
+     (document.createElement(href ? 'a' : 'div')) -- it's not a nested <a>
+     inside a div, so "a.fact-card" (the card IS the link), not ".fact-card
+     a" (a link inside the card), is what actually needs the color override.
+     The old ".fact-card a" rule never matched anything real, so every
+     linked fact-card (People & institutions, Collaboration, ...) still
+     showed the browser's default blue link color (user-flagged). */
+  /* :link/:visited explicitly, not just the bare selector -- the browser's
+     own default (blue unvisited, purple visited) has enough specificity to
+     win over a plain color:inherit once a link has actually been visited,
+     which read as "unformatted" (user-reported) on exactly the links a
+     reader would have clicked before. */
+  a.fact-card, a.fact-card:link, a.fact-card:visited { display: block; color: inherit; text-decoration: none; }
+  a.fact-card:hover .label { color: var(--accent); text-decoration: underline; }
+
+  .move-list { list-style: none; margin: 10px 0 0; padding: 0; }
+  .move-list li {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.92em;
+  }
+  .move-list li:last-child { border-bottom: none; }
+  .move-list .delta { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  .move-list .delta.up { color: #3fae6a; }
+  .move-list .delta.down { color: #e6614f; }
+  .move-list a { text-decoration: none; }
+  .move-list a:hover { text-decoration: underline; }
+  .move-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 640px) { .move-cols { grid-template-columns: 1fr; } }
+
+  .venue-list { list-style: none; margin: 10px 0 0; padding: 0; font-size: 0.92em; }
+  .venue-list li { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--border); }
+  .venue-list li:last-child { border-bottom: none; }
+  .venue-list .pct { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  table.data-table { width: 100%; border-collapse: collapse; margin: 10px 0 0; font-size: 0.92em; }
+  table.data-table th, table.data-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+  table.data-table th { color: var(--muted); font-weight: 600; }
+  table.data-table td.num, table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  /* Without this, a plain <a> in a table cell falls back to the browser's
+     default blue/purple link color -- theme.css sets no global `a` rule, so
+     every table needs its own override, same convention as every other
+     page's table (see index.html's td a comment). */
+  table.data-table td a, table.data-table td a:link, table.data-table td a:visited { color: var(--text); text-decoration: none; }
+  table.data-table td a:hover { text-decoration: underline; }
+
+  .line-chart-wrap { position: relative; }
+  .line-chart-wrap svg { width: 100%; height: auto; display: block; }
+  .series-line { fill: none; stroke-width: 2.5; opacity: 0.9; }
+  .series-dot { cursor: pointer; }
+  .axis-line { stroke: var(--border); }
+  .axis-label { fill: var(--muted); font-size: 10.5px; }
+  .crosshair { stroke: var(--muted); stroke-dasharray: 3 3; pointer-events: none; }
+  .legend-row { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 4px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.82em; color: var(--text); }
+  .legend-item .swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .tooltip-box {
+    position: absolute; background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 10px; font-size: 0.8em; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    min-width: 140px; display: none; z-index: 10;
+  }
+  .tooltip-box .tt-year { font-weight: 700; margin-bottom: 4px; }
+  .tooltip-box .tt-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .tooltip-box .tt-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .tooltip-box .tt-val { margin-left: auto; font-variant-numeric: tabular-nums; padding-left: 10px; }
+
+  /* Correlation matrices. Columns are numbered rather than label-rotated --
+     robust against long category names at 27+ columns, where rotated text
+     would overlap its neighbors; the row headers (which have the room)
+     carry the same number, so "column 7" is read off the row list. Wrapped
+     in .table-scroll automatically (see filters.js's autoWrapTables), which
+     is what makes a 40+-column grid usable on a phone at all. */
+  table.corr-matrix { font-size: 0.72em; border-collapse: collapse; }
+  table.corr-matrix th, table.corr-matrix td {
+    padding: 3px 6px; text-align: center; white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+  }
+  table.corr-matrix thead th { color: var(--muted); font-weight: 600; cursor: help; }
+  table.corr-matrix tbody th {
+    text-align: left; color: var(--text); font-weight: 600; white-space: nowrap;
+    position: sticky; left: 0; background: var(--panel);
+  }
+  table.corr-matrix td { font-variant-numeric: tabular-nums; cursor: default; }
+  table.corr-matrix td.self { background: var(--panel2) !important; color: var(--muted); }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Growth</h2>
+    <div class="limit-row">
+      Compared to
+      <select id="growth-years-back">
+        <option value="1">1 year earlier</option>
+        <option value="2">2 years earlier</option>
+        <option value="3" selected>3 years earlier</option>
+        <option value="5">5 years earlier</option>
+        <option value="10">10 years earlier</option>
+      </select>
+    <span class="info-tip" tabindex="0" role="img" aria-label="Papers added per year, AV-relevant and total. The two percentages are a compound annual growth rate over the window the dropdown selects. Log y-axis." data-tip="Papers added per year, AV-relevant and total. The two percentages are a compound annual growth rate over the window the dropdown selects. Log y-axis.">i</span></div>
+  </div>
+  <div class="fact-grid" id="growth-facts"></div>
+  <div class="line-chart-wrap" id="growth-chart-wrap">
+    <svg id="growth-chart"></svg>
+    <div class="tooltip-box" id="growth-tooltip"></div>
+  </div>
+  <div class="legend-row" id="growth-legend"></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Topics: rising and declining</h2>
+    <div class="limit-row">
+      Compared to
+      <select id="trend-years-back">
+        <option value="1">1 year earlier</option>
+        <option value="2">2 years earlier</option>
+        <option value="3" selected>3 years earlier</option>
+        <option value="5">5 years earlier</option>
+        <option value="10">10 years earlier</option>
+      </select>
+    <span class="info-tip" tabindex="0" role="img" aria-label="Which categories gained or lost the most share of AV papers between a recent complete year and one N years earlier (set by the dropdown)." data-tip="Which categories gained or lost the most share of AV papers between a recent complete year and one N years earlier (set by the dropdown).">i</span></div>
+  </div>
+  <p class="section-intro" id="trend-window-note"></p>
+  <div class="move-cols">
+    <div>
+      <h3 style="margin-top:0; color:#3fae6a;">▲ Rising</h3>
+      <ul class="move-list" id="rising-list"></ul>
+    </div>
+    <div>
+      <h3 style="margin-top:0; color:#e6614f;">▼ Declining</h3>
+      <ul class="move-list" id="declining-list"></ul>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Category correlation</h2>
+  <span class="info-tip" tabindex="0" role="img" aria-label="If an author published in the row category, what share of them also published in the column category -- counting every author with at least one AV paper in each. Columns are numbered to match the row list; the diagonal is left blank." data-tip="If an author published in the row category, what share of them also published in the column category -- counting every author with at least one AV paper in each. Columns are numbered to match the row list; the diagonal is left blank.">i</span></div>
+  <p class="section-intro">
+    Read a row: of authors who published in that category, the % who also published in each
+    numbered column category. Tap or hover a cell for the exact count.
+  </p>
+  <table class="corr-matrix" id="category-corr-matrix"><thead></thead><tbody></tbody></table>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Dataset adoption over time</h2>
+    <div id="dataset-topn-container"><span class="info-tip" tabindex="0" role="img" aria-label="How many papers per year cite each of the most-used AV datasets, from those papers&#x27; own reference lists." data-tip="How many papers per year cite each of the most-used AV datasets, from those papers&#x27; own reference lists.">i</span></div>
+  </div>
+  <p class="section-intro">How many papers per year cite each dataset.</p>
+  <div class="line-chart-wrap" id="dataset-chart-wrap">
+    <svg id="dataset-chart"></svg>
+    <div class="tooltip-box" id="dataset-tooltip"></div>
+  </div>
+  <div class="legend-row" id="dataset-legend"></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2>Leadership</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top author, institution and paper by a few different measures, from the same underlying data as the Authors and Institutions pages -- though some cards use a stricter minimum-papers floor than those pages default to, noted on the card where it applies." data-tip="The top author, institution and paper by a few different measures, from the same underlying data as the Authors and Institutions pages -- though some cards use a stricter minimum-papers floor than those pages default to, noted on the card where it applies.">i</span></div>
+  <p class="section-intro">Leading people, institutions and papers in the field.</p>
+  <div class="fact-grid" id="people-facts"></div>
+  <p class="section-intro" id="maintainer-disclosure" style="margin-bottom:0;" hidden></p>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2>Collaboration</h2><span class="info-tip" tabindex="0" role="img" aria-label="How many distinct people, institutions and countries appear on a typical paper, and how the average author count per paper has changed over time." data-tip="How many distinct people, institutions and countries appear on a typical paper, and how the average author count per paper has changed over time.">i</span></div>
+  <p class="section-intro">How many people, institutions, and countries collaborate on a typical paper.</p>
+  <div class="fact-grid" id="collab-facts"></div>
+  <div class="line-chart-wrap" id="team-chart-wrap">
+    <svg id="team-chart"></svg>
+    <div class="tooltip-box" id="team-tooltip"></div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2>Researcher careers</h2><span class="info-tip" tabindex="0" role="img" aria-label="“Career span” is the years between an author&#x27;s first and last AV-relevant paper in this corpus, not their real career length." data-tip="“Career span” is the years between an author&#x27;s first and last AV-relevant paper in this corpus, not their real career length.">i</span></div>
+  <p class="section-intro">
+    An author's "career span" here is the span between their first and last AV-relevant publication
+    in this corpus, not their real age or whole career.
+  </p>
+  <h3 style="margin-top:0;">Where researchers are in their career</h3>
+  <p class="section-intro" style="margin-bottom:4px;">Researchers per career span, in years.</p>
+  <div class="line-chart-wrap" id="lifetime-dist-chart-wrap">
+    <svg id="lifetime-dist-chart"></svg>
+  </div>
+  <h3>Citations by career span</h3>
+  <p class="section-intro" style="margin-bottom:4px;">
+    Median total citations per researcher at each career span, shaded band is the 25th-75th percentile range.
+  </p>
+  <div class="line-chart-wrap" id="lifetime-citations-chart-wrap">
+    <svg id="lifetime-citations-chart"></svg>
+  </div>
+  <h3>Rising stars in the field</h3>
+  <p class="section-intro" style="margin-bottom:4px;" id="young-researchers-note">
+    A record of 3 years or less here, 5+ papers, several of them among the most-cited.
+  </p>
+  <table class="data-table" id="young-researchers-table">
+    <thead>
+      <tr>
+        <th>Author</th><th class="num">First year</th><th class="num">Last year</th>
+        <th class="num" data-term="career_span">Career span</th><th class="num">Papers</th>
+        <th class="num" id="young-influential-head">Influential papers</th>
+        <th class="num" data-term="citations">Citations</th>
+        <th class="num" data-term="citations_per_paper">Citations / paper</th>
+      </tr>
+    </thead>
+    <tbody id="young-researchers-body"></tbody>
+  </table>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2>Citation patterns</h2><span class="info-tip" tabindex="0" role="img" aria-label="How concentrated in-corpus citations are: the self-citation share, and how much of all citations go to the most-cited papers." data-tip="How concentrated in-corpus citations are: the self-citation share, and how much of all citations go to the most-cited papers.">i</span></div>
+  <p class="section-intro">How citations are distributed across the corpus.</p>
+  <div class="fact-grid" id="citation-facts"></div>
+</div>
+
+<div class="panel" id="disruption-panel">
+  <div class="panel-title-row"><h2 style="margin-top:0;">Disruptive papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="The CD index (Funk and Owen-Smith, 2017). For each in-corpus citer of a paper: does it cite the paper on its own (a disruptive vote) or alongside the paper's own references (consolidating)? The score is the average of those votes, from -1 to +1. Computed only for papers whose own reference list has been scanned and that have at least 10 in-corpus citers." data-tip="The CD index (Funk and Owen-Smith, 2017). For each in-corpus citer of a paper: does it cite the paper on its own (a disruptive vote) or alongside the paper's own references (consolidating)? The score is the average of those votes, from -1 to +1. Computed only for papers whose own reference list has been scanned and that have at least 10 in-corpus citers.">i</span></div>
+  <p class="section-intro">
+    The CD index (Funk &amp; Owen-Smith, 2017): does later work engage with a paper as having
+    <em>superseded</em> its own references (disruptive), or does it cite the paper alongside those
+    same references, as one more contribution to an ongoing line of work (consolidating)? Computed
+    only for papers whose own reference list has been scanned and that have enough in-corpus
+    citers for the average to mean something. Ranked by the score, then by citer count.
+  </p>
+  <div class="fact-grid" id="disruption-facts"></div>
+  <div class="limit-row" style="margin-top:16px;">
+    Show
+    <select id="disruption-limit">
+      <option value="5">5</option>
+      <option value="10" selected>10</option>
+      <option value="25">25</option>
+    </select>
+    Min. citations
+    <select id="disruption-min-citations">
+      <option value="0">Any</option>
+      <option value="10">10+</option>
+      <option value="25">25+</option>
+      <option value="50">50+</option>
+      <option value="100" selected>100+</option>
+      <option value="250">250+</option>
+    </select>
+  </div>
+  <div style="margin-top:8px;">
+    <h3 style="margin-top:0; color:#3fae6a;">▲ Most disruptive</h3>
+    <ul class="move-list" id="disruptive-list"></ul>
+  </div>
+</div>
+
+
+<div class="panel">
+  <div class="panel-title-row"><h2>Most cited paper by year</h2><span class="info-tip" tabindex="0" role="img" aria-label="The single highest in-corpus-cited paper published in each year." data-tip="The single highest in-corpus-cited paper published in each year.">i</span></div>
+  <p class="section-intro">The highest-cited paper published each year, in-corpus citations only.</p>
+  <table class="data-table" id="best-by-year-table">
+    <thead><tr><th>Year</th><th>Title</th><th>Venue</th><th class="num">Citations</th></tr></thead>
+    <tbody id="best-by-year-body"></tbody>
+  </table>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin:0;">How much of each venue is AV research</h2>
+    <div class="limit-row">
+      Min. papers
+      <select id="venue-relevance-min">
+        <option value="10">10+</option>
+        <option value="25">25+</option>
+        <option value="50">50+</option>
+        <option value="100" selected>100+</option>
+        <option value="250">250+</option>
+      </select>
+    <span class="info-tip" tabindex="0" role="img" aria-label="For venues above the size threshold, the share of their total output that this site classified as AV-relevant." data-tip="For venues above the size threshold, the share of their total output that this site classified as AV-relevant.">i</span></div>
+  </div>
+  <p class="section-intro">
+    Share of each venue's total output judged AV-relevant. Venues below the threshold above are
+    excluded as too small to be meaningful.
+  </p>
+  <div class="move-cols">
+    <div>
+      <h3 style="margin-top:0;">Most AV-focused</h3>
+      <ul class="venue-list" id="venue-high-list"></ul>
+    </div>
+    <div>
+      <h3 style="margin-top:0;">Least AV-focused</h3>
+      <ul class="venue-list" id="venue-low-list"></ul>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Venue correlation</h2>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Same idea as the category correlation matrix, for the seed venues (the venues AV Atlas pulls complete proceedings from): if an author published at the row venue, what share of them also published at the column venue." data-tip="Same idea as the category correlation matrix, for the seed venues (the venues AV Atlas pulls complete proceedings from): if an author published at the row venue, what share of them also published at the column venue.">i</span></div>
+  <p class="section-intro">
+    Same idea as the category matrix above, restricted to the seed venues &mdash; the venues AV Atlas
+    pulls complete proceedings from. Tap or hover a cell for the exact count.
+  </p>
+  <table class="corr-matrix" id="venue-corr-matrix"><thead></thead><tbody></tbody></table>
+</div>
+
+<script src="filters.js?v=1789288051"></script>
+<script>
+const PALETTE = ['#e6614f', '#3987e5', '#3fae6a', '#e6a53f', '#9366d9'];
+
+// Heat ramp for the correlation matrices only. Deliberately higher-contrast
+// than the shared blue SEQ_RAMP (filters.js) -- a magma-style yellow -> coral
+// -> magenta -> deep-purple progression separates adjacent buckets far more
+// clearly than a single-hue blue ramp does, which matters on a dense grid
+// where most cells sit in the low-to-mid range.
+const CORR_RAMP = ['#fcfdbf', '#feb078', '#f8765c', '#d3436e', '#982d80', '#5f187f', '#1c1044'];
+
+function row(cells) {
+  const tr = document.createElement('tr');
+  cells.forEach((c, i) => {
+    const td = document.createElement('td');
+    if (i > 0 && typeof c === 'number') td.className = 'num';
+    if (c instanceof Node) td.appendChild(c);
+    else td.textContent = c;
+    tr.appendChild(td);
+  });
+  return tr;
+}
+
+function statTile(container, value, label, sub, href) {
+  const card = document.createElement(href ? 'a' : 'div');
+  card.className = 'fact-card';
+  if (href) card.href = href;
+  const big = document.createElement('div');
+  big.className = 'big accent';
+  big.textContent = value;
+  card.appendChild(big);
+  const lab = document.createElement('div');
+  lab.className = 'label';
+  lab.textContent = label;
+  card.appendChild(lab);
+  if (sub) {
+    const s = document.createElement('div');
+    s.className = 'sub';
+    s.textContent = sub;
+    card.appendChild(s);
+  }
+  container.appendChild(card);
+}
+
+function moveRow(list, item, up) {
+  const li = document.createElement('li');
+  const name = document.createElement('span');
+  name.textContent = categoryLabel(item.category);
+  li.appendChild(name);
+  const delta = document.createElement('span');
+  delta.className = 'delta ' + (up ? 'up' : 'down');
+  delta.textContent = `${item.point_change > 0 ? '+' : ''}${item.point_change.toFixed(1)} pt`;
+  li.appendChild(delta);
+  list.appendChild(li);
+}
+
+// A category needs a minimally real presence in both years being compared --
+// otherwise a category with a couple of papers swinging from 1 to 3 reads as
+// a 200% "rise" that means nothing.
+const TREND_MIN_PAPERS_PER_YEAR = 8;
+
+function computeCategoryTrends(allPapers, yearsBack) {
+  const years = [...new Set(allPapers.map(p => p.year).filter(Boolean))].sort((a, b) => a - b);
+  if (!years.length) return null;
+  // Every corpus's newest year is still partial (papers keep getting added
+  // to it after publication), so it's excluded the same way every other
+  // "complete years only" figure on this site excludes it.
+  const latestYear = years[years.length - 1];
+  const completeYears = years.filter(y => y !== latestYear);
+  if (!completeYears.length) return null;
+  const recentYear = completeYears[completeYears.length - 1];
+  const priorYear = recentYear - yearsBack;
+  if (!completeYears.includes(priorYear)) return null;
+
+  const recentPapers = allPapers.filter(p => p.year === recentYear);
+  const priorPapers = allPapers.filter(p => p.year === priorYear);
+  if (!recentPapers.length || !priorPapers.length) return null;
+
+  const countByCategory = papers => {
+    const counts = {};
+    papers.forEach(p => {
+      const cat = p.category || 'uncategorized';
+      counts[cat] = (counts[cat] || 0) + 1;
+    });
+    return counts;
+  };
+  const catRecent = countByCategory(recentPapers), catPrior = countByCategory(priorPapers);
+  const trends = [];
+  new Set([...Object.keys(catRecent), ...Object.keys(catPrior)]).forEach(cat => {
+    if (cat === 'uncategorized') return;
+    const rc = catRecent[cat] || 0, pc = catPrior[cat] || 0;
+    if (rc < TREND_MIN_PAPERS_PER_YEAR && pc < TREND_MIN_PAPERS_PER_YEAR) return;
+    const recentShare = rc / recentPapers.length, priorShare = pc / priorPapers.length;
+    // Not rounded here -- moveRow() formats to exactly 1 decimal place for
+    // display (toFixed(1)), so the stored value just needs to be accurate.
+    trends.push({ category: cat, point_change: (recentShare - priorShare) * 100 });
+  });
+  trends.sort((a, b) => b.point_change - a.point_change);
+  return { trends, recentYear, priorYear };
+}
+
+function renderCategoryTrends(stats) {
+  const sel = document.getElementById('trend-years-back');
+  const noteEl = document.getElementById('trend-window-note');
+  const risingList = document.getElementById('rising-list');
+  const decliningList = document.getElementById('declining-list');
+
+  function draw() {
+    const yearsBack = parseInt(sel.value, 10) || 3;
+    const result = computeCategoryTrends(stats.all_papers || [], yearsBack);
+    risingList.innerHTML = '';
+    decliningList.innerHTML = '';
+    if (!result) {
+      noteEl.textContent = 'Not enough complete years yet for this comparison.';
+      risingList.innerHTML = '<li>Not enough complete years yet.</li>';
+      decliningList.innerHTML = '<li>Not enough complete years yet.</li>';
+      return;
+    }
+    noteEl.textContent = `Comparing each category's share of papers, ${result.priorYear} vs. ${result.recentYear}.`;
+    result.trends.slice(0, 5).forEach(c => moveRow(risingList, c, true));
+    [...result.trends].slice(-5).reverse().forEach(c => moveRow(decliningList, c, false));
+    if (!result.trends.length) {
+      risingList.innerHTML = '<li>No category has enough papers in both years.</li>';
+      decliningList.innerHTML = '<li>No category has enough papers in both years.</li>';
+    }
+  }
+  if (sel) {
+    try {
+      const stored = sessionStorage.getItem('insights-trend-years-back');
+      if (stored && [...sel.options].some(o => o.value === stored)) sel.value = stored;
+    } catch (e) { /* ignore */ }
+    sel.addEventListener('change', () => {
+      try { sessionStorage.setItem('insights-trend-years-back', sel.value); } catch (e) { /* ignore */ }
+      draw();
+    });
+  }
+  draw();
+}
+
+// -- Correlation matrices (category and venue) --------------------------
+//
+// "If you published in X, did you also publish in Y?" -- per-author set of
+// whichever dimension (category or venue) they've published in, across
+// their own AV papers, then a row-normalized co-occurrence count: cell
+// (X, Y) is the share of X's authors who ALSO have Y somewhere in their own
+// set. Deliberately not symmetric (share of X who also do Y differs from
+// share of Y who also do X unless X and Y have the same total), which is
+// exactly what a reader asking this question wants -- a plain symmetric
+// count would answer a different, less useful question.
+function buildCorrelationMatrix(papers, dimensionFn, itemKeys) {
+  const allowed = new Set(itemKeys);
+  const byAuthor = {};
+  papers.forEach(p => {
+    const vals = (dimensionFn(p) || []).filter(v => allowed.has(v));
+    if (!vals.length) return;
+    (p.authors || []).forEach(a => {
+      const set = byAuthor[a] || (byAuthor[a] = new Set());
+      vals.forEach(v => set.add(v));
+    });
+  });
+  const totals = {}, co = {};
+  itemKeys.forEach(k => {
+    totals[k] = 0;
+    co[k] = {};
+    itemKeys.forEach(k2 => { co[k][k2] = 0; });
+  });
+  Object.values(byAuthor).forEach(set => {
+    const arr = [...set];
+    arr.forEach(k => { totals[k] += 1; });
+    arr.forEach(k1 => arr.forEach(k2 => { if (k1 !== k2) co[k1][k2] += 1; }));
+  });
+  return { totals, co };
+}
+
+// Renders one correlation panel: the heat-shaded grid, a real <table> so
+// filters.js's autoWrapTables gives it horizontal scroll for free and the
+// row header can go position:sticky.
+function renderCorrelationPanel(opts) {
+  const { totals, co } = buildCorrelationMatrix(opts.papers, opts.dimensionFn, opts.itemKeys);
+  // Drop anything with zero authors entirely -- an all-empty row/column is
+  // dead weight in a grid a reader has to scroll past for nothing.
+  const activeKeys = opts.itemKeys.filter(k => totals[k] > 0);
+  const matrixTable = document.getElementById(opts.matrixTableId);
+  const thead = matrixTable.querySelector('thead');
+  const tbody = matrixTable.querySelector('tbody');
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+  if (!activeKeys.length) return;
+
+  const headRow = document.createElement('tr');
+  headRow.appendChild(document.createElement('th'));
+  activeKeys.forEach((k, i) => {
+    const th = document.createElement('th');
+    th.textContent = String(i + 1);
+    th.title = opts.labelFor(k);
+    headRow.appendChild(th);
+  });
+  thead.appendChild(headRow);
+
+  activeKeys.forEach((rowKey, i) => {
+    const tr = document.createElement('tr');
+    const rowHead = document.createElement('th');
+    rowHead.textContent = `${i + 1}. ${opts.labelFor(rowKey)}`;
+    tr.appendChild(rowHead);
+    activeKeys.forEach(colKey => {
+      const td = document.createElement('td');
+      if (rowKey === colKey) {
+        td.textContent = '—';
+        td.className = 'self';
+      } else {
+        const pct = Math.round((100 * co[rowKey][colKey]) / totals[rowKey]);
+        td.textContent = String(pct);
+        const step = Math.min(CORR_RAMP.length - 1, Math.round((pct / 100) * (CORR_RAMP.length - 1)));
+        td.style.background = CORR_RAMP[step];
+        td.style.color = step <= 1 ? '#0b0b0b' : '#ffffff';
+        td.title = `${opts.labelFor(rowKey)} → ${opts.labelFor(colKey)}: ${pct}% `
+          + `(${co[rowKey][colKey]} of ${totals[rowKey]} authors)`;
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+function renderCategoryCorrelation(stats) {
+  renderCorrelationPanel({
+    papers: stats.all_papers || [],
+    dimensionFn: p => [p.category],
+    // "Uncategorized" is a catch-all, not a topic -- an author "also
+    // publishing in Uncategorized" says nothing, so it's left out of the grid.
+    itemKeys: (stats.category_breakdown || [])
+      .map(c => c.category)
+      .filter(c => c && c !== 'uncategorized'),
+    labelFor: categoryLabel,
+    matrixTableId: 'category-corr-matrix',
+  });
+}
+
+function renderVenueCorrelation(stats) {
+  renderCorrelationPanel({
+    papers: stats.all_papers || [],
+    dimensionFn: p => [p.venue],
+    // Seed venues only -- the venues AV Atlas pulls complete proceedings from
+    // (corpus_stats.venue_coverage, the same set the About page's coverage
+    // table lists). arXiv is dropped explicitly: it's a preprint server, not
+    // a venue, and it isn't in venue_coverage anyway.
+    itemKeys: Object.keys((stats.corpus_stats || {}).venue_coverage || {})
+      .filter(v => v !== 'arXiv'),
+    labelFor: v => v,
+    matrixTableId: 'venue-corr-matrix',
+  });
+}
+
+// Category labels come from filters.js's shared window.CATEGORY_LABELS /
+// categoryLabel() -- this used to be its own local, private copy (predating
+// that consolidation) which had quietly drifted 5 categories behind the
+// shared one (traffic-flow-management, platooning-cruise-control,
+// testing-validation, sensor-calibration, vehicle-dynamics-powertrain all
+// fell back to the raw-slug-title-cased default here instead of their real
+// name). Every overlapping entry's wording already matched, so there was
+// nothing to port the other way.
+
+fetch('stats.json').then(r => r.json()).then(stats => {
+  const ins = stats.insights || {};
+  render(ins, stats);
+}).catch(err => {
+  document.body.insertAdjacentHTML('beforeend', '');
+  document.getElementById('growth-facts').textContent = 'Could not load stats.json: ' + err;
+});
+
+// The curated seed list (stats.datasets, see DATASET_SEED_TITLES in
+// aggregate.py) only covers verified AV datasets with hand-checked
+// citation graphs. When the reader asks for more series than that, extend
+// with the rest of the "Datasets" category -- ranked by how many in-corpus
+// citers we found for them -- instead of just refusing to show more.
+// Moved here from the retired Datasets page (user-requested).
+function extraDatasetsFromCategory(stats, curatedTitles, need) {
+  const seen = new Set(curatedTitles);
+  return (stats.all_papers || [])
+    .filter(p => p.category === 'dataset-benchmark-paper' && !seen.has(p.title))
+    .map(p => ({
+      name: p.title, paper_title: p.title, year: p.year, venue: p.venue,
+      also_introduced_in: [], citing_papers: p.citing_papers || [],
+      citing_count: (p.citing_papers || []).length,
+    }))
+    .sort((a, b) => b.citing_count - a.citing_count)
+    .slice(0, need);
+}
+
+// citing_papers (both on stats.datasets and on an all_papers entry) is just
+// a list of titles -- see aggregate.py -- so every consumer that needs a
+// citer's year resolves it against this map instead of the site shipping a
+// second denormalized copy of every citer's own fields.
+function resolveCitingYears(stats, citingTitles) {
+  const byTitle = resolveCitingYears._byTitle
+    || (resolveCitingYears._byTitle = new Map((stats.all_papers || []).map(p => [p.title, p])));
+  return (citingTitles || []).map(t => byTitle.get(t)).filter(Boolean);
+}
+
+function renderDatasetTimeline(stats, allDatasets, topN) {
+  const topDatasets = [...allDatasets].sort((a, b) => b.citing_count - a.citing_count).slice(0, topN);
+  const PALETTE = TIMELINE_PALETTE;
+
+  // Same rule as every other trend line on the site (see
+  // renderDimensionTimeline in filters.js) -- the partial current year is
+  // left off rather than drawn as a drop in dataset adoption.
+  const allYears = [...new Set(
+    topDatasets.flatMap(d => resolveCitingYears(stats, d.citing_papers).map(c => c.year)).filter(Boolean)
+  )].filter(y => y !== window.PARTIAL_YEAR).sort();
+
+  // In memory only for this pageview, not persisted -- a refresh always
+  // starts with every series visible.
+  const hidden = new Set();
+
+  const legend = document.getElementById('dataset-legend');
+  legend.innerHTML = '';
+  topDatasets.forEach((d, i) => {
+    const item = document.createElement('div');
+    item.className = 'legend-item' + (hidden.has(d.name) ? ' off' : '');
+    renderSwatchLabel(item, PALETTE[i % PALETTE.length], `${d.name} (${d.citing_count})`);
+    item.addEventListener('click', () => {
+      if (hidden.has(d.name)) hidden.delete(d.name); else hidden.add(d.name);
+      item.classList.toggle('off');
+      draw();
+    });
+    legend.appendChild(item);
+  });
+
+  function draw() {
+    const series = topDatasets
+      .filter(d => !hidden.has(d.name))
+      .map((d, i) => {
+        const byYear = {};
+        resolveCitingYears(stats, d.citing_papers).forEach(c => { if (c.year) byYear[c.year] = (byYear[c.year] || 0) + 1; });
+        const values = {};
+        allYears.forEach(yr => { values[yr] = byYear[yr] || 0; });
+        return { name: d.name, color: PALETTE[topDatasets.indexOf(d) % PALETTE.length], values };
+      });
+    lineChart(document.getElementById('dataset-chart'), document.getElementById('dataset-tooltip'),
+      series, allYears, v => `${v} paper${v === 1 ? '' : 's'}`, { yLabel: 'Citing papers per year' });
+  }
+  draw();
+}
+
+function render(ins, stats) {
+  // -- Dataset adoption over time --
+  const curatedDatasets = stats.datasets || [];
+  if (curatedDatasets.length) {
+    const curatedTitles = curatedDatasets.map(d => d.paper_title);
+    const n = renderTopNControl(document.getElementById('dataset-topn-container'), 'insights-datasets-topn', {
+      default: 10, min: 1, max: 40,
+      onChange: (topN) => renderDatasetTimeline(
+        stats,
+        [...curatedDatasets, ...(topN > curatedDatasets.length ? extraDatasetsFromCategory(stats, curatedTitles, topN - curatedDatasets.length) : [])],
+        topN,
+      ),
+    });
+    renderDatasetTimeline(
+      stats,
+      [...curatedDatasets, ...(n > curatedDatasets.length ? extraDatasetsFromCategory(stats, curatedTitles, n - curatedDatasets.length) : [])],
+      n,
+    );
+  }
+
+  // -- Best paper by year -- (computed here, not read from a server field,
+  // so it respects the citation-source toggle same as every other citation
+  // count on the site -- see the equivalent comment this replaced on
+  // index.html, moved here per user request.)
+  const bestByYearBody = document.getElementById('best-by-year-body');
+  const byYear = {};
+  // The current calendar year is still in progress, so its "most cited"
+  // paper isn't a fair comparison against the completed years -- leave it out.
+  const currentYear = new Date().getFullYear();
+  (stats.all_papers || []).forEach(p => {
+    if (!p.year || p.citations == null || p.year >= currentYear) return;
+    if (!byYear[p.year] || p.citations > byYear[p.year].citations) byYear[p.year] = p;
+  });
+  const bestByYearRows = Object.keys(byYear).sort().reverse().map(y => byYear[y]);
+  function renderBestByYearBody(rows) {
+    bestByYearBody.innerHTML = '';
+    rows.forEach(p => {
+      const link = document.createElement('a');
+      link.href = `paper.html?title=${encodeURIComponent(p.title)}`;
+      link.textContent = p.title;
+      bestByYearBody.appendChild(row([p.year, link, p.venue || '', p.citations]));
+    });
+  }
+  makeSortableSafe(bestByYearBody.closest('table'), bestByYearRows, [
+    { accessor: p => p.year, numeric: true },
+    { accessor: p => p.title, numeric: false },
+    { accessor: p => p.venue || '', numeric: false },
+    { accessor: p => p.citations, numeric: true },
+  ], renderBestByYearBody);
+
+  // -- Growth -- (aggregate.py already excludes the current, still-partial
+  // year from every field here; nothing to filter client-side). The two
+  // headline percentages are a compound annual growth rate computed
+  // client-side from corpus_growth's year arrays, over whatever window the
+  // "Compared to N years earlier" dropdown selects.
+  const gf = document.getElementById('growth-facts');
+  const growth = ins.corpus_growth || {};
+  const gYears = growth.years || [];
+  const growthBackSel = document.getElementById('growth-years-back');
+
+  function growthTile(container, value, label, tip) {
+    const card = document.createElement('div');
+    card.className = 'fact-card';
+    const big = document.createElement('div');
+    big.className = 'big accent';
+    big.textContent = value;
+    card.appendChild(big);
+    const lab = document.createElement('div');
+    lab.className = 'label';
+    lab.textContent = label;
+    card.appendChild(lab);
+    if (tip && typeof window.infoTip === 'function') card.appendChild(window.infoTip(tip));
+    container.appendChild(card);
+  }
+
+  function renderGrowthFacts() {
+    gf.innerHTML = '';
+    if (gYears.length < 2) return;
+    const lastIdx = gYears.length - 1;
+    const back = parseInt(growthBackSel && growthBackSel.value, 10) || 3;
+    const fromIdx = Math.max(0, lastIdx - back);
+    const intervals = lastIdx - fromIdx;
+    const cagr = (a, b) => (a > 0 && intervals > 0) ? (Math.pow(b / a, 1 / intervals) - 1) * 100 : null;
+    const tip = `Compound annual growth rate, ${gYears[fromIdx]} to ${gYears[lastIdx]} (complete years only).`;
+    const avPct = cagr(growth.av_papers[fromIdx], growth.av_papers[lastIdx]);
+    const allPct = cagr(growth.total_papers[fromIdx], growth.total_papers[lastIdx]);
+    if (avPct != null) growthTile(gf, `${avPct > 0 ? '+' : ''}${avPct.toFixed(1)}%`, 'AV paper growth', tip);
+    if (allPct != null) growthTile(gf, `${allPct > 0 ? '+' : ''}${allPct.toFixed(1)}%`, 'All paper growth', tip);
+  }
+  // Only offer look-back windows the data can actually cover: with N
+  // complete years, "compared to K years earlier" is meaningless for
+  // K >= N (it just clamps to the first year, so every larger K gives the
+  // same number). Disable those and snap the selection down if needed.
+  if (growthBackSel) {
+    const maxBack = Math.max(1, gYears.length - 1);
+    [...growthBackSel.options].forEach(o => { o.disabled = parseInt(o.value, 10) > maxBack; });
+    if ((parseInt(growthBackSel.value, 10) || 0) > maxBack) {
+      const enabled = [...growthBackSel.options].filter(o => !o.disabled);
+      if (enabled.length) growthBackSel.value = enabled[enabled.length - 1].value;
+    }
+  }
+  renderGrowthFacts();
+  if (growthBackSel) growthBackSel.addEventListener('change', renderGrowthFacts);
+
+  if (gYears.length) {
+    const series = [
+      { name: 'AV papers', color: PALETTE[0], values: Object.fromEntries(gYears.map((y, i) => [y, growth.av_papers[i]])) },
+      { name: 'All papers', color: PALETTE[1], values: Object.fromEntries(gYears.map((y, i) => [y, growth.total_papers[i]])) },
+    ];
+    const legend = document.getElementById('growth-legend');
+    series.forEach(s => {
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      const sw = document.createElement('span');
+      sw.className = 'swatch';
+      sw.style.background = s.color;
+      item.appendChild(sw);
+      item.appendChild(document.createTextNode(s.name));
+      legend.appendChild(item);
+    });
+    lineChart(document.getElementById('growth-chart'), document.getElementById('growth-tooltip'),
+      series, gYears, v => `${v.toLocaleString()} papers`, { yLabel: 'Papers per year (log)', log: true });
+  }
+
+  // -- Leadership --
+  const pf = document.getElementById('people-facts');
+  if (ins.most_prolific_author) {
+    const a = ins.most_prolific_author;
+    statTile(pf, a.name, 'Author with most papers', `${a.papers} papers, ${a.citations} total citations.`,
+      `author.html?name=${encodeURIComponent(a.name)}`);
+  }
+  if (ins.highest_impact_author) {
+    const a = ins.highest_impact_author;
+    // This ranking uses its own, stricter floor (see
+    // highest_impact_author_min_papers, aggregate.py) than the Authors
+    // page's adjustable one -- stated explicitly because otherwise this
+    // author's rank badge on their own page, computed with a much lower
+    // floor, can show a very different position with no visible reason
+    // why (user-reported: Oscar Beijbom read #1 here but #7 on his own
+    // page).
+    const minP = ins.highest_impact_author_min_papers;
+    statTile(pf, a.name, 'Author with most citations per paper',
+      `${a.avg_citations} citations/paper across ${a.papers} papers`
+      + (minP ? ` -- among authors with ${minP}+ papers, a stricter floor than the Authors page's own `
+        + `adjustable one. Their rank badge elsewhere on the site may differ, since that uses a lower floor.`
+        : '.'),
+      `author.html?name=${encodeURIComponent(a.name)}`);
+  }
+  if (ins.leading_institution) {
+    const i = ins.leading_institution;
+    statTile(pf, i.name, 'Institution with most citations', `${i.papers} papers, ${i.citations} total citations.`,
+      `institution.html?name=${encodeURIComponent(i.name)}`);
+  }
+  // Conflict-of-interest disclosure, rendered only when it actually applies
+  // -- i.e. when this site's own maintainer is one of the names the site has
+  // just put at the top of a ranking. Checked against the rendered tiles
+  // rather than hard-coded to a position, so it appears and disappears on
+  // its own as the corpus changes.
+  const maintainerTile = [ins.most_prolific_author, ins.highest_impact_author]
+    .some(a => a && a.name === window.SITE_MAINTAINER);
+  const disclosure = document.getElementById('maintainer-disclosure');
+  if (maintainerTile && disclosure) {
+    disclosure.textContent = `Disclosure: ${window.SITE_MAINTAINER}, named above, built and maintains `
+      + `AV Atlas. That ranking is produced by the same code as every other name on this site and is `
+      + `not adjusted either way, but you should know who is counting.`;
+    disclosure.hidden = false;
+  }
+  if (ins.most_cited_paper) {
+    const p = ins.most_cited_paper;
+    statTile(pf, p.short_title, 'Paper with most citations', `${p.citations.toLocaleString()} citations (${p.year}).`,
+      `paper.html?title=${encodeURIComponent(p.title)}`);
+  }
+
+  // -- Rising / declining categories -- computed client-side (not a stats.json
+  // field) so the "compared to N years earlier" dropdown can recompute
+  // instantly instead of needing a fixed set of server-precomputed windows.
+  renderCategoryTrends(stats);
+  renderCategoryCorrelation(stats);
+
+  // -- Collaboration -- (link to the paper, but no title text -- the point
+  // here is the number, and a long title crowds the card; click through if
+  // you want to know which paper it is)
+  const cf = document.getElementById('collab-facts');
+  if (ins.most_collaborative_paper) {
+    const p = ins.most_collaborative_paper;
+    statTile(cf, p.institution_count, 'Most institutions on one paper', null,
+      `paper.html?title=${encodeURIComponent(p.title)}`);
+  }
+  if (ins.most_international_paper) {
+    const p = ins.most_international_paper;
+    statTile(cf, p.country_count, 'Most countries on one paper', null,
+      `paper.html?title=${encodeURIComponent(p.title)}`);
+  }
+  const teamSizes = ins.avg_team_size_by_year || [];
+  if (teamSizes.length >= 2) {
+    const first = teamSizes[0], last = teamSizes[teamSizes.length - 1];
+    statTile(cf, `${first.avg_authors} → ${last.avg_authors}`, 'Average authors per paper');
+  }
+  if (teamSizes.length) {
+    const series = [{ name: 'Average authors per paper', color: PALETTE[3],
+      values: Object.fromEntries(teamSizes.map(t => [t.year, t.avg_authors])) }];
+    lineChart(document.getElementById('team-chart'), document.getElementById('team-tooltip'),
+      series, teamSizes.map(t => t.year), v => `${v} authors`, { yLabel: 'Avg. authors / paper' });
+  }
+
+  // -- Researcher careers --
+  const dist = ins.researcher_lifetime_distribution || [];
+  if (dist.length) {
+    barChart(document.getElementById('lifetime-dist-chart'), dist.map(d => d.lifetime === 14 ? '14+' : String(d.lifetime)),
+      dist.map(d => d.researchers), v => `${v.toLocaleString()} researchers`, { yLabel: 'Researchers (log-scale)', log: true });
+  }
+  const byLifetime = ins.citations_by_researcher_lifetime || [];
+  if (byLifetime.length) {
+    errorBarChart(document.getElementById('lifetime-citations-chart'), byLifetime, { yLabel: 'Median total citations (log-scale)', log: true });
+  }
+  // The binding requirement is "several influential papers", not the
+  // average -- an average alone cannot tell a consistently strong record
+  // apart from one co-authorship on a famous paper, which is what this list
+  // used to surface. Both the threshold and the required count come from
+  // aggregate.py so the description can't drift from the rule.
+  const minInfluential = ins.young_researchers_min_influential || 3;
+  const influentialAt = ins.influential_paper_threshold;
+  if (ins.young_researchers_cutoff_year) {
+    document.getElementById('young-researchers-note').textContent =
+      `A record of 3 years or less here, 5+ papers, still publishing in `
+      + `${ins.young_researchers_cutoff_year}, and ${minInfluential}+ papers in the corpus's most-cited `
+      + `10% (${influentialAt}+ in-corpus citations each). Ranked by that count, then citations per paper. `
+      + `A short record can also be an established researcher new to AV, or one name covering several people.`;
+  }
+  const influentialHead = document.getElementById('young-influential-head');
+  if (influentialHead && influentialAt) {
+    influentialHead.title = `Papers by this author with at least ${influentialAt} in-corpus citations `
+      + `-- the 90th percentile of cited papers in this corpus. Recomputed every build, so it tracks `
+      + `citation-graph coverage rather than being a fixed number.`;
+  }
+  const youngBody = document.getElementById('young-researchers-body');
+  const young = ins.most_promising_young_researchers || [];
+  function renderYoungBody(rows) {
+    youngBody.innerHTML = '';
+    rows.forEach(a => {
+      const name = document.createElement('a');
+      name.href = `author.html?name=${encodeURIComponent(a.name)}`;
+      name.textContent = a.name;
+      // Each metric its own column (user-requested), not folded into one
+      // "(first to last)" text string and a single combined "X cit./paper, Y
+      // papers" span.
+      youngBody.appendChild(row([name, a.first_year, a.last_year, a.lifetime, a.papers,
+        a.influential_papers ?? 'n/a', a.citations, a.avg_citations]));
+    });
+    if (!rows.length) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 8;
+      td.textContent = 'Not enough data yet to identify any.';
+      tr.appendChild(td);
+      youngBody.appendChild(tr);
+    }
+  }
+  makeSortableSafe(youngBody.closest('table'), young, [
+    { accessor: a => a.name, numeric: false },
+    { accessor: a => a.first_year, numeric: true },
+    { accessor: a => a.last_year, numeric: true },
+    { accessor: a => a.lifetime, numeric: true },
+    { accessor: a => a.papers, numeric: true },
+    { accessor: a => a.influential_papers ?? -Infinity, numeric: true },
+    { accessor: a => a.citations, numeric: true },
+    { accessor: a => a.avg_citations, numeric: true },
+  ], renderYoungBody);
+
+  // -- Citation patterns --
+  const cif = document.getElementById('citation-facts');
+  if (ins.self_citation_rate_pct != null) {
+    statTile(cif, `${ins.self_citation_rate_pct.toFixed(1)}%`, 'of raw citation edges are self-citations');
+  }
+  if (ins.citation_concentration) {
+    const c = ins.citation_concentration;
+    statTile(cif, `${c.top1pct_share_pct.toFixed(1)}%`, 'of all citations go to the top 1% of cited papers');
+    statTile(cif, `${c.top10pct_share_pct.toFixed(1)}%`, 'of all citations go to the top 10% of cited papers');
+  }
+
+  // -- Disruptive papers --
+  const disruption = ins.disruption_index;
+  const disruptionPanel = document.getElementById('disruption-panel');
+  if (disruption && disruption.scored_papers) {
+    const scoredNote = document.getElementById('disruption-scored-note');
+    if (scoredNote) scoredNote.textContent = `${disruption.scored_papers.toLocaleString()} papers currently have a computable score`;
+    const dif = document.getElementById('disruption-facts');
+    const meanLabel = disruption.mean_cd_index >= 0
+      ? 'average paper leans disruptive' : 'average paper leans consolidating';
+    statTile(dif, (disruption.mean_cd_index > 0 ? '+' : '') + disruption.mean_cd_index.toFixed(2), meanLabel);
+    statTile(dif, disruption.scored_papers.toLocaleString(), 'papers with a computable score');
+
+    function disruptionRow(list, item, up) {
+      const li = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = `paper.html?title=${encodeURIComponent(item.title)}`;
+      link.textContent = `${item.short_title}${item.year ? ` (${item.year})` : ''}`;
+      link.style.color = 'inherit';
+      li.appendChild(link);
+      const delta = document.createElement('span');
+      delta.className = 'delta ' + (up ? 'up' : 'down');
+      delta.textContent = (item.cd_index > 0 ? '+' : '') + item.cd_index.toFixed(2);
+      // cd_index only takes a handful of exact fractions, so many papers
+      // tie at the same score (ties are broken server-side by citer count,
+      // see aggregate.py) -- showing the count here is what actually
+      // explains the ranking to a reader, not just the tied score itself.
+      if (item.n_citers) {
+        delta.title = `Based on ${item.n_citers.toLocaleString()} citer${item.n_citers === 1 ? '' : 's'}`;
+      }
+      li.appendChild(delta);
+      list.appendChild(li);
+    }
+    const disruptiveList = document.getElementById('disruptive-list');
+    // Older stats.json builds don't carry a raw citation count on each
+    // disruption entry yet (only n_citers, the count of citers the CD score
+    // itself is based on) -- fall back to that until the next full rebuild
+    // adds "citations" to disruption_entry() in aggregate.py.
+    function paperCitations(p) { return p.citations != null ? p.citations : p.n_citers; }
+    function renderDisruptionLists(limit, minCitations) {
+      disruptiveList.innerHTML = '';
+      const rows = (disruption.most_disruptive || []).filter(p => (paperCitations(p) || 0) >= minCitations);
+      rows.slice(0, limit).forEach(p => disruptionRow(disruptiveList, p, true));
+      if (!rows.length) {
+        disruptiveList.innerHTML = '<li>Not enough data yet.</li>';
+      }
+    }
+    const disruptionLimitSel = document.getElementById('disruption-limit');
+    const disruptionMinCitationsSel = document.getElementById('disruption-min-citations');
+    let disruptionLimitStored = null, disruptionMinCitationsStored = null;
+    try {
+      disruptionLimitStored = sessionStorage.getItem('insights-disruption-limit');
+      disruptionMinCitationsStored = sessionStorage.getItem('insights-disruption-min-citations');
+    } catch (e) { /* ignore */ }
+    if (disruptionLimitStored) disruptionLimitSel.value = disruptionLimitStored;
+    if (disruptionMinCitationsStored) disruptionMinCitationsSel.value = disruptionMinCitationsStored;
+    function redrawDisruption() {
+      renderDisruptionLists(parseInt(disruptionLimitSel.value, 10), parseInt(disruptionMinCitationsSel.value, 10));
+    }
+    redrawDisruption();
+    disruptionLimitSel.addEventListener('change', () => {
+      try { sessionStorage.setItem('insights-disruption-limit', disruptionLimitSel.value); } catch (e) { /* ignore */ }
+      redrawDisruption();
+    });
+    disruptionMinCitationsSel.addEventListener('change', () => {
+      try { sessionStorage.setItem('insights-disruption-min-citations', disruptionMinCitationsSel.value); } catch (e) { /* ignore */ }
+      redrawDisruption();
+    });
+  } else if (disruptionPanel) {
+    disruptionPanel.style.display = 'none';
+  }
+
+  // -- Venue relevance --
+  function venueRow(list, v) {
+    const li = document.createElement('li');
+    const name = document.createElement('span');
+    name.textContent = `${v.venue} (${v.av_papers.toLocaleString()} / ${v.total_papers.toLocaleString()})`;
+    li.appendChild(name);
+    const pct = document.createElement('span');
+    pct.className = 'pct';
+    pct.textContent = `${v.av_relevance_pct.toFixed(1)}%`;
+    li.appendChild(pct);
+    list.appendChild(li);
+  }
+  const vh = document.getElementById('venue-high-list'), vl = document.getElementById('venue-low-list');
+  const venueRelevanceAll = ins.venue_relevance || [];
+  const venueMinSel = document.getElementById('venue-relevance-min');
+  function renderVenueRelevance() {
+    const minPapers = parseInt(venueMinSel.value, 10) || 100;
+    // By AV paper count, not total -- matches what "Min.
+    // papers" means everywhere else on the site (Venues' own Min. filter is
+    // AV-paper-count based too). Filtering by TOTAL papers instead let a
+    // venue with zero real AV output (e.g. MICCAI, a medical-imaging
+    // conference with a couple of tangentially-discovered papers) clear an
+    // 80-total-paper bar despite not being an AV venue at all -- user-
+    // reported: "I don't believe it has 80 AV relevant papers. It is not
+    // shown on Venues."
+    const filtered = venueRelevanceAll.filter(v => v.av_papers >= minPapers);
+    vh.innerHTML = ''; vl.innerHTML = '';
+    filtered.slice(0, 5).forEach(v => venueRow(vh, v));
+    [...filtered].slice(-5).reverse().forEach(v => venueRow(vl, v));
+    if (!filtered.length) {
+      vh.innerHTML = '<li style="color:var(--muted);">No venues meet this threshold.</li>';
+    }
+  }
+  if (venueMinSel) {
+    try {
+      const stored = sessionStorage.getItem('insights-venue-relevance-min');
+      if (stored && [...venueMinSel.options].some(o => o.value === stored)) venueMinSel.value = stored;
+    } catch (e) { /* ignore */ }
+    venueMinSel.addEventListener('change', () => {
+      try { sessionStorage.setItem('insights-venue-relevance-min', venueMinSel.value); } catch (e) { /* ignore */ }
+      renderVenueRelevance();
+    });
+  }
+  renderVenueRelevance();
+  renderVenueCorrelation(stats);
+}
+
+// Shared line-chart renderer (same as every other timeline on this site).
+function lineChart(svgEl, tooltipEl, series, years, formatValue, opts) {
+  opts = opts || {};
+  svgEl.innerHTML = '';
+  if (!years.length || !series.some(s => Object.values(s.values).some(v => v != null))) {
+    const msg = document.createElementNS(svgEl.namespaceURI, 'text');
+    msg.setAttribute('x', 20); msg.setAttribute('y', 30);
+    msg.setAttribute('fill', 'var(--muted)'); msg.setAttribute('font-size', '13');
+    msg.textContent = 'No data.';
+    svgEl.appendChild(msg);
+    return;
+  }
+  const PAD_L = opts.yLabel ? 56 : 46;
+  const W = 1050, H = 280, PAD_R = 16, PAD_T = 16, PAD_B = 28;
+  svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const ns = svgEl.namespaceURI;
+  if (opts.yLabel) {
+    const yLabelEl = document.createElementNS(ns, 'text');
+    yLabelEl.setAttribute('x', 14); yLabelEl.setAttribute('y', (PAD_T + (H - PAD_B)) / 2);
+    yLabelEl.setAttribute('text-anchor', 'middle'); yLabelEl.setAttribute('class', 'axis-label');
+    yLabelEl.setAttribute('transform', `rotate(-90, 14, ${(PAD_T + (H - PAD_B)) / 2})`);
+    yLabelEl.textContent = opts.yLabel;
+    svgEl.appendChild(yLabelEl);
+  }
+  const allValues = series.flatMap(s => years.map(y => s.values[y])).filter(v => v != null);
+  const dataMax = Math.max(1e-9, ...allValues);
+  const useLog = !!opts.log;
+  const logLo = 1;
+  const logHi = Math.max(10, Math.pow(10, Math.ceil(Math.log10(Math.max(logLo + 1e-9, dataMax)))));
+  const maxV = typeof window.niceAxisMax === 'function' ? window.niceAxisMax(dataMax) : dataMax;
+  const x = i => PAD_L + (years.length <= 1 ? 0 : (i / (years.length - 1)) * (W - PAD_L - PAD_R));
+  const y = useLog
+    ? v => H - PAD_B - ((Math.log10(Math.max(logLo, v)) - Math.log10(logLo)) / (Math.log10(logHi) - Math.log10(logLo))) * (H - PAD_T - PAD_B)
+    : v => H - PAD_B - (Math.max(0, v) / maxV) * (H - PAD_T - PAD_B);
+  const gridVals = useLog
+    ? Array.from({ length: Math.round(Math.log10(logHi)) + 1 }, (_, e) => Math.pow(10, e))
+    : Array.from({ length: 5 }, (_, i) => (maxV / 4) * i);
+  gridVals.forEach((v, i) => {
+    const gy = y(v);
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', PAD_L); line.setAttribute('x2', W - PAD_R);
+    line.setAttribute('y1', gy); line.setAttribute('y2', gy);
+    line.setAttribute('class', 'axis-line'); line.setAttribute('stroke-opacity', i === 0 ? 0.6 : 0.25);
+    svgEl.appendChild(line);
+    const label = document.createElementNS(ns, 'text');
+    label.setAttribute('x', PAD_L - 6); label.setAttribute('y', gy + 3);
+    label.setAttribute('text-anchor', 'end'); label.setAttribute('class', 'axis-label');
+    label.textContent = opts.formatAxis ? opts.formatAxis(v)
+      : useLog ? v.toLocaleString() : Math.round(v);
+    svgEl.appendChild(label);
+  });
+  const xStep = Math.max(1, Math.ceil(years.length / 18));
+  years.forEach((yr, i) => {
+    if (i % xStep !== 0 && i !== years.length - 1) return;
+    const label = document.createElementNS(ns, 'text');
+    label.setAttribute('x', x(i)); label.setAttribute('y', H - PAD_B + 16);
+    label.setAttribute('text-anchor', 'middle'); label.setAttribute('class', 'axis-label');
+    label.textContent = yr;
+    svgEl.appendChild(label);
+  });
+  const crosshair = document.createElementNS(ns, 'line');
+  crosshair.setAttribute('class', 'crosshair');
+  crosshair.setAttribute('y1', PAD_T); crosshair.setAttribute('y2', H - PAD_B);
+  crosshair.style.display = 'none';
+  svgEl.appendChild(crosshair);
+  const seriesEls = series.map(s => {
+    let d = '';
+    let drawing = false;
+    years.forEach((yr, i) => {
+      const v = s.values[yr];
+      if (v == null) { drawing = false; return; }
+      d += (drawing ? 'L' : 'M') + x(i) + ',' + y(v) + ' ';
+      drawing = true;
+    });
+    const path = document.createElementNS(ns, 'path');
+    path.setAttribute('d', d.trim());
+    path.setAttribute('class', 'series-line');
+    path.setAttribute('stroke', s.color);
+    svgEl.appendChild(path);
+    years.forEach((yr, i) => {
+      const v = s.values[yr];
+      if (v == null) return;
+      const dot = document.createElementNS(ns, 'circle');
+      dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(v)); dot.setAttribute('r', 3);
+      dot.setAttribute('fill', s.color);
+      dot.setAttribute('class', 'series-dot');
+      svgEl.appendChild(dot);
+    });
+    return { series: s };
+  });
+  years.forEach((yr, i) => {
+    const colW = years.length > 1 ? (W - PAD_L - PAD_R) / (years.length - 1) : (W - PAD_L - PAD_R);
+    const hit = document.createElementNS(ns, 'rect');
+    hit.setAttribute('x', x(i) - colW / 2); hit.setAttribute('y', PAD_T);
+    hit.setAttribute('width', colW); hit.setAttribute('height', H - PAD_T - PAD_B);
+    hit.setAttribute('fill', 'transparent');
+    hit.addEventListener('mouseenter', () => {
+      crosshair.style.display = '';
+      crosshair.setAttribute('x1', x(i)); crosshair.setAttribute('x2', x(i));
+      tooltipEl.textContent = '';
+      const yearEl = document.createElement('div');
+      yearEl.className = 'tt-year';
+      yearEl.textContent = yr;
+      tooltipEl.appendChild(yearEl);
+      const visible = seriesEls.filter(se => se.series.values[yr] != null)
+        .sort((a, b) => b.series.values[yr] - a.series.values[yr]);
+      visible.forEach(se => {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'tt-row';
+        const sw = document.createElement('span');
+        sw.className = 'tt-swatch';
+        sw.style.background = se.series.color;
+        rowEl.appendChild(sw);
+        rowEl.appendChild(document.createTextNode(se.series.name));
+        const val = document.createElement('span');
+        val.className = 'tt-val';
+        val.textContent = formatValue(se.series.values[yr]);
+        rowEl.appendChild(val);
+        tooltipEl.appendChild(rowEl);
+      });
+      tooltipEl.style.display = 'block';
+      tooltipEl.style.left = Math.min(W - 220, Math.max(0, x(i) - 60)) / W * 100 + '%';
+      tooltipEl.style.top = '8px';
+    });
+    hit.addEventListener('mouseleave', () => {
+      crosshair.style.display = 'none';
+      tooltipEl.style.display = 'none';
+    });
+    svgEl.appendChild(hit);
+  });
+  svgEl.appendChild(crosshair);
+}
+
+// Shared by every log-scale chart below. Values are floored at 1 for
+// positioning (log10(0) is -Infinity) -- a 0-count bucket just draws at the
+// same baseline a count-of-1 bucket would, the standard way to handle a log
+// axis whose data includes zero.
+function log10Floored(v) { return Math.log10(Math.max(v, 1)); }
+function logGridlineValues(maxV) {
+  const topExp = Math.max(1, Math.ceil(log10Floored(maxV)));
+  const vals = [];
+  for (let e = 0; e <= topExp; e++) vals.push(Math.pow(10, e));
+  return vals;
+}
+
+// A plain vertical bar chart -- one bar per category label (not a year
+// axis, so it doesn't reuse lineChart's x(i) time-series assumptions), used
+// for the researcher-lifetime distribution. Hovering a bar shows its exact
+// value via a native <title>, same low-overhead approach network.html uses
+// for its node tooltips, rather than building a second positioned-div
+// tooltip component just for this one chart.
+function barChart(svgEl, labels, values, formatValue, opts) {
+  opts = opts || {};
+  svgEl.innerHTML = '';
+  if (!labels.length) return;
+  const PAD_L = opts.yLabel ? 56 : 40, PAD_R = 16, PAD_T = 16, PAD_B = 28;
+  const W = 1050, H = 220;
+  svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const ns = svgEl.namespaceURI;
+  if (opts.yLabel) {
+    const yLabelEl = document.createElementNS(ns, 'text');
+    yLabelEl.setAttribute('x', 14); yLabelEl.setAttribute('y', (PAD_T + (H - PAD_B)) / 2);
+    yLabelEl.setAttribute('text-anchor', 'middle'); yLabelEl.setAttribute('class', 'axis-label');
+    yLabelEl.setAttribute('transform', `rotate(-90, 14, ${(PAD_T + (H - PAD_B)) / 2})`);
+    yLabelEl.textContent = opts.yLabel;
+    svgEl.appendChild(yLabelEl);
+  }
+  const maxV = Math.max(1e-9, ...values);
+  const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+  const colW = plotW / labels.length;
+  const barW = colW * 0.62;
+  const logMax = log10Floored(maxV);
+  const yFor = v => opts.log
+    ? (H - PAD_B) - (log10Floored(v) / (logMax || 1)) * plotH
+    : (H - PAD_B) - (v / maxV) * plotH;
+  const gridValues = opts.log ? logGridlineValues(maxV) : [0, 1, 2, 3, 4].map(i => (maxV / 4) * i);
+  gridValues.forEach((v, i) => {
+    const gy = yFor(v);
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', PAD_L); line.setAttribute('x2', W - PAD_R);
+    line.setAttribute('y1', gy); line.setAttribute('y2', gy);
+    line.setAttribute('class', 'axis-line'); line.setAttribute('stroke-opacity', i === 0 ? 0.6 : 0.25);
+    svgEl.appendChild(line);
+    const label = document.createElementNS(ns, 'text');
+    label.setAttribute('x', PAD_L - 6); label.setAttribute('y', gy + 3);
+    label.setAttribute('text-anchor', 'end'); label.setAttribute('class', 'axis-label');
+    label.textContent = Math.round(v).toLocaleString();
+    svgEl.appendChild(label);
+  });
+  labels.forEach((lab, i) => {
+    const cx = PAD_L + colW * i + colW / 2;
+    const v = values[i] || 0;
+    const barTop = yFor(v);
+    const barH = (H - PAD_B) - barTop;
+    const rect = document.createElementNS(ns, 'rect');
+    rect.setAttribute('x', cx - barW / 2); rect.setAttribute('y', barTop);
+    rect.setAttribute('width', barW); rect.setAttribute('height', Math.max(0, barH));
+    rect.setAttribute('fill', PALETTE[1]); rect.setAttribute('opacity', '0.85');
+    rect.setAttribute('rx', '2');
+    const title = document.createElementNS(ns, 'title');
+    title.textContent = `${lab} years: ${formatValue(v)}`;
+    rect.appendChild(title);
+    svgEl.appendChild(rect);
+    const xLabel = document.createElementNS(ns, 'text');
+    xLabel.setAttribute('x', cx); xLabel.setAttribute('y', H - PAD_B + 16);
+    xLabel.setAttribute('text-anchor', 'middle'); xLabel.setAttribute('class', 'axis-label');
+    xLabel.textContent = lab;
+    svgEl.appendChild(xLabel);
+  });
+}
+
+// Mean citations per researcher-lifetime bucket, with a shaded ±1-stdev
+// band -- the standard way to show "here's the average AND how spread out
+// the real values are around it" in one figure, rather than a bare mean
+// line that reads as more precise/consistent than the underlying data
+// actually is.
+function errorBarChart(svgEl, rows, opts) {
+  opts = opts || {};
+  svgEl.innerHTML = '';
+  if (!rows.length) return;
+  const PAD_L = opts.yLabel ? 56 : 40, PAD_R = 16, PAD_T = 16, PAD_B = 28;
+  const W = 1050, H = 260;
+  svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const ns = svgEl.namespaceURI;
+  if (opts.yLabel) {
+    const yLabelEl = document.createElementNS(ns, 'text');
+    yLabelEl.setAttribute('x', 14); yLabelEl.setAttribute('y', (PAD_T + (H - PAD_B)) / 2);
+    yLabelEl.setAttribute('text-anchor', 'middle'); yLabelEl.setAttribute('class', 'axis-label');
+    yLabelEl.setAttribute('transform', `rotate(-90, 14, ${(PAD_T + (H - PAD_B)) / 2})`);
+    yLabelEl.textContent = opts.yLabel;
+    svgEl.appendChild(yLabelEl);
+  }
+  // p25/p75 instead of mean+-stdev -- see aggregate.py's comment on
+  // citations_by_researcher_lifetime for why (mean-stdev routinely went
+  // negative for this heavily right-skewed data and got invisibly clamped
+  // to the axis; a percentile band can't do that, its edges are always real
+  // values present in the data).
+  const maxV = Math.max(1e-9, ...rows.map(r => r.p75_citations));
+  const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+  const x = i => rows.length <= 1 ? PAD_L + plotW / 2 : PAD_L + (i / (rows.length - 1)) * plotW;
+  const logMax = log10Floored(maxV);
+  const y = opts.log
+    ? (v => (H - PAD_B) - (log10Floored(Math.max(0, v)) / (logMax || 1)) * plotH)
+    : (v => H - PAD_B - (Math.max(0, v) / maxV) * plotH);
+  const gridValues = opts.log ? logGridlineValues(maxV) : [0, 1, 2, 3, 4].map(i => (maxV / 4) * i);
+  gridValues.forEach((v, i) => {
+    const gy = y(v);
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', PAD_L); line.setAttribute('x2', W - PAD_R);
+    line.setAttribute('y1', gy); line.setAttribute('y2', gy);
+    line.setAttribute('class', 'axis-line'); line.setAttribute('stroke-opacity', i === 0 ? 0.6 : 0.25);
+    svgEl.appendChild(line);
+    const label = document.createElementNS(ns, 'text');
+    label.setAttribute('x', PAD_L - 6); label.setAttribute('y', gy + 3);
+    label.setAttribute('text-anchor', 'end'); label.setAttribute('class', 'axis-label');
+    label.textContent = Math.round(v).toLocaleString();
+    svgEl.appendChild(label);
+  });
+  // Shaded p25-p75 band, drawn as one filled path so it reads as a
+  // continuous region rather than a stack of separate per-point rectangles.
+  let bandD = rows.map((r, i) => `${i === 0 ? 'M' : 'L'}${x(i)},${y(r.p75_citations)}`).join(' ');
+  bandD += ' ' + rows.slice().reverse().map((r, j) => {
+    const i = rows.length - 1 - j;
+    return `L${x(i)},${y(r.p25_citations)}`;
+  }).join(' ') + ' Z';
+  const band = document.createElementNS(ns, 'path');
+  band.setAttribute('d', bandD);
+  band.setAttribute('fill', PALETTE[2]); band.setAttribute('opacity', '0.15');
+  svgEl.appendChild(band);
+  const lineD = rows.map((r, i) => `${i === 0 ? 'M' : 'L'}${x(i)},${y(r.median_citations)}`).join(' ');
+  const line = document.createElementNS(ns, 'path');
+  line.setAttribute('d', lineD);
+  line.setAttribute('class', 'series-line');
+  line.setAttribute('stroke', PALETTE[2]);
+  svgEl.appendChild(line);
+  rows.forEach((r, i) => {
+    const dot = document.createElementNS(ns, 'circle');
+    dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(r.median_citations)); dot.setAttribute('r', 3.5);
+    dot.setAttribute('fill', PALETTE[2]);
+    const title = document.createElementNS(ns, 'title');
+    title.textContent = `Career span ${r.lifetime}: median ${r.median_citations} citations, ` +
+      `IQR ${r.p25_citations}-${r.p75_citations} (${r.researchers} researchers)`;
+    dot.appendChild(title);
+    svgEl.appendChild(dot);
+    const xLabel = document.createElementNS(ns, 'text');
+    xLabel.setAttribute('x', x(i)); xLabel.setAttribute('y', H - PAD_B + 16);
+    xLabel.setAttribute('text-anchor', 'middle'); xLabel.setAttribute('class', 'axis-label');
+    // aggregate.py caps/lumps every lifetime >=14 into one "14" bucket
+    // (this corpus only indexes 2012 onward, so a real 14-year lifetime is
+    // already close to the corpus's own age) -- labeled "14+" so that
+    // lumping is visible on the axis, not read as "exactly 14 years".
+    xLabel.textContent = r.lifetime >= 14 ? '14+' : r.lifetime;
+    svgEl.appendChild(xLabel);
+  });
+}
+</script>
+<script src="nav.js?v=1789288051"></script>
+<script src="sortable.js?v=1789288051"></script>
+</body>
+</html>

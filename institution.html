@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas: Institution</title>
+<meta name="description" content="An institution's publication record within autonomous vehicle research: papers, citations, and top authors.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AV Atlas">
+<meta property="og:title" content="AV Atlas: Institution">
+<meta property="og:description" content="An institution's publication record within autonomous vehicle research: papers, citations, and top authors.">
+<meta property="og:url" content="https://nightrome.github.io/av-atlas/institution.html">
+<meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AV Atlas: Institution">
+<meta name="twitter:description" content="An institution's publication record within autonomous vehicle research: papers, citations, and top authors.">
+<meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css?v=1789288051">
+<link rel="stylesheet" href="theme-light.css?v=1789288051">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .header { display: flex; gap: 20px; align-items: center; margin-bottom: 8px; }
+  .avatar {
+    width: 72px; height: 72px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.3em; color: #fff; flex-shrink: 0; overflow: hidden; background: var(--panel2);
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: contain; }
+  .header h2 { margin: 0 0 4px; font-size: 1.5em; }
+  .header .tags { color: var(--muted); font-size: 0.9em; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0; }
+  .stat-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; position: relative; }
+  .stat-tile .info-tip { position: absolute; top: 10px; right: 10px; }
+  .stat-tile .value { font-size: 1.6em; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stat-tile .label { color: var(--muted); font-size: 0.82em; margin-top: 2px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+  .panel h2 { margin-top: 0; font-size: 1.1em; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover { background: var(--panel2); }
+  td a { color: var(--accent); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  .chart { display: flex; align-items: flex-end; gap: 3px; height: 100px; padding: 4px 0 0; border-bottom: 2px solid var(--border); }
+  .chart .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+  .chart .bar { width: 100%; max-width: 26px; border-radius: 4px 4px 0 0; background: var(--accent); min-height: 2px; }
+  .chart .xlabel { font-size: 0.68em; color: var(--muted); margin-top: 4px; white-space: nowrap; }
+  .chart .tooltip {
+    display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: var(--panel); font-size: 0.72em; padding: 3px 7px; border-radius: 5px;
+    white-space: nowrap; margin-bottom: 4px; z-index: 5;
+  }
+  .chart .bar-wrap:hover .tooltip { display: block; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<div id="detail-back-container"></div>
+
+<div class="header">
+  <div class="avatar" id="avatar"></div>
+  <div>
+    <h2 id="name">…</h2>
+    <div class="tags" id="tags"></div>
+  </div>
+</div>
+
+<div id="rank-badges" class="rank-badges"></div>
+
+<div class="stat-grid" id="stat-grid"></div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2>Papers by year</h2><span class="info-tip" tabindex="0" role="img" aria-label="AV-relevant papers crediting this institution, by publication year. Hover a bar for its citation total." data-tip="AV-relevant papers crediting this institution, by publication year. Hover a bar for its citation total.">i</span></div>
+  <div class="chart" id="year-chart"></div>
+</div>
+
+<div class="cols">
+  <div class="panel">
+    <div class="panel-title-row"><h2>Top authors here</h2><span class="info-tip" tabindex="0" role="img" aria-label="The most-published authors whose own stated affiliation is this institution." data-tip="The most-published authors whose own stated affiliation is this institution.">i</span></div>
+    <table><thead><tr><th>Author</th><th>Years</th><th class="num">Papers</th><th class="num" data-term="citations">Citations</th></tr></thead>
+    <tbody id="authors-body"></tbody></table>
+  </div>
+  <div class="panel">
+    <div class="panel-title-row"><h2>Top categories</h2><span class="info-tip" tabindex="0" role="img" aria-label="The research categories this institution&#x27;s AV papers fall into, most common first." data-tip="The research categories this institution&#x27;s AV papers fall into, most common first.">i</span></div>
+    <table><thead><tr><th>Category</th><th class="num">Papers</th></tr></thead>
+    <tbody id="categories-body"></tbody></table>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2>Other affiliations of members</h2><span class="info-tip" tabindex="0" role="img" aria-label="Every OTHER institution this institution&#x27;s own authors have also been affiliated with in the corpus, and how many distinct members that covers -- e.g. how many people here also have MIT in their history." data-tip="Every OTHER institution this institution&#x27;s own authors have also been affiliated with in the corpus, and how many distinct members that covers -- e.g. how many people here also have MIT in their history.">i</span></div>
+  <table><thead><tr><th>Institution</th><th class="num">Members</th></tr></thead>
+  <tbody id="other-affiliations-body"></tbody></table>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2>Papers</h2>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Papers crediting this institution, most-cited first." data-tip="Papers crediting this institution, most-cited first.">i</span></div>
+  </div>
+  <div id="papers-pagination"></div>
+  <table><thead><tr><th>Title</th><th>Year</th><th>Venue</th><th>Category</th><th class="num" data-term="citations">Citations</th></tr></thead>
+  <tbody id="papers-body"></tbody></table>
+</div>
+
+<script src="filters.js?v=1789288051"></script>
+<script>
+const backLink = renderBackLink();
+if (backLink) document.getElementById('detail-back-container').appendChild(backLink);
+
+function hashString(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+function colorFor(name) { return `hsl(${hashString(name) % 360}, 60%, 45%)`; }
+function initials(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  return parts.length <= 1 ? name.slice(0, 3) : parts.map(p => p[0]).join('').slice(0, 3);
+}
+
+function stat(value, label, opts) {
+  const tile = document.createElement('div');
+  tile.className = 'stat-tile';
+  const valueEl = document.createElement('div');
+  valueEl.className = 'value';
+  const labelEl = document.createElement('div');
+  labelEl.className = 'label';
+  labelEl.textContent = label;
+  tile.appendChild(valueEl);
+  tile.appendChild(labelEl);
+  if (typeof value === 'number' && isFinite(value)) animateCount(valueEl, value, opts);
+  else valueEl.textContent = value;
+  return tile;
+}
+
+const params = new URLSearchParams(location.search);
+const name = params.get('name') || '';
+document.getElementById('name').textContent = name || 'Unknown institution';
+setDetailPageMeta(name, name
+  ? `${name}'s autonomous vehicle research in AV Atlas: papers, citations within AV research, and the researchers behind them.`
+  : null);
+
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
+  document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
+});
+
+function row(cells) {
+  const tr = document.createElement('tr');
+  cells.forEach((c, i) => {
+    const td = document.createElement('td');
+    if (i > 0 && typeof c === 'number') td.className = 'num';
+    if (c instanceof Node) td.appendChild(c);
+    else td.textContent = c;
+    tr.appendChild(td);
+  });
+  return tr;
+}
+
+function titleLink(p) {
+  const a = document.createElement('a');
+  a.href = `paper.html?title=${encodeURIComponent(p.title)}`;
+  a.className = 'truncate-cell';
+  a.textContent = p.title;
+  a.title = p.title;
+  return a;
+}
+
+function render(stats) {
+  const papers = (stats.all_papers || []).filter(p => (p.institutions || []).includes(name));
+
+  // Where this institution sits on the Institutions overview page's default ranking.
+  try {
+    renderRankBadges(document.getElementById('rank-badges'), computeEntityRanks(stats).institution(name));
+  } catch (e) { /* ranking is a top-of-page extra, never block the page for it */ }
+
+  const avatar = document.getElementById('avatar');
+  const imageUrl = (stats.institution_images || {})[name];
+  if (imageUrl) {
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = name;
+    img.referrerPolicy = 'no-referrer';
+    avatar.appendChild(img);
+  } else {
+    avatar.style.background = colorFor(name);
+    avatar.textContent = initials(name);
+  }
+
+  // stats.institution_countries is this institution's single resolved
+  // country (see aggregate.py -- sourced from the curated
+  // data/institution_countries.json, not per-paper text parsing). Used to
+  // union p.countries across every paper crediting this institution
+  // instead, which meant one mis-parsed affiliation address on any single
+  // paper (out of what can be hundreds for a large institution) polluted
+  // this line permanently (user-reported: "the countries of Tsinghua
+  // University are a mess"). Same fix already applied to the coauthor/
+  // citing-author Country columns elsewhere on the site, for the same
+  // "two independent lookups can disagree" reason.
+  document.getElementById('tags').textContent = (stats.institution_countries || {})[name] || 'Country not yet resolved';
+
+  const citedPapers = papers.filter(p => p.citations != null);
+  const totalCitations = citedPapers.reduce((s, p) => s + p.citations, 0);
+  const avg = citedPapers.length ? Math.round((totalCitations / citedPapers.length) * 10) / 10 : null;
+  const authorSet = new Set();
+  papers.forEach(p => (p.authors || []).forEach(a => {
+    // Only count an author here if this institution is actually among their
+    // listed affiliations somewhere in the corpus wouldn't be resolvable
+    // cheaply client-side, so this is a looser "co-appeared on a paper
+    // crediting this institution" count -- consistent with how the rest of
+    // the site (aggregateByDimension) already attributes a paper's authors
+    // to its institutions without a strict per-author mapping.
+    authorSet.add(a);
+  }));
+
+  const grid = document.getElementById('stat-grid');
+  grid.appendChild(stat(papers.length, 'AV papers in corpus'));
+  grid.appendChild(stat(totalCitations, 'Citations'));
+  grid.appendChild(stat(avg == null ? 'n/a' : avg, 'Citations / paper', { decimals: 1 }));
+  grid.appendChild(stat(authorSet.size, 'Distinct authors credited'));
+  // Nested inside the first tile rather than floating above the grid in
+  // the page's bare background -- see author.html's identical fix for why
+  // (same "i logo must be inside the white box" issue, same markup).
+  if (grid.firstElementChild) {
+    grid.firstElementChild.appendChild(infoTip(
+      "This institution's totals in the corpus: AV papers, in-corpus citations, citations per paper, and distinct authors credited."));
+  }
+
+  const yearAgg = {};
+  papers.forEach(p => {
+    if (!p.year) return;
+    yearAgg[p.year] = (yearAgg[p.year] || 0) + 1;
+  });
+  // Fill the whole span between the first and last active year, so years
+  // with no papers show as an empty slot rather than being dropped from the
+  // axis (which silently compresses a gap into a continuous-looking run).
+  const activeYears = Object.keys(yearAgg).map(Number).sort((a, b) => a - b);
+  const years = [];
+  if (activeYears.length) {
+    for (let y = activeYears[0]; y <= activeYears[activeYears.length - 1]; y++) years.push(y);
+  }
+  const chart = document.getElementById('year-chart');
+  const maxC = Math.max(1, ...years.map(y => yearAgg[y] || 0));
+  years.forEach(y => {
+    const v = yearAgg[y] || 0;
+    const wrap = document.createElement('div');
+    wrap.className = 'bar-wrap';
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.style.height = (v === 0 ? 0 : Math.max(3, (v / maxC) * 100)) + '%';
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = `${y}: ${v} paper${v === 1 ? '' : 's'}`;
+    wrap.appendChild(tooltip);
+    wrap.appendChild(bar);
+    const label = document.createElement('div');
+    label.className = 'xlabel';
+    label.textContent = y;
+    wrap.appendChild(label);
+    chart.appendChild(wrap);
+  });
+  if (!years.length) chart.textContent = 'No dated papers for this institution.';
+
+  // Prefer the precise per-author list (stats.institution_authors): built
+  // server-side from each author's OWN authors_detail affiliation, never a
+  // co-author's -- the previous "every author on a paper crediting this
+  // institution" approach wrongly listed people who never worked here
+  // (confirmed on real data: a Waymo researcher was showing as a top author
+  // of Google purely because a co-author on a shared paper is
+  // Google-affiliated). Only institutions with zero authors_detail coverage
+  // fall back to the old paper-level approach, so something still shows
+  // rather than an empty table.
+  const preciseAuthors = (stats.institution_authors || {})[name];
+  const authors = preciseAuthors
+    ? preciseAuthors.map(a => ({
+        name: a.name, papers: a.papers, citations: a.citations,
+        first_year: a.first_year, last_year: a.last_year,
+      }))
+    : aggregateByDimension(papers, p => p.authors, { minPapers: 0 });
+  // By citations, not paper count -- sorting by papers alone buried
+  // single-paper authors with a genuinely high-impact paper below dozens of
+  // low-citation multi-paper authors (user-flagged: Tsinghua's "best paper"
+  // stat tile showed 148 citations, but the highest total shown in this
+  // table -- sorted by papers -- was only 44; the 148-citation paper's
+  // authors were real, just single-paper, so they never made the top 15).
+  authors.sort((a, b) => b.citations - a.citations);
+  const authorsTop15 = authors.slice(0, 15);
+  const authorsBody = document.getElementById('authors-body');
+  // Years shown only when known -- the precise per-author path
+  // (stats.institution_authors) always has them, the paper-level fallback
+  // (institutions with no authors_detail coverage at all) never does.
+  function fmtYears(a) {
+    if (a.first_year == null) return 'n/a';
+    return a.first_year === a.last_year ? String(a.first_year) : `${a.first_year} to ${a.last_year}`;
+  }
+  function renderAuthorsBody(rows) {
+    authorsBody.innerHTML = '';
+    rows.forEach(a => {
+      const link = document.createElement('a');
+      link.href = `author.html?name=${encodeURIComponent(a.name)}`;
+      link.textContent = a.name;
+      authorsBody.appendChild(row([link, fmtYears(a), a.papers, a.citations]));
+    });
+  }
+  makeSortableSafe(authorsBody.closest('table'), authorsTop15, [
+    { accessor: a => a.name, numeric: false },
+    { accessor: a => a.first_year ?? -1, numeric: true },
+    { accessor: a => a.papers, numeric: true },
+    { accessor: a => a.citations, numeric: true },
+  ], renderAuthorsBody);
+
+  // Other affiliations of THIS institution's own members (user-requested:
+  // "how many people in Google are from MIT etc."), from `authors` (the
+  // full member list above, already using the precise per-author source
+  // when available -- reusing it keeps the same "don't credit a co-author's
+  // affiliation to this institution" guarantee the Top-authors table
+  // relies on) and each member's OWN full affiliation history
+  // (author_detail[name].institutions), which the corpus already carries
+  // for every author regardless of this page. Counts distinct MEMBERS, not
+  // occurrences, so someone with two stints elsewhere still counts once.
+  const authorDetail = stats.author_detail || {};
+  const otherAffMembers = {};
+  authors.forEach(a => {
+    const insts = (authorDetail[a.name] || {}).institutions || [];
+    const seen = new Set();
+    insts.forEach(inst => {
+      if (inst.name === name || seen.has(inst.name)) return;
+      seen.add(inst.name);
+      (otherAffMembers[inst.name] = otherAffMembers[inst.name] || new Set()).add(a.name);
+    });
+  });
+  const otherAffRows = Object.entries(otherAffMembers).map(([instName, members]) => ({ name: instName, members: members.size }));
+  otherAffRows.sort((a, b) => b.members - a.members);
+  const otherAffTop15 = otherAffRows.slice(0, 15);
+  const otherAffBody = document.getElementById('other-affiliations-body');
+  function renderOtherAffBody(rows) {
+    otherAffBody.innerHTML = '';
+    rows.forEach(r => {
+      const link = document.createElement('a');
+      link.href = `institution.html?name=${encodeURIComponent(r.name)}`;
+      link.textContent = r.name;
+      otherAffBody.appendChild(row([link, r.members]));
+    });
+    if (!rows.length) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 2;
+      td.style.color = 'var(--muted)';
+      td.textContent = 'No affiliation-history overlap found yet.';
+      tr.appendChild(td);
+      otherAffBody.appendChild(tr);
+    }
+  }
+  makeSortableSafe(otherAffBody.closest('table'), otherAffTop15, [
+    { accessor: r => r.name, numeric: false },
+    { accessor: r => r.members, numeric: true },
+  ], renderOtherAffBody);
+
+  const cats = aggregateByDimension(papers, p => [p.category || 'uncategorized'], { minPapers: 0 });
+  cats.sort((a, b) => b.papers - a.papers);
+  const catsTop15 = cats.slice(0, 15);
+  const catsBody = document.getElementById('categories-body');
+  function renderCatsBody(rows) {
+    catsBody.innerHTML = '';
+    rows.forEach(c => {
+      const link = document.createElement('a');
+      link.href = `index.html?category=${encodeURIComponent(c.name)}`;
+      link.textContent = categoryLabel(c.name);
+      catsBody.appendChild(row([link, c.papers]));
+    });
+  }
+  makeSortableSafe(catsBody.closest('table'), catsTop15, [
+    { accessor: c => c.name, numeric: false },
+    { accessor: c => c.papers, numeric: true },
+  ], renderCatsBody);
+
+  const sortedPapers = [...papers].sort((a, b) => (b.citations ?? -Infinity) - (a.citations ?? -Infinity));
+  const papersBody = document.getElementById('papers-body');
+  function renderBody(rows) {
+    papersBody.innerHTML = '';
+    rows.forEach(p => papersBody.appendChild(row([
+      titleLink(p), p.year || '', p.venue || '', categoryLabel(p.category) || '', p.citations ?? '',
+    ])));
+    appendSumRow(papersBody, rows, [null, null, null, null, p => p.citations]);
+  }
+  // Paginate rather than dumping every paper into one table (Toyota/Tsinghua-
+  // scale institutions have hundreds).
+  function renderPapersPage() {
+    const pg = renderPagination(document.getElementById('papers-pagination'), 'institution.html', sortedPapers.length, { onChange: renderPapersPage });
+    const shown = sortedPapers.slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(document.getElementById('papers-body').closest('table'), shown, [
+      { accessor: p => p.title, numeric: false },
+      { accessor: p => p.year, numeric: true },
+      { accessor: p => p.venue, numeric: false },
+      { accessor: p => p.category, numeric: false },
+      { accessor: p => p.citations, numeric: true },
+    ], renderBody);
+  }
+  renderPapersPage();
+
+  const exportContainer = document.getElementById('export-container');
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButtons({
+    table: papersBody.closest('table'),
+    csvName: `${name}-papers.csv`,
+    bibtexPapers: () => sortedPapers,
+    bibtexName: `${name}-papers.bib`,
+  }), exportContainer.firstChild);
+}
+</script>
+<script src="nav.js?v=1789288051"></script>
+<script src="sortable.js?v=1789288051"></script>
+</body>
+</html>

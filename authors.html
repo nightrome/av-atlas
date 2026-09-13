@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas: Authors</title>
+<meta name="description" content="Researchers publishing autonomous vehicle research, ranked by papers and by citations within AV research specifically.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AV Atlas">
+<meta property="og:title" content="AV Atlas: Authors">
+<meta property="og:description" content="Researchers publishing autonomous vehicle research, ranked by papers and by citations within AV research specifically.">
+<meta property="og:url" content="https://nightrome.github.io/av-atlas/authors.html">
+<meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AV Atlas: Authors">
+<meta name="twitter:description" content="Researchers publishing autonomous vehicle research, ranked by papers and by citations within AV research specifically.">
+<meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css?v=1789288051">
+<link rel="stylesheet" href="theme-light.css?v=1789288051">
+<style>
+  body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .page-title { margin: 0 0 16px; font-size: 1.5em; }
+  h2 { font-size: 1.2em; margin: 32px 0 16px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px; display: flex; flex-direction: column; align-items: center; text-align: center;
+    text-decoration: none; color: var(--text); transition: transform 0.15s, border-color 0.15s;
+    position: relative;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .avatar {
+    width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.3em; color: #fff; margin-bottom: 12px; flex-shrink: 0; overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .card .name { font-weight: 600; font-size: 0.95em; margin-bottom: 4px; }
+  .card .meta { color: var(--muted); font-size: 0.82em; }
+  .rank { position: absolute; top: 10px; left: 12px; font-size: 0.75em; color: var(--muted); }
+  .chart-wrap { overflow-x: auto; position: relative; }
+  /* Custom tooltip for the scatter chart, not the browser's native SVG
+     <title> -- user-reported (Chrome on macOS): hovering a bubble showed
+     no tooltip at all. Native <title> tooltips depend on the OS/browser's
+     own hover-delay and hit-testing, both of which are known to be
+     unreliable for small/overlapping SVG shapes; a JS-driven positioned div
+     (the same pattern already used for every line-chart tooltip on this
+     site) works the same way in every browser. */
+  .scatter-tooltip {
+    position: absolute; background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 6px 10px; font-size: 0.8em; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    display: none; z-index: 10; white-space: nowrap;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover { background: var(--panel2); }
+  td a { color: var(--accent); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<div id="filter-bar-container"></div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2 style="margin-top:0;">Papers vs. citations / paper</h2><span class="info-tip" tabindex="0" role="img" aria-label="One dot per top author: x is papers, y is citations per paper, dot size is total citations. Click a dot to open that author." data-tip="One dot per top author: x is papers, y is citations per paper, dot size is total citations. Click a dot to open that author.">i</span></div>
+  <div class="chart-wrap" id="scatter"></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row"><h2 style="margin-top:0;">Top authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="The leaders by the chosen metric, as many as the Show top setting allows. The table below ranks every author matching the filters, not just these." data-tip="The leaders by the chosen metric, as many as the Show top setting allows. The table below ranks every author matching the filters, not just these.">i</span></div>
+  <div class="card-grid" id="authors-grid"></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">All authors</h2>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Every author matching the current filters, ranked by the chosen metric, “Show top” per page. “Citations / paper” averages only over that author’s papers that have at least one citation." data-tip="Every author matching the current filters, ranked by the chosen metric, “Show top” per page. “Citations / paper” averages only over that author’s papers that have at least one citation.">i</span></div>
+  </div>
+  <p id="authors-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
+  <p id="authors-thin-note" style="color: var(--muted); font-size: 0.8em; margin: -8px 0 12px;"></p>
+  <div id="pagination-container"></div>
+  <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" data-term="career_span">Career span</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th class="num" data-term="self_citation_pct">Self-citation %</th><th class="num" data-term="non_av_papers">Non-AV papers</th></tr></thead>
+  <tbody id="researchers-body"></tbody></table>
+</div>
+
+<script src="filters.js?v=1789288051"></script>
+<script>
+function hashString(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+function colorFor(name) { return `hsl(${hashString(name) % 360}, 60%, 45%)`; }
+function initials(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function authorCard(a, rank, detail) {
+  const card = document.createElement('a');
+  card.className = 'card';
+  card.href = `author.html?name=${encodeURIComponent(a.name)}`;
+
+  const rankEl = document.createElement('span');
+  rankEl.className = 'rank';
+  rankEl.textContent = `#${rank}`;
+  card.appendChild(rankEl);
+
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  if (detail && detail.photo_url) {
+    const img = document.createElement('img');
+    img.src = detail.photo_url;
+    img.alt = a.name;
+    img.referrerPolicy = 'no-referrer';
+    avatar.appendChild(img);
+  } else {
+    avatar.style.background = colorFor(a.name);
+    avatar.textContent = initials(a.name);
+  }
+  card.appendChild(avatar);
+
+  const name = document.createElement('div');
+  name.className = 'name';
+  name.textContent = a.name;
+  card.appendChild(name);
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  meta.textContent = `${a.papers} papers · ${a.citations} total citations`;
+  card.appendChild(meta);
+
+  return card;
+}
+
+// null means no paper of theirs has a citation count at all (as opposed to a
+// real average of 0) -- show that as "n/a", not a misleading number.
+function fmtAvg(v) { return v == null ? 'n/a' : v; }
+function fmtPct(v) { return v == null ? 'n/a' : v + '%'; }
+
+// Papers-vs-citations/paper scatter: paper count (x) against avg citations/paper (y),
+// bubble radius by total citations -- the "graphs of papers and people" view.
+function renderScatter(container, authors) {
+  container.innerHTML = '';
+  if (!authors.length) { container.textContent = 'No authors match the current filters.'; return; }
+  const W = 720, H = 360, PAD = 44;
+  const maxPapers = Math.max(1, ...authors.map(a => a.papers));
+  const maxAvg = Math.max(1, ...authors.map(a => a.avg_citations));
+  const maxCit = Math.max(1, ...authors.map(a => a.citations));
+  const x = p => PAD + (p / maxPapers) * (W - PAD * 2);
+  const y = v => H - PAD - (v / maxAvg) * (H - PAD * 2);
+  const r = c => 4 + Math.sqrt(c / maxCit) * 18;
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.style.width = '100%';
+  svg.style.maxWidth = '760px';
+  svg.style.height = 'auto';
+
+  const axisColor = getComputedStyle(document.body).getPropertyValue('--border').trim() || '#333';
+  const mutedColor = getComputedStyle(document.body).getPropertyValue('--muted').trim() || '#888';
+  const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#3987e5';
+
+  const axisX = document.createElementNS(svg.namespaceURI, 'line');
+  axisX.setAttribute('x1', PAD); axisX.setAttribute('x2', W - PAD);
+  axisX.setAttribute('y1', H - PAD); axisX.setAttribute('y2', H - PAD);
+  axisX.setAttribute('stroke', axisColor);
+  svg.appendChild(axisX);
+  const axisY = document.createElementNS(svg.namespaceURI, 'line');
+  axisY.setAttribute('x1', PAD); axisY.setAttribute('x2', PAD);
+  axisY.setAttribute('y1', PAD); axisY.setAttribute('y2', H - PAD);
+  axisY.setAttribute('stroke', axisColor);
+  svg.appendChild(axisY);
+
+  const xLabel = document.createElementNS(svg.namespaceURI, 'text');
+  xLabel.setAttribute('x', W / 2); xLabel.setAttribute('y', H - 8);
+  xLabel.setAttribute('text-anchor', 'middle'); xLabel.setAttribute('font-size', '11');
+  xLabel.setAttribute('fill', mutedColor);
+  xLabel.textContent = 'Papers';
+  svg.appendChild(xLabel);
+  const yLabel = document.createElementNS(svg.namespaceURI, 'text');
+  yLabel.setAttribute('x', -H / 2); yLabel.setAttribute('y', 14);
+  yLabel.setAttribute('text-anchor', 'middle'); yLabel.setAttribute('font-size', '11');
+  yLabel.setAttribute('fill', mutedColor);
+  yLabel.setAttribute('transform', 'rotate(-90)');
+  yLabel.textContent = 'Citations / paper';
+  svg.appendChild(yLabel);
+
+  const tooltip = document.createElement('div');
+  tooltip.className = 'scatter-tooltip';
+  container.appendChild(tooltip);
+
+  authors.forEach(a => {
+    const c = document.createElementNS(svg.namespaceURI, 'circle');
+    c.setAttribute('cx', x(a.papers));
+    c.setAttribute('cy', y(a.avg_citations));
+    c.setAttribute('r', r(a.citations));
+    c.setAttribute('fill', accent);
+    c.setAttribute('fill-opacity', '0.55');
+    c.setAttribute('stroke', accent);
+    c.style.cursor = 'pointer';
+    c.addEventListener('mouseenter', () => {
+      tooltip.textContent = `${a.name}: ${a.papers} papers, avg ${a.avg_citations} cit./paper, ${a.citations} total`;
+      tooltip.style.display = 'block';
+    });
+    c.addEventListener('mousemove', ev => {
+      const rect = container.getBoundingClientRect();
+      let left = ev.clientX - rect.left + 12;
+      const top = ev.clientY - rect.top + 12;
+      // Keep the tooltip from running off the right edge of its container.
+      const maxLeft = rect.width - tooltip.offsetWidth - 8;
+      if (maxLeft > 0 && left > maxLeft) left = Math.max(0, ev.clientX - rect.left - tooltip.offsetWidth - 12);
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
+    });
+    c.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+    c.addEventListener('click', () => { location.href = `author.html?name=${encodeURIComponent(a.name)}`; });
+    svg.appendChild(c);
+  });
+
+  container.appendChild(svg);
+}
+
+let currentStats = null, currentFilters = null;
+let currentQuery = new URLSearchParams(location.search).get('q') || '';
+const relevance = new URLSearchParams(location.search).get('relevance') || '';
+fetchStatsWithRelevance(relevance).then(stats => {
+  currentStats = stats;
+  currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'authors.html', {
+    search: { placeholder: 'Search author names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
+    relevance: true,
+    metrics: [
+      { key: 'total', label: 'Citations' },
+      { key: 'papers', label: 'Papers' },
+      { key: 'avg', label: 'Citations / paper' },
+    ],
+    minPapers: { default: 50 },
+    minCareerSpan: { default: 0 },
+    topN: { default: 10, storageKey: 'authors-topn', onChange: render },
+  });
+  render();
+}).catch(err => {
+  document.getElementById('authors-grid').textContent = 'Could not load stats.json: ' + err;
+});
+
+function row(cells) {
+  const tr = document.createElement('tr');
+  cells.forEach((c, i) => {
+    const td = document.createElement('td');
+    // Columns 2+ are always numeric-position, even when the cell's value is
+    // the 'n/a' fallback string from fmtAvg() -- see the same fix on
+    // countries.html for why a typeof-based check misaligns "no data" rows.
+    if (i > 1) td.className = 'num';
+    if (c instanceof Node) td.appendChild(c);
+    else td.textContent = c;
+    tr.appendChild(td);
+  });
+  return tr;
+}
+
+function render() {
+  const stats = currentStats, filters = currentFilters;
+  const papers = filterPapers(stats.all_papers || [], filters);
+  const detail = stats.author_detail || {};
+
+  const minPapersThreshold = filters.minPapers;
+
+  // minCitedPapers: 3 -- an average built from 1-2 real data points (the rest
+  // of an author's papers just lacking a citation count, not being genuinely
+  // uncited) reads as a well-supported ranking when it isn't. Caught in
+  // practice: an author with 4 papers but only 1 carrying a citation count
+  // topped the leaderboard purely on that single paper's count.
+  //
+  // Both thresholds are dropped to 0 while a search query is active --
+  // otherwise a real author with fewer papers/cited-papers than the
+  // Min./Rows filters currently allow never even enters `authors` for the
+  // query to filter, so searching their exact name returns nothing with no
+  // indication why (user-reported: two real corpus authors, each with only
+  // 2-5 papers, were unfindable by name search while the default Min. 10+
+  // filter was active). Search should never hide a genuine name match.
+  const query = currentQuery.trim().toLowerCase();
+  let authors = query
+    ? aggregateByDimension(papers, p => p.authors, { minPapers: 0, minCitedPapers: 0 })
+    : aggregateByDimension(papers, p => p.authors, { minPapers: minPapersThreshold - 1, minCitedPapers: 3 });
+  if (query) authors = authors.filter(a => matchesSearchQuery(a.name, query));
+
+  // Names aggregate.py flagged as a confirmed identity conflict -- papers
+  // filed under one name that carry two or more distinct external author
+  // IDs, i.e. almost certainly several different real people merged by
+  // name-only matching. aggregate.py already excluded them from the
+  // server-side rankings it precomputes, but this page builds its own
+  // leaderboard client-side from all_papers (so it can respect the filter
+  // bar), and that path never consulted the flag -- so the exclusion the
+  // About page describes was happening only on Insights, and the two
+  // worst-affected names sat at #9 and #10 of the very leaderboard the
+  // check exists to protect.
+  //
+  // Excluded from the RANKING only, never from search: the flag can also
+  // fire when the external source has split one real person across two IDs,
+  // and someone looking up their own name must still find their page.
+  const conflicted = new Set(Object.keys(detail).filter(n => detail[n] && detail[n].identity_conflict));
+  let conflictedShown = 0;
+  if (!query) {
+    const before = authors.length;
+    authors = authors.filter(a => !conflicted.has(a.name));
+    conflictedShown = before - authors.length;
+  }
+
+  // Self-citation %: how much of an author's own incoming in-corpus
+  // citations come from their own later papers vs. an independent one.
+  // Built from the same filtered `papers` set as everything else on this
+  // page, so it respects active filters (category/venue/year/...) too.
+  const papersByAuthor = {};
+  papers.forEach(p => (p.authors || []).forEach(name => {
+    (papersByAuthor[name] = papersByAuthor[name] || []).push(p);
+  }));
+  const nonAvCounts = stats.non_av_paper_counts || {};
+  authors.forEach(a => {
+    const { selfCitations, otherCitations } = computeSelfCitationStats(papersByAuthor[a.name]);
+    const total = selfCitations + otherCitations;
+    // null (not 0) when the author has no citation data at all -- same
+    // "unknown vs. a real zero" distinction as avg_citations elsewhere on
+    // this page.
+    a.selfCitationPct = total > 0 ? Math.round(100 * selfCitations / total) : null;
+    a.nonAvPapers = nonAvCounts[a.name] || 0;
+    // Lifetime: span between this author's first and last AV-relevant
+    // publication YEAR in the current filtered set -- same "last - first"
+    // definition aggregate.py already uses server-side for the Insights
+    // page's lifetime charts (author_lifetimes), just computed client-side
+    // here from the same per-page-filtered papers everything else uses.
+    let firstYear = null, lastYear = null;
+    (papersByAuthor[a.name] || []).forEach(p => {
+      if (p.year == null) return;
+      firstYear = firstYear == null ? p.year : Math.min(firstYear, p.year);
+      lastYear = lastYear == null ? p.year : Math.max(lastYear, p.year);
+    });
+    a.lifetime = firstYear == null ? null : lastYear - firstYear;
+  });
+
+  // Dropped while searching, same reasoning as the identity-conflict
+  // exclusion and the minPapers/minCitedPapers floors above: a name search
+  // must always be able to find a real match regardless of what the
+  // adjustable filters currently require.
+  if (!query && filters.minCareerSpan) {
+    authors = authors.filter(a => a.lifetime != null && a.lifetime >= filters.minCareerSpan);
+  }
+
+  // Every ranked page on this site defaults to total citations, with the
+  // same Citations / Papers / Citations-per-paper order in the dropdown.
+  // Citations-per-paper used to be the default on several pages, which put
+  // a 20-paper company above every university and a 31-paper journal above
+  // CVPR on the strength of one dataset paper each -- technically what the
+  // metric says, and a poor default view of the field. It is still one
+  // click away, with the Min. control there to raise the floor first.
+  const metric = getMetric('total');
+  const byTotal = (a, b) => b.citations - a.citations;
+  const authorSort = {
+    avg: (a, b) => (b.avg_citations ?? -Infinity) - (a.avg_citations ?? -Infinity),
+    total: byTotal,
+    papers: (a, b) => b.papers - a.papers,
+  }[metric] || byTotal;
+  authors.sort(authorSort);
+
+  // "Show top N" is the single size control for this whole page, but it
+  // means two different things to the two kinds of section here, and that
+  // distinction is deliberate:
+  //
+  //   - The scatter chart and the Leading-authors cards are a *highlight*
+  //     of the field, so they show exactly the top N by the chosen metric.
+  //   - The ranked table is a *browsable list*, so N is its page size and
+  //     Prev/Next walk the entire filtered set.
+  //
+  // Previously the table was also hard-capped at N, which made its own
+  // pagination a lie: with the default N of 10 it read "1 to 10 of 10" and
+  // rendered a Next button that could never do anything, directly next to a
+  // filter bar reporting "1,495 authors" -- two contradictory totals on one
+  // screen, and no way to reach author 11 without changing a dropdown whose
+  // label ("Show top") gave no hint that it was the only way through. The
+  // Papers page already treated the same control as a page size over the
+  // full list; this makes the two agree.
+  const topN = filters.topN || 10;
+  const matchCount = authors.length;
+  const topAuthors = authors.slice(0, topN);
+
+  document.getElementById('result-count').textContent = `${matchCount} authors`;
+  document.getElementById('authors-summary-stat').textContent =
+    `${((stats.corpus_stats || {}).total_researchers || 0).toLocaleString()} authors named across the corpus`
+    + (conflictedShown
+      ? `. ${conflictedShown} name${conflictedShown === 1 ? ' was' : 's were'} left out of this ranking: `
+        + `their papers carry more than one external author ID, so the name almost certainly covers `
+        + `several different people. Search still finds them.`
+      : '');
+
+  // Authors with no citation-bearing paper at all have no meaningful y-value
+  // for this chart -- plotting them at 0 would misrepresent "unknown" as
+  // "confirmed zero impact".
+  renderScatter(document.getElementById('scatter'), topAuthors.filter(a => a.avg_citations != null));
+
+  const authorsGrid = document.getElementById('authors-grid');
+  if (!topAuthors.length) {
+    renderEmptyState(authorsGrid, 'authors.html', 'No authors match the current filters. Try lowering "Min." or clearing a filter.');
+  } else {
+    authorsGrid.innerHTML = '';
+    topAuthors.forEach((a, i) => authorsGrid.appendChild(authorCard(a, i + 1, detail[a.name])));
+  }
+
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length,
+    { onChange: render, pageSize: topN, showSizeControl: false });
+  const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);
+
+  const tbody = document.getElementById('researchers-body');
+  function renderBody(data) {
+    tbody.innerHTML = '';
+    data.forEach((a, i) => {
+      const link = document.createElement('a');
+      link.href = `author.html?name=${encodeURIComponent(a.name)}`;
+      link.textContent = a.name;
+      const tr = row([pagination.offset + i + 1, link, a.papers, fmtAvg(a.lifetime), a.citations,
+        fmtAvg(a.avg_citations), fmtPct(a.selfCitationPct), a.nonAvPapers]);
+      // Citations / paper is column 5 (0-based). Marked when the average
+      // rests on only a couple of papers that have any citation data.
+      markThinAverage(tr.children[5], a.cited_papers, a.papers);
+      tbody.appendChild(tr);
+    });
+    const thinNote = document.getElementById('authors-thin-note');
+    if (thinNote) {
+      thinNote.textContent = thinAverageNoteText(
+        data.filter(a => a.cited_papers != null && a.cited_papers < THIN_AVERAGE_BELOW).length);
+    }
+    appendSumRow(tbody, data, [null, null, a => a.papers, null, a => a.citations, null, null, a => a.nonAvPapers]);
+    // Re-applied on every re-render (sort, page change) because this
+    // function rebuilds the whole tbody each time.
+    renderCompareSelection({ table: tbody.closest('table'), type: 'author',
+      nameFor: a => a.name, rows: data });
+  }
+  // Feed the table the current page's slice, not the whole list -- otherwise
+  // every row renders at once and Prev/Next only move the count label.
+  makeSortableSafe(tbody.closest('table'), shown, [
+    null,
+    { accessor: a => a.name, numeric: false },
+    { accessor: a => a.papers, numeric: true },
+    { accessor: a => a.lifetime ?? -Infinity, numeric: true },
+    { accessor: a => a.citations, numeric: true },
+    { accessor: a => a.avg_citations ?? -Infinity, numeric: true },
+    { accessor: a => a.selfCitationPct ?? -Infinity, numeric: true },
+    { accessor: a => a.nonAvPapers, numeric: true },
+  ], renderBody);
+
+  const exportContainer = document.getElementById('export-container');
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButton(tbody.closest('table'), 'av-atlas-authors.csv'), exportContainer.firstChild);
+}
+</script>
+<script src="nav.js?v=1789288051"></script>
+<script src="sortable.js?v=1789288051"></script>
+</body>
+</html>

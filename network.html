@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas: Co-authorship Network</title>
+<meta name="description" content="An interactive map of collaboration between autonomous vehicle researchers, clustered by who actually publishes together.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AV Atlas">
+<meta property="og:title" content="AV Atlas: Co-authorship Network">
+<meta property="og:description" content="An interactive map of collaboration between autonomous vehicle researchers, clustered by who actually publishes together.">
+<meta property="og:url" content="https://nightrome.github.io/av-atlas/network.html">
+<meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AV Atlas: Co-authorship Network">
+<meta name="twitter:description" content="An interactive map of collaboration between autonomous vehicle researchers, clustered by who actually publishes together.">
+<meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="theme.css?v=1789288051">
+<link rel="stylesheet" href="theme-light.css?v=1789288051">
+<style>
+  body { max-width: 1900px; margin: 0 auto; padding: 24px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
+  .section-intro { color: var(--muted); font-size: 0.88em; margin: 0 0 10px; line-height: 1.5; }
+  .graph-wrap { position: relative; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--panel2); cursor: grab; }
+  .graph-wrap:active { cursor: grabbing; }
+  .node { cursor: pointer; }
+  .node circle { stroke: var(--panel); stroke-width: 1.5; transition: stroke-width 0.12s; }
+  .node text { font-size: 12px; fill: var(--text); pointer-events: none; paint-order: stroke; stroke: var(--panel2); stroke-width: 3px; }
+  .node:hover circle { stroke: var(--text); stroke-width: 3; }
+  .node.dim { opacity: 0.12; }
+  .node.dim text { display: none; }
+  .edge { stroke: var(--muted); pointer-events: none; }
+  .edge.dim { opacity: 0.04; }
+  .edge.highlight { stroke: var(--accent); }
+  #viewport { transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  #viewport.dragging { transition: none; }
+  .controls-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 0.85em; color: var(--muted); }
+  .controls-row select, .controls-row input[type="text"] {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+    padding: 4px 8px; font-size: 0.95em;
+  }
+  .controls-row input[type="text"] { width: 200px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9em; table-layout: fixed; }
+  /* table-layout: fixed needs a real minimum width to divide up -- without
+     it, a narrow/mobile viewport squeezes 8 columns down to unreadable
+     slivers instead of the table just scrolling horizontally (the
+     .table-scroll wrapper on this table is what makes that scroll work). */
+  #metrics-table { min-width: 820px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); overflow-wrap: break-word; }
+  th { color: var(--muted); font-weight: 600; vertical-align: bottom; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover { background: var(--panel2); }
+  td a { color: var(--accent); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  th .th-main, th .th-sub { display: block; }
+  /* Was white-space: nowrap -- with table-layout: fixed and 7 narrow
+     columns sharing the width left after the 26%-wide name column, a
+     one-line sub-label like "w/ other institutions" doesn't fit its own
+     column and visually spills into the next one instead of wrapping
+     (user-reported: "columns overlap each other"). Letting it wrap is the
+     fix; overflow-wrap on the shared th/td rule below already handles long
+     unbroken words if it ever comes to that. */
+  th .th-sub { font-weight: 400; font-size: 0.85em; }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+<div id="filter-bar-container"></div>
+<div class="panel">
+  <div class="panel-title-row">
+    <div class="controls-row" id="controls-row">
+      <input type="text" id="search-box" placeholder="Highlight a name in the graph…" title="Highlights matching nodes in the graph below. To narrow which authors are in the graph at all, use Search in the filter bar above.">
+    </div>
+    <span class="info-tip" tabindex="0" role="img" aria-label="Each dot is one of the top authors by paper count; lines are co-authored papers. Colour groups authors who mostly publish together. Drag to pan, scroll to zoom." data-tip="Each dot is one of the top authors by paper count; lines are co-authored papers. Colour groups authors who mostly publish together. Drag to pan, scroll to zoom.">i</span>
+  </div>
+  <p class="section-intro" id="graph-legend"></p>
+  <div class="graph-wrap">
+    <svg id="graph" viewBox="0 0 1850 1050" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: auto; aspect-ratio: 1850 / 1050; max-height: 800px; display: block;"></svg>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Collaboration metrics</h2>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Collaboration metrics for the top authors in the co-authorship graph: distinct co-authors, cross-institution and cross-country papers, and a PageRank centrality score." data-tip="Collaboration metrics for the top authors in the co-authorship graph: distinct co-authors, cross-institution and cross-country papers, and a PageRank centrality score.">i</span></div>
+  </div>
+  <div id="metrics-pagination"></div>
+  <div class="table-scroll">
+  <table id="metrics-table">
+    <colgroup>
+      <col style="width: 26%;"><col><col><col><col><col><col><col>
+    </colgroup>
+    <thead><tr>
+      <th>Author</th>
+      <th class="num">Papers</th>
+      <th class="num">Co-authors</th>
+      <th class="num"><span class="th-main">Papers</span><span class="th-sub">w/ other institutions</span></th>
+      <th class="num"><span class="th-main">Institutions</span><span class="th-sub">collaborated with</span></th>
+      <th class="num"><span class="th-main">Papers</span><span class="th-sub">w/ other countries</span></th>
+      <th class="num"><span class="th-main">Countries</span><span class="th-sub">collaborated with</span></th>
+      <th class="num" title="A PageRank score over the co-authorship graph: reflects indirect, multi-hop reach through collaborators-of-collaborators, not just a direct co-author count.">Centrality</th>
+    </tr></thead>
+    <tbody id="metrics-body"></tbody>
+  </table>
+  </div>
+</div>
+
+<script src="filters.js?v=1789288051"></script>
+<script>
+function hashString(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+
+// A fixed, hand-picked categorical palette (not hash-derived hues) so
+// clusters read as clearly distinct colors rather than the muddy
+// similar-hue collisions a hash function occasionally produces.
+const CLUSTER_PALETTE = [
+  '#e6614f', '#3987e5', '#3fae6a', '#e6a53f', '#9366d9', '#3fb8bd',
+  '#d9527a', '#7a9e3f', '#c98e3f', '#5f7de6', '#4fa88a', '#c95fd0',
+];
+function clusterColor(i) { return CLUSTER_PALETTE[i % CLUSTER_PALETTE.length]; }
+
+let currentStats = null, currentFilters = null;
+let currentQuery = new URLSearchParams(location.search).get('q') || '';
+const relevance = new URLSearchParams(location.search).get('relevance') || '';
+
+fetchStatsWithRelevance(relevance).then(stats => {
+  currentStats = stats;
+  // Same fields, same order as authors.html's own filter bar
+  // (user-requested: "replicate the SEARCH bar from Authors") -- no Year
+  // dropdown, matching Authors exactly.
+  currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'network.html', {
+    search: { placeholder: 'Search author names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
+    relevance: true,
+    // A floor on paper count before "Show top" caps the result, same
+    // combination Authors already offers (user-requested: "add a MIN
+    // papers counter similar to Authors"). Default 1 is a no-op -- every
+    // author here has published at least one paper -- so this doesn't
+    // change what the graph shows until a reader raises it.
+    minPapers: { default: 1 },
+    // "authors by paper count" (not a timeline series count like every
+    // other page's topN) -- same field, same place, higher ceiling to match
+    // this control's previous native <select>, which already went to 250.
+    topN: { default: 100, options: [40, 60, 100, 150, 250], label: 'Show top', storageKey: 'network-topn', onChange: render },
+  });
+  render();
+}).catch(err => {
+  document.getElementById('graph').outerHTML = 'Could not load stats.json: ' + err;
+});
+
+// Label propagation: the standard dependency-free community-detection
+// algorithm -- every node starts as its own label, then repeatedly adopts
+// whichever label is most common (by total edge weight) among its
+// neighbors, ties broken toward keeping the current label so the process
+// actually converges instead of oscillating. A handful of passes is enough
+// at this graph's size; order is shuffled each pass so the result doesn't
+// depend on node insertion order.
+function detectClusters(nodes, edges) {
+  const label = new Map(nodes.map(n => [n.id, n.id]));
+  const neighborWeights = new Map(nodes.map(n => [n.id, []]));
+  edges.forEach(e => {
+    neighborWeights.get(e.source).push([e.target, e.weight]);
+    neighborWeights.get(e.target).push([e.source, e.weight]);
+  });
+  const order = nodes.map(n => n.id);
+  for (let pass = 0; pass < 12; pass++) {
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    let changed = false;
+    order.forEach(id => {
+      const tally = new Map();
+      neighborWeights.get(id).forEach(([nb, w]) => tally.set(label.get(nb), (tally.get(label.get(nb)) || 0) + w));
+      if (!tally.size) return;
+      let best = label.get(id), bestScore = tally.get(best) || 0;
+      tally.forEach((score, lbl) => { if (score > bestScore) { best = lbl; bestScore = score; } });
+      if (best !== label.get(id)) { label.set(id, best); changed = true; }
+    });
+    if (!changed) break;
+  }
+  // Collapse to dense 0..k-1 cluster indices, ordered by cluster size
+  // (largest first) so the palette's first, most-distinct colors go to the
+  // clusters a reader will actually notice.
+  const groups = new Map();
+  label.forEach((lbl, id) => { (groups.get(lbl) || groups.set(lbl, []).get(lbl)).push(id); });
+  const ordered = [...groups.values()].sort((a, b) => b.length - a.length);
+  const clusterOf = new Map();
+  ordered.forEach((members, idx) => members.forEach(id => clusterOf.set(id, idx)));
+  return { clusterOf, clusterSizes: ordered.map(m => m.length) };
+}
+
+// Weighted PageRank via power iteration -- the standard dependency-free way
+// to measure "connectedness that accounts for multiple hops": a node's
+// score depends on the score of whoever points to it, not just how many
+// direct neighbors it has, so being well-connected to a few well-connected
+// people outranks being connected to the same number of peripheral ones.
+// Co-authorship is undirected, so each edge is treated as two directed
+// edges (source->target and target->source), weighted by how many papers
+// they actually co-authored.
+function pageRank(nodes, edges, iterations, damping) {
+  const idx = new Map(nodes.map((n, i) => [n.id, i]));
+  const N = nodes.length;
+  if (!N) return new Map();
+  const adj = Array.from({ length: N }, () => []);
+  const outWeight = new Array(N).fill(0);
+  edges.forEach(e => {
+    const i = idx.get(e.source), j = idx.get(e.target);
+    adj[i].push([j, e.weight]);
+    adj[j].push([i, e.weight]);
+    outWeight[i] += e.weight;
+    outWeight[j] += e.weight;
+  });
+  let rank = new Array(N).fill(1 / N);
+  for (let iter = 0; iter < iterations; iter++) {
+    let danglingMass = 0;
+    const next = new Array(N).fill((1 - damping) / N);
+    for (let i = 0; i < N; i++) {
+      if (!outWeight[i]) { danglingMass += rank[i]; continue; } // no co-authors at all -- redistribute below
+      adj[i].forEach(([j, w]) => { next[j] += damping * rank[i] * (w / outWeight[i]); });
+    }
+    // A node with zero co-authors (shouldn't happen for anyone actually
+    // shown here, since they're all edge-connected by construction, but
+    // guarded anyway) would otherwise leak rank out of the system entirely.
+    if (danglingMass > 0) for (let i = 0; i < N; i++) next[i] += damping * danglingMass / N;
+    rank = next;
+  }
+  const result = new Map();
+  nodes.forEach((n, i) => result.set(n.id, rank[i]));
+  return result;
+}
+
+// Force layout: repulsion + spring edges + gentle centering, same as
+// before, plus a same-cluster attraction / different-cluster repulsion
+// term -- this is what actually pulls each cluster into its own visual
+// region instead of leaving color as the only signal of grouping.
+function layoutForceGraph(nodes, edges, clusterOf, width, height, iterations, radius) {
+  const pos = new Map();
+  const clusterCount = Math.max(1, ...clusterOf.values()) + 1;
+  nodes.forEach((n, i) => {
+    // Seed position by cluster -- spread cluster centroids around a ring,
+    // then jitter each node near its cluster's seed point, so the force
+    // simulation starts from an already-roughly-clustered layout instead
+    // of a random tangle it has to untangle from scratch.
+    const c = clusterOf.get(n.id) || 0;
+    const angle = (c / clusterCount) * Math.PI * 2;
+    const cx = width / 2 + Math.cos(angle) * width * 0.44;
+    const cy = height / 2 + Math.sin(angle) * height * 0.44;
+    pos.set(n.id, {
+      x: cx + (Math.random() - 0.5) * 120, y: cy + (Math.random() - 0.5) * 120, vx: 0, vy: 0,
+    });
+  });
+  const REPULSION = 2200;
+  const SPRING = 0.02;
+  const SPRING_LEN = 70;
+  const CENTER = 0.003;
+  const CLUSTER_PULL = 0.05;
+  const CLUSTER_PUSH = 2.8;
+  const DAMPING = 0.85;
+
+  for (let iter = 0; iter < iterations; iter++) {
+    nodes.forEach(a => {
+      const pa = pos.get(a.id);
+      let fx = (width / 2 - pa.x) * CENTER;
+      let fy = (height / 2 - pa.y) * CENTER;
+      nodes.forEach(b => {
+        if (a === b) return;
+        const pb = pos.get(b.id);
+        const dx = pa.x - pb.x, dy = pa.y - pb.y;
+        const distSq = Math.max(100, dx * dx + dy * dy);
+        const force = REPULSION / distSq;
+        const dist = Math.sqrt(distSq);
+        fx += (dx / dist) * force;
+        fy += (dy / dist) * force;
+        // Same-cluster nodes get a strong extra pull toward each other
+        // beyond whatever edges connect them (some same-cluster pairs never
+        // directly co-authored, just share the community); different
+        // clusters get an explicit extra push apart on top of the general
+        // repulsion above, which alone wasn't enough to keep whole clusters
+        // visually separated from each other.
+        if (clusterOf.get(a.id) === clusterOf.get(b.id)) {
+          fx -= (dx / dist) * CLUSTER_PULL * dist;
+          fy -= (dy / dist) * CLUSTER_PULL * dist;
+        } else {
+          const push = (REPULSION / distSq) * CLUSTER_PUSH;
+          fx += (dx / dist) * push;
+          fy += (dy / dist) * push;
+        }
+      });
+      pa.fx = fx; pa.fy = fy;
+    });
+    edges.forEach(e => {
+      const pa = pos.get(e.source), pb = pos.get(e.target);
+      const dx = pb.x - pa.x, dy = pb.y - pa.y;
+      const dist = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+      const force = (dist - SPRING_LEN) * SPRING;
+      const fx = (dx / dist) * force, fy = (dy / dist) * force;
+      pa.fx += fx; pa.fy += fy;
+      pb.fx -= fx; pb.fy -= fy;
+    });
+    nodes.forEach(a => {
+      const pa = pos.get(a.id);
+      pa.vx = (pa.vx + pa.fx) * DAMPING;
+      pa.vy = (pa.vy + pa.fy) * DAMPING;
+      pa.x = Math.min(width - 20, Math.max(20, pa.x + pa.vx));
+      pa.y = Math.min(height - 20, Math.max(20, pa.y + pa.vy));
+    });
+
+    // Hard collision resolution, on top of the spring/repulsion physics
+    // above: a highly-collaborative author (many co-author edges, often
+    // reaching across several clusters) gets pulled toward the centroid of
+    // all their neighbors by the spring forces alone, and several such hub
+    // nodes tend to converge on roughly the same spot near the canvas
+    // center -- exactly the nodes a reader most wants to click on, rendered
+    // on top of each other and unclickable (user-reported: "the Network
+    // plot centers too many influential people closely around the center
+    // making them not accessible"). The physics above can't fix this on its
+    // own since it's an emergent property of degree, not a force term; a
+    // direct pairwise separation pass, using each node's actual rendered
+    // radius (bigger circle needs more clearance, not a fixed gap), is what
+    // actually guarantees no two circles end up overlapping regardless of
+    // why the springs pulled them close.
+    if (radius) {
+      for (let a = 0; a < nodes.length; a++) {
+        const pa = pos.get(nodes[a].id);
+        const ra = radius(nodes[a]);
+        for (let b = a + 1; b < nodes.length; b++) {
+          const pb = pos.get(nodes[b].id);
+          const minDist = ra + radius(nodes[b]) + 6;
+          const dx = pb.x - pa.x, dy = pb.y - pa.y;
+          const dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+          if (dist < minDist) {
+            const push = (minDist - dist) / 2;
+            const ux = dx / dist, uy = dy / dist;
+            pa.x -= ux * push; pa.y -= uy * push;
+            pb.x += ux * push; pb.y += uy * push;
+          }
+        }
+      }
+    }
+  }
+  return pos;
+}
+
+function render() {
+  const stats = currentStats;
+  const filters = currentFilters || {};
+  const topN = filters.topN || 100;
+  const papers = filterPapers(stats.all_papers || [], filters);
+
+  const paperCounts = {};
+  papers.forEach(p => (p.authors || []).forEach(a => { paperCounts[a] = (paperCounts[a] || 0) + 1; }));
+  const query = currentQuery.trim().toLowerCase();
+  let candidateNames = Object.keys(paperCounts);
+  // Dropped entirely while searching, same fix as authors.html/institutions.html
+  // and for the same reason: an author below the current Min. floor must
+  // still be findable by exact name search rather than never entering the
+  // candidate pool at all.
+  if (query) candidateNames = candidateNames.filter(a => matchesSearchQuery(a, query));
+  else candidateNames = candidateNames.filter(a => paperCounts[a] >= (filters.minPapers || 1));
+  const topAuthors = candidateNames.sort((a, b) => paperCounts[b] - paperCounts[a]).slice(0, topN);
+  const topSet = new Set(topAuthors);
+
+  //  as the join delimiter, not a space -- author names routinely
+  // contain spaces themselves (a first name and a surname), so joining two full names
+  // with a single space and splitting back on space is ambiguous/lossy
+  // (confirmed broken on real data: it silently reconstructed the wrong
+  // pair of names for virtually every two-word-name author, which then
+  // crashed downstream code trying to look up a node that was never a real
+  // author).  can't appear in a real name, so the split is exact.
+  const edgeWeights = {};
+  papers.forEach(p => {
+    const authors = (p.authors || []).filter(a => topSet.has(a));
+    for (let i = 0; i < authors.length; i++) {
+      for (let j = i + 1; j < authors.length; j++) {
+        const key = authors[i] < authors[j] ? `${authors[i]}${authors[j]}` : `${authors[j]}${authors[i]}`;
+        edgeWeights[key] = (edgeWeights[key] || 0) + 1;
+      }
+    }
+  });
+  const edges = Object.keys(edgeWeights).map(key => {
+    const [source, target] = key.split('');
+    return { source, target, weight: edgeWeights[key] };
+  });
+
+  const nodes = topAuthors.map(name => ({ id: name, papers: paperCounts[name] }));
+  const { clusterOf, clusterSizes } = detectClusters(nodes, edges);
+  // Say what the colours mean. Nothing on the page did outside a hover tip,
+  // so a reader saw a graph of coloured dots with no stated encoding.
+  const legendEl = document.getElementById('graph-legend');
+  if (legendEl) {
+    const groups = (clusterSizes || []).filter(n => n > 1).length;
+    legendEl.textContent = `Each dot is one author, sized by paper count; each line is at least one `
+      + `co-authored paper. Colour marks a collaboration group found in the graph itself `
+      + `(${groups} group${groups === 1 ? '' : 's'} here) -- it is not a country, institution or topic. `
+      + `Drag to pan, scroll to zoom.`;
+  }
+
+  const maxPapers = Math.max(1, ...nodes.map(n => n.papers));
+  const radius = n => 4 + Math.sqrt(n.papers / maxPapers) * 15;
+
+  const W = 1850, H = 1050;
+  const pos = layoutForceGraph(nodes, edges, clusterOf, W, H, 300, radius);
+
+  const svg = document.getElementById('graph');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = '';
+  const ns = svg.namespaceURI;
+
+  const viewport = document.createElementNS(ns, 'g');
+  viewport.setAttribute('id', 'viewport');
+  svg.appendChild(viewport);
+
+  const edgeEls = edges.map(e => {
+    const line = document.createElementNS(ns, 'line');
+    const pa = pos.get(e.source), pb = pos.get(e.target);
+    line.setAttribute('x1', pa.x); line.setAttribute('y1', pa.y);
+    line.setAttribute('x2', pb.x); line.setAttribute('y2', pb.y);
+    line.setAttribute('class', 'edge');
+    line.setAttribute('stroke-width', Math.min(3, 0.5 + e.weight * 0.5));
+    line.setAttribute('stroke-opacity', 0.35);
+    line.dataset.source = e.source;
+    line.dataset.target = e.target;
+    viewport.appendChild(line);
+    return line;
+  });
+
+  const neighborsOf = name => {
+    const set = new Set();
+    edges.forEach(e => {
+      if (e.source === name) set.add(e.target);
+      if (e.target === name) set.add(e.source);
+    });
+    return set;
+  };
+
+  const nodeEls = nodes.map(n => {
+    const p = pos.get(n.id);
+    const g = document.createElementNS(ns, 'g');
+    g.setAttribute('class', 'node');
+    g.setAttribute('transform', `translate(${p.x},${p.y})`);
+    const circle = document.createElementNS(ns, 'circle');
+    circle.setAttribute('r', radius(n));
+    circle.setAttribute('fill', clusterColor(clusterOf.get(n.id) || 0));
+    g.appendChild(circle);
+    const label = document.createElementNS(ns, 'text');
+    label.setAttribute('x', radius(n) + 3);
+    label.setAttribute('y', 3);
+    label.textContent = n.id;
+    g.appendChild(label);
+    const title = document.createElementNS(ns, 'title');
+    title.textContent = `${n.id}: ${n.papers} paper${n.papers === 1 ? '' : 's'}`;
+    g.appendChild(title);
+
+    g.addEventListener('mouseenter', () => {
+      const neighbors = neighborsOf(n.id);
+      nodeEls.forEach(other => {
+        if (other === g) return;
+        other.node.classList.toggle('dim', !neighbors.has(other.name));
+      });
+      edgeEls.forEach(line => {
+        const connected = line.dataset.source === n.id || line.dataset.target === n.id;
+        line.classList.toggle('highlight', connected);
+        line.classList.toggle('dim', !connected);
+      });
+    });
+    g.addEventListener('mouseleave', () => {
+      nodeEls.forEach(other => other.node.classList.remove('dim'));
+      edgeEls.forEach(line => { line.classList.remove('highlight'); line.classList.remove('dim'); });
+    });
+    g.addEventListener('click', () => { location.href = `author.html?name=${encodeURIComponent(n.id)}`; });
+
+    viewport.appendChild(g);
+    return { node: g, name: n.id };
+  });
+
+  setupPanZoom(svg, viewport, W, H);
+  setupSearch(nodeEls, pos);
+  renderMetricsTable(nodes, edges, topAuthors, papers);
+}
+
+// Papers/institutions/countries counted from THIS author's own paper list
+// (all papers in the corpus they're on, not just edges within the shown
+// top-N subgraph) -- co-author/centrality columns are necessarily scoped to
+// the shown subgraph (an edge only exists between two authors who are both
+// in it), but "how many of my own papers involved another institution" is
+// meaningful regardless of whether my co-authors happen to also be in the
+// top-N list, so it isn't artificially narrowed to match.
+function renderMetricsTable(nodes, edges, topAuthors, allPapers) {
+  const topSet = new Set(topAuthors);
+  const coAuthorsOf = new Map(topAuthors.map(a => [a, new Set()]));
+  edges.forEach(e => { coAuthorsOf.get(e.source).add(e.target); coAuthorsOf.get(e.target).add(e.source); });
+
+  const crossInstPapers = new Map(topAuthors.map(a => [a, 0]));
+  const institutionsOf = new Map(topAuthors.map(a => [a, new Set()]));
+  const crossCountryPapers = new Map(topAuthors.map(a => [a, 0]));
+  const countriesOf = new Map(topAuthors.map(a => [a, new Set()]));
+  allPapers.forEach(p => {
+    const authorsHere = (p.authors || []).filter(a => topSet.has(a));
+    if (!authorsHere.length) return;
+    const insts = p.institutions || [], countries = p.countries || [];
+    authorsHere.forEach(a => {
+      insts.forEach(i => institutionsOf.get(a).add(i));
+      countries.forEach(c => countriesOf.get(a).add(c));
+      if (insts.length >= 2) crossInstPapers.set(a, crossInstPapers.get(a) + 1);
+      if (countries.length >= 2) crossCountryPapers.set(a, crossCountryPapers.get(a) + 1);
+    });
+  });
+
+  const rank = pageRank(nodes, edges, 60, 0.85);
+  const maxRank = Math.max(1e-12, ...rank.values());
+
+  const rows = nodes.map(n => ({
+    name: n.id,
+    papers: n.papers,
+    coAuthors: coAuthorsOf.get(n.id).size,
+    crossInstPapers: crossInstPapers.get(n.id),
+    institutions: institutionsOf.get(n.id).size,
+    crossCountryPapers: crossCountryPapers.get(n.id),
+    countries: countriesOf.get(n.id).size,
+    centrality: rank.get(n.id) / maxRank,
+  }));
+  // Default sort: centrality descending (user-requested) -- previously
+  // just whatever order `nodes` happened to be in (raw paper count, from
+  // the top-N author selection above), unrelated to what this table is
+  // actually about.
+  rows.sort((a, b) => b.centrality - a.centrality);
+
+  const tbody = document.getElementById('metrics-body');
+  function row(cells) {
+    const tr = document.createElement('tr');
+    cells.forEach((c, i) => {
+      const td = document.createElement('td');
+      if (i > 0) td.className = 'num';
+      if (c instanceof Node) td.appendChild(c);
+      else td.textContent = c;
+      tr.appendChild(td);
+    });
+    return tr;
+  }
+  function renderBody(data) {
+    tbody.innerHTML = '';
+    data.forEach(r => {
+      const link = document.createElement('a');
+      link.href = `author.html?name=${encodeURIComponent(r.name)}`;
+      link.textContent = r.name;
+      tbody.appendChild(row([
+        link, r.papers, r.coAuthors, r.crossInstPapers, r.institutions,
+        r.crossCountryPapers, r.countries, r.centrality.toFixed(3),
+      ]));
+    });
+  }
+  // Paginate at 50/page -- the "Show top" control still decides how many
+  // authors are in the graph and this analysis, the table just pages
+  // through them rather than rendering all 250 at once.
+  function renderMetricsPage() {
+    const pg = renderPagination(document.getElementById('metrics-pagination'), 'network.html', rows.length, { onChange: renderMetricsPage, showSizeControl: false });
+    const shown = rows.slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(tbody.closest('table'), shown, [
+      { accessor: r => r.name, numeric: false },
+      { accessor: r => r.papers, numeric: true },
+      { accessor: r => r.coAuthors, numeric: true },
+      { accessor: r => r.crossInstPapers, numeric: true },
+      { accessor: r => r.institutions, numeric: true },
+      { accessor: r => r.crossCountryPapers, numeric: true },
+      { accessor: r => r.countries, numeric: true },
+      { accessor: r => r.centrality, numeric: true },
+    ], renderBody);
+  }
+  renderMetricsPage();
+
+  const exportContainer = document.getElementById('export-container');
+  exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
+  exportContainer.insertBefore(renderExportButton(tbody.closest('table'), 'av-atlas-network-metrics.csv'), exportContainer.firstChild);
+}
+
+function setupPanZoom(svg, viewport, W, H) {
+  let scale = 1, tx = 0, ty = 0;
+  let panning = false, panStart = null;
+
+  function apply(animate) {
+    viewport.classList.toggle('dragging', !animate);
+    viewport.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`);
+  }
+
+  svg.addEventListener('wheel', ev => {
+    ev.preventDefault();
+    const rect = svg.getBoundingClientRect();
+    const mx = (ev.clientX - rect.left) / rect.width * W;
+    const my = (ev.clientY - rect.top) / rect.height * H;
+    const factor = ev.deltaY < 0 ? 1.12 : 1 / 1.12;
+    const newScale = Math.min(6, Math.max(0.3, scale * factor));
+    // Zoom toward the cursor: keep the graph point under the cursor fixed.
+    tx = mx - (mx - tx) * (newScale / scale);
+    ty = my - (my - ty) * (newScale / scale);
+    scale = newScale;
+    apply(false);
+  }, { passive: false });
+
+  // Pointer capture is deferred until the pointer has actually moved past a
+  // small threshold, not set immediately on pointerdown -- capturing right
+  // away reroutes EVERY subsequent event (including the click the browser
+  // synthesizes on pointerup) to the svg itself regardless of what element
+  // was actually under the cursor, which silently ate every node's own
+  // click listener: a plain click on a node looked identical to a
+  // zero-distance drag, so it always resolved to "pan", never "navigate to
+  // this author" (confirmed: user-reported, node clicks did nothing).
+  // Below the threshold, no capture happens at all, so the pointerup's
+  // click event fires on the node exactly like an unhandled click normally
+  // would, and the node's own listener runs.
+  const DRAG_THRESHOLD = 4;
+  svg.addEventListener('pointerdown', ev => {
+    panStart = { x: ev.clientX, y: ev.clientY, tx, ty, pointerId: ev.pointerId };
+  });
+  svg.addEventListener('pointermove', ev => {
+    if (!panStart) return;
+    const dx = ev.clientX - panStart.x, dy = ev.clientY - panStart.y;
+    if (!panning) {
+      if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+      panning = true;
+      svg.setPointerCapture(panStart.pointerId);
+    }
+    tx = panStart.tx + dx;
+    ty = panStart.ty + dy;
+    apply(false);
+  });
+  function endInteraction() { panning = false; panStart = null; }
+  svg.addEventListener('pointerup', endInteraction);
+  svg.addEventListener('pointerleave', endInteraction);
+}
+
+// Typing a name pulses that node (a brief scale bounce via inline style,
+// since the node's own transform is already used for position) so it's
+// easy to spot in a dense graph without needing to hunt visually.
+function setupSearch(nodeEls, pos) {
+  const box = document.getElementById('search-box');
+  box.value = '';
+  box.addEventListener('input', () => {
+    const q = box.value.trim().toLowerCase();
+    nodeEls.forEach(({ node, name }) => {
+      const match = q.length > 1 && name.toLowerCase().includes(q);
+      node.classList.toggle('dim', q.length > 1 && !match);
+      const circle = node.querySelector('circle');
+      circle.setAttribute('stroke', match ? 'var(--accent)' : 'var(--panel)');
+      circle.setAttribute('stroke-width', match ? 3.5 : 1.5);
+    });
+  });
+}
+</script>
+<script src="nav.js?v=1789288051"></script>
+<script src="sortable.js?v=1789288051"></script>
+</body>
+</html>
