@@ -41,6 +41,15 @@ class TestNormalizeTitle(unittest.TestCase):
         ):
             self.assertEqual(mc.normalize_title(a), mc.normalize_title(b), (a, b))
 
+    def test_known_duplicate_title_pair_folds_together(self):
+        # A hand-verified pair (see KNOWN_DUPLICATE_TITLES' own comment):
+        # same paper, retitled between its arXiv preprint and its IROS
+        # camera-ready version, with a swapped leading qualifier none of
+        # the other heuristics here catch.
+        self.assertEqual(
+            mc.normalize_title("End-to-end Learned Visual Odometry with Events and Frames"),
+            mc.normalize_title("Deep Visual Odometry with Events and Frames"))
+
     def test_missing_space_after_acronym_colon_folds(self):
         self.assertEqual(mc.normalize_title("ADBA: Approximation Decision Boundary Approach"),
                          mc.normalize_title("ADBA:Approximation Decision Boundary Approach"))

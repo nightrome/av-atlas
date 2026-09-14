@@ -13,13 +13,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "astatisticalgpserrormodelforautonomousdriving": {
-    "title": "A Statistical GPS Error Model for Autonomous Driving",
-    "category": "mapping-localization",
-    "reason": "GPS error model for localization",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "challengesfordriveractionrecognitionwithfacemasks": {
     "title": "Challenges for Driver Action Recognition with Face Masks",
     "category": null,
@@ -95,13 +88,6 @@
     "category": "sensor-calibration",
     "reason": "camera calibration for AVs",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "egolaneestimationforlanelevelnavigationinurbanscenarios": {
-    "title": "Ego-lane estimation for lane-level navigation in urban scenarios",
-    "category": "mapping-localization",
-    "reason": "ego-lane estimation for navigation",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "generationofmodularandmeasurablevalidationscenariosforautonomousvehiclesusingaccidentdata": {
@@ -272,13 +258,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "passengerdetectioncountingandactionrecognitionforselfdrivingpublictransportvehicles": {
-    "title": "Passenger Detection, Counting, and Action Recognition for Self-Driving Public Transport Vehicles",
-    "category": "object-detection",
-    "reason": "Passenger detection and counting",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "theroleoftheherculesautonomousvehicleduringthecovid19pandemicanautonomouslogisticvehicleforcontactlessgoodstransportationi": {
     "title": "The Role of the Hercules Autonomous Vehicle During the COVID-19 Pandemic: An Autonomous Logistic Vehicle for Contactless Goods Transportation (I)",
     "category": null,
@@ -447,13 +426,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "sensingarchitectureforautomatedautonomousvehiclestowardsallconditionsafety": {
-    "title": "Sensing architecture for automated/autonomous vehicles towards all-condition safety",
-    "category": "mapping-localization",
-    "reason": "sensing for all-condition safety",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "contextdrivenmultistreamlstmmlstmforrecognizingfinegrainedactivityofdrivers": {
     "title": "Context-driven Multi-stream LSTM (M-LSTM) for Recognizing Fine-Grained Activity of Drivers",
     "category": "driver-behavior-hmi",
@@ -545,24 +517,10 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "anautonomousdrivingsystemforunknownenvironmentsusingaunifiedmap": {
-    "title": "An Autonomous Driving System for Unknown Environments Using a Unified Map",
-    "category": "mapping-localization",
-    "reason": "Unified map for unknown environments",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "learningeffectivelyfrominterventionforvisualbasedautonomousdriving": {
     "title": "Learning Effectively from Intervention for Visual-based Autonomous Driving",
     "category": "reinforcement-learning",
     "reason": "Learning from intervention",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "detectingwalkingpedestriansfromlegmotionindrivingvideo": {
-    "title": "Detecting walking pedestrians from leg motion in driving video",
-    "category": "object-detection",
-    "reason": "detecting pedestrians",
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
@@ -664,13 +622,6 @@
     "venue": "RA-L",
     "model": "qwen2.5:7b-instruct"
   },
-  "dadlitenetanefficientneuralnetworkfordrivableareadetectioninautonomousdriving": {
-    "title": "DADLiteNet: An Efficient Neural Network for Drivable Area Detection in Autonomous Driving",
-    "category": "object-detection",
-    "reason": "drivable area detection",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "worstperceptionscenariosearchforautonomousdriving": {
     "title": "Worst Perception Scenario Search for Autonomous Driving",
     "category": "adversarial-robustness-safety",
@@ -741,13 +692,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "submetervehiclenavigationusingefficientpremappedvisuallandmarks": {
-    "title": "Sub-meter vehicle navigation using efficient pre-mapped visual landmarks",
-    "category": "mapping-localization",
-    "reason": "sub-meter vehicle navigation",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "statisticalsensormodellingforautonomousdrivingusingautoregressiveinputoutputhmms": {
     "title": "Statistical Sensor Modelling for Autonomous Driving Using Autoregressive Input-Output HMMs",
     "category": "sensor-fusion",
@@ -787,13 +731,6 @@
     "title": "Road detection with thermal cameras through 3D information",
     "category": "depth-3d-geometry",
     "reason": "3D information for road detection",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "reliableevaluationofnavigationstatesestimationforautomateddrivingsystems": {
-    "title": "Reliable Evaluation of Navigation States Estimation for Automated Driving Systems",
-    "category": "mapping-localization",
-    "reason": "evaluation of navigation states",
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
@@ -991,13 +928,6 @@
     "category": null,
     "reason": "not AV-specific",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "dotaunsuperviseddetectionoftrafficanomalyindrivingvideos": {
-    "title": "DoTA: Unsupervised Detection of Traffic Anomaly in Driving Videos",
-    "category": "object-detection",
-    "reason": "unsupervised detection of traffic anomalies",
-    "venue": "TPAMI",
     "model": "qwen2.5:7b-instruct"
   },
   "beyondautomationexploringpassengercooperationandperceptioninteleoperatedsharedautomatedvehiclessavs": {
@@ -1245,20 +1175,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "computingthedrivableareaofautonomousroadvehiclesindynamicroadscenes": {
-    "title": "Computing the Drivable Area of Autonomous Road Vehicles in Dynamic Road Scenes",
-    "category": "mapping-localization",
-    "reason": "computing drivable area",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "semvecnetgeneralizablevectormapgenerationforarbitrarysensorconfigurations": {
-    "title": "SemVecNet: Generalizable Vector Map Generation for Arbitrary Sensor Configurations",
-    "category": "mapping-localization",
-    "reason": "vector map generation for localization",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "atransformationaggregationframeworkforstaterepresentationofautonomousdrivingsystems": {
     "title": "A Transformation-Aggregation Framework for State Representation of Autonomous Driving Systems",
     "category": null,
@@ -1343,13 +1259,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "aflexiblemodelingapproachforrobustmultilaneroadestimation": {
-    "title": "A flexible modeling approach for robust multi-lane road estimation",
-    "category": "mapping-localization",
-    "reason": "road estimation, mapping & localization",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "studyondrivingfatigueevaluationsystembasedonshorttimeperiodecgsignal": {
     "title": "Study on Driving Fatigue Evaluation System Based on Short Time Period ECG Signal",
     "category": null,
@@ -1406,24 +1315,10 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "stereobasedroisgenerationfordetectingpedestriansincloseproximity": {
-    "title": "Stereo based ROIs generation for detecting pedestrians in close proximity",
-    "category": "object-detection",
-    "reason": "Stereo based ROI generation for pedestrian detection",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "memoryguidedcollaborativeattentionfornighttimethermalinfraredimagecolorizationoftrafficscenes": {
     "title": "Memory-Guided Collaborative Attention for Nighttime Thermal Infrared Image Colorization of Traffic Scenes",
     "category": null,
     "reason": "generic title",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "drivableregioncompletionviaa3dlidar": {
-    "title": "Drivable Region Completion via a 3D LiDAR",
-    "category": "mapping-localization",
-    "reason": "3D LiDAR for drivable region",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -1502,13 +1397,6 @@
     "category": null,
     "reason": "title too generic",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "simultaneousestimationofvehiclepositionanddatadelaysusinggaussianprocessbasedmovinghorizonestimation": {
-    "title": "Simultaneous Estimation of Vehicle Position and Data Delays Using Gaussian Process Based Moving Horizon Estimation",
-    "category": "mapping-localization",
-    "reason": "estimating position and delays",
-    "venue": "IROS",
     "model": "qwen2.5:7b-instruct"
   },
   "doautomatedvehiclesreducetheriskofcrashesdreamorreality": {
@@ -1868,20 +1756,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "rianetroadgraphandimageattentionnetworksforrobusturbanautonomousdrivingunderroadchanges": {
-    "title": "RIANet++: Road Graph and Image Attention Networks for Robust Urban Autonomous Driving Under Road Changes",
-    "category": "mapping-localization",
-    "reason": "road graph and image attention for localization",
-    "venue": "RA-L",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "lanelet2ahighdefinitionmapframeworkforthefutureofautomateddriving": {
-    "title": "Lanelet2: A high-definition map framework for the future of automated driving",
-    "category": "mapping-localization",
-    "reason": "high-definition map framework",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "rapidestimationofroadfrictionforantiskidautonomousdriving": {
     "title": "Rapid Estimation of Road Friction for Anti-Skid Autonomous Driving",
     "category": "control",
@@ -1994,20 +1868,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "siamesenetworksforonlinemapvalidationinautonomousdriving": {
-    "title": "Siamese Networks for Online Map Validation in Autonomous Driving",
-    "category": "mapping-localization",
-    "reason": "map validation for AV",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "bayesianroadestimationusingonboardsensors": {
-    "title": "Bayesian Road Estimation Using Onboard Sensors",
-    "category": "mapping-localization",
-    "reason": "Bayesian road estimation",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "kaistmultispectraldaynightdatasetforautonomousandassisteddriving": {
     "title": "KAIST Multi-Spectral Day/Night Data Set for Autonomous and Assisted Driving",
     "category": "dataset-benchmark-paper",
@@ -2069,13 +1929,6 @@
     "category": null,
     "reason": "title too generic",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "alightweightenvironmentvectormapframeworkanditsfastlanelevelnavigationstrategyforautonomousvehicles": {
-    "title": "A Lightweight Environment Vector Map Framework and Its Fast Lane-Level Navigation Strategy for Autonomous Vehicles",
-    "category": "mapping-localization",
-    "reason": "framework for environment vector map",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "lineextractioninuncalibratedcentralimageswithrevolutionsymmetry": {
@@ -2188,13 +2041,6 @@
     "category": "sensor-fusion",
     "reason": "LiDAR data fusion",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "spatiotemporaltrafficscenemodelingforobjectmotiondetection": {
-    "title": "Spatio-Temporal Traffic Scene Modeling for Object Motion Detection",
-    "category": "object-detection",
-    "reason": "Spatio-Temporal Traffic Scene Modeling",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "thresholdbaseddecisiontreeforautomaticdrivingmaneuverrecognitionusingcanbussignal": {
@@ -2351,13 +2197,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "egolaneestimationbymodelinglanesandsensorfailures": {
-    "title": "Ego-lane estimation by modeling lanes and sensor failures",
-    "category": "mapping-localization",
-    "reason": "ego-lane estimation, sensor failures",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "anetworktrafficmodelwithcontrolledautonomousvehiclesactingasmovingbottlenecks": {
     "title": "A network traffic model with controlled autonomous vehicles acting as moving bottlenecks",
     "category": "planning-decision-making",
@@ -2426,13 +2265,6 @@
     "category": "driver-behavior-hmi",
     "reason": "driver interfaces and task change",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "offlineobjectmatchingandevaluationprocessforverificationofautonomousdriving": {
-    "title": "Offline object matching and evaluation process for verification of autonomous driving",
-    "category": "object-detection",
-    "reason": "offline object matching",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "markovclusteringbasedcontentplacementinroadsideunitcachingwithdeadlineconstraint": {
@@ -2552,13 +2384,6 @@
     "category": "adversarial-robustness-safety",
     "reason": "safe driving in occlusion",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "amechanismtolocalizedetectandpreventjamminginconnectedandautonomousvehiclescavs": {
-    "title": "A Mechanism to Localize, Detect, and Prevent Jamming in Connected and Autonomous Vehicles (CAVs)",
-    "category": "mapping-localization",
-    "reason": "localize, detect, prevent jamming",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "investigatingtheoscillationcharacteristicsandmitigatingitsimpactwithlowpenetrationconnectedandautomatedvehicles": {
@@ -2736,20 +2561,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "recognitionofhighwayworkzonesforreliableautonomousdriving": {
-    "title": "Recognition of Highway Workzones for Reliable Autonomous Driving",
-    "category": "mapping-localization",
-    "reason": "workzones localization",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "classifyingandpassing3dobstaclesforautonomousdriving": {
-    "title": "Classifying and Passing 3D Obstacles for Autonomous Driving",
-    "category": "object-detection",
-    "reason": "Classifying 3D obstacles",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "comewithmeanactivityorientedcarpoolingapproach": {
     "title": "ComeWithMe: An Activity-Oriented Carpooling Approach",
     "category": null,
@@ -2804,13 +2615,6 @@
     "category": "motion-prediction",
     "reason": "path prediction for lane departures",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "egocentricstereonavigationusingstixelworld": {
-    "title": "Ego-Centric Stereo Navigation Using Stixel World",
-    "category": "mapping-localization",
-    "reason": "stixel world for navigation",
-    "venue": "ICRA",
     "model": "qwen2.5:7b-instruct"
   },
   "humanlikebehaviorgenerationforintelligentvehiclesinurbanenvironmentbasedonahybridpotentialmap": {
@@ -3091,13 +2895,6 @@
     "category": null,
     "reason": "title too generic",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "objectmodelingfrom3dpointclouddataforselfdrivingvehicles": {
-    "title": "Object Modeling from 3D Point Cloud Data for Self-Driving Vehicles",
-    "category": "object-detection",
-    "reason": "3D Point Cloud Data for Object Modeling",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "developingabodysensornetworktodetectemotionsduringdriving": {
@@ -3443,13 +3240,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "intersectionandstopbarpositionextractionfromvehiclepositioningdata": {
-    "title": "Intersection and Stop Bar Position Extraction From Vehicle Positioning Data",
-    "category": "mapping-localization",
-    "reason": "intersection and stop bar extraction",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "semanticclassificationofpedestriantrafficscenariosforthevalidationofautomateddriving": {
     "title": "Semantic Classification of Pedestrian Traffic Scenarios for the Validation of Automated Driving",
     "category": "planning-decision-making",
@@ -3506,13 +3296,6 @@
     "venue": "IROS",
     "model": "qwen2.5:7b-instruct"
   },
-  "pvtransformerpointtovoxeltransformerforscalable3dobjectdetection": {
-    "title": "PVTransformer: Point-To-Voxel Transformer for Scalable 3D ObjectDetection",
-    "category": "object-detection",
-    "reason": "3D Object Detection",
-    "venue": "ICRA",
-    "model": "qwen2.5:7b-instruct"
-  },
   "realtimerearendcollisionwarningsystemusingamultilayerperceptronneuralnetwork": {
     "title": "Real-Time Rear-End Collision-Warning System Using a Multilayer Perceptron Neural Network",
     "category": "adversarial-robustness-safety",
@@ -3532,13 +3315,6 @@
     "category": "planning-decision-making",
     "reason": "architecture for planning",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "csralightweightcrowdsourcedroadstructurereconstructionsystemforautonomousdriving": {
-    "title": "CSR: A Lightweight Crowdsourced Road Structure Reconstruction System for Autonomous Driving",
-    "category": "mapping-localization",
-    "reason": "road structure reconstruction",
-    "venue": "IROS",
     "model": "qwen2.5:7b-instruct"
   },
   "trafficvelocityestimationfromvehiclecountsequences": {
@@ -3658,13 +3434,6 @@
     "category": "driver-behavior-hmi",
     "reason": "driver behavior & HMI",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "towardautomateddrivingincitiesusingclosetomarketsensorsanoverviewofthevchargeproject": {
-    "title": "Toward automated driving in cities using close-to-market sensors: An overview of the V-Charge Project",
-    "category": "mapping-localization",
-    "reason": "overview of V-Charge project",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "evaluationofautomatedvehiclesencounteringpedestriansatunsignalizedcrossings": {
@@ -4003,13 +3772,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "jointlydetectingandretrievingvehiclesfromroadimagesequencesbasedoncnn": {
-    "title": "Jointly Detecting and Retrieving Vehicles from Road Image Sequences based on CNN",
-    "category": "object-detection",
-    "reason": "detecting vehicles from images",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "mobilityandsafetybenefitsofconnectivityincaccvehiclestrings": {
     "title": "Mobility and Safety Benefits of Connectivity in CACC Vehicle Strings",
     "category": "platooning-cruise-control",
@@ -4283,13 +4045,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "smartphonesensorplatformtostudytrafficconditionsandassessdrivingperformance": {
-    "title": "Smartphone sensor platform to study traffic conditions and assess driving performance",
-    "category": "mapping-localization",
-    "reason": "studies traffic conditions and driving performance",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "towardautonomousdrivinginhighwayandurbanenvironmenthq3andivfc2017": {
     "title": "Toward Autonomous Driving in Highway and Urban Environment: HQ3 and IVFC 2017",
     "category": "end-to-end-driving",
@@ -4309,13 +4064,6 @@
     "category": "control",
     "reason": "velocity-dependent path-following",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "skeletonbasedpedestriangesturedetectionforautonomousdriving": {
-    "title": "Skeleton-Based Pedestrian Gesture Detection for Autonomous Driving",
-    "category": "object-detection",
-    "reason": "pedestrian gesture detection",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "reducedscalemobilerobotsforautonomousdrivingresearch": {
@@ -5032,13 +4780,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "evaluatinglocationcomplianceapproachesforautomatedroadvehicles": {
-    "title": "Evaluating Location Compliance Approaches for Automated Road Vehicles",
-    "category": "mapping-localization",
-    "reason": "evaluating location compliance",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "anovelcodingarchitectureformultilinelidarpointcloudsbasedonclusteringandconvolutionallstmnetwork": {
     "title": "A Novel Coding Architecture for Multi-Line LiDAR Point Clouds Based on Clustering and Convolutional LSTM Network",
     "category": "sensor-fusion",
@@ -5186,13 +4927,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "multidriveroadmapgenerationonstandardizedhighvelocityroadsusinglowcostsensordata": {
-    "title": "Multi-drive road map generation on standardized high-velocity roads using low-cost sensor data",
-    "category": "mapping-localization",
-    "reason": "road map generation",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "trajectorybasedperformancerankingsystemoflowlevelautomatedvehicles": {
     "title": "Trajectory-Based Performance Ranking System of Low-Level Automated Vehicles",
     "category": "motion-prediction",
@@ -5228,13 +4962,6 @@
     "venue": "ICRA",
     "model": "qwen2.5:7b-instruct"
   },
-  "diffusionedgeguidancenetworkandclassspecificnmsforvulnerabletargetdetectioninsurveillancevideoofurbanroadway": {
-    "title": "Diffusion Edge Guidance Network and Class Specific NMS for Vulnerable Target Detection in Surveillance Video of Urban Roadway",
-    "category": "object-detection",
-    "reason": "vulnerable target detection",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "aduallayermixtureofexpertmodelbasedhumanlikestrategyforautonomousdrivingvelocitycontrol": {
     "title": "A Dual-Layer Mixture of Expert Model-Based Human-Like Strategy for Autonomous Driving Velocity Control",
     "category": "control",
@@ -5246,13 +4973,6 @@
     "title": "Learning Traffic Light Colors",
     "category": "traffic-sign-signal-perception",
     "reason": "Traffic light color learning",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "maplineinterfaceforautonomousdriving": {
-    "title": "Map Line Interface for Autonomous Driving",
-    "category": "mapping-localization",
-    "reason": "map line interface for localization",
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
@@ -5389,13 +5109,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "ascaleddowntrafficsystembasedonautonomousvehiclesanewexperimentalsystemforitsresearch": {
-    "title": "A scaled-down traffic system based on autonomous vehicles: A new experimental system for ITS research",
-    "category": "mapping-localization",
-    "reason": "ITS research implies mapping & localization",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "pollutantemissionsestimationframeworkforrealdrivingemissionsatmicroscopicscaleandenvironmentalfootprintcalculation": {
     "title": "Pollutant emissions estimation framework for real-driving emissions at microscopic scale and environmental footprint calculation",
     "category": null,
@@ -5519,13 +5232,6 @@
     "title": "Distance and Steering Heuristics for Streamline-Based Flow Field Planning",
     "category": "planning-decision-making",
     "reason": "flow field planning",
-    "venue": "ICRA",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "autonomousexplorationofunknown3denvironmentsusingafrontierbasedcollectorstrategy": {
-    "title": "Autonomous Exploration of Unknown 3D Environments Using a Frontier-Based Collector Strategy",
-    "category": "mapping-localization",
-    "reason": "frontier-based collector strategy",
     "venue": "ICRA",
     "model": "qwen2.5:7b-instruct"
   },
@@ -5701,13 +5407,6 @@
     "title": "Multimodal Priming of Drivers for a Cooperative Take-Over",
     "category": "v2x-cooperative",
     "reason": "Cooperative take-over indication",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "predictionofdriverspedestriandetectabilitybyimageprocessingadaptivetovisualfieldsofview": {
-    "title": "Prediction of driver's pedestrian detectability by image processing adaptive to visual fields of view",
-    "category": "object-detection",
-    "reason": "predict driver's pedestrian detectability",
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
@@ -5907,13 +5606,6 @@
     "venue": "IROS",
     "model": "qwen2.5:7b-instruct"
   },
-  "lanemindseeinglaneslikehumandrivers": {
-    "title": "LaneMind: Seeing Lanes Like Human Drivers",
-    "category": "mapping-localization",
-    "reason": "Lane perception for localization",
-    "venue": "IROS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "portableroadsidesensorsforvehiclecountingclassificationandspeedmeasurement": {
     "title": "Portable Roadside Sensors for Vehicle Counting, Classification, and Speed Measurement",
     "category": "sensor-fusion",
@@ -6096,13 +5788,6 @@
     "venue": "RA-L",
     "model": "qwen2.5:7b-instruct"
   },
-  "adaptivemultisensorintegratednavigationsystemaidedbycontinuouserrormapfromrsuforautonomousvehiclesinurbanareas": {
-    "title": "Adaptive Multi-Sensor Integrated Navigation System Aided by Continuous Error Map from RSU for Autonomous Vehicles in Urban Areas",
-    "category": "mapping-localization",
-    "reason": "RSU for error map",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "eyesclosedsafetykernelssafetyofautonomoussystemsunderlossofobservability": {
     "title": "Eyes-Closed Safety Kernels: Safety of Autonomous Systems Under Loss of Observability",
     "category": "adversarial-robustness-safety",
@@ -6157,13 +5842,6 @@
     "category": "depth-3d-geometry",
     "reason": "3D Convolution Networks for LiDAR",
     "venue": "TPAMI",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "logiclidaronlygeometricintensitychannelbaseddrivableareaestimationinurbanenvironments": {
-    "title": "LOGIC: LiDAR-Only Geometric-Intensity Channel-based Drivable Area Estimation in Urban Environments",
-    "category": "mapping-localization",
-    "reason": "drivable area estimation",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "towardsrealisticevaluationofcollectiveperceptionforconnectedandautomateddriving": {
@@ -6327,13 +6005,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "lightweightlanepositioningofvehiclesusingasmartphonegpsbymonitoringthedistancefromthecenterline": {
-    "title": "Lightweight lane positioning of vehicles using a smartphone GPS by monitoring the distance from the center line",
-    "category": "mapping-localization",
-    "reason": "lane positioning, GPS",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "risktolerantonsitedispatchforautonomousminingtruckfleetswithuncertainfailuresigns": {
     "title": "Risk-Tolerant On-Site Dispatch for Autonomous Mining Truck Fleets With Uncertain Failure Signs",
     "category": "planning-decision-making",
@@ -6353,13 +6024,6 @@
     "category": "control",
     "reason": "robot control for autonomous driving",
     "venue": "ICRA",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "c3mcollaborativemagneticawaremapmergingforintelligentvehiclesindegradedenvironments": {
-    "title": "C3M: Collaborative Magnetic-Aware Map-Merging for Intelligent Vehicles in Degraded Environments",
-    "category": "mapping-localization",
-    "reason": "Collaborative map merging",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "sensitivityanalysisonregularitybaseddriveradvisorysystems": {
@@ -6537,13 +6201,6 @@
     "venue": "ICRA",
     "model": "qwen2.5:7b-instruct"
   },
-  "dltnetjointdetectionofdrivableareaslanelinesandtrafficobjects": {
-    "title": "DLT-Net: Joint Detection of Drivable Areas, Lane Lines, and Traffic Objects",
-    "category": "object-detection",
-    "reason": "drivable areas, lane lines, traffic objects",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "probabilisticestimationofthegazeregionofthedriverusingdenseclassification": {
     "title": "Probabilistic Estimation of the Gaze Region of the Driver using Dense Classification",
     "category": null,
@@ -6689,13 +6346,6 @@
     "category": null,
     "reason": "not AV-specific",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "visionbaseddetectionofdrivercellphoneusageandfoodconsumption": {
-    "title": "Vision Based Detection of Driver Cell Phone Usage and Food Consumption",
-    "category": "object-detection",
-    "reason": "driver behavior detection",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "constrainedhierarchicalmontecarlobeliefstateplanning": {
@@ -7139,31 +6789,10 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "roadnetworkstateestimationusingrandomforestensemblelearning": {
-    "title": "Road network state estimation using random forest ensemble learning",
-    "category": "mapping-localization",
-    "reason": "random forest for state estimation",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "contextawarenavigationprotocolforsafedrivinginvehicularcyberphysicalsystems": {
     "title": "Context-Aware Navigation Protocol for Safe Driving in Vehicular Cyber-Physical Systems",
     "category": "planning-decision-making",
     "reason": "navigation protocol for safe driving",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "temporalsemanticsautoencodingbasedmovingobjectsdetectioninurbandrivingscenario": {
-    "title": "Temporal Semantics Auto-Encoding based Moving Objects Detection in Urban Driving Scenario",
-    "category": "object-detection",
-    "reason": "Moving Objects Detection",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "designandoptimizationofnonlinearobserversforroadcurvatureandstateestimationinautomatedvehicles": {
-    "title": "Design and Optimization of Nonlinear Observers for Road Curvature and State Estimation in Automated Vehicles",
-    "category": "mapping-localization",
-    "reason": "estimation of state and road curvature",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -7291,13 +6920,6 @@
     "category": "adversarial-robustness-safety",
     "reason": "adversarial training for perception",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "roadnetworkreconstructionusingreversiblejumpmcmcsimulatedannealingbasedonvehicletrajectoriesfromfleetmeasurements": {
-    "title": "Road network reconstruction using reversible jump MCMC simulated annealing based on vehicle trajectories from fleet measurements",
-    "category": "mapping-localization",
-    "reason": "reconstruction using vehicle trajectories",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "autonomousroboticsfortranscatheterdeliverysystem": {
@@ -7433,39 +7055,11 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "sparsevehicularsensornetworksfortrafficdynamicsreconstruction": {
-    "title": "Sparse Vehicular Sensor Networks for Traffic Dynamics Reconstruction",
-    "category": "mapping-localization",
-    "reason": "reconstructing traffic dynamics",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "predictingdrivingconditionsatmountaincrossingsusingdeeplearning": {
     "title": "Predicting Driving Conditions at Mountain Crossings Using Deep Learning",
     "category": "motion-prediction",
     "reason": "predicting driving conditions",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "arealtimevehiclenavigationalgorithminsensornetworkenvironments": {
-    "title": "A Real-Time Vehicle Navigation Algorithm in Sensor Network Environments",
-    "category": "mapping-localization",
-    "reason": "vehicle navigation in sensor networks",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "highefficientdetectionoftrafficparametersbyusingtwoforegroundtemporalspatialimages": {
-    "title": "High-efficient detection of traffic parameters by using two foreground temporal-spatial images",
-    "category": "object-detection",
-    "reason": "traffic parameter detection",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "illegalparkingdetectionbasedonmultitaskdrivingperception": {
-    "title": "Illegal Parking Detection Based on Multi-Task Driving Perception",
-    "category": "object-detection",
-    "reason": "Illegal parking detection",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "ontheimpactofcooperativeautonomousvehiclesinimprovingfreewaymergingamodifiedintelligentdrivermodelbasedapproach": {
@@ -7508,13 +7102,6 @@
     "category": "occupancy",
     "reason": "collision estimation for occupancy prediction",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "automaticdetectionoftrafficlightsusingsupportvectormachine": {
-    "title": "Automatic detection of traffic lights using support vector machine",
-    "category": "object-detection",
-    "reason": "traffic light detection",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "creatingkinematicsdependentpedestriancrossingwillingnessmodelwheninteractingwithapproachingvehicle": {
@@ -7608,13 +7195,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "astudyoftheeffectivenessofmessagecontentlengthandratecontrolforimprovingmapaccuracyinautomateddrivingsystems": {
-    "title": "A Study of the Effectiveness of Message Content, Length, and Rate Control for Improving Map Accuracy in Automated Driving Systems",
-    "category": "mapping-localization",
-    "reason": "focuses on map accuracy",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "shouldautomatedvehiclesstopatyellowlightsastudyofthedilemmazoneandrearendcollisions": {
     "title": "Should Automated Vehicles Stop at Yellow Lights? A Study of the Dilemma Zone and Rear-End Collisions",
     "category": "planning-decision-making",
@@ -7629,13 +7209,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "commonroadscenariodesigneranopensourcetoolboxformapconversionandscenariocreationforautonomousvehicles": {
-    "title": "CommonRoad Scenario Designer: An Open-Source Toolbox for Map Conversion and Scenario Creation for Autonomous Vehicles",
-    "category": "mapping-localization",
-    "reason": "Scenario creation for AVs",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "vehiclespeedtrajectoryestimationusingroadtrafficandinfrastructureinformation": {
     "title": "Vehicle speed trajectory estimation using road traffic and infrastructure information",
     "category": "motion-prediction",
@@ -7648,13 +7221,6 @@
     "category": "sensor-fusion",
     "reason": "Synthetic LiDAR data for perception",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "visionbasedpositioningforinternetofvehicles": {
-    "title": "Vision-Based Positioning for Internet-of-Vehicles",
-    "category": "mapping-localization",
-    "reason": "Vision-based positioning",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "whereisthedriverlookinganalysisofheadeyeandirisforrobustgazezoneestimation": {
@@ -7818,13 +7384,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "learningappearancemodelsforroaddetection": {
-    "title": "Learning appearance models for road detection",
-    "category": "object-detection",
-    "reason": "Learning appearance models for road detection",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "usingdelayedobservationsforlongtermvehicletrackinginlargeenvironments": {
     "title": "Using Delayed Observations for Long-Term Vehicle Tracking in Large Environments",
     "category": "tracking",
@@ -7963,13 +7522,6 @@
     "category": "motion-prediction",
     "reason": "Model Predictive Path Integral Control",
     "venue": "ICRA",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "deeplearningalgorithmforautonomousdrivingusinggooglenet": {
-    "title": "Deep learning algorithm for autonomous driving using GoogLeNet",
-    "category": "object-detection",
-    "reason": "GoogLeNet for AV",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "developmentandevaluationoflanehazardpredictionapplicationforconnectedandautomatedvehiclescavs": {
@@ -8119,13 +7671,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "deeplearningbasedvehiclepositionestimationforhumandrivevehicleatconnectedfreeway": {
-    "title": "Deep Learning Based Vehicle Position Estimation for Human Drive Vehicle at Connected Freeway",
-    "category": "mapping-localization",
-    "reason": "vehicle position estimation",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "worstperceptionscenariopredictionfortestingautonomousdrivingperception": {
     "title": "Worst Perception Scenario Prediction for Testing Autonomous Driving Perception",
     "category": "occupancy",
@@ -8172,13 +7717,6 @@
     "title": "The experience of ethics: Evaluation of self harm risks in automated vehicles",
     "category": "adversarial-robustness-safety",
     "reason": "evaluates self harm risks",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "efficientrectanglefittingofsparselaserdataforrobustonroadobiectdetection": {
-    "title": "Efficient Rectangle Fitting of Sparse Laser Data for Robust On-Road Obiect Detection",
-    "category": "object-detection",
-    "reason": "Sparse Laser Data for Robust Object Detection",
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
@@ -8308,13 +7846,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "intersectionscanmodelandprobabilityinferenceforvisionbasedsmallscaleurbanintersectiondetection": {
-    "title": "Intersection scan model and probability inference for vision based small-scale urban intersection detection",
-    "category": "object-detection",
-    "reason": "intersection detection",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "effectsofvisualplanningsupportontakeoverperformanceinconditionalautomateddriving": {
     "title": "Effects of Visual Planning Support on Take-over Performance in Conditional Automated Driving",
     "category": "planning-decision-making",
@@ -8364,25 +7895,11 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "laneletsefficientmaprepresentationforautonomousdriving": {
-    "title": "Lanelets: Efficient map representation for autonomous driving",
-    "category": "mapping-localization",
-    "reason": "Lanelets for mapping",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "enhancedtemporaldataorganizationforlidardatainautonomousdrivingenvironments": {
     "title": "Enhanced Temporal Data Organization for LiDAR Data in Autonomous Driving Environments",
     "category": "sensor-fusion",
     "reason": "LiDAR data fusion",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "sensorbasedroadmodelestimationforautonomousdriving": {
-    "title": "Sensor-based road model estimation for autonomous driving",
-    "category": "mapping-localization",
-    "reason": "road model estimation",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "exploringdecisionshiftsinautonomousdrivingwithattributionguidedvisualization": {
@@ -8467,20 +7984,6 @@
     "category": "driver-behavior-hmi",
     "reason": "behavior attributes for driving",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "alidarbasedduallevelvirtuallanesconstructionandanticipationofspecificroadinfrastructureeventsforautonomousdriving": {
-    "title": "A Lidar-based Dual-level Virtual Lanes Construction and Anticipation of Specific Road Infrastructure Events for Autonomous Driving",
-    "category": "mapping-localization",
-    "reason": "lidar-based lane construction",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "rodrgbonlyfastandefficientoffroadfreespacedetection": {
-    "title": "ROD: RGB-Only Fast and Efficient Off-Road Freespace Detection",
-    "category": "object-detection",
-    "reason": "RGB-Only Freespace Detection",
-    "venue": "ICRA",
     "model": "qwen2.5:7b-instruct"
   },
   "sensorstechnologiesforintelligentvehiclesperceptionsystemsacomparisonbetweenvisionand3dlidar": {
@@ -8665,13 +8168,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "topologyawareroadextractionviamultitasklearningforautonomousdriving": {
-    "title": "Topology-aware Road Extraction via Multi-task Learning for Autonomous Driving",
-    "category": "mapping-localization",
-    "reason": "road extraction for localization",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "autonomouslatchingsystemforselfdrivingroboticboats": {
     "title": "Autonomous Latching System for Self-driving Robotic Boats",
     "category": "control",
@@ -8756,13 +8252,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "optimizingrightofwayallocationinurbanexpresswayrampinfluenceareasplacementofautonomousvehiclededicatedlanesandbufferzones": {
-    "title": "Optimizing Right-of-Way Allocation in Urban Expressway Ramp Influence Areas: Placement of Autonomous Vehicle-Dedicated Lanes and Buffer Zones",
-    "category": "mapping-localization",
-    "reason": "lane allocation and buffer zones",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "optimizedsecurityalgorithmsforintelligentandautonomousvehiculartransportationsystems": {
     "title": "Optimized Security Algorithms for Intelligent and Autonomous Vehicular Transportation Systems",
     "category": "adversarial-robustness-safety",
@@ -8775,13 +8264,6 @@
     "category": null,
     "reason": "generic topic",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "probabilisticobstaclepartitioningofmonocularvideoforautonomousvehicles": {
-    "title": "Probabilistic Obstacle Partitioning of Monocular Video for Autonomous Vehicles",
-    "category": "object-detection",
-    "reason": "Probabilistic obstacle partitioning",
-    "venue": "BMVC",
     "model": "qwen2.5:7b-instruct"
   },
   "layeredstatediscoveryforincrementalautonomousexploration": {
@@ -8803,13 +8285,6 @@
     "category": null,
     "reason": "title too generic",
     "venue": "RA-L",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "aformalapproachforthedesignofadependableperceptionsystemforautonomousvehicles": {
-    "title": "A Formal Approach for the Design of a Dependable Perception System for Autonomous Vehicles",
-    "category": "mapping-localization",
-    "reason": "dependable perception system for localization",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "shareddrivingcontrolbetweenhumanandautonomousdrivingsystemviaconflictresolutionusingnoncooperativegametheory": {
@@ -8903,13 +8378,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "trajectorymapmatchinginurbanroadnetworksbasedonrssmeasurements": {
-    "title": "Trajectory Map-Matching in Urban Road Networks Based on RSS Measurements",
-    "category": "mapping-localization",
-    "reason": "trajectory map-matching, localization",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "graphbasedcontextrepresentationenvironmentmodelingandinformationaggregationforautomateddriving": {
     "title": "Graph-based context representation, environment modeling and information aggregation for automated driving",
     "category": "world-models",
@@ -8998,13 +8466,6 @@
     "title": "Spatiotemporal Analysis of Static and Dynamic Traffic Elements From Road Scenes",
     "category": "motion-prediction",
     "reason": "spatiotemporal analysis of traffic elements",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "agraphbasedvehicleproposallocationanddetectionalgorithm": {
-    "title": "A Graph-Based Vehicle Proposal Location and Detection Algorithm",
-    "category": "object-detection",
-    "reason": "Vehicle proposal location and detection",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -9153,13 +8614,6 @@
     "category": null,
     "reason": "title too generic",
     "venue": "AAAI",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "visionbasedrecognitionofroadregulationforintelligentvehicle": {
-    "title": "Vision-Based Recognition of Road Regulation for Intelligent Vehicle",
-    "category": "mapping-localization",
-    "reason": "road regulation recognition",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "routecoveragetestingforautonomousvehiclesviamapmodeling": {
@@ -9316,13 +8770,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "mapbasedcurvilinearcoordinatesforautonomousvehicles": {
-    "title": "Map-based curvilinear coordinates for autonomous vehicles",
-    "category": "mapping-localization",
-    "reason": "map-based coordinates for AV",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "trackingmultipleobjectsintrafficscenariosusingfreeformobstacledelimitersandparticlefilters": {
     "title": "Tracking multiple objects in traffic scenarios using free-form obstacle delimiters and particle filters",
     "category": "tracking",
@@ -9393,13 +8840,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "thermalinfraredbaseddrivableregiondetection": {
-    "title": "Thermal-infrared based drivable region detection",
-    "category": "object-detection",
-    "reason": "Thermal-infrared drivable region detection",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "driversvisualinputprocessingofinformationdisplayedonthewindshield": {
     "title": "Driver's Visual Input Processing of Information Displayed on the Windshield",
     "category": null,
@@ -9419,13 +8859,6 @@
     "category": "adversarial-robustness-safety",
     "reason": "security vulnerabilities in AVs",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "finegrainedvehiclerepresentationsforautonomousdriving": {
-    "title": "Fine-Grained Vehicle Representations for Autonomous Driving",
-    "category": "object-detection",
-    "reason": "Fine-grained vehicle representations",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "quantifyingtaxidriversbehaviorswithbehavioralgametheory": {
@@ -9715,13 +9148,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "asequentialtestforautonomouslocalisationofmaperrorsfordrivingassistancesystems": {
-    "title": "A sequential test for autonomous localisation of map errors for driving assistance systems",
-    "category": "mapping-localization",
-    "reason": "localisation of map errors",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "studyonunsafebehaviordetectionoftowercranedriversinprefabricatedbuildingconstruction": {
     "title": "Study on Unsafe Behavior Detection of Tower Crane Drivers in Prefabricated Building Construction",
     "category": null,
@@ -9783,13 +9209,6 @@
     "category": "sensor-fusion",
     "reason": "Berm detection involves sensor data fusion",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "trafficscenerepresentationandencodingwithgraphstructurelearningandexploration": {
-    "title": "Traffic Scene Representation and Encoding With Graph Structure Learning and Exploration",
-    "category": "mapping-localization",
-    "reason": "Graph structure for scene representation",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "tpioavatripartyclouddataprotectionschemeforinternetofautonomousvehiclecoupledwithchaoticbiometriccryptography": {
@@ -9911,13 +9330,6 @@
     "venue": "ICRA",
     "model": "qwen2.5:7b-instruct"
   },
-  "roadsideinfrastructuresupportforurbanautomateddriving": {
-    "title": "Roadside Infrastructure Support for Urban Automated Driving",
-    "category": "mapping-localization",
-    "reason": "infrastructure for localization",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "amultiphaseadaptablebuslanesharingstrategyforvehicleswithvariousturningintentionsatintersections": {
     "title": "A Multi-Phase-Adaptable Bus Lane Sharing Strategy for Vehicles with Various Turning Intentions at Intersections",
     "category": "planning-decision-making",
@@ -9953,13 +9365,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "continuouscardrivingintentdetectionusingstructuralpatternrecognition": {
-    "title": "Continuous Car Driving Intent Detection Using Structural Pattern Recognition",
-    "category": "object-detection",
-    "reason": "intent detection using structural pattern",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "aparticipatoryurbantrafficmonitoringsystemthepowerofbusriders": {
     "title": "A Participatory Urban Traffic Monitoring System: The Power of Bus Riders",
     "category": null,
@@ -9979,13 +9384,6 @@
     "category": null,
     "reason": "Title is too generic",
     "venue": "ICLR",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "deeplysupervisedzstyleresidualnetworkdevotestorealtimeenvironmentperceptionforautonomousdriving": {
-    "title": "Deeply Supervised Z-Style Residual Network Devotes to Real-Time Environment Perception for Autonomous Driving",
-    "category": "object-detection",
-    "reason": "Real-Time Environment Perception",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "recognizingdriverawarenessofpedestrian": {
@@ -10072,13 +9470,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "mdanetalightweightmultitaskdynamicadaptivenetworkforrealtimevisualperceptioninautonomousdriving": {
-    "title": "MDANet: A Lightweight Multi-Task Dynamic Adaptive Network for Real-Time Visual Perception in Autonomous Driving",
-    "category": "object-detection",
-    "reason": "Multi-task for real-time perception",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "avirtualdrivinginstructorthatgeneratespersonalizeddrivinglessonsbasedonstudentskilllevel": {
     "title": "A Virtual Driving Instructor That Generates Personalized Driving Lessons Based on Student Skill Level",
     "category": "driver-behavior-hmi",
@@ -10119,13 +9510,6 @@
     "category": null,
     "reason": "not AV-specific",
     "venue": "WACV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "realtimemodelingofdynamicenvironmentsintrafficscenariosusingastereovisionsystem": {
-    "title": "Real-time modeling of dynamic environments in traffic scenarios using a stereo-vision system",
-    "category": "mapping-localization",
-    "reason": "stereo-vision for environment modeling",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "adecentralizedandcoordinatedroutingalgorithmforconnectedandautonomousvehicles": {
@@ -10289,13 +9673,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "coherentonlineroadtopologyestimationandreasoningwithstandarddefinitionmaps": {
-    "title": "Coherent Online Road Topology Estimation and Reasoning with Standard-Definition Maps",
-    "category": "mapping-localization",
-    "reason": "road topology estimation",
-    "venue": "IROS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "recsaldeeprecursivesupervisionforvisualsaliencyprediction": {
     "title": "RecSal : Deep Recursive Supervision for Visual Saliency Prediction",
     "category": null,
@@ -10429,31 +9806,10 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "mapbasedpathandposeinformationforautomatedandassisteddrivingoftrams": {
-    "title": "Map-Based Path and Pose Information for Automated and Assisted Driving of Trams",
-    "category": "mapping-localization",
-    "reason": "map-based path and pose information",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "detectionandclassificationofbicyclistgroupbehaviorforautomatedvehicleapplications": {
-    "title": "Detection and Classification of Bicyclist Group Behavior for Automated Vehicle Applications",
-    "category": "object-detection",
-    "reason": "bicyclist detection and classification",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "vehicletrajectoryestimationusingahighgainmultioutputnonlinearobserver": {
     "title": "Vehicle Trajectory Estimation Using a High-Gain Multi-Output Nonlinear Observer",
     "category": "motion-prediction",
     "reason": "vehicle trajectory estimation",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "ahighintegrityandlowcostnavigationsystemforautonomousvehicles": {
-    "title": "A High-Integrity and Low-Cost Navigation System for Autonomous Vehicles",
-    "category": "mapping-localization",
-    "reason": "Navigation system implies mapping & localization",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -10744,13 +10100,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "detectingroadobstaclesbyerasingthem": {
-    "title": "Detecting Road Obstacles by Erasing Them",
-    "category": "object-detection",
-    "reason": "detecting road obstacles",
-    "venue": "TPAMI",
-    "model": "qwen2.5:7b-instruct"
-  },
   "impactofdriverclassificationregulationsontransportationnetworkcompanies": {
     "title": "Impact of Driver Classification Regulations on Transportation Network Companies",
     "category": null,
@@ -10762,13 +10111,6 @@
     "title": "Proprioceptive Observer Design for Speed Estimation in Automated Driving Systems",
     "category": "control",
     "reason": "speed estimation in control",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "acompactrepresentationoftheenvironmentanditsfrontiersforautonomousvehiclenavigation": {
-    "title": "A compact representation of the environment and its frontiers for autonomous vehicle navigation",
-    "category": "mapping-localization",
-    "reason": "environment representation for navigation",
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
@@ -10784,13 +10126,6 @@
     "category": "occupancy",
     "reason": "reachability estimation for occupancy",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "rcalalightweightroadcognitionandautomatedlabelingsystemforautonomousdrivingscenarios": {
-    "title": "RCAL:A Lightweight Road Cognition and Automated Labeling System for Autonomous Driving Scenarios",
-    "category": "mapping-localization",
-    "reason": "road cognition and labeling",
-    "venue": "IROS",
     "model": "qwen2.5:7b-instruct"
   },
   "developmentandevaluationoftwolearningbasedpersonalizeddrivermodelsforpurepursuitpathtrackingbehaviors": {
@@ -11031,25 +10366,11 @@
     "venue": "IROS",
     "model": "qwen2.5:7b-instruct"
   },
-  "sparseupdpaunifiedmultitaskframeworkforpanopticdrivingperception": {
-    "title": "Sparse U-PDP: A Unified Multi-Task Framework for Panoptic Driving Perception",
-    "category": "object-detection",
-    "reason": "panoptic driving perception",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "identificationofeffectivemotionprimitivesforgroundvehicles": {
     "title": "Identification of Effective Motion Primitives for Ground Vehicles",
     "category": "motion-prediction",
     "reason": "effective motion primitives",
     "venue": "IROS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "translatingimagestoroadnetworkasequencetosequenceperspective": {
-    "title": "Translating Images to Road Network: A Sequence-to-Sequence Perspective",
-    "category": "mapping-localization",
-    "reason": "translates images to road network",
-    "venue": "TPAMI",
     "model": "qwen2.5:7b-instruct"
   },
   "determiningutterancetimingofadrivingagentwithdoublearticulationanalyzer": {
@@ -11064,13 +10385,6 @@
     "category": null,
     "reason": "not clearly AV-specific",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "visibilityestimationincomplexrealworlddrivingenvironmentsusinghighdefinitionmaps": {
-    "title": "Visibility Estimation in Complex, Real-World Driving Environments Using High Definition Maps",
-    "category": "mapping-localization",
-    "reason": "uses high definition maps",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "extractionandanalysisofmassiveskeletalinformationfromvideodataofcrowdedurbanlocationsforunderstandingimplicitgesturesofroadusers": {
@@ -11218,13 +10532,6 @@
     "category": "testing-validation",
     "reason": "intelligence testing of automated driving systems",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "bayessaliencybasedobjectproposalgeneratorfornighttimetrafficimages": {
-    "title": "Bayes Saliency-Based Object Proposal Generator for Nighttime Traffic Images",
-    "category": "object-detection",
-    "reason": "Bayes saliency-based object proposal",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "height3daroadsidevisualframeworkbasedonheightpredictioninreal3dspace": {
@@ -11500,13 +10807,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "generationofcomplexroadnetworksusingasimplifiedlogicaldescriptionforthevalidationofautomatedvehicles": {
-    "title": "Generation of Complex Road Networks Using a Simplified Logical Description for the Validation of Automated Vehicles",
-    "category": "mapping-localization",
-    "reason": "road network validation",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "trafficregulationviaindividuallycontrolledautomatedvehiclesacelltransmissionmodelapproach": {
     "title": "Traffic regulation via individually controlled automated vehicles: a cell transmission model approach",
     "category": "planning-decision-making",
@@ -11661,13 +10961,6 @@
     "venue": "ICRA",
     "model": "qwen2.5:7b-instruct"
   },
-  "deeptlrasingledeepconvolutionalnetworkfordetectionandclassificationoftrafficlights": {
-    "title": "DeepTLR: A single deep convolutional network for detection and classification of traffic lights",
-    "category": "object-detection",
-    "reason": "traffic light detection",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "datadrivenindoorpositioningcorrectionforinfrastructureenabledautonomousdrivingsystemsalifelongframework": {
     "title": "Data-Driven Indoor Positioning Correction for Infrastructure-Enabled Autonomous Driving Systems: A Lifelong Framework",
     "category": null,
@@ -11787,13 +11080,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "scenariobasedanalysisofsimulatedandmeasureddrivingdynamicsdataforsteerbywireroadfeedbackgeneration": {
-    "title": "Scenario-Based Analysis of Simulated and Measured Driving Dynamics Data for Steer-by-Wire Road Feedback Generation",
-    "category": "mapping-localization",
-    "reason": "driving dynamics data for steer-by-wire",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "aligningmachiavellianagentsbehaviorsteeringviatesttimepolicyshaping": {
     "title": "Aligning Machiavellian Agents: Behavior Steering via Test-Time Policy Shaping",
     "category": null,
@@ -11848,13 +11134,6 @@
     "category": "reinforcement-learning",
     "reason": "trust management suggests RL",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "taskorientedpretrainingfordrivableareadetection": {
-    "title": "Task-Oriented Pre-Training for Drivable Area Detection",
-    "category": "object-detection",
-    "reason": "drivable area detection",
-    "venue": "ICRA",
     "model": "qwen2.5:7b-instruct"
   },
   "classifyingpedestrianactionsinadvanceusingpredictedvideoofurbandrivingscenes": {
@@ -12039,13 +11318,6 @@
     "venue": "IROS",
     "model": "qwen2.5:7b-instruct"
   },
-  "aknowledgearchitecturelayerformapdatainautonomousvehicles": {
-    "title": "A Knowledge Architecture Layer for Map Data in Autonomous Vehicles",
-    "category": "mapping-localization",
-    "reason": "map data in autonomous vehicles",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "stopandwaitdiscoveraggregationeffectbasedonprivatecartrajectorydata": {
     "title": "Stop-and-Wait: Discover Aggregation Effect Based on Private Car Trajectory Data",
     "category": null,
@@ -12093,13 +11365,6 @@
     "category": "driver-behavior-hmi",
     "reason": "user experience evaluation",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "compactrepresentationofdynamicdrivingenvironmentsforadasbyparametricfreespaceanddynamicobjectmaps": {
-    "title": "Compact Representation of Dynamic Driving Environments for ADAS by Parametric Free Space and Dynamic Object Maps",
-    "category": "mapping-localization",
-    "reason": "free space and dynamic object maps",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "dempstershafergridbasedhybridfusionofvirtuallanesforautonomousdriving": {
@@ -12319,13 +11584,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "readinessevaluationoffreewaysforlanedetectionperformanceoflidarbasedautomatedvehiclesafieldtestanalysis": {
-    "title": "Readiness Evaluation of Freeways for Lane-Detection Performance of Lidar-Based Automated Vehicles: A Field Test Analysis",
-    "category": "mapping-localization",
-    "reason": "freeway lane detection, localization",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "intelligent3dobjectsclassificationforvehicularadhocnetworkbasedonlidaranddeeplearningapproaches": {
     "title": "Intelligent 3D Objects Classification for Vehicular Ad Hoc Network Based on Lidar and Deep Learning Approaches",
     "category": "sensor-fusion",
@@ -12438,24 +11696,10 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "fcdnetfeaturedecorrelationandconfidencedrivendynamicfusionforrobustpedestrianrecognitioninautonomousdriving": {
-    "title": "FCD-Net: Feature Decorrelation and Confidence-Driven Dynamic Fusion for Robust Pedestrian Recognition in Autonomous Driving",
-    "category": "object-detection",
-    "reason": "pedestrian recognition",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "ageofviewanewmetricforevaluatingheterogeneousinformationfusioninvehicularcyberphysicalsystems": {
     "title": "Age of View: A New Metric for Evaluating Heterogeneous Information Fusion in Vehicular Cyber-Physical Systems",
     "category": "sensor-fusion",
     "reason": "Evaluating fusion in vehicular systems",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "estimatingmotorwaytrafficstateswithdatafusionandphysicsinformeddeeplearning": {
-    "title": "Estimating motorway traffic states with data fusion and physics-informed deep learning",
-    "category": "mapping-localization",
-    "reason": "data fusion, localization, traffic states",
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
@@ -12515,13 +11759,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "robustvehiclestateestimationfromurbandrivingtothelimitsofhandling": {
-    "title": "Robust Vehicle State Estimation From Urban Driving to the Limits of Handling",
-    "category": "mapping-localization",
-    "reason": "vehicle state estimation",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "domainadaptiveroadperceptionnetworkofautonomousvehicles": {
     "title": "Domain Adaptive Road Perception Network of Autonomous Vehicles",
     "category": "domain-adaptation",
@@ -12541,13 +11778,6 @@
     "category": "sensor-fusion",
     "reason": "driver-vehicle visual fusion",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "fusinginformationfrommultisensorsandhighdefinitionmapsforcontinuousandprecisepositioninginautonomousdrivingservices": {
-    "title": "Fusing Information From Multi-Sensors and High-Definition Maps for Continuous and Precise Positioning in Autonomous Driving Services",
-    "category": "mapping-localization",
-    "reason": "fuses sensors and maps for positioning",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "azimuthheightbackgroundfilteringmethodforroadsidelidardata": {
@@ -12662,13 +11892,6 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "creatingvaluefrominvehicledatadetectingroadsurfacesandroadhazards": {
-    "title": "Creating Value from in-Vehicle Data: Detecting Road Surfaces and Road Hazards",
-    "category": "object-detection",
-    "reason": "detecting road surfaces and hazards",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "avehicleintheloopmethodologyforevaluatingautomateddrivingfunctionsinvirtualtraffic": {
     "title": "A Vehicle-in-the-Loop Methodology for Evaluating Automated Driving Functions in Virtual Traffic",
     "category": "testing-validation",
@@ -12723,13 +11946,6 @@
     "category": null,
     "reason": "title too generic",
     "venue": "ICLR",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "semanticgridbasedroadmodelestimationforautonomousdriving": {
-    "title": "Semantic Grid-Based Road Model Estimation for Autonomous Driving",
-    "category": "mapping-localization",
-    "reason": "road model estimation",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "examplebasedquerytoidentifycausesofdrivinganomalywithfewlabeledsamples": {
@@ -12842,13 +12058,6 @@
     "category": "planning-decision-making",
     "reason": "Tree-structured planning indicates decision-making",
     "venue": "ICRA",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "detectionandclassificationofdrivingmaneuvereventsforautomaticlanemapgeneration": {
-    "title": "Detection and Classification of Driving Maneuver Events for Automatic Lane Map Generation",
-    "category": "object-detection",
-    "reason": "Detection and classification fit",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "lookinginandlookingoutvisionforurbanintelligentassistanceestimationofdriverattentivestateanddynamicsurroundforsafemergingandbraking": {
@@ -12988,13 +12197,6 @@
     "title": "Optimizing Time-Dependent Network Flows With Environmental Objectives: A Path Controlling Approach Enabled by Automated Vehicles",
     "category": "control",
     "reason": "path controlling approach",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "shadowanalyzeranefficientneuralnetworksbasedghostobjectsdetectionforautonomousvehicles": {
-    "title": "Shadow-Analyzer: An Efficient Neural Networks-Based Ghost Objects Detection for Autonomous Vehicles",
-    "category": "object-detection",
-    "reason": "ghost objects detection",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -13306,13 +12508,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "enrichingaspatialroadrepresentationwithlanesanddrivingdirections": {
-    "title": "Enriching a spatial road representation with lanes and driving directions",
-    "category": "mapping-localization",
-    "reason": "road representation, lanes, directions",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "avirtualspringstrategyforcooperativecontrolofconnectedandautomatedvehiclesatsignalfreeintersections": {
     "title": "A Virtual Spring Strategy for Cooperative Control of Connected and Automated Vehicles at Signal-Free Intersections",
     "category": "v2x-cooperative",
@@ -13359,13 +12554,6 @@
     "title": "Scenario-Optimization-Based Velocity Planning of Autonomous Vehicles for Interacting With Pedestrians",
     "category": "planning-decision-making",
     "reason": "Velocity planning for interactions",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "vehiclesdetectionforsmartroadsapplicationsonboardofsmartcamerasacomparativeanalysis": {
-    "title": "Vehicles Detection for Smart Roads Applications on Board of Smart Cameras: A Comparative Analysis",
-    "category": "object-detection",
-    "reason": "Vehicles detection",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -13446,13 +12634,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "visualperceptionbasedsituationanalysisoftrafficscenesforautonomousdrivingapplications": {
-    "title": "Visual Perception Based Situation Analysis of Traffic Scenes for Autonomous Driving Applications",
-    "category": "object-detection",
-    "reason": "Visual Perception for Autonomous Driving",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "predictingthepublicadoptionofconnectedandautonomousvehicles": {
     "title": "Predicting the Public Adoption of Connected and Autonomous Vehicles",
     "category": null,
@@ -13499,13 +12680,6 @@
     "title": "BatchEnsemble-Based Perception Uncertainty Quantification for Autonomous Vehicles",
     "category": "sensor-fusion",
     "reason": "uncertainty quantification in perception",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "spatialrayfeaturesforrealtimeegolaneextraction": {
-    "title": "Spatial ray features for real-time ego-lane extraction",
-    "category": "mapping-localization",
-    "reason": "ego-lane extraction",
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
@@ -13642,13 +12816,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "sammapsroadmapgenerationforautomatedvehiclesinurbanareas": {
-    "title": "SAM-Maps: Road Map Generation for Automated Vehicles in Urban Areas",
-    "category": "mapping-localization",
-    "reason": "road map generation for AVs",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "anofflineframeworkforthediagnosisoftimereliabilitybyautomaticvehiclelocationdata": {
     "title": "An Offline Framework for the Diagnosis of Time Reliability by Automatic Vehicle Location Data",
     "category": null,
@@ -13689,13 +12856,6 @@
     "category": "planning-decision-making",
     "reason": "focuses on decision method",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "combiningmultiplecomplementaryfeaturesforpedestrianandmotorbikedetection": {
-    "title": "Combining multiple complementary features for pedestrian and motorbike detection",
-    "category": "object-detection",
-    "reason": "pedestrian and motorbike detection",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "realtimeterrainconditiondetectionforoffroaddrivingbasedontransformer": {
@@ -13796,13 +12956,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "beliefplotmapanefficientwaytomodelstaticobjectsandenvironmentsforautonomousdrivingsystems": {
-    "title": "Belief Plot Map - An efficient way to model static objects and environments for Autonomous Driving Systems",
-    "category": "mapping-localization",
-    "reason": "Belief plot map for environments",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "gochartaminiatureremotelyaccessibleselfdrivingcarrobot": {
     "title": "Go-CHART: A Miniature Remotely Accessible Self-Driving Car Robot",
     "category": "end-to-end-driving",
@@ -13822,13 +12975,6 @@
     "category": null,
     "reason": "not AV-specific",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "fromgridmapstoparametricfreespacemapsahighlycompactgenericenvironmentrepresentationforadas": {
-    "title": "From grid maps to Parametric Free Space maps - A highly compact, generic environment representation for ADAS",
-    "category": "mapping-localization",
-    "reason": "grid maps to parametric maps",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "trafficsceneclassificationonarepresentationbudget": {
@@ -13885,13 +13031,6 @@
     "category": "control",
     "reason": "Human-like control for AVs",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "applicationoflineclusteringalgorithmsforimprovingroadfeaturedetection": {
-    "title": "Application of line clustering algorithms for improving road feature detection",
-    "category": "object-detection",
-    "reason": "road feature detection",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "drivingthefutureaddressinggenerationaltrustandownershipbarriersintheadoptionofconnectedandautonomousvehicles": {
@@ -14083,13 +13222,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "probabilisticterrainestimationforautonomousoffroaddriving": {
-    "title": "Probabilistic Terrain Estimation for Autonomous Off-Road Driving",
-    "category": "mapping-localization",
-    "reason": "terrain estimation for localization",
-    "venue": "ICRA",
-    "model": "qwen2.5:7b-instruct"
-  },
   "privacyandinitialinformationinautomateddrivingevaluationofinformationdemandsanddatasharingconcerns": {
     "title": "Privacy and initial information in automated driving - Evaluation of information demands and data sharing concerns",
     "category": null,
@@ -14216,13 +13348,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "mapcvvoncloudmapconstructionusingcrowdsourcingvisualvectorizedelementstowardsautonomousdriving": {
-    "title": "MapCVV: On-Cloud Map Construction Using Crowdsourcing Visual Vectorized Elements Towards Autonomous Driving",
-    "category": "mapping-localization",
-    "reason": "map construction for autonomy",
-    "venue": "RA-L",
-    "model": "qwen2.5:7b-instruct"
-  },
   "rulesoftheroadformalguaranteesforautonomousvehicleswithbehavioralcontractdesign": {
     "title": "Rules of the Road: Formal Guarantees for Autonomous Vehicles With Behavioral Contract Design",
     "category": "planning-decision-making",
@@ -14255,13 +13380,6 @@
     "title": "A unified framework of the automated lane centering/changing control for motion smoothness adaptation",
     "category": "control",
     "reason": "lane centering/changing control",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "pedestriansandtheirphonesdetectingphonebasedactivitiesofpedestriansforautonomousvehicles": {
-    "title": "Pedestrians and their phones - detecting phone-based activities of pedestrians for autonomous vehicles",
-    "category": "object-detection",
-    "reason": "detecting phone activities",
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
@@ -14333,13 +13451,6 @@
     "category": "planning-decision-making",
     "reason": "maneuver planning intersections",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "evdodgenetdeepdynamicobstacledodgingwitheventcameras": {
-    "title": "EVDodgeNet: Deep Dynamic Obstacle Dodging with Event Cameras",
-    "category": "object-detection",
-    "reason": "dodge obstacles with cameras",
-    "venue": "ICRA",
     "model": "qwen2.5:7b-instruct"
   },
   "negotiationofdrivableareasofcooperativevehiclesforconflictresolution": {
@@ -14459,13 +13570,6 @@
     "category": "planning-decision-making",
     "reason": "scheduling method for AVs",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "automatictrafficlighttoegovehiclelaneassociationatcomplexintersections": {
-    "title": "Automatic Traffic Light to Ego Vehicle Lane Association at Complex Intersections",
-    "category": "mapping-localization",
-    "reason": "lane association, intersection navigation",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "amultilayerpyramidnetworkbasedonlearningforvehiclelogorecognition": {
@@ -14591,13 +13695,6 @@
     "title": "Need data for driver behaviour analysis? Presenting the public UAH-DriveSet",
     "category": "driver-behavior-hmi",
     "reason": "Driver behavior dataset",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "anoptimizationtechniqueforpositioningmultiplemapsforselfdrivingcarsautonomousnavigation": {
-    "title": "An Optimization Technique for Positioning Multiple Maps for Self-Driving Car's Autonomous Navigation",
-    "category": "mapping-localization",
-    "reason": "maps for autonomous navigation",
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
@@ -14923,13 +14020,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "learningtoattendtosalienttargetsindrivingvideosusingfullyconvolutionalrnn": {
-    "title": "Learning to Attend to Salient Targets in Driving Videos Using Fully Convolutional RNN",
-    "category": "object-detection",
-    "reason": "fully convolutional RNN for targets",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "intuitivevisualizationofvehicledistancevelocityandriskpotentialinrearviewcameraapplications": {
     "title": "Intuitive visualization of vehicle distance, velocity and risk potential in rear-view camera applications",
     "category": null,
@@ -15005,20 +14095,6 @@
     "category": "sensor-fusion",
     "reason": "LiDAR-Camera fusion",
     "venue": "TPAMI",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "adeeplearningapproachtodetectrealtimevehiclemaneuversbasedonsmartphonesensors": {
-    "title": "A Deep Learning Approach to Detect Real-Time Vehicle Maneuvers Based on Smartphone Sensors",
-    "category": "object-detection",
-    "reason": "vehicle maneuvers detection",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "obstaclerecognitionforadasusingstereovisionandsnakemodels": {
-    "title": "Obstacle recognition for ADAS using stereovision and snake models",
-    "category": "object-detection",
-    "reason": "obstacle recognition using stereovision",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "emvpanedgeassistedmultitaskvisualperceptionsystemformultivehiclescenarios": {
@@ -15168,13 +14244,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "automateddetectionofconstructionsitesonmotorways": {
-    "title": "Automated Detection of Construction Sites on Motorways",
-    "category": "object-detection",
-    "reason": "Automated detection of construction sites",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "trainingdeepneuralnetworksusinganoiseadaptationlayer": {
     "title": "Training deep neural-networks using a noise adaptation layer",
     "category": "domain-adaptation",
@@ -15264,13 +14333,6 @@
     "category": "control",
     "reason": "motion control method",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "efficientgridmapdatastructuresforautonomousdrivinginlargescaleenvironments": {
-    "title": "Efficient Grid Map Data Structures for Autonomous Driving in Large-Scale Environments",
-    "category": "mapping-localization",
-    "reason": "Grid map data structures for mapping & localization",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "effectofdistractionondrivingperformanceusingtouchscreenwhiledrivingontesttrack": {
@@ -15476,13 +14538,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "framefastandrobustautonomous3dpointcloudmapmergingforegocentricmultirobotexploration": {
-    "title": "FRAME: Fast and Robust Autonomous 3D Point Cloud Map-Merging for Egocentric Multi-Robot Exploration",
-    "category": "mapping-localization",
-    "reason": "3D point cloud map-merging",
-    "venue": "ICRA",
-    "model": "qwen2.5:7b-instruct"
-  },
   "agentbasedmodelofhighwaytrafficreductionindrivingefficiencywithdensity": {
     "title": "Agent-based model of highway traffic: Reduction in driving efficiency with density",
     "category": null,
@@ -15550,13 +14605,6 @@
     "title": "Histograms of the Normalized Inverse Depth and Line Scanning for Urban Road Detection",
     "category": "depth-3d-geometry",
     "reason": "focuses on depth and inverse depth",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "amultienvironmentfreespacedetectionmethodbasedonrangescalemap": {
-    "title": "A Multi-Environment Freespace Detection Method Based on Range Scale Map",
-    "category": "object-detection",
-    "reason": "Freespace detection using map",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -15672,13 +14720,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "visualegovehiclelaneassignmentusingspatialrayfeatures": {
-    "title": "Visual ego-vehicle lane assignment using Spatial Ray features",
-    "category": "mapping-localization",
-    "reason": "ego-vehicle lane assignment",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "intelligentvehiclecountingandclassificationsensorforrealtimetrafficsurveillance": {
     "title": "Intelligent Vehicle Counting and Classification Sensor for Real-Time Traffic Surveillance",
     "category": null,
@@ -15719,13 +14760,6 @@
     "category": "control",
     "reason": "motion cueing algorithm for driving",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "highdensitygroundmapsusinglowboundaryheightestimationforautonomousvehicles": {
-    "title": "High Density Ground Maps using Low Boundary Height Estimation for Autonomous Vehicles",
-    "category": "mapping-localization",
-    "reason": "ground maps, localization",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "realtimedensedisparityestimationbasedonmultipathviterbiforintelligentvehicleapplications": {
@@ -15805,13 +14839,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "towardanadaptivesituationalawarenesssupportsystemforurbandriving": {
-    "title": "Toward an Adaptive Situational Awareness Support System for Urban Driving",
-    "category": "mapping-localization",
-    "reason": "situational awareness for urban driving",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "enhancingroadsafetypredictivemodelingofaccidentpronezoneswithadasequippedvehiclefleetdata": {
     "title": "Enhancing Road Safety: Predictive Modeling of Accident-Prone Zones with ADAS-Equipped Vehicle Fleet Data",
     "category": "occupancy",
@@ -15861,25 +14888,11 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "positioningofroadusersbyrssiwithroadsurfacereflectionmodel": {
-    "title": "Positioning of road users by RSSI with road surface reflection model",
-    "category": "mapping-localization",
-    "reason": "RSSI and road surface reflection",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "traveltimemanagementusingtimecompensationschemeforatrafficexclusivelyofautonomousvehiclesinadoublelanehighway": {
     "title": "Travel time management using time compensation scheme for a traffic exclusively of autonomous vehicles in a double lane highway",
     "category": "traffic-flow-management",
     "reason": "traffic flow & management",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "sceneadaptiveoffroaddetectionusingamonocularcamera": {
-    "title": "Scene-Adaptive Off-Road Detection Using a Monocular Camera",
-    "category": "object-detection",
-    "reason": "Scene-adaptive off-road detection",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "developingadatadrivenmodularizedmodelofapluginhybridelectricbusphebforconnectedandautomatedvehicleapplications": {
@@ -15929,13 +14942,6 @@
     "category": "v2x-cooperative",
     "reason": "Cooperative maneuvers for AVs",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "mtdynnmultiteacherdistilleddynamicneuralnetworkforinstanceadaptivedetectioninautonomousdriving": {
-    "title": "MT-DyNN: Multi-Teacher Distilled Dynamic Neural Network for Instance-Adaptive Detection in Autonomous Driving",
-    "category": "object-detection",
-    "reason": "Instance-Adaptive Detection",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "mrulinsatightlycoupleduwblidarinertialestimatorwithmultiepochoutlierrejection": {
@@ -16099,13 +15105,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "estimatingthelocalizabilityintunnellikeenvironmentsusinglidaranduwb": {
-    "title": "Estimating the Localizability in Tunnel-like Environments using LiDAR and UWB",
-    "category": "mapping-localization",
-    "reason": "LiDAR and UWB for localization",
-    "venue": "ICRA",
-    "model": "qwen2.5:7b-instruct"
-  },
   "hypehybridplanningwithegoproposalconditionedpredictions": {
     "title": "HYPE: Hybrid Planning with Ego Proposal-Conditioned Predictions",
     "category": "planning-decision-making",
@@ -16160,13 +15159,6 @@
     "category": "sensor-calibration",
     "reason": "sensor calibration for AVs",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "lateralvehiclestateandenvironmentestimationusingtemporallypreviewedmappedlanefeatures": {
-    "title": "Lateral Vehicle State and Environment Estimation Using Temporally Previewed Mapped Lane Features",
-    "category": "mapping-localization",
-    "reason": "lane features, state and environment estimation",
-    "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
   "trafficpanelsdetectionusingvisualappearance": {
@@ -16260,13 +15252,6 @@
     "venue": "IROS",
     "model": "qwen2.5:7b-instruct"
   },
-  "learningandormodeltorepresentcontextandocclusionforcardetectionandviewpointestimation": {
-    "title": "Learning And-Or Model to Represent Context and Occlusion for Car Detection and Viewpoint Estimation",
-    "category": "object-detection",
-    "reason": "car detection and viewpoint estimation",
-    "venue": "TPAMI",
-    "model": "qwen2.5:7b-instruct"
-  },
   "twostagefocusedinferenceforresourceconstrainedminimalcollisionnavigation": {
     "title": "Two-Stage Focused Inference for Resource-Constrained Minimal Collision Navigation",
     "category": "motion-prediction",
@@ -16293,13 +15278,6 @@
     "category": null,
     "reason": "not AV-specific",
     "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "mrlgraphanovelgraphbasedmaprelationlearningnetworkfortrafficelementtolaneassignmentbasedongeometricmapdata": {
-    "title": "MRLGraph: A Novel, Graph-Based Map Relation Learning Network for Traffic Element to Lane Assignment Based on Geometric Map Data",
-    "category": "mapping-localization",
-    "reason": "map relation learning",
-    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
   "poweredtwowheelerscriticaleventsdetectionandrecognitionusingdatadrivenapproaches": {
@@ -16365,24 +15343,10 @@
     "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
-  "shadowcamrealtimedetectionofmovingobstaclesbehindacornerforautonomousvehicles": {
-    "title": "ShadowCam: Real-Time Detection of Moving Obstacles Behind A Corner For Autonomous Vehicles",
-    "category": "object-detection",
-    "reason": "Real-Time Detection of Moving Obstacles",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "estimationofdriverheadyawangleusingagenericgeometricmodel": {
     "title": "Estimation of Driver Head Yaw Angle Using a Generic Geometric Model",
     "category": null,
     "reason": "not specific enough",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "curvilinearcoordinatebasedobjectandsituationassessmentforhighlyautomatedvehicles": {
-    "title": "Curvilinear-Coordinate-Based Object and Situation Assessment for Highly Automated Vehicles",
-    "category": "object-detection",
-    "reason": "curvilinear coordinate object assessment",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -16449,13 +15413,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "multidrivefeatureassociationforautomatedmapgenerationusinglowcostsensordata": {
-    "title": "Multi-drive feature association for automated map generation using low-cost sensor data",
-    "category": "mapping-localization",
-    "reason": "map generation using sensors",
-    "venue": "IV",
-    "model": "qwen2.5:7b-instruct"
-  },
   "driversdecisionanalysisintermsofpedestrianattributesacasestudyinpassingbyapedestrian": {
     "title": "Driver's decision analysis in terms of pedestrian attributes - A case study in passing by a pedestrian",
     "category": "driver-behavior-hmi",
@@ -16467,13 +15424,6 @@
     "title": "Optimized Calculation of the Economic Speed Profile for Slope Driving: Based on Iterative Dynamic Programming",
     "category": null,
     "reason": "not AV-specific",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "pedestrianproposalandrefiningbasedonthesharedpixeldifferentialfeature": {
-    "title": "Pedestrian Proposal and Refining Based on the Shared Pixel Differential Feature",
-    "category": "object-detection",
-    "reason": "pedestrian proposal and refining",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -16554,13 +15504,6 @@
     "venue": "BMVC",
     "model": "qwen2.5:7b-instruct"
   },
-  "visionbasedlanechangingbehaviordetectionusingdeepresidualneuralnetwork": {
-    "title": "Vision-Based Lane-Changing Behavior Detection Using Deep Residual Neural Network",
-    "category": "object-detection",
-    "reason": "lane-changing behavior detection",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "stixmentationprobabilisticstixelbasedtrafficscenelabeling": {
     "title": "Stixmentation - Probabilistic Stixel based Traffic Scene Labeling",
     "category": "segmentation",
@@ -16582,25 +15525,11 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "pibaprobabilisticneuralbundleadjustmentwithiterativecycleoptimizationfordrivingscenereconstruction": {
-    "title": "$\\pi$-BA: Probabilistic Neural Bundle Adjustment With Iterative Cycle Optimization for Driving Scene Reconstruction",
-    "category": "mapping-localization",
-    "reason": "bundle adjustment for reconstruction",
-    "venue": "RA-L",
-    "model": "qwen2.5:7b-instruct"
-  },
   "exploitingredundancyforreliabilityanalysisofsensorperceptioninautomateddrivingvehicles": {
     "title": "Exploiting Redundancy for Reliability Analysis of Sensor Perception in Automated Driving Vehicles",
     "category": "sensor-fusion",
     "reason": "redundant sensor reliability",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "aconvolutionbasedgridmapreconfigurationmethodforautonomousdrivinginhighlyconstrainedenvironments": {
-    "title": "A convolution-based grid map reconfiguration method for autonomous driving in highly constrained environments",
-    "category": "mapping-localization",
-    "reason": "grid map reconfiguration for localization",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "learningvehiclesurroundingawarelanechangingbehaviorfromobservedtrajectories": {
@@ -16869,13 +15798,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "roadcurbandlanesdetectionforautonomousdrivingonurbanscenarios": {
-    "title": "Road curb and lanes detection for autonomous driving on urban scenarios",
-    "category": "object-detection",
-    "reason": "curb and lanes detection",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "alightweightdeeplearningmodelforvehicleviewpointestimationfromdashcamimages": {
     "title": "A Lightweight Deep Learning Model for Vehicle Viewpoint Estimation from Dashcam Images",
     "category": "depth-3d-geometry",
@@ -16995,13 +15917,6 @@
     "venue": "AAAI",
     "model": "qwen2.5:7b-instruct"
   },
-  "robustdetectionofnonmotorizedroadusersusingdeeplearningonopticalandlidardata": {
-    "title": "Robust detection of non-motorized road users using deep learning on optical and LIDAR data",
-    "category": "object-detection",
-    "reason": "non-motorized road user detection",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "recommendaprofitablecruisingroutefortaxidrivers": {
     "title": "Recommend a profitable cruising route for taxi drivers",
     "category": "platooning-cruise-control",
@@ -17044,13 +15959,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "generatinglanelevelroaddatafromvehicletrajectoriesusingkerneldensityestimation": {
-    "title": "Generating lane level road data from vehicle trajectories using Kernel Density Estimation",
-    "category": "mapping-localization",
-    "reason": "lane level road data generation",
-    "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
   "workzonedetectionforautonomousvehicles": {
     "title": "Work Zone Detection For Autonomous Vehicles",
     "category": null,
@@ -17090,13 +15998,6 @@
     "title": "Action Recognition Framework in Traffic Scene for Autonomous Driving System",
     "category": null,
     "reason": "title too generic",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "autonomousvisualnavigationandlaserbasedmovingobstacleavoidance": {
-    "title": "Autonomous Visual Navigation and Laser-Based Moving Obstacle Avoidance",
-    "category": "object-detection",
-    "reason": "moving obstacle avoidance",
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
@@ -17254,13 +16155,6 @@
     "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   },
-  "anautomatedlearningframeworkwithlimitedandcrossdomaindatafortrafficequipmentdetectionfromsurveillancevideos": {
-    "title": "An Automated Learning Framework With Limited and Cross-Domain Data for Traffic Equipment Detection From Surveillance Videos",
-    "category": "object-detection",
-    "reason": "Traffic equipment detection",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "specifyingandmonitoringsafedrivingpropertieswithscenegraphs": {
     "title": "Specifying and Monitoring Safe Driving Properties with Scene Graphs",
     "category": "adversarial-robustness-safety",
@@ -17294,13 +16188,6 @@
     "category": "motion-prediction",
     "reason": "pedestrian navigation evaluation",
     "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "patternrecognitionfordrivingscenariodetectioninrealdrivingdata": {
-    "title": "Pattern Recognition for Driving Scenario Detection in Real Driving Data",
-    "category": "object-detection",
-    "reason": "Driving scenario detection",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "estimatingdriverawarenessofpedestriansincrosswalkinthepathofrightorleftturnsatanintersectionfromvehiclebehavior": {
@@ -17436,13 +16323,6 @@
     "venue": "T-ITS",
     "model": "qwen2.5:7b-instruct"
   },
-  "learningfromthefleetmapattributesforenergeticrepresentationofdrivingprofiles": {
-    "title": "Learning From the Fleet: Map Attributes for Energetic Representation of Driving Profiles",
-    "category": "mapping-localization",
-    "reason": "map attributes for driving profiles",
-    "venue": "T-ITS",
-    "model": "qwen2.5:7b-instruct"
-  },
   "hgatcpheterogeneousgraphattentionnetworkforcollisionpredictioninautonomousdriving": {
     "title": "HGAT-CP: Heterogeneous Graph Attention Network for Collision Prediction in Autonomous Driving",
     "category": "motion-prediction",
@@ -17476,13 +16356,6 @@
     "category": "control",
     "reason": "predictive control for navigation",
     "venue": "ITSC",
-    "model": "qwen2.5:7b-instruct"
-  },
-  "offlinemapupdatingandvalidationforautonomousdrivingusingcrowdsourceddata": {
-    "title": "Offline Map Updating and Validation for Autonomous Driving Using Crowdsourced Data",
-    "category": "mapping-localization",
-    "reason": "map updating and validation",
-    "venue": "IV",
     "model": "qwen2.5:7b-instruct"
   },
   "opportunitiesandchallengesforflagmanrecognitioninautonomousvehicles": {
@@ -17560,6 +16433,433 @@
     "category": "simulation-benchmarking",
     "reason": "uses SUMO and Unity 3D",
     "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "sensorbasedroadmodelestimationforautonomousdriving": {
+    "title": "Sensor-based road model estimation for autonomous driving",
+    "category": "mapping",
+    "reason": "road model estimation",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "positioningofroadusersbyrssiwithroadsurfacereflectionmodel": {
+    "title": "Positioning of road users by RSSI with road surface reflection model",
+    "category": "localization",
+    "reason": "RSSI for positioning",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "recognitionofhighwayworkzonesforreliableautonomousdriving": {
+    "title": "Recognition of Highway Workzones for Reliable Autonomous Driving",
+    "category": "mapping",
+    "reason": "workzone mapping for autonomy",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "enrichingaspatialroadrepresentationwithlanesanddrivingdirections": {
+    "title": "Enriching a spatial road representation with lanes and driving directions",
+    "category": "mapping",
+    "reason": "road representation with lanes",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "intersectionscanmodelandprobabilityinferenceforvisionbasedsmallscaleurbanintersectiondetection": {
+    "title": "Intersection scan model and probability inference for vision based small-scale urban intersection detection",
+    "category": "object-detection-2d",
+    "reason": "2D Object Detection for intersections",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "bayessaliencybasedobjectproposalgeneratorfornighttimetrafficimages": {
+    "title": "Bayes Saliency-Based Object Proposal Generator for Nighttime Traffic Images",
+    "category": "object-detection-2d",
+    "reason": "Bayes saliency-based object proposal",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "roadcurbandlanesdetectionforautonomousdrivingonurbanscenarios": {
+    "title": "Road curb and lanes detection for autonomous driving on urban scenarios",
+    "category": "object-detection-2d",
+    "reason": "road curb and lanes detection",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "lightweightlanepositioningofvehiclesusingasmartphonegpsbymonitoringthedistancefromthecenterline": {
+    "title": "Lightweight lane positioning of vehicles using a smartphone GPS by monitoring the distance from the center line",
+    "category": "localization",
+    "reason": "GPS-based lane positioning",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "roadnetworkstateestimationusingrandomforestensemblelearning": {
+    "title": "Road network state estimation using random forest ensemble learning",
+    "category": null,
+    "reason": "Title too generic",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "fusinginformationfrommultisensorsandhighdefinitionmapsforcontinuousandprecisepositioninginautonomousdrivingservices": {
+    "title": "Fusing Information From Multi-Sensors and High-Definition Maps for Continuous and Precise Positioning in Autonomous Driving Services",
+    "category": "localization",
+    "reason": "focusing on positioning",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "fromgridmapstoparametricfreespacemapsahighlycompactgenericenvironmentrepresentationforadas": {
+    "title": "From grid maps to Parametric Free Space maps - A highly compact, generic environment representation for ADAS",
+    "category": "mapping",
+    "reason": "grid maps to parametric free space maps",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "generatinglanelevelroaddatafromvehicletrajectoriesusingkerneldensityestimation": {
+    "title": "Generating lane level road data from vehicle trajectories using Kernel Density Estimation",
+    "category": "mapping",
+    "reason": "lane level road data generation",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "robustdetectionofnonmotorizedroadusersusingdeeplearningonopticalandlidardata": {
+    "title": "Robust detection of non-motorized road users using deep learning on optical and LIDAR data",
+    "category": "object-detection-2d",
+    "reason": "2D object detection for non-motorized users",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "sceneadaptiveoffroaddetectionusingamonocularcamera": {
+    "title": "Scene-Adaptive Off-Road Detection Using a Monocular Camera",
+    "category": "object-detection-2d",
+    "reason": "Monocular camera for scene adaptive detection",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "multidrivefeatureassociationforautomatedmapgenerationusinglowcostsensordata": {
+    "title": "Multi-drive feature association for automated map generation using low-cost sensor data",
+    "category": "mapping",
+    "reason": "automated map generation",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "submetervehiclenavigationusingefficientpremappedvisuallandmarks": {
+    "title": "Sub-meter vehicle navigation using efficient pre-mapped visual landmarks",
+    "category": "mapping",
+    "reason": "sub-meter vehicle navigation",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "realtimemodelingofdynamicenvironmentsintrafficscenariosusingastereovisionsystem": {
+    "title": "Real-time modeling of dynamic environments in traffic scenarios using a stereo-vision system",
+    "category": "depth-3d-geometry",
+    "reason": "stereo-vision system for dynamic environments",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "learningandormodeltorepresentcontextandocclusionforcardetectionandviewpointestimation": {
+    "title": "Learning And-Or Model to Represent Context and Occlusion for Car Detection and Viewpoint Estimation",
+    "category": "object-detection-2d",
+    "reason": "car detection and viewpoint estimation",
+    "venue": "TPAMI",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "roadnetworkreconstructionusingreversiblejumpmcmcsimulatedannealingbasedonvehicletrajectoriesfromfleetmeasurements": {
+    "title": "Road network reconstruction using reversible jump MCMC simulated annealing based on vehicle trajectories from fleet measurements",
+    "category": "mapping",
+    "reason": "road network reconstruction",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "pvtransformerpointtovoxeltransformerforscalable3dobjectdetection": {
+    "title": "PVTransformer: Point-To-Voxel Transformer for Scalable 3D ObjectDetection",
+    "category": "object-detection-3d",
+    "reason": "3D Object Detection",
+    "venue": "ICRA",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "obstaclerecognitionforadasusingstereovisionandsnakemodels": {
+    "title": "Obstacle recognition for ADAS using stereovision and snake models",
+    "category": "object-detection-2d",
+    "reason": "stereovision-based obstacle recognition",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "anoptimizationtechniqueforpositioningmultiplemapsforselfdrivingcarsautonomousnavigation": {
+    "title": "An Optimization Technique for Positioning Multiple Maps for Self-Driving Car's Autonomous Navigation",
+    "category": "mapping",
+    "reason": "Focus on positioning multiple maps",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "detectingwalkingpedestriansfromlegmotionindrivingvideo": {
+    "title": "Detecting walking pedestrians from leg motion in driving video",
+    "category": "object-detection-2d",
+    "reason": "walking pedestrians detection",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "sparsevehicularsensornetworksfortrafficdynamicsreconstruction": {
+    "title": "Sparse Vehicular Sensor Networks for Traffic Dynamics Reconstruction",
+    "category": "planning-decision-making",
+    "reason": "traffic dynamics reconstruction",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "learningappearancemodelsforroaddetection": {
+    "title": "Learning appearance models for road detection",
+    "category": null,
+    "reason": "Title too generic",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "egolaneestimationbymodelinglanesandsensorfailures": {
+    "title": "Ego-lane estimation by modeling lanes and sensor failures",
+    "category": "localization",
+    "reason": "ego-lane estimation by modeling",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "ascaleddowntrafficsystembasedonautonomousvehiclesanewexperimentalsystemforitsresearch": {
+    "title": "A scaled-down traffic system based on autonomous vehicles: A new experimental system for ITS research",
+    "category": "simulation-benchmarking",
+    "reason": "scaled-down traffic system",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "bayesianroadestimationusingonboardsensors": {
+    "title": "Bayesian Road Estimation Using Onboard Sensors",
+    "category": "localization",
+    "reason": "Bayesian road estimation",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "curvilinearcoordinatebasedobjectandsituationassessmentforhighlyautomatedvehicles": {
+    "title": "Curvilinear-Coordinate-Based Object and Situation Assessment for Highly Automated Vehicles",
+    "category": "object-detection-2d",
+    "reason": "curvilinear-coordinate-based object assessment",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "agraphbasedvehicleproposallocationanddetectionalgorithm": {
+    "title": "A Graph-Based Vehicle Proposal Location and Detection Algorithm",
+    "category": null,
+    "reason": "Too generic, needs more context",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "automaticdetectionoftrafficlightsusingsupportvectormachine": {
+    "title": "Automatic detection of traffic lights using support vector machine",
+    "category": "reinforcement-learning",
+    "reason": "Traffic light detection is a classification task",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "towardautomateddrivingincitiesusingclosetomarketsensorsanoverviewofthevchargeproject": {
+    "title": "Toward automated driving in cities using close-to-market sensors: An overview of the V-Charge Project",
+    "category": "survey-review-paper",
+    "reason": "overview of project",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "applicationoflineclusteringalgorithmsforimprovingroadfeaturedetection": {
+    "title": "Application of line clustering algorithms for improving road feature detection",
+    "category": null,
+    "reason": "topic too generic",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "spatialrayfeaturesforrealtimeegolaneextraction": {
+    "title": "Spatial ray features for real-time ego-lane extraction",
+    "category": "sensor-fusion",
+    "reason": "spatial ray features for lane extraction",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "sensingarchitectureforautomatedautonomousvehiclestowardsallconditionsafety": {
+    "title": "Sensing architecture for automated/autonomous vehicles towards all-condition safety",
+    "category": "sensor-fusion",
+    "reason": "sensing architecture for all-condition safety",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "smartphonesensorplatformtostudytrafficconditionsandassessdrivingperformance": {
+    "title": "Smartphone sensor platform to study traffic conditions and assess driving performance",
+    "category": "sensor-fusion",
+    "reason": "Smartphone sensor platform for traffic and driving",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "anautonomousdrivingsystemforunknownenvironmentsusingaunifiedmap": {
+    "title": "An Autonomous Driving System for Unknown Environments Using a Unified Map",
+    "category": "mapping",
+    "reason": "uses unified map for unknown environments",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "acompactrepresentationoftheenvironmentanditsfrontiersforautonomousvehiclenavigation": {
+    "title": "A compact representation of the environment and its frontiers for autonomous vehicle navigation",
+    "category": "mapping",
+    "reason": "environment representation",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "compactrepresentationofdynamicdrivingenvironmentsforadasbyparametricfreespaceanddynamicobjectmaps": {
+    "title": "Compact Representation of Dynamic Driving Environments for ADAS by Parametric Free Space and Dynamic Object Maps",
+    "category": "mapping",
+    "reason": "Free space and dynamic object maps",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "predictionofdriverspedestriandetectabilitybyimageprocessingadaptivetovisualfieldsofview": {
+    "title": "Prediction of driver's pedestrian detectability by image processing adaptive to visual fields of view",
+    "category": "segmentation",
+    "reason": "detectability by image processing",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "mapbasedcurvilinearcoordinatesforautonomousvehicles": {
+    "title": "Map-based curvilinear coordinates for autonomous vehicles",
+    "category": "mapping",
+    "reason": "map-based coordinates for AVs",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "highefficientdetectionoftrafficparametersbyusingtwoforegroundtemporalspatialimages": {
+    "title": "High-efficient detection of traffic parameters by using two foreground temporal-spatial images",
+    "category": "object-detection-2d",
+    "reason": "2D Object Detection",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "pedestriansandtheirphonesdetectingphonebasedactivitiesofpedestriansforautonomousvehicles": {
+    "title": "Pedestrians and their phones - detecting phone-based activities of pedestrians for autonomous vehicles",
+    "category": "object-detection-2d",
+    "reason": "detecting phone activities",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "offlineobjectmatchingandevaluationprocessforverificationofautonomousdriving": {
+    "title": "Offline object matching and evaluation process for verification of autonomous driving",
+    "category": "testing-validation",
+    "reason": "verification process for AV",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "visionbasedpositioningforinternetofvehicles": {
+    "title": "Vision-Based Positioning for Internet-of-Vehicles",
+    "category": "localization",
+    "reason": "Vision-based positioning for localization",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "arealtimevehiclenavigationalgorithminsensornetworkenvironments": {
+    "title": "A Real-Time Vehicle Navigation Algorithm in Sensor Network Environments",
+    "category": "localization",
+    "reason": "Real-time vehicle navigation",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "laneletsefficientmaprepresentationforautonomousdriving": {
+    "title": "Lanelets: Efficient map representation for autonomous driving",
+    "category": "mapping",
+    "reason": "Lanelets for map representation",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "visualegovehiclelaneassignmentusingspatialrayfeatures": {
+    "title": "Visual ego-vehicle lane assignment using Spatial Ray features",
+    "category": "localization",
+    "reason": "lane assignment for ego-vehicle",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "combiningmultiplecomplementaryfeaturesforpedestrianandmotorbikedetection": {
+    "title": "Combining multiple complementary features for pedestrian and motorbike detection",
+    "category": "object-detection-2d",
+    "reason": "pedestrian and motorbike detection",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "deeptlrasingledeepconvolutionalnetworkfordetectionandclassificationoftrafficlights": {
+    "title": "DeepTLR: A single deep convolutional network for detection and classification of traffic lights",
+    "category": "object-detection-2d",
+    "reason": "traffic light detection and classification",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "thermalinfraredbaseddrivableregiondetection": {
+    "title": "Thermal-infrared based drivable region detection",
+    "category": "segmentation",
+    "reason": "Thermal-infrared drivable region",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "probabilisticobstaclepartitioningofmonocularvideoforautonomousvehicles": {
+    "title": "Probabilistic Obstacle Partitioning of Monocular Video for Autonomous Vehicles",
+    "category": "object-detection-2d",
+    "reason": "Probabilistic obstacle partitioning from monocular video",
+    "venue": "BMVC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "asequentialtestforautonomouslocalisationofmaperrorsfordrivingassistancesystems": {
+    "title": "A sequential test for autonomous localisation of map errors for driving assistance systems",
+    "category": "localization",
+    "reason": "autonomous localisation of map errors",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "autonomousvisualnavigationandlaserbasedmovingobstacleavoidance": {
+    "title": "Autonomous Visual Navigation and Laser-Based Moving Obstacle Avoidance",
+    "category": "object-detection-3d",
+    "reason": "laser-based moving obstacle avoidance",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "lateralvehiclestateandenvironmentestimationusingtemporallypreviewedmappedlanefeatures": {
+    "title": "Lateral Vehicle State and Environment Estimation Using Temporally Previewed Mapped Lane Features",
+    "category": "localization",
+    "reason": "lane feature estimation",
+    "venue": "T-ITS",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "stereobasedroisgenerationfordetectingpedestriansincloseproximity": {
+    "title": "Stereo based ROIs generation for detecting pedestrians in close proximity",
+    "category": "object-detection-2d",
+    "reason": "Stereo based ROI generation for pedestrian detection",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "classifyingandpassing3dobstaclesforautonomousdriving": {
+    "title": "Classifying and Passing 3D Obstacles for Autonomous Driving",
+    "category": "object-detection-3d",
+    "reason": "3D Obstacle Detection",
+    "venue": "ITSC",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "automateddetectionofconstructionsitesonmotorways": {
+    "title": "Automated Detection of Construction Sites on Motorways",
+    "category": "object-detection-2d",
+    "reason": "Automated detection of construction sites",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "egolaneestimationforlanelevelnavigationinurbanscenarios": {
+    "title": "Ego-lane estimation for lane-level navigation in urban scenarios",
+    "category": "localization",
+    "reason": "ego-lane estimation for navigation",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "deeplearningalgorithmforautonomousdrivingusinggooglenet": {
+    "title": "Deep learning algorithm for autonomous driving using GoogLeNet",
+    "category": "object-detection-2d",
+    "reason": "GoogLeNet for object detection",
+    "venue": "IV",
+    "model": "qwen2.5:7b-instruct"
+  },
+  "multidriveroadmapgenerationonstandardizedhighvelocityroadsusinglowcostsensordata": {
+    "title": "Multi-drive road map generation on standardized high-velocity roads using low-cost sensor data",
+    "category": "mapping",
+    "reason": "road map generation",
+    "venue": "ITSC",
     "model": "qwen2.5:7b-instruct"
   }
 }

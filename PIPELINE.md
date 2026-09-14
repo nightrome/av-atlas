@@ -91,6 +91,31 @@ retry later" as the only lever -- there's no header or documented schedule
 to trigger a retry against, so don't build one assuming a daily reset the
 way OpenAlex's is confirmed to have.
 
+**Update, same day, ~90 minutes later: local network instability was a real
+confound, on top of arXiv's own block.** A plain fetch to `google.com` (no
+AV Atlas code involved) took 11 seconds for a page that normally loads
+instantly, and `backup_corpus.py`'s upload to GitHub Releases failed twice
+in a row on a bare TCP write timeout, on an unrelated host and an unrelated
+protocol path -- both symptoms of this environment's own network being
+unwell that day, independent of any site's rate limiting. Once things
+settled, a fresh direct probe (3 repeated real title-search queries, 3s
+apart) got clean, fast, correct responses every time, and a full
+`mine_abstracts.py` re-run completed its fast ID-lookup pass at **200/200**,
+zero failures -- a complete reversal from the two earlier runs that failed
+every single request from the first batch. This doesn't fully separate "the
+block genuinely lifted" (consistent with the rate-limit explanation above)
+from "the local network recovered and some of what looked like arXiv
+blocking us was actually us failing to reach arXiv reliably" -- both were
+probably true at once, and the 429-vs-timeout split in the earlier logs is
+the tell: the clean `HTTP 429`/`Rate exceeded.` responses are real, received
+answers from arXiv's own server and can't be blamed on the network, but the
+interleaved `The read operation timed out` / connection errors are exactly
+what local instability looks like, and likely inflated how total the block
+appeared. Practical takeaway unchanged: this is not scriptable around
+either way, but a block that looks total on one attempt is worth a plain
+retest (not just the same script again) before concluding it's still fully
+up.
+
 **Other abstract sources surveyed, none adopted:** for a sample of the
 currently-missing titles (see venue breakdown above), Google itself returned
 a bot-check page to this project's browser tooling on the very first query
@@ -158,6 +183,48 @@ slots into the existing pipeline exactly like any other arXiv-ID source.
 Not scripted further: at this yield rate and with no way to automate the
 search step itself, this is a manual research task to repeat occasionally
 on the recent-ML-flavored slice specifically, not a crawler to schedule.
+
+**Exact-title-match, relaxed for this manual process specifically.** Every
+scripted source in this pipeline (`find_arxiv_id`, Semantic Scholar's
+title-match endpoint, ...) verifies a hit by exact normalized-title
+equality, on purpose -- a fuzzy same-topic match risks silently attaching
+the wrong paper. For a human-in-the-loop web search that risk is much
+smaller (a person, or an LLM checking one candidate at a time, is reading
+the actual methodology/authors, not pattern-matching strings), so this
+process instead accepts a title that was clearly reworded between an arXiv
+preprint and its camera-ready version -- confirmed independently, not just
+"close enough": a Semantic-Scholar-verified abstract for the exact
+methodology, an identical author byline, or a coined name/benchmark
+unlikely to collide (Navya3DSeg, SSCBench, DriVLMe, RAMP-VO). Re-litigating
+each of the 3 candidates rejected above under this looser standard: the
+"Risky **Traffic Agents**"/"Risky **Objects**" pair is now accepted
+(`2209.07922`) -- same attention-guided multistream fusion network, same
+authors, "Traffic Agents" is simply the terminology the IEEE-published
+version later settled on. The "Constant **Velocity**"/"Constant
+**Acceleration**" radar-odometry pair stays rejected regardless of how
+loose the title standard gets -- external sources describe the acceleration
+paper as an explicit *follow-up* to the velocity one, i.e. two different
+papers with similar names, not one paper with two names, and no amount of
+title-matching leniency changes that.
+
+The third rejected candidate turned out to be neither a hit nor a clean
+miss, but a real bug worth more than a link: this corpus already had *both*
+titles as two separate paper records -- "Deep Visual Odometry with Events
+and Frames" (tagged 2023, arXiv-discovered, already carrying the correct
+abstract and `arxiv_url`) and "End-to-end Learned Visual Odometry with
+Events and Frames" (tagged IROS 2024, from a venue listing, enriched with
+neither) -- with an identical 7-author byline on both. One real publication
+was being double-counted in every author/venue/citation rollup. Neither of
+`normalize_title()`'s existing heuristics (acronym-prefix stripping,
+plural-`s` collapsing, LaTeX/superscript folding) catches a swapped
+*leading qualifier* ahead of an otherwise identical remainder ("Deep" vs
+"End-to-end Learned"), so this needed its own hand-verified entry --
+`KNOWN_DUPLICATE_TITLES` in `merge_corpus.py`, the same "exact pair, not a
+broader pattern" precedent as `GLUED_INSTITUTION_SPLITS`/
+`INSTITUTION_ALIASES` in `aggregate.py`. A general "strip any leading
+adjective" rule was deliberately not attempted -- it would risk merging
+genuinely different papers that happen to share a generic remainder, the
+same failure mode those other two tables were built to avoid.
 
 ## Per-venue scripts (current, in use)
 

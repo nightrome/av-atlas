@@ -140,8 +140,31 @@ def _acronym_prefix_ok(w, sep, rest):
     return coined and len(re.sub(r"[^a-z0-9]", "", rest.lower())) >= 25
 
 
+
+# Same paper, retitled between its arXiv preprint and its camera-ready
+# conference version, in a shape none of the heuristics above catch: a
+# swapped LEADING QUALIFIER ahead of an otherwise identical remainder
+# ("Deep Visual Odometry with Events and Frames" vs "End-to-end Learned
+# Visual Odometry with Events and Frames"), not an acronym prefix or a
+# trailing plural. Confirmed the same paper via an identical 7-author
+# byline (Pellerito, Cannici, Gehrig, Belhadj, Dubois-Matra, Casasco,
+# Scaramuzza) on both, found while manually verifying an arXiv-link
+# candidate (2309.09947, "RAMP-VO") against this corpus -- without this,
+# the IROS 2023 arXiv-discovered copy and the IROS 2024 venue-listing copy
+# double-count one real publication. A hand-verified pair, not a general
+# rule: a broader "strip any leading adjective" heuristic would risk
+# merging genuinely different papers that happen to share a generic
+# remainder, same reasoning as GLUED_INSTITUTION_SPLITS/INSTITUTION_ALIASES
+# preferring an exact verified pair over a broader pattern (aggregate.py).
+KNOWN_DUPLICATE_TITLES = {
+    "End-to-end Learned Visual Odometry with Events and Frames": "Deep Visual Odometry with Events and Frames",
+}
+
+
 def normalize_title(t):
-    t = _EMOJI_RE.sub("", clean_title(t).translate(_SUPERSCRIPT_DIGITS))
+    t = clean_title(t)
+    t = KNOWN_DUPLICATE_TITLES.get(t, t)
+    t = _EMOJI_RE.sub("", t.translate(_SUPERSCRIPT_DIGITS))
     t = _TITLE_MATH_RE.sub("", t)
     t = re.sub(r"\s+:", ":", t)  # "FG2 :" -> "FG2:"
     t = re.sub(r"^[^0-9A-Za-z(\"']+", "", t).strip()  # leading symbol/marker junk
