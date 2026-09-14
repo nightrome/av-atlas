@@ -105,13 +105,59 @@ sign-in (confirmed on one sample paper) -- **deliberately not pursued**: the
 `418` is IEEE's own anti-bot signal the same way DBLP's Anubis challenge is,
 and driving a real browser at scale specifically to get past that is the
 same kind of bypass this project already ruled out for DBLP above, just via
-a different technical route. The one genuinely useful finding: a spot-check
-of titles with no arXiv match found in this corpus turned up real arXiv
-preprints for them via web search (e.g. a 2022 T-ITS paper on GNSS-spoofing
-detection, findable at `arxiv.org/abs/2108.08635`) -- confirms
-`mine_abstracts.py`'s own premise (most of these IEEE-published AV papers do
-have a preprint) rather than surfacing some new gap; the fix here is still
-just "wait for arXiv's block to lift and re-run," not a new source.
+a different technical route.
+
+**Web search as a manual, non-scripted arXiv-link finder -- works, but only
+on a specific slice of the gap.** Since search-engine result pages
+themselves resist scripting the same way (Google served this project's
+browser tooling a bot-check on the very first query; DuckDuckGo's `html.
+duckduckgo.com` endpoint returns a challenge shell with zero result links;
+Bing returns 200 with a full page but the actual results are injected by
+JS the raw HTML never contains -- confirmed by fetching a query already
+known to have an arXiv hit and finding no `arxiv.org` link anywhere in the
+markup), there is no way to turn this into an unattended `fetch_*.py`
+script the way every other source in this pipeline works. The only legitimate
+way to do it is one title at a time through a real search tool. In
+practice, this session did that directly: 40 titles from the missing-
+abstract pool, one web-search query each, each candidate hit verified
+against the corpus's own exact title the same way every other script in
+this pipeline verifies a match. 3 tempting-looking candidates were
+explicitly rejected this way: an "Attention-guided...Risky **Objects**"
+arXiv paper offered in place of this corpus's differently-worded "...Risky
+**Traffic Agents**" extended abstract, a "Constant **Acceleration**"
+follow-up paper offered in place of the "Constant **Velocity**" original
+actually being searched for, and an "End-to-End Learned Event- and
+Image-based Visual Odometry" whose wording was close but not exact for
+"End-to-end Learned Visual Odometry with Events and Frames". The yield
+varied enormously by segment, not uniformly:
+
+- Older ITSC/IV-style papers (pre-2021, classical ITS/vehicle-control
+  topics): **0 hits out of 16 tried**, split evenly between titles arXiv's
+  own search had never seen and titles it had already searched and recorded
+  as no-match. These venues and this era appear to genuinely predate or sit
+  outside arXiv's posting culture for this sub-field -- not a rate-limit
+  gap, a real absence. Don't expect `mine_abstracts.py` to recover much of
+  this segment even once arXiv's block lifts.
+- Recent (2021+) ICLR/ICML/BMVC papers: **0 hits out of 8 tried** -- but for
+  a different reason. These venues run their own open-access hosting
+  (OpenReview, PMLR, the BMVA archive) and their authors often don't bother
+  cross-posting to arXiv at all; every one of these 8 resolved cleanly to
+  its real venue-hosted page, just never an arXiv one.
+- Recent (2021+) IROS/ICRA/RA-L/T-ITS/ITSC/IJCV papers with an ML/perception
+  flavor: **5 hits out of 16 tried** (~31%) -- SSCBench (`2306.09001`),
+  DriVLMe (`2406.03008`), Navya3DSeg (`2302.08292`), a mixed-traffic
+  string-stability paper (`2309.01625`), and a trajectory-forecasting paper
+  (`2503.04994`). This is the one segment where manual web-search linking
+  is worth the effort, and where a preprint culture similar to CVPR/ICCV's
+  already applies.
+
+The 5 confirmed hits were added directly to `data/arxiv_ids.json` (the same
+side file `fetch_arxiv_links.py` itself writes) and folded in with the
+existing `apply_arxiv_links.py` -- no new side file or script needed, this
+slots into the existing pipeline exactly like any other arXiv-ID source.
+Not scripted further: at this yield rate and with no way to automate the
+search step itself, this is a manual research task to repeat occasionally
+on the recent-ML-flavored slice specifically, not a crawler to schedule.
 
 ## Per-venue scripts (current, in use)
 
