@@ -1052,8 +1052,9 @@ INVALID_INSTITUTIONS = {
     # Bare countries -- an affiliation field split on commas sometimes leaves
     # just the country as its own entry (e.g. "..., Beijing, China" splitting
     # into "Beijing" and "China" instead of one string).
-    "China", "USA", "United States", "Germany", "France", "UK", "Japan", "Canada",
-    "India", "Australia", "Sweden", "Spain", "Italy", "South Korea", "Korea",
+    "China", "USA", "United States", "Germany", "France", "UK", "United Kingdom",
+    "Japan", "Canada", "India", "Australia", "Sweden", "Spain", "Italy",
+    "South Korea", "Korea", "Republic of Korea",
     "Singapore", "Israel", "Switzerland", "Netherlands", "Austria", "Belgium",
     # Bare cities, same cause.
     "Beijing", "Los Angeles", "Shenzhen", "Xiamen", "Nanjing", "Zurich", "Paris",
