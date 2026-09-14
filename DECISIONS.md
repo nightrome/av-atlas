@@ -283,6 +283,40 @@ beats a single one, and the two are legitimately different reader
 interests (someone hunting for HD-map papers doesn't want the SLAM
 literature mixed in).
 
+## The 2D/3D object-detection split needed its own tie-break, not a global one
+
+The split above created a structural collision the original single category
+never had: `object-detection-2d`'s bare `'object detection'` keyword is a
+literal substring of every one of `object-detection-3d`'s specific phrases
+(`'3d object detection'`, `'lidar object detection'`, `'point cloud object
+detection'`, ...). A genuinely 3D paper's title therefore always ties 2D on
+`rank()`'s title-score check (both match), and then whichever OTHER,
+dimensionality-unrelated 2D keyword ("detector", "bounding box") also
+happens to appear in the abstract wins the combined-score tiebreak for 2D
+regardless. Confirmed on real data: "Center-Based 3D Object Detection and
+Tracking" (CenterPoint), DETR3D, Voxel R-CNN, PolarFormer, HDNET, and ~385
+more all landed in `object-detection-2d` this way despite an explicit "3D
+Object Detection" in their own title.
+
+`rank()`'s own docstring already describes the intended tiebreak order as
+title match, then longest matching keyword, then id — but the actual tuple
+checks combined score before longest-match, so the doc and the code
+disagreed. Tried the literal fix (reorder the tuple so max_len outranks
+combined_score globally) and measured its blast radius before trusting it:
+6,878 of 235,288 papers (~3%) would reclassify, across dozens of unrelated
+category pairs (`llm-vlm-driving` vs `reinforcement-learning`, `segmentation`
+vs `general-cv-ml-method`, ...) with no way to review that many changes
+against real judgment. Rejected as far too broad for what only one category
+pair actually needed.
+
+Fixed with a narrow, explicit override instead, right after the normal
+ranking loop: if a paper lands on `object-detection-2d` AND
+`object-detection-3d` matched the title at least as well AND 3D's longest
+matching keyword is more specific (longer) than 2D's, use 3D. Scoped to
+exactly the ~388 papers where this exact ambiguity exists (spot-checked: all
+genuinely 3D by title), leaving `rank()`'s general tiebreak — and every
+other category pair — untouched.
+
 ## `load_llm_category_labels()` must re-validate against the live taxonomy
 
 The split above orphaned `data/category_labels_llm.json`: 65 entries still

@@ -553,5 +553,50 @@ class TestClassifyPaper(unittest.TestCase):
         self.assertEqual(category, "end-to-end-driving")
 
 
+class TestObjectDetection3dOverride(unittest.TestCase):
+    # object-detection-2d's bare 'object detection' keyword is a literal
+    # substring of object-detection-3d's own specific phrases, so both tie
+    # on title_score for any 3D paper -- see classify_paper's own comment
+    # on this override, right after the normal ranking loop.
+    CATEGORIES = [
+        {"id": "object-detection-2d", "keywords": ["object detection", "detector", "bounding box"]},
+        {"id": "object-detection-3d", "keywords": ["3d object detection", "point cloud"]},
+    ]
+
+    def test_real_case_centerpoint_lands_in_3d_not_2d(self):
+        # CenterPoint (real title/abstract, confirmed misclassified before
+        # this override existed): the title ties 1-1 on title_score, and
+        # the abstract's generic "detector"/"bounding box" mentions (about
+        # the prior work it compares against, not its own contribution)
+        # used to win object-detection-2d the combined-score tiebreak.
+        category, _ = cl.classify_paper(
+            "Center-Based 3D Object Detection and Tracking",
+            "We represent 3D boxes in a point-cloud. Prior box-based detectors have "
+            "difficulties fitting an axis-aligned bounding box to rotated objects.",
+            self.CATEGORIES,
+        )
+        self.assertEqual(category, "object-detection-3d")
+
+    def test_a_2d_paper_with_no_3d_signal_is_unaffected(self):
+        category, _ = cl.classify_paper(
+            "Pedestrian Detection for Autonomous Driving",
+            "We propose a new object detector for pedestrian bounding box detection.",
+            self.CATEGORIES,
+        )
+        self.assertEqual(category, "object-detection-2d")
+
+    def test_2d_wins_when_its_own_title_match_is_more_specific(self):
+        # 2D's longest matched keyword ("bounding box", 12 chars) beats 3D's
+        # ("3d object detection", 19 chars) only when 3D doesn't also match
+        # the title -- here 3D has no title match at all, so 2D correctly
+        # keeps it despite the abstract mentioning "point cloud" once.
+        category, _ = cl.classify_paper(
+            "Real-Time Bounding Box Detection",
+            "Our detector estimates bounding boxes; we briefly compare to a point cloud baseline.",
+            self.CATEGORIES,
+        )
+        self.assertEqual(category, "object-detection-2d")
+
+
 if __name__ == "__main__":
     unittest.main()

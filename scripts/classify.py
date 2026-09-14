@@ -675,6 +675,33 @@ def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known
         category = best_id
         break
 
+    # object-detection-2d's generic 'object detection' keyword is a literal
+    # substring of every one of object-detection-3d's own specific phrases
+    # ('3d object detection', 'lidar object detection', 'point cloud object
+    # detection', ...) -- so a genuinely 3D paper's title always ties 2D on
+    # title_score (both match), and then whichever OTHER, dimensionality-
+    # unrelated 2D keyword ('detector', 'bounding box', ...) also happens to
+    # appear in the abstract wins the combined_score tiebreak for 2D anyway.
+    # Confirmed on real data: "Center-Based 3D Object Detection and
+    # Tracking" (CenterPoint), DETR3D, Voxel R-CNN, PolarFormer, HDNET, and
+    # ~385 more all landed in object-detection-2d this way despite an
+    # explicit "3D Object Detection" in their own title.
+    #
+    # Not fixed by reordering rank()'s general tie-break (max_len before
+    # combined_score) -- tried and measured: that moves ~3% of the WHOLE
+    # corpus across dozens of unrelated category pairs (llm-vlm-driving vs
+    # reinforcement-learning, segmentation vs general-cv-ml-method, ...),
+    # far too broad to review or trust. Scoped to just this one already-
+    # understood collision instead: if 3D matched the title at least as
+    # well as 2D did, and 3D's longest matching keyword is more specific
+    # (longer) than 2D's, 3D is almost always what the title actually
+    # claims, so it wins.
+    if category == "object-detection-2d":
+        obj_2d = next((r for r in ranked if r[3] == "object-detection-2d"), None)
+        obj_3d = next((r for r in ranked if r[3] == "object-detection-3d"), None)
+        if obj_2d and obj_3d and obj_3d[0] >= obj_2d[0] and obj_3d[2] > obj_2d[2]:
+            category = "object-detection-3d"
+
     # Last-resort categories only get a turn once nothing normal matched --
     # see LAST_RESORT_CATEGORY_IDS above for why explainability lives here
     # instead of in the main ranking.
