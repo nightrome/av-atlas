@@ -99,7 +99,7 @@ def load_llm_av_titles():
     return titles
 
 
-def load_llm_category_labels():
+def load_llm_category_labels(valid_ids=None):
     """Normalized title -> category id, from fetch_llm_category_labels.py.
     Read-only, last-resort signal for classify_paper() -- see its own
     comment on where this ranks relative to every other source. A
@@ -108,11 +108,27 @@ def load_llm_category_labels():
     only checks this dict when it already has nothing else, so an absent
     key and an explicit null both correctly fall through to misc either
     way, but skipping nulls keeps this dict's only content the entries
-    that can actually change the outcome."""
+    that can actually change the outcome.
+
+    valid_ids, when given, drops any entry whose category id no longer
+    exists in categories.json -- confirmed real bug: splitting
+    object-detection/mapping-localization left 65/96 old entries in this
+    file pointing at ids that don't exist anymore, and this dict is
+    otherwise applied verbatim (classify_paper() has no other reason to
+    doubt it), so those papers were showing the literal orphaned id
+    ("Mapping Localization" / "Object Detection" -- categoryLabel()'s
+    fallback for an id with no matching label) instead of falling through
+    to misc like a normal unlabeled title-only paper would. This can't be
+    a one-time data cleanup -- the taxonomy will keep evolving, and every
+    future split/rename needs this same discard to fail safe instead of
+    leaking a dead id back into the UI."""
     if not CATEGORY_LABELS_LLM_FILE.exists():
         return {}
     labels = json.loads(CATEGORY_LABELS_LLM_FILE.read_text(encoding="utf-8"))
-    return {key: v["category"] for key, v in labels.items() if v.get("category")}
+    return {
+        key: v["category"] for key, v in labels.items()
+        if v.get("category") and (valid_ids is None or v["category"] in valid_ids)
+    }
 
 # Phrases specific enough to AVs that their presence is real signal, unlike
 # generic CV terms (object detection, segmentation, etc.) which also match

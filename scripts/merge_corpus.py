@@ -176,7 +176,8 @@ def main():
         cat["keywords"] = [k.lower() for k in cat["keywords"]]
     known_dataset_titles = frozenset(cl.normalize_title(t) for t in taxonomy_full.get("known_dataset_papers", []))
     llm_av_titles = cl.load_llm_av_titles()
-    llm_category_labels = cl.load_llm_category_labels()
+    valid_category_ids = frozenset(cat["id"] for cat in taxonomy)
+    llm_category_labels = cl.load_llm_category_labels(valid_category_ids)
 
     # This script used to be safe to re-run at any time, but several other
     # scripts (enrich_av_authors.py, fetch_citations_openalex.py, the

@@ -283,6 +283,29 @@ beats a single one, and the two are legitimately different reader
 interests (someone hunting for HD-map papers doesn't want the SLAM
 literature mixed in).
 
+## `load_llm_category_labels()` must re-validate against the live taxonomy
+
+The split above orphaned `data/category_labels_llm.json`: 65 entries still
+said `object-detection`, 96 still said `mapping-localization`, both ids that
+no longer exist in `categories.json`. `load_llm_category_labels()` had no
+reason to distrust its own file, so `classify_paper()` applied a dead id
+verbatim wherever it was the last fallback — surfacing on the live site as a
+literal "Mapping Localization (40)" / "Object Detection (33)" row in every
+page's category filter and in the Categories ranking table and Insights'
+category-correlation matrix (`categoryLabel()`'s fallback title-cases
+whatever id it doesn't recognize, rather than hiding it).
+
+Fixed by passing the current set of valid ids (built once in
+`merge_corpus.py`'s `main()`, from the same `taxonomy` list already loaded
+for keyword ranking) into `load_llm_category_labels()`, which now drops any
+entry whose `category` isn't in that set — the same "fail safe back to
+misc/uncategorized" behavior an absent or `null` entry already gets, not a
+one-time cleanup of the JSON file. This has to hold for every future
+category split or rename too: the LLM-label file is long-lived cached
+output from an expensive crawl, re-running it isn't a data-quality fix on
+its own, and nothing else in the pipeline re-checks its contents against the
+taxonomy that produced it.
+
 ## Derived data is not tracked; `gh-pages` is a single squashed commit
 
 `data/stats.json`, `data/stats_non_av.json`, and the abstract shards are

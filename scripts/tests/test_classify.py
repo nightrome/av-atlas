@@ -399,6 +399,21 @@ class TestLoadLlmCategoryLabels(unittest.TestCase):
         }), encoding="utf-8")
         self.assertEqual(cl.load_llm_category_labels(), {"somepaper": "object-detection"})
 
+    def test_stale_category_ids_are_dropped_when_valid_ids_given(self):
+        # Confirmed real bug: splitting object-detection -> -2d/-3d and
+        # mapping-localization -> mapping/localization left 161 old entries
+        # in category_labels_llm.json pointing at ids that no longer exist
+        # in categories.json. Passing the current valid id set discards
+        # those instead of leaking a dead id back out as a literal category.
+        self.labels_file.write_text(json.dumps({
+            "stalepaper": {"category": "object-detection"},
+            "freshpaper": {"category": "object-detection-2d"},
+        }), encoding="utf-8")
+        self.assertEqual(
+            cl.load_llm_category_labels(valid_ids=frozenset({"object-detection-2d", "object-detection-3d"})),
+            {"freshpaper": "object-detection-2d"},
+        )
+
 
 class TestClassifyPaper(unittest.TestCase):
     CATEGORIES = [
