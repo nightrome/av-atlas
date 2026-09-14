@@ -254,6 +254,35 @@ that doesn't exist), but one that must resolve to the same "misc" outcome
 as a paper this pass hasn't looked at yet, not something worth
 distinguishing at the classification layer.
 
+## Object Detection and Mapping & Localization split by sensor/task, not merged
+
+Both were the two largest categories by a wide margin (2,020 and 2,062
+papers respectively) — user-requested: split them for a more even
+distribution, the same way Datasets/Surveys/Explainability already carve
+distinct concerns out of a crowded taxonomy rather than growing it flatter.
+
+`object-detection` → `object-detection-2d` / `object-detection-3d`, split
+on sensor modality: bare "2D"/"3D" mentions turned out to be nearly useless
+as a keyword signal (of 2,020 papers, only 35 said "2D" explicitly — it was
+historically the unmarked default, so nobody writes it), but LiDAR/point-
+cloud/BEV/voxel language is a reliable proxy: 3D-modality papers
+overwhelmingly also say "3D" explicitly (confirmed on real data — "3D
+Object Detection", "LiDAR 3D Vehicle Detection", etc.), and 2D/camera-based
+ones use the shared generic detection vocabulary without it. Result: 1,282
+/ 1,132, about as even as this kind of split gets. `radar-perception`'s
+existing gate (checked before all normal categories) still claims
+radar-based detection first, so "radar" was deliberately left out of the
+3D keyword list — including it would never fire on anything that gate
+hasn't already taken.
+
+`mapping-localization` → `mapping` / `localization`: a cleaner conceptual
+line (HD maps/lane info vs. SLAM/odometry/pose) than a genuinely even one —
+605 / 1,361 on real data, localization being the naturally larger,
+more heavily-researched half. Kept anyway: half the size of one bucket
+beats a single one, and the two are legitimately different reader
+interests (someone hunting for HD-map papers doesn't want the SLAM
+literature mixed in).
+
 ## Derived data is not tracked; `gh-pages` is a single squashed commit
 
 `data/stats.json`, `data/stats_non_av.json`, and the abstract shards are

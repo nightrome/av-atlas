@@ -24,11 +24,10 @@
   ],
   "categories": [
     {
-      "id": "object-detection",
-      "label": "Object Detection",
+      "id": "object-detection-2d",
+      "label": "2D Object Detection",
       "keywords": [
         "object detection",
-        "3d detection",
         "2d detection",
         "bounding box",
         "detector",
@@ -36,7 +35,6 @@
         "pedestrian detection",
         "vehicle detection",
         "small object detection",
-        "3d object detection",
         "vulnerable road user",
         "object classification",
         "obstacle detection",
@@ -44,6 +42,29 @@
         "road anomaly",
         "traffic participant",
         "moving object detection"
+      ]
+    },
+    {
+      "id": "object-detection-3d",
+      "label": "3D Object Detection",
+      "keywords": [
+        "3d object detection",
+        "3d detection",
+        "3d vehicle detection",
+        "monocular 3d detection",
+        "monocular 3d object detection",
+        "lidar object detection",
+        "lidar-based object detection",
+        "lidar detection",
+        "point cloud detection",
+        "point cloud object detection",
+        "bev object detection",
+        "bird's eye view detection",
+        "voxel-based detection",
+        "voxel object detection",
+        "multi-view 3d detection",
+        "lidar point cloud",
+        "point cloud"
       ]
     },
     {
@@ -346,14 +367,24 @@
       ]
     },
     {
-      "id": "mapping-localization",
-      "label": "Mapping & Localization",
+      "id": "mapping",
+      "label": "Mapping",
       "keywords": [
         "hd map",
         "mapping",
+        "lane detection",
+        "lane marking",
+        "road information",
+        "crowdsourced map",
+        "lane-level map"
+      ]
+    },
+    {
+      "id": "localization",
+      "label": "Localization",
+      "keywords": [
         "localization",
         "slam",
-        "lane detection",
         "visual odometry",
         "lidar odometry",
         "pose estimation",
@@ -362,16 +393,12 @@
         "map matching",
         "ego-motion estimation",
         "loop closure",
-        "lane marking",
         "visual-inertial odometry",
         "lidar-inertial odometry",
         "visual inertial odometry",
         "gnss",
         "gps positioning",
         "dead reckoning",
-        "road information",
-        "crowdsourced map",
-        "lane-level map",
         "lane-level localization",
         "odometry",
         "wheel odometry",
