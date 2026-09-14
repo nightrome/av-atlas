@@ -25,6 +25,94 @@ Revisit `fetch_dblp_listing.py` only if DBLP's access policy changes; until
 then, treat every DBLP-sourced row as frozen at what's already in
 `data/venues/`.
 
+## OpenAlex and arXiv rate limits, observed directly (2026-09-14)
+
+Both `enrich_av_authors.py` (OpenAlex, ~15,900 AV papers still with no
+authors_detail at all) and `mine_abstracts.py` (arXiv, ~2,000 AV papers still
+missing an abstract -- 89% of those ITSC/IV/T-ITS, all IEEE-published, see
+the DBLP block above for why those venues have nothing but title+authors
+from their own listing) exist specifically to backfill data these two
+paid/rate-limited sources can still give away for free, for papers no other
+tracked source has reached. Both hit a wall mid-session; tested each
+directly (a bare request outside either script) to see exactly what kind of
+wall, since the two turned out to be nothing alike.
+
+**OpenAlex: a real, hard, *daily* budget, not a soft throttle.** A direct
+`GET /works?search=...` (the same endpoint `enrich_av_authors.py`'s
+`openalex_authors()` and `fetch_ieee_openalex.py` both call) returned:
+
+```
+HTTP 429, Retry-After: 23062
+{"error":"Rate limit exceeded","message":"Insufficient budget. This request
+costs $0.001 but you only have $0 remaining. Resets at midnight UTC. ...",
+"dailyRemainingUsd":0,"prepaidRemainingUsd":0,"creditsRemaining":0}
+```
+
+This is the exact same wall `fetch_ieee_openalex.py` hit on 2026-08-17 (see
+the ICRA/IROS row below) -- confirms it's not specific to that one script or
+that one day, it's OpenAlex's search endpoint generally, for every caller
+sharing this project's `mailto` identity. The two runs today make the shape
+of it obvious: the first `enrich_av_authors.py` run this session enriched
+185 papers before stopping itself on 35 consecutive failures (spending
+whatever daily free credit remained down to $0); a second run ~20 minutes
+later got 0 out of the first 40 attempted and failed immediately, because
+the response above is explicit that the daily budget resets at midnight UTC,
+not on any short timer -- retrying again before then cannot help, no matter
+how the request is spaced or batched. This is also why the second run was
+*worse* than the first rather than the same: the first run's own requests
+are what spent the day's remaining balance down to exactly $0.
+Per this project's no-paid-APIs rule (see the ICRA/IROS row), the fix isn't
+to pay for credits -- it's accepting that `enrich_av_authors.py` can only
+ever make a small amount of progress once per UTC day (however many papers
+$0-of-free-daily-budget happens to cover that day) until OpenAlex changes
+this policy again. Not worth scripting a midnight-UTC-triggered retry for
+this alone; just re-run it occasionally.
+
+**arXiv: a real block, but NOT confirmed daily -- don't overstate it.** A
+direct `GET export.arxiv.org/api/query` returned `HTTP 429` with body
+`Rate exceeded.` and, unlike OpenAlex, *no* `Retry-After` header and no
+reset-time claim of any kind in the body. `mine_abstracts.py`'s two runs
+this session both failed on every single request from the very first batch
+(the fast ID-lookup pass, not just the slow title-search pass) and both hit
+its own 20-consecutive-failure guard within the first minute -- ~20 minutes
+apart, with no sign of recovery in between. That's consistent with a block
+lasting at least tens of minutes, but arXiv's own API documentation only
+commits to "no more than one request every three seconds" (already
+`mine_abstracts.py`'s `REQUEST_DELAY`) and doesn't document how long a 429
+block lasts once triggered -- public reports range from single-digit minutes
+to several hours ([arXiv API Google
+Group](https://groups.google.com/a/arxiv.org/g/api/c/pNB3lnxf4mQ),
+[arXiv API user's
+manual](https://info.arxiv.org/help/api/user-manual.html)). Likely explanation,
+not confirmed: this session's earlier citation-graph/affiliation crawls this
+week already used some of arXiv's tolerance for this environment's shared
+egress IP before `mine_abstracts.py` ever got a turn today. Treat "wait and
+retry later" as the only lever -- there's no header or documented schedule
+to trigger a retry against, so don't build one assuming a daily reset the
+way OpenAlex's is confirmed to have.
+
+**Other abstract sources surveyed, none adopted:** for a sample of the
+currently-missing titles (see venue breakdown above), Google itself returned
+a bot-check page to this project's browser tooling on the very first query
+(no scripted search was attempted after that); web search instead of a
+direct Google query worked fine and is the right tool for this going
+forward. ResearchGate's publication pages 403/redirect to the bare homepage
+for an unauthenticated fetch -- not usable without a login this project
+doesn't have. IEEE Xplore, which is where the bulk of the remaining gap
+lives, returns its already-documented `418` to a scripted request but
+*does* render the full abstract in the DOM to a real browser session with no
+sign-in (confirmed on one sample paper) -- **deliberately not pursued**: the
+`418` is IEEE's own anti-bot signal the same way DBLP's Anubis challenge is,
+and driving a real browser at scale specifically to get past that is the
+same kind of bypass this project already ruled out for DBLP above, just via
+a different technical route. The one genuinely useful finding: a spot-check
+of titles with no arXiv match found in this corpus turned up real arXiv
+preprints for them via web search (e.g. a 2022 T-ITS paper on GNSS-spoofing
+detection, findable at `arxiv.org/abs/2108.08635`) -- confirms
+`mine_abstracts.py`'s own premise (most of these IEEE-published AV papers do
+have a preprint) rather than surfacing some new gap; the fix here is still
+just "wait for arXiv's block to lift and re-run," not a new source.
+
 ## Per-venue scripts (current, in use)
 
 | Venue | Script | Source | Notes |
