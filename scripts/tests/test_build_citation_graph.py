@@ -11,7 +11,18 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-import build_citation_graph as bcg
+# pdfplumber is a crawler dependency (scripts/requirements.txt), not part of
+# the stdlib-only test baseline the CI job checks for -- so on a bare CI
+# checkout with no `pip install`, this module can't be imported at all (its
+# top-level `import pdfplumber` fires even though the tests below only
+# exercise pure-string helpers that never touch a PDF). Skip cleanly there,
+# same pattern as test_fetch_affiliations_arxiv.py's beautifulsoup4 guard
+# (unittest turns a module-level SkipTest during discovery into a skipped
+# test, not an error, so it doesn't fail the whole suite).
+try:
+    import build_citation_graph as bcg
+except ImportError as exc:
+    raise unittest.SkipTest(f"pdfplumber not installed: {exc}")
 
 
 class TestPdfUrlFromPath(unittest.TestCase):
