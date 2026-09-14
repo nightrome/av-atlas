@@ -1005,6 +1005,22 @@ class TestNormalizeVenue(unittest.TestCase):
         self.assertEqual(ag.normalize_venue("CVPR"), "CVPR")
         self.assertEqual(ag.normalize_venue("Some New Venue"), "Some New Venue")
 
+    def test_spelling_variant_venues_merge_to_one_canonical_form(self):
+        # Found by grouping every real venue string by its significant words
+        # with stopwords/punctuation removed -- each of these is a source-
+        # to-source spelling drift of the same venue, not a distinct one
+        # (confirmed on real data: same acronym tag, same topic/year range).
+        self.assertEqual(ag.normalize_venue("Frontiers Neurorobotics"), "Frontiers in Neurorobotics")
+        self.assertEqual(ag.normalize_venue("Radar"), "RADAR")
+        self.assertEqual(
+            ag.normalize_venue("Discrete & Continuous Dynamical Systems - B"),
+            "Discrete and Continuous Dynamical Systems - B",
+        )
+        self.assertEqual(
+            ag.normalize_venue("Journal of Transportation Engineering Part A Systems"),
+            "Journal of Transportation Engineering, Part A: Systems",
+        )
+
 
 class TestAuthorCountryCodes(unittest.TestCase):
     def test_internetlab_brazil_mislabel_is_stripped(self):

@@ -249,6 +249,19 @@ VENUE_ALIASES = {
     "Computer graphics forum (Print)": "Computer Graphics Forum",
     "Neural computing & applications (Print)": "Neural Computing & Applications",
     "Displays (Guildford)": "Displays",
+    # Found by grouping every venue string by its significant words with
+    # stopwords ("of"/"on"/"and"/punctuation) removed, then flagging groups
+    # with more than one surviving spelling -- each pair here is confirmed
+    # the same real venue (same acronym tag, same paper topic/year range),
+    # just a source-to-source spelling drift too small for a reader to
+    # notice on its own but real enough to split an already-small venue's
+    # paper count across two rows.
+    "Frontiers Neurorobotics": "Frontiers in Neurorobotics",
+    "Radar": "RADAR",
+    "AEIT International Conference of Electrical and Electronic Technologies for Automotive (AEIT AUTOMOTIVE)":
+        "AEIT International Conference on Electrical and Electronic Technologies for Automotive (AEIT AUTOMOTIVE)",
+    "Discrete & Continuous Dynamical Systems - B": "Discrete and Continuous Dynamical Systems - B",
+    "Journal of Transportation Engineering Part A Systems": "Journal of Transportation Engineering, Part A: Systems",
 }
 
 # A venue string sometimes carries its own year, either leading ("2023
