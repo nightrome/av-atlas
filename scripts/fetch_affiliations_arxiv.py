@@ -81,6 +81,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 
 import institution_extraction_llm as iel
+from fetch_common import by_citations
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
@@ -307,10 +308,6 @@ def save_json(path, data):
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
 
 
-def _in_corpus_citations(p):
-    return ((p.get("citations_by_source") or {}).get("in_corpus") or {}).get("count") or 0
-
-
 def load_pending(already_done):
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     av = [p for p in papers if p.get("av_relevance") == "AV" and not p.get("authors_detail")]
@@ -321,7 +318,7 @@ def load_pending(already_done):
     # the earlier "random order for representativeness" call now that the
     # ceiling is the binding constraint). papers_full.json's own order
     # clusters by venue, so an explicit sort is needed either way.
-    av.sort(key=_in_corpus_citations, reverse=True)
+    av = by_citations(av)
     pending = [p["title"] for p in av if normalize_title(p.get("title")) not in already_done]
     return pending, len(av)
 

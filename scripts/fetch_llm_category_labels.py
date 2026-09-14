@@ -35,10 +35,11 @@ Usage: python fetch_llm_category_labels.py [--model qwen2.5:7b-instruct] [--n N]
 """
 import argparse
 import json
-import random
 import re
 import urllib.request
 from pathlib import Path
+
+from fetch_common import by_citations
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
@@ -47,7 +48,6 @@ OUT_FILE = BASE / "data" / "category_labels_llm.json"
 OLLAMA_URL = "http://localhost:11434/api/generate"
 BATCH_SIZE = 10
 MAX_CONSECUTIVE_FAILURES = 12
-SEED = 20260913
 
 PROMPT_TEMPLATE = """You are assigning ONE topic category to an autonomous-vehicle (AV) research paper, from its title alone (no abstract is available for this paper -- its source venue never published one). The paper has already been confirmed to be genuinely about autonomous/automated vehicles; your only job is picking which of these categories its own topic best fits.
 
@@ -111,7 +111,12 @@ def save_results(r):
 def build_pool(n):
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     by_norm = {}
-    for p in papers:
+    # Most-cited-first (user-requested, applied to every crawler in this
+    # pipeline -- see fetch_common.by_citations). This one runs against a
+    # local Ollama model, not an external rate limit, so order rarely
+    # matters in practice (a run typically finishes the whole pool) -- kept
+    # consistent with every other crawler anyway, for the rare partial run.
+    for p in by_citations(papers):
         # Title-only AND still misc -- see module docstring for why this is
         # the population an LLM helps with (vs. an abstract-having misc
         # paper, which is a taxonomy-coverage question, not a data one).
@@ -121,7 +126,6 @@ def build_pool(n):
         if k and k not in by_norm:
             by_norm[k] = p
     keys = list(by_norm.keys())
-    random.Random(SEED).shuffle(keys)
     return by_norm, keys[:n] if n else keys
 
 

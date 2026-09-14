@@ -25,6 +25,41 @@ OUT_DIR = BASE / "data" / "venues"
 HEADERS = {"User-Agent": "av-atlas (mailto:holger@it-caesar.com)"}
 
 
+def _in_corpus_citations(p):
+    # NOT p.get("citations") -- that top-level field is dead (confirmed on
+    # real data: 0 of 25,639 AV papers have it set, including nuScenes,
+    # this corpus's single most-cited paper). The real, actively-maintained
+    # count is citations_by_source.in_corpus.count, written by
+    # build_citation_graph.py/backfill_citing_venues.py -- the same number
+    # every leaderboard and "most cited" list on the site itself ranks by.
+    return ((p.get("citations_by_source") or {}).get("in_corpus") or {}).get("count") or 0
+
+
+def by_citations(papers):
+    """Sorts paper dicts by in-corpus citation count, descending --
+    highest-impact papers first, ties broken by title for a deterministic
+    order across runs. Missing/zero citations sorts to the back rather than
+    crashing the comparison or being treated as "unknown, skip".
+
+    User-requested: every external source this pipeline crawls is
+    rate-limited or budget-capped (see PIPELINE.md's "OpenAlex and arXiv
+    rate limits" -- OpenAlex's daily budget alone has cut a full
+    enrich_av_authors.py run off after ~200 papers of a 15,000+ backlog).
+    A crawl that gets cut off partway through should already have enriched
+    the papers readers actually encounter first -- the ones on every
+    top-cited list, comparison page, and venue/author leaderboard -- not
+    whichever paper happened to load first from its source venue file.
+    Replaces this pipeline's earlier random-shuffle-the-queue convention
+    (still correct for ML-training-data sampling scripts, which need an
+    unbiased draw, not a priority order -- see e.g. select_labeling_
+    candidates.py/fetch_llm_relevance_labels.py, deliberately NOT switched
+    to this) -- and matches enrich_av_authors.py's own load_pending(),
+    which already did this same most-cited-first sort by user request
+    before this helper existed.
+    """
+    return sorted(papers, key=lambda p: (-_in_corpus_citations(p), p.get("title") or ""))
+
+
 def fetch(url, timeout=30, max_retries=1, retry_status=(503,), backoff=10, headers=None):
     """GET url and return the decoded response body.
 

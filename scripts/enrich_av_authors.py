@@ -60,6 +60,8 @@ import urllib.request
 from difflib import SequenceMatcher
 from pathlib import Path
 
+from fetch_common import by_citations
+
 BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
 CONTACT_EMAIL = "holger@it-caesar.com"
@@ -133,10 +135,6 @@ def _needs_ids(p):
             and not any("openalex_id" in a for a in ad))
 
 
-def _in_corpus_citations(p):
-    return ((p.get("citations_by_source") or {}).get("in_corpus") or {}).get("count") or 0
-
-
 def load_pending(refetch_ids):
     """Re-reads the file fresh and returns (all_papers, titles needing lookup, av_total)."""
     papers = json.loads(IN_FILE.read_text(encoding="utf-8"))
@@ -146,7 +144,7 @@ def load_pending(refetch_ids):
     # anchor the Institutions/Countries leaderboards -- the top-cited ones --
     # not a random slice (user-requested, supersedes the earlier
     # random-order call now that the ceiling is the binding constraint).
-    av.sort(key=_in_corpus_citations, reverse=True)
+    av = by_citations(av)
     if refetch_ids:
         pending_titles = [p["title"] for p in av if _needs_ids(p)]
     else:

@@ -34,7 +34,6 @@ Usage: python fetch_cvf_affiliations.py
 """
 import io
 import json
-import random
 import re
 import time
 import urllib.error
@@ -45,6 +44,7 @@ import pdfplumber
 from build_citation_graph import (
     CVF_VENUES, build_cvf_pdf_url_index, fetch_with_retries, normalize_title,
 )
+from fetch_common import by_citations
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
@@ -145,19 +145,22 @@ def save_out(data):
 
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    pending_keys = {
-        normalize_title(p["title"]) for p in papers
+    eligible = by_citations(
+        p for p in papers
         if p.get("av_relevance") == "AV" and (p.get("venue") or "") in CVF_VENUES
         and not p.get("authors_detail")
-    }
+    )
+    eligible_keys = [normalize_title(p["title"]) for p in eligible]
+    pending_keys = set(eligible_keys)
     pdf_url_index = build_cvf_pdf_url_index()
 
     data = load_out()
     succeeded = set(data["succeeded"])
-    pending = [k for k in pending_keys if k in pdf_url_index and k not in succeeded]
-    # Shuffled, not corpus order -- see build_citation_graph.py's matching
-    # fix for why (user-requested, applied to every incremental crawler).
-    random.shuffle(pending)
+    # Most-cited-first, not corpus order -- see build_citation_graph.py's
+    # matching fix for why (user-requested, applied to every incremental
+    # crawler). eligible_keys carries the citation order from `eligible`;
+    # pending_keys (a set, built only for the print count below) doesn't.
+    pending = [k for k in eligible_keys if k in pdf_url_index and k not in succeeded]
     print(f"{len(pending)} AV CVF papers left to check for affiliations "
           f"(of {len(pending_keys)} AV CVF papers still missing authors_detail)", flush=True)
 

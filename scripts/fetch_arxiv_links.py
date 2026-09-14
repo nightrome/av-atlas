@@ -29,6 +29,7 @@ import time
 from pathlib import Path
 
 from fetch_affiliations_arxiv import find_arxiv_id
+from fetch_common import by_citations
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
@@ -53,7 +54,8 @@ def save_json(path, data):
 
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    av = [p for p in papers if p.get("av_relevance") == "AV" and not p.get("arxiv_url")]
+    # Most-cited-first (user-requested) -- see fetch_common.by_citations.
+    av = by_citations(p for p in papers if p.get("av_relevance") == "AV" and not p.get("arxiv_url"))
 
     ids = load_json(OUT_FILE, {})
 

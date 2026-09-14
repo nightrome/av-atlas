@@ -53,7 +53,6 @@ Usage: python build_citation_graph.py
 """
 import io
 import json
-import random
 import re
 import time
 import urllib.error
@@ -63,6 +62,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pdfplumber
+
+from fetch_common import by_citations
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
@@ -240,14 +241,16 @@ def save_json(path, data):
 def fetch_phase(av_cvf_titles, pdf_url_index):
     refs = load_refs_cvf()
     succeeded = set(refs["succeeded"])
+    # Most-cited-first, not corpus order (which clusters by venue/year) --
+    # an interrupted or session-limited run should have already extracted
+    # reference lists for the papers readers actually visit (feeds each
+    # paper's own self-citation/CD-index numbers and its detail page),
+    # not whichever ones happen to sort first (user-requested, applied to
+    # every incremental crawler in this pipeline, not just this one; see
+    # fetch_common.by_citations). av_cvf_titles already carries this order
+    # from main() below -- filtered here, not re-sorted, since it's a list
+    # of title keys with no citation count left to sort by.
     pending = [k for k in av_cvf_titles if k in pdf_url_index and k not in succeeded]
-    # Shuffled, not left in corpus order (which clusters by venue/year) --
-    # an interrupted or session-limited run should still leave the
-    # extracted reference-list coverage a representative slice of every
-    # venue/year, not just whichever ones happen to sort first
-    # (user-requested, applied to every incremental crawler in this
-    # pipeline, not just this one).
-    random.shuffle(pending)
     n_retrying = sum(1 for k in pending if k in refs["failed"])
     print(f"{len(pending)} AV CVF papers left to fetch (of {len(av_cvf_titles)} AV CVF total), "
           f"including {n_retrying} retrying a previous failure", flush=True)
@@ -347,10 +350,12 @@ def match_phase(word_index):
 
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    av_cvf_titles = {
-        normalize_title(p["title"]) for p in papers
-        if p.get("av_relevance") == "AV" and (p.get("venue") or "") in CVF_VENUES
-    }
+    av_cvf_titles = [
+        normalize_title(p["title"]) for p in by_citations(
+            p for p in papers
+            if p.get("av_relevance") == "AV" and (p.get("venue") or "") in CVF_VENUES
+        )
+    ]
     pdf_url_index = build_cvf_pdf_url_index()
     word_index = build_corpus_match_index(papers)
 

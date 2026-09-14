@@ -39,7 +39,6 @@ Usage: python fetch_semanticscholar_citing.py [N|all]   # top N most-cited
                                                            # paper
 """
 import json
-import random
 import re
 import sys
 import time
@@ -47,7 +46,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from fetch_common import BASE, HEADERS
+from fetch_common import BASE, HEADERS, by_citations
 
 STATS_FILE = BASE / "data" / "stats.json"
 SEEDS_FILE = BASE / "data" / "s2_citing_seeds.json"
@@ -81,21 +80,22 @@ def top_seed_titles(n):
     # still have real citations Semantic Scholar knows about that we don't,
     # which is the whole point of seeding from it.
     #
-    # Used to sort by in-corpus citations descending, on the theory that an
-    # interrupted/resumed run should work through "the papers most likely to
-    # matter first" -- but that's exactly self-defeating for any paper (or
-    # whole venue) that has zero in-corpus citations *because* it's never
-    # been queried yet: it always sorts last, so a long-tail venue never
-    # gets its turn no matter how many runs complete. User-reported: "IV and
-    # arXiv still have no citations" after a run that got well over a third
-    # of the way through the corpus. Shuffled instead -- every paper gets an
-    # equal shot at being queried soon, not just the ones already well-cited
-    # (n, when given, still bounds the run to a random sample rather than a
-    # fixed top-N).
+    # Sorted by in-corpus citations descending again (user-requested, applied
+    # to every crawler in this pipeline -- see fetch_common.by_citations),
+    # after previously being reverted FROM exactly this for a confirmed,
+    # self-defeating failure mode: a paper (or whole venue) with zero
+    # in-corpus citations *because* it's never been queried yet always sorts
+    # last, so it can never earn a citation to rise in priority -- confirmed
+    # stuck this way ("IV and arXiv still have no citations") after a run
+    # that got well over a third of the way through the corpus. Reinstated
+    # anyway, knowingly: readers encounter this pipeline's top-cited papers
+    # far more than its long tail, so THOSE papers' citing-author discovery
+    # should complete first even if it means an under-cited venue waits
+    # longer for its own turn (n, when given, now bounds the run to a
+    # top-N slice rather than a random sample).
     stats = json.loads(STATS_FILE.read_text(encoding="utf-8"))
-    papers = [p for p in stats.get("all_papers", []) if p.get("title")]
+    papers = by_citations(p for p in stats.get("all_papers", []) if p.get("title"))
     titles = [p["title"] for p in papers]
-    random.shuffle(titles)
     return titles if n is None else titles[:n]
 
 

@@ -31,14 +31,13 @@ budget is exhausted, not that this batch of papers is unusually hard to find.
 Usage: python fetch_abstracts_semanticscholar.py
 """
 import json
-import random
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from fetch_common import BASE, HEADERS
+from fetch_common import BASE, HEADERS, by_citations
 
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 OUT_FILE = BASE / "data" / "abstracts_semanticscholar.json"
@@ -124,13 +123,16 @@ def save_out(data):
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     pending_titles = [
-        p["title"] for p in papers
-        if p.get("av_relevance") == "AV" and not (p.get("abstract") or "").strip() and p.get("title")
+        p["title"] for p in by_citations(
+            p for p in papers
+            if p.get("av_relevance") == "AV" and not (p.get("abstract") or "").strip() and p.get("title")
+        )
     ]
-    # Shuffled, not corpus order -- see build_citation_graph.py's matching
-    # fix for why (a long-tail venue must not always sort last across
-    # interrupted/resumed runs). Applied to every incremental crawler.
-    random.shuffle(pending_titles)
+    # Highest-cited first, not corpus order -- user-requested: a run that
+    # gets cut off partway through (this source's own daily/rate budget,
+    # see PIPELINE.md) should already have enriched the papers readers
+    # actually encounter -- top-cited lists, comparison pages -- first.
+    # See fetch_common.by_citations' own comment for the full reasoning.
 
     data = load_out()
     succeeded = set(data["succeeded"])

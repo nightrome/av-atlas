@@ -33,14 +33,13 @@ reads this file to know which authors to look up an ORCID for.
 Usage: python fetch_s2_author_ids.py
 """
 import json
-import random
 import re
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 
-from fetch_common import BASE, HEADERS
+from fetch_common import BASE, HEADERS, by_citations
 
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 IDS_FILE = BASE / "data" / "s2_author_ids.json"
@@ -99,13 +98,15 @@ def save_json(path, data):
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     av = [p for p in papers if p.get("av_relevance") == "AV" and p.get("authors")]
-    # Shuffled, not sorted by author-list length -- the previous "most
-    # papers first" ordering systematically resolved large-team-paper
-    # authors before anyone else on every partial/interrupted run, leaving
-    # ORCID/S2-ID coverage skewed toward big collaborations rather than a
-    # representative slice of the corpus (user-requested, applied to every
-    # incremental crawler in this pipeline).
-    random.shuffle(av)
+    # Most-cited-first (user-requested, applied to every crawler in this
+    # pipeline -- see fetch_common.by_citations). This knowingly reopens
+    # the same shape of skew a prior "sort by author-list length" ordering
+    # was reverted for (resolves big-collaboration-paper authors first,
+    # since a highly-cited paper often has a large author list too) --
+    # accepted deliberately this time: the goal here is the same as every
+    # other crawler's now (enrich what readers actually encounter first),
+    # not corpus-wide author-ID representativeness.
+    av = by_citations(av)
 
     ids = load_json(IDS_FILE, {})
     checked = set(load_json(CHECKED_FILE, []))

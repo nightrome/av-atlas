@@ -56,6 +56,8 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+from fetch_common import by_citations
+
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 ABSTRACTS_CACHE_FILE = BASE / "data" / "abstracts_arxiv.json"
@@ -189,8 +191,8 @@ def main():
     print(f"{len(av)} papers in the mining pool (AV + the non-AV-recheck slice above), "
           f"{len(missing)} missing an abstract")
 
-    with_url = [e for e in missing if e.get("arxiv_url")]
-    without_url = [e for e in missing if not e.get("arxiv_url")]
+    with_url = by_citations(e for e in missing if e.get("arxiv_url"))
+    without_url = by_citations(e for e in missing if not e.get("arxiv_url"))
     print(f"  {len(with_url)} already have an arxiv_url (fast pass), "
           f"{len(without_url)} need a title search (slow pass)")
 

@@ -412,3 +412,44 @@ live. Fixed by listing all releases and matching on `tag_name`
 client-side; `backup_corpus.py` also now deletes any stale duplicates it
 finds beyond the most recent, so a repo affected by the old bug self-heals
 on its next backup rather than needing manual cleanup.
+
+## Every crawler processes its queue most-cited-first, not corpus order or random
+
+`fetch_common.by_citations()` (by `citations_by_source.in_corpus.count`, NOT
+the top-level `citations` field -- confirmed dead, 0 of 25,639 AV papers have
+it set, including nuScenes) is now the shared ordering for every incremental
+crawler's pending queue: `mine_abstracts.py`, `fetch_abstracts_
+semanticscholar.py`, `enrich_av_authors.py` (already had its own copy of this,
+now consolidated), `fetch_affiliations_arxiv.py` (ditto), `fetch_arxiv_links.py`,
+`fetch_cvf_affiliations.py`, `build_citation_graph.py`, `fetch_s2_author_ids.py`,
+`fetch_semanticscholar_citing.py`, `fetch_llm_category_labels.py`, and
+`classify_code_links_llm.py` (previously alphabetical by normalized title, a
+tuple-sort accident). User-requested: with every external source in this
+pipeline rate-limited or budget-capped (see PIPELINE.md), a run that gets cut
+off partway through should already have enriched the papers readers actually
+encounter -- top-cited lists, comparison pages, leaderboards -- not whichever
+paper happened to load first from its source venue file.
+
+Two crawlers were explicitly asked about and kept the OLD behavior anyway,
+by user choice, not oversight:
+- `fetch_s2_author_ids.py` -- an earlier "sort by author-count" ordering was
+  reverted for skewing ORCID/S2-ID coverage toward big-collaboration papers;
+  citation count risks the same skew (a highly-cited paper often has a large
+  author list too). Switched to most-cited-first anyway, user-confirmed,
+  accepting that reopened trade-off.
+- `fetch_semanticscholar_citing.py` -- this one previously WAS citation-sorted,
+  then was reverted after a confirmed, self-defeating bug: a paper (or whole
+  venue) with zero in-corpus citations *because it's never been queried yet*
+  always sorts last under that rule, so it can never earn a citation to rise
+  in priority -- confirmed stuck this way ("IV and arXiv still have no
+  citations") after a run well over a third of the way through the corpus.
+  Switched back anyway, user-confirmed, accepting that long-tail venues may
+  go unqueried again.
+
+Deliberately NOT switched, and shouldn't be: `select_labeling_candidates.py`,
+`select_near_threshold_candidates.py`, `train_relevance_classifier.py`,
+`fetch_llm_relevance_labels.py`/`_v2.py`, and `audit_code_links_llm.py` --
+these all feed or evaluate the relevance classifier and need an unbiased
+random draw, not a priority order; citation-sorting them would systematically
+skew training/eval data toward older, more established, already-popular
+papers.

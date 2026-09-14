@@ -41,7 +41,7 @@ import sys
 import time
 import urllib.request
 
-from fetch_common import BASE
+from fetch_common import BASE, by_citations
 from fetch_affiliations_arxiv import (
     CODE_HOST_RE,
     CODE_AVAILABILITY_TEXT_RE,
@@ -192,16 +192,20 @@ def load_targets():
     regex detector runs over, so this is a like-for-like replacement."""
     affil = json.loads(AFFIL_FILE.read_text(encoding="utf-8"))
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    av = {norm_title(p.get("title")): p.get("title")
-            for p in papers if p.get("av_relevance") == "AV"}
+    # Most-cited-first (user-requested, applied to every crawler in this
+    # pipeline -- see fetch_common.by_citations). Was previously an
+    # alphabetical-by-key sort (out.sort(), a byproduct of tuples starting
+    # with the normalized title) -- as arbitrary an order as corpus order.
+    av_by_key = {norm_title(p.get("title")): p for p in by_citations(papers)
+                 if p.get("av_relevance") == "AV"}
     out = []
-    for key, v in affil.items():
-        if not isinstance(v, dict) or key not in av:
+    for key, p in av_by_key.items():
+        v = affil.get(key)
+        if not isinstance(v, dict):
             continue
         aid = v.get("arxiv_id")
         if aid:
-            out.append((key, aid, av[key]))
-    out.sort()
+            out.append((key, aid, p.get("title")))
     return out
 
 
