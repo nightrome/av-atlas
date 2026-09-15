@@ -95,6 +95,47 @@ def save_json(path, data):
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
 
 
+def resolve_author_ids(title, authors):
+    """Looks up `title` on Semantic Scholar and returns {normalized_name:
+    authorId} for whichever of `authors` it could confidently match --
+    empty (not an error) when nothing matched or the paper isn't on S2 at
+    all. Raises on a real failure (network, rate limit after retries);
+    callers must treat that as "try again later", never silently as "no
+    author ids for this paper" the way an empty return here means.
+    """
+    try:
+        data = s2_get("/paper/search/match", {"query": title, "fields": "title,authors"})
+    except urllib.error.HTTPError as e:
+        # search/match responds 404 (not 200 + an empty data array) when
+        # NOTHING matches the query at all -- same confirmed behavior as
+        # fetch_abstracts_semanticscholar.py's identical guard on this same
+        # endpoint. A clean "no match", not a failure: without this, EVERY
+        # unmatched title (most of them, in practice) counted as a failure
+        # and never got marked checked -- tripping the consecutive-failures
+        # stop-early almost immediately, and re-querying the exact same
+        # doomed titles again on every future run since they never got
+        # recorded as tried.
+        if e.code == 404:
+            return {}
+        raise
+    results = data.get("data") or []
+    title_key = normalize_title(title)
+    match = results[0] if results and normalize_title(results[0].get("title")) == title_key else None
+    if not match:
+        return {}
+    api_authors = match.get("authors") or []
+    # Only trust a 1:1 name-for-name lineup -- if S2's author count/order
+    # doesn't match ours exactly, there's no safe way to know which API
+    # author corresponds to which of ours.
+    if len(api_authors) != len(authors):
+        return {}
+    resolved = {}
+    for our_name, api_author in zip(authors, api_authors):
+        if normalize_name(our_name) == normalize_name(api_author.get("name")) and api_author.get("authorId"):
+            resolved[normalize_name(our_name)] = api_author["authorId"]
+    return resolved
+
+
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     av = [p for p in papers if p.get("av_relevance") == "AV" and p.get("authors")]
@@ -127,18 +168,7 @@ def main():
             checked.add(title_key)
             continue
         try:
-            data = s2_get("/paper/search/match", {"query": p["title"], "fields": "title,authors"})
-            results = data.get("data") or []
-            match = results[0] if results and normalize_title(results[0].get("title")) == title_key else None
-            if match:
-                api_authors = match.get("authors") or []
-                # Only trust a 1:1 name-for-name lineup -- if S2's author
-                # count/order doesn't match ours exactly, there's no safe
-                # way to know which API author corresponds to which of ours.
-                if len(api_authors) == len(p["authors"]):
-                    for our_name, api_author in zip(p["authors"], api_authors):
-                        if normalize_name(our_name) == normalize_name(api_author.get("name")) and api_author.get("authorId"):
-                            ids[normalize_name(our_name)] = api_author["authorId"]
+            ids.update(resolve_author_ids(p["title"], p["authors"]))
             checked.add(title_key)
             consecutive_failures = 0
         except Exception as e:
