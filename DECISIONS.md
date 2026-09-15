@@ -564,3 +564,57 @@ small, human-in-the-loop scale rather than automated: this is a one-time,
 bounded (13-paper) patch, not a crawler, and won't be repeated as one --
 see that entry for why turning this into an automated scraper stays off
 the table regardless of how well it would work technically.
+
+## In-corpus citation counts vs. real-world (Google Scholar) counts
+
+User-requested: estimate how accurate this corpus's own citation counts
+are against Google Scholar. Sampled 15 AV papers spanning three orders of
+magnitude (nuScenes at 2,742 in-corpus down to a 5-citation T-ITS paper),
+looked each one up on Google Scholar by hand, and compared:
+
+| Paper | In-corpus | Scholar | Ratio |
+|---|---:|---:|---:|
+| nuScenes (2020) | 2,742 | 12,016 | 22.8% |
+| KITTI benchmark suite (2012) | 1,901 | 21,670 | 8.8% |
+| CARLA (2017) | 1,808 | 10,615 | 17.0% |
+| KITTI dataset, IJRR (2013) | 1,336 | 14,092 | 9.5% |
+| Waymo Open Dataset (2020) | 1,250 | 5,952 | 21.0% |
+| CenterPoint (2021) | 742 | 3,295 | 22.5% |
+| MV3D (2017) | 476 | 4,797 | 9.9% |
+| TransFusion (2022) | 283 | 1,532 | 18.5% |
+| 3D Object Proposals (2015) | 204 | 1,595 | 12.8% |
+| IntentNet (2018) | 127 | 589 | 21.6% |
+| SphereFormer (2023) | 71 | 383 | 18.5% |
+| SuperDepth (2019) | 38 | 290 | 13.1% |
+| Synthetic-data segmentation (2019) | 20 | 350 | 5.7% |
+| Declarative metamorphic testing (2022) | 10 | 79 | 12.7% |
+| Trajectory prediction, T-ITS (2022) | 5 | 120 | 4.2% |
+
+This corpus's own count captures roughly **5-23%** of a paper's true
+citation count -- never close to complete (by design: it only counts
+citations from papers whose reference list this pipeline has actually
+scanned, not all of academic literature), but not wildly inconsistent
+either. Two real patterns, not just noise:
+
+- **How AV-core vs. adjacent-field a paper is matters more than its raw
+  citation count.** The two lowest ratios (4.2%, 5.7%) are a T-ITS traffic-
+  engineering paper and a domain-adaptation/segmentation paper -- both cited
+  heavily by fields this corpus's ~20 tracked venues barely touch (general
+  traffic engineering, general semantic segmentation). The KITTI papers
+  themselves score surprisingly low (8.8%, 9.5%) for the same reason despite
+  being foundational AV datasets: an enormous share of their real citers are
+  generic computer-vision/robotics papers with nothing to do with
+  autonomous driving specifically, sitting outside this corpus's scope by
+  construction, not by a gap in coverage.
+- **No strong bias by citation-count tier itself** -- a highly-cited paper
+  (nuScenes, 22.8%) and a modestly-cited one (IntentNet, 21.6%) can land at
+  nearly the same ratio; the venue/topic-fit pattern above dominates over
+  sheer popularity.
+
+Not a reason to change how citations are computed or labeled -- the "Cited
+by (all papers)"/"Cited by (AV papers)" pair on paper.html already states
+plainly that both numbers are corpus-internal, never an external database
+(see the entry below). This is a sanity check on that existing honesty, not
+a finding that anything needs fixing: a reader who wants a truer
+"how-cited-is-this-in-the-world" number already has an explicit, correct
+signal (the tooltip) that this isn't it.
