@@ -453,3 +453,51 @@ these all feed or evaluate the relevance classifier and need an unbiased
 random draw, not a priority order; citation-sorting them would systematically
 skew training/eval data toward older, more established, already-popular
 papers.
+
+## A raw DBLP-suffixed author name in papers_full.json is not a live bug
+
+Investigating the top of the most-cited-authors list surfaced names like
+"Andreas Geiger 0001" in `papers_full.json`'s raw `authors` field (a
+DBLP-assigned disambiguation suffix, present on 2,377 distinct base names /
+several thousand raw occurrences across the corpus). Before writing a fix,
+checked the actual output this feeds: `aggregate.py`'s `clean_author_name()`
+already strips a trailing `\s+\d{4}` unconditionally (`DBLP_DISAMBIG_SUFFIX_
+RE`), confirmed on `stats.json` -- "Andreas Geiger 0001" appears nowhere in
+`all_papers[].authors`, and the real "Andreas Geiger" entry already carries
+the correct, unified 7,098-citation/56-paper total. No fragmentation reaches
+the live site. Recorded here specifically so this doesn't get "fixed" again
+from the same starting point -- this is the second time this session a raw-
+`papers_full.json` diagnostic almost drove a change that the processed
+output already handled (see the institution-alias audit above); the lesson
+holds: check `stats.json`/`stats_detail.json` (what the site actually reads)
+before treating a `papers_full.json` string as evidence of a live bug.
+
+## `flag_ambiguous_authors.py`'s heuristics false-positive on prolific lab researchers
+
+Checked its 4 unconfirmed "review"-tier candidates from the current top-60-
+by-citations against Google Scholar directly (Hongyang Li, Long Chen, Hang
+Zhao, Zheng Zhu) rather than leaving them in the queue. All four are real,
+single, extremely prolific researchers in the fast-moving, highly
+collaborative modern AV/world-model research community (OpenDriveLab/
+Shanghai AI Lab-adjacent): Hang Zhao's papers consistently share one email
+(hangzhao@mail.tsinghua.edu.cn); Hongyang Li and Long Chen recur as each
+other's co-authors across a large, coherent, recent (2023-2026) end-to-end-
+driving publication cluster; Zheng Zhu's papers form one coherent "driving
+world models" research thread. None marked ambiguous in
+`scholar_profiles.json` -- doing so would incorrectly warn on a real
+researcher's legitimate, unified profile.
+
+This is a real, generalizable false-positive mode worth naming: the script's
+structural signals (disjoint co-author clusters, papers/active-year,
+category spread -- see its own docstring) were tuned against the classic
+failure case (a common name silently blending 2-3 unrelated academics), not
+against a newer pattern this corpus's most recent years are full of: one
+person embedded in a large, fast-publishing lab, co-authoring across many
+loosely-connected sub-teams and projects, which structurally looks exactly
+like "several disjoint collaboration circles" even though it's one person.
+A common surname plus high recent output should be weighed as a real prior
+on "prolific lab researcher," not just "possible collision," when the
+corpus's own co-author graph forms one connected, thematically coherent
+recent cluster this consistently. Not changed here (needs care to avoid
+under-flagging the opposite, real case); worth revisiting the scoring
+itself if this pattern keeps showing up at the top of future review runs.
