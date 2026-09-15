@@ -501,3 +501,45 @@ corpus's own co-author graph forms one connected, thematically coherent
 recent cluster this consistently. Not changed here (needs care to avoid
 under-flagging the opposite, real case); worth revisiting the scoring
 itself if this pattern keeps showing up at the top of future review runs.
+
+## Whole-corpus citations: the feature already existed, only the data didn't
+
+User-requested: integrate "citations from the whole corpus, not just AV
+papers" and make sure every place showing a citation number says clearly
+which one it is. Before building anything, checked what already exists --
+`paper.html` already shows exactly this, in two adjacent stat tiles: "Cited
+by (all papers)" (`paper.citations`, i.e. `citations_by_source.in_corpus.
+count`) and "Cited by (AV papers)" (`paper.citing_papers.length`, the
+subset of those citers that are themselves AV papers), each with its own
+explanatory tooltip. `apply_citation_sources.py`'s `in_corpus_counts()`
+already counts every edge in `citation_graph.json` unconditionally, with no
+AV filter -- confirmed on real data before touching anything: nuScenes
+already showed 2,742 "all papers" vs 1,938 "AV papers", a real, live gap
+this design was already built to represent.
+
+What was actually missing was upstream of all that: `build_citation_graph.py`
+only ever scanned `av_relevance=="AV"` papers' own reference lists (both its
+own CVF-PDF fetch and `fetch_affiliations_arxiv.py`'s ar5iv-HTML side
+channel), so `citation_graph.json`'s edges could only ever contain AV
+citers -- "all papers" was structurally capped at "the AV slice" no matter
+how the counting code was written. Fixed at the actual source: `main()`
+now builds its CVF title pool from the whole corpus (34,352 more papers,
+prioritized most-cited-first same as everywhere else -- see fetch_common.
+by_citations), not just the AV subset. `citations_by_source.in_corpus` and
+`citing_papers`/`paper.citations` keep their exact existing meaning and
+code, unchanged -- they just get fed a more complete graph as this crawl
+(now running) works through the backlog over the coming days.
+
+A parallel `in_corpus_all`/`citations_all` field was drafted and then
+reverted before shipping, once this was understood -- it would have
+duplicated the existing `in_corpus`/`citing_papers` pair under new names
+AND (worse) changed `in_corpus`'s own counting to exclude non-AV citers,
+which is backwards from what "Cited by (all papers)" has always meant.
+Recorded here so the same duplicate isn't built again from the same
+starting confusion. The arXiv/ar5iv side (`fetch_affiliations_arxiv.py`,
+~55,534 more non-AV papers with a known arxiv_url) is NOT yet widened the
+same way -- its reference extraction is a side effect of its own
+expensive per-paper LLM affiliation-extraction work, which non-AV papers
+don't need at all, so widening it naively would waste that LLM cost on
+~55k papers for a reference list alone. Left as a follow-up needing its
+own leaner reference-only path, not done here.

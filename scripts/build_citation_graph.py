@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Builds an in-corpus citation graph -- "how much do AV papers in this corpus
-cite each other", a signal OpenAlex/Semantic Scholar can't give us -- from
-two raw-reference sources:
+Builds an in-corpus citation graph -- "who cites whom within this corpus",
+a signal OpenAlex/Semantic Scholar can't give us -- from two raw-reference
+sources:
 
-  1. This script fetches PDFs for av_relevance=="AV" papers hosted on CVF
-     (CVPR/ICCV/WACV -- predictable URL, no rate limit), extracts just the
-     references section (pdfplumber, stopping once past it, never touching
-     figures), and splits it into raw entries.
+  1. This script fetches PDFs for every paper hosted on CVF (CVPR/ICCV/WACV
+     -- predictable URL, no rate limit; not just av_relevance=="AV" papers,
+     see main()'s own comment), extracts just the references section
+     (pdfplumber, stopping once past it, never touching figures), and
+     splits it into raw entries.
   2. fetch_affiliations_arxiv.py separately fetches ar5iv's full-text HTML
      for author affiliations -- since that page is already downloaded, it
      extracts ar5iv's cleanly-structured bibliography (one <li class=
@@ -238,7 +239,7 @@ def save_json(path, data):
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
 
 
-def fetch_phase(av_cvf_titles, pdf_url_index):
+def fetch_phase(cvf_titles, pdf_url_index):
     refs = load_refs_cvf()
     succeeded = set(refs["succeeded"])
     # Most-cited-first, not corpus order (which clusters by venue/year) --
@@ -247,13 +248,13 @@ def fetch_phase(av_cvf_titles, pdf_url_index):
     # paper's own self-citation/CD-index numbers and its detail page),
     # not whichever ones happen to sort first (user-requested, applied to
     # every incremental crawler in this pipeline, not just this one; see
-    # fetch_common.by_citations). av_cvf_titles already carries this order
+    # fetch_common.by_citations). cvf_titles already carries this order
     # from main() below -- filtered here, not re-sorted, since it's a list
     # of title keys with no citation count left to sort by.
-    pending = [k for k in av_cvf_titles if k in pdf_url_index and k not in succeeded]
+    pending = [k for k in cvf_titles if k in pdf_url_index and k not in succeeded]
     n_retrying = sum(1 for k in pending if k in refs["failed"])
-    print(f"{len(pending)} AV CVF papers left to fetch (of {len(av_cvf_titles)} AV CVF total), "
-          f"including {n_retrying} retrying a previous failure", flush=True)
+    print(f"{len(pending)} CVF papers left to fetch (of {len(cvf_titles)} CVF total, "
+          f"AV and non-AV), including {n_retrying} retrying a previous failure", flush=True)
 
     processed = 0
     consecutive_failures = 0
@@ -350,16 +351,24 @@ def match_phase(word_index):
 
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    av_cvf_titles = [
+    # Whole corpus, not just av_relevance=="AV" -- user-requested: a paper's
+    # citation count should reflect who cites it anywhere in this corpus,
+    # not just its AV-relevant slice (see aggregate.py's citations_by_
+    # source.in_corpus_all and DECISIONS.md's "Whole-corpus citations" entry
+    # for the two-metric design this feeds). Most-cited-first still applies
+    # (see fetch_common.by_citations) -- for a non-AV paper this naturally
+    # prioritizes ones already known to be cited by AV papers (foundational
+    # CV/robotics work our own corpus already points at) over an arbitrary
+    # non-AV paper nothing here has any reason to care about yet.
+    cvf_titles = [
         normalize_title(p["title"]) for p in by_citations(
-            p for p in papers
-            if p.get("av_relevance") == "AV" and (p.get("venue") or "") in CVF_VENUES
+            p for p in papers if (p.get("venue") or "") in CVF_VENUES
         )
     ]
     pdf_url_index = build_cvf_pdf_url_index()
     word_index = build_corpus_match_index(papers)
 
-    fetch_phase(av_cvf_titles, pdf_url_index)
+    fetch_phase(cvf_titles, pdf_url_index)
     match_phase(word_index)
 
 
