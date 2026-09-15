@@ -543,3 +543,24 @@ expensive per-paper LLM affiliation-extraction work, which non-AV papers
 don't need at all, so widening it naively would waste that LLM cost on
 ~55k papers for a reference list alone. Left as a follow-up needing its
 own leaner reference-only path, not done here.
+
+## Manually-sourced abstracts for the top-cited gap
+
+User-requested: look up missing information for the most-cited papers
+specifically. Took the highest-in-corpus-citation AV papers still missing
+an abstract (topped by KITTI's two seed papers, 1,901 and 1,336 citations)
+and checked each one by hand against its own publisher page (IEEE Xplore,
+ACM DL, CMU RI publications) via a real browser session, not a script --
+every one of these had already been queried by `fetch_abstracts_
+semanticscholar.py`'s own API call and come back with no abstract on file
+there either, so this wasn't a case of "the crawler hasn't reached it yet."
+13 verbatim abstracts recovered this way and applied directly to
+`papers_full.json`, stamped `abstract_source: "manual-publisher-page"` so
+this batch's provenance stays distinguishable from every automated source.
+
+Confirms the same finding as the IEEE Xplore entry above (a real browser
+renders the abstract even though scripted access gets `418`'d) applied at
+small, human-in-the-loop scale rather than automated: this is a one-time,
+bounded (13-paper) patch, not a crawler, and won't be repeated as one --
+see that entry for why turning this into an automated scraper stays off
+the table regardless of how well it would work technically.
