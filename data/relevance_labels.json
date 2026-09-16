@@ -759,5 +759,103 @@
     "label": "non-AV",
     "source": "relevance_audit_2026_09",
     "hard": true
+  },
+  {
+    "id": "allroadsleadtoromeincentivizingdivergentthinkinginvisionlanguagemodels",
+    "title": "All Roads Lead to Rome: Incentivizing Divergent Thinking in Vision-Language Models",
+    "label": "non-AV",
+    "source": "near_threshold_2026_09",
+    "category": "llm-vlm-driving"
+  },
+  {
+    "id": "analyzingandmodelingdifferentpatternsofvehiclescutinbehaviorinplatoons",
+    "title": "Analyzing and Modeling Different Patterns of Vehicle's Cut-In Behavior in Platoons",
+    "label": "non-AV",
+    "source": "near_threshold_2026_09",
+    "category": "platooning-cruise-control"
+  },
+  {
+    "id": "drlbasedresourceorchestrationforvehicularedgecomputingwithmultiedgeandmultivehicleassistance",
+    "title": "DRL-Based Resource Orchestration for Vehicular Edge Computing With Multi-Edge and Multi-Vehicle Assistance",
+    "label": "non-AV",
+    "source": "near_threshold_2026_09",
+    "category": "v2x-cooperative"
+  },
+  {
+    "id": "hallucinationeliminationandtextannotationframeworkforlargevisionlanguagemodelsintrafficscenarios",
+    "title": "Hallucination Elimination and Text Annotation Framework for Large Vision-Language Models in Traffic Scenarios",
+    "label": "AV",
+    "source": "near_threshold_2026_09",
+    "category": "llm-vlm-driving"
+  },
+  {
+    "id": "improvingthecommunicationoverheadinvehiclesplatoonanoveldynamiceventtriggeredpredictormethod",
+    "title": "Improving the Communication Overhead in Vehicles Platoon: A Novel Dynamic Event-Triggered Predictor Method",
+    "label": "non-AV",
+    "source": "near_threshold_2026_09",
+    "category": "platooning-cruise-control"
+  },
+  {
+    "id": "multifactorroadsideunitdeploymentoptimizationconsideringtrafficsafetyrisks",
+    "title": "Multi-Factor Roadside Unit Deployment Optimization Considering Traffic Safety Risks",
+    "label": "non-AV",
+    "source": "near_threshold_2026_09",
+    "category": "v2x-cooperative"
+  },
+  {
+    "id": "multivehiclecooperativemotionplanningbasedonadmmwithparallelcomputingandconvexifyingguidance",
+    "title": "Multi-Vehicle Cooperative Motion Planning Based on ADMM With Parallel Computing and Convexifying Guidance",
+    "label": "AV",
+    "source": "near_threshold_2026_09",
+    "category": "end-to-end-driving"
+  },
+  {
+    "id": "oalightoverflowawareadaptivetrafficsignalcontrolviastatewisereinforcementlearning",
+    "title": "OAlight: Overflow-Aware Adaptive Traffic Signal Control via State-Wise Reinforcement Learning",
+    "label": "non-AV",
+    "source": "near_threshold_2026_09",
+    "category": "traffic-flow-management"
+  },
+  {
+    "id": "offroadnavigationviaimplicitneuralrepresentationofterraintraversability",
+    "title": "Off-Road Navigation via Implicit Neural Representation of Terrain Traversability",
+    "label": "AV",
+    "source": "near_threshold_2026_09",
+    "category": "end-to-end-driving"
+  },
+  {
+    "id": "pedanalyzepedestrianbehaviorannotatorandontology",
+    "title": "PedAnalyze - Pedestrian Behavior Annotator and Ontology",
+    "label": "AV",
+    "source": "near_threshold_2026_09",
+    "category": "driver-behavior-hmi"
+  },
+  {
+    "id": "physicallyanalyzableaibasednonlinearplatoondynamicsmodelingduringtrafficoscillationakoopmanapproach",
+    "title": "Physically Analyzable AI-Based Nonlinear Platoon Dynamics Modeling During Traffic Oscillation: A Koopman Approach",
+    "label": "non-AV",
+    "source": "near_threshold_2026_09",
+    "category": "platooning-cruise-control"
+  },
+  {
+    "id": "scalablemultiobjectiveoptimizationforrobusttrafficsignalcontrolinuncertainenvironmentsbasedonhierarchicalreinforcementlearning",
+    "title": "Scalable Multi-Objective Optimization for Robust Traffic Signal Control in Uncertain Environments Based on Hierarchical Reinforcement Learning",
+    "label": "non-AV",
+    "source": "near_threshold_2026_09",
+    "category": "traffic-flow-management"
+  },
+  {
+    "id": "sociallycomplianthierarchicalhumanvehiclecollaborationwithmultimodalhapticsteering",
+    "title": "Socially-Compliant Hierarchical Human-Vehicle Collaboration With Multimodal Haptic Steering",
+    "label": "non-AV",
+    "source": "near_threshold_2026_09",
+    "category": "driver-behavior-hmi"
+  },
+  {
+    "id": "towardoptimalmultivehiclepathplanningwithhybridroadmaps",
+    "title": "Toward Optimal Multi-Vehicle Path Planning With Hybrid Roadmaps",
+    "label": "AV",
+    "source": "near_threshold_2026_09",
+    "category": "end-to-end-driving"
   }
 ]
