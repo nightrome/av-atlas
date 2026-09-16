@@ -22,6 +22,7 @@ import json
 import time
 import urllib.error
 import urllib.request
+from functools import lru_cache
 
 from fetch_common import BASE, HEADERS
 
@@ -33,14 +34,17 @@ REQUEST_DELAY = 1.1
 CHUNK_SIZE = 1000  # /author/batch's own documented max
 
 
+@lru_cache(maxsize=None)
 def load_api_key():
+    # Lazy + memoized, not a module-level call -- importing this module
+    # (e.g. from a future test file, same class of bug fixed in
+    # fetch_s2_author_ids.py) must not require .env to exist.
+    if not ENV_FILE.exists():
+        raise SystemExit(f"Missing {ENV_FILE} -- add a line SEMANTIC_SCHOLAR_API_KEY=... (never commit this file)")
     for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
         if line.startswith("SEMANTIC_SCHOLAR_API_KEY="):
             return line.split("=", 1)[1].strip()
     raise SystemExit(f"SEMANTIC_SCHOLAR_API_KEY not found in {ENV_FILE}")
-
-
-API_KEY = load_api_key()
 
 
 def s2_post(path, params, body):
@@ -48,7 +52,7 @@ def s2_post(path, params, body):
     url = f"{API_BASE}{path}?{urlencode(params)}"
     req = urllib.request.Request(
         url, data=json.dumps(body).encode("utf-8"),
-        headers={**HEADERS, "x-api-key": API_KEY, "Content-Type": "application/json"}, method="POST",
+        headers={**HEADERS, "x-api-key": load_api_key(), "Content-Type": "application/json"}, method="POST",
     )
     delay = REQUEST_DELAY
     for attempt in range(4):

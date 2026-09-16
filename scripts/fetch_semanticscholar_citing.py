@@ -45,6 +45,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from functools import lru_cache
 
 from fetch_common import BASE, HEADERS, by_citations
 
@@ -58,16 +59,17 @@ MAX_PAGES_PER_SEED = 3  # 1000 citations/page -- bounds a mega-cited seed (nuSce
 PAGE_SIZE = 1000
 
 
+@lru_cache(maxsize=None)
 def load_api_key():
+    # Lazy + memoized, not a module-level call -- importing this module
+    # (e.g. from a future test file, same class of bug fixed in
+    # fetch_s2_author_ids.py) must not require .env to exist.
     if not ENV_FILE.exists():
         raise SystemExit(f"Missing {ENV_FILE} -- add a line SEMANTIC_SCHOLAR_API_KEY=... (never commit this file)")
     for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
         if line.startswith("SEMANTIC_SCHOLAR_API_KEY="):
             return line.split("=", 1)[1].strip()
     raise SystemExit(f"SEMANTIC_SCHOLAR_API_KEY not found in {ENV_FILE}")
-
-
-API_KEY = load_api_key()
 
 
 def normalize_title(t):
@@ -101,7 +103,7 @@ def top_seed_titles(n):
 
 def s2_get(path, params):
     url = f"{API_BASE}{path}?{urllib.parse.urlencode(params)}"
-    req = urllib.request.Request(url, headers={**HEADERS, "x-api-key": API_KEY})
+    req = urllib.request.Request(url, headers={**HEADERS, "x-api-key": load_api_key()})
     delay = REQUEST_DELAY
     for attempt in range(4):
         try:

@@ -38,6 +38,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from functools import lru_cache
 
 from fetch_common import BASE, HEADERS, by_citations
 
@@ -51,14 +52,21 @@ BATCH_SIZE = 20
 MAX_CONSECUTIVE_FAILURES = 20
 
 
+@lru_cache(maxsize=None)
 def load_api_key():
+    # Lazy + memoized, not a module-level call -- this module is imported by
+    # its own test suite (test_fetch_s2_author_ids.py), which mocks s2_get
+    # and never needs a real key. Reading .env at import time made the mere
+    # act of importing this module fail outright wherever .env doesn't
+    # exist (correctly, by design, everywhere except a maintainer's own
+    # checkout) -- CI included, where it broke `python -m unittest discover`
+    # for the whole test run, not just this module's own tests.
+    if not ENV_FILE.exists():
+        raise SystemExit(f"Missing {ENV_FILE} -- add a line SEMANTIC_SCHOLAR_API_KEY=... (never commit this file)")
     for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
         if line.startswith("SEMANTIC_SCHOLAR_API_KEY="):
             return line.split("=", 1)[1].strip()
     raise SystemExit(f"SEMANTIC_SCHOLAR_API_KEY not found in {ENV_FILE}")
-
-
-API_KEY = load_api_key()
 
 
 def normalize_title(t):
@@ -71,7 +79,7 @@ def normalize_name(n):
 
 def s2_get(path, params):
     url = f"{API_BASE}{path}?{urllib.parse.urlencode(params)}"
-    req = urllib.request.Request(url, headers={**HEADERS, "x-api-key": API_KEY})
+    req = urllib.request.Request(url, headers={**HEADERS, "x-api-key": load_api_key()})
     delay = REQUEST_DELAY
     for attempt in range(4):
         try:
