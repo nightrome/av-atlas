@@ -342,7 +342,7 @@ taxonomy that produced it.
 
 ## Derived data is not tracked; `gh-pages` is a single squashed commit
 
-`data/stats.json`, `data/stats_non_av.json`, and the abstract shards are
+`data/stats.json`, the sharded `data/non_av_papers/`, and the abstract shards are
 gitignored — cheaply regenerable from `data/papers_full.json` by `aggregate.py`
 alone (well under a minute), and tracking a leaderboard dump bloats every diff
 with numbers that change on every corpus update and aren't reviewable anyway.
@@ -678,3 +678,60 @@ A deliberate backfill pass (temporarily ignoring `succeeded` to force a
 re-download) would be needed to close that gap -- not done here since nothing
 required it (their extracted references are already saved and correct; only
 the raw-PDF archive itself would be incomplete for that subset).
+
+## `stats_non_av.json` sharded into `data/non_av_papers/`, same scheme as abstracts
+
+The single-file non-AV dataset had grown to 81.5MB -- past GitHub's 50MB
+recommended single-file size (flagged on every gh-pages push: "File
+stats_non_av.json is 77.76 MB... GH001: Large files detected"), a real
+concern raised while assessing whether the site was ready to go public and
+attract real traffic. It also had a second, more direct cost:
+`paper.html`'s fallback lookup (a paper not found in the AV-relevant set is
+also checked against the non-AV set, since a paper can legitimately be
+part of the corpus without being AV-relevant -- e.g. reached only via the
+citation graph) downloaded and parsed the ENTIRE 81.5MB file just to find
+one paper by title.
+
+Fixed the same way `ABSTRACTS_DIR` already solved an identical problem for
+abstract text: sharded into `data/non_av_papers/shard-NN.json` (64 shards,
+same title-hash `shard_index()`/`ABSTRACT_SHARD_COUNT` already used for
+abstracts, reused rather than duplicated) instead of one growing file.
+Largest shard measured 1.32MB -- comfortably under any size limit, with
+room to grow for years before revisiting. `paper.html`'s single-title
+lookup now fetches exactly one shard instead of the whole set. The two
+consumers that genuinely need the WHOLE non-AV set --
+`filters.js`'s `fetchStatsWithRelevance` (the "Show: include non-AV
+papers" dropdown on every listing page) and `author.html`'s per-author
+non-AV paper list -- fetch and concatenate all 64 shards via a new shared
+`window.fetchAllNonAvPapers()` helper in filters.js, rather than each
+re-implementing the same shard-loop. Same total bytes over the wire as
+before for those two cases; only the paper.html fallback lookup actually
+gets less data, but all three consumers stop tripping GitHub's single-file
+warning.
+
+`build_public_site.py` copies the shard directory the same
+file-by-file way it already copies `abstracts/` (never `shutil.rmtree`, a
+real OneDrive directory-lock `PermissionError` this repo hit in practice --
+see the abstracts entry). The old single `stats_non_av.json` in `public/`
+is cleaned up automatically by the existing "remove anything not in the
+current expected set" stale-file sweep, the same mechanism that already
+caught a stray `label_relevance.html` once -- no special-case deletion
+needed, just removing the old filename from that expected set.
+
+Investigated but declined: converting `fetch_cvf_affiliations.py`'s
+page-1-only pdfplumber extraction to PyMuPDF (the same swap that gave
+`build_citation_graph.py` a 20x win -- see that entry above). Declined
+because the two cases aren't actually alike: that win came from eliminating
+an early-stop bug that made pdfplumber scan every page instead of one, not
+from pdfplumber being slow at a single page. This script already only
+touches page 1, and it hand-tunes a pdfplumber-specific parameter
+(`x_tolerance=1`) that was confirmed against real CVF PDFs to stop
+two-column author/affiliation blocks from losing word spacing entirely
+("University of California at Merced" -> "UniversityofCaliforniaatMerced").
+PyMuPDF's text extraction has no equivalent knob, so swapping backends here
+risks silently reintroducing exactly that bug in a feature (institution
+extraction) this site's Institutions/Countries pages depend on for
+correctness, for a per-paper cost (one page, not an early-stop bug) far
+smaller than what made the citation-graph swap worth the risk. Not
+currently even running (last touched a side file three days before this
+check), so there's no active throughput problem to justify it either.

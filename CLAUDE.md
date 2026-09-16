@@ -65,8 +65,8 @@ the fresh merge.
   shared JS/CSS below, `logo.svg`/`og-image.png`, and `site/assets/` (vendored
   institution/venue logos). `build_public_site.py` copies this tree into `public/`
   alongside a fresh `stats.json`; there's no build step for the pages themselves.
-  Each page reads `stats.json` (or `stats_non_av.json` for the "include
-  non-AV papers" view) at runtime.
+  Each page reads `stats.json` (or the sharded `non_av_papers/shard-NN.json`
+  files for the "include non-AV papers" view) at runtime.
 - `site/nav.js` -- shared top nav bar, injected into every page via `<nav id="topnav">`.
 - `site/filters.js` -- shared filter-bar component (`renderFilterBar`) used across the
   listing pages.
@@ -83,13 +83,16 @@ the fresh merge.
 - `scripts/` -- the whole data pipeline (see README.md) plus `build_public_site.py` and
   `deploy.py`.
 - `data/` -- the crawled/derived corpus. The large derived files (`papers_full.json`,
-  `stats.json`, `stats_non_av.json`, `abstracts/shard-NN.json`, citation-graph side
-  files, reference-list dumps) are gitignored -- regenerable from the smaller tracked
-  source files (`data/venues/*.json`, `scholar_profiles.json`, `orcids.json`, ...), not
-  worth the repo bloat or unreviewable diffs. `data/abstracts/` is sharded out of
-  `stats.json` (see DECISIONS.md's "Abstracts sharded out of stats.json" entry) --
-  `paper.html` is the only page that fetches one, computing which shard from the
-  paper's title via the same hash `aggregate.py`'s `shard_index()` uses.
+  `stats.json`, `non_av_papers/shard-NN.json`, `abstracts/shard-NN.json`,
+  citation-graph side files, reference-list dumps) are gitignored -- regenerable
+  from the smaller tracked source files (`data/venues/*.json`, `scholar_profiles.json`,
+  `orcids.json`, ...), not worth the repo bloat or unreviewable diffs. `data/abstracts/`
+  and `data/non_av_papers/` are both sharded out of `stats.json`-adjacent output the
+  same way (see DECISIONS.md's "Abstracts sharded out of stats.json" entry) --
+  `paper.html` fetches a single shard for a one-paper lookup (computing which one
+  from the paper's title via the same hash `aggregate.py`'s `shard_index()` uses),
+  while `filters.js`/`author.html` fetch and concatenate every `non_av_papers/`
+  shard when they need the whole non-AV set.
 - `tests/` -- pure-JS logic tests (`*.test.js`, plain Node) plus a smoke test
   (`qa_smoke_test.js`) and a structural UI regression test (`ui_regression_test.js`),
   both run via `dom_stub.js` against real page scripts and real data.

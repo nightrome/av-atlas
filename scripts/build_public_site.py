@@ -17,7 +17,7 @@ Runs, in order, and aborts (non-zero exit) if any step fails:
      corpus: all three patch papers_full.json directly, which step 1
      rebuilds from data/venues/*.json alone and would otherwise silently
      drop them.
-  3. aggregate.py -- rebuilds data/stats.json + data/stats_non_av.json.
+  3. aggregate.py -- rebuilds data/stats.json + the sharded data/non_av_papers/.
   4. run_tests.py -- the full test suite (Python + JS + smoke + regression).
   5. build_public_site() below -- publishes the built HTML/stats.
 
@@ -206,17 +206,21 @@ def build_public_site():
         abstracts_dst.mkdir(parents=True, exist_ok=True)
         for shard_path in abstracts_src.glob("*.json"):
             shutil.copy2(shard_path, abstracts_dst / shard_path.name)
-    # Lazily fetched by index.html only when its AV-relevance filter is
-    # switched away from the default -- not every deploy necessarily has
-    # one yet (aggregate.py writes it, but an older stats.json could still
-    # be lying around from before that existed), so this copy is optional,
-    # unlike stats.json itself above.
-    non_av_path = BASE / "data" / "stats_non_av.json"
-    if non_av_path.exists():
-        shutil.copy2(non_av_path, page_dir / "stats_non_av.json")
+    # Sharded non-AV papers (see aggregate.py's NON_AV_DIR comment) -- same
+    # fixed-shard-set copy pattern as abstracts_src/abstracts_dst above,
+    # for the same OneDrive-rmtree reason. Lazily fetched by index.html and
+    # friends only when the AV-relevance filter is switched away from the
+    # default, so (like abstracts) this copy is optional -- not every
+    # deploy necessarily has one yet.
+    non_av_src = BASE / "data" / "non_av_papers"
+    non_av_dst = page_dir / "non_av_papers"
+    if non_av_src.exists():
+        non_av_dst.mkdir(parents=True, exist_ok=True)
+        for shard_path in non_av_src.glob("*.json"):
+            shutil.copy2(shard_path, non_av_dst / shard_path.name)
     # Lazily fetched by author.html/authors.html/countries.html/institution.html/
     # paper.html only -- see aggregate.py's DETAIL_OUT_FILE comment. Same
-    # optional-copy reasoning as stats_non_av.json above.
+    # optional-copy reasoning as non_av_papers/ above.
     detail_path = BASE / "data" / "stats_detail.json"
     if detail_path.exists():
         shutil.copy2(detail_path, page_dir / "stats_detail.json")
@@ -255,7 +259,7 @@ def build_public_site():
     # part of the current expected output. Caught in practice: label_relevance.html
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
-        | {"stats.json", "stats_non_av.json", "stats_detail.json", "theme.css", "theme-light.css",
+        | {"stats.json", "stats_detail.json", "theme.css", "theme-light.css",
            "logo.svg", "og-image.png", "sitemap.xml", "robots.txt"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
@@ -274,6 +278,8 @@ def build_public_site():
     print(f"  stats.json")
     if abstracts_dst.exists():
         print(f"  abstracts/ ({len(list(abstracts_dst.iterdir()))} shards)")
+    if non_av_dst.exists():
+        print(f"  non_av_papers/ ({len(list(non_av_dst.iterdir()))} shards)")
     print(f"  robots.txt (allow all)")
 
 

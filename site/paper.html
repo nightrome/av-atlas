@@ -240,8 +240,12 @@ fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(fetchStat
   // indistinguishable from a genuine typo or a paper this site has never
   // seen at all).
   document.getElementById('venue-meta').textContent = 'Looking for this paper among non-AV papers…';
-  fetch('stats_non_av.json').then(r => r.json()).then(nonAv => {
-    const adjPaper = (nonAv || []).find(p => p.title === title);
+  // Sharded the same way as abstracts/ (see loadAbstract above) -- this is
+  // a single-title lookup, so fetch only the one non_av_papers/ shard that
+  // could possibly contain it instead of the whole (80MB+) non-AV set.
+  const nonAvShard = String(shardIndex(title)).padStart(2, '0');
+  fetch(`non_av_papers/shard-${nonAvShard}.json`).then(r => r.json()).then(nonAvShardData => {
+    const adjPaper = (nonAvShardData || []).find(p => p.title === title);
     if (!adjPaper) { notFound(); return; }
     adjPaper.citations = ((adjPaper.citations_by_source || {}).in_corpus || {}).count || 0;
     renderPaper(stats, adjPaper, true);

@@ -40,21 +40,35 @@ BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
 OUT_FILE = BASE / "data" / "stats.json"
 # Separate from stats.json (not a field inside it) because of scale: ~212k
-# non-AV (not AV) papers at even a slimmed-down ~160
-# bytes/record is ~34MB, versus stats.json's own size for the ~17k AV
-# papers everything else on the site is built from. Bundling that into the
-# page every reader loads by default would make every page slower for a
-# feature only some readers want (user-requested "list the non-AV
-# papers"). Fetched lazily by index.html only when its AV-relevance filter
-# is switched away from the "AV relevant" default.
-NON_AV_OUT_FILE = BASE / "data" / "stats_non_av.json"
+# non-AV (not AV) papers, now over 80MB as a single file -- versus stats.json's
+# own size for the ~26k AV papers everything else on the site is built from.
+# Bundling that into the page every reader loads by default would make every
+# page slower for a feature only some readers want (user-requested "list the
+# non-AV papers"). Fetched lazily by index.html only when its AV-relevance
+# filter is switched away from the "AV relevant" default.
+#
+# Sharded into ABSTRACT_SHARD_COUNT files by the same title-hash scheme as
+# ABSTRACTS_DIR below, rather than one growing single-file blob -- two
+# distinct problems that scheme fixes for both datasets: (1) it had grown
+# past GitHub's 50MB recommended single-file size (flagged on every gh-pages
+# push: "File stats_non_av.json is 77.76 MB"), and, more directly useful,
+# (2) paper.html's non-AV fallback lookup (see below) needs exactly one
+# paper by title and, unsharded, had to download and parse the entire file
+# to find it -- the same "pay for the whole haystack to get one needle"
+# problem ABSTRACTS_DIR already solved for abstracts, so this reuses that
+# exact mechanism (same shard_index(), same shard count) rather than
+# inventing a second one. The two pages that DO need the whole set
+# (filters.js's fetchStatsWithRelevance, author.html's non-AV papers-by-
+# author lookup) fetch and concatenate all shards -- same total bytes as
+# before, just split into parallel-fetchable, size-capped pieces.
+NON_AV_DIR = BASE / "data" / "non_av_papers"
 # author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors
 # together are ~14MB (~32%) of stats.json (raw) but are only read by
 # author.html, authors.html, countries.html, institution.html and
 # paper.html -- every OTHER listing page (index, venues, network,
 # categories, insights, compare) downloaded and JSON.parse'd all of it on
 # every load without ever touching it (confirmed: grepped for each field
-# across every page). Same reasoning as ABSTRACTS_DIR/NON_AV_OUT_FILE
+# across every page). Same reasoning as ABSTRACTS_DIR/NON_AV_DIR
 # above, just for these four fields together rather than one each --
 # they're needed by an overlapping set of pages, so one extra fetch
 # reaches all four instead of a page needing several needing to make
@@ -3463,22 +3477,19 @@ def main():
 
     # Not-AV-relevant paper count per author (user-requested, shown on
     # author.html and the Authors table) -- has to be computed here, not
-    # derived client-side, because stats_non_av.json deliberately carries
-    # no author field at all (it's ~212k records; adding one would meaningfully
-    # grow an already-58MB file for a client-side page that would then have
-    # to fetch and scan all of it just to count matches for one name). A
-    # plain {name: count} map is a few hundred KB at most and answers the
-    # same question far cheaper. Adjacent entries still have their raw
-    # "authors" string (this is server-side, reading the full corpus, not
-    # the slimmed client file), so no separate enrichment pass is needed.
+    # derived client-side, because the non-AV set (~212k records, sharded
+    # across NON_AV_DIR -- see that comment) has no per-author index: a
+    # client-side page would have to fetch and scan every shard just to
+    # count matches for one name. A plain {name: count} map is a few
+    # hundred KB at most and answers the same question far cheaper.
     adjacent_entries = [e for e in all_entries
                          if e.get("av_relevance") == "non-AV" and is_fully_processed(e)]
     non_av_paper_counts = defaultdict(int)
     # Same reasoning, same shape, for citations rather than paper count --
     # author.html's stat tiles pair "AV citations" with "Non-AV citations"
     # (user-requested), and that pairing needs both numbers available
-    # synchronously on page load, not behind the lazy stats_non_av.json
-    # fetch the Papers table below only triggers once a reader actually
+    # synchronously on page load, not behind the lazy non_av_papers/ shard
+    # fetches the Papers table below only triggers once a reader actually
     # switches the SHOW filter.
     non_av_paper_citations = defaultdict(int)
     for e in adjacent_entries:
@@ -3666,7 +3677,7 @@ def main():
                                 for cat, vals in sorted(category_stats.items(), key=lambda kv: -kv[1]["citations"])],
         "insights": insights,
     }
-    # No indent -- same reasoning as stats_non_av.json/the abstract shards
+    # No indent -- same reasoning as the non_av_papers/abstract shards
     # just below (indent=2's per-key newline+spacing roughly doubled this
     # file's size at corpus scale, which is what pushed it over GitHub's
     # 100MB file limit and got a gh-pages push rejected outright).
@@ -3719,8 +3730,8 @@ def main():
         shard_path.write_text(json.dumps(shard, ensure_ascii=False), encoding="utf-8", newline="\n")
     print(f"Wrote {ABSTRACTS_DIR}: {n_abstracts} abstracts across {ABSTRACT_SHARD_COUNT} shards")
 
-    # Separate, lazily-fetched file for non-AV (not AV)
-    # papers -- see NON_AV_OUT_FILE's own comment for why this isn't part
+    # Separate, lazily-fetched, sharded set of files for non-AV (not AV)
+    # papers -- see NON_AV_DIR's own comment for why this isn't part
     # of stats.json. No per-paper detail page link (user-requested: no
     # paper.html pages generated for these, "too many"). adjacent_entries
     # itself is computed further up, alongside non_av_paper_counts.
@@ -3749,9 +3760,19 @@ def main():
             "countries": adj_countries,
             "institutions": adj_institutions,
         })
-    NON_AV_OUT_FILE.write_text(json.dumps(non_av_papers, ensure_ascii=False), encoding="utf-8", newline="\n")
-    print(f"Wrote {NON_AV_OUT_FILE}: {len(non_av_papers)} non-AV papers "
-          f"({NON_AV_OUT_FILE.stat().st_size / 1e6:.1f} MB)")
+    # Same fixed-shard-set, always-fully-overwritten reasoning as the
+    # abstract shards above -- no rmtree needed, no stale-shard risk.
+    NON_AV_DIR.mkdir(parents=True, exist_ok=True)
+    non_av_shards = [[] for _ in range(ABSTRACT_SHARD_COUNT)]
+    for p in non_av_papers:
+        non_av_shards[shard_index(p["title"])].append(p)
+    total_bytes = 0
+    for i, shard in enumerate(non_av_shards):
+        shard_path = NON_AV_DIR / f"shard-{i:02d}.json"
+        shard_path.write_text(json.dumps(shard, ensure_ascii=False), encoding="utf-8", newline="\n")
+        total_bytes += shard_path.stat().st_size
+    print(f"Wrote {NON_AV_DIR}: {len(non_av_papers)} non-AV papers across "
+          f"{ABSTRACT_SHARD_COUNT} shards ({total_bytes / 1e6:.1f} MB total)")
 
 
 if __name__ == "__main__":

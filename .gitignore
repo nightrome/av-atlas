@@ -14,14 +14,14 @@ data/papers_full.json
 # always; this only affects what git tracks in the repo, not what deploys.
 data/stats.json
 # Same reasoning as stats.json above -- regenerable, not reviewable as a
-# diff.
-data/stats_non_av.json
+# diff. Sharded into data/non_av_papers/shard-NN.json (regenerate with
+# scripts/aggregate.py) rather than one growing single file, over 80MB and
+# past GitHub's recommended single-file size -- see aggregate.py's
+# NON_AV_DIR comment.
+data/non_av_papers/
 # Sharded abstract text split out of stats.json (regenerate with
 # scripts/aggregate.py) -- same reasoning as stats.json above.
 data/abstracts/
-# Per-author non-AV publication tallies, another ~80MB regenerable dump the
-# Insights page loads lazily -- same reasoning as stats.json above.
-data/stats_non_av.json
 # author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors,
 # split out of stats.json (regenerate with scripts/aggregate.py) since
 # they're ~32% of it by size but only needed by author/authors/countries/
@@ -33,7 +33,7 @@ data/stats_detail.json
 # by deploy.py's `git add -A`. The real copies are data/ (source of truth)
 # and public/ (the built site); nothing should write these at the root.
 /stats.json
-/stats_non_av.json
+/non_av_papers/
 /stats_detail.json
 /abstracts/
 # One-off evaluation artifact from scripts/audit_code_links_llm.py (LLM

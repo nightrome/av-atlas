@@ -558,17 +558,35 @@
     return page + (p.toString() ? '?' + p.toString() : '');
   };
 
-  // Fetches stats.json (always) and stats_non_av.json (only when a page
-  // has actually switched away from the default "AV relevant" view, since
-  // the non-AV set is a large separate file -- see the NON_AV_OUT_FILE comment
-  // in aggregate.py), then swaps stats.all_papers to whichever set the
-  // relevance param asks for. Centralized here so every listing page's
-  // Show dropdown behaves identically instead of each page re-implementing
-  // its own fetch-and-swap (which is how the Papers page's version of this
-  // first shipped, before the dropdown moved into the shared filter bar).
+  // Non-AV papers are sharded into non_av_papers/shard-00.json..shard-63.json
+  // (see aggregate.py's NON_AV_DIR comment) rather than one 80MB+ file --
+  // fixes a real GitHub 50MB-single-file warning and lets paper.html fetch
+  // just one shard for a single-title lookup. A page that needs the WHOLE
+  // non-AV set (this file's fetchStatsWithRelevance, author.html's per-
+  // author lookup) has no single title to hash against, so it fetches
+  // every shard in parallel and flattens them -- same total bytes as the
+  // old single file, just split into size-capped, parallel-fetchable
+  // pieces. Shared here so both call sites -- and any future one -- stay
+  // in sync on the shard count instead of each hardcoding it.
+  const NON_AV_SHARD_COUNT = 64;
+  window.fetchAllNonAvPapers = function () {
+    const shardUrls = Array.from({length: NON_AV_SHARD_COUNT},
+      (_, i) => `non_av_papers/shard-${String(i).padStart(2, '0')}.json`);
+    return Promise.all(shardUrls.map(u => fetch(u).then(r => r.json())))
+      .then(shards => shards.flat());
+  };
+
+  // Fetches stats.json (always) and every non_av_papers/ shard (only when a
+  // page has actually switched away from the default "AV relevant" view,
+  // since the non-AV set is large -- see fetchAllNonAvPapers above), then
+  // swaps stats.all_papers to whichever set the relevance param asks for.
+  // Centralized here so every listing page's Show dropdown behaves
+  // identically instead of each page re-implementing its own fetch-and-swap
+  // (which is how the Papers page's version of this first shipped, before
+  // the dropdown moved into the shared filter bar).
   window.fetchStatsWithRelevance = function (relevance) {
     const statsFetch = fetch('stats.json').then(r => r.json()).then(applyCitationSource);
-    const nonAvFetch = relevance ? fetch('stats_non_av.json').then(r => r.json()) : Promise.resolve(null);
+    const nonAvFetch = relevance ? window.fetchAllNonAvPapers() : Promise.resolve(null);
     return Promise.all([statsFetch, nonAvFetch]).then(([stats, nonAv]) => {
       // The true AV-relevant-only paper list, kept around under its own key
       // regardless of what the "Show" toggle does to stats.all_papers below.
@@ -724,8 +742,8 @@
     // Papers page, above the whole filter bar including SEARCH (user-
     // requested: move it down into the filter bar, below SEARCH, and reuse
     // it on every listing page for a consistent place/behavior). Adjacent
-    // (not AV) papers are shipped as a separate stats_non_av.json
-    // (see aggregate.py's NON_AV_OUT_FILE comment for the size reasoning);
+    // (not AV) papers are shipped as a separate sharded non_av_papers/ set
+    // (see aggregate.py's NON_AV_DIR comment for the size reasoning);
     // fetchStatsWithRelevance below does the actual fetch-and-swap.
     // "Both" (re-added, user-requested) unions the two sets -- category/venue/
     // year counts and chart series computed client-side from the resulting

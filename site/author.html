@@ -430,9 +430,10 @@ function render(stats) {
 
   // Not itself an AV paper/citation figure -- computed server-side
   // (aggregate.py) from the full corpus, not from all_papers (AV-only)
-  // here, since stats_non_av.json deliberately carries no author field to
-  // search client-side (see non_av_paper_counts/non_av_paper_citations'
-  // own comment in aggregate.py).
+  // here, since summing per-author across the whole non-AV set client-side
+  // would mean fetching every non_av_papers/ shard on every author page
+  // load (see non_av_paper_counts/non_av_paper_citations' own comment in
+  // aggregate.py).
   const nonAvCount = (stats.non_av_paper_counts || {})[name] || 0;
   const nonAvCitations = (stats.non_av_paper_citations || {})[name] || 0;
   const nonAvAvg = nonAvCount ? Math.round((nonAvCitations / nonAvCount) * 10) / 10 : null;
@@ -685,16 +686,18 @@ function render(stats) {
   renderCitingAuthors();
 
   // Not-AV-relevant papers aren't in stats.all_papers at all (see
-  // aggregate.py's NON_AV_OUT_FILE comment) -- fetched lazily, only once
+  // aggregate.py's NON_AV_DIR comment) -- fetched lazily, only once
   // the reader actually switches away from the default "AV relevant" view,
   // same reasoning as the shared filter bar's own relevance dropdown
   // (fetchStatsWithRelevance in filters.js). Cached after the first fetch
-  // so switching back and forth doesn't refetch stats_non_av.json (a
-  // large file) every time.
+  // so switching back and forth doesn't refetch every non_av_papers/ shard
+  // (a large set, even split up) every time.
   let adjacentPapersForAuthor = null;
   function fetchNonAvPapersForAuthor() {
     if (adjacentPapersForAuthor) return Promise.resolve(adjacentPapersForAuthor);
-    return fetch('stats_non_av.json').then(r => r.json()).then(all => {
+    // fetchAllNonAvPapers (filters.js) fetches+flattens every sharded
+    // non_av_papers/ file -- see aggregate.py's NON_AV_DIR comment.
+    return window.fetchAllNonAvPapers().then(all => {
       adjacentPapersForAuthor = (all || []).filter(p => (p.authors || []).includes(name));
       return adjacentPapersForAuthor;
     });

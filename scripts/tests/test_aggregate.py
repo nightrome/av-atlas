@@ -1060,27 +1060,33 @@ class TestAggregateEndToEnd(unittest.TestCase):
             graph_file.write_text(json.dumps(citation_graph), encoding="utf-8")
 
         orig_in, orig_out, orig_adjacent, orig_detail, orig_profiles, orig_graph, orig_abstracts = (
-            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_OUT_FILE, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE,
+            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE,
             ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR)
         ag.IN_FILE, ag.OUT_FILE = in_file, out_file
-        # Patched to a tmp path same as OUT_FILE -- without this, every test
-        # run would silently overwrite the real ~34MB data/stats_non_av.json
-        # with whatever tiny fixture the current test happens to pass.
-        ag.NON_AV_OUT_FILE = Path(tmpdir.name) / "stats_non_av.json"
-        # Same reasoning as NON_AV_OUT_FILE -- without this, every test run
+        # Patched to a tmp path -- without this, every test run would
+        # silently rmtree+rewrite the real, sharded data/non_av_papers/.
+        ag.NON_AV_DIR = Path(tmpdir.name) / "non_av_papers"
+        # Same reasoning as NON_AV_DIR -- without this, every test run
         # would overwrite the real data/stats_detail.json.
         ag.DETAIL_OUT_FILE = Path(tmpdir.name) / "stats_detail.json"
         ag.SCHOLAR_PROFILES_FILE = Path(tmpdir.name) / "scholar_profiles.json"  # deliberately absent
         ag.CITATION_GRAPH_FILE = graph_file  # absent unless citation_graph was passed
-        # Same reasoning as NON_AV_OUT_FILE above -- without this, every
+        # Same reasoning as NON_AV_DIR above -- without this, every
         # test run would rmtree+rewrite the real data/abstracts/ directory.
         ag.ABSTRACTS_DIR = Path(tmpdir.name) / "abstracts"
         try:
             ag.main()
-            self.last_adjacent_papers = json.loads(ag.NON_AV_OUT_FILE.read_text(encoding="utf-8"))
+            # Sharded the same way as ABSTRACTS_DIR -- flatten every shard
+            # back into one list so existing assertions (which only care
+            # which papers ended up adjacent, not which shard) don't need
+            # to know sharding exists.
+            self.last_adjacent_papers = [
+                p for shard_path in sorted(ag.NON_AV_DIR.glob("shard-*.json"))
+                for p in json.loads(shard_path.read_text(encoding="utf-8"))
+            ]
             self.last_detail = json.loads(ag.DETAIL_OUT_FILE.read_text(encoding="utf-8"))
         finally:
-            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_OUT_FILE, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, \
+            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, \
                 ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR = (
                 orig_in, orig_out, orig_adjacent, orig_detail, orig_profiles, orig_graph, orig_abstracts)
 
