@@ -7,9 +7,11 @@ sources:
 
   1. This script fetches PDFs for every paper hosted on CVF (CVPR/ICCV/WACV
      -- predictable URL, no rate limit; not just av_relevance=="AV" papers,
-     see main()'s own comment), extracts just the references section
-     (pdfplumber, stopping once past it, never touching figures), and
-     splits it into raw entries.
+     see main()'s own comment), archives the raw PDF to data/pdfs_cvf/ (so
+     it doesn't have to be re-downloaded to be reprocessed for something
+     else later -- gitignored, this is a local cache, not a repo asset),
+     extracts just the references section (PyMuPDF, stopping once past it,
+     never touching figures), and splits it into raw entries.
   2. fetch_affiliations_arxiv.py separately fetches ar5iv's full-text HTML
      for author affiliations -- since that page is already downloaded, it
      extracts ar5iv's cleanly-structured bibliography (one <li class=
@@ -52,7 +54,6 @@ written by this script.
 
 Usage: python build_citation_graph.py
 """
-import io
 import json
 import re
 import time
@@ -62,7 +63,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-import pdfplumber
+import pymupdf
 
 from fetch_common import by_citations
 
@@ -72,6 +73,7 @@ VENUES_DIR = BASE / "data" / "venues"
 REFS_CVF_FILE = BASE / "data" / "reference_lists_cvf.json"
 REFS_ARXIV_FILE = BASE / "data" / "reference_lists_arxiv.json"
 GRAPH_FILE = BASE / "data" / "citation_graph.json"
+PDF_DIR = BASE / "data" / "pdfs_cvf"
 CVF_BASE = "https://openaccess.thecvf.com"
 CVF_VENUES = {"CVPR", "ICCV", "WACV"}
 HEADERS = {"User-Agent": "av-atlas (mailto:holger@it-caesar.com)"}
@@ -176,22 +178,37 @@ def fetch_with_retries(url, max_retries=3):
     raise last_error
 
 
-def fetch_pdf_text(url):
+def fetch_pdf_text(url, key):
     raw = fetch_with_retries(url)
-    with pdfplumber.open(io.BytesIO(raw)) as pdf:
+    # Archived before parsing, so even a PDF that fails to parse (corrupt,
+    # scanned image, whatever) still leaves the raw file on disk for later
+    # reprocessing -- user-requested, this is meant as a general local PDF
+    # cache for this corpus, not just a reference-extraction input.
+    PDF_DIR.mkdir(parents=True, exist_ok=True)
+    (PDF_DIR / f"{key}.pdf").write_bytes(raw)
+    # PyMuPDF instead of pdfplumber: pdfplumber's extract_text() does its own
+    # from-scratch character-layout reconstruction and was measured at
+    # ~23 sec/paper on this corpus's PDFs -- almost entirely spent on pages
+    # we then throw away (this function's own early-stop check ran
+    # extract_text() on every page up to and including the references
+    # section, not just up to it, since the "stop" was never actually early).
+    # PyMuPDF's get_text() is backed by MuPDF's C parser and is the standard
+    # go-to for bulk text extraction where layout fidelity doesn't matter --
+    # confirmed already installed locally (1.28.2) before switching.
+    with pymupdf.open(stream=raw, filetype="pdf") as pdf:
         pages_text = []
         started = False
-        for page in pdf.pages:
-            text = page.extract_text() or ""
+        for page in pdf:
+            text = page.get_text() or ""
             if not started and re.search(r"\bReferences\b", text):
                 started = True
             if started:
                 pages_text.append(text)
-        if not pages_text and pdf.pages:
+        if not pages_text and pdf.page_count:
             # No explicit "References" heading found (rare, some templates use
             # "Bibliography" or a different heading) -- fall back to the last
             # two pages, where the reference list almost always lives.
-            pages_text = [p.extract_text() or "" for p in pdf.pages[-2:]]
+            pages_text = [pdf[i].get_text() or "" for i in range(max(0, pdf.page_count - 2), pdf.page_count)]
         return "\n".join(pages_text)
 
 
@@ -283,7 +300,7 @@ def fetch_phase(cvf_titles, pdf_url_index):
             attempted_this_run.add(key)
             url = pdf_url_index[key]
             try:
-                text = fetch_pdf_text(url)
+                text = fetch_pdf_text(url, key)
                 refs["references"][key] = split_reference_entries(text)
                 refs["succeeded"].append(key)
                 refs["failed"].pop(key, None)

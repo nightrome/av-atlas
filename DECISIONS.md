@@ -618,3 +618,63 @@ plainly that both numbers are corpus-internal, never an external database
 a finding that anything needs fixing: a reader who wants a truer
 "how-cited-is-this-in-the-world" number already has an explicit, correct
 signal (the tooltip) that this isn't it.
+
+## `build_citation_graph.py`'s PDF text extraction: pdfplumber -> PyMuPDF, plus a local PDF archive
+
+The overnight widened citation-graph crawl (see the entry above) was running
+at ~23 sec/paper -- confirmed for real, not estimated, by cross-checking
+`data/reference_lists_cvf.json`'s growth against wall-clock time over a
+~21-hour run (only 3,200 of 32,686 CVF papers done; the laptop having slept
+part of that night inflated the wall-clock total further, but didn't explain
+the per-paper rate itself). Root cause: `fetch_pdf_text()`'s own docstring
+claimed to "stop once past" the References section, but the loop actually
+called the expensive `page.extract_text()` on every page from page 1 onward
+just to search each page's text for the word "References" -- no early stop
+of the expensive work ever happened, matching the recurring "Could not get
+FontBBox from font descriptor" pdfplumber warnings seen throughout the log
+(consistent with slow font-parsing overhead, not with network waiting).
+
+Fixed by switching the PDF backend from `pdfplumber` to `pymupdf` (`import
+pymupdf`, `page.get_text()` in place of `page.extract_text()` -- confirmed
+already installed locally, 1.28.2, before switching; added to
+`scripts/requirements.txt`). Directly measured on identical downloaded PDF
+bytes (network time excluded, so this isolates parsing only): 2.67 sec vs.
+0.13 sec for the same 10-page 2021 CVPR paper -- roughly 20x, in line with
+PyMuPDF's general reputation for bulk text extraction. `fetch_cvf_affiliations.
+py` (page-1-only extraction, a much smaller per-paper cost) was deliberately
+left on pdfplumber -- not the bottleneck this was about, no reason to touch
+a working, unrelated call site while chasing this one.
+
+Verified equivalent output quality, not just equivalent speed, before
+trusting it: ran both the old pdfplumber path and the new pymupdf path
+against the exact same downloaded PDF bytes for two different papers (an
+old 2013 single-column paper and a modern 2021 two-column paper) and
+confirmed byte-for-byte-equivalent reference-section detection and near-
+identical extracted text and reference-entry counts in both cases,
+including a pre-existing (unrelated, not introduced by this change)
+`split_reference_entries()` quirk on both papers -- a two-column PDF's text
+sometimes interleaves in a way that its `[N] `-without-a-period regex
+doesn't split into separate entries, and a chart's axis-label text can
+occasionally trip the "References" heading search early. Both quirks
+reproduce identically under the old and new backend, so this is a pre-
+existing corpus/regex limitation to note, not a regression from this
+change -- left as-is, out of scope for a PDF-speed/archiving request.
+
+Also added (separately requested, same message: "make sure to save all pdfs
+locally in a gitignored folder so we might process them later for other
+things"): every downloaded CVF PDF is now archived to `data/pdfs_cvf/
+<title-key>.pdf` (gitignored -- a many-GB personal cache, not source data),
+written *before* parsing so even a PDF that fails to parse still leaves the
+raw bytes on disk. This is a general-purpose local cache for future
+reprocessing, not something the current pipeline reads back -- nothing else
+in the pipeline depends on this directory existing or being complete.
+
+One known gap, left as a deliberate choice rather than an oversight: the
+~3,200 CVF papers the old (pre-fix) crawler run already marked `succeeded`
+before this change won't be re-fetched under the normal pending-exclusion
+logic in `fetch_phase()` (`succeeded` papers are always skipped), so they
+won't retroactively gain an archived PDF just from re-running the crawler.
+A deliberate backfill pass (temporarily ignoring `succeeded` to force a
+re-download) would be needed to close that gap -- not done here since nothing
+required it (their extracted references are already saved and correct; only
+the raw-PDF archive itself would be incomplete for that subset).

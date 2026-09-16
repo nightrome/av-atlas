@@ -55,6 +55,11 @@ data/affiliations_arxiv.json
 data/affiliations_cvf.json
 data/reference_lists_cvf.json
 data/reference_lists_arxiv.json
+# Raw PDFs archived by build_citation_graph.py's fetch phase, one per CVF
+# paper it downloads -- kept as a local cache so they can be reprocessed for
+# something else later without re-fetching, but this is a many-GB personal
+# cache, not source data.
+data/pdfs_cvf/
 # mine_abstracts.py's side file (folded into papers_full.json by
 # apply_abstracts_arxiv.py) -- same reasoning as affiliations_arxiv.json
 # above. Large (backfilled from papers_full.json's full existing abstract
