@@ -111,5 +111,10 @@ __pycache__/
 # debug eyeball dump from train_relevance_classifier.py (regenerable)
 scripts/_relevance_projection_sample.txt
 
+# stdout/stderr redirect from a long-running crawler launched in the
+# background (e.g. build_citation_graph.py) -- an operational log, not a
+# pipeline artifact.
+scripts/*.log
+
 # local dev scaffold (browser preview launch config)
 .claude/
