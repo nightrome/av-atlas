@@ -11,6 +11,7 @@
 <meta property="og:title" content="AV Atlas: Co-authorship Network">
 <meta property="og:description" content="An interactive map of collaboration between autonomous vehicle researchers, clustered by who actually publishes together.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/network.html">
+<link rel="canonical" href="https://nightrome.github.io/av-atlas/network.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AV Atlas: Co-authorship Network">
@@ -48,6 +49,8 @@
      slivers instead of the table just scrolling horizontally (the
      .table-scroll wrapper on this table is what makes that scroll work). */
   #metrics-table { min-width: 820px; }
+  #clusters-table { min-width: 640px; }
+  .cluster-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: middle; }
   th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); overflow-wrap: break-word; }
   th { color: var(--muted); font-weight: 600; vertical-align: bottom; }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -83,6 +86,24 @@
   <p class="section-intro" id="graph-legend"></p>
   <div class="graph-wrap">
     <svg id="graph" viewBox="0 0 1850 1050" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: auto; aspect-ratio: 1850 / 1050; max-height: 800px; display: block;"></svg>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title-row">
+    <h2 style="margin-top:0;">Clusters</h2>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Each cluster is a group of authors the graph above found to be closely connected, largest first. Primary institution/country is whichever appears most often across the cluster's own papers -- a cluster can genuinely span several, this is just the most common one, not the only one." data-tip="Each cluster is a group of authors the graph above found to be closely connected, largest first. Primary institution/country is whichever appears most often across the cluster's own papers -- a cluster can genuinely span several, this is just the most common one, not the only one.">i</span></div>
+  <div class="table-scroll">
+  <table id="clusters-table">
+    <thead><tr>
+      <th></th>
+      <th class="num">Authors</th>
+      <th>Top members</th>
+      <th>Primary institution</th>
+      <th>Primary country</th>
+    </tr></thead>
+    <tbody id="clusters-body"></tbody>
+  </table>
   </div>
 </div>
 
@@ -526,7 +547,122 @@ function render() {
 
   setupPanZoom(svg, viewport, W, H);
   setupSearch(nodeEls, pos);
+  renderClustersTable(nodes, clusterOf, clusterSizes, papers);
   renderMetricsTable(nodes, edges, topAuthors, papers);
+}
+
+// One row per cluster the graph above actually found (color-matched via
+// clusterColor(), same index detectClusters() assigned), largest first --
+// singleton "clusters" (an author with no co-author inside the current
+// top-N set) are left out, same filter the legend text above already uses
+// for its own "N groups" count, since a cluster of one has no institution
+// distribution to summarize.
+//
+// "Primary" institution/country is a mode over every paper any cluster
+// member is on (not just edges within the subgraph, same scoping
+// renderMetricsTable's own institutionsOf/countriesOf below uses) -- the
+// single most common value, not a claim that the whole cluster shares one
+// affiliation. A real research group's papers routinely also carry a
+// frequent external collaborator's institution, so this can legitimately
+// undercount how mixed a cluster is; it answers "which one institution
+// would a reader guess this cluster is centered on", not "is this cluster
+// one lab".
+function renderClustersTable(nodes, clusterOf, clusterSizes, papers) {
+  const clusterOfName = new Map(nodes.map(n => [n.id, clusterOf.get(n.id) || 0]));
+  const membersOf = new Map();
+  // `nodes` is already sorted by paper count descending (see topAuthors
+  // above render()), so each cluster's member list comes out pre-ranked
+  // without a second sort here.
+  nodes.forEach(n => {
+    const c = clusterOfName.get(n.id);
+    if (!membersOf.has(c)) membersOf.set(c, []);
+    membersOf.get(c).push(n.id);
+  });
+
+  const instTally = new Map(), countryTally = new Map();
+  const bump = (tallyByCluster, cluster, key) => {
+    const t = tallyByCluster.get(cluster) || new Map();
+    t.set(key, (t.get(key) || 0) + 1);
+    tallyByCluster.set(cluster, t);
+  };
+  papers.forEach(p => {
+    // A paper can touch more than one cluster (a cross-cluster collaboration);
+    // each cluster it touches gets one tally, not one per author, so a
+    // single paper with 4 co-authors from the same cluster doesn't out-vote
+    // a real 4-paper trend.
+    const clustersHere = new Set((p.authors || [])
+      .map(a => clusterOfName.get(a)).filter(c => c !== undefined));
+    clustersHere.forEach(c => {
+      (p.institutions || []).forEach(inst => bump(instTally, c, inst));
+      (p.countries || []).forEach(country => bump(countryTally, c, country));
+    });
+  });
+  const modeOf = tally => {
+    if (!tally || !tally.size) return null;
+    let best = null, bestCount = 0;
+    tally.forEach((count, key) => { if (count > bestCount) { best = key; bestCount = count; } });
+    return best;
+  };
+
+  const rows = [...membersOf.entries()]
+    .filter(([, members]) => members.length > 1)
+    .sort((a, b) => b[1].length - a[1].length)
+    .map(([cluster, members]) => ({
+      cluster, members,
+      institution: modeOf(instTally.get(cluster)),
+      country: modeOf(countryTally.get(cluster)),
+    }));
+
+  const tbody = document.getElementById('clusters-body');
+  tbody.innerHTML = '';
+  const TOP_MEMBERS_SHOWN = 3;
+  rows.forEach(r => {
+    const swatch = document.createElement('span');
+    swatch.className = 'cluster-swatch';
+    swatch.style.background = clusterColor(r.cluster);
+
+    const membersCell = document.createElement('span');
+    r.members.slice(0, TOP_MEMBERS_SHOWN).forEach((name, i) => {
+      if (i > 0) membersCell.append(', ');
+      const a = document.createElement('a');
+      a.href = `author.html?name=${encodeURIComponent(name)}`;
+      a.textContent = name;
+      membersCell.appendChild(a);
+    });
+    if (r.members.length > TOP_MEMBERS_SHOWN) {
+      membersCell.append(` +${r.members.length - TOP_MEMBERS_SHOWN} more`);
+    }
+
+    const instCell = document.createElement('span');
+    if (r.institution) {
+      const a = document.createElement('a');
+      a.href = `institution.html?name=${encodeURIComponent(r.institution)}`;
+      a.textContent = r.institution;
+      instCell.appendChild(a);
+    } else {
+      instCell.textContent = 'n/a';
+      instCell.style.color = 'var(--muted)';
+    }
+
+    const tr = document.createElement('tr');
+    [swatch, r.members.length, membersCell, instCell, r.country || 'n/a'].forEach((c, i) => {
+      const td = document.createElement('td');
+      if (i === 1) td.className = 'num';
+      if (i === 4 && !r.country) td.style.color = 'var(--muted)';
+      if (c instanceof Node) td.appendChild(c); else td.textContent = c;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  if (!rows.length) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 5;
+    td.style.color = 'var(--muted)';
+    td.textContent = 'No multi-author clusters in the current graph.';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  }
 }
 
 // Papers/institutions/countries counted from THIS author's own paper list
