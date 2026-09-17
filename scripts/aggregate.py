@@ -806,6 +806,64 @@ def resolve_ambiguous_author_identity(name, title):
     return name
 
 
+# OpenAlex ids manually confirmed (via the OpenAlex API, by display name +
+# shared affiliation) to be an unmerged duplicate of the same real person,
+# not a second person with an identical name -- OpenAlex's own entity
+# resolution occasionally leaves a newly-indexed paper on a fresh stub author
+# id instead of merging it into that person's established one. Left
+# unresolved, this trips the identity_conflicts heuristic below (>=2 distinct
+# ids for one cleaned name) as a false positive. Keyed by the duplicate id,
+# valued by the canonical one to fold it into.
+#   A5144375944 ("Holger Caesar", 1 work, no ORCID, TU Delft) is OpenAlex's
+#   unmerged duplicate of A5001917215 ("Holger Caesar", 81 works, ORCID
+#   0000-0001-5099-6297, TU Delft/Motional/EPFL) -- same person.
+KNOWN_DUPLICATE_OPENALEX_IDS = {
+    "A5144375944": "A5001917215",
+}
+
+
+def canonical_openalex_id(oaid):
+    return KNOWN_DUPLICATE_OPENALEX_IDS.get(oaid, oaid)
+
+
+# A handful of authors whose per-paper affiliation extraction is manually
+# confirmed to carry a co-author's institution instead of their own -- the
+# "shared affiliation block" bug documented above blanket_shared_papers
+# catches it only when 2+ authors end up with an IDENTICAL multi-institution
+# list; here just one author on the paper got the glued string, so it slips
+# through. Keyed by cleaned author name, valued by the lowercase substrings
+# of the institutions actually confirmed correct for them -- an
+# author_affiliations() result not containing any of these is dropped rather
+# than trusted.
+#   Marco Pavone (confirmed 2026-09-17): Stanford and NVIDIA are his own;
+#   the extracted list also carried co-authors' schools from papers with an
+#   unpartitioned author block (Technion, Vector Institute, UC Berkeley,
+#   UCLA, UCL, Virginia Tech, Qualcomm, and once a co-author's name --
+#   "Claire J. Tomlin" -- leaking through as an "institution").
+AUTHOR_AFFILIATION_ALLOWLIST = {
+    "Marco Pavone": ("stanford", "nvidia"),
+}
+
+# Real affiliations confirmed correct but never dated by any paper in this
+# corpus -- Pavone's PhD (MIT) and NASA-JPL research years both predate this
+# corpus's coverage of him, so no crawled paper carries them. Added with no
+# year range rather than a guessed one (author.html already renders an
+# institution tag with no year suffix when first_year is None -- see
+# makeLink() there); appended only for names in AUTHOR_AFFILIATION_ALLOWLIST,
+# after the real per-paper-derived entries, so the honestly-dated ones still
+# come first.
+AUTHOR_UNDATED_AFFILIATIONS = {
+    "Marco Pavone": ("Massachusetts Institute of Technology", "NASA Jet Propulsion Laboratory"),
+}
+
+
+def filter_author_affiliations(name, affs):
+    allow = AUTHOR_AFFILIATION_ALLOWLIST.get(name)
+    if not allow:
+        return affs
+    return [a for a in affs if any(k in a.lower() for k in allow)]
+
+
 # An affiliation/LaTeX-formatting fragment that leaked into the author-name
 # field instead of the affiliation field (seen on real data: "[2mm] UC
 # Berkeley" -- a LaTeX vertical-spacing command glued onto an institution
@@ -3174,10 +3232,10 @@ def main():
             author_names_enriched.add(name)
             oaid = a.get("openalex_id")
             if oaid:
-                author_openalex_ids[name].add(oaid)
+                author_openalex_ids[name].add(canonical_openalex_id(oaid))
             own_affs = author_affiliations(a, all_author_names, co_author_names)
             if not blanket_shared:
-                for aff in own_affs:
+                for aff in filter_author_affiliations(name, own_affs):
                     rec = author_institutions[name].setdefault(aff, {"first_year": year, "last_year": year, "papers": 0})
                     if year is not None:
                         rec["first_year"] = year if rec["first_year"] is None else min(rec["first_year"], year)
@@ -3321,6 +3379,16 @@ def main():
             for inst, rec in sorted(author_institutions[name].items(),
                                      key=lambda kv: (kv[1]["first_year"] is None, kv[1]["first_year"]))
         ]
+        # AUTHOR_UNDATED_AFFILIATIONS entries predate this corpus's coverage
+        # of the author (see its comment above) -- prepended, not appended,
+        # since chronologically they came first, and appending would instead
+        # push them to the tail this list's consumers (author.html's
+        # INLINE_LIMIT slice) treat as "most recent".
+        undated_names = {i["name"] for i in institutions}
+        institutions = [
+            {"name": inst, "first_year": None, "last_year": None, "papers": 0}
+            for inst in AUTHOR_UNDATED_AFFILIATIONS.get(name, ()) if inst not in undated_names
+        ] + institutions
         # Chronological, not alphabetical, same reasoning and shape as
         # institutions above -- countries stays a plain array of names (not
         # {name, first_year, last_year} objects like institutions) since

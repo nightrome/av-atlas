@@ -11,6 +11,7 @@
 <meta property="og:title" content="AV Atlas: Author">
 <meta property="og:description" content="A researcher's publication record within autonomous vehicle research: papers, citations, co-authors, and career trajectory.">
 <meta property="og:url" content="https://nightrome.github.io/av-atlas/author.html">
+<link rel="canonical" href="https://nightrome.github.io/av-atlas/author.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AV Atlas: Author">
@@ -28,14 +29,6 @@
   }
   .avatar img { width: 100%; height: 100%; object-fit: cover; }
   .header h2 { margin: 0 0 4px; font-size: 1.5em; }
-  .header .tags { color: var(--muted); font-size: 0.9em; }
-  .header .tags .tag-link { color: var(--accent); text-decoration: none; }
-  .header .tags .tag-link:hover { text-decoration: underline; }
-  .header .tags .tag-more-btn {
-    background: none; border: 1px solid var(--border); border-radius: 10px;
-    color: var(--muted); font: inherit; font-size: 0.9em; padding: 0 7px; cursor: pointer;
-  }
-  .header .tags .tag-more-btn:hover { border-color: var(--accent); color: var(--accent); }
   .header .scholar-link { display: inline-block; margin-top: 6px; font-size: 0.9em; color: var(--accent); text-decoration: none; }
   .header .scholar-link:hover { text-decoration: underline; }
   .ambiguous-warning {
@@ -87,7 +80,6 @@
   <div>
     <h2 id="name">…</h2>
     <div class="ambiguous-warning" id="ambiguous-warning" style="display:none;"></div>
-    <div class="tags" id="tags"></div>
     <a class="scholar-link" id="scholar-link" target="_blank" rel="noopener"></a>
     <a class="scholar-link" id="orcid-link" target="_blank" rel="noopener" style="display:none;"></a>
   </div>
@@ -101,6 +93,7 @@
   <div class="panel-title-row">
     <h2 style="margin-top:0;">Affiliations</h2>
   <span class="info-tip" tabindex="0" role="img" aria-label="Every institution this author has been affiliated with, in the corpus, with the years seen and whether it&#x27;s academic or industry." data-tip="Every institution this author has been affiliated with, in the corpus, with the years seen and whether it&#x27;s academic or industry.">i</span></div>
+  <p style="color:var(--muted);font-size:0.85em;margin:-4px 0 10px;">Affiliations are parsed automatically from paper author blocks, not verified against any authoritative source, and are often wrong or incomplete -- especially for papers with several authors and one shared institution list. Spot one that's wrong? Use the 🚩 report link above.</p>
   <table><thead><tr><th>Institution</th><th class="num">First year</th><th class="num">Last year</th><th>Type</th></tr></thead>
   <tbody id="affiliations-body"></tbody></table>
 </div>
@@ -290,64 +283,14 @@ function render(stats) {
     avatar.textContent = initials(name);
   }
 
-  const tagsEl = document.getElementById('tags');
-  tagsEl.innerHTML = '';
+  // Used to show a compact "what's current" summary under the name, with
+  // the full table below as the detailed record. Dropped (user-requested):
+  // parsed-from-papers affiliation data is noisy enough (see the disclaimer
+  // on the Affiliations panel below) that surfacing it a second time, right
+  // under the name before a reader has any of that context, did more harm
+  // than the convenience was worth. The full table is still the one place
+  // this data lives.
   const institutions = detail.institutions || [];
-  const countries = detail.countries || [];
-  if (!institutions.length && !countries.length) {
-    tagsEl.textContent = 'Affiliation not yet enriched';
-  } else {
-    // Institutions are already in chronological order (earliest first_year
-    // first) -- show each with its year range so two entries read as "was
-    // there, then moved on" rather than an unordered list of employers.
-    //
-    // Only the most recent few are shown up front, with the rest behind a
-    // toggle. Rendering every one inline turned this line into a wall on
-    // real data: a well-published author with a long record showed nine
-    // affiliations plus a trailing list of countries, including near-
-    // duplicates of each other, as the very first thing under their name.
-    // The current affiliation is the fact a reader is nearly always here
-    // for; the full history is a click away rather than in the way.
-    const INLINE_LIMIT = 3;
-    const makeLink = inst => {
-      const a = document.createElement('a');
-      a.href = `institution.html?name=${encodeURIComponent(inst.name)}`;
-      const yr = inst.first_year == null ? ''
-        : inst.first_year === inst.last_year ? ` (${inst.first_year})`
-        : ` (${inst.first_year} to ${inst.last_year})`;
-      a.textContent = inst.name + yr;
-      a.className = 'tag-link';
-      return a;
-    };
-    // Most recent last in the stored order, so show the tail.
-    const recent = institutions.slice(-INLINE_LIMIT).reverse();
-    const earlier = institutions.slice(0, Math.max(0, institutions.length - INLINE_LIMIT)).reverse();
-    const appendList = (target, list) => list.forEach((inst, i) => {
-      if (i > 0) target.append(' · ');
-      target.appendChild(makeLink(inst));
-    });
-    appendList(tagsEl, recent);
-    if (earlier.length) {
-      const more = document.createElement('span');
-      more.hidden = true;
-      more.append(' · ');
-      appendList(more, earlier);
-      const toggle = document.createElement('button');
-      toggle.type = 'button';
-      toggle.className = 'tag-more-btn';
-      toggle.textContent = `+${earlier.length} earlier`;
-      toggle.addEventListener('click', () => {
-        more.hidden = !more.hidden;
-        toggle.textContent = more.hidden ? `+${earlier.length} earlier` : 'Show fewer';
-      });
-      tagsEl.append(' ');
-      tagsEl.appendChild(toggle);
-      tagsEl.appendChild(more);
-    }
-    // Countries used to be appended here as bare text after the institution
-    // list, which read as if they were more affiliations. They add nothing a
-    // reader can't get from the institutions themselves, so they're dropped.
-  }
 
   // Full affiliation history as a proper table (user-requested: name,
   // year(s), and academic-vs-industry type) -- the tags row above is a
