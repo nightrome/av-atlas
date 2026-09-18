@@ -231,7 +231,7 @@ function renderScatter(container, authors) {
 let currentStats = null, currentFilters = null;
 let currentQuery = new URLSearchParams(location.search).get('q') || '';
 const relevance = new URLSearchParams(location.search).get('relevance') || '';
-fetchStatsWithRelevance(relevance).then(fetchStatsDetail).then(stats => {
+fetchStatsWithRelevance(relevance).then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'authors.html', {
     search: { placeholder: 'Search author names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
@@ -268,7 +268,6 @@ function row(cells) {
 function render() {
   const stats = currentStats, filters = currentFilters;
   const papers = filterPapers(stats.all_papers || [], filters);
-  const detail = stats.author_detail || {};
 
   const minPapersThreshold = filters.minPapers;
 
@@ -305,7 +304,15 @@ function render() {
   // Excluded from the RANKING only, never from search: the flag can also
   // fire when the external source has split one real person across two IDs,
   // and someone looking up their own name must still find their page.
-  const conflicted = new Set(Object.keys(detail).filter(n => detail[n] && detail[n].identity_conflict));
+  //
+  // stats.identity_conflicted_authors is a small precomputed list (see
+  // aggregate.py's comment where it's built) -- deriving this same set by
+  // scanning stats.author_detail used to be how this worked, back when that
+  // was one whole-corpus file fetched in full; now that it's sharded by
+  // name (see aggregate.py's AUTHOR_DETAIL_DIR comment), a page-wide scan
+  // like that would force fetching and flattening all 64 shards just to
+  // build this one exclusion set.
+  const conflicted = new Set(stats.identity_conflicted_authors || []);
   let conflictedShown = 0;
   if (!query) {
     const before = authors.length;
@@ -321,7 +328,6 @@ function render() {
   papers.forEach(p => (p.authors || []).forEach(name => {
     (papersByAuthor[name] = papersByAuthor[name] || []).push(p);
   }));
-  const nonAvCounts = stats.non_av_paper_counts || {};
   authors.forEach(a => {
     const { selfCitations, otherCitations } = computeSelfCitationStats(papersByAuthor[a.name]);
     const total = selfCitations + otherCitations;
@@ -329,7 +335,8 @@ function render() {
     // "unknown vs. a real zero" distinction as avg_citations elsewhere on
     // this page.
     a.selfCitationPct = total > 0 ? Math.round(100 * selfCitations / total) : null;
-    a.nonAvPapers = nonAvCounts[a.name] || 0;
+    // a.nonAvPapers is set further down, once the shown/topAuthors sets are
+    // known -- see the fetchNonAvAuthorStats comment below for why.
     // Lifetime: span between this author's first and last AV-relevant
     // publication YEAR in the current filtered set -- same "last - first"
     // definition aggregate.py already uses server-side for the Insights
@@ -403,17 +410,37 @@ function render() {
   // "confirmed zero impact".
   renderScatter(document.getElementById('scatter'), topAuthors.filter(a => a.avg_citations != null));
 
+  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length,
+    { onChange: render, pageSize: topN, showSizeControl: false });
+  const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);
+
+  // author_detail (cards' photo_url) and non_av_author_stats (the table's
+  // Non-AV papers column) are sharded by name now (see aggregate.py's
+  // AUTHOR_DETAIL_DIR comment) instead of one whole-corpus file fetched in
+  // full -- resolved here for exactly the two bounded sets actually
+  // rendered (topAuthors' cards, shown's table page), not the ~55k names in
+  // the corpus. author_detail is only fetched for topAuthors: the table
+  // itself never reads it (no institution/country column here).
+  const neededForNonAv = new Set([...topAuthors, ...shown].map(a => a.name));
+  Promise.all([
+    window.fetchAuthorDetail(topAuthors.map(a => a.name)),
+    window.fetchNonAvAuthorStats([...neededForNonAv]),
+  ]).then(([detailMap, nonAvMap]) => {
+    neededForNonAv.forEach(n => {
+      const a = (topAuthors.find(x => x.name === n) || shown.find(x => x.name === n));
+      if (a) a.nonAvPapers = (nonAvMap.get(n) || {}).count || 0;
+    });
+    renderBody2(detailMap);
+  });
+
+  function renderBody2(detailMap) {
   const authorsGrid = document.getElementById('authors-grid');
   if (!topAuthors.length) {
     renderEmptyState(authorsGrid, 'authors.html', 'No authors match the current filters. Try lowering "Min." or clearing a filter.');
   } else {
     authorsGrid.innerHTML = '';
-    topAuthors.forEach((a, i) => authorsGrid.appendChild(authorCard(a, i + 1, detail[a.name])));
+    topAuthors.forEach((a, i) => authorsGrid.appendChild(authorCard(a, i + 1, detailMap.get(a.name))));
   }
-
-  const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length,
-    { onChange: render, pageSize: topN, showSizeControl: false });
-  const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);
 
   const tbody = document.getElementById('researchers-body');
   function renderBody(data) {
@@ -456,6 +483,7 @@ function render() {
   const exportContainer = document.getElementById('export-container');
   exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
   exportContainer.insertBefore(renderExportButton(tbody.closest('table'), 'av-atlas-authors.csv'), exportContainer.firstChild);
+  }
 }
 </script>
 <script src="nav.js"></script>

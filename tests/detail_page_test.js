@@ -30,9 +30,18 @@ function findAll(root, predicate, out) {
 
 const stats = JSON.parse(fs.readFileSync(path.join(BASE, 'data', 'stats.json'), 'utf-8'));
 // institution_authors (used below to pick a real institution to test
-// against) lives in its own lazily-fetched file now -- see filters.js's
-// fetchStatsDetail and aggregate.py's DETAIL_OUT_FILE.
-Object.assign(stats, JSON.parse(fs.readFileSync(path.join(BASE, 'data', 'stats_detail.json'), 'utf-8')));
+// against) is sharded by name now -- see aggregate.py's AUTHOR_DETAIL_DIR
+// comment. Flattened back into one object here, same as the real page's
+// own fetchAllAuthorDetail-style flatten, since this file only needs it to
+// pick a name, not to exercise the sharded-fetch code path itself (that's
+// covered by institution.html actually rendering in runPage() below).
+const institutionAuthorsDir = path.join(BASE, 'data', 'institution_authors');
+stats.institution_authors = {};
+if (fs.existsSync(institutionAuthorsDir)) {
+  fs.readdirSync(institutionAuthorsDir).filter(f => f.endsWith('.json')).forEach(f => {
+    Object.assign(stats.institution_authors, JSON.parse(fs.readFileSync(path.join(institutionAuthorsDir, f), 'utf-8')));
+  });
+}
 
 const failures = [];
 function check(label, cond) {
