@@ -218,6 +218,16 @@ def build_public_site():
         non_av_dst.mkdir(parents=True, exist_ok=True)
         for shard_path in non_av_src.glob("*.json"):
             shutil.copy2(shard_path, non_av_dst / shard_path.name)
+    # Sharded citing-paper lists (see aggregate.py's CITATIONS_DIR comment) --
+    # same fixed-shard-set copy pattern as abstracts_src/abstracts_dst above.
+    # Lazily fetched by index.html/network.html/paper.html for just the
+    # titles they actually need.
+    citations_src = BASE / "data" / "citations"
+    citations_dst = page_dir / "citations"
+    if citations_src.exists():
+        citations_dst.mkdir(parents=True, exist_ok=True)
+        for shard_path in citations_src.glob("*.json"):
+            shutil.copy2(shard_path, citations_dst / shard_path.name)
     # Lazily fetched by author.html/authors.html/countries.html/institution.html/
     # paper.html only -- see aggregate.py's DETAIL_OUT_FILE comment. Same
     # optional-copy reasoning as non_av_papers/ above.
@@ -280,6 +290,8 @@ def build_public_site():
         print(f"  abstracts/ ({len(list(abstracts_dst.iterdir()))} shards)")
     if non_av_dst.exists():
         print(f"  non_av_papers/ ({len(list(non_av_dst.iterdir()))} shards)")
+    if citations_dst.exists():
+        print(f"  citations/ ({len(list(citations_dst.iterdir()))} shards)")
     print(f"  robots.txt (allow all)")
 
 

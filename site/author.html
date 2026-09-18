@@ -580,6 +580,18 @@ function render(stats) {
   }
   renderCoauthors();
 
+  // citing_papers is stripped from most papers' stats.json entries and
+  // sharded into citations/shard-NN.json instead (see aggregate.py's
+  // CITATIONS_DIR comment). This author's own paper list is small and
+  // bounded (unlike the whole corpus), so it's cheap to resolve every one
+  // of their papers' citer lists before rendering the section below.
+  (function resolveCitingAuthors() {
+    const needTitles = papers.filter(p => !Array.isArray(p.citing_papers)).map(p => p.title);
+    const fetchPromise = needTitles.length ? window.fetchCitingPapers(needTitles) : Promise.resolve(new Map());
+    fetchPromise.then(fetched => renderCitingAuthorsSection(fetched));
+  })();
+
+  function renderCitingAuthorsSection(fetchedCiting) {
   // Citing authors: every author of a DIFFERENT paper in this corpus that
   // cites one of this author's papers -- the mirror image of "Top
   // co-authors" above (who they wrote with vs. who cites them). Each edge
@@ -590,7 +602,7 @@ function render(stats) {
   // -- resolved against this same page's all_papers, already fully fetched.
   const byTitle = new Map((stats.all_papers || []).map(p => [p.title, p]));
   const citingAuthorCounts = {};
-  papers.forEach(p => (p.citing_papers || []).forEach(citerTitle => {
+  papers.forEach(p => (p.citing_papers || fetchedCiting.get(p.title) || []).forEach(citerTitle => {
     const citer = byTitle.get(citerTitle);
     if (!citer) return;
     (citer.authors || []).forEach(a => {
@@ -684,6 +696,7 @@ function render(stats) {
     ], renderCitingAuthorsBody);
   }
   renderCitingAuthors();
+  }
 
   // Not-AV-relevant papers aren't in stats.all_papers at all (see
   // aggregate.py's NON_AV_DIR comment) -- fetched lazily, only once

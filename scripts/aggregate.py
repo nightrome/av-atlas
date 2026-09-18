@@ -84,6 +84,20 @@ DETAIL_OUT_FILE = BASE / "data" / "stats_detail.json"
 # not by convention -- change one, change both.
 ABSTRACTS_DIR = BASE / "data" / "abstracts"
 ABSTRACT_SHARD_COUNT = 64
+# Each paper's citing_papers (titles of in-corpus papers that cite it) was
+# ~7.8MB of stats.json's ~30MB (raw) -- present on every paper that has any
+# citers (8,398 of them), read in full by every page load even though only
+# index.html's currently-shown table page, network.html's citation-mode
+# toggle, and paper.html's single paper ever touch it. Same "pay for the
+# whole haystack for one needle" fix as ABSTRACTS_DIR: sharded out by the
+# same shard_index(title), fetched only for the specific titles a page
+# actually needs.
+#   Exception: dataset-benchmark-paper papers (KITTI, nuScenes, ...) keep
+# citing_papers inline on all_papers -- insights.html's dataset timeline
+# (extraDatasetsFromCategory) reads it synchronously off the whole category
+# and it's cheap to keep: only ~1.0MB of the 7.8MB total across 323 papers,
+# not worth a second lazy-fetch code path in insights.html for.
+CITATIONS_DIR = BASE / "data" / "citations"
 SCHOLAR_PROFILES_FILE = BASE / "data" / "scholar_profiles.json"
 ORCIDS_FILE = BASE / "data" / "orcids.json"
 INSTITUTION_LOGOS_FILE = BASE / "data" / "institution_logos.json"
@@ -3550,6 +3564,28 @@ def main():
         for v, rec in sorted(venue_coverage_acc.items(), key=lambda kv: -kv[1]["total"])
         if rec["total"] >= VENUE_COVERAGE_MIN_PAPERS
     }
+
+    # Split citing_papers out to CITATIONS_DIR before it's serialized into
+    # stats.json below -- see that constant's comment. Must run here, after
+    # compute_insights() (which doesn't read this field) and before `stats`/
+    # OUT_FILE are built, so the stripped dicts (top_papers/all_papers share
+    # the same paper objects by reference, so stripping once covers both)
+    # are what actually gets written.
+    CITATIONS_DIR.mkdir(parents=True, exist_ok=True)
+    citation_shards = [{} for _ in range(ABSTRACT_SHARD_COUNT)]
+    n_citing_sharded = 0
+    for p in papers:
+        cp = p.get("citing_papers")
+        if not cp:
+            continue
+        citation_shards[shard_index(p["title"])][p["title"]] = cp
+        n_citing_sharded += 1
+        if p.get("category") != "dataset-benchmark-paper":
+            del p["citing_papers"]
+    for i, shard in enumerate(citation_shards):
+        shard_path = CITATIONS_DIR / f"shard-{i:02d}.json"
+        shard_path.write_text(json.dumps(shard, ensure_ascii=False), encoding="utf-8", newline="\n")
+    print(f"Wrote {CITATIONS_DIR}: {n_citing_sharded} papers' citer lists across {ABSTRACT_SHARD_COUNT} shards")
 
     stats = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d"),

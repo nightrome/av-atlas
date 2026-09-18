@@ -383,19 +383,42 @@ function renderPapersCitationTimeline(papers, datasetNameByTitle, allPapers) {
   const yearByTitle = new Map();
   (allPapers || []).forEach(p => { if (p.title && p.year) yearByTitle.set(p.title, p.year); });
 
+  // citing_papers is stripped from most papers' stats.json entries and
+  // sharded into citations/shard-NN.json instead (see aggregate.py's
+  // CITATIONS_DIR comment) -- a dataset-benchmark-paper still carries it
+  // inline. Cached across draw() calls (outer closure, not per-call) since
+  // the legend's "toggle all" re-invokes draw() with the same page of
+  // papers and shouldn't re-fetch shards it already resolved.
+  const fetchedCiting = new Map();
+
   // `papersToPlot` is exactly the papers shown on the current page of the
   // Top Papers table -- Prev/Next and the "Show top" size both flow through
   // here, so the chart always tracks what the reader is looking at.
   function draw(papersToPlot) {
-    const plotPapers = (papersToPlot || [])
-      .filter(p => (p.citations || 0) > 0 && Array.isArray(p.citing_papers) && p.citing_papers.length);
+    const candidates = (papersToPlot || []).filter(p => (p.citations || 0) > 0);
+    const needTitles = candidates
+      .filter(p => !Array.isArray(p.citing_papers) && !fetchedCiting.has(p.title))
+      .map(p => p.title);
+    const fetchPromise = needTitles.length ? window.fetchCitingPapers(needTitles) : Promise.resolve(new Map());
+    fetchPromise.then(fetched => {
+      fetched.forEach((v, k) => fetchedCiting.set(k, v));
+      drawResolved(candidates, papersToPlot);
+    });
+  }
+
+  function citingPapersOf(p) {
+    return p.citing_papers || fetchedCiting.get(p.title) || [];
+  }
+
+  function drawResolved(candidates, papersToPlot) {
+    const plotPapers = candidates.filter(p => citingPapersOf(p).length);
 
     // Per paper: { year -> number of its citations that landed in that year }.
     const countsByPaper = new Map();
     let minYr = Infinity, maxYr = -Infinity;
     plotPapers.forEach(p => {
       const perYear = {};
-      p.citing_papers.forEach(t => {
+      citingPapersOf(p).forEach(t => {
         const yr = yearByTitle.get(t);
         if (!yr) return;
         perYear[yr] = (perYear[yr] || 0) + 1;

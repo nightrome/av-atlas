@@ -558,6 +558,40 @@
     return page + (p.toString() ? '?' + p.toString() : '');
   };
 
+  // Same djb2-hash-mod-N as aggregate.py's shard_index() -- must stay in
+  // sync by construction, not convention. Shared here (not copy-pasted per
+  // page) since abstracts/, non_av_papers/ and citations/ are all sharded
+  // by this exact scheme, and paper.html/index.html/network.html all need
+  // to resolve a paper title to its shard number.
+  const SHARD_COUNT = 64;
+  window.shardIndex = function (title, numShards = SHARD_COUNT) {
+    let h = 5381;
+    for (let i = 0; i < title.length; i++) h = ((h * 33) + title.charCodeAt(i)) >>> 0;
+    return h % numShards;
+  };
+
+  // Resolves citing_papers for exactly the given titles, fetching only the
+  // citations/shard-NN.json files those titles actually hash into (see
+  // aggregate.py's CITATIONS_DIR comment) -- not all SHARD_COUNT of them.
+  // Most callers only need a handful of papers' citer lists (paper.html:
+  // one; index.html: the current table page; network.html: the current
+  // top-N subgraph), so this is typically a few shard fetches, not the
+  // whole ~7MB set. Returns a Map<title, citingTitles[]> covering whichever
+  // of the given titles actually have any citers -- a title absent from the
+  // map has none, same as the old inline paper.citing_papers being
+  // undefined.
+  window.fetchCitingPapers = function (titles) {
+    const shardsNeeded = new Set(titles.map(t => window.shardIndex(t)));
+    return Promise.all([...shardsNeeded].map(i => {
+      const shard = String(i).padStart(2, '0');
+      return fetch(`citations/shard-${shard}.json`).then(r => r.json()).catch(() => ({}));
+    })).then(shards => {
+      const merged = new Map();
+      shards.forEach(shard => { for (const t in shard) merged.set(t, shard[t]); });
+      return merged;
+    });
+  };
+
   // Non-AV papers are sharded into non_av_papers/shard-00.json..shard-63.json
   // (see aggregate.py's NON_AV_DIR comment) rather than one 80MB+ file --
   // fixes a real GitHub 50MB-single-file warning and lets paper.html fetch

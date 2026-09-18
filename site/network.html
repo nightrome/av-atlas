@@ -391,19 +391,48 @@ function render() {
   // pair of names for virtually every two-word-name author, which then
   // crashed downstream code trying to look up a node that was never a real
   // author).  can't appear in a real name, so the split is exact.
-  const edgeWeights = {};
   if (currentEdgeMode === 'citation') {
-    // citing_papers is title-only (aggregate.py strips authors from it
-    // deliberately -- every citer is itself a top-level all_papers entry,
-    // so re-embedding its author list there would just duplicate data
-    // already in this same payload). Same resolve-by-title pattern
-    // paper.html/insights.html already use for this exact field.
-    const byTitle = new Map();
-    (stats.all_papers || []).forEach(p => { if (p.title) byTitle.set(p.title, p); });
+    buildCitationEdgeWeights(papers, topSet).then(edgeWeights => {
+      finishRender(papers, paperCounts, topAuthors, topSet, edgeWeights);
+    });
+  } else {
+    const edgeWeights = {};
     papers.forEach(p => {
+      const authors = (p.authors || []).filter(a => topSet.has(a));
+      for (let i = 0; i < authors.length; i++) {
+        for (let j = i + 1; j < authors.length; j++) {
+          const key = authors[i] < authors[j] ? `${authors[i]}${authors[j]}` : `${authors[j]}${authors[i]}`;
+          edgeWeights[key] = (edgeWeights[key] || 0) + 1;
+        }
+      }
+    });
+    finishRender(papers, paperCounts, topAuthors, topSet, edgeWeights);
+  }
+}
+
+// citing_papers is stripped from most papers' stats.json entries and
+// sharded into citations/shard-NN.json instead (see aggregate.py's
+// CITATIONS_DIR comment) -- resolved here for exactly the cited-paper
+// titles this graph's current top-N author set actually needs (typically a
+// small fraction of the corpus), not the whole ~7MB set. Returns the same
+// edgeWeights shape the co-authorship branch above builds synchronously.
+function buildCitationEdgeWeights(papers, topSet) {
+  // citing_papers is title-only (aggregate.py strips authors from it
+  // deliberately -- every citer is itself a top-level all_papers entry,
+  // so re-embedding its author list there would just duplicate data
+  // already in this same payload). Same resolve-by-title pattern
+  // paper.html/insights.html already use for this exact field.
+  const byTitle = new Map();
+  (currentStats.all_papers || []).forEach(p => { if (p.title) byTitle.set(p.title, p); });
+  const citedPapers = papers.filter(p => (p.authors || []).some(a => topSet.has(a)));
+  const needTitles = citedPapers.filter(p => !Array.isArray(p.citing_papers)).map(p => p.title);
+  const fetchPromise = needTitles.length ? window.fetchCitingPapers(needTitles) : Promise.resolve(new Map());
+  return fetchPromise.then(fetched => {
+    const edgeWeights = {};
+    citedPapers.forEach(p => {
       const citedAuthors = (p.authors || []).filter(a => topSet.has(a));
-      if (!citedAuthors.length) return;
-      (p.citing_papers || []).forEach(title => {
+      const citingTitles = p.citing_papers || fetched.get(p.title) || [];
+      citingTitles.forEach(title => {
         const citer = byTitle.get(title);
         if (!citer) return;
         const citingAuthors = (citer.authors || []).filter(a => topSet.has(a));
@@ -414,17 +443,11 @@ function render() {
         }));
       });
     });
-  } else {
-  papers.forEach(p => {
-    const authors = (p.authors || []).filter(a => topSet.has(a));
-    for (let i = 0; i < authors.length; i++) {
-      for (let j = i + 1; j < authors.length; j++) {
-        const key = authors[i] < authors[j] ? `${authors[i]}${authors[j]}` : `${authors[j]}${authors[i]}`;
-        edgeWeights[key] = (edgeWeights[key] || 0) + 1;
-      }
-    }
+    return edgeWeights;
   });
-  }
+}
+
+function finishRender(papers, paperCounts, topAuthors, topSet, edgeWeights) {
   const edges = Object.keys(edgeWeights).map(key => {
     const [source, target] = key.split('');
     return { source, target, weight: edgeWeights[key] };
