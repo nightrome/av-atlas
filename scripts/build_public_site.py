@@ -194,46 +194,44 @@ def build_public_site():
         (page_dir / html_path.name).write_text(html, encoding="utf-8", newline="\n")
 
     shutil.copy2(stats_path, page_dir / "stats.json")
-    # Sharded abstract files (see aggregate.py's ABSTRACTS_DIR comment) --
-    # paper.html fetches one shard at a time, not stats.json's whole payload.
-    # The shard set is fixed (always exactly ABSTRACT_SHARD_COUNT files,
-    # fixed names), so this copies each file over rather than rmtree+
-    # copytree-ing the whole directory -- avoids a real OneDrive
-    # directory-lock PermissionError rmtree hit in practice here.
-    abstracts_src = BASE / "data" / "abstracts"
-    abstracts_dst = page_dir / "abstracts"
-    if abstracts_src.exists():
-        abstracts_dst.mkdir(parents=True, exist_ok=True)
-        for shard_path in abstracts_src.glob("*.json"):
-            shutil.copy2(shard_path, abstracts_dst / shard_path.name)
-    # Sharded non-AV papers (see aggregate.py's NON_AV_DIR comment) -- same
-    # fixed-shard-set copy pattern as abstracts_src/abstracts_dst above,
-    # for the same OneDrive-rmtree reason. Lazily fetched by index.html and
-    # friends only when the AV-relevance filter is switched away from the
-    # default, so (like abstracts) this copy is optional -- not every
-    # deploy necessarily has one yet.
-    non_av_src = BASE / "data" / "non_av_papers"
-    non_av_dst = page_dir / "non_av_papers"
-    if non_av_src.exists():
-        non_av_dst.mkdir(parents=True, exist_ok=True)
-        for shard_path in non_av_src.glob("*.json"):
-            shutil.copy2(shard_path, non_av_dst / shard_path.name)
-    # Sharded citing-paper lists (see aggregate.py's CITATIONS_DIR comment) --
-    # same fixed-shard-set copy pattern as abstracts_src/abstracts_dst above.
-    # Lazily fetched by index.html/network.html/paper.html for just the
-    # titles they actually need.
-    citations_src = BASE / "data" / "citations"
-    citations_dst = page_dir / "citations"
-    if citations_src.exists():
-        citations_dst.mkdir(parents=True, exist_ok=True)
-        for shard_path in citations_src.glob("*.json"):
-            shutil.copy2(shard_path, citations_dst / shard_path.name)
-    # Lazily fetched by author.html/authors.html/countries.html/institution.html/
-    # paper.html only -- see aggregate.py's DETAIL_OUT_FILE comment. Same
-    # optional-copy reasoning as non_av_papers/ above.
-    detail_path = BASE / "data" / "stats_detail.json"
-    if detail_path.exists():
-        shutil.copy2(detail_path, page_dir / "stats_detail.json")
+
+    # Every sharded data directory aggregate.py writes (see its AUTHOR_
+    # DETAIL_DIR/ABSTRACTS_DIR/etc. comments) -- copied file-by-file rather
+    # than rmtree+copytree-ing the whole directory, since an rmtree here hit
+    # a real OneDrive directory-lock PermissionError in practice. Optional:
+    # not every deploy necessarily has one yet (e.g. a fresh checkout before
+    # its first full aggregate.py run).
+    def copy_shard_dir(name):
+        src = BASE / "data" / name
+        dst = page_dir / name
+        if not src.exists():
+            return None
+        dst.mkdir(parents=True, exist_ok=True)
+        for shard_path in src.glob("*.json"):
+            shutil.copy2(shard_path, dst / shard_path.name)
+        return dst
+
+    abstracts_dst = copy_shard_dir("abstracts")
+    # Lazily fetched by index.html and friends only when the AV-relevance
+    # filter is switched away from the default.
+    non_av_dst = copy_shard_dir("non_av_papers")
+    # Lazily fetched by index.html/network.html/paper.html/author.html for
+    # just the titles they actually need.
+    citations_dst = copy_shard_dir("citations")
+    # Lazily fetched by author.html/authors.html/countries.html/
+    # institution.html/paper.html for just the names they actually need --
+    # see aggregate.py's AUTHOR_DETAIL_DIR comment.
+    author_detail_dst = copy_shard_dir("author_detail")
+    institution_authors_dst = copy_shard_dir("institution_authors")
+    non_av_author_stats_dst = copy_shard_dir("non_av_author_stats")
+
+    # Google Search Console site-ownership verification file for
+    # holger@it-caesar.de -- delete site/google3408b04e9d6aafbd.html (and
+    # this block) once verification is confirmed in Search Console.
+    verification_src = SITE_DIR / "google3408b04e9d6aafbd.html"
+    if verification_src.exists():
+        shutil.copy2(verification_src, page_dir / verification_src.name)
+
     shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
     # see theme-light.css's own header comment.
@@ -269,8 +267,10 @@ def build_public_site():
     # part of the current expected output. Caught in practice: label_relevance.html
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
-        | {"stats.json", "stats_detail.json", "theme.css", "theme-light.css",
+        | {"stats.json", "theme.css", "theme-light.css",
            "logo.svg", "og-image.png", "sitemap.xml", "robots.txt"}
+    if verification_src.exists():
+        expected.add(verification_src.name)
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()
@@ -286,12 +286,13 @@ def build_public_site():
     for js_path in SITE_DIR.glob("*.js"):
         print(f"  {js_path.name}")
     print(f"  stats.json")
-    if abstracts_dst.exists():
-        print(f"  abstracts/ ({len(list(abstracts_dst.iterdir()))} shards)")
-    if non_av_dst.exists():
-        print(f"  non_av_papers/ ({len(list(non_av_dst.iterdir()))} shards)")
-    if citations_dst.exists():
-        print(f"  citations/ ({len(list(citations_dst.iterdir()))} shards)")
+    for name, dst in (
+        ("abstracts", abstracts_dst), ("non_av_papers", non_av_dst), ("citations", citations_dst),
+        ("author_detail", author_detail_dst), ("institution_authors", institution_authors_dst),
+        ("non_av_author_stats", non_av_author_stats_dst),
+    ):
+        if dst is not None:
+            print(f"  {name}/ ({len(list(dst.iterdir()))} shards)")
     print(f"  robots.txt (allow all)")
 
 

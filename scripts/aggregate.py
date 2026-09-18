@@ -63,17 +63,28 @@ OUT_FILE = BASE / "data" / "stats.json"
 # before, just split into parallel-fetchable, size-capped pieces.
 NON_AV_DIR = BASE / "data" / "non_av_papers"
 # author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors
-# together are ~14MB (~32%) of stats.json (raw) but are only read by
-# author.html, authors.html, countries.html, institution.html and
-# paper.html -- every OTHER listing page (index, venues, network,
-# categories, insights, compare) downloaded and JSON.parse'd all of it on
-# every load without ever touching it (confirmed: grepped for each field
-# across every page). Same reasoning as ABSTRACTS_DIR/NON_AV_DIR
-# above, just for these four fields together rather than one each --
-# they're needed by an overlapping set of pages, so one extra fetch
-# reaches all four instead of a page needing several needing to make
-# several small requests for the same reason.
-DETAIL_OUT_FILE = BASE / "data" / "stats_detail.json"
+# used to live together in one ~14MB (~32% of stats.json raw) side file,
+# fetched in full by author.html/authors.html/countries.html/institution.html/
+# paper.html -- every OTHER listing page paid nothing (a real improvement
+# over embedding them in stats.json itself), but each of those five still
+# downloaded and parsed the WHOLE 14MB just to look up a handful of names:
+# one author's own record, a paper's dozen authors, one institution's
+# roster. Sharded by name instead (same shard_index() scheme as
+# ABSTRACTS_DIR, just hashing a person/institution name instead of a paper
+# title) so a page fetches roughly 1/64th of each set per name it actually
+# needs. The two pages that genuinely need the WHOLE author_detail set
+# (countries.html's per-country author count, scanning every author on
+# every filtered paper) fetch and flatten all shards -- same total bytes as
+# before, same "pages that need everything still can" fallback NON_AV_DIR
+# already established.
+AUTHOR_DETAIL_DIR = BASE / "data" / "author_detail"
+INSTITUTION_AUTHORS_DIR = BASE / "data" / "institution_authors"
+# non_av_paper_counts and non_av_paper_citations are both keyed by the same
+# author name, always read together (see author.html's paired "AV
+# citations" / "Non-AV citations" stat tiles) -- combined into one sharded
+# set instead of two, so a page needing one name's stats makes one request
+# instead of two.
+NON_AV_AUTHOR_STATS_DIR = BASE / "data" / "non_av_author_stats"
 # Abstracts are ~20MB of the ~70MB stats.json (raw), but only paper.html
 # ever reads one, one paper at a time -- every other page pays that weight
 # on every load for a field it never touches. Sharded into ABSTRACT_SHARD_COUNT
@@ -1037,6 +1048,29 @@ def shard_index(title, num_shards=ABSTRACT_SHARD_COUNT):
     for ch in title:
         h = ((h * 33) + ord(ch)) & 0xFFFFFFFF
     return h % num_shards
+
+
+def write_sharded_json(dir_path, mapping, label):
+    """Splits a flat {key: value} dict into ABSTRACT_SHARD_COUNT files by
+    shard_index(key) -- the same scheme every sharded directory in this
+    module uses (ABSTRACTS_DIR, NON_AV_DIR, CITATIONS_DIR,
+    AUTHOR_DETAIL_DIR, ...), whether key is a paper title or a person/
+    institution name, so a client resolves any of them the same way. The
+    shard set is a fixed ABSTRACT_SHARD_COUNT files, always fully
+    overwritten -- no rmtree first (a real OneDrive directory-lock
+    PermissionError hit in practice here, see ABSTRACTS_DIR's write site),
+    so a key dropped since the last run doesn't linger in a stale shard."""
+    dir_path.mkdir(parents=True, exist_ok=True)
+    shards = [{} for _ in range(ABSTRACT_SHARD_COUNT)]
+    for key, value in mapping.items():
+        shards[shard_index(key)][key] = value
+    total_bytes = 0
+    for i, shard in enumerate(shards):
+        shard_path = dir_path / f"shard-{i:02d}.json"
+        shard_path.write_text(json.dumps(shard, ensure_ascii=False), encoding="utf-8", newline="\n")
+        total_bytes += shard_path.stat().st_size
+    print(f"Wrote {dir_path}: {len(mapping)} {label} across {ABSTRACT_SHARD_COUNT} shards "
+          f"({total_bytes / 1e6:.1f} MB total)")
 
 
 def paper_short_name(title, authors, year, abstract=None):
@@ -3571,21 +3605,15 @@ def main():
     # OUT_FILE are built, so the stripped dicts (top_papers/all_papers share
     # the same paper objects by reference, so stripping once covers both)
     # are what actually gets written.
-    CITATIONS_DIR.mkdir(parents=True, exist_ok=True)
-    citation_shards = [{} for _ in range(ABSTRACT_SHARD_COUNT)]
-    n_citing_sharded = 0
+    citing_papers_by_title = {}
     for p in papers:
         cp = p.get("citing_papers")
         if not cp:
             continue
-        citation_shards[shard_index(p["title"])][p["title"]] = cp
-        n_citing_sharded += 1
+        citing_papers_by_title[p["title"]] = cp
         if p.get("category") != "dataset-benchmark-paper":
             del p["citing_papers"]
-    for i, shard in enumerate(citation_shards):
-        shard_path = CITATIONS_DIR / f"shard-{i:02d}.json"
-        shard_path.write_text(json.dumps(shard, ensure_ascii=False), encoding="utf-8", newline="\n")
-    print(f"Wrote {CITATIONS_DIR}: {n_citing_sharded} papers' citer lists across {ABSTRACT_SHARD_COUNT} shards")
+    write_sharded_json(CITATIONS_DIR, citing_papers_by_title, "papers' citer lists")
 
     stats = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
@@ -3712,6 +3740,14 @@ def main():
         "category_breakdown": [{"category": cat, **vals}
                                 for cat, vals in sorted(category_stats.items(), key=lambda kv: -kv[1]["citations"])],
         "insights": insights,
+        # A tiny (few hundred names at most) precomputed list, not the
+        # boolean-per-author flag authors.html used to derive by scanning
+        # the ENTIRE author_detail set for identity_conflict=true -- now
+        # that author_detail is sharded by name (see AUTHOR_DETAIL_DIR's
+        # comment), that scan would otherwise force authors.html to fetch
+        # and flatten all 64 shards just to build this one exclusion set.
+        # Cheap enough to ship inline in stats.json rather than its own file.
+        "identity_conflicted_authors": sorted(identity_conflicts),
     }
     # No indent -- same reasoning as the non_av_papers/abstract shards
     # just below (indent=2's per-key newline+spacing roughly doubled this
@@ -3724,26 +3760,29 @@ def main():
           f"{len(inst_citations)} institutions, {len(country_citations)} countries")
     print(f"  papers_with_author_detail={n_with_author_detail} verified={n_verified} excluded_mismatch={n_excluded}")
 
-    # See DETAIL_OUT_FILE's comment above -- these four used to live in
-    # stats.json itself.
-    detail = {
-        "author_detail": author_detail,
-        "non_av_paper_counts": dict(non_av_paper_counts),
-        "non_av_paper_citations": dict(non_av_paper_citations),
-        # Precise "who actually works here" per institution -- see
-        # institution_authors' comment above for why this exists separately
-        # from the paper-level `institutions` field on each paper.
-        "institution_authors": {
-            inst: [
-                {"name": name, "papers": v["papers"], "citations": v["citations"],
-                 "first_year": v["first_year"], "last_year": v["last_year"]}
-                for name, v in sorted(authors.items(), key=lambda kv: -kv[1]["papers"])
-            ]
-            for inst, authors in institution_authors.items()
-        },
+    # See AUTHOR_DETAIL_DIR's comment above -- these four used to live
+    # together in one stats_detail.json, now each sharded by name.
+    write_sharded_json(AUTHOR_DETAIL_DIR, author_detail, "authors' detail records")
+    # Precise "who actually works here" per institution -- see
+    # institution_authors' comment above for why this exists separately
+    # from the paper-level `institutions` field on each paper.
+    institution_authors_out = {
+        inst: [
+            {"name": name, "papers": v["papers"], "citations": v["citations"],
+             "first_year": v["first_year"], "last_year": v["last_year"]}
+            for name, v in sorted(authors.items(), key=lambda kv: -kv[1]["papers"])
+        ]
+        for inst, authors in institution_authors.items()
     }
-    DETAIL_OUT_FILE.write_text(json.dumps(detail, ensure_ascii=False), encoding="utf-8", newline="\n")
-    print(f"Wrote {DETAIL_OUT_FILE} ({DETAIL_OUT_FILE.stat().st_size / 1e6:.1f} MB)")
+    write_sharded_json(INSTITUTION_AUTHORS_DIR, institution_authors_out, "institutions' author rosters")
+    # Combined into one shard set (see NON_AV_AUTHOR_STATS_DIR's comment) --
+    # only a name present in EITHER map gets an entry, defaulting the other
+    # side to 0 rather than requiring both.
+    non_av_author_stats = {
+        name: {"count": non_av_paper_counts.get(name, 0), "citations": non_av_paper_citations.get(name, 0)}
+        for name in set(non_av_paper_counts) | set(non_av_paper_citations)
+    }
+    write_sharded_json(NON_AV_AUTHOR_STATS_DIR, non_av_author_stats, "authors' non-AV paper stats")
 
     # Sharded abstracts -- see ABSTRACTS_DIR's comment above. The shard set
     # is fixed (always exactly ABSTRACT_SHARD_COUNT files, fixed names) and

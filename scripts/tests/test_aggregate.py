@@ -1059,24 +1059,32 @@ class TestAggregateEndToEnd(unittest.TestCase):
         if citation_graph is not None:
             graph_file.write_text(json.dumps(citation_graph), encoding="utf-8")
 
-        orig_in, orig_out, orig_adjacent, orig_detail, orig_profiles, orig_graph, orig_abstracts, orig_citations = (
-            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE,
-            ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR, ag.CITATIONS_DIR)
+        orig = (
+            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.SCHOLAR_PROFILES_FILE, ag.CITATION_GRAPH_FILE,
+            ag.ABSTRACTS_DIR, ag.CITATIONS_DIR, ag.AUTHOR_DETAIL_DIR, ag.INSTITUTION_AUTHORS_DIR,
+            ag.NON_AV_AUTHOR_STATS_DIR,
+        )
         ag.IN_FILE, ag.OUT_FILE = in_file, out_file
-        # Patched to a tmp path -- without this, every test run would
-        # silently rmtree+rewrite the real, sharded data/non_av_papers/.
+        # Every one of these patched to a tmp path -- without it, every test
+        # run would silently rmtree+rewrite the real, sharded data/ output
+        # (non_av_papers/, abstracts/, citations/, author_detail/,
+        # institution_authors/, non_av_author_stats/) or overwrite the real
+        # scholar_profiles.json/citation_graph.json.
         ag.NON_AV_DIR = Path(tmpdir.name) / "non_av_papers"
-        # Same reasoning as NON_AV_DIR -- without this, every test run
-        # would overwrite the real data/stats_detail.json.
-        ag.DETAIL_OUT_FILE = Path(tmpdir.name) / "stats_detail.json"
         ag.SCHOLAR_PROFILES_FILE = Path(tmpdir.name) / "scholar_profiles.json"  # deliberately absent
         ag.CITATION_GRAPH_FILE = graph_file  # absent unless citation_graph was passed
-        # Same reasoning as NON_AV_DIR above -- without this, every
-        # test run would rmtree+rewrite the real data/abstracts/ directory.
         ag.ABSTRACTS_DIR = Path(tmpdir.name) / "abstracts"
-        # Same reasoning as ABSTRACTS_DIR -- without this, every test run
-        # would overwrite the real, sharded data/citations/.
         ag.CITATIONS_DIR = Path(tmpdir.name) / "citations"
+        ag.AUTHOR_DETAIL_DIR = Path(tmpdir.name) / "author_detail"
+        ag.INSTITUTION_AUTHORS_DIR = Path(tmpdir.name) / "institution_authors"
+        ag.NON_AV_AUTHOR_STATS_DIR = Path(tmpdir.name) / "non_av_author_stats"
+
+        def flatten(dir_path):
+            merged = {}
+            for shard_path in sorted(dir_path.glob("shard-*.json")):
+                merged.update(json.loads(shard_path.read_text(encoding="utf-8")))
+            return merged
+
         try:
             ag.main()
             # Sharded the same way as ABSTRACTS_DIR -- flatten every shard
@@ -1087,18 +1095,24 @@ class TestAggregateEndToEnd(unittest.TestCase):
                 p for shard_path in sorted(ag.NON_AV_DIR.glob("shard-*.json"))
                 for p in json.loads(shard_path.read_text(encoding="utf-8"))
             ]
-            self.last_detail = json.loads(ag.DETAIL_OUT_FILE.read_text(encoding="utf-8"))
+            # author_detail/institution_authors used to live together in one
+            # stats_detail.json -- existing assertions still read
+            # self.last_detail["author_detail"]/["institution_authors"], so
+            # the flattened shards are reassembled into that same shape here
+            # rather than touching every individual test.
+            self.last_detail = {
+                "author_detail": flatten(ag.AUTHOR_DETAIL_DIR),
+                "institution_authors": flatten(ag.INSTITUTION_AUTHORS_DIR),
+            }
+            self.last_non_av_author_stats = flatten(ag.NON_AV_AUTHOR_STATS_DIR)
             # Sharded the same way as NON_AV_DIR above -- flattened into one
             # {title: citing_papers} map so existing/new assertions can look
             # up a title's citer list without caring which shard it landed in.
-            self.last_citations = {}
-            for shard_path in sorted(ag.CITATIONS_DIR.glob("shard-*.json")):
-                self.last_citations.update(json.loads(shard_path.read_text(encoding="utf-8")))
+            self.last_citations = flatten(ag.CITATIONS_DIR)
         finally:
-            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, \
-                ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR, ag.CITATIONS_DIR = (
-                orig_in, orig_out, orig_adjacent, orig_detail, orig_profiles, orig_graph, orig_abstracts,
-                orig_citations)
+            (ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.SCHOLAR_PROFILES_FILE, ag.CITATION_GRAPH_FILE,
+             ag.ABSTRACTS_DIR, ag.CITATIONS_DIR, ag.AUTHOR_DETAIL_DIR, ag.INSTITUTION_AUTHORS_DIR,
+             ag.NON_AV_AUTHOR_STATS_DIR) = orig
 
         return json.loads(out_file.read_text(encoding="utf-8"))
 
