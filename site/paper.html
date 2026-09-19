@@ -185,19 +185,9 @@ function row(cells) {
   return tr;
 }
 
-// Same djb2-hash-mod-N as aggregate.py's shard_index() -- must stay in sync
-// by construction, not convention. Picks which abstracts/shard-NN.json this
-// paper's abstract (if any) lives in, so this page fetches ~1/64th of the
-// site's abstract text instead of stats.json bundling all of it for every
-// page's every visitor (see aggregate.py's ABSTRACTS_DIR comment).
-const ABSTRACT_SHARD_COUNT = 64;
-function shardIndex(t, numShards = ABSTRACT_SHARD_COUNT) {
-  let h = 5381;
-  for (let i = 0; i < t.length; i++) {
-    h = ((h * 33) + t.charCodeAt(i)) >>> 0;
-  }
-  return h % numShards;
-}
+// shardIndex is shared via filters.js now (picks which abstracts/,
+// non_av_papers/ or citations/ shard a title lives in -- same djb2-hash-
+// mod-N as aggregate.py's shard_index(), see that file's comment).
 
 function loadAbstract(paperTitle) {
   // Hidden until the shard resolves, rather than showing an empty "Abstract"
@@ -227,7 +217,7 @@ function notFound() {
   document.getElementById('citing-panel').style.display = 'none';
 }
 
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(fetchStatsDetail).then(stats => {
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => {
   const paper = (stats.all_papers || []).find(p => p.title === title);
   if (paper) { renderPaper(stats, paper, false); return; }
   // Not in the AV-relevant set -- before giving up, also check the much
@@ -255,7 +245,36 @@ fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(fetchStat
   document.getElementById('title').textContent = 'Could not load stats.json: ' + err;
 });
 
+// citing_papers is stripped out of most papers' stats.json entries and
+// sharded into citations/shard-NN.json instead (see aggregate.py's
+// CITATIONS_DIR comment) -- a dataset-benchmark-paper keeps it inline
+// already (cheap, and insights.html relies on that), a non-AV/adjacent
+// paper never had it in the first place (same as before this change).
+// author_detail is sharded by name the same way (see aggregate.py's
+// AUTHOR_DETAIL_DIR comment) -- this page needs exactly this paper's own
+// authors plus every citing paper's authors, both resolved here, once,
+// ahead of the (otherwise unchanged) render, rather than renderPaperBody
+// reading an empty stats.author_detail.
 function renderPaper(stats, paper, isAdjacent) {
+  const citingTitlesPromise = paper.citing_papers || isAdjacent
+    ? Promise.resolve(paper.citing_papers || [])
+    : window.fetchCitingPapers([paper.title]).then(map => map.get(paper.title) || []);
+  citingTitlesPromise.then(citingTitles => {
+    paper.citing_papers = citingTitles;
+    const byTitle = new Map((stats.all_papers || []).map(p => [p.title, p]));
+    const neededNames = new Set(paper.authors || []);
+    citingTitles.forEach(t => {
+      const citer = byTitle.get(t);
+      (citer && citer.authors || []).forEach(a => neededNames.add(a));
+    });
+    window.fetchAuthorDetail([...neededNames]).then(detailMap => {
+      stats.author_detail = Object.fromEntries(detailMap);
+      renderPaperBody(stats, paper, isAdjacent);
+    });
+  });
+}
+
+function renderPaperBody(stats, paper, isAdjacent) {
   const relevanceChip = document.getElementById('relevance-chip');
   if (isAdjacent) {
     relevanceChip.textContent = 'Non-AV paper';

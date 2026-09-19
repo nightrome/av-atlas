@@ -156,7 +156,17 @@ let currentStats = null, currentFilters = null;
 let currentQuery = new URLSearchParams(location.search).get('q') || '';
 let currentTimelineDraw = null;
 const relevance = new URLSearchParams(location.search).get('relevance') || '';
-fetchStatsWithRelevance(relevance).then(fetchStatsDetail).then(stats => {
+// This page scans every author on every filtered paper (see authorDetail's
+// own comment below), so unlike author.html/authors.html it genuinely needs
+// the WHOLE author_detail set -- author_detail is sharded by name now (see
+// aggregate.py's AUTHOR_DETAIL_DIR comment), so fetchAllAuthorDetail fetches
+// and flattens every shard, same total bytes as the old one-file fetch,
+// just split into parallel-fetchable pieces. Fetched once here, not inside
+// render() (which reruns on every filter change) -- the whole-corpus set
+// doesn't change when a filter narrows `papers`.
+fetchStatsWithRelevance(relevance).then(stats =>
+  window.fetchAllAuthorDetail().then(authorDetail => { stats.author_detail = authorDetail; return stats; })
+).then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'countries.html', {
     search: { placeholder: 'Search country names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
