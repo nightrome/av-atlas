@@ -54,11 +54,6 @@ data/stats_adjacent.json
 # second opinion on the has_code_link heuristic) -- rerun to regenerate,
 # not part of the site build.
 data/code_link_audit.json
-# sql.js-httpvfs prototype's SQLite file (build with scripts/build_sqlite.py)
-# -- regenerable, ~90MB, and authors_sql_prototype.html is a local-only
-# spike (not linked from nav, not deployed) so this never needs to ship.
-data/av_research_prototype.db
-av_research_prototype.db
 # Citation-source side files (fetch_citations_openalex.py, build_citation_graph.py)
 # -- same reasoning as papers_full.json/stats.json above: fully regenerable,
 # not reviewable as a diff, folded into papers_full.json by

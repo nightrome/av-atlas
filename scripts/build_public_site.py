@@ -65,8 +65,8 @@ ROBOTS_TXT = "User-agent: *\nAllow: /\n"
 # This used to be "every *.html at the app root, minus these three", which
 # leaked twice: label_relevance.html (a hand-labeling tool with candidate
 # paper data embedded in it) and authors_sql_prototype.html (a local-only
-# spike, broken if actually visited, since its vendored dependencies are
-# never copied here) both reached gh-pages before anyone thought to add them
+# spike, since deleted, that was broken if actually visited because its
+# vendored dependencies were never copied here) both reached gh-pages before anyone thought to add them
 # to the exclusion list. A denylist fails open -- a new dev file is published
 # by default and only stops being published once someone remembers. This
 # fails closed: a new page ships when it is added here, and nothing else
