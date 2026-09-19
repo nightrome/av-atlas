@@ -225,13 +225,6 @@ def build_public_site():
     institution_authors_dst = copy_shard_dir("institution_authors")
     non_av_author_stats_dst = copy_shard_dir("non_av_author_stats")
 
-    # Google Search Console site-ownership verification file for
-    # holger@it-caesar.de -- delete site/google3408b04e9d6aafbd.html (and
-    # this block) once verification is confirmed in Search Console.
-    verification_src = SITE_DIR / "google3408b04e9d6aafbd.html"
-    if verification_src.exists():
-        shutil.copy2(verification_src, page_dir / verification_src.name)
-
     shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
     # see theme-light.css's own header comment.
@@ -269,8 +262,6 @@ def build_public_site():
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
         | {"stats.json", "theme.css", "theme-light.css",
            "logo.svg", "og-image.png", "sitemap.xml", "robots.txt"}
-    if verification_src.exists():
-        expected.add(verification_src.name)
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()
