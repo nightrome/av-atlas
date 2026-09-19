@@ -286,4 +286,22 @@
     document.body.insertBefore(nav, document.body.firstChild.nextSibling);
     document.body.insertBefore(brand, nav);
   }
+
+
+  // Visitor analytics (Google Analytics 4). Only on the production site --
+  // the staging preview lives on the same host under /av-atlas-staging/, so
+  // the path prefix is what tells them apart. localhost and forks on other
+  // hosts send nothing.
+  const GA_ID = 'G-Y2HZ5PRR8W';
+  if (location.hostname === 'nightrome.github.io' &&
+      location.pathname.startsWith('/av-atlas/')) {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA_ID);
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+  }
 })();
