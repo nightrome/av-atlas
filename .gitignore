@@ -27,6 +27,11 @@ data/abstracts/
 # they're ~32% of it by size but only needed by author/authors/countries/
 # institution/paper.html -- same reasoning as stats.json above.
 data/stats_detail.json
+# stats_adjacent.json was aggregate.py's original output filename before it
+# was renamed to stats_non_av.json (later sharded into data/non_av_papers/)
+# -- same reasoning as stats.json above, kept ignored in case a stale build
+# artifact from that era ever resurfaces.
+data/stats_adjacent.json
 
 # Belt-and-braces against a stray root copy of the generated data (an old
 # habit, or a hand-run of aggregate.py with the wrong cwd) getting swept in
