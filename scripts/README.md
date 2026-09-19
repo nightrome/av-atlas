@@ -105,4 +105,3 @@ Kept because they document something, not because anyone runs them.
 | Script | What it does |
 | --- | --- |
 | `strip_redundant_venue_fields.py` | A finished cleanup that shrank `data/venues/*.json`. |
-| `build_sqlite.py` | A prototype for `dev/authors_sql_prototype.html`, an author page backed by a SQLite file. It was measured and not adopted. |
