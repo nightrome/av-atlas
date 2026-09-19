@@ -132,3 +132,7 @@ scripts/*.log
 
 # local dev scaffold (browser preview launch config)
 .claude/
+
+# Persistent clones deploy.py uses to push gh-pages incrementally, plus its state
+# (last full-build fingerprint, last previewed build hash). Local-only.
+.deploy-cache/
