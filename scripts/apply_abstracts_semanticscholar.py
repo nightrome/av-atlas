@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Folds fetch_abstracts_semanticscholar.py's side file
+(data/abstracts_semanticscholar.json) into papers_full.json's "abstract"
+field. Only applied to papers that still have no abstract at all -- never
+overwrites a real, already-sourced abstract (CVF/NeurIPS/arXiv/etc.) with
+this fallback.
+
+Usage: python apply_abstracts_semanticscholar.py
+"""
+import json
+import re
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent.parent
+PAPERS_FILE = BASE / "data" / "papers_full.json"
+ABSTRACTS_FILE = BASE / "data" / "abstracts_semanticscholar.json"
+
+
+def normalize_title(t):
+    return re.sub(r"[^a-z0-9]", "", (t or "").lower())
+
+
+def load_json(path, default):
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return default
+
+
+def main():
+    papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
+    abstracts = load_json(ABSTRACTS_FILE, {}).get("abstracts", {})
+
+    n_applied = 0
+    for p in papers:
+        if (p.get("abstract") or "").strip():
+            continue  # a real abstract already exists from a better source
+        key = normalize_title(p.get("title"))
+        abstract = abstracts.get(key)
+        if not abstract:
+            continue
+        p["abstract"] = abstract
+        p["abstract_source"] = "semanticscholar"
+        n_applied += 1
+
+    PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    print(f"Applied Semantic-Scholar-sourced abstracts to {n_applied} papers")
+
+
+if __name__ == "__main__":
+    main()

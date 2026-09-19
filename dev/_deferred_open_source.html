@@ -1,0 +1,72 @@
+<!--
+  DEFERRED / NOT DEPLOYED. Parked here (excluded from the build, see
+  scripts/build_public_site.py's EXCLUDED_HTML) until the LLM code-link
+  classifier (scripts/classify_code_links_llm.py) has enough coverage for
+  the numbers to be trustworthy. To bring it back:
+    1. paste the <div class="panel" id="open-source-panel"> block back into
+       insights.html, after the "Disruptive papers" panel;
+    2. paste the "-- Open-source code --" JS block back into insights.html's
+       main script, before the "-- Venue relevance --" block;
+    3. paste the "Open-source code (Insights)" <h3> block back into
+       about.html's "Beyond the leaderboards" details section.
+-->
+
+<!-- === insights.html: panel markup === -->
+<div class="panel" id="open-source-panel">
+  <div class="panel-title-row"><h2>Open-source code</h2><span class="info-tip" tabindex="0" role="img" aria-label="Share of checked arXiv papers that release their own code, judged by a language model, and whether it correlates with citations." data-tip="Share of checked arXiv papers that release their own code, judged by a language model, and whether it correlates with citations.">i</span></div>
+  <p class="section-intro">
+    Whether a paper releases its own code (not a dataset, not a baseline it compares against), judged
+    by a language model from its arXiv page, and whether that correlates with citation impact.
+    Restricted to papers actually checked (arXiv-sourced only), and the model works through them in
+    batches, so coverage and the percentages here keep shifting as it goes (see About).
+  </p>
+  <div class="fact-grid" id="open-source-facts"></div>
+  <h3>Share of checked papers with a code link, by year</h3>
+  <ul class="venue-list" id="open-source-by-year-list"></ul>
+</div>
+
+<!-- === insights.html: script block === -->
+<script>
+  // -- Open-source code --
+  const openSource = ins.open_source;
+  const openSourcePanel = document.getElementById('open-source-panel');
+  if (openSource) {
+    const osf = document.getElementById('open-source-facts');
+    statTile(osf, `${openSource.with_code_pct.toFixed(1)}%`, 'of checked papers link to their own code');
+    statTile(osf, openSource.checked_papers.toLocaleString(), 'papers checked for a code link');
+    if (openSource.avg_citations_with_code != null && openSource.avg_citations_without_code != null) {
+      statTile(osf, openSource.avg_citations_with_code, 'avg. citations, papers with code');
+      statTile(osf, openSource.avg_citations_without_code, 'avg. citations, papers without code');
+    }
+    const yearList = document.getElementById('open-source-by-year-list');
+    (openSource.with_code_pct_by_year || []).forEach(row => {
+      const li = document.createElement('li');
+      const name = document.createElement('span');
+      name.textContent = row.year;
+      li.appendChild(name);
+      const pct = document.createElement('span');
+      pct.className = 'pct';
+      pct.textContent = `${row.pct.toFixed(1)}%`;
+      li.appendChild(pct);
+      yearList.appendChild(li);
+    });
+    if (!(openSource.with_code_pct_by_year || []).length) {
+      yearList.innerHTML = '<li>Not enough checked papers in any single year yet.</li>';
+    }
+  } else if (openSourcePanel) {
+    openSourcePanel.style.display = 'none';
+  }
+</script>
+
+<!-- === about.html: "Beyond the leaderboards" details, one <h3> block === -->
+<h3>Open-source code (Insights)</h3>
+<p>
+  Whether a paper releases <em>its own</em> source code. A first pass just scanned the arXiv page
+  for a code-host link, but that over-counted badly (a spot check put it near 40% wrong: links to
+  datasets or leaderboards, third-party baseline repos cited in passing, and a loose "code is
+  available" text match that also caught "code is <em>not</em> available"). Now a language model
+  reads each paper's arXiv page and decides whether the authors actually published code for
+  <em>this</em> work. It works through the ~10k arXiv papers in batches, so coverage grows over
+  time; every comparison (citation impact, share over time) is restricted to papers actually
+  checked, never padded out with papers nobody looked at.
+</p>

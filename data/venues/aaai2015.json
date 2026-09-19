@@ -1,0 +1,3372 @@
+[
+  {
+    "title": "Efficient Top-k Shortest-Path Distance Queries on Large Networks by Pruned Landmark Labeling",
+    "authors": "Takuya Akiba, Takanori Hayashi 0002, Nozomi Nori, Yoichi Iwata, Yuichi Yoshida",
+    "abstract": null
+  },
+  {
+    "title": "Inferring Same-As Facts from Linked Data: An Iterative Import-by-Query Approach",
+    "authors": "Mustafa Al-Bakri, Manuel Atencia, Steffen Lalande, Marie-Christine Rousset",
+    "abstract": null
+  },
+  {
+    "title": "A Personalized Interest-Forgetting Markov Model for Recommendations",
+    "authors": "Jun Chen 0004, Chaokun Wang, Jianmin Wang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Will You \"Reconsume\" the Near Past? Fast Prediction on Short-Term Reconsumption Behaviors",
+    "authors": "Jun Chen 0004, Chaokun Wang, Jianmin Wang 0001",
+    "abstract": null
+  },
+  {
+    "title": "VELDA: Relating an Image Tweet's Text and Images",
+    "authors": "Tao Chen 0008, Hany M. SalahEldeen, Xiangnan He 0001, Min-Yen Kan, Dongyuan Lu",
+    "abstract": null
+  },
+  {
+    "title": "On Information Coverage for Location Category Based Point-of-Interest Recommendation",
+    "authors": "Xuefeng Chen 0001, Yifeng Zeng, Gao Cong, Shengchao Qin, Yanping Xiang, Yuanshun Dai",
+    "abstract": null
+  },
+  {
+    "title": "Visually Interpreting Names as Demographic Attributes by Exploiting Click-Through Data",
+    "authors": "Yan-Ying Chen, Yin-Hsi Kuo, Chun-Che Wu, Winston H. Hsu",
+    "abstract": null
+  },
+  {
+    "title": "A New Granger Causal Model for Influence Evolution in Dynamic Social Networks: The Case of DBLP",
+    "authors": "Belkacem Chikhaoui, Mauricio Chiazzaro, Shengrui Wang",
+    "abstract": null
+  },
+  {
+    "title": "An Axiomatic Approach to Link Prediction",
+    "authors": "Sara Cohen, Aviv Zohar",
+    "abstract": null
+  },
+  {
+    "title": "Perceiving Group Themes from Collective Social and Behavioral Information",
+    "authors": "Peng Cui 0001, Tianyang Zhang 0001, Fei Wang 0001, Peng He",
+    "abstract": null
+  },
+  {
+    "title": "Predicting the Demographics of Twitter Users from Website Traffic Data",
+    "authors": "Aron Culotta, Nirmal Ravi Kumar, Jennifer Cutler",
+    "abstract": null
+  },
+  {
+    "title": "High-Performance Distributed ML at Scale through Parameter Server Consistency Models",
+    "authors": "Wei Dai 0003, Abhimanu Kumar, Jinliang Wei, Qirong Ho, Garth A. Gibson, Eric P. Xing",
+    "abstract": null
+  },
+  {
+    "title": "An EBMC-Based Approach to Selecting Types for Entity Filtering",
+    "authors": "Jiwei Ding, Wentao Ding, Wei Hu 0007, Yuzhong Qu",
+    "abstract": null
+  },
+  {
+    "title": "Trust Models for RDF Data: Semantics and Complexity",
+    "authors": "Valeria Fionda, Gianluigi Greco",
+    "abstract": null
+  },
+  {
+    "title": "Extended Property Paths: Writing More SPARQL Queries in a Succinct Way",
+    "authors": "Valeria Fionda, Giuseppe Pirrò, Mariano P. Consens",
+    "abstract": null
+  },
+  {
+    "title": "Lower and Upper Bounds for SPARQL Queries over OWL Ontologies",
+    "authors": "Birte Glimm, Yevgeny Kazakov, Ilianna Kollia, Giorgos B. Stamou",
+    "abstract": null
+  },
+  {
+    "title": "FACES: Diversity-Aware Entity Summarization Using Incremental Hierarchical Conceptual Clustering",
+    "authors": "Kalpa Gunaratna, Krishnaprasad Thirunarayan, Amit P. Sheth",
+    "abstract": null
+  },
+  {
+    "title": "TrustSVD: Collaborative Filtering with Both the Explicit and Implicit Influence of User Trust and of Item Ratings",
+    "authors": "Guibing Guo, Jie Zhang 0002, Neil Yorke-Smith",
+    "abstract": null
+  },
+  {
+    "title": "A Stochastic Model for Detecting Heterogeneous Link Communities in Complex Networks",
+    "authors": "Dongxiao He, Dayou Liu, Di Jin 0001, Weixiong Zhang",
+    "abstract": null
+  },
+  {
+    "title": "Prajna: Towards Recognizing Whatever You Want from Images without Image Labeling",
+    "authors": "Xian-Sheng Hua 0001, Jin Li 0001",
+    "abstract": null
+  },
+  {
+    "title": "Kernel Density Estimation for Text-Based Geolocation",
+    "authors": "Mans Hulden, Miikka Silfverberg, Jerid Francom",
+    "abstract": null
+  },
+  {
+    "title": "Cross-Modal Image Clustering via Canonical Correlation Analysis",
+    "authors": "Cheng Jin 0001, Wenhui Mao, Ruiqi Zhang, Yuejie Zhang, Xiangyang Xue 0001",
+    "abstract": null
+  },
+  {
+    "title": "Modeling with Node Degree Preservation Can Accurately Find Communities",
+    "authors": "Di Jin 0001, Zheng Chen, Dongxiao He, Weixiong Zhang",
+    "abstract": null
+  },
+  {
+    "title": "Estimating Temporal Dynamics of Human Emotions",
+    "authors": "Seungyeon Kim 0001, Joonseok Lee, Guy Lebanon, Haesun Park",
+    "abstract": null
+  },
+  {
+    "title": "Uniform Interpolation and Forgetting for ALC Ontologies with ABoxes",
+    "authors": "Patrick Koopmann, Renate A. Schmidt",
+    "abstract": null
+  },
+  {
+    "title": "Using Matched Samples to Estimate the Effects of Exercise on Mental Health via Twitter",
+    "authors": "Virgile Landeiro Dos Reis, Aron Culotta",
+    "abstract": null
+  },
+  {
+    "title": "Consistent Knowledge Discovery from Evolving Ontologies",
+    "authors": "Freddy Lécué, Jeff Z. Pan",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Document Summarization Based on Two-Level Sparse Representation Model",
+    "authors": "He Liu, Hongliang Yu, Zhi-Hong Deng 0001",
+    "abstract": null
+  },
+  {
+    "title": "COT: Contextual Operating Tensor for Context-Aware Recommender Systems",
+    "authors": "Qiang Liu 0006, Shu Wu, Liang Wang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Effectively Predicting Whether and When a Topic Will Become Prevalent in a Social Network",
+    "authors": "Weiwei Liu 0003, Zhi-Hong Deng 0001, Xiuwen Gong, Frank Jiang 0001, Ivor W. Tsang",
+    "abstract": null
+  },
+  {
+    "title": "Content-Based Collaborative Filtering for News Topic Recommendation",
+    "authors": "Zhongqi Lu, Zhicheng Dou, Jianxun Lian, Xing Xie 0001, Qiang Yang 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Tri-Role Topic Model for Domain-Specific Question Answering",
+    "authors": "Zongyang Ma, Aixin Sun, Quan Yuan 0001, Gao Cong",
+    "abstract": null
+  },
+  {
+    "title": "Handling Owl: sameAs via Rewriting",
+    "authors": "Boris Motik, Yavor Nenov, Robert Edgar Felix Piro, Ian Horrocks 0001",
+    "abstract": null
+  },
+  {
+    "title": "Incorporating Assortativity and Degree Dependence into Scalable Network Models",
+    "authors": "Stephen Mussmann, John Moore, Joseph John Pfeiffer III, Jennifer Neville",
+    "abstract": null
+  },
+  {
+    "title": "Using Description Logics for RDF Constraint Checking and Closed-World Recognition",
+    "authors": "Peter F. Patel-Schneider",
+    "abstract": null
+  },
+  {
+    "title": "Approximating Model-Based ABox Revision in DL-Lite: Theory and Practice",
+    "authors": "Guilin Qi, Zhe Wang 0001, Kewen Wang 0001, Xuefeng Fu, Zhiqiang Zhuang",
+    "abstract": null
+  },
+  {
+    "title": "Leveraging Social Foci for Information Seeking in Social Media",
+    "authors": "Suhas Ranganath, Jiliang Tang, Xia Hu 0001, Hari Sundaram, Huan Liu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Extracting Bounded-Level Modules from Deductive RDF Triplestores",
+    "authors": "Marie-Christine Rousset, Federico Ulliana",
+    "abstract": null
+  },
+  {
+    "title": "Question/Answer Matching for CQA System via Combining Lexical and Sequential Information",
+    "authors": "Yikang Shen, Wenge Rong, Zhiwei Sun, Yuanxin Ouyang, Zhang Xiong 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Hybrid Approach of Classifier and Clustering for Solving the Missing Node Problem",
+    "authors": "Sigal Sina, Avi Rosenfeld, Sarit Kraus, Navot Akiva",
+    "abstract": null
+  },
+  {
+    "title": "Recommending Positive Links in Signed Social Networks by Optimizing a Generalized AUC",
+    "authors": "Dongjin Song, David A. Meyer 0001",
+    "abstract": null
+  },
+  {
+    "title": "Causal Inference via Sparse Additive Models with Application to Online Advertising",
+    "authors": "Wei Sun 0027, Pengyuan Wang 0001, Dawei Yin 0001, Jian Yang 0002, Yi Chang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Sampling Representative Users from Large Social Networks",
+    "authors": "Jie Tang 0001, Chenhui Zhang, Keke Cai, Li Zhang 0007, Zhong Su",
+    "abstract": null
+  },
+  {
+    "title": "Relating Romanized Comments to News Articles by Inferring Multi-Glyphic Topical Correspondence",
+    "authors": "Goutham Tholpadi, Mrinal Kanti Das, Trapit Bansal, Chiranjib Bhattacharyya",
+    "abstract": null
+  },
+  {
+    "title": "Mining User Intents in Twitter: A Semi-Supervised Approach to Inferring Intent Categories for Tweets",
+    "authors": "Jinpeng Wang 0001, Gao Cong, Wayne Xin Zhao, Xiaoming Li 0001",
+    "abstract": null
+  },
+  {
+    "title": "Burst Time Prediction in Cascades",
+    "authors": "Senzhang Wang, Zhao Yan, Xia Hu 0001, Philip S. Yu, Zhoujun Li 0001",
+    "abstract": null
+  },
+  {
+    "title": "Clustering-Based Collaborative Filtering for Link Prediction",
+    "authors": "Xiangyu Wang 0017, Dayu He, Danyang Chen, Jinhui Xu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Mining Query Subtopics from Questions in Community Question Answering",
+    "authors": "Yu Wu 0012, Wei Wu 0014, Zhoujun Li 0001, Ming Zhou 0001",
+    "abstract": null
+  },
+  {
+    "title": "DynaDiffuse: A Dynamic Diffusion Model for Continuous Time Constrained Influence Maximization",
+    "authors": "Miao Xie, Qiusong Yang, Qing Wang 0001, Gao Cong, Gerard de Melo",
+    "abstract": null
+  },
+  {
+    "title": "A Probabilistic Model for Bursty Topic Discovery in Microblogs",
+    "authors": "Xiaohui Yan, Jiafeng Guo, Yanyan Lan, Jun Xu 0001, Xueqi Cheng 0001",
+    "abstract": null
+  },
+  {
+    "title": "On the Scalable Learning of Stochastic Blockmodel",
+    "authors": "Bo Yang 0002, Xuehua Zhao",
+    "abstract": null
+  },
+  {
+    "title": "RAIN: Social Role-Aware Information Diffusion",
+    "authors": "Yang Yang 0009, Jie Tang 0001, Cane Wing-ki Leung, Yizhou Sun, Qicong Chen, Juanzi Li, Qiang Yang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Collaborative Topic Ranking: Leveraging Item Meta-Data for Sparsity Reduction",
+    "authors": "Weilong Yao, Jing He 0004, Hua Wang 0002, Yanchun Zhang, Jie Cao 0001",
+    "abstract": null
+  },
+  {
+    "title": "Robust Image Sentiment Analysis Using Progressively Trained and Domain Transferred Deep Networks",
+    "authors": "Quanzeng You, Jiebo Luo 0001, Hailin Jin, Jianchao Yang",
+    "abstract": null
+  },
+  {
+    "title": "Are Features Equally Representative? A Feature-Centric Recommendation",
+    "authors": "Chenyi Zhang 0002, Ke Wang 0001, Ee-Peng Lim, Qinneng Xu, Jianling Sun, Hongkun Yu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Incorporating Implicit Link Preference Into Overlapping Community Detection",
+    "authors": "Hongyi Zhang 0012, Irwin King, Michael R. Lyu",
+    "abstract": null
+  },
+  {
+    "title": "Retweet Behavior Prediction Using Hierarchical Dirichlet Process",
+    "authors": "Qi Zhang 0001, Yeyun Gong, Ya Guo, Xuanjing Huang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Exploring Key Concept Paraphrasing Based on Pivot Language Translation for Question Retrieval",
+    "authors": "Weinan Zhang 0003, Zhaoyan Ming, Yu Zhang 0030, Ting Liu 0001, Tat-Seng Chua",
+    "abstract": null
+  },
+  {
+    "title": "Representation Learning for Aspect Category Detection in Online Reviews",
+    "authors": "Xinjie Zhou, Xiaojun Wan 0001, Jianguo Xiao",
+    "abstract": null
+  },
+  {
+    "title": "Person Identification Using Anthropometric and Gait Data from Kinect Sensor",
+    "authors": "Virginia Ortiz Andersson, Ricardo Matsumura de Araújo",
+    "abstract": null
+  },
+  {
+    "title": "R1SVM: A Randomised Nonlinear Approach to Large-Scale Anomaly Detection",
+    "authors": "Sarah M. Erfani, Mahsa Baktashmotlagh, Sutharshan Rajasegarar, Shanika Karunasekera, Christopher Leckie",
+    "abstract": null
+  },
+  {
+    "title": "Personalized Tag Recommendation through Nonlinear Tensor Factorization Using Gaussian Kernel",
+    "authors": "Xiaomin Fang, Rong Pan, Guoxiang Cao, Xiuqiang He 0001, Wenyuan Dai",
+    "abstract": null
+  },
+  {
+    "title": "A Multivariate Timeseries Modeling Approach to Severity of Illness Assessment and Forecasting in ICU with Sparse, Heterogeneous Clinical Data",
+    "authors": "Marzyeh Ghassemi, Marco A. F. Pimentel, Tristan Naumann, Thomas Brennan, David A. Clifton, Peter Szolovits, Mengling Feng",
+    "abstract": null
+  },
+  {
+    "title": "Probabilistic Graphical Models for Boosting Cardinal and Ordinal Peer Grading in MOOCs",
+    "authors": "Fei Mi, Dit-Yan Yeung",
+    "abstract": null
+  },
+  {
+    "title": "Efficient Computation of Semivalues for Game-Theoretic Network Centrality",
+    "authors": "Piotr Lech Szczepanski, Mateusz Krzysztof Tarkowski, Tomasz Pawel Michalak, Paul Harrenstein, Michael J. Wooldridge",
+    "abstract": null
+  },
+  {
+    "title": "Embedded Unsupervised Feature Selection",
+    "authors": "Suhang Wang, Jiliang Tang, Huan Liu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Learning User-Specific Latent Influence and Susceptibility from Information Cascades",
+    "authors": "Yongqing Wang 0005, Huawei Shen, Shenghua Liu, Xueqi Cheng 0001",
+    "abstract": null
+  },
+  {
+    "title": "Kickback Cuts Backprop's Red-Tape: Biologically Plausible Credit Assignment in Neural Networks",
+    "authors": "David Balduzzi, Hastagiri Vanchinathan, Joachim M. Buhmann",
+    "abstract": null
+  },
+  {
+    "title": "An Agent-Based Model of the Emergence and Transmission of a Language System for the Expression of Logical Combinations",
+    "authors": "Josefina Sierra-Santibáñez",
+    "abstract": null
+  },
+  {
+    "title": "Moral Decision-Making by Analogy: Generalizations versus Exemplars",
+    "authors": "Joseph A. Blass, Kenneth D. Forbus",
+    "abstract": null
+  },
+  {
+    "title": "AffectiveSpace 2: Enabling Affective Intuition for Concept-Level Sentiment Analysis",
+    "authors": "Erik Cambria, Jie Fu 0001, Federica Bisio, Soujanya Poria",
+    "abstract": null
+  },
+  {
+    "title": "Dialogue Understanding in a Logic of Action and Belief",
+    "authors": "Alfredo Gabaldon, Pat Langley",
+    "abstract": null
+  },
+  {
+    "title": "Automated Construction of Visual-Linguistic Knowledge via Concept Learning from Cartoon Videos",
+    "authors": "JungWoo Ha 0001, Kyung-Min Kim, Byoung-Tak Zhang",
+    "abstract": null
+  },
+  {
+    "title": "Bayesian Affect Control Theory of Self",
+    "authors": "Jesse Hoey, Tobias Schröder",
+    "abstract": null
+  },
+  {
+    "title": "Heuristic Induction of Rate-Based Process Models",
+    "authors": "Pat Langley, Adam Arvay",
+    "abstract": null
+  },
+  {
+    "title": "Spontaneous Retrieval from Long-Term Memory for a Cognitive Architecture",
+    "authors": "Justin Li, John E. Laird",
+    "abstract": null
+  },
+  {
+    "title": "Learning Plausible Inferences from Semantic Web Knowledge by Combining Analogical Generalization with Structured Logistic Regression",
+    "authors": "Chen Liang, Kenneth D. Forbus",
+    "abstract": null
+  },
+  {
+    "title": "Ontology-Based Information Extraction with a Cognitive Agent",
+    "authors": "Peter Lindes, Deryle W. Lonsdale, David W. Embley",
+    "abstract": null
+  },
+  {
+    "title": "Extending Analogical Generalization with Near-Misses",
+    "authors": "Matthew D. McLure, Scott E. Friedman, Kenneth D. Forbus",
+    "abstract": null
+  },
+  {
+    "title": "Automatic Ellipsis Resolution: Recovering Covert Information from Text",
+    "authors": "Marjorie McShane, Petr Babkin",
+    "abstract": null
+  },
+  {
+    "title": "Inference Graphs: Combining Natural Deduction and Subsumption Inference in a Concurrent Reasoner",
+    "authors": "Daniel R. Schlegel, Stuart C. Shapiro",
+    "abstract": null
+  },
+  {
+    "title": "An Entorhinal-Hippocampal Model for Simultaneous Cognitive Map Building",
+    "authors": "Miaolong Yuan, Bo Tian, Vui Ann Shim, Huajin Tang, Haizhou Li 0001",
+    "abstract": null
+  },
+  {
+    "title": "An Association Network for Computing Semantic Relatedness",
+    "authors": "Keyang Zhang, Kenny Q. Zhu, Seung-won Hwang",
+    "abstract": null
+  },
+  {
+    "title": "Influence-Driven Model for Time Series Prediction from Partial Observations",
+    "authors": "Saima Aman, Charalampos Chelmis, Viktor K. Prasanna",
+    "abstract": null
+  },
+  {
+    "title": "Sharing Rides with Friends: A Coalition Formation Algorithm for Ridesharing",
+    "authors": "Filippo Bistaffa, Alessandro Farinelli, Sarvapali D. Ramchurn",
+    "abstract": null
+  },
+  {
+    "title": "Best-Response Planning of Thermostatically Controlled Loads under Power Constraints",
+    "authors": "Frits de Nijs, Matthijs T. J. Spaan, Mathijs de Weerdt",
+    "abstract": null
+  },
+  {
+    "title": "FutureMatch: Combining Human Value Judgments and Machine Learning to Match in Dynamic Environments",
+    "authors": "John P. Dickerson, Tuomas Sandholm",
+    "abstract": null
+  },
+  {
+    "title": "Energy Disaggregation via Learning Powerlets and Sparse Coding",
+    "authors": "Ehsan Elhamifar, Shankar Sastry 0001",
+    "abstract": null
+  },
+  {
+    "title": "Pattern Decomposition with Complex Combinatorial Constraints: Application to Materials Discovery",
+    "authors": "Stefano Ermon, Ronan Le Bras 0001, Santosh K. Suram, John M. Gregoire, Carla P. Gomes, Bart Selman, Robert Bruce van Dover",
+    "abstract": null
+  },
+  {
+    "title": "Learning Large-Scale Dynamic Discrete Choice Models of Spatio-Temporal Preferences with Application to Migratory Pastoralism in East Africa",
+    "authors": "Stefano Ermon, Yexiang Xue, Russell Toth, Bistra Dilkina, Richard Bernstein, Theodoros Damoulas, Patrick E. Clark, Steve DeGloria, Andrew Mude, Christopher Barrett, Carla P. Gomes",
+    "abstract": null
+  },
+  {
+    "title": "A Nonparametric Online Model for Air Quality Prediction",
+    "authors": "Vitor Campanholo Guizilini, Fabio Tozeto Ramos",
+    "abstract": null
+  },
+  {
+    "title": "Power System Restoration With Transient Stability",
+    "authors": "Hassan L. Hijazi, Terrence W. K. Mak, Pascal Van Hentenryck",
+    "abstract": null
+  },
+  {
+    "title": "Aggregating Electric Cars to Sustainable Virtual Power Plants: The Value of Flexibility in Future Electricity Markets",
+    "authors": "Micha Kahlen, Wolfgang Ketter",
+    "abstract": null
+  },
+  {
+    "title": "Energy Usage Behavior Modeling in Energy Disaggregation via Marked Hawkes Process",
+    "authors": "Liangda Li, Hongyuan Zha",
+    "abstract": null
+  },
+  {
+    "title": "HVAC-Aware Occupancy Scheduling",
+    "authors": "BoonPing Lim, Menkes van den Briel, Sylvie Thiébaux, Scott Backhaus, Russell Bent",
+    "abstract": null
+  },
+  {
+    "title": "Data Analysis and Optimization for (Citi)Bike Sharing",
+    "authors": "Eoin O'Mahony, David B. Shmoys",
+    "abstract": null
+  },
+  {
+    "title": "Towards Optimal Solar Tracking: A Dynamic Programming Approach",
+    "authors": "Athanasios Aris Panagopoulos, Georgios Chalkiadakis, Nicholas Robert Jennings",
+    "abstract": null
+  },
+  {
+    "title": "Risk Based Optimization for Improving Emergency Medical Systems",
+    "authors": "Sandhya Saisubramanian, Pradeep Varakantham, Hoong Chuin Lau",
+    "abstract": null
+  },
+  {
+    "title": "Predisaster Preparation of Transportation Networks",
+    "authors": "Hermann Schichl, Meinolf Sellmann",
+    "abstract": null
+  },
+  {
+    "title": "SmartShift: Expanded Load Shifting Incentive Mechanism for Risk-Averse Consumers",
+    "authors": "Bochao Shen, Balakrishnan Narayanaswamy, Ravi Sundaram",
+    "abstract": null
+  },
+  {
+    "title": "Incentivizing Users for Balancing Bike Sharing Systems",
+    "authors": "Adish Singla, Marco Santoni, Gábor Bartók, Pratik Mukerji, Moritz Meenen, Andreas Krause 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Simulator of Human Emergency Mobility Following Disasters: Knowledge Transfer from Big Disaster Data",
+    "authors": "Xuan Song 0001, Quanshi Zhang, Yoshihide Sekimoto, Ryosuke Shibasaki, Nicholas Jing Yuan, Xing Xie 0001",
+    "abstract": null
+  },
+  {
+    "title": "Real-Time Predictive Optimization for Energy Management in a Hybrid Electric Vehicle",
+    "authors": "Alexander David Styler, Illah Reza Nourbakhsh",
+    "abstract": null
+  },
+  {
+    "title": "Automatic Generation of Alternative Starting Positions for Simple Traditional Board Games",
+    "authors": "Umair Z. Ahmed, Krishnendu Chatterjee, Sumit Gulwani",
+    "abstract": null
+  },
+  {
+    "title": "Continuity Editing for 3D Animation",
+    "authors": "Quentin Galvane, Rémi Ronfard, Christophe Lino, Marc Christie",
+    "abstract": null
+  },
+  {
+    "title": "Assessing the Robustness of Cremer-McLean with Automated Mechanism Design",
+    "authors": "Michael Albert 0002, Vincent Conitzer, Giuseppe Lopomo",
+    "abstract": null
+  },
+  {
+    "title": "Online Learning and Profit Maximization from Revealed Preferences",
+    "authors": "Kareem Amin 0002, Rachel Cummings, Lili Dworkin, Michael J. Kearns, Aaron Roth 0001",
+    "abstract": null
+  },
+  {
+    "title": "Approximating Optimal Social Choice under Metric Preferences",
+    "authors": "Elliot Anshelevich, Onkar Bhardwaj, John Postl",
+    "abstract": null
+  },
+  {
+    "title": "Justified Representation in Approval-Based Committee Voting",
+    "authors": "Haris Aziz 0001, Markus Brill, Vincent Conitzer, Edith Elkind, Rupert Freeman, Toby Walsh",
+    "abstract": null
+  },
+  {
+    "title": "Audit Games with Multiple Defender Resources",
+    "authors": "Jeremiah Blocki, Nicolas Christin, Anupam Datta, Ariel D. Procaccia, Arunesh Sinha",
+    "abstract": null
+  },
+  {
+    "title": "Learning Valuation Distributions from Partial Observation",
+    "authors": "Avrim Blum, Yishay Mansour, Jamie Morgenstern",
+    "abstract": null
+  },
+  {
+    "title": "Sequence-Form Algorithm for Computing Stackelberg Equilibria in Extensive-Form Games",
+    "authors": "Branislav Bosanský, Jiri Cermak",
+    "abstract": null
+  },
+  {
+    "title": "Combining Compact Representation and Incremental Generation in Large Games with Sequential Strategies",
+    "authors": "Branislav Bosanský, Albert Xin Jiang, Milind Tambe, Christopher Kiekintveld",
+    "abstract": null
+  },
+  {
+    "title": "Strategic Voting and Strategic Candidacy",
+    "authors": "Markus Brill, Vincent Conitzer",
+    "abstract": null
+  },
+  {
+    "title": "A Faster Core Constraint Generation Algorithm for Combinatorial Auctions",
+    "authors": "Benedikt Bünz, Sven Seuken, Benjamin Lubin",
+    "abstract": null
+  },
+  {
+    "title": "Price Evolution in a Continuous Double Auction Prediction Market With a Scoring-Rule Based Market Maker",
+    "authors": "Mithun Chakraborty, Sanmay Das, Justin Peabody",
+    "abstract": null
+  },
+  {
+    "title": "Computing Nash Equilibrium in Interdependent Defense Games",
+    "authors": "Hau Chan, Luis E. Ortiz",
+    "abstract": null
+  },
+  {
+    "title": "Fair Information Sharing for Treasure Hunting",
+    "authors": "Yiling Chen 0001, Kobbi Nissim, Bo Waggoner",
+    "abstract": null
+  },
+  {
+    "title": "Conventional Machine Learning for Social Choice",
+    "authors": "John A. Doucette, Kate Larson, Robin Cohen",
+    "abstract": null
+  },
+  {
+    "title": "The Complexity of Recognizing Incomplete Single-Crossing Preferences",
+    "authors": "Edith Elkind, Piotr Faliszewski, Martin Lackner, Svetlana Obraztsova",
+    "abstract": null
+  },
+  {
+    "title": "A Unifying Hierarchy of Valuations with Complements and Substitutes",
+    "authors": "Uriel Feige, Michal Feldman, Nicole Immorlica, Rani Izsak, Brendan Lucier, Vasilis Syrgkanis",
+    "abstract": null
+  },
+  {
+    "title": "Do Capacity Constraints Constrain Coalitions?",
+    "authors": "Michal Feldman, Ofir Geri",
+    "abstract": null
+  },
+  {
+    "title": "A Mechanism Design Approach to Measure Awareness",
+    "authors": "Diodato Ferraioli, Carmine Ventre, Gabor Aranyi",
+    "abstract": null
+  },
+  {
+    "title": "Facility Location with Double-Peaked Preferences",
+    "authors": "Aris Filos-Ratsikas, Minming Li, Jie Zhang 0008, Qiang Zhang",
+    "abstract": null
+  },
+  {
+    "title": "Elicitation for Aggregation",
+    "authors": "Rafael M. Frongillo, Yiling Chen 0001, Ian A. Kash",
+    "abstract": null
+  },
+  {
+    "title": "A Complexity Approach for Core-Selecting Exchange with Multiple Indivisible Goods under Lexicographic Preferences",
+    "authors": "Etsushi Fujita, Julien Lesca, Akihisa Sonoda, Taiki Todo, Makoto Yokoo",
+    "abstract": null
+  },
+  {
+    "title": "Security Games with Protection Externalities",
+    "authors": "Jiarui Gan, Bo An 0001, Yevgeniy Vorobeychik",
+    "abstract": null
+  },
+  {
+    "title": "Strategy-Proof and Efficient Kidney Exchange Using a Credit Mechanism",
+    "authors": "Chen Hajaj, John P. Dickerson, Avinatan Hassidim, Tuomas Sandholm, David Sarne",
+    "abstract": null
+  },
+  {
+    "title": "Hedonic Coalition Formation in Networks",
+    "authors": "Martin Hoefer 0001, Daniel Vaz 0001, Lisa Wagner",
+    "abstract": null
+  },
+  {
+    "title": "Matching with Dynamic Ordinal Preferences",
+    "authors": "Hadi Hosseini, Kate Larson, Robin Cohen",
+    "abstract": null
+  },
+  {
+    "title": "On a Competitive Secretary Problem",
+    "authors": "Anna R. Karlin, Eric Lei",
+    "abstract": null
+  },
+  {
+    "title": "Controlled School Choice with Soft Bounds and Overlapping Types",
+    "authors": "Ryoji Kurata, Masahiro Goto, Atsushi Iwasaki, Makoto Yokoo",
+    "abstract": null
+  },
+  {
+    "title": "Optimal Personalized Filtering Against Spear-Phishing Attacks",
+    "authors": "Aron Laszka, Yevgeniy Vorobeychik, Xenofon D. Koutsoukos",
+    "abstract": null
+  },
+  {
+    "title": "Stable Invitations",
+    "authors": "Hooyeon Lee, Yoav Shoham",
+    "abstract": null
+  },
+  {
+    "title": "The Pricing War Continues: On Competitive Multi-Item Pricing",
+    "authors": "Omer Lev, Joel Oren, Craig Boutilier, Jeffrey S. Rosenschein",
+    "abstract": null
+  },
+  {
+    "title": "Cooperative Game Solution Concepts that Maximize Stability under Noise",
+    "authors": "Yuqian Li 0002, Vincent Conitzer",
+    "abstract": null
+  },
+  {
+    "title": "Congestion Games with Distance-Based Strict Uncertainty",
+    "authors": "Reshef Meir, David C. Parkes",
+    "abstract": null
+  },
+  {
+    "title": "On the Convergence of Iterative Voting: How Restrictive Should Restricted Dynamics Be?",
+    "authors": "Svetlana Obraztsova, Evangelos Markakis 0001, Maria Polukarov, Zinovi Rabinovich, Nicholas R. Jennings",
+    "abstract": null
+  },
+  {
+    "title": "Voting Rules As Error-Correcting Codes",
+    "authors": "Ariel D. Procaccia, Nisarg Shah 0001, Yair Zick",
+    "abstract": null
+  },
+  {
+    "title": "Analysis of Equilibria in Iterative Voting Schemes",
+    "authors": "Zinovi Rabinovich, Svetlana Obraztsova, Omer Lev, Evangelos Markakis 0001, Jeffrey S. Rosenschein",
+    "abstract": null
+  },
+  {
+    "title": "Incentives for Subjective Evaluations with Private Beliefs",
+    "authors": "Goran Radanovic, Boi Faltings",
+    "abstract": null
+  },
+  {
+    "title": "Envy-Free Cake-Cutting in Two Dimensions",
+    "authors": "Erel Segal-Halevi, Avinatan Hassidim, Yonatan Aumann",
+    "abstract": null
+  },
+  {
+    "title": "Truthful Mechanisms without Money for Non-Utilitarian Heterogeneous Facility Location",
+    "authors": "Paolo Serafino, Carmine Ventre",
+    "abstract": null
+  },
+  {
+    "title": "A Graphical Representation for Games in Partition Function Form",
+    "authors": "Oskar Skibski, Tomasz P. Michalak, Yuko Sakurai, Michael J. Wooldridge, Makoto Yokoo",
+    "abstract": null
+  },
+  {
+    "title": "A Stackelberg Game Approach for Incentivizing Participation in Online Educational Forums with Heterogeneous Student Population",
+    "authors": "Rohith Dwarakanath Vallam, Priyanka Bhatt, Debmalya Mandal, Y. Narahari 0001",
+    "abstract": null
+  },
+  {
+    "title": "Mechanism Design for Team Formation",
+    "authors": "Mason Wright, Yevgeniy Vorobeychik",
+    "abstract": null
+  },
+  {
+    "title": "Exploring Information Asymmetry in Two-Stage Security Games",
+    "authors": "Haifeng Xu, Zinovi Rabinovich, Shaddin Dughmi, Milind Tambe",
+    "abstract": null
+  },
+  {
+    "title": "Balanced Trade Reduction for Dual-Role Exchange Markets",
+    "authors": "Dengji Zhao, Sarvapali D. Ramchurn, Enrico H. Gerding, Nicholas R. Jennings",
+    "abstract": null
+  },
+  {
+    "title": "Optimal Machine Strategies to Commit to in Two-Person Repeated Games",
+    "authors": "Song Zuo, Pingzhong Tang",
+    "abstract": null
+  },
+  {
+    "title": "Optimal Column Subset Selection by A-Star Search",
+    "authors": "Hiromasa Arai, Crystal Maung, Haim Schweitzer",
+    "abstract": null
+  },
+  {
+    "title": "Limitations of Front-To-End Bidirectional Heuristic Search",
+    "authors": "Joseph Kelly Barker, Richard E. Korf",
+    "abstract": null
+  },
+  {
+    "title": "Incremental Weight Elicitation for Multiobjective State Space Search",
+    "authors": "Nawal Benabbou, Patrice Perny",
+    "abstract": null
+  },
+  {
+    "title": "Complexity Results for Compressing Optimal Paths",
+    "authors": "Adi Botea, Ben Strasser, Daniel Harabor",
+    "abstract": null
+  },
+  {
+    "title": "Two Weighting Local Search for Minimum Vertex Cover",
+    "authors": "Shaowei Cai 0001, Jinkun Lin, Kaile Su",
+    "abstract": null
+  },
+  {
+    "title": "Efficient Benchmarking of Hyperparameter Optimizers via Surrogates",
+    "authors": "Katharina Eggensperger, Frank Hutter, Holger H. Hoos, Kevin Leyton-Brown",
+    "abstract": null
+  },
+  {
+    "title": "Convergent Plans for Large-Scale Evacuations",
+    "authors": "Caroline Even, Victor Pillac, Pascal Van Hentenryck",
+    "abstract": null
+  },
+  {
+    "title": "Initializing Bayesian Hyperparameter Optimization via Meta-Learning",
+    "authors": "Matthias Feurer 0001, Jost Tobias Springenberg, Frank Hutter",
+    "abstract": null
+  },
+  {
+    "title": "Stochastic Local Search for Satisfiability Modulo Theories",
+    "authors": "Andreas Fröhlich, Armin Biere, Christoph M. Wintersteiger, Youssef Hamadi",
+    "abstract": null
+  },
+  {
+    "title": "Lagrangian Decomposition Algorithm for Allocating Marketing Channels",
+    "authors": "Daisuke Hatano, Takuro Fukunaga, Takanori Maehara, Ken-ichi Kawarabayashi",
+    "abstract": null
+  },
+  {
+    "title": "Recursive Best-First Search with Bounded Overhead",
+    "authors": "Matthew Hatem, Scott Kiesel, Wheeler Ruml",
+    "abstract": null
+  },
+  {
+    "title": "Reusing Previously Found A* Paths for Fast Goal-Directed Navigation in Dynamic Terrain",
+    "authors": "Carlos Hernández 0003, Roberto Asín, Jorge A. Baier",
+    "abstract": null
+  },
+  {
+    "title": "Pruning Game Tree by Rollouts",
+    "authors": "Bojun Huang",
+    "abstract": null
+  },
+  {
+    "title": "Solving Distributed Constraint Optimization Problems Using Logic Programming",
+    "authors": "Tiep Le, Tran Cao Son, Enrico Pontelli, William Yeoh 0001",
+    "abstract": null
+  },
+  {
+    "title": "Value-Directed Compression of Large-Scale Assignment Problems",
+    "authors": "Tyler Lu, Craig Boutilier",
+    "abstract": null
+  },
+  {
+    "title": "On Unconstrained Quasi-Submodular Function Optimization",
+    "authors": "Jincheng Mei, Kang Zhao, Bao-Liang Lu",
+    "abstract": null
+  },
+  {
+    "title": "Improved Local Search for Binary Matrix Factorization",
+    "authors": "Seyed Hamid Mirisaee, Éric Gaussier, Alexandre Termier",
+    "abstract": null
+  },
+  {
+    "title": "A Theoretical Analysis of Optimization by Gaussian Continuation",
+    "authors": "Hossein Mobahi, John W. Fisher III",
+    "abstract": null
+  },
+  {
+    "title": "Solving Hard Stable Matching Problems via Local Search and Cooperative Parallelization",
+    "authors": "Danny Munera, Daniel Diaz 0001, Salvador Abreu, Francesca Rossi 0001, Vijay A. Saraswat, Philippe Codognet",
+    "abstract": null
+  },
+  {
+    "title": "BDD-Constrained Search: A Unified Approach to Constrained Shortest Path Problems",
+    "authors": "Masaaki Nishino, Norihito Yasuda, Shin-ichi Minato, Masaaki Nagata",
+    "abstract": null
+  },
+  {
+    "title": "Exploiting Variable Associations to Configure Efficient Local Search in Large-Scale Set Partitioning Problems",
+    "authors": "Shunji Umetani",
+    "abstract": null
+  },
+  {
+    "title": "Resilient Upgrade of Electrical Distribution Grids",
+    "authors": "Emre Yamangil, Russell Bent, Scott Backhaus",
+    "abstract": null
+  },
+  {
+    "title": "TDS+: Improving Temperature Discovery Search",
+    "authors": "Yeqin Zhang, Martin Müller 0003",
+    "abstract": null
+  },
+  {
+    "title": "Massively Parallel A* Search on a GPU",
+    "authors": "Yichao Zhou, Jianyang Zeng 0001",
+    "abstract": null
+  },
+  {
+    "title": "Novel Mechanisms for Online Crowdsourcing with Unreliable, Strategic Agents",
+    "authors": "Praphul Chandra, Yadati Narahari, Debmalya Mandal, Prasenjit Dey",
+    "abstract": null
+  },
+  {
+    "title": "Acquiring Speech Transcriptions Using Mismatched Crowdsourcing",
+    "authors": "Preethi Jyothi, Mark Hasegawa-Johnson",
+    "abstract": null
+  },
+  {
+    "title": "Incentive Networks",
+    "authors": "Yuezhou Lv, Thomas Moscibroda",
+    "abstract": null
+  },
+  {
+    "title": "Collaboration in Social Problem-Solving: When Diversity Trumps Network Efficiency",
+    "authors": "Diego Noble, Marcelo O. R. Prates, Daniel Bossle, Luís C. Lamb",
+    "abstract": null
+  },
+  {
+    "title": "CrowdWON: A Modelling Language for Crowd Processes based on Workflow Nets",
+    "authors": "David Sanchez-Charles, Victor Muntés-Mulero, Marc Solé, Jordi Nin",
+    "abstract": null
+  },
+  {
+    "title": "On the Impossibility of Convex Inference in Human Computation",
+    "authors": "Nihar B. Shah, Dengyong Zhou",
+    "abstract": null
+  },
+  {
+    "title": "Crowdsourcing Complex Workflows under Budget Constraints",
+    "authors": "Long Tran-Thanh, Trung Dong Huynh, Avi Rosenfeld, Sarvapali D. Ramchurn, Nicholas R. Jennings",
+    "abstract": null
+  },
+  {
+    "title": "Efficient Task Sub-Delegation for Crowdsourcing",
+    "authors": "Han Yu 0001, Chunyan Miao, Zhiqi Shen 0001, Cyril Leung, Yiqiang Chen 0001, Qiang Yang 0001",
+    "abstract": null
+  },
+  {
+    "title": "When Suboptimal Rules",
+    "authors": "Avshalom Elmalech, David Sarne, Avi Rosenfeld, Eden Shalom Erez",
+    "abstract": null
+  },
+  {
+    "title": "Providing Arguments in Discussions Based on the Prediction of Human Argumentative Behavior",
+    "authors": "Ariel Rosenfeld, Sarit Kraus",
+    "abstract": null
+  },
+  {
+    "title": "Predicting Emotion Perception Across Domains: A Study of Singing and Speaking",
+    "authors": "Biqiao Zhang, Emily Mower Provost, Robert Swedberg, Georg Essl",
+    "abstract": null
+  },
+  {
+    "title": "Learning to Manipulate Unknown Objects in Clutter by Reinforcement",
+    "authors": "Abdeslam Boularias, James Andrew Bagnell, Anthony Stentz",
+    "abstract": null
+  },
+  {
+    "title": "Bayesian Active Learning-Based Robot Tutor for Children's Word-Reading Skills",
+    "authors": "Goren Gordon, Cynthia Breazeal",
+    "abstract": null
+  },
+  {
+    "title": "RANSAC versus CS-RANSAC",
+    "authors": "GeunSik Jo, Kee-Sung Lee, Devy Chandra, Chol-Hee Jang, Myung-Hyun Ga",
+    "abstract": null
+  },
+  {
+    "title": "Game-Theoretic Approach for Non-Cooperative Planning",
+    "authors": "Jaume Jordán, Eva Onaindia",
+    "abstract": null
+  },
+  {
+    "title": "Pattern-Based Variant-Best-Neighbors Respiratory Motion Prediction Using Orthogonal Polynomials Approximation",
+    "authors": "KinMing Kam, Shouyi Wang, Stephen R. Bowen, Wanpracha Art Chaovalitwongse",
+    "abstract": null
+  },
+  {
+    "title": "Toward Mobile Robots Reasoning Like Humans",
+    "authors": "Jean H. Oh, Arne Suppé, Felix Duvallet, Abdeslam Boularias, Luis E. Navarro-Serment, Martial Hebert, Anthony Stentz, Jerry Vinokurov, Oscar J. Romero, Christian Lebiere, Robert M. Dean",
+    "abstract": null
+  },
+  {
+    "title": "Integration and Evaluation of a Matrix Factorization Sequencer in Large Commercial ITS",
+    "authors": "Carlotta Schatten, Ruth Janning, Lars Schmidt-Thieme",
+    "abstract": null
+  },
+  {
+    "title": "Going Beyond Literal Command-Based Instructions: Extending Robotic Natural Language Interaction Capabilities",
+    "authors": "Tom Williams 0001, Gordon Briggs, Bradley Oosterveld, Matthias Scheutz",
+    "abstract": null
+  },
+  {
+    "title": "CORPP: Commonsense Reasoning and Probabilistic Planning, as Applied to Dialog with a Mobile Robot",
+    "authors": "Shiqi Zhang 0001, Peter Stone 0001",
+    "abstract": null
+  },
+  {
+    "title": "Tackling Mental Health by Integrating Unobtrusive Multimodal Sensing",
+    "authors": "Dawei Zhou 0003, Jiebo Luo 0001, Vincent M. B. Silenzio, Yun Zhou, Jile Hu, Glenn Currier, Henry A. Kautz",
+    "abstract": null
+  },
+  {
+    "title": "Ontology Module Extraction via Datalog Reasoning",
+    "authors": "Ana Armas Romero, Mark Kaminski, Bernardo Cuenca Grau, Ian Horrocks 0001",
+    "abstract": null
+  },
+  {
+    "title": "Tractable Interval Temporal Propositional and Description Logics",
+    "authors": "Alessandro Artale, Roman Kontchakov, Vladislav Ryzhikov, Michael Zakharyaschev",
+    "abstract": null
+  },
+  {
+    "title": "Action Language BC+: Preliminary Report",
+    "authors": "Joseph Babb, Joohyung Lee 0002",
+    "abstract": null
+  },
+  {
+    "title": "LARS: A Logic-Based Framework for Analyzing Reasoning over Streams",
+    "authors": "Harald Beck, Minh Dao-Tran, Thomas Eiter, Michael Fink 0001",
+    "abstract": null
+  },
+  {
+    "title": "Partial Meet Revision and Contraction in Logic Programs",
+    "authors": "Sebastian Binnewies, Zhiqiang Zhuang, Kewen Wang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Pearl's Causality in a Logical Setting",
+    "authors": "Alexander Bochman, Vladimir Lifschitz",
+    "abstract": null
+  },
+  {
+    "title": "Grounded Fixpoints",
+    "authors": "Bart Bogaerts 0001, Joost Vennekens, Marc Denecker",
+    "abstract": null
+  },
+  {
+    "title": "Solving and Explaining Analogy Questions Using Semantic Networks",
+    "authors": "Adrian Boteanu, Sonia Chernova",
+    "abstract": null
+  },
+  {
+    "title": "asprin: Customizing Answer Set Preferences without a Headache",
+    "authors": "Gerhard Brewka, James P. Delgrande, Javier Romero 0003, Torsten Schaub",
+    "abstract": null
+  },
+  {
+    "title": "Exploiting Parallelism for Hard Problems in Abstract Argumentation",
+    "authors": "Federico Cerutti 0001, Ilias Tachmazidis, Mauro Vallati, Sotirios Batsakis, Massimiliano Giacomin, Grigoris Antoniou",
+    "abstract": null
+  },
+  {
+    "title": "A Syntax-Independent Approach to Forgetting in Disjunctive Logic Programs",
+    "authors": "James P. Delgrande, Kewen Wang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Towards Tractable and Practical ABox Abduction over Inconsistent Description Logic Ontologies",
+    "authors": "Jianfeng Du, Kewen Wang 0001, Yi-Dong Shen",
+    "abstract": null
+  },
+  {
+    "title": "On Computing Explanations in Argumentation",
+    "authors": "Xiuyi Fan, Francesca Toni",
+    "abstract": null
+  },
+  {
+    "title": "Parallelized Hitting Set Computation for Model-Based Diagnosis",
+    "authors": "Dietmar Jannach, Thomas Schmitz 0002, Kostyantyn M. Shchekotykhin",
+    "abstract": null
+  },
+  {
+    "title": "Splitting a Logic Program Revisited",
+    "authors": "Jianmin Ji, Hai Wan, Ziwei Huo, Zhenfeng Yuan",
+    "abstract": null
+  },
+  {
+    "title": "On Elementary Loops and Proper Loops for Disjunctive Logic Programs",
+    "authors": "Jianmin Ji, Hai Wan, Peng Xiao 0009",
+    "abstract": null
+  },
+  {
+    "title": "XPath for DL Ontologies",
+    "authors": "Egor V. Kostylev, Juan L. Reutter, Domagoj Vrgoc",
+    "abstract": null
+  },
+  {
+    "title": "An Abstract View on Modularity in Knowledge Representation",
+    "authors": "Yuliya Lierler, Miroslaw Truszczynski",
+    "abstract": null
+  },
+  {
+    "title": "Learning Partial Lexicographic Preference Trees over Combinatorial Domains",
+    "authors": "Xudong Liu 0003, Miroslaw Truszczynski",
+    "abstract": null
+  },
+  {
+    "title": "From Classical to Consistent Query Answering under Existential Rules",
+    "authors": "Thomas Lukasiewicz, Maria Vanina Martinez, Andreas Pieris, Gerardo I. Simari",
+    "abstract": null
+  },
+  {
+    "title": "Belief Revision with General Epistemic States",
+    "authors": "Hua Meng 0001, Hui Kou, Sanjiang Li",
+    "abstract": null
+  },
+  {
+    "title": "Incremental Update of Datalog Materialisation: the Backward/Forward Algorithm",
+    "authors": "Boris Motik, Yavor Nenov, Robert Edgar Felix Piro, Ian Horrocks 0001",
+    "abstract": null
+  },
+  {
+    "title": "Logic Programming in Assumption-Based Argumentation Revisited - Semantics and Graphical Representation",
+    "authors": "Claudia Schulz 0001, Francesca Toni",
+    "abstract": null
+  },
+  {
+    "title": "Minimizing User Involvement for Accurate Ontology Matching Problems",
+    "authors": "Anika Schumann, Freddy Lécué",
+    "abstract": null
+  },
+  {
+    "title": "Projection in the Epistemic Situation Calculus with Belief Conditionals",
+    "authors": "Christoph Schwering, Gerhard Lakemeyer",
+    "abstract": null
+  },
+  {
+    "title": "Belief Revision Games",
+    "authors": "Nicolas Schwind, Katsumi Inoue, Gauvain Bourgne, Sébastien Konieczny, Pierre Marquis",
+    "abstract": null
+  },
+  {
+    "title": "Interactive Query-Based Debugging of ASP Programs",
+    "authors": "Kostyantyn M. Shchekotykhin",
+    "abstract": null
+  },
+  {
+    "title": "Exploring the KD45 Property of a Kripke Model After the Execution of an Action Sequence",
+    "authors": "Tran Cao Son, Enrico Pontelli, Chitta Baral, Gregory Gelfond",
+    "abstract": null
+  },
+  {
+    "title": "Answering Conjunctive Queries over EL Knowledge Bases with Transitive and Reflexive Roles",
+    "authors": "Giorgio Stefanoni, Boris Motik",
+    "abstract": null
+  },
+  {
+    "title": "How Many Diagnoses Do We Need?",
+    "authors": "Roni Tzvi Stern, Meir Kalech, Shelly Rogov, Alexander Feldman",
+    "abstract": null
+  },
+  {
+    "title": "The Relative Expressiveness of Abstract Argumentation and Logic Programming",
+    "authors": "Hannes Strass",
+    "abstract": null
+  },
+  {
+    "title": "A Comparison of Qualitative and Metric Spatial Relation Models for Scene Understanding",
+    "authors": "Akshaya Thippur, Chris Burbridge, Lars Kunze, Marina Alberti, John Folkesson, Patric Jensfelt, Nick Hawes",
+    "abstract": null
+  },
+  {
+    "title": "On the Role of Canonicity in Knowledge Compilation",
+    "authors": "Guy Van den Broeck, Adnan Darwiche",
+    "abstract": null
+  },
+  {
+    "title": "Knowledge Forgetting in Circumscription: A Preliminary Report",
+    "authors": "Yisong Wang 0004, Kewen Wang 0001, Zhe Wang 0001, Zhiqiang Zhuang",
+    "abstract": null
+  },
+  {
+    "title": "Instance-Driven Ontology Evolution in DL-Lite",
+    "authors": "Zhe Wang 0001, Kewen Wang 0001, Zhiqiang Zhuang, Guilin Qi",
+    "abstract": null
+  },
+  {
+    "title": "Structured Embedding via Pairwise Relations and Long-Range Interactions in Knowledge Base",
+    "authors": "Fei Wu 0001, Jun Song 0004, Yi Yang 0001, Xi Li 0001, Zhongfei (Mark) Zhang, Yueting Zhuang",
+    "abstract": null
+  },
+  {
+    "title": "A Logic for Reasoning About Game Strategies",
+    "authors": "Dongmo Zhang, Michael Thielscher",
+    "abstract": null
+  },
+  {
+    "title": "Existential Rule Languages with Finite Chase: Complexity and Expressiveness",
+    "authors": "Heng Zhang 0006, Yan Zhang 0003, Jia-Huai You",
+    "abstract": null
+  },
+  {
+    "title": "Variational Inference for Nonparametric Bayesian Quantile Regression",
+    "authors": "Sachinthaka Abeywardana, Fabio Ramos 0001",
+    "abstract": null
+  },
+  {
+    "title": "Sample-Targeted Clinical Trial Adaptation",
+    "authors": "Ognjen Arandjelovic",
+    "abstract": null
+  },
+  {
+    "title": "A Sparse Combined Regression-Classification Formulation for Learning a Physiological Alternative to Clinical Post-Traumatic Stress Disorder Scores",
+    "authors": "Sarah Marie Brown, Andrea Webb, Rami Mangoubi, Jennifer G. Dy",
+    "abstract": null
+  },
+  {
+    "title": "Marginalized Denoising for Link Prediction and Multi-Label Learning",
+    "authors": "Zheng Chen, Minmin Chen, Kilian Q. Weinberger, Weixiong Zhang",
+    "abstract": null
+  },
+  {
+    "title": "Structured Sparsity with Group-Graph Regularization",
+    "authors": "Xin-Yu Dai, Jianbing Zhang, Shujian Huang, Jiajun Chen 0001, Zhi-Hua Zhou",
+    "abstract": null
+  },
+  {
+    "title": "Content-Aware Point of Interest Recommendation on Location-Based Social Networks",
+    "authors": "Huiji Gao, Jiliang Tang, Xia Hu 0001, Huan Liu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Constructing Models of User and Task Characteristics from Eye Gaze Data for User-Adaptive Information Highlighting",
+    "authors": "Matthew Gingerich, Cristina Conati",
+    "abstract": null
+  },
+  {
+    "title": "Automatic Assessment of OCR Quality in Historical Documents",
+    "authors": "Anshul Gupta, Ricardo Gutierrez-Osuna, Matthew Christy, Boris Capitanu, Loretta Auvil, Liz Grumbach, Richard Furuta, Laura Mandell",
+    "abstract": null
+  },
+  {
+    "title": "PD Disease State Assessment in Naturalistic Environments Using Deep Learning",
+    "authors": "Nils Yannick Hammerla, James Fisher, Peter Andras 0001, Lynn Rochester, Richard Walker 0005, Thomas Ploetz",
+    "abstract": null
+  },
+  {
+    "title": "Identifying At-Risk Students in Massive Open Online Courses",
+    "authors": "Jiazhen He, James Bailey 0001, Benjamin I. P. Rubinstein, Rui Zhang 0003",
+    "abstract": null
+  },
+  {
+    "title": "Exploiting Determinism to Scale Relational Inference",
+    "authors": "Mohamed Hamza Ibrahim, Christopher J. Pal, Gilles Pesant",
+    "abstract": null
+  },
+  {
+    "title": "Scalable and Interpretable Data Representation for High-Dimensional, Complex Data",
+    "authors": "Been Kim, Kayur Patel, Afshin Rostamizadeh, Julie A. Shah",
+    "abstract": null
+  },
+  {
+    "title": "Learning to Uncover Deep Musical Structure",
+    "authors": "Phillip B. Kirlin, David D. Jensen",
+    "abstract": null
+  },
+  {
+    "title": "Nonstationary Gaussian Process Regression for Evaluating Repeated Clinical Laboratory Tests",
+    "authors": "Thomas A. Lasko",
+    "abstract": null
+  },
+  {
+    "title": "Tensor-Based Learning for Predicting Stock Movements",
+    "authors": "Qing Li 0005, LiLing Jiang, Ping Li 0060, Hsinchun Chen",
+    "abstract": null
+  },
+  {
+    "title": "Sub-Merge: Diving Down to the Attribute-Value Level in Statistical Schema Matching",
+    "authors": "Zhe Lim, Benjamin I. P. Rubinstein",
+    "abstract": null
+  },
+  {
+    "title": "A Regularized Linear Dynamical System Framework for Multivariate Time Series Analysis",
+    "authors": "Zitao Liu 0003, Milos Hauskrecht",
+    "abstract": null
+  },
+  {
+    "title": "Generalized Singular Value Thresholding",
+    "authors": "Canyi Lu, Changbo Zhu, Chunyan Xu, Shuicheng Yan, Zhouchen Lin",
+    "abstract": null
+  },
+  {
+    "title": "Lazier Than Lazy Greedy",
+    "authors": "Baharan Mirzasoleiman, Ashwinkumar Badanidiyuru, Amin Karbasi, Jan Vondrák, Andreas Krause 0001",
+    "abstract": null
+  },
+  {
+    "title": "Inertial Hidden Markov Models: Modeling Change in Multivariate Time Series",
+    "authors": "George D. Montañez, Saeed Amizadeh, Nikolay Laptev",
+    "abstract": null
+  },
+  {
+    "title": "Algorithm Selection via Ranking",
+    "authors": "Richard Jayadi Oentaryo, Stephanus Daniel Handoko, Hoong Chuin Lau",
+    "abstract": null
+  },
+  {
+    "title": "Propagating Ranking Functions on a Graph: Algorithms and Applications",
+    "authors": "Buyue Qian, Xiang Wang 0001, Ian Davidson",
+    "abstract": null
+  },
+  {
+    "title": "On Vectorization of Deep Convolutional Neural Networks for Vision Tasks",
+    "authors": "Jimmy S. J. Ren, Li Xu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Learning Hybrid Models with Guarded Transitions",
+    "authors": "Pedro Henrique Santana, Spencer Lane, Eric Timmons, Brian Charles Williams, Carlos Forster",
+    "abstract": null
+  },
+  {
+    "title": "Transaction Costs-Aware Portfolio Optimization via Fast Lowner-John Ellipsoid Approximation",
+    "authors": "Weiwei Shen, Jun Wang",
+    "abstract": null
+  },
+  {
+    "title": "Coupled Interdependent Attribute Analysis on Mixed Data",
+    "authors": "Can Wang 0004, Chi-Hung Chi, Wei Zhou 0011, Raymond K. Wong 0001",
+    "abstract": null
+  },
+  {
+    "title": "Exploring Social Context for Topic Identification in Short and Noisy Texts",
+    "authors": "Xin Wang 0035, Ying Wang 0009, Wanli Zuo, Guoyong Cai",
+    "abstract": null
+  },
+  {
+    "title": "Modeling Status Theory in Trust Prediction",
+    "authors": "Ying Wang 0009, Xin Wang 0035, Jiliang Tang, Wanli Zuo, Guoyong Cai",
+    "abstract": null
+  },
+  {
+    "title": "Swiss-System Based Cascade Ranking for Gait-Based Person Re-Identification",
+    "authors": "Lan Wei, Yonghong Tian 0001, Yaowei Wang 0001, Tiejun Huang 0001",
+    "abstract": null
+  },
+  {
+    "title": "An SVD and Derivative Kernel Approach to Learning from Geometric Data",
+    "authors": "Eric Wong 0001, J. Zico Kolter",
+    "abstract": null
+  },
+  {
+    "title": "Mining User Interests from Personal Photos",
+    "authors": "Pengtao Xie, Yulong Pei, Yuan Xie, Eric P. Xing",
+    "abstract": null
+  },
+  {
+    "title": "Integrating Image Clustering and Codebook Learning",
+    "authors": "Pengtao Xie, Eric P. Xing",
+    "abstract": null
+  },
+  {
+    "title": "Stable Feature Selection from Brain sMRI",
+    "authors": "Bo Xin, Lingjing Hu, Yizhou Wang 0001, Wen Gao 0001",
+    "abstract": null
+  },
+  {
+    "title": "Forecasting Collector Road Speeds Under High Percentage of Missing Data",
+    "authors": "Xin Xin 0001, Chunwei Lu, Yashen Wang, Heyan Huang",
+    "abstract": null
+  },
+  {
+    "title": "Large-Margin Multi-Label Causal Feature Learning",
+    "authors": "Chang Xu 0002, Dacheng Tao, Chao Xu 0006",
+    "abstract": null
+  },
+  {
+    "title": "Exploiting Task-Feature Co-Clusters in Multi-Task Learning",
+    "authors": "Linli Xu 0002, Aiqing Huang, Jianhui Chen, Enhong Chen",
+    "abstract": null
+  },
+  {
+    "title": "Temporally Adaptive Restricted Boltzmann Machine for Background Modeling",
+    "authors": "Linli Xu 0002, Yitan Li, Yubo Wang 0010, Enhong Chen",
+    "abstract": null
+  },
+  {
+    "title": "On Machine Learning towards Predictive Sales Pipeline Analytics",
+    "authors": "Junchi Yan, Chao Zhang 0010, Hongyuan Zha, Min Gong, Changhua Sun, Jin Huang, Stephen M. Chu, Xiaokang Yang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Bayesian Approach to Modeling and Detecting Communities in Signed Network",
+    "authors": "Bo Yang 0002, Xuehua Zhao, Xueyan Liu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Colorization by Patch-Based Local Low-Rank Matrix Completion",
+    "authors": "Quanming Yao, James T. Kwok",
+    "abstract": null
+  },
+  {
+    "title": "Sparse Bayesian Multiview Learning for Simultaneous Association Discovery and Diagnosis of Alzheimer's Disease",
+    "authors": "Shandian Zhe, Zenglin Xu, Yuan Qi 0001, Peng Yu",
+    "abstract": null
+  },
+  {
+    "title": "A Closed Form Solution to Multi-View Low-Rank Regression",
+    "authors": "Shuai Zheng 0002, Xiao Cai, Chris H. Q. Ding, Feiping Nie 0001, Heng Huang 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Nonconvex Relaxation Approach for Rank Minimization Problems",
+    "authors": "Xiaowei Zhong, Linli Xu 0002, Yitan Li, Zhiyuan Liu, Enhong Chen",
+    "abstract": null
+  },
+  {
+    "title": "An Empirical Study on the Practical Impact of Prior Beliefs over Policy Types",
+    "authors": "Stefano Vittorino Albrecht, Jacob William Crandall, Subramanian Ramamoorthy",
+    "abstract": null
+  },
+  {
+    "title": "Scalable Planning and Learning for Multiagent POMDPs",
+    "authors": "Christopher Amato, Frans A. Oliehoek",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Agent Pathfinding as a Combinatorial Auction",
+    "authors": "Ofra Amir, Guni Sharon, Roni Stern",
+    "abstract": null
+  },
+  {
+    "title": "Cooperating with Unknown Teammates in Complex Domains: A Robot Soccer Case Study of Ad Hoc Teamwork",
+    "authors": "Samuel Barrett, Peter Stone 0001",
+    "abstract": null
+  },
+  {
+    "title": "Cognitive Social Learners: An Architecture for Modeling Normative Behavior",
+    "authors": "Rahmatollah Beheshti, Awrad Mohammed Ali, Gita Reese Sukthankar",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Agent Path Finding on Strongly Biconnected Digraphs",
+    "authors": "Adi Botea, Pavel Surynek",
+    "abstract": null
+  },
+  {
+    "title": "Verification of Relational Multiagent Systems with Data Types",
+    "authors": "Diego Calvanese, Giorgio Delzanno, Marco Montali",
+    "abstract": null
+  },
+  {
+    "title": "Verifying and Synthesising Multi-Agent Systems against One-Goal Strategy Logic Specifications",
+    "authors": "Petr Cermák, Alessio Lomuscio, Aniello Murano",
+    "abstract": null
+  },
+  {
+    "title": "Elections with Few Voters: Candidate Control Can Be Easy",
+    "authors": "Jiehua Chen 0001, Piotr Faliszewski, Rolf Niedermeier, Nimrod Talmon",
+    "abstract": null
+  },
+  {
+    "title": "Cupid: Commitments in Relational Algebra",
+    "authors": "Amit K. Chopra, Munindar P. Singh",
+    "abstract": null
+  },
+  {
+    "title": "Automated Analysis of Commitment Protocols Using Probabilistic Model Checking",
+    "authors": "Akin Günay, Songzheng Song, Yang Liu 0003, Jie Zhang 0002",
+    "abstract": null
+  },
+  {
+    "title": "Fast Convention Formation in Dynamic Networks Using Topological Knowledge",
+    "authors": "Mohammad Rashedul Hasan, Anita Raja, Ana L. C. Bazzan",
+    "abstract": null
+  },
+  {
+    "title": "Distributed Multiplicative Weights Methods for DCOP",
+    "authors": "Daisuke Hatano, Yuichi Yoshida",
+    "abstract": null
+  },
+  {
+    "title": "A Counter Abstraction Technique for the Verification of Robot Swarms",
+    "authors": "Panagiotis Kouvaros, Alessio Lomuscio",
+    "abstract": null
+  },
+  {
+    "title": "Generalization Analysis for Game-Theoretic Machine Learning",
+    "authors": "Haifang Li 0002, Fei Tian, Wei Chen 0034, Tao Qin 0001, Zhiming Ma, Tie-Yan Liu",
+    "abstract": null
+  },
+  {
+    "title": "SCRAM: Scalable Collision-avoiding Role Assignment with Minimal-Makespan for Formational Positioning",
+    "authors": "Patrick MacAlpine, Eric Price 0001, Peter Stone 0001",
+    "abstract": null
+  },
+  {
+    "title": "Plurality Voting Under Uncertainty",
+    "authors": "Reshef Meir",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Robot Auctions for Allocation of Tasks with Temporal Constraints",
+    "authors": "Ernesto Nunes, Maria L. Gini",
+    "abstract": null
+  },
+  {
+    "title": "Distributing Coalition Value Calculations to Coalition Members",
+    "authors": "Luke Riley, Katie Atkinson, Paul E. Dunne, Terry R. Payne",
+    "abstract": null
+  },
+  {
+    "title": "Fully Proportional Representation with Approval Ballots: Approximating the MaxCover Problem with Bounded Frequencies in FPT Time",
+    "authors": "Piotr Krzysztof Skowron, Piotr Faliszewski",
+    "abstract": null
+  },
+  {
+    "title": "Finding a Collective Set of Items: From Proportional Multirepresentation to Group Recommendation",
+    "authors": "Piotr Krzysztof Skowron, Piotr Faliszewski, Jérôme Lang",
+    "abstract": null
+  },
+  {
+    "title": "Solving Games with Functional Regret Estimation",
+    "authors": "Kevin Waugh, Dustin Morrill, James Andrew Bagnell, Michael H. Bowling",
+    "abstract": null
+  },
+  {
+    "title": "Learning Word Representations from Relational Graphs",
+    "authors": "Danushka Bollegala, Takanori Maehara, Yuichi Yoshida, Ken-ichi Kawarabayashi",
+    "abstract": null
+  },
+  {
+    "title": "Ranking with Recursive Neural Networks and Its Application to Multi-Document Summarization",
+    "authors": "Ziqiang Cao, Furu Wei, Li Dong 0004, Sujian Li, Ming Zhou 0001",
+    "abstract": null
+  },
+  {
+    "title": "Refer-to-as Relations as Semantic Knowledge",
+    "authors": "Song Feng 0002, Sujith Ravi, Ravi Kumar 0001, Polina Kuznetsova, Wei Liu 0015, Alexander C. Berg, Tamara L. Berg, Yejin Choi 0001",
+    "abstract": null
+  },
+  {
+    "title": "Surveyor: A System for Generating Coherent Survey Articles for Scientific Topics",
+    "authors": "Rahul Jha, Reed Coke, Dragomir R. Radev",
+    "abstract": null
+  },
+  {
+    "title": "Automatically Creating a Large Number of New Bilingual Dictionaries",
+    "authors": "Khang Nhut Lam, Feras Al Tarouti, Jugal K. Kalita",
+    "abstract": null
+  },
+  {
+    "title": "Learning Entity and Relation Embeddings for Knowledge Graph Completion",
+    "authors": "Yankai Lin 0001, Zhiyuan Liu 0001, Maosong Sun 0001, Yang Liu 0107, Xuan Zhu 0006",
+    "abstract": null
+  },
+  {
+    "title": "Sense-Aaware Semantic Analysis: A Multi-Prototype Word Representation Model Using Wikipedia",
+    "authors": "Zhaohui Wu 0002, C. Lee Giles",
+    "abstract": null
+  },
+  {
+    "title": "Phrase Type Sensitive Tensor Indexing Model for Semantic Composition",
+    "authors": "Yu Zhao 0040, Zhiyuan Liu 0001, Maosong Sun 0001",
+    "abstract": null
+  },
+  {
+    "title": "Predicting Peer-to-Peer Loan Rates Using Bayesian Non-Linear Regression",
+    "authors": "Zsolt Bitvai, Trevor Cohn",
+    "abstract": null
+  },
+  {
+    "title": "A Novel Neural Topic Model and Its Supervised Extension",
+    "authors": "Ziqiang Cao, Sujian Li, Yang Liu 0124, Wenjie Li 0002, Heng Ji 0001",
+    "abstract": null
+  },
+  {
+    "title": "Unsupervised Word Sense Disambiguation Using Markov Random Field and Dependency Parser",
+    "authors": "Devendra Singh Chaplot, Pushpak Bhattacharyya, Ashwin Paranjape",
+    "abstract": null
+  },
+  {
+    "title": "Dataless Text Classification with Descriptive LDA",
+    "authors": "Xingyuan Chen, Yunqing Xia, Peng Jin, John Carroll 0001",
+    "abstract": null
+  },
+  {
+    "title": "Topic Segmentation with an Ordering-Based Topic Model",
+    "authors": "Lan Du 0002, John K. Pate, Mark Johnson 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Stratified Strategy for Efficient Kernel-Based Learning",
+    "authors": "Simone Filice, Danilo Croce, Roberto Basili 0001",
+    "abstract": null
+  },
+  {
+    "title": "Weakly-Supervised Grammar-Informed Bayesian CCG Parser Learning",
+    "authors": "Dan Garrette, Chris Dyer, Jason Baldridge, Noah A. Smith",
+    "abstract": null
+  },
+  {
+    "title": "Unsupervised Phrasal Near-Synonym Generation from Text Corpora",
+    "authors": "Dishan Gupta, Jaime G. Carbonell, Anatole Gershman, Steve Klein, David Miller",
+    "abstract": null
+  },
+  {
+    "title": "Local Context Sparse Coding",
+    "authors": "Seungyeon Kim 0001, Joonseok Lee, Guy Lebanon, Haesun Park",
+    "abstract": null
+  },
+  {
+    "title": "Recurrent Convolutional Neural Networks for Text Classification",
+    "authors": "Siwei Lai, Liheng Xu, Kang Liu 0001, Jun Zhao 0001",
+    "abstract": null
+  },
+  {
+    "title": "Joint Anaphoricity Detection and Coreference Resolution with Constrained Latent Structures",
+    "authors": "Emmanuel Lassalle, Pascal Denis",
+    "abstract": null
+  },
+  {
+    "title": "Fast and Accurate Prediction of Sentence Specificity",
+    "authors": "Junyi Jessy Li, Ani Nenkova",
+    "abstract": null
+  },
+  {
+    "title": "Learning to Mediate Perceptual Differences in Situated Human-Robot Dialogue",
+    "authors": "Changsong Liu, Joyce Yue Chai",
+    "abstract": null
+  },
+  {
+    "title": "Contrastive Unsupervised Word Alignment with Non-Local Features",
+    "authors": "Yang Liu 0005, Maosong Sun 0001",
+    "abstract": null
+  },
+  {
+    "title": "Never-Ending Learning",
+    "authors": "Tom M. Mitchell, William W. Cohen, Estevam R. Hruschka Jr., Partha Pratim Talukdar, Justin Betteridge, Andrew Carlson, Bhavana Dalvi Mishra, Matthew Gardner 0001, Bryan Kisiel, Jayant Krishnamurthy, Ni Lao, Kathryn Mazaitis, Thahir Mohamed, Ndapandula Nakashole, Emmanouil A. Platanios, Alan Ritter, Mehdi Samadi, Burr Settles, Richard C. Wang, Derry Wijaya, Abhinav Gupta 0001, Xinlei Chen, Abulhair Saparov, Malcolm Greaves, Joel Welling",
+    "abstract": null
+  },
+  {
+    "title": "The Utility of Text: The Case of Amicus Briefs and the Supreme Court",
+    "authors": "Yanchuan Sim, Bryan R. Routledge, Noah A. Smith",
+    "abstract": null
+  },
+  {
+    "title": "A Family of Latent Variable Convex Relaxations for IBM Model 2",
+    "authors": "Andrei Arsene Simion, Michael Collins 0001, Cliff Stein 0001",
+    "abstract": null
+  },
+  {
+    "title": "Online Bayesian Models for Personal Analytics in Social Media",
+    "authors": "Svitlana Volkova, Benjamin Van Durme",
+    "abstract": null
+  },
+  {
+    "title": "Microblog Sentiment Classification with Contextual Knowledge Regularization",
+    "authors": "Fangzhao Wu, Yangqiu Song, Yongfeng Huang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Learning Greedy Policies for the Easy-First Framework",
+    "authors": "Jun Xie, Chao Ma 0001, Janardhan Rao Doppa, Prashanth Mannem, Xiaoli Z. Fern, Thomas G. Dietterich, Prasad Tadepalli",
+    "abstract": null
+  },
+  {
+    "title": "Jointly Modeling Deep Video and Compositional Text to Bridge Vision and Language in a Unified Framework",
+    "authors": "Ran Xu 0001, Caiming Xiong, Wei Chen 0134, Jason J. Corso",
+    "abstract": null
+  },
+  {
+    "title": "Ordering-Sensitive and Semantic-Aware Topic Modeling",
+    "authors": "Min Yang 0007, Tianyi Cui, Wenting Tu",
+    "abstract": null
+  },
+  {
+    "title": "Target-Dependent Churn Classification in Microblogs",
+    "authors": "Hadi Amiri, Hal Daumé III",
+    "abstract": null
+  },
+  {
+    "title": "English Light Verb Construction Identification Using Lexical Knowledge",
+    "authors": "Wei-Te Chen, Claire Bonial, Martha Palmer",
+    "abstract": null
+  },
+  {
+    "title": "Chinese Common Noun Phrase Resolution: An Unsupervised Probabilistic Model Rivaling Supervised Resolvers",
+    "authors": "Chen Chen 0004, Vincent Ng 0001",
+    "abstract": null
+  },
+  {
+    "title": "Gazetteer-Independent Toponym Resolution Using Geographic Word Profiles",
+    "authors": "Grant DeLozier, Jason Baldridge, Loretta London",
+    "abstract": null
+  },
+  {
+    "title": "Mining User Consumption Intention from Social Media Using Domain Adaptive Convolutional Neural Network",
+    "authors": "Xiao Ding, Ting Liu 0001, Junwen Duan, Jian-Yun Nie",
+    "abstract": null
+  },
+  {
+    "title": "Generating Event Causality Hypotheses through Semantic Relations",
+    "authors": "Chikara Hashimoto, Kentaro Torisawa, Julien Kloetzer, Jong-Hoon Oh",
+    "abstract": null
+  },
+  {
+    "title": "A Neural Probabilistic Model for Context Based Citation Recommendation",
+    "authors": "Wenyi Huang, Zhaohui Wu 0002, Chen Liang 0001, Prasenjit Mitra 0001, C. Lee Giles",
+    "abstract": null
+  },
+  {
+    "title": "Extracting Verb Expressions Implying Negative Opinions",
+    "authors": "Huayi Li, Arjun Mukherjee, Jianfeng Si, Bing Liu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Topical Word Embeddings",
+    "authors": "Yang Liu 0005, Zhiyuan Liu 0001, Tat-Seng Chua, Maosong Sun 0001",
+    "abstract": null
+  },
+  {
+    "title": "Towards Knowledge-Driven Annotation",
+    "authors": "Yassine Mrabet, Claire Gardent, Muriel Foulonneau, Elena Simperl, Eric Ras",
+    "abstract": null
+  },
+  {
+    "title": "Semantic Lexicon Induction from Twitter with Pattern Relatedness and Flexible Term Length",
+    "authors": "Ashequl Qadir, Pablo N. Mendes, Daniel Gruhl, Neal Lewis",
+    "abstract": null
+  },
+  {
+    "title": "Word Segmentation for Chinese Novels",
+    "authors": "Likun Qiu, Yue Zhang 0004",
+    "abstract": null
+  },
+  {
+    "title": "Using Frame Semantics for Knowledge Extraction from Twitter",
+    "authors": "Anders Søgaard, Barbara Plank, Héctor Martínez Alonso",
+    "abstract": null
+  },
+  {
+    "title": "Learning to Recommend Quotes for Writing",
+    "authors": "Jiwei Tan, Xiaojun Wan 0001, Jianguo Xiao",
+    "abstract": null
+  },
+  {
+    "title": "Extracting Adverse Drug Reactions from Social Media",
+    "authors": "Andrew Yates, Nazli Goharian, Ophir Frieder",
+    "abstract": null
+  },
+  {
+    "title": "An Unsupervised Framework of Exploring Events on Twitter: Filtering, Extraction and Categorization",
+    "authors": "Deyu Zhou, Liangyu Chen, Yulan He 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Probabilistic Covariate Shift Assumption for Domain Adaptation",
+    "authors": "Tameem Adel, Alexander Wong",
+    "abstract": null
+  },
+  {
+    "title": "Efficient Active Learning of Halfspaces via Query Synthesis",
+    "authors": "Ibrahim M. Alabdulmohsin, Xin Gao 0001, Xiangliang Zhang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Budgeted Prediction with Expert Advice",
+    "authors": "Kareem Amin 0002, Satyen Kale, Gerald Tesauro, Deepak S. Turaga",
+    "abstract": null
+  },
+  {
+    "title": "Model-Based Reinforcement Learning in Continuous Environments Using Real-Time Constrained Optimization",
+    "authors": "Olov Andersson, Fredrik Heintz, Patrick Doherty 0001",
+    "abstract": null
+  },
+  {
+    "title": "Unsupervised Cross-Domain Transfer in Policy Gradient Reinforcement Learning via Manifold Alignment",
+    "authors": "Haitham Bou-Ammar, Eric Eaton, Paul Ruvolo, Matthew E. Taylor",
+    "abstract": null
+  },
+  {
+    "title": "Aligning Mixed Manifolds",
+    "authors": "Thomas Boucher, CJ Carey, Sridhar Mahadevan, Melinda Darby Dyar",
+    "abstract": null
+  },
+  {
+    "title": "Deep Modeling Complex Couplings within Financial Markets",
+    "authors": "Wei Cao 0012, Liang Hu 0004, Longbing Cao",
+    "abstract": null
+  },
+  {
+    "title": "Structural Learning with Amortized Inference",
+    "authors": "Kai-Wei Chang 0001, Shyam Upadhyay, Gourab Kundu, Dan Roth 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Convex Formulation for Spectral Shrunk Clustering",
+    "authors": "Xiaojun Chang, Feiping Nie 0001, Zhigang Ma, Yi Yang 0001, Xiaofang Zhou 0001",
+    "abstract": null
+  },
+  {
+    "title": "Learning Relational Kalman Filtering",
+    "authors": "Jaesik Choi, Eyal Amir, Tianfang Xu, Albert J. Valocchi",
+    "abstract": null
+  },
+  {
+    "title": "Policy Tree: Adaptive Representation for Policy Gradient",
+    "authors": "Ujjwal Das Gupta, Erik Talvitie, Michael Bowling",
+    "abstract": null
+  },
+  {
+    "title": "Collaborative Filtering with Localised Ranking",
+    "authors": "Charanpal Dhanjal, Romaric Gaudel, Stéphan Clémençon",
+    "abstract": null
+  },
+  {
+    "title": "Random Gradient Descent Tree: A Combinatorial Approach for SVM with Outliers",
+    "authors": "Hu Ding 0003, Jinhui Xu 0001",
+    "abstract": null
+  },
+  {
+    "title": "An Adaptive Gradient Method for Online AUC Maximization",
+    "authors": "Yi Ding 0006, Peilin Zhao, Steven C. H. Hoi, Yew-Soon Ong",
+    "abstract": null
+  },
+  {
+    "title": "Graph-Sparse LDA: A Topic Model with Structured Sparsity",
+    "authors": "Finale Doshi-Velez, Byron C. Wallace, Ryan P. Adams",
+    "abstract": null
+  },
+  {
+    "title": "Bayesian Maximum Margin Principal Component Analysis",
+    "authors": "Changying Du, Shandian Zhe, Fuzhen Zhuang, Yuan Qi 0001, Qing He 0003, Zhongzhi Shi",
+    "abstract": null
+  },
+  {
+    "title": "Modelling Class Noise with Symmetric and Asymmetric Distributions",
+    "authors": "Jun Du 0005, Zhihua Cai",
+    "abstract": null
+  },
+  {
+    "title": "Optimizing Bag Features for Multiple-Instance Retrieval",
+    "authors": "Zhouyu Fu, Feifei Pan 0003, Cheng Deng 0002, Wei Liu 0005",
+    "abstract": null
+  },
+  {
+    "title": "Learning Sparse Representations from Datasets with Uncertain Group Structures: Model, Algorithm and Applications",
+    "authors": "Longwen Gao, Shuigeng Zhou",
+    "abstract": null
+  },
+  {
+    "title": "Spectral Clustering Using Multilinear SVD: Analysis, Approximations and Applications",
+    "authors": "Debarghya Ghoshdastidar, Ambedkar Dukkipati",
+    "abstract": null
+  },
+  {
+    "title": "Pathway Graphical Lasso",
+    "authors": "Maxim Grechkin, Maryam Fazel, Daniela M. Witten, Su-In Lee",
+    "abstract": null
+  },
+  {
+    "title": "Concurrent PAC RL",
+    "authors": "Zhaohan Guo, Emma Brunskill",
+    "abstract": null
+  },
+  {
+    "title": "Discriminative Feature Grouping",
+    "authors": "Lei Han 0001, Yu Zhang 0006",
+    "abstract": null
+  },
+  {
+    "title": "Learning Multi-Level Task Groups in Multi-Task Learning",
+    "authors": "Lei Han 0001, Yu Zhang 0006",
+    "abstract": null
+  },
+  {
+    "title": "Localized Centering: Reducing Hubness in Large-Sample Data",
+    "authors": "Kazuo Hara, Ikumi Suzuki, Masashi Shimbo, Kei Kobayashi, Kenji Fukumizu, Milos Radovanovic 0001",
+    "abstract": null
+  },
+  {
+    "title": "Expressing Arbitrary Reward Functions as Potential-Based Advice",
+    "authors": "Anna Harutyunyan, Sam Devlin, Peter Vrancx, Ann Nowé",
+    "abstract": null
+  },
+  {
+    "title": "Active Learning by Learning",
+    "authors": "Wei-Ning Hsu, Hsuan-Tien Lin",
+    "abstract": null
+  },
+  {
+    "title": "Kernelized Online Imbalanced Learning with Fixed Budgets",
+    "authors": "Junjie Hu 0001, Haiqin Yang, Irwin King, Michael R. Lyu, Anthony Man-Cho So",
+    "abstract": null
+  },
+  {
+    "title": "Approximate MaxEnt Inverse Optimal Control and Its Application for Mental Simulation of Human Interactions",
+    "authors": "De-An Huang, Amir-massoud Farahmand, Kris M. Kitani, James Andrew Bagnell",
+    "abstract": null
+  },
+  {
+    "title": "Maximin Separation Probability Clustering",
+    "authors": "Gao Huang 0001, Jianwen Zhang, Shiji Song, Zheng Chen 0001",
+    "abstract": null
+  },
+  {
+    "title": "The Dynamic Chinese Restaurant Process via Birth and Death Processes",
+    "authors": "Rui Huang, Fengyuan Zhu, Pheng-Ann Heng",
+    "abstract": null
+  },
+  {
+    "title": "Self-Paced Curriculum Learning",
+    "authors": "Lu Jiang 0004, Deyu Meng, Qian Zhao 0002, Shiguang Shan, Alexander G. Hauptmann",
+    "abstract": null
+  },
+  {
+    "title": "Outlier-Robust Convex Segmentation",
+    "authors": "Itamar Katz, Koby Crammer",
+    "abstract": null
+  },
+  {
+    "title": "Fast Gradient Descent for Drifting Least Squares Regression, with Application to Bandits",
+    "authors": "Nathaniel Korda, Prashanth L. A., Rémi Munos",
+    "abstract": null
+  },
+  {
+    "title": "Spectral Learning of Predictive State Representations with Insufficient Statistics",
+    "authors": "Alex Kulesza, Nan Jiang 0008, Satinder Singh 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Generalized Reduced Linear Program for Markov Decision Processes",
+    "authors": "Chandrashekar Lakshminarayanan, Shalabh Bhatnagar",
+    "abstract": null
+  },
+  {
+    "title": "Don't Fall for Tuning Parameters: Tuning-Free Variable Selection in High Dimensions With the TREX",
+    "authors": "Johannes Lederer, Christian L. Müller",
+    "abstract": null
+  },
+  {
+    "title": "On the Equivalence of Linear Discriminant Analysis and Least Squares",
+    "authors": "Kibok Lee 0003, Junmo Kim",
+    "abstract": null
+  },
+  {
+    "title": "Multi-tensor Completion with Common Structures",
+    "authors": "Chao Li 0013, Qibin Zhao, Junhua Li, Andrzej Cichocki, Lili Guo",
+    "abstract": null
+  },
+  {
+    "title": "Large-Scale Multi-View Spectral Clustering via Bipartite Graph",
+    "authors": "Yeqing Li, Feiping Nie 0001, Heng Huang 0001, Junzhou Huang",
+    "abstract": null
+  },
+  {
+    "title": "Integrating Features and Similarities: Flexible Models for Heterogeneous Multiview Data",
+    "authors": "Wenzhao Lian, Piyush Rai, Esther Salazar, Lawrence Carin",
+    "abstract": null
+  },
+  {
+    "title": "Shift-Pessimistic Active Learning Using Robust Bias-Aware Prediction",
+    "authors": "Anqi Liu 0001, Lev Reyzin, Brian D. Ziebart",
+    "abstract": null
+  },
+  {
+    "title": "Unidimensional Clustering of Discrete Data Using Latent Tree Models",
+    "authors": "April H. Liu, Leonard K. M. Poon, Nevin Lianwen Zhang",
+    "abstract": null
+  },
+  {
+    "title": "Low-Rank Multi-View Learning in Matrix Completion for Multi-Label Image Classification",
+    "authors": "Meng Liu 0003, Yong Luo 0002, Dacheng Tao, Chao Xu 0006, Yonggang Wen 0001",
+    "abstract": null
+  },
+  {
+    "title": "Support Consistency of Direct Sparse-Change Learning in Markov Networks",
+    "authors": "Song Liu 0002, Taiji Suzuki, Masashi Sugiyama",
+    "abstract": null
+  },
+  {
+    "title": "Low-Rank Similarity Metric Learning in High Dimensions",
+    "authors": "Wei Liu 0005, Cun Mu, Rongrong Ji, Shiqian Ma, John R. Smith, Shih-Fu Chang",
+    "abstract": null
+  },
+  {
+    "title": "Large Margin Metric Learning for Multi-Label Prediction",
+    "authors": "Weiwei Liu 0003, Ivor W. Tsang",
+    "abstract": null
+  },
+  {
+    "title": "Absent Multiple Kernel Learning",
+    "authors": "Xinwang Liu 0002, Lei Wang 0001, Jianping Yin, Yong Dou, Jian Zhang 0002",
+    "abstract": null
+  },
+  {
+    "title": "Eigenvalues Ratio for Kernel Selection of Kernel Methods",
+    "authors": "Yong Liu 0018, Shizhong Liao",
+    "abstract": null
+  },
+  {
+    "title": "Parallel Gaussian Process Regression for Big Data: Low-Rank Representation Meets Markov Approximation",
+    "authors": "Kian Hsiang Low, Jiangbo Yu, Jie Chen 0027, Patrick Jaillet",
+    "abstract": null
+  },
+  {
+    "title": "Noise-Robust Semi-Supervised Learning by Large-Scale Sparse Coding",
+    "authors": "Zhiwu Lu 0001, Xin Gao 0001, Liwei Wang 0001, Ji-Rong Wen, Songfang Huang",
+    "abstract": null
+  },
+  {
+    "title": "The Hybrid Nested/Hierarchical Dirichlet Process and its Application to Topic Modeling with Word Differentiation",
+    "authors": "Tengfei Ma 0001, Issei Sato, Hiroshi Nakagawa",
+    "abstract": null
+  },
+  {
+    "title": "UT Austin Villa 2014: RoboCup 3D Simulation League Champion via Overlapping Layered Learning",
+    "authors": "Patrick MacAlpine, Mike Depinet, Peter Stone 0001",
+    "abstract": null
+  },
+  {
+    "title": "The Queue Method: Handling Delay, Heuristics, Prior Data, and Evaluation in Bandits",
+    "authors": "Travis Mandel, Yun-En Liu, Emma Brunskill, Zoran Popovic",
+    "abstract": null
+  },
+  {
+    "title": "V-MIN: Efficient Reinforcement Learning through Demonstrations and Relaxed Reward Demands",
+    "authors": "David Martínez Martínez, Guillem Alenyà, Carme Torras",
+    "abstract": null
+  },
+  {
+    "title": "The Boundary Forest Algorithm for Online Supervised and Unsupervised Learning",
+    "authors": "Charles Mathy, Nate Derbinsky, José Bento 0001, Jonathan Rosenthal, Jonathan S. Yedidia",
+    "abstract": null
+  },
+  {
+    "title": "Using Machine Teaching to Identify Optimal Training-Set Attacks on Machine Learners",
+    "authors": "Shike Mei, Xiaojin Zhu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Learning Relational Sum-Product Networks",
+    "authors": "Aniruddh Nath, Pedro M. Domingos",
+    "abstract": null
+  },
+  {
+    "title": "Tensor-Variate Restricted Boltzmann Machines",
+    "authors": "Tu Dinh Nguyen, Truyen Tran 0001, Dinh Q. Phung, Svetha Venkatesh",
+    "abstract": null
+  },
+  {
+    "title": "Probabilistic Attributed Hashing",
+    "authors": "Mingdong Ou, Peng Cui 0001, Jun Wang 0006, Fei Wang 0001, Wenwu Zhu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Obtaining Well Calibrated Probabilities Using Bayesian Binning",
+    "authors": "Mahdi Pakdaman Naeini, Gregory F. Cooper, Milos Hauskrecht",
+    "abstract": null
+  },
+  {
+    "title": "Detecting and Tracking Concept Class Drift and Emergence in Non-Stationary Fast Data Streams",
+    "authors": "Brandon Shane Parker, Latifur Khan",
+    "abstract": null
+  },
+  {
+    "title": "Detecting Change Points in the Large-Scale Structure of Evolving Networks",
+    "authors": "Leto Peel, Aaron Clauset",
+    "abstract": null
+  },
+  {
+    "title": "Adaptive Sampling with Optimal Cost for Class-Imbalance Learning",
+    "authors": "Yuxin Peng 0001",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Objective Reinforcement Learning with Continuous Pareto Frontier Approximation",
+    "authors": "Matteo Pirotta, Simone Parisi, Marcello Restelli",
+    "abstract": null
+  },
+  {
+    "title": "Pareto Ensemble Pruning",
+    "authors": "Chao Qian 0001, Yang Yu 0001, Zhi-Hua Zhou",
+    "abstract": null
+  },
+  {
+    "title": "Leveraging Features and Networks for Probabilistic Tensor Decomposition",
+    "authors": "Piyush Rai, Yingjian Wang 0004, Lawrence Carin",
+    "abstract": null
+  },
+  {
+    "title": "Doubly Robust Covariate Shift Correction",
+    "authors": "Sashank Jakkam Reddi, Barnabás Póczos, Alexander J. Smola",
+    "abstract": null
+  },
+  {
+    "title": "Clustering Longitudinal Clinical Marker Trajectories from Electronic Health Data: Applications to Phenotyping and Endotype Discovery",
+    "authors": "Peter Schulam 0001, Fredrick Wigley, Suchi Saria",
+    "abstract": null
+  },
+  {
+    "title": "SP-SVM: Large Margin Classifier for Data on Multiple Manifolds",
+    "authors": "Bin Shen 0002, Bao-Di Liu, Qifan Wang 0001, Yi Fang 0008, Jan P. Allebach",
+    "abstract": null
+  },
+  {
+    "title": "Spectral Label Refinement for Noisy and Missing Text Labels",
+    "authors": "Yangqiu Song, Chenguang Wang 0001, Ming Zhang 0004, Hailong Sun 0001, Qiang Yang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Unsupervised Feature Learning through Divergent Discriminative Feature Accumulation",
+    "authors": "Paul A. Szerlip, Gregory Morse, Justin K. Pugh, Kenneth O. Stanley",
+    "abstract": null
+  },
+  {
+    "title": "Agnostic System Identification for Monte Carlo Planning",
+    "authors": "Erik Talvitie",
+    "abstract": null
+  },
+  {
+    "title": "Optimizing the CVaR via Sampling",
+    "authors": "Aviv Tamar, Yonatan Glassner, Shie Mannor",
+    "abstract": null
+  },
+  {
+    "title": "High-Confidence Off-Policy Evaluation",
+    "authors": "Philip S. Thomas, Georgios Theocharous, Mohammad Ghavamzadeh",
+    "abstract": null
+  },
+  {
+    "title": "TODTLER: Two-Order-Deep Transfer Learning",
+    "authors": "Jan Van Haaren, Andrey Kolobov, Jesse Davis",
+    "abstract": null
+  },
+  {
+    "title": "Compress and Control",
+    "authors": "Joel Veness, Marc G. Bellemare, Marcus Hutter, Alvin Chua, Guillaume Desjardins",
+    "abstract": null
+  },
+  {
+    "title": "Improving Multi-Step Prediction of Learned Time Series Models",
+    "authors": "Arun Venkatraman, Martial Hebert, J. Andrew Bagnell",
+    "abstract": null
+  },
+  {
+    "title": "Gaussian Cardinality Restricted Boltzmann Machines",
+    "authors": "Cheng Wan, Xiaoming Jin, Guiguang Ding, Dou Shen",
+    "abstract": null
+  },
+  {
+    "title": "Online Boosting Algorithms for Anytime Transfer and Multitask Learning",
+    "authors": "Boyu Wang 0002, Joelle Pineau",
+    "abstract": null
+  },
+  {
+    "title": "Convex Batch Mode Active Sampling via α-Relative Pearson Divergence",
+    "authors": "Hanmo Wang, Liang Du 0003, Peng Zhou 0006, Lei Shi 0015, Yi-Dong Shen",
+    "abstract": null
+  },
+  {
+    "title": "Relational Stacked Denoising Autoencoder for Tag Recommendation",
+    "authors": "Hao Wang 0014, Xingjian Shi, Dit-Yan Yeung",
+    "abstract": null
+  },
+  {
+    "title": "Learning Robust Locality Preserving Projection via p-Order Minimization",
+    "authors": "Hua Wang 0007, Feiping Nie 0001, Heng Huang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Learning to Hash on Structured Data",
+    "authors": "Qifan Wang 0001, Luo Si, Bin Shen 0002",
+    "abstract": null
+  },
+  {
+    "title": "Transfer Feature Representation via Multiple Kernel Learning",
+    "authors": "Wei Wang 0061, Hao Wang 0005, Chen Zhang 0003, Fanjiang Xu",
+    "abstract": null
+  },
+  {
+    "title": "Optimal Estimation of Multivariate ARMA Models",
+    "authors": "Martha White, Junfeng Wen, Michael Bowling, Dale Schuurmans",
+    "abstract": null
+  },
+  {
+    "title": "Improving Approximate Value Iteration with Complex Returns by Bounding",
+    "authors": "Robert William Wright, Xingye Qiao, Steven Loscalzo, Lei Yu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Bayesian Model Averaging Naive Bayes (BMA-NB): Averaging over an Exponential Number of Feature Models in Linear Time",
+    "authors": "Ga Wu, Scott Sanner, Rodrigo F. S. C. Oliveira",
+    "abstract": null
+  },
+  {
+    "title": "Dictionary Learning with Mutually Reinforcing Group-Graph Structures",
+    "authors": "Hongteng Xu, Licheng Yu, Dixin Luo, Hongyuan Zha, Yi Xu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Active Manifold Learning via Gershgorin Circle Guided Sample Selection",
+    "authors": "Hongteng Xu, Hongyuan Zha, Ren-Cang Li, Mark A. Davenport",
+    "abstract": null
+  },
+  {
+    "title": "Nystrom Approximation for Sparse Kernel Methods: Theoretical Analysis and Empirical Evaluation",
+    "authors": "Zenglin Xu, Rong Jin 0001, Bin Shen 0002, Shenghuo Zhu",
+    "abstract": null
+  },
+  {
+    "title": "OMNI-Prop: Seamless Node Classification on Arbitrary Label Correlation",
+    "authors": "Yuto Yamaguchi, Christos Faloutsos, Hiroyuki Kitagawa",
+    "abstract": null
+  },
+  {
+    "title": "Non-Linear Regression for Bag-of-Words Data via Gaussian Process Latent Variable Set Model",
+    "authors": "Yuya Yoshikawa, Tomoharu Iwata, Hiroshi Sawada",
+    "abstract": null
+  },
+  {
+    "title": "A Mathematical Programming-Based Approach to Determining Objective Functions from Qualitative and Subjective Comparisons",
+    "authors": "Takayuki Yoshizumi",
+    "abstract": null
+  },
+  {
+    "title": "Exact Recoverability of Robust PCA via Outlier Pursuit with Tight Recovery Bounds",
+    "authors": "Hongyang Zhang 0001, Zhouchen Lin, Chao Zhang 0001, Edward Y. Chang",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Source Domain Adaptation: A Causal View",
+    "authors": "Kun Zhang 0001, Mingming Gong, Bernhard Schölkopf",
+    "abstract": null
+  },
+  {
+    "title": "Online Bandit Learning for a Special Class of Non-Convex Losses",
+    "authors": "Lijun Zhang 0005, Tianbao Yang, Rong Jin 0001, Zhi-Hua Zhou",
+    "abstract": null
+  },
+  {
+    "title": "Online Dictionary Learning on Symmetric Positive Definite Manifolds with Vision Applications",
+    "authors": "Shengping Zhang, Shiva Prasad Kasiviswanathan, Pong C. Yuen, Mehrtash Harandi",
+    "abstract": null
+  },
+  {
+    "title": "Constrained NMF-Based Multi-View Clustering on Unmapped Data",
+    "authors": "Xianchao Zhang 0001, Linlin Zong, Xinyue Liu 0002, Hong Yu 0005",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Task Learning and Algorithmic Stability",
+    "authors": "Yu Zhang",
+    "abstract": null
+  },
+  {
+    "title": "SoF: Soft-Cluster Matrix Factorization for Probabilistic Clustering",
+    "authors": "Han Zhao 0002, Pascal Poupart, Yongfeng Zhang, Martin Lysy",
+    "abstract": null
+  },
+  {
+    "title": "Self-Paced Learning for Matrix Factorization",
+    "authors": "Qian Zhao 0002, Deyu Meng, Lu Jiang 0004, Qi Xie 0002, Zongben Xu, Alexander G. Hauptmann",
+    "abstract": null
+  },
+  {
+    "title": "Cross-Modal Similarity Learning via Pairs, Preferences, and Active Supervision",
+    "authors": "Yi Zhen, Piyush Rai, Hongyuan Zha, Lawrence Carin",
+    "abstract": null
+  },
+  {
+    "title": "A Reduction of the Elastic Net to Support Vector Machines with an Application to GPU Computing",
+    "authors": "Quan Zhou, Wenlin Chen, Shiji Song, Jacob R. Gardner, Kilian Q. Weinberger, Yixin Chen 0001",
+    "abstract": null
+  },
+  {
+    "title": "10, 000+ Times Accelerated Robust Subset Selection",
+    "authors": "Feiyun Zhu, Bin Fan 0001, Xinliang Zhu, Ying Wang 0008, Shiming Xiang, Chunhong Pan",
+    "abstract": null
+  },
+  {
+    "title": "Tractable Cost-Optimal Planning over Restricted Polytree Causal Graphs",
+    "authors": "Meysam Aghighi, Peter Jonsson, Simon Ståhlberg",
+    "abstract": null
+  },
+  {
+    "title": "Some Fixed Parameter Tractability Results for Planning with Non-Acyclic Domain-Transition Graphs",
+    "authors": "Christer Bäckström",
+    "abstract": null
+  },
+  {
+    "title": "Robustness in Probabilistic Temporal Planning",
+    "authors": "Jeb Brooks, Emilia Reed, Alexander Gruver, James C. Boerkoel",
+    "abstract": null
+  },
+  {
+    "title": "SMT-Based Nonlinear PDDL+ Planning",
+    "authors": "Daniel Bryce, Sicun Gao, David J. Musliner, Robert P. Goldman",
+    "abstract": null
+  },
+  {
+    "title": "Strong Temporal Planning with Uncontrollable Durations: A State-Space Approach",
+    "authors": "Alessandro Cimatti, Andrea Micheli, Marco Roveri",
+    "abstract": null
+  },
+  {
+    "title": "Factored MCTS for Large Scale Stochastic Planning",
+    "authors": "Hao Cui 0003, Roni Khardon, Alan Fern, Prasad Tadepalli",
+    "abstract": null
+  },
+  {
+    "title": "Transition Constraints for Parallel Planning",
+    "authors": "Nina Ghanbari Ghooshchi, Majid Namazi, M. A. Hakim Newton, Abdul Sattar 0001",
+    "abstract": null
+  },
+  {
+    "title": "Measuring Plan Diversity: Pathologies in Existing Approaches and A New Plan Distance Metric",
+    "authors": "Robert P. Goldman, Ugur Kuter",
+    "abstract": null
+  },
+  {
+    "title": "Efficient Bounds in Heuristic Search Algorithms for Stochastic Shortest Path Problems",
+    "authors": "Eric A. Hansen, Ibrahim Abdoulahi",
+    "abstract": null
+  },
+  {
+    "title": "A Generalization of Sleep Sets Based on Operator Sequence Redundancy",
+    "authors": "Robert C. Holte, Yusra Alkhazraji, Martin Wehrle",
+    "abstract": null
+  },
+  {
+    "title": "Goal Recognition Design for Non-Optimal Agents",
+    "authors": "Sarah Keren, Avigdor Gal, Erez Karpas",
+    "abstract": null
+  },
+  {
+    "title": "Variable-Deletion Backdoors to Planning",
+    "authors": "Martin Kronegger, Sebastian Ordyniak, Andreas Pfandler",
+    "abstract": null
+  },
+  {
+    "title": "Preference Planning for Markov Decision Processes",
+    "authors": "Meilun Li, Zhikun She, Andrea Turrini, Lijun Zhang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Information Gathering and Reward Exploitation of Subgoals for POMDPs",
+    "authors": "Hang Ma 0001, Joelle Pineau",
+    "abstract": null
+  },
+  {
+    "title": "Planning Over Multi-Agent Epistemic States: A Classical Planning Approach",
+    "authors": "Christian J. Muise, Vaishak Belle, Paolo Felli, Sheila A. McIlraith, Tim Miller 0001, Adrian R. Pearce, Liz Sonenberg",
+    "abstract": null
+  },
+  {
+    "title": "From Non-Negative to General Operator Cost Partitioning",
+    "authors": "Florian Pommerening, Malte Helmert, Gabriele Röger, Jendrik Seipp",
+    "abstract": null
+  },
+  {
+    "title": "Approximate Linear Programming for Constrained Partially Observable Markov Decision Processes",
+    "authors": "Pascal Poupart, Aarti Malhotra, Pei Pei, Kee-Eung Kim, Bongseok Goh, Michael Bowling",
+    "abstract": null
+  },
+  {
+    "title": "Discretization of Temporal Models with Application to Planning with SMT",
+    "authors": "Jussi Rintanen",
+    "abstract": null
+  },
+  {
+    "title": "Exploiting Submodular Value Functions for Faster Dynamic Sensor Selection",
+    "authors": "Yash Satsangi, Shimon Whiteson, Frans A. Oliehoek",
+    "abstract": null
+  },
+  {
+    "title": "Automatic Configuration of Sequential Planning Portfolios",
+    "authors": "Jendrik Seipp, Silvan Sievers, Malte Helmert, Frank Hutter",
+    "abstract": null
+  },
+  {
+    "title": "Heuristics and Symmetries in Classical Planning",
+    "authors": "Alexander Shleyfman, Michael Katz 0001, Malte Helmert, Silvan Sievers, Martin Wehrle",
+    "abstract": null
+  },
+  {
+    "title": "Factored Symmetries for Merge-and-Shrink Abstractions",
+    "authors": "Silvan Sievers, Martin Wehrle, Malte Helmert, Alexander Shleyfman, Michael Katz 0001",
+    "abstract": null
+  },
+  {
+    "title": "Improving Exploration in UCT Using Local Manifolds",
+    "authors": "Sriram Srinivasan 0005, Erik Talvitie, Michael H. Bowling",
+    "abstract": null
+  },
+  {
+    "title": "Tractability of Planning with Loops",
+    "authors": "Siddharth Srivastava 0001, Shlomo Zilberstein, Abhishek Gupta 0004, Pieter Abbeel, Stuart Russell 0001",
+    "abstract": null
+  },
+  {
+    "title": "Real-Time Symbolic Dynamic Programming",
+    "authors": "Luis Gustavo Rocha Vianna, Leliane N. de Barros, Scott Sanner",
+    "abstract": null
+  },
+  {
+    "title": "tBurton: A Divide and Conquer Temporal Planner",
+    "authors": "David Wang, Brian Charles Williams",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Objective MDPs with Conditional Lexicographic Reward Preferences",
+    "authors": "Kyle Hollins Wray, Shlomo Zilberstein, Abdel-Illah Mouaddib",
+    "abstract": null
+  },
+  {
+    "title": "Resolving Over-Constrained Probabilistic Temporal Problems through Chance Constraint Relaxation",
+    "authors": "Peng Yu, Cheng Fang, Brian Charles Williams",
+    "abstract": null
+  },
+  {
+    "title": "An Efficient Forest-Based Tabu Search Algorithm for the Split-delivery Vehicle Routing Problem",
+    "authors": "Zizhen Zhang, Huang He, Zhixing Luo, Hu Qin, Songshan Guo",
+    "abstract": null
+  },
+  {
+    "title": "Crowdsourced Action-Model Acquisition for Planning",
+    "authors": "Hankz Hankui Zhuo",
+    "abstract": null
+  },
+  {
+    "title": "Loss-Calibrated Monte Carlo Action Selection",
+    "authors": "Ehsan Abbasnejad, Justin Domke, Scott Sanner",
+    "abstract": null
+  },
+  {
+    "title": "Solving Uncertain MDPs with Objectives that Are Separable over Instantiations of Model Uncertainty",
+    "authors": "Yossiri Adulyasak, Pradeep Varakantham, Asrar Ahmed, Patrick Jaillet",
+    "abstract": null
+  },
+  {
+    "title": "Linear-Time Gibbs Sampling in Piecewise Graphical Models",
+    "authors": "Hadi Mohasel Afshar, Scott Sanner, Ehsan Abbasnejad",
+    "abstract": null
+  },
+  {
+    "title": "Stable Model Counting and Its Application in Probabilistic Logic Programming",
+    "authors": "Rehan Abdul Aziz, Geoffrey Chu, Christian J. Muise, Peter James Stuckey",
+    "abstract": null
+  },
+  {
+    "title": "Recovering Causal Effects from Selection Bias",
+    "authors": "Elias Bareinboim, Jin Tian 0001",
+    "abstract": null
+  },
+  {
+    "title": "Egalitarian Collective Decision Making under Qualitative Possibilistic Uncertainty: Principles and Characterization",
+    "authors": "Nahla Ben Amor, Fatma Essghaier, Hélène Fargier",
+    "abstract": null
+  },
+  {
+    "title": "Representing Aggregators in Relational Probabilistic Models",
+    "authors": "David Buchman, David Poole 0001",
+    "abstract": null
+  },
+  {
+    "title": "Optimal Cost Almost-Sure Reachability in POMDPs",
+    "authors": "Krishnendu Chatterjee, Martin Chmelik, Raghav Gupta, Ayush Kanodia",
+    "abstract": null
+  },
+  {
+    "title": "Value of Information Based on Decision Robustness",
+    "authors": "Suming Jeremiah Chen, Arthur Choi, Adnan Darwiche",
+    "abstract": null
+  },
+  {
+    "title": "Submodular Surrogates for Value of Information",
+    "authors": "Yuxin Chen 0001, Shervin Javdani, Amin Karbasi, J. Andrew Bagnell, Siddhartha S. Srinivasa, Andreas Krause 0001",
+    "abstract": null
+  },
+  {
+    "title": "Bayesian Networks Specified Using Propositional and Relational Constructs: Combined, Data, and Domain Complexity",
+    "authors": "Fábio Gagliardi Cozman, Denis Deratani Mauá",
+    "abstract": null
+  },
+  {
+    "title": "An Improved Lower Bound for Bayesian Network Structure Learning",
+    "authors": "Xiannian Fan, Changhe Yuan",
+    "abstract": null
+  },
+  {
+    "title": "Approximately Optimal Risk-Averse Routing Policies via Adaptive Discretization",
+    "authors": "Darrell Hoy, Evdokia Nikolova",
+    "abstract": null
+  },
+  {
+    "title": "Better Be Lucky than Good: Exceeding Expectations in MDP Evaluation",
+    "authors": "Thomas Keller 0001, Florian Geißer",
+    "abstract": null
+  },
+  {
+    "title": "Reward Shaping for Model-Based Bayesian Reinforcement Learning",
+    "authors": "Hyeoneun Kim, Woosang Lim, Kanghoon Lee, Yung-Kyun Noh, Kee-Eung Kim",
+    "abstract": null
+  },
+  {
+    "title": "Tighter Value Function Bounds for Bayesian Reinforcement Learning",
+    "authors": "Kanghoon Lee, Kee-Eung Kim",
+    "abstract": null
+  },
+  {
+    "title": "Knowledge-Based Probabilistic Logic Learning",
+    "authors": "Phillip Odom, Tushar Khot, Reid B. Porter, Sriraam Natarajan",
+    "abstract": null
+  },
+  {
+    "title": "On the Decreasing Power of Kernel and Distance Based Nonparametric Hypothesis Tests in High Dimensions",
+    "authors": "Aaditya Ramdas, Sashank Jakkam Reddi, Barnabás Póczos, Aarti Singh, Larry A. Wasserman",
+    "abstract": null
+  },
+  {
+    "title": "Representation Discovery for MDPs Using Bisimulation Metrics",
+    "authors": "Sherry Shanshan Ruan, Gheorghe Comanici, Prakash Panangaden, Doina Precup",
+    "abstract": null
+  },
+  {
+    "title": "Lifting Model Sampling for General Game Playing to Incomplete-Information Models",
+    "authors": "Michael John Schofield, Michael Thielscher",
+    "abstract": null
+  },
+  {
+    "title": "On Interruptible Pure Exploration in Multi-Armed Bandits",
+    "authors": "Alexander Shleyfman, Antonín Komenda, Carmel Domshlak",
+    "abstract": null
+  },
+  {
+    "title": "Lifted Probabilistic Inference for Asymmetric Graphical Models",
+    "authors": "Guy Van den Broeck, Mathias Niepert",
+    "abstract": null
+  },
+  {
+    "title": "Just Count the Satisfied Groundings: Scalable Local-Search and Sampling Based Inference in MLNs",
+    "authors": "Deepak Venugopal, Somdeb Sarkhel, Vibhav Gogate",
+    "abstract": null
+  },
+  {
+    "title": "Hierarchical Monte-Carlo Planning",
+    "authors": "Ngo Anh Vien, Marc Toussaint",
+    "abstract": null
+  },
+  {
+    "title": "Chance-Constrained Scheduling via Conflict-Directed Risk Allocation",
+    "authors": "Andrew J. Wang, Brian C. Williams",
+    "abstract": null
+  },
+  {
+    "title": "Learning to Reject Sequential Importance Steps for Continuous-Time Bayesian Networks",
+    "authors": "Jeremy C. Weiss, Sriraam Natarajan, C. David Page Jr.",
+    "abstract": null
+  },
+  {
+    "title": "Nonparametric Scoring Rules",
+    "authors": "Erik Peter Zawadzki, Sébastien Lahaie",
+    "abstract": null
+  },
+  {
+    "title": "On Fairness in Decision-Making under Uncertainty: Definitions, Computation, and Comparison",
+    "authors": "Chongjie Zhang, Julie A. Shah",
+    "abstract": null
+  },
+  {
+    "title": "An Exact Algorithm for Solving Most Relevant Explanation in Bayesian Networks",
+    "authors": "Xiaoyuan Zhu, Changhe Yuan",
+    "abstract": null
+  },
+  {
+    "title": "Proximal Operators for Multi-Agent Path Planning",
+    "authors": "José Bento 0001, Nate Derbinsky, Charles Mathy, Jonathan S. Yedidia",
+    "abstract": null
+  },
+  {
+    "title": "This Time the Robot Settles for a Cost: A Quantitative Approach to Temporal Logic Planning with Partial Satisfaction",
+    "authors": "Morteza Lahijanian, Shaull Almagor, Dror Fried, Lydia E. Kavraki, Moshe Y. Vardi",
+    "abstract": null
+  },
+  {
+    "title": "Intent Prediction and Trajectory Forecasting via Predictive Inverse Linear-Quadratic Regulation",
+    "authors": "Mathew Monfort, Anqi Liu 0001, Brian D. Ziebart",
+    "abstract": null
+  },
+  {
+    "title": "Spatio-Spectral Exploration Combining In Situ and Remote Measurements",
+    "authors": "David Ray Thompson, David Wettergreen, Greydon T. Foil, P. Michael Furlong, Anatha Ravi Kiran",
+    "abstract": null
+  },
+  {
+    "title": "Robot Learning Manipulation Action Plans by \"Watching\" Unconstrained Videos from the World Wide Web",
+    "authors": "Yezhou Yang, Yi Li, Cornelia Fermüller, Yiannis Aloimonos",
+    "abstract": null
+  },
+  {
+    "title": "Efficient Extraction of QBF (Counter)models from Long-Distance Resolution Proofs",
+    "authors": "Valeriy Balabanov, Jie-Hong Roland Jiang, Mikolas Janota, Magdalena Widl",
+    "abstract": null
+  },
+  {
+    "title": "SAT Modulo Monotonic Theories",
+    "authors": "Sam Bayless, Noah Bayless, Holger H. Hoos, Alan J. Hu",
+    "abstract": null
+  },
+  {
+    "title": "On Computing Maximal Subsets of Clauses that Must Be Satisfiable with Possibly Mutually-Contradictory Assumptive Contexts",
+    "authors": "Philippe Besnard, Éric Grégoire, Jean-Marie Lagniez",
+    "abstract": null
+  },
+  {
+    "title": "Strong Bounds Consistencies and Their Application to Linear Constraints",
+    "authors": "Christian Bessiere, Anastasia Paparrizou, Kostas Stergiou 0001",
+    "abstract": null
+  },
+  {
+    "title": "SMT-Based Validation of Timed Failure Propagation Graphs",
+    "authors": "Marco Bozzano, Alessandro Cimatti, Marco Gario, Andrea Micheli",
+    "abstract": null
+  },
+  {
+    "title": "Binarisation via Dualisation for Valued Constraints",
+    "authors": "David A. Cohen, Martin C. Cooper, Peter G. Jeavons, Stanislav Zivný",
+    "abstract": null
+  },
+  {
+    "title": "SAT-Based Strategy Extraction in Reachability Games",
+    "authors": "Niklas Eén, Alexander Legg, Nina Narodytska, Leonid Ryzhyk",
+    "abstract": null
+  },
+  {
+    "title": "The Extendable-Triple Property: A New CSP Tractable Class beyond BTP",
+    "authors": "Philippe Jégou, Cyril Terrioux",
+    "abstract": null
+  },
+  {
+    "title": "Online Detection of Abnormal Events Using Incremental Coding Length",
+    "authors": "Jayanta Kumar Dutta, Bonny Banerjee",
+    "abstract": null
+  },
+  {
+    "title": "A Bayesian Approach to Perceptual 3D Object-Part Decomposition Using Skeleton-Based Representations",
+    "authors": "Tarek El-Gaaly, Vicky Froyen, Ahmed M. Elgammal, Jacob Feldman, Manish Singh 0001",
+    "abstract": null
+  },
+  {
+    "title": "Exploring Semantic Inter-Class Relationships (SIR) for Zero-Shot Action Recognition",
+    "authors": "Chuang Gan 0001, Ming Lin 0002, Yi Yang 0001, Yueting Zhuang, Alexander G. Hauptmann",
+    "abstract": null
+  },
+  {
+    "title": "Building Effective Representations for Sketch Recognition",
+    "authors": "Jun Guo 0024, Changhu Wang, Hongyang Chao",
+    "abstract": null
+  },
+  {
+    "title": "Learning Predictable and Discriminative Attributes for Visual Recognition",
+    "authors": "Yuchen Guo, Guiguang Ding, Xiaoming Jin, Jianmin Wang 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Local Sparse Model for Matching Problem",
+    "authors": "Bo Jiang 0002, Jin Tang 0001, Chris H. Q. Ding, Bin Luo 0001",
+    "abstract": null
+  },
+  {
+    "title": "Compute Less to Get More: Using ORC to Improve Sparse Filtering",
+    "authors": "Johannes Lederer, Sergio Guadarrama",
+    "abstract": null
+  },
+  {
+    "title": "Sparse Deep Stacking Network for Image Classification",
+    "authors": "Jun Li 0027, Heyou Chang, Jian Yang 0003",
+    "abstract": null
+  },
+  {
+    "title": "Surpassing Human-Level Face Verification Performance on LFW with GaussianFace",
+    "authors": "Chaochao Lu, Xiaoou Tang",
+    "abstract": null
+  },
+  {
+    "title": "Automatic Topic Discovery for Multi-Object Tracking",
+    "authors": "Wenhan Luo, Björn Stenger, Xiaowei Zhao, Tae-Kyun Kim 0001",
+    "abstract": null
+  },
+  {
+    "title": "Robust Subspace Clustering via Thresholding Ridge Regression",
+    "authors": "Xi Peng 0001, Zhang Yi 0001, Huajin Tang",
+    "abstract": null
+  },
+  {
+    "title": "Multi-View Point Registration via Alternating Optimization",
+    "authors": "Junchi Yan, Jun Wang 0006, Hongyuan Zha, Xiaokang Yang 0001, Stephen M. Chu",
+    "abstract": null
+  },
+  {
+    "title": "Complex Event Detection via Event Oriented Dictionary Learning",
+    "authors": "Yan Yan 0002, Yi Yang 0001, Haoquan Shen, Deyu Meng, Gaowen Liu, Alexander G. Hauptmann, Nicu Sebe",
+    "abstract": null
+  },
+  {
+    "title": "Deep Representation Learning with Target Coding",
+    "authors": "Shuo Yang 0003, Ping Luo 0002, Chen Change Loy, Kenneth W. Shum, Xiaoou Tang",
+    "abstract": null
+  },
+  {
+    "title": "Learning to Describe Video with Weak Supervision by Exploiting Negative Sentential Information",
+    "authors": "Haonan Yu, Jeffrey Mark Siskind",
+    "abstract": null
+  },
+  {
+    "title": "Metric Learning Driven Multi-Task Structured Output Optimization for Robust Keypoint Tracking",
+    "authors": "Liming Zhao, Xi Li 0001, Jun Xiao 0001, Fei Wu 0001, Yueting Zhuang",
+    "abstract": null
+  },
+  {
+    "title": "Learning Face Hallucination in the Wild",
+    "authors": "Erjin Zhou, Haoqiang Fan, Zhimin Cao, Yuning Jiang 0001, Qi Yin",
+    "abstract": null
+  },
+  {
+    "title": "A Boosted Multi-Task Model for Pedestrian Detection with Occlusion Handling",
+    "authors": "Chao Zhu 0003, Yuxin Peng 0001",
+    "abstract": null
+  },
+  {
+    "title": "Activity Planning for a Lunar Orbital Mission",
+    "authors": "John L. Bresina",
+    "abstract": null
+  },
+  {
+    "title": "Robust System for Identifying Procurement Fraud",
+    "authors": "Amit Dhurandhar, Rajesh Kumar Ravi, Bruce Graves, Gopikrishnan Maniachari, Markus Ettl",
+    "abstract": null
+  },
+  {
+    "title": "Position Assignment on an Enterprise Level Using Combinatorial Optimization",
+    "authors": "Leonard Kinnaird-Heether, Chris Dorman",
+    "abstract": null
+  },
+  {
+    "title": "Graph Analysis for Detecting Fraud, Waste, and Abuse in Healthcare Data",
+    "authors": "Juan Liu, Eric Bier, Aaron Wilson, Tomonori Honda 0001, Kumar Sricharan, Leilani Gilpin, John Alexis Guerra Gómez, Daniel Davies",
+    "abstract": null
+  },
+  {
+    "title": "Planned Protest Modeling in News and Social Media",
+    "authors": "Sathappan Muthiah, Bert Huang, Jaime Arredondo, David Mares, Lise Getoor, Graham Katz, Naren Ramakrishnan",
+    "abstract": null
+  },
+  {
+    "title": "Process Diagnosis System (PDS) - A 30 Year History",
+    "authors": "Edward D. Thompson, Ethan Frolich, James C. Bellows, Benjamin E. Bassford, Edward J. Skiko, Mark S. Fox",
+    "abstract": null
+  },
+  {
+    "title": "Named Entity Recognition in Travel-Related Search Queries",
+    "authors": "Brooke Cowan, Sven Zethelius, Brittany Luk, Teodora Baras, Prachi Ukarde, Daodao Zhang",
+    "abstract": null
+  },
+  {
+    "title": "Automated Problem List Generation from Electronic Medical Records in IBM Watson",
+    "authors": "Murthy V. Devarakonda, Ching-Huei Tsou",
+    "abstract": null
+  },
+  {
+    "title": "Using Qualitative Spatial Logic for Validating Crowd-Sourced Geospatial Data",
+    "authors": "Heshan Du, Hai H. Nguyen, Natasha Alechina, Brian Logan 0001, Michael Jackson 0005, John Goodwin",
+    "abstract": null
+  },
+  {
+    "title": "Day-Ahead Hail Prediction Integrating Machine Learning with Storm-Scale Numerical Weather Models",
+    "authors": "David John Gagne II, Amy McGovern, Jerald Brotzge, Michael Coniglio, James Correia Jr., Ming Xue",
+    "abstract": null
+  },
+  {
+    "title": "Capturing Human Route Preferences From Track Information: New Results",
+    "authors": "Johnathan Gohde, Mark S. Boddy, Hazel Shackleton, Steve Johnston",
+    "abstract": null
+  },
+  {
+    "title": "Design and Experiment of a Collaborative Planning Service for NetCentric International Brigade Command",
+    "authors": "Christophe Guettier, Willy Lamal, Israel Mayk, Jacques Yelloz",
+    "abstract": null
+  },
+  {
+    "title": "Aggregating User Input in Ecology Citizen Science Projects",
+    "authors": "Greg Hines, Alexandra Swanson, Margaret Kosmala, Chris J. Lintott",
+    "abstract": null
+  },
+  {
+    "title": "Leveraging Ontologies to Improve Model Generalization Automatically with Online Data Sources",
+    "authors": "Sasin Janpuangtong, Dylan A. Shell",
+    "abstract": null
+  },
+  {
+    "title": "HACKAR: Helpful Advice for Code Knowledge and Attack Resilience",
+    "authors": "Ugur Kuter, Mark H. Burstein, J. Benton 0001, Daniel Bryce, Jordan Tyler Thayer, Steve McCoy",
+    "abstract": null
+  },
+  {
+    "title": "A Robust and Extensible Tool for Data Integration Using Data Type Models",
+    "authors": "Andres Quiroz, Eric Huang, Luca Ceriani",
+    "abstract": null
+  },
+  {
+    "title": "Maestoso: An Intelligent Educational Sketching Tool for Learning Music Theory",
+    "authors": "Paul Taele, Laura Barreto, Tracy Anne Hammond",
+    "abstract": null
+  },
+  {
+    "title": "Preventing HIV Spread in Homeless Populations Using PSINET",
+    "authors": "Amulya Yadav, Leandro Soriano Marcolino, Eric Rice, Robin Petering, Hailey Winetrobe, Harmony Rhoades, Milind Tambe, Heather Carmichael",
+    "abstract": null
+  },
+  {
+    "title": "SKILL: A System for Skill Identification and Normalization",
+    "authors": "Meng Zhao, Faizan Javed, Ferosh Jacob, Matt McNair",
+    "abstract": null
+  },
+  {
+    "title": "Elementary School Science and Math Tests as a Driver for AI: Take the Aristo Challenge!",
+    "authors": "Peter Clark",
+    "abstract": null
+  },
+  {
+    "title": "Time-Varying Clusters in Large-Scale Flow Cytometry",
+    "authors": "Jeremy Hyrkas, Daniel Halperin, Bill Howe",
+    "abstract": null
+  },
+  {
+    "title": "The Winograd Schema Challenge: Evaluating Progress in Commonsense Reasoning",
+    "authors": "Leora Morgenstern, Charles L. Ortiz Jr.",
+    "abstract": null
+  },
+  {
+    "title": "Speech Adaptation in Extended Ambient Intelligence Environments",
+    "authors": "Bonnie J. Dorr, Lucian Galescu, Ian Perera, Kristy Hollingshead-Seitz, David J. Atkinson 0001, Micah Clark, William J. Clancey, Yorick Wilks, Eric Fosler-Lussier",
+    "abstract": null
+  },
+  {
+    "title": "Intelligent Agents for Rehabilitation and Care of Disabled and Chronic Patients",
+    "authors": "Sarit Kraus",
+    "abstract": null
+  },
+  {
+    "title": "Mechanism Learning with Mechanism Induced Data",
+    "authors": "Tie-Yan Liu, Wei Chen 0034, Tao Qin 0001",
+    "abstract": null
+  },
+  {
+    "title": "Emerging Architectures for Global System Science",
+    "authors": "Michela Milano, Pascal Van Hentenryck",
+    "abstract": null
+  },
+  {
+    "title": "Blended Planning and Acting: Preliminary Approach, Research Challenges",
+    "authors": "Dana S. Nau, Malik Ghallab, Paolo Traverso",
+    "abstract": null
+  },
+  {
+    "title": "Impact of Modeling Languages on the Theory and Practice in Planning Research",
+    "authors": "Jussi Rintanen",
+    "abstract": null
+  },
+  {
+    "title": "Steering Evolution Strategically: Computational Game Theory and Opponent Exploitation for Treatment Planning, Drug Design, and Synthetic Biology",
+    "authors": "Tuomas Sandholm",
+    "abstract": null
+  },
+  {
+    "title": "Towards a Programmer's Apprentice (Again)",
+    "authors": "Howard Elliot Shrobe, Boris Katz, Randall Davis",
+    "abstract": null
+  },
+  {
+    "title": "Conducting Neuroscience to Guide the Development of AI",
+    "authors": "Jeffrey Mark Siskind",
+    "abstract": null
+  },
+  {
+    "title": "Challenges in Resource and Cost Allocation",
+    "authors": "Toby Walsh",
+    "abstract": null
+  },
+  {
+    "title": "Explaining Watson: Polymath Style",
+    "authors": "Wlodek Zadrozny, Valeria de Paiva, Lawrence S. Moss",
+    "abstract": null
+  },
+  {
+    "title": "Machine Teaching: An Inverse Problem to Machine Learning and an Approach Toward Optimal Education",
+    "authors": "Xiaojin Zhu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Building Strong Semi-Autonomous Systems",
+    "authors": "Shlomo Zilberstein",
+    "abstract": null
+  },
+  {
+    "title": "Achieving Intelligence Using Prototypes, Composition, and Analogy",
+    "authors": "Vinay K. Chaudhri",
+    "abstract": null
+  },
+  {
+    "title": "Towards User-Adaptive Information Visualization",
+    "authors": "Cristina Conati, Giuseppe Carenini, Dereck Toker, Sébastien Lallé",
+    "abstract": null
+  },
+  {
+    "title": "Languages for Learning and Mining",
+    "authors": "Luc De Raedt",
+    "abstract": null
+  },
+  {
+    "title": "Compile!",
+    "authors": "Pierre Marquis",
+    "abstract": null
+  },
+  {
+    "title": "On the Diagnosis of Cyber-Physical Production Systems",
+    "authors": "Oliver Niggemann, Volker Lohweg",
+    "abstract": null
+  },
+  {
+    "title": "Abstraction for Solving Large Incomplete-Information Games",
+    "authors": "Tuomas Sandholm",
+    "abstract": null
+  },
+  {
+    "title": "Semantic Representation",
+    "authors": "Lenhart K. Schubert",
+    "abstract": null
+  },
+  {
+    "title": "A Succinct Conceptualization of the Foundations for a Network Organization Paradigm",
+    "authors": "Saad Alqithami",
+    "abstract": null
+  },
+  {
+    "title": "A Goal-Based Model of Personality for Planning-Based Narrative Generation",
+    "authors": "Julio César Bahamón, Camille Barot, Robert Michael Young",
+    "abstract": null
+  },
+  {
+    "title": "Leveraging Common Structure to Improve Prediction across Related Datasets",
+    "authors": "Matt Barnes 0001, Nick Gisolfi, Madalina Fiterau, Artur Dubrawski",
+    "abstract": null
+  },
+  {
+    "title": "Stochastic Blockmodeling for Online Advertising",
+    "authors": "Li Chen, Matthew Patton",
+    "abstract": null
+  },
+  {
+    "title": "Query Abduction for ELH Ontologies",
+    "authors": "Mahsa Chitsaz, Zhe Wang 0001, Kewen Wang 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Multi-Pass Sieve for Name Normalization",
+    "authors": "Jennifer D'Souza 0001",
+    "abstract": null
+  },
+  {
+    "title": "A Sequence Labeling Approach to Deriving Word Variants",
+    "authors": "Jennifer D'Souza 0001",
+    "abstract": null
+  },
+  {
+    "title": "Predicting the Quality of User Experiences to Improve Productivity and Wellness",
+    "authors": "Priya Lekha Donti, Jacob Rosenbloom, Alex Gruver, James C. Boerkoel Jr.",
+    "abstract": null
+  },
+  {
+    "title": "Modelling Individual Negative Emotion Spreading Process with Mobile Phones",
+    "authors": "Zhanwei Du, Yongjian Yang 0001, Chuang Ma, Yuan Bai",
+    "abstract": null
+  },
+  {
+    "title": "Active Learning for Informative Projection Retrieval",
+    "authors": "Madalina Fiterau, Artur Dubrawski",
+    "abstract": null
+  },
+  {
+    "title": "Placing Influencing Agents in a Flock",
+    "authors": "Katie Genter, Peter Stone 0001",
+    "abstract": null
+  },
+  {
+    "title": "Characterizing Performance of Consistency Algorithms by Algorithm Configuration of Random CSP Generators",
+    "authors": "Daniel J. Geschwender, Robert J. Woodward, Berthe Y. Choueiry",
+    "abstract": null
+  },
+  {
+    "title": "Finding Meaningful Gaps to Guide Data Acquisition for a Radiation Adjudication System",
+    "authors": "Nick Gisolfi, Madalina Fiterau, Artur Dubrawski",
+    "abstract": null
+  },
+  {
+    "title": "Dealing with Trouble: A Data-Driven Model of a Repair Type for a Conversational Agent",
+    "authors": "Sviatlana Höhn",
+    "abstract": null
+  },
+  {
+    "title": "On Manipulablity of Random Serial Dictatorship in Sequential Matching with Dynamic Preferences",
+    "authors": "Hadi Hosseini, Kate Larson, Robin Cohen",
+    "abstract": null
+  },
+  {
+    "title": "Language Independent Feature Extractor",
+    "authors": "Young-Seob Jeong, Ho-Jin Choi",
+    "abstract": null
+  },
+  {
+    "title": "Coupled Collaborative Filtering for Context-aware Recommendation",
+    "authors": "Xinxin Jiang, Wei Liu 0007, Longbing Cao, Guodong Long",
+    "abstract": null
+  },
+  {
+    "title": "Sorted Neighborhood for the Semantic Web",
+    "authors": "Mayank Kejriwal",
+    "abstract": null
+  },
+  {
+    "title": "Effect of Spatial Pooler Initialization on Column Activity in Hierarchical Temporal Memory",
+    "authors": "Mackenzie Leake, Liyu Xia, Kamil Rocki, Wayne Imaino",
+    "abstract": null
+  },
+  {
+    "title": "Acronym Disambiguation Using Word Embedding",
+    "authors": "Chao Li, Lei Ji 0001, Jun Yan 0001",
+    "abstract": null
+  },
+  {
+    "title": "Learning Word Vectors Efficiently Using Shared Representations and Document Representations",
+    "authors": "Qun Luo, Weiran Xu",
+    "abstract": null
+  },
+  {
+    "title": "Just-in-Time Hierarchical Constraint Decomposition",
+    "authors": "Valentin Mayer-Eichberger",
+    "abstract": null
+  },
+  {
+    "title": "Every Team Deserves a Second Chance: Identifying When Things Go Wrong (Student Abstract Version)",
+    "authors": "Vaishnavh Nagarajan, Leandro Soriano Marcolino, Milind Tambe",
+    "abstract": null
+  },
+  {
+    "title": "Active Advice Seeking for Inverse Reinforcement Learning",
+    "authors": "Phillip Odom, Sriraam Natarajan",
+    "abstract": null
+  },
+  {
+    "title": "Designing Vaccines that Are Robust to Virus Escape",
+    "authors": "Swetasudha Panda, Yevgeniy Vorobeychik",
+    "abstract": null
+  },
+  {
+    "title": "\"Is It Rectangular?\" Using I Spy as an Interactive, Game-Based Approach to Multimodal Robot Learning",
+    "authors": "Natalie Parde, Michalis Papakostas, Konstantinos Tsiakas, Rodney D. Nielsen",
+    "abstract": null
+  },
+  {
+    "title": "A New Computational Intelligence Model for Long-Term Prediction of Solar and Geomagnetic Activity",
+    "authors": "Mahboobeh Parsapoor, John Brooke, Bertil Svensson",
+    "abstract": null
+  },
+  {
+    "title": "GEF: A Self-Programming Robot Using Grammatical Evolution",
+    "authors": "Charles Peabody, Jennifer Seitzer",
+    "abstract": null
+  },
+  {
+    "title": "Planning with Numeric Timed Initial Fluents",
+    "authors": "Chiara Piacentini, Maria Fox 0001, Derek Long",
+    "abstract": null
+  },
+  {
+    "title": "Combining Ontology Class Expression Generation with Mathematical Modeling for Ontology Learning",
+    "authors": "Jedrzej Potoniec, Agnieszka Lawrynowicz",
+    "abstract": null
+  },
+  {
+    "title": "Improving Cross-Domain Recommendation through Probabilistic Cluster-Level Latent Factor Model",
+    "authors": "Siting Ren, Sheng Gao 0001, Jianxin Liao, Jun Guo 0002",
+    "abstract": null
+  },
+  {
+    "title": "Representation Discovery for MDPs Using Bisimulation Metrics",
+    "authors": "Sherry Shanshan Ruan, Gheorghe Comanici, Prakash Panangaden, Doina Precup",
+    "abstract": null
+  },
+  {
+    "title": "Graphical Representation of Assumption-Based Argumentation",
+    "authors": "Claudia Schulz 0001",
+    "abstract": null
+  },
+  {
+    "title": "Actionable Combined High Utility Itemset Mining",
+    "authors": "Jingyu Shao, Junfu Yin, Wei Liu 0007, Longbing Cao",
+    "abstract": null
+  },
+  {
+    "title": "Spatio-Temporal Signatures of User-Centric Data: How Similar Are We?",
+    "authors": "Samta Shukla, Aditya Telang, Salil Joshi 0001, L. Venkata Subramaniam",
+    "abstract": null
+  },
+  {
+    "title": "Multimedia Data for the Visually Impaired",
+    "authors": "Niket Tandon, Shekhar Sharma, Tanima Makkad",
+    "abstract": null
+  },
+  {
+    "title": "Improving Microblog Retrieval from Exterior Corpus by Automatically Constructing Microblogging Corpus",
+    "authors": "Wenting Tu, David Wai-Lok Cheung, Nikos Mamoulis",
+    "abstract": null
+  },
+  {
+    "title": "Time-Sensitive Opinion Mining for Prediction",
+    "authors": "Wenting Tu, David Wai-Lok Cheung, Nikos Mamoulis",
+    "abstract": null
+  },
+  {
+    "title": "Self-Organized Collective Decision-Making in a 100-Robot Swarm",
+    "authors": "Gabriele Valentini, Heiko Hamann, Marco Dorigo",
+    "abstract": null
+  },
+  {
+    "title": "Handling Uncertainty in Answer Set Programming",
+    "authors": "Yi Wang 0048, Joohyung Lee 0002",
+    "abstract": null
+  },
+  {
+    "title": "Combining Machine Learning and Crowdsourcing for Better Understanding Commodity Reviews",
+    "authors": "Heting Wu, Hailong Sun 0001, Yili Fang, Kefan Hu, Yongqing Xie, Yangqiu Song, Xudong Liu 0001",
+    "abstract": null
+  },
+  {
+    "title": "What Is the Longest River in the USA? Semantic Parsing for Aggregation Questions",
+    "authors": "Kun Xu 0005, Sheng Zhang 0012, Yansong Feng 0002, Songfang Huang, Dongyan Zhao 0001",
+    "abstract": null
+  },
+  {
+    "title": "Accelerating SAT Solving by Common Subclause Elimination",
+    "authors": "Yaowei Yan, Chris E. Gutierrez, Jeriah Jn-Charles, Forrest Sheng Bao, Yuanlin Zhang 0002",
+    "abstract": null
+  },
+  {
+    "title": "Global Policy Construction in Modular Reinforcement Learning",
+    "authors": "Ruohan Zhang, Zhao Song 0002, Dana H. Ballard",
+    "abstract": null
+  },
+  {
+    "title": "Touchless Telerobotic Surgery - Is It Possible at All?",
+    "authors": "Tian Zhou 0005, Maria Eugenia Cabrera, Juan P. Wachs",
+    "abstract": null
+  },
+  {
+    "title": "Modeling Eye Movements when Reading Microblogs",
+    "authors": "Maria Barrett, Anders Søgaard",
+    "abstract": null
+  },
+  {
+    "title": "Exploiting the Structure of Distributed Constraint Optimization Problems",
+    "authors": "Ferdinando Fioretto",
+    "abstract": null
+  },
+  {
+    "title": "Realistic Assumptions for Attacks on Elections",
+    "authors": "Zack Fitzsimmons",
+    "abstract": null
+  },
+  {
+    "title": "Social Hierarchical Learning",
+    "authors": "Bradley Hayes",
+    "abstract": null
+  },
+  {
+    "title": "Multivariate Conditional Anomaly Detection and Its Clinical Application",
+    "authors": "Charmgil Hong, Milos Hauskrecht",
+    "abstract": null
+  },
+  {
+    "title": "Probabilistic Planning with Risk-Sensitive Criterion",
+    "authors": "Ping Hou",
+    "abstract": null
+  },
+  {
+    "title": "Entity Resolution in a Big Data Framework",
+    "authors": "Mayank Kejriwal",
+    "abstract": null
+  },
+  {
+    "title": "Non-Classical Planning for Robotic Applications",
+    "authors": "Scott Kiesel",
+    "abstract": null
+  },
+  {
+    "title": "Transfer Learning-Based Co-Run Scheduling for Heterogeneous Datacenters",
+    "authors": "Wei Kuang, Laura E. Brown, Zhenlin Wang 0003",
+    "abstract": null
+  },
+  {
+    "title": "HVAC-Aware Occupancy Scheduling (Extended Abstract)",
+    "authors": "Boon Ping Lim",
+    "abstract": null
+  },
+  {
+    "title": "Scalable Agent Modeling for Large Multiagent Systems",
+    "authors": "Carrie Rebhuhn",
+    "abstract": null
+  },
+  {
+    "title": "Explaining Answer Set Programming in Argumentative Terms",
+    "authors": "Claudia Schulz 0001",
+    "abstract": null
+  },
+  {
+    "title": "Optimal Multi-Agent Pathfinding Algorithms",
+    "authors": "Guni Sharon",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Agent Team Formation: Solving Complex Problems by Aggregating Opinions",
+    "authors": "Leandro Soriano Marcolino",
+    "abstract": null
+  },
+  {
+    "title": "Scaling-Up Inference in Markov Logic",
+    "authors": "Deepak Venugopal",
+    "abstract": null
+  },
+  {
+    "title": "Risk-Aware Scheduling throughout Planning and Execution",
+    "authors": "Andrew J. Wang",
+    "abstract": null
+  },
+  {
+    "title": "A Planning-Based Assistance System for Setting Up a Home Theater",
+    "authors": "Pascal Bercher, Felix Richter 0001, Thilo Hörnle, Thomas Geier, Daniel Höller, Gregor Behnke, Florian Nothdurft, Frank Honold, Wolfgang Minker, Michael Weber 0001, Susanne Biundo",
+    "abstract": null
+  },
+  {
+    "title": "On Correcting Misspelled Queries in Email Search",
+    "authors": "Abhijit Bhole, Raghavendra Udupa",
+    "abstract": null
+  },
+  {
+    "title": "Towards Cognitive Automation of Data Science",
+    "authors": "Alain Biem, Maria Butrico, Mark Feblowitz, Tim Klinger, Yuri Malitsky, Kenney Ng, Adam Perer, Chandra Reddy, Anton Riabov, Horst Samulowitz, Daby M. Sow, Gerald Tesauro, Deepak S. Turaga",
+    "abstract": null
+  },
+  {
+    "title": "Tartanian7: A Champion Two-Player No-Limit Texas Hold'em Poker-Playing Program",
+    "authors": "Noam Brown, Sam Ganzfried, Tuomas Sandholm",
+    "abstract": null
+  },
+  {
+    "title": "CrowdMR: Integrating Crowdsourcing with MapReduce for AI-Hard Problems",
+    "authors": "Jun Chen 0004, Chaokun Wang, Yiyuan Bai",
+    "abstract": null
+  },
+  {
+    "title": "VecLP: A Realtime Video Recommendation System for Live TV Programs",
+    "authors": "Sheng Gao 0001, Dai Zhang, Honggang Zhang 0002, Chao Huang, Yongsheng Zhang, Jianxin Liao, Jun Guo 0002",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Agent Dynamic Coupling for Cooperative Vehicles Modeling",
+    "authors": "Maxime Guériau, Romain Billot, Nour-Eddin El Faouzi, Salima Hassas, Frédéric Armetta",
+    "abstract": null
+  },
+  {
+    "title": "Cognitive Master Teacher",
+    "authors": "Raghu Krishnapuram, Luis A. Lastras, Satya V. Nitta",
+    "abstract": null
+  },
+  {
+    "title": "Visualizing Inference",
+    "authors": "Henry Lieberman, Joe Henke",
+    "abstract": null
+  },
+  {
+    "title": "Bottom-Up Demand Response by Following Local Energy Generation Voluntarily",
+    "authors": "Tobias Linnenberg, Alexander Fay, Michael Kaisers",
+    "abstract": null
+  },
+  {
+    "title": "Visualization Techniques for Topic Model Checking",
+    "authors": "Jaimie Murdock, Colin Allen",
+    "abstract": null
+  },
+  {
+    "title": "Salient Object Detection via Objectness Proposals",
+    "authors": "Tam V. Nguyen 0002",
+    "abstract": null
+  },
+  {
+    "title": "Gene Selection in Microarray Datasets Using Progressively Refined PSO Scheme",
+    "authors": "Yamuna Prasad, Kanad K. Biswas",
+    "abstract": null
+  },
+  {
+    "title": "World WordNet Database Structure: An Efficient Schema for Storing Information of WordNets of the World",
+    "authors": "Hanumant Harichandra Redkar, Sudha Baban Bhingardive, Diptesh Kanojia, Pushpak Bhattacharyya",
+    "abstract": null
+  },
+  {
+    "title": "The Network Data Repository with Interactive Graph Analytics and Visualization",
+    "authors": "Ryan A. Rossi, Nesreen K. Ahmed",
+    "abstract": null
+  },
+  {
+    "title": "DeepTutor: An Effective, Online Intelligent Tutoring System That Promotes Deep Learning",
+    "authors": "Vasile Rus, Nobal B. Niraula, Rajendra Banjade",
+    "abstract": null
+  },
+  {
+    "title": "Inferring Latent User Properties from Texts Published in Social Media",
+    "authors": "Svitlana Volkova, Yoram Bachrach, Michael Armstrong, Vijay Sharma",
+    "abstract": null
+  },
+  {
+    "title": "Circumventing Robots' Failures by Embracing Their Faults: A Practical Approach to Planning for Autonomous Construction",
+    "authors": "Stefan J. Witwicki, Francesco Mondada",
+    "abstract": null
+  },
+  {
+    "title": "Crowd Motion Monitoring with Thermodynamics-Inspired Feature",
+    "authors": "Xinfeng Zhang 0003, Su Yang 0001, Yuan Yan Tang, Weishan Zhang",
+    "abstract": null
+  },
+  {
+    "title": "Cerebella: Automatic Generation of Nonverbal Behavior for Virtual Humans",
+    "authors": "Margot Lhommet, Yuyu Xu, Stacy Marsella",
+    "abstract": null
+  },
+  {
+    "title": "Scheherazade: Crowd-Powered Interactive Narrative Generation",
+    "authors": "Boyang Li 0001, Mark O. Riedl",
+    "abstract": null
+  },
+  {
+    "title": "SimSensei Demonstration: A Perceptive Virtual Human Interviewer for Healthcare Applications",
+    "authors": "Louis-Philippe Morency, Giota Stratou, David DeVault, Arno Hartholt, Margot Lhommet, Gale M. Lucas, Fabrizio Morbini, Kallirroi Georgila, Stefan Scherer, Jonathan Gratch, Stacy Marsella, David R. Traum, Albert A. Rizzo",
+    "abstract": null
+  },
+  {
+    "title": "LOL - Laugh Out Loud",
+    "authors": "Florian Pecune, Béatrice Biancardi, Yu Ding 0001, Catherine Pelachaud, Maurizio Mancini, Giovanna Varni, Antonio Camurri, Gualtiero Volpe",
+    "abstract": null
+  },
+  {
+    "title": "Using Social Relationships to Control Narrative Generation",
+    "authors": "Julie Porteous, Fred Charles, Marc Cavazza",
+    "abstract": null
+  },
+  {
+    "title": "Interactive Narrative Planning in The Best Laid Plans",
+    "authors": "Stephen G. Ware, Robert Michael Young, Christian Stith, Phillip Wright",
+    "abstract": null
+  },
+  {
+    "title": "Knowledge Representation and Reasoning: What's Hot",
+    "authors": "Chitta Baral, Giuseppe De Giacomo",
+    "abstract": null
+  },
+  {
+    "title": "What's Hot in Crowdsourcing and Human Computation",
+    "authors": "Jeffrey P. Bigham",
+    "abstract": null
+  },
+  {
+    "title": "BDDs Strike Back (in AI Planning)",
+    "authors": "Stefan Edelkamp, Peter Kissmann, Álvaro Torralba",
+    "abstract": null
+  },
+  {
+    "title": "What's Hot in the SAT and ASP Competitions",
+    "authors": "Marijn Heule, Torsten Schaub",
+    "abstract": null
+  },
+  {
+    "title": "What Is Hot in CHI",
+    "authors": "Wei Li",
+    "abstract": null
+  },
+  {
+    "title": "AIBIRDS: The Angry Birds Artificial Intelligence Competition",
+    "authors": "Jochen Renz",
+    "abstract": null
+  },
+  {
+    "title": "RoboCup@Home - Benchmarking Domestic Service Robots",
+    "authors": "Sven Wachsmuth, Dirk Holz, Maja Rudinac, Javier Ruiz-del-Solar",
+    "abstract": null
+  },
+  {
+    "title": "Data Science for Social Good - 2014 KDD Highlights",
+    "authors": "Wei Wang 0010",
+    "abstract": null
+  }
+]

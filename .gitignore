@@ -1,0 +1,120 @@
+# Generated build output -- rebuilt fresh by scripts/build_public_site.py,
+# published to gh-pages by scripts/deploy.py, never committed to main.
+public/
+
+# papers_full.json is a ~265MB derived merge of data/venues/*.json +
+# enriched.json (regenerate with scripts/merge_corpus.py) -- redundant to
+# store both, and GitHub flags it as an oversized file. Keep the sources,
+# not the merge output.
+data/papers_full.json
+# stats.json is likewise fully derived (regenerate with scripts/aggregate.py,
+# after merge_corpus.py) -- untracked to keep diffs/commits to source data
+# and code, not a ~90MB regenerable leaderboard dump. build_public_site.py
+# copies whatever's currently on disk into the published output, same as
+# always; this only affects what git tracks in the repo, not what deploys.
+data/stats.json
+# Same reasoning as stats.json above -- regenerable, not reviewable as a
+# diff. Sharded into data/non_av_papers/shard-NN.json (regenerate with
+# scripts/aggregate.py) rather than one growing single file, over 80MB and
+# past GitHub's recommended single-file size -- see aggregate.py's
+# NON_AV_DIR comment.
+data/non_av_papers/
+# Sharded abstract text split out of stats.json (regenerate with
+# scripts/aggregate.py) -- same reasoning as stats.json above.
+data/abstracts/
+# author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors,
+# split out of stats.json (regenerate with scripts/aggregate.py) since
+# they're ~32% of it by size but only needed by author/authors/countries/
+# institution/paper.html -- same reasoning as stats.json above.
+data/stats_detail.json
+
+# Belt-and-braces against a stray root copy of the generated data (an old
+# habit, or a hand-run of aggregate.py with the wrong cwd) getting swept in
+# by deploy.py's `git add -A`. The real copies are data/ (source of truth)
+# and public/ (the built site); nothing should write these at the root.
+/stats.json
+/non_av_papers/
+/stats_detail.json
+/abstracts/
+# One-off evaluation artifact from scripts/audit_code_links_llm.py (LLM
+# second opinion on the has_code_link heuristic) -- rerun to regenerate,
+# not part of the site build.
+data/code_link_audit.json
+# sql.js-httpvfs prototype's SQLite file (build with scripts/build_sqlite.py)
+# -- regenerable, ~90MB, and authors_sql_prototype.html is a local-only
+# spike (not linked from nav, not deployed) so this never needs to ship.
+data/av_research_prototype.db
+av_research_prototype.db
+# Citation-source side files (fetch_citations_openalex.py, build_citation_graph.py)
+# -- same reasoning as papers_full.json/stats.json above: fully regenerable,
+# not reviewable as a diff, folded into papers_full.json by
+# apply_citation_sources.py before aggregate.py runs.
+data/citations_openalex.json
+data/citation_graph.json
+data/affiliations_arxiv.json
+data/affiliations_cvf.json
+data/reference_lists_cvf.json
+data/reference_lists_arxiv.json
+# Raw PDFs archived by build_citation_graph.py's fetch phase, one per CVF
+# paper it downloads -- kept as a local cache so they can be reprocessed for
+# something else later without re-fetching, but this is a many-GB personal
+# cache, not source data.
+data/pdfs_cvf/
+# mine_abstracts.py's side file (folded into papers_full.json by
+# apply_abstracts_arxiv.py) -- same reasoning as affiliations_arxiv.json
+# above. Large (backfilled from papers_full.json's full existing abstract
+# set the day this file was introduced, not just newly-mined ones -- see
+# DECISIONS.md), not reviewable as a diff.
+data/abstracts_arxiv.json
+# fetch_abstracts_semanticscholar.py's side file (folded into
+# papers_full.json by apply_abstracts_semanticscholar.py) -- same reasoning
+# as abstracts_arxiv.json above.
+data/abstracts_semanticscholar.json
+# fetch_arxiv_links.py's resumability cache -- its output is folded into
+# papers_full.json's arxiv_url field by apply_arxiv_links.py, same pattern
+# as every other fetch/apply side-file pair above.
+data/arxiv_ids.json
+data/s2_citing_seeds.json
+# fetch_s2_author_ids.py's own resumability caches -- its meaningful output,
+# data/s2_author_ids.json, feeds fetch_orcids.py directly (not tracked
+# either, an intermediate ID lookup) but the FINAL orcids.json output IS
+# tracked (small, real per-author enrichment, same treatment as
+# scholar_profiles.json).
+data/s2_author_ids.json
+data/s2_author_ids_checked_papers.json
+# arxiv_s2_citing.json (34MB+, ~4x the next-largest venues/*.json file) is
+# a bulk crawl dump, not a hand-curated proceedings listing like every
+# other venues/*.json -- most of its entries don't even pass classify.py's
+# relevance check. Same reasoning as papers_full.json/reference_lists_*.json
+# above: fully regenerable by rerunning fetch_semanticscholar_citing.py
+# (resumable via s2_citing_seeds.json), not meaningfully reviewable as a
+# diff, not worth the repo bloat.
+data/venues/arxiv_s2_citing.json
+# label_relevance.html is generated (build_labeling_tool.py) and embeds
+# labeling_candidates.json, itself a regenerable sample (fixed seed) of
+# papers_full.json -- neither is source. relevance_labels.json (the actual
+# hand-labeled output, once it exists) is NOT ignored -- that's real human
+# work, same treatment as scholar_profiles.json.
+dev/label_relevance.html
+data/labeling_candidates.json
+# select_near_threshold_candidates.py's output -- a regenerable (fixed-seed
+# shuffle, deterministic stratified selection) triage sample of
+# papers_full.json, same treatment as labeling_candidates.json above. The
+# labels a human actually assigns from it belong in relevance_labels.json
+# (tracked, real work), not this intermediate.
+data/near_threshold_candidates.json
+
+__pycache__/
+*.pyc
+.env
+
+# debug eyeball dump from train_relevance_classifier.py (regenerable)
+scripts/_relevance_projection_sample.txt
+
+# stdout/stderr redirect from a long-running crawler launched in the
+# background (e.g. build_citation_graph.py) -- an operational log, not a
+# pipeline artifact.
+scripts/*.log
+
+# local dev scaffold (browser preview launch config)
+.claude/

@@ -1,0 +1,947 @@
+[
+  {
+    "title": "Fitting models to data: Accuracy, Speed, Robustness",
+    "authors": "Andrew W. Fitzgibbon",
+    "abstract": null
+  },
+  {
+    "title": "A Spectral Perspective on Shapes",
+    "authors": "Ron Kimmel",
+    "abstract": null
+  },
+  {
+    "title": "Online Domain Adaptation for Multi-Object Tracking",
+    "authors": "Adrien Gaidon, Eleonora Vig",
+    "abstract": null
+  },
+  {
+    "title": "Learning Optimal Parameters For Multi-target Tracking",
+    "authors": "Shaofei Wang, Charless C. Fowlkes",
+    "abstract": null
+  },
+  {
+    "title": "R-CNN minus R",
+    "authors": "Karel Lenc, Andrea Vedaldi",
+    "abstract": null
+  },
+  {
+    "title": "Convolutional Neural Networks for Direct Text Deblurring",
+    "authors": "Michal Hradis, Jan Kotera, Pavel Zemc&#237;k, Filip Sroubek",
+    "abstract": null
+  },
+  {
+    "title": "Sketch-a-Net that Beats Humans",
+    "authors": "Qian Yu 0002, Yongxin Yang, Yi-Zhe Song, Tao Xiang 0002, Timothy M. Hospedales",
+    "abstract": null
+  },
+  {
+    "title": "Learning Deep Representations of Appearance and Motion for Anomalous Event Detection",
+    "authors": "Dan Xu 0002, Elisa Ricci 0001, Yan Yan 0002, Jingkuan Song, Nicu Sebe",
+    "abstract": null
+  },
+  {
+    "title": "Deep Perceptual Mapping for Thermal to Visible Face Recogntion",
+    "authors": "M. Saquib Sarfraz, Rainer Stiefelhagen",
+    "abstract": null
+  },
+  {
+    "title": "An Efficient Algorithm for Learning Distances that Obey the Triangle Inequality",
+    "authors": "Arijit Biswas, David W. Jacobs",
+    "abstract": null
+  },
+  {
+    "title": "Diagnosing state-of-the-art object proposal methods",
+    "authors": "Hongyuan Zhu 0002, Shijian Lu, Jianfei Cai 0001, Guangqing Lee",
+    "abstract": null
+  },
+  {
+    "title": "WxBS: Wide Baseline Stereo Generalizations",
+    "authors": "Dmytro Mishkin, Jiri Matas, Michal Perdoch, Karel Lenc",
+    "abstract": null
+  },
+  {
+    "title": "Planar shape decomposition made simple",
+    "authors": "Nikos Papanelopoulos, Yannis Avrithis",
+    "abstract": null
+  },
+  {
+    "title": "Adaptation of Synthetic Data for Coarse-to-Fine Viewpoint Refinement",
+    "authors": "Pau Panareda Busto, Joerg Liebelt, Juergen Gall",
+    "abstract": null
+  },
+  {
+    "title": "Saliency Prediction with Active Semantic Segmentation",
+    "authors": "Ming Jiang 0019, Xavier Boix, Juan Xu, Gemma Roig, Luc Van Gool, Qi Zhao 0001",
+    "abstract": null
+  },
+  {
+    "title": "Using Near-Field Light Sources to Separate Illumination from BRDF",
+    "authors": "Jeroen Put, Nick Michiels, Philippe Bekaert",
+    "abstract": null
+  },
+  {
+    "title": "Multi-scale Graph-based Guided Filter for De-noising Cryo-Electron Tomographic Data",
+    "authors": "Shadi Albarqouni, Maximilian Baust, Sailesh Conjeti, Asharf Al-Amoudi, Nassir Navab",
+    "abstract": null
+  },
+  {
+    "title": "Spotlight the Negatives: A Generalized Discriminative Latent Model",
+    "authors": "Hossein Azizpour, Mostafa Arefiyan, Sobhan Naderi Parizi, Stefan Carlsson",
+    "abstract": null
+  },
+  {
+    "title": "Perceptual Dynamic Range for In-Camera Image Processing",
+    "authors": "Praveen Cyriac, David Kane, Marcelo Bertalm&#237;o",
+    "abstract": null
+  },
+  {
+    "title": "Robust Multiple Model Fitting with Preference Analysis and Low-rank Approximation",
+    "authors": "Luca Magri 0002, Andrea Fusiello",
+    "abstract": null
+  },
+  {
+    "title": "Robust Global Motion Compensation in Presence of Predominant Foreground",
+    "authors": "Seyed Morteza Safdarnejad, Xiaoming Liu 0002, Lalita Udpa",
+    "abstract": null
+  },
+  {
+    "title": "Using Segmentation to Predict the Absence of Occluded Parts",
+    "authors": "Golnaz Ghiasi, Charless C. Fowlkes",
+    "abstract": null
+  },
+  {
+    "title": "Learning the Structure of Deep Architectures Using L1 Regularization",
+    "authors": "Praveen Kulkarni 0003, Joaquin Zepeda, Fr&#233;d&#233;ric Jurie, Patrick P&#233;rez, Louis Chevallier",
+    "abstract": null
+  },
+  {
+    "title": "Subspace Distribution Alignment for Unsupervised Domain Adaptation",
+    "authors": "Baochen Sun, Kate Saenko",
+    "abstract": null
+  },
+  {
+    "title": "Robust Spatial Matching as Ensemble of Weak Geometric Relations",
+    "authors": "Xiaomeng Wu, Kunio Kashino",
+    "abstract": null
+  },
+  {
+    "title": "Kernelized View Adaptive Subspace Learning for Person Re-identification",
+    "authors": "Qin Zhou 0002, Shibao Zheng, Hang Su 0006, Hua Yang 0001, Yu Wang, Shuang Wu 0001",
+    "abstract": null
+  },
+  {
+    "title": "Object localization in ImageNet by looking out of the window",
+    "authors": "Alexander Vezhnevets, Vittorio Ferrari",
+    "abstract": null
+  },
+  {
+    "title": "Unsupervised Behavior-Specific Dictionary Learning for Abnormal Event Detection",
+    "authors": "Huamin Ren, Weifeng Liu 0002, S&#248;ren Ingvor Olsen, Sergio Escalera, Thomas B. Moeslund",
+    "abstract": null
+  },
+  {
+    "title": "Joint Calibration for Semantic Segmentation",
+    "authors": "Holger Caesar, Jasper R. R. Uijlings, Vittorio Ferrari",
+    "abstract": null
+  },
+  {
+    "title": "Camera Elevation Estimation from a Single Mountain Landscape Photograph",
+    "authors": "Martin Cad&#237;k, Jan Vas&#237;cek, Michal Hradis, Filip Radenovic, Ondrej Chum",
+    "abstract": null
+  },
+  {
+    "title": "Data-free Parameter Pruning for Deep Neural Networks",
+    "authors": "Suraj Srinivas, R. Venkatesh Babu",
+    "abstract": null
+  },
+  {
+    "title": "Real-Time Pedestrian Detection with Deep Network Cascades",
+    "authors": "Anelia Angelova, Alex Krizhevsky, Vincent Vanhoucke, Abhijit S. Ogale, Dave Ferguson",
+    "abstract": null
+  },
+  {
+    "title": "Rule of thumb: Deep derotation for improved fingertip detection",
+    "authors": "Aaron Wetzler, Ron Slossberg, Ron Kimmel",
+    "abstract": null
+  },
+  {
+    "title": "Riesz-based Volume Local Binary Pattern and A Novel Group Expression Model for Group Happiness Intensity Analysis",
+    "authors": "Xiaohua Huang 0003, Abhinav Dhall, Guoying Zhao 0001, Roland Goecke, Matti Pietik&#228;inen",
+    "abstract": null
+  },
+  {
+    "title": "Weakly Supervised Metric Learning towards Signer Adaptation for Sign Language Recognition",
+    "authors": "Fang Yin, Xiujuan Chai, Yu Zhou 0015, Xilin Chen 0001",
+    "abstract": null
+  },
+  {
+    "title": "Hashmod: A Hashing Method for Scalable 3D Object Detection",
+    "authors": "Wadim Kehl, Federico Tombari, Nassir Navab, Slobodan Ilic, Vincent Lepetit",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Task Transfer Methods to Improve One-Shot Learning for Multimedia Event Detection",
+    "authors": "Wang Yan, Jordan Yap, Greg Mori",
+    "abstract": null
+  },
+  {
+    "title": "Appearance and Depth for Rapid Human Activity Recognition in Real Applications",
+    "authors": "Stavros Tachos, Konstantinos Avgerinakis, Alexia Briassouli, Ioannis Kompatsiaris",
+    "abstract": null
+  },
+  {
+    "title": "Robust Wearable Camera Localization as a Target Tracking Problem on SE(3)",
+    "authors": "Guillaume Bourmaud, Audrey Giremus",
+    "abstract": null
+  },
+  {
+    "title": "Joint Object-Material Category Segmentation from Audio-Visual Cues",
+    "authors": "Anurag Arnab, Michael Sapienza, Stuart Golodetz, Julien P. C. Valentin, Ondrej Miksik, Shahram Izadi, Philip H. S. Torr",
+    "abstract": null
+  },
+  {
+    "title": "Deep Face Recognition",
+    "authors": "Omkar M. Parkhi, Andrea Vedaldi, Andrew Zisserman",
+    "abstract": null
+  },
+  {
+    "title": "Combinatorial Regularization of Descriptor Matching for Optical Flow Estimation",
+    "authors": "Benjamin Drayer, Thomas Brox",
+    "abstract": null
+  },
+  {
+    "title": "Discrete Light Source Estimation from Light Probes for Photorealistic Rendering",
+    "authors": "Farshad Einabadi, Oliver Grau",
+    "abstract": null
+  },
+  {
+    "title": "Dictionary Learning with Iterative Laplacian Regularisation for Unsupervised Person Re-identification",
+    "authors": "Elyor Kodirov, Tao Xiang 0002, Shaogang Gong",
+    "abstract": null
+  },
+  {
+    "title": "Camera Pose Estimation from Lines using Pl&#252;cker Coordinates",
+    "authors": "Bronislav Pribyl, Pavel Zemc&#237;k, Martin Cad&#237;k",
+    "abstract": null
+  },
+  {
+    "title": "Linear Global Translation Estimation with Feature Tracks",
+    "authors": "Zhaopeng Cui, Nianjuan Jiang, Chengzhou Tang, Ping Tan 0002",
+    "abstract": null
+  },
+  {
+    "title": "Learning Discriminative Visual N-grams from Mid-level Image Features",
+    "authors": "Raj Kumar Gupta, Megha Pandey, Alex Y. S. Chia",
+    "abstract": null
+  },
+  {
+    "title": "Minimizing the Number of Keypoint Matching Queries for Object Retrieval",
+    "authors": "Johannes Niedermayer, Peer Kr&#246;ger",
+    "abstract": null
+  },
+  {
+    "title": "JH2R: Joint Homography Estimation for Highlight Removal",
+    "authors": "Sungmin Eum, Hyungtae Lee, David S. Doermann",
+    "abstract": null
+  },
+  {
+    "title": "Action Recognition based on Subdivision-Fusion Model",
+    "authors": "Zong Bo Hao, Linlin Lu, Qianni Zhang, Jie Wu, Ebroul Izquierdo, Juanyu Yang, Jun Zhao",
+    "abstract": null
+  },
+  {
+    "title": "Mix and Match: Joint Model for Clothing and Attribute Recognition",
+    "authors": "Kota Yamaguchi, Takayuki Okatani, Kyoko Sudo, Kazuhiko Murasaki, Yukinobu Taniguchi",
+    "abstract": null
+  },
+  {
+    "title": "Describing Common Human Visual Actions in Images",
+    "authors": "Matteo Ruggero Ronchi, Pietro Perona",
+    "abstract": null
+  },
+  {
+    "title": "Searching for Objects using Structure in Indoor Scenes",
+    "authors": "Varun K. Nagaraja, Vlad I. Morariu, Larry S. Davis",
+    "abstract": null
+  },
+  {
+    "title": "Fast Inverse Compositional Image Alignment with Missing Data and Re-weighting",
+    "authors": "Vincent Lui, Dinesh Gamage, Tom Drummond",
+    "abstract": null
+  },
+  {
+    "title": "Automatic Age Estimation from Face Images via Deep Ranking",
+    "authors": "Huei-Fang Yang, Bo-Yao Lin, Kuang-Yu Chang, Chu-Song Chen",
+    "abstract": null
+  },
+  {
+    "title": "Feature Encoding of Spectral Signatures for 3D Non-Rigid Shape Retrieval",
+    "authors": "Frederico A. Limberger, Richard C. Wilson 0001",
+    "abstract": null
+  },
+  {
+    "title": "A BoW-equivalent Recurrent Neural Network for Action Recognition",
+    "authors": "Alexander Richard, Juergen Gall",
+    "abstract": null
+  },
+  {
+    "title": "Depth Restoration via Joint Training of a Global Regression Model and CNNs",
+    "authors": "Gernot Riegler, Ren&#233; Ranftl, Matthias R&#252;ther, Thomas Pock, Horst Bischof",
+    "abstract": null
+  },
+  {
+    "title": "Shape Detection with Nearest Neighbour Contour Fragments",
+    "authors": "Kasim Terzic, Hussein Adnan Mohammed, J. M. Hans du Buf",
+    "abstract": null
+  },
+  {
+    "title": "Exploiting Image-trained CNN Architectures for Unconstrained Video Classification",
+    "authors": "Shengxin Zha, Florian Luisier, Walter Andrews, Nitish Srivastava, Ruslan Salakhutdinov",
+    "abstract": null
+  },
+  {
+    "title": "Change Detection from a Street Image Pair using CNN Features and Superpixel Segmentation",
+    "authors": "Ken Sakurada, Takayuki Okatani",
+    "abstract": null
+  },
+  {
+    "title": "Robust Multiview Registration of 3D Surfaces via L_1-norm Minimization",
+    "authors": "Anil C. Raghuramu",
+    "abstract": null
+  },
+  {
+    "title": "Because better detections are still possible: Multi-aspect Object Detection with Boosted Hough Forest",
+    "authors": "Carolina Redondo-Cabrera, Roberto Javier L&#243;pez-Sastre",
+    "abstract": null
+  },
+  {
+    "title": "Optimizing Partition Trees for Multi-Object Segmentation with Shape Prior",
+    "authors": "Emmanuel Maggiori, Yuliya Tarabalka, Guillaume Charpiat",
+    "abstract": null
+  },
+  {
+    "title": "Face Painting: querying art with photos",
+    "authors": "Elliot J. Crowley, Omkar M. Parkhi, Andrew Zisserman",
+    "abstract": null
+  },
+  {
+    "title": "Cross-Domain Object Recognition Using Object Alignment",
+    "authors": "Pengcheng Liu 0001, Chong Wang, Peipei Yang, Kaiqi Huang, Tieniu Tan",
+    "abstract": null
+  },
+  {
+    "title": "Dynamical Regularity for Action Analysis",
+    "authors": "Vinay Venkataraman, Ioannis Vlachos 0001, Pavan K. Turaga",
+    "abstract": null
+  },
+  {
+    "title": "Efficient Spatio-Temporal Data Association Using Multidimensional Assignment in Multi-Camera Multi-Target Tracking",
+    "authors": "Moonsub Byeon, Songhwai Oh, Kikyung Kim, Haan-Ju Yoo, Jin Young Choi 0002",
+    "abstract": null
+  },
+  {
+    "title": "A New Face Recognition Algorithm based on Dictionary Learning for a Single Training Sample per Person",
+    "authors": "Yang Liu 0105, Ian J. Wassell",
+    "abstract": null
+  },
+  {
+    "title": "Robust Direct Visual Localisation using Normalised Information Distance",
+    "authors": "Geoffrey Pascoe, William P. Maddern, Paul Newman 0001",
+    "abstract": null
+  },
+  {
+    "title": "Joint Clustering and Classification for Multiple Instance Learning",
+    "authors": "Karan Sikka, Ritwik Giri, Marian Stewart Bartlett",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Modality Feature Transform: An Interactive Image Segmentation Approach",
+    "authors": "Moustafa Meshry, Ahmed Taha 0001, Marwan Torki",
+    "abstract": null
+  },
+  {
+    "title": "Multi-Shot Human Re-Identification Using Adaptive Fisher Discriminant Analysis",
+    "authors": "Yang Li 0056, Ziyan Wu 0001, Srikrishna Karanam, Richard J. Radke",
+    "abstract": null
+  },
+  {
+    "title": "Hierarchical Hybrid Shape Representation for Medical Shapes",
+    "authors": "Abhishek Kolagunda, Guoyu Lu 0001, Chandra Kambhamettu",
+    "abstract": null
+  },
+  {
+    "title": "Data Separation of L1-minimization for Real-time Motion Detection",
+    "authors": "Yu Liu 0008, Huaxin Xiao, Zheng Zhang 0011, Wei Xu 0019, Maojun Zhang, Jianguo Zhang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Color Constancy by Deep Learning",
+    "authors": "Zhongyu Lou, Theo Gevers, Ninghang Hu, Marcel P. Lucassen",
+    "abstract": null
+  },
+  {
+    "title": "Model-based 3D Hand Tracking with on-line Shape Adaptation",
+    "authors": "Alexandros Makris, Antonis A. Argyros",
+    "abstract": null
+  },
+  {
+    "title": "Globally Optimal DLS Method for PnP Problem with Cayley parameterization",
+    "authors": "Gaku Nakano",
+    "abstract": null
+  },
+  {
+    "title": "Joint Tracking and Event Analysis for Carried Object Detection",
+    "authors": "Aryana Tavanai, Muralikrishna Sridhar, Eris Chinellato, Anthony G. Cohn 0001, David C. Hogg",
+    "abstract": null
+  },
+  {
+    "title": "Occlusion-Aware Object Localization, Segmentation and Pose Estimation",
+    "authors": "Samarth Brahmbhatt, Heni Ben Amor, Henrik I. Christensen",
+    "abstract": null
+  },
+  {
+    "title": "VESICLE: Volumetric Evaluation of Synaptic Inferfaces using Computer Vision at Large Scale",
+    "authors": "William R. Gray Roncal, Michael J. Pekala, Verena Kaynig-Fittkau, Dean M. Kleissas, Joshua T. Vogelstein, Hanspeter Pfister, Randal C. Burns, R. Jacob Vogelstein, Mark A. Chevillet, Gregory D. Hager",
+    "abstract": null
+  },
+  {
+    "title": "Epipolar Consistency in Fluoroscopy for Image-Based Tracking",
+    "authors": "Andr&#233; Aichert, Jian Wang 0009, Roman Schaffert, Arnd D&#246;rfler, Joachim Hornegger, Andreas K. Maier",
+    "abstract": null
+  },
+  {
+    "title": "Automatic Aortic Root Segmentation with Shape Constraints and Mesh Regularisation",
+    "authors": "Robert Ieuan Palmer, Xianghua Xie, Gary K. L. Tam",
+    "abstract": null
+  },
+  {
+    "title": "Anatomical triangulation: from sparse landmarks to dense annotation of the skeleton in CT images",
+    "authors": "Marie Bieth, Rene Donner, Georg Langs, Markus Schwaiger, Bjoern H. Menze",
+    "abstract": null
+  },
+  {
+    "title": "Primal-Dual convex optimization in large deformation diffeomorphic registration with robust regularizers",
+    "authors": "Monica Hernandez",
+    "abstract": null
+  },
+  {
+    "title": "Global Minimum for Curvature Penalized Minimal Path Method",
+    "authors": "Da Chen 0002, Jean-Marie Mirebeau, Laurent D. Cohen",
+    "abstract": null
+  },
+  {
+    "title": "Adaptive Contour Fitting for Pose-Invariant 3D Face Shape Reconstruction",
+    "authors": "Chengchao Qu, Eduardo Monari, Tobias Schuchert, J&#252;rgen Beyerer",
+    "abstract": null
+  },
+  {
+    "title": "Freehand Laser Scanning Using Mobile Phone",
+    "authors": "Ron Slossberg, Aaron Wetzler, Ron Kimmel",
+    "abstract": null
+  },
+  {
+    "title": "Stochastic visibility in point-sampled scenes",
+    "authors": "Miles E. Hansard",
+    "abstract": null
+  },
+  {
+    "title": "MGM: A Significantly More Global Matching for Stereovision",
+    "authors": "Gabriele Facciolo, Carlo de Franchis, Enric Meinhardt",
+    "abstract": null
+  },
+  {
+    "title": "Action and Attention in First-person Vision",
+    "authors": "Kristen Grauman",
+    "abstract": null
+  },
+  {
+    "title": "Automated Identification of Individual Great White Sharks from Unrestricted Fin Imagery",
+    "authors": "Benjamin Hughes, Tilo Burghardt",
+    "abstract": null
+  },
+  {
+    "title": "Generating Multi-sentence Natural Language Descriptions of Indoor Scenes",
+    "authors": "Dahua Lin, Sanja Fidler, Chen Kong, Raquel Urtasun",
+    "abstract": null
+  },
+  {
+    "title": "Overlapping Domain Cover for Scalable and Accurate Regression Kernel Machines",
+    "authors": "Mohamed Elhoseiny, Ahmed M. Elgammal",
+    "abstract": null
+  },
+  {
+    "title": "Visual Comparison of Images Using Multiple Kernel Learning for Ranking",
+    "authors": "Amr Sharaf, Mohamed E. Hussein 0001, Mohamed A. Ismail",
+    "abstract": null
+  },
+  {
+    "title": "Bridging the Domain Shift by Domain Adaptive Dictionary Learning",
+    "authors": "Hongyu Xu, Jingjing Zheng, Rama Chellappa",
+    "abstract": null
+  },
+  {
+    "title": "Joint Feature Selection with Low-rank Dictionary Learning",
+    "authors": "Homa Foroughi, Moein Shakeri, Nilanjan Ray, Hong Zhang 0013",
+    "abstract": null
+  },
+  {
+    "title": "Scalable Visual Instance Mining with Instance Graph",
+    "authors": "Wei Li 0152, Changhu Wang, Lei Zhang 0001, Yong Rui, Bo Zhang 0010",
+    "abstract": null
+  },
+  {
+    "title": "Perceptually Motivated Benchmark for Video Matting",
+    "authors": "Mikhail Erofeev, Yury Gitman, Dmitriy S. Vatolin, Alexey Fedorov, Jue Wang",
+    "abstract": null
+  },
+  {
+    "title": "SDICP: Semi-Dense Tracking based on Iterative Closest Points",
+    "authors": "Laurent Kneip, Zhou Yi, Hongdong Li",
+    "abstract": null
+  },
+  {
+    "title": "Human Pose as Context for Object Detection",
+    "authors": "Abhilash Srikantha, Juergen Gall",
+    "abstract": null
+  },
+  {
+    "title": "Learning Depth Calibration of Time-of-Flight Cameras",
+    "authors": "David Ferstl, Christian Reinbacher, Gernot Riegler, Matthias R&#252;ther, Horst Bischof",
+    "abstract": null
+  },
+  {
+    "title": "Low-Rank Spatio-Temporal Video Segmentation",
+    "authors": "Alasdair Newson, Mariano Tepper, Guillermo Sapiro",
+    "abstract": null
+  },
+  {
+    "title": "Fast Online Upper Body Pose Estimation from Video",
+    "authors": "Ming-Ching Chang, Honggang Qi, Xin Wang 0045, Hong Cheng 0002, Siwei Lyu",
+    "abstract": null
+  },
+  {
+    "title": "Simultaneous Inpainting and Super-resolution Using Self-learning",
+    "authors": "Milind Gajanan Padalkar, Manjunath V. Joshi, Nilay L. Khatri",
+    "abstract": null
+  },
+  {
+    "title": "Manitest: Are classifiers really invariant?",
+    "authors": "Alhussein Fawzi, Pascal Frossard",
+    "abstract": null
+  },
+  {
+    "title": "MCSLAM: a Multiple Constrained SLAM",
+    "authors": "Datta Ramadasan, Marc Chevaldonn&#233;, Thierry Chateau",
+    "abstract": null
+  },
+  {
+    "title": "Incremental Dictionary Learning for Unsupervised Domain Adaptation",
+    "authors": "Boyu Lu, Rama Chellappa, Nasser M. Nasrabadi",
+    "abstract": null
+  },
+  {
+    "title": "StixelNet: A Deep Convolutional Network for Obstacle Detection and Road Segmentation",
+    "authors": "Dan Levi, Noa Garnett, Ethan Fetaya",
+    "abstract": null
+  },
+  {
+    "title": "Segmenting natural images with the least effort as humans",
+    "authors": "Qiyang Zhao",
+    "abstract": null
+  },
+  {
+    "title": "Deep Fishing: Gradient Features from Deep Nets",
+    "authors": "Albert Gordo, Adrien Gaidon, Florent Perronnin",
+    "abstract": null
+  },
+  {
+    "title": "Multimodal Stereo Vision For Reconstruction In The Presence Of Reflection",
+    "authors": "Scott Sorensen, Philip Saponaro, Stephen Rhein, Chandra Kambhamettu",
+    "abstract": null
+  },
+  {
+    "title": "Real-time Human Detection based on Personness Estimation",
+    "authors": "Kyuwon Kim, Kwanghoon Sohn",
+    "abstract": null
+  },
+  {
+    "title": "Semantic Classification of Boundaries of an RGBD Image",
+    "authors": "Nishit Soni, Anoop M. Namboodiri, C. V. Jawahar, Srikumar Ramalingam",
+    "abstract": null
+  },
+  {
+    "title": "Elliptical ASIFT Agglomeration in Class Prototype for Logo Detection",
+    "authors": "Raluca Boia, Corneliu Florea, Laura Florea",
+    "abstract": null
+  },
+  {
+    "title": "Entire Reflective Object Surface Structure Understanding",
+    "authors": "Qinglin Lu, Olivier Laligant, Eric Fauvet, Anastasia Zakharova",
+    "abstract": null
+  },
+  {
+    "title": "TennisVid2Text: Fine-grained Descriptions for Domain Specific Videos",
+    "authors": "Mohak Sukhwani, C. V. Jawahar",
+    "abstract": null
+  },
+  {
+    "title": "Human activity recognition in the semantic simplex of elementary actions",
+    "authors": "Cyrille Beaudry, Renaud P&#233;teri, Laurent Mascarilla",
+    "abstract": null
+  },
+  {
+    "title": "Character Identification in TV-series via Non-local Cost Aggregation",
+    "authors": "Ching-Hui Chen, Rama Chellappa",
+    "abstract": null
+  },
+  {
+    "title": "Prototypical Priors: From Improving Classification to Zero-Shot Learning",
+    "authors": "Saumya Jetley, Bernardino Romera-Paredes, Sadeep Jayasumana, Philip H. S. Torr",
+    "abstract": null
+  },
+  {
+    "title": "Fast Affine Template Matching over Galois Field",
+    "authors": "Chao Zhang 0030, Takuya Akashi",
+    "abstract": null
+  },
+  {
+    "title": "Universal Hough dictionaries for object tracking",
+    "authors": "Fausto Milletari, Wadim Kehl, Federico Tombari, Slobodan Ilic, Seyed-Ahmad Ahmadi, Nassir Navab",
+    "abstract": null
+  },
+  {
+    "title": "3D Tracking of Human Hands in Interaction with Unknown Objects",
+    "authors": "Paschalis Panteleris, Nikolaos Kyriazis, Antonis A. Argyros",
+    "abstract": null
+  },
+  {
+    "title": "Handling Data Imbalance in Automatic Facial Action Intensity Estimation",
+    "authors": "Philipp Werner, Frerk Saxen, Ayoub Al-Hamadi",
+    "abstract": null
+  },
+  {
+    "title": "Hierarchical rank-based veiling light estimation for underwater dehazing",
+    "authors": "Simon Emberton, Lars Chittka, Andrea Cavallaro",
+    "abstract": null
+  },
+  {
+    "title": "The intrinsic error of exposure fusion for HDR imaging, and a way to reduce it",
+    "authors": "Raquel Gil Rodr&#237;guez, Javier Vazquez-Corral, Marcelo Bertalm&#237;o",
+    "abstract": null
+  },
+  {
+    "title": "Detecting Change for Multi-View, Long-Term Surface Inspection",
+    "authors": "Simon Stent, Riccardo Gherardi, Bj&#246;rn Stenger, Roberto Cipolla",
+    "abstract": null
+  },
+  {
+    "title": "Part Localization using Multi-Proposal Consensus for Fine-Grained Categorization",
+    "authors": "Kevin J. Shih, Arun Mallya, Saurabh Singh 0005, Derek Hoiem",
+    "abstract": null
+  },
+  {
+    "title": "Gesture and Action Recognition by Evolved Dynamic Subgestures",
+    "authors": "V&#237;ctor Ponce-L&#243;pez, Hugo Jair Escalante, Sergio Escalera, Xavier Bar&#243;",
+    "abstract": null
+  },
+  {
+    "title": "Face Alignment Assisted by Head Pose Estimation",
+    "authors": "Heng Yang 0001, Wenxuan Mou, Yichi Zhang, Ioannis Patras, Hatice Gunes, Peter Robinson 0001",
+    "abstract": null
+  },
+  {
+    "title": "Score Normalization in Multimodal Systems using Generalized Extreme Value Distribution",
+    "authors": "Renu Sharma, Sukhendu Das, Padmaja Joshi",
+    "abstract": null
+  },
+  {
+    "title": "Manifold-Regularized Selectable Factor Extraction for Semi-supervised Image Classification",
+    "authors": "Xin Shi, Chao Zhang 0001, Fangyun Wei, Hongyang Zhang 0001, Yiyuan She",
+    "abstract": null
+  },
+  {
+    "title": "Leaf Segmentation under Loosely Controlled Conditions",
+    "authors": "Simone Buoncompagni, Dario Maio, Vincent Lepetit",
+    "abstract": null
+  },
+  {
+    "title": "Shape from Focus with Adaptive Focus Measure and High Order Derivatives",
+    "authors": "Yuval Frommer, Rami Ben-Ari, Nahum Kiryati",
+    "abstract": null
+  },
+  {
+    "title": "A Segmentation Technique for Flexible Pipes in Deep Underwater Environments",
+    "authors": "Saulo A. Pessoa, Vinicius Cesar, Bernardo Reis, Judith Kelner, Ismael Santos 0001",
+    "abstract": null
+  },
+  {
+    "title": "Structural Symmetries from Motion for Scene Reconstruction and Understanding",
+    "authors": "Natesh Srinivasan, Luca Carlone, Frank Dellaert",
+    "abstract": null
+  },
+  {
+    "title": "Stereo Tracking and 3D Reconstruction of Underwater Pipes",
+    "authors": "Vinicius Cesar, Bernardo Reis, Saulo A. Pessoa, Judith Kelner, Ismael Santos 0001",
+    "abstract": null
+  },
+  {
+    "title": "Nonlinear Metric Learning for Alzheimer's Disease Diagnosis with Integration of Longitudinal Neuroimaging Features",
+    "authors": "Bibo Shi, Yani Chen, Kevin Hobbs, Charles D. Smith, Jundong Liu",
+    "abstract": null
+  },
+  {
+    "title": "Boosted Metric Learning for Efficient Identity-Based Face Retrieval",
+    "authors": "Romain Negrel, Alexis Lechervy, Fr&#233;d&#233;ric Jurie",
+    "abstract": null
+  },
+  {
+    "title": "Enforcing Point-wise Priors on Binary Segmentation",
+    "authors": "Feng Li 0005, Fatih Porikli",
+    "abstract": null
+  },
+  {
+    "title": "Sparse Discrimination based Multiset Canonical Correlation Analysis for Multi-Feature Fusion and Recognition",
+    "authors": "Hongkun Ji, Xiao-Bo Shen, Quan-Sen Sun, Zexuan Ji",
+    "abstract": null
+  },
+  {
+    "title": "Towards 4D Coupled Models of Conversational Facial Expression Interactions",
+    "authors": "Jason Vandeventer, Lukas Gr&#228;ser, Magdalena Rychlowska, Paul L. Rosin, A. David Marshall",
+    "abstract": null
+  },
+  {
+    "title": "A Unified Bayesian Approach to Multi-Frame Super-Resolution and Single-Image Upsampling in Multi-Sensor Imaging",
+    "authors": "Thomas K&#246;hler 0004, Johannes Jordan, Andreas K. Maier, Joachim Hornegger",
+    "abstract": null
+  },
+  {
+    "title": "Boosting the Performance of Model-based 3D Tracking by Employing Low Level Motion Cues",
+    "authors": "Ammar Qammaz, Nikolaos Kyriazis, Antonis A. Argyros",
+    "abstract": null
+  },
+  {
+    "title": "Real-time RGB-D Tracking with Depth Scaling Kernelised Correlation Filters and Occlusion Handling",
+    "authors": "Massimo Camplani, Sion L. Hannuna, Majid Mirmehdi, Dima Damen, Adeline Paiement, Lili Tao, Tilo Burghardt",
+    "abstract": null
+  },
+  {
+    "title": "Experimental Evaluation of the Bag-of-Features Model for Unsupervised Learning of Images",
+    "authors": "Mariana Afonso, Lu&#237;s F. Teixeira 0001",
+    "abstract": null
+  },
+  {
+    "title": "Indoor Localisation with Regression Networks and Place Cell Models",
+    "authors": "Jose Rivera-Rubio, Ioannis Alexiou, Anil A. Bharath",
+    "abstract": null
+  },
+  {
+    "title": "Kinship Verification with Deep Convolutional Neural Networks",
+    "authors": "Kaihao Zhang, Yongzhen Huang, Chunfeng Song, Hong Wu, Liang Wang 0001",
+    "abstract": null
+  },
+  {
+    "title": "Exploiting Low-rank Structure for Discriminative Sub-categorization",
+    "authors": "Zheng Xu 0002, Xue Li, Kuiyuan Yang, Thomas A. Goldstein",
+    "abstract": null
+  },
+  {
+    "title": "Sparse 3D convolutional neural networks",
+    "authors": "Ben Graham",
+    "abstract": null
+  },
+  {
+    "title": "Multi-task Gaussian Process Regression-based Image Super Resolution",
+    "authors": "Xinwei Jiang, Jie Yang, Lei Ma, Yiping Yang",
+    "abstract": null
+  },
+  {
+    "title": "Spatiotemporal Stereo Matching with 3D Disparity Profiles",
+    "authors": "Yong-Ho Shin, Kuk-Jin Yoon",
+    "abstract": null
+  },
+  {
+    "title": "Randomized Global Transformation Approach for Dense Correspondence",
+    "authors": "Kihong Park, Seungryong Kim, Seungchul Ryu, Kwanghoon Sohn",
+    "abstract": null
+  },
+  {
+    "title": "Achieving Turbidity Robustness on Underwater Images Local Feature Detection",
+    "authors": "Felipe Codevilla, Joel D. O. Gaya, Nelson Duarte Filho, Silvia S. C. Botelho",
+    "abstract": null
+  },
+  {
+    "title": "The Self-Equalizing De Bruijn Sequence for 3D Profilometry",
+    "authors": "Tomislav Petkovic, Tomislav Pribanic, Matea Donlic",
+    "abstract": null
+  },
+  {
+    "title": "A fast and robust ellipse detector based on top-down least-square fitting",
+    "authors": "Yongtao Wang, Zheqi He, Xicheng Liu, Zhi Tang 0001, Luyuan Li",
+    "abstract": null
+  },
+  {
+    "title": "Multiview Reconstruction of Complex Organic Shapes",
+    "authors": "Jasenko Zivanov, Thomas Vetter",
+    "abstract": null
+  },
+  {
+    "title": "Manifold Regularized Transfer Distance Metric Learning",
+    "authors": "Haibo Shi, Yong Luo 0002, Chao Xu 0006, Yonggang Wen 0001",
+    "abstract": null
+  },
+  {
+    "title": "Top-down saliency with Locality-constrained Contextual Sparse Coding",
+    "authors": "Hisham Cholakkal, Deepu Rajan, Jubin Johnson",
+    "abstract": null
+  },
+  {
+    "title": "Very Efficient Training of Convolutional Neural Networks using Fast Fourier Transform and Overlap-and-Add",
+    "authors": "Tyler Highlander, Andres Rodriguez 0004",
+    "abstract": null
+  },
+  {
+    "title": "Deep Q-learning for Active Recognition of GERMS: Baseline performance on a standardized dataset for active learning",
+    "authors": "Mohsen Malmir, Karan Sikka, Deborah Forster, Javier R. Movellan, Garison Cottrell",
+    "abstract": null
+  },
+  {
+    "title": "Camera Pose and Focal Length Estimation Using Regularized Distance Constraints",
+    "authors": "Ekaterina Kanaeva, Lev Gurevich, Alexander Vakhitov",
+    "abstract": null
+  },
+  {
+    "title": "Classifying Global Scene Context for On-line Multiple Tracker Selection",
+    "authors": "Salma Moujtahid, Stefan Duffner, Atilla Baskurt",
+    "abstract": null
+  },
+  {
+    "title": "Sketch based Image Retrieval using Learned KeyShapes (LKS)",
+    "authors": "Jos&#233; M. Saavedra, Juan Manuel Barrios",
+    "abstract": null
+  },
+  {
+    "title": "Online Visual Tracking via Coupled Object-Context Dictionary",
+    "authors": "Mingquan Ye, Hong Chang 0001, Xilin Chen 0001",
+    "abstract": null
+  },
+  {
+    "title": "Subspace Alignment Based Domain Adaptation for RCNN Detector",
+    "authors": "Anant Raj, Vinay P. Namboodiri, Tinne Tuytelaars",
+    "abstract": null
+  },
+  {
+    "title": "Time-slice Prediction of Dyadic Human Activities",
+    "authors": "Maryam Ziaeefard, Robert Bergevin, Louis-Philippe Morency",
+    "abstract": null
+  },
+  {
+    "title": "Adapting RANSAC SVM to Detect Outliers for Robust Classification",
+    "authors": "Subhabrata Debnath, Anjan Banerjee, Vinay P. Namboodiri",
+    "abstract": null
+  },
+  {
+    "title": "Beyond MSER: Maximally Stable Regions using Tree of Shapes",
+    "authors": "Petra Bosilj, Ewa Kijak, S&#233;bastien Lef&#232;vre",
+    "abstract": null
+  },
+  {
+    "title": "Exploring Locally Rigid Discriminative Patches for Learning Relative Attributes",
+    "authors": "Yashaswi Verma, C. V. Jawahar",
+    "abstract": null
+  },
+  {
+    "title": "Semantic description of medical image findings: structured learning approach",
+    "authors": "Pavel Kisilev, Eugene Walach, Sharbell Y. Hashoul, Ella Barkan, Boaz Ophir, Sharon Alpert",
+    "abstract": null
+  },
+  {
+    "title": "Latent Structure Preserving Hashing",
+    "authors": "Ziyun Cai, Li Liu 0004, Mengyang Yu, Ling Shao 0001",
+    "abstract": null
+  },
+  {
+    "title": "Local Feature Binary Coding for Approximate Nearest Neighbor Search",
+    "authors": "Li Liu 0004, Mengyang Yu, Ling Shao 0001",
+    "abstract": null
+  },
+  {
+    "title": "Revealing Smooth Structure of Visual Data by Permutation on Manifolds",
+    "authors": "Yi-Lei Chen, Chiou-Ting Hsu",
+    "abstract": null
+  },
+  {
+    "title": "Normalized Autobinomial Markov Channels For Pedestrian Detection",
+    "authors": "Cosmin Toca, Mihai Ciuc, Carmen Patrascu",
+    "abstract": null
+  },
+  {
+    "title": "Exploring Prior Knowledge for Pedestrian Detection",
+    "authors": "Yi Yang, Zhenhua Wang 0002, Fuchao Wu",
+    "abstract": null
+  },
+  {
+    "title": "APT: Action localization proposals from dense trajectories",
+    "authors": "Jan C. van Gemert, Mihir Jain, Ella Gati, Cees G. M. Snoek",
+    "abstract": null
+  },
+  {
+    "title": "Event Fisher Vectors: Robust Encoding Visual Diversity of Visual Streams",
+    "authors": "Markus Nagel, Thomas Mensink, Cees G. M. Snoek",
+    "abstract": null
+  },
+  {
+    "title": "Deep Structured Models For Group Activity Recognition",
+    "authors": "Zhiwei Deng, Mengyao Zhai, Lei Chen 0023, Yuhao Liu, Srikanth Muralidharan, Mehrsan Javan Roshtkhari, Greg Mori",
+    "abstract": null
+  },
+  {
+    "title": "Fast Action Retrieval from Videos via Feature Disaggregation",
+    "authors": "Jie Qin 0004, Li Liu 0004, Mengyang Yu, Yunhong Wang 0001, Ling Shao 0001",
+    "abstract": null
+  },
+  {
+    "title": "Pose Estimation of Kinematic Chain Instances via Object Coordinate Regression",
+    "authors": "Frank Michel 0002, Alexander Krull, Eric Brachmann, Michael Ying Yang, Stefan Gumhold, Carsten Rother",
+    "abstract": null
+  },
+  {
+    "title": "Hybrid One-Shot 3D Hand Pose Estimation by Exploiting Uncertainties",
+    "authors": "Georg Poier, Konstantinos Roditakis, Samuel Schulter, Damien Michel, Horst Bischof, Antonis A. Argyros",
+    "abstract": null
+  },
+  {
+    "title": "Particle dynamics and multi-channel feature dictionaries for robust visual tracking",
+    "authors": "Srikrishna Karanam, Yang Li 0056, Richard J. Radke",
+    "abstract": null
+  },
+  {
+    "title": "Collaborative Correlation Tracking",
+    "authors": "Guibo Zhu, Jinqiao Wang, Yi Wu 0001, Hanqing Lu",
+    "abstract": null
+  },
+  {
+    "title": "Enable Scale and Aspect Ratio Adaptability in Visual Tracking with Detection Proposals",
+    "authors": "Dafei Huang, Lei Luo 0002, Mei Wen, Zhaoyun Chen, Chunyuan Zhang",
+    "abstract": null
+  },
+  {
+    "title": "Multiple Frames Matching for Object Discovery in Video",
+    "authors": "Otilia Stretcu, Marius Leordeanu",
+    "abstract": null
+  },
+  {
+    "title": "Surface Based Object Detection in RGBD Images",
+    "authors": "Siddhartha Chandra, Grigorios G. Chrysos, Iasonas Kokkinos",
+    "abstract": null
+  },
+  {
+    "title": "Context Forest for Object Class Detection",
+    "authors": "Davide Modolo, Alexander Vezhnevets, Vittorio Ferrari",
+    "abstract": null
+  },
+  {
+    "title": "Spatiotemporal Deformable Prototypes for Motion Anomaly Detection",
+    "authors": "Robert Bensch, Thomas Brox, Olaf Ronneberger",
+    "abstract": null
+  }
+]
