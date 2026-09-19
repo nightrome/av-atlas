@@ -287,17 +287,14 @@
     document.body.insertBefore(brand, nav);
   }
 
+
   // Visitor analytics (Google Analytics 4). Only on the production site --
   // the staging preview lives on the same host under /av-atlas-staging/, so
-  // the path prefix is what tells them apart -- and only after the visitor
-  // has accepted; nothing is loaded or stored before that. The choice is
-  // remembered in localStorage (a failure there just means asking again).
+  // the path prefix is what tells them apart. localhost and forks on other
+  // hosts send nothing.
   const GA_ID = 'G-Y2HZ5PRR8W';
-  const CONSENT_KEY = 'av-atlas-analytics';
-  const isProd = location.hostname === 'nightrome.github.io' &&
-    location.pathname.startsWith('/av-atlas/');
-
-  function loadAnalytics() {
+  if (location.hostname === 'nightrome.github.io' &&
+      location.pathname.startsWith('/av-atlas/')) {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag('js', new Date());
@@ -306,42 +303,5 @@
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
     document.head.appendChild(s);
-  }
-
-  function askForConsent() {
-    const bar = document.createElement('div');
-    bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:200;' +
-      'max-width:560px;margin:0 auto;background:var(--panel);color:var(--text);' +
-      'border:1px solid var(--border);border-radius:10px;padding:12px 14px;' +
-      'font-size:0.85em;box-shadow:0 4px 18px rgba(0,0,0,0.18);' +
-      'display:flex;flex-wrap:wrap;gap:10px;align-items:center;';
-    const msg = document.createElement('span');
-    msg.style.flex = '1 1 260px';
-    msg.textContent = 'Allow anonymous usage statistics (Google Analytics) to help the maintainer see which pages are used?';
-    bar.appendChild(msg);
-    const choose = (accepted) => {
-      try { localStorage.setItem(CONSENT_KEY, accepted ? 'granted' : 'denied'); } catch (e) { /* ignore */ }
-      bar.remove();
-      if (accepted) loadAnalytics();
-    };
-    [['Decline', false], ['Accept', true]].forEach(([label, accepted]) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.textContent = label;
-      b.style.cssText = 'border-radius:6px;padding:6px 14px;cursor:pointer;font-size:1em;' +
-        (accepted
-          ? 'background:var(--accent);border:1px solid var(--accent);color:#fff;'
-          : 'background:none;border:1px solid var(--border);color:var(--text);');
-      b.addEventListener('click', () => choose(accepted));
-      bar.appendChild(b);
-    });
-    document.body.appendChild(bar);
-  }
-
-  if (isProd) {
-    let saved = null;
-    try { saved = localStorage.getItem(CONSENT_KEY); } catch (e) { /* ignore */ }
-    if (saved === 'granted') loadAnalytics();
-    else if (saved !== 'denied') askForConsent();
   }
 })();
