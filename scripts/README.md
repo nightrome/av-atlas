@@ -1,106 +1,108 @@
 # What's in scripts/
 
-Fifty-odd scripts sit here: the live pipeline, the crawlers that feed it,
-one-off repairs kept for reproducibility, and a couple of shelved prototypes.
-Nothing in the filenames says which is which, so this index does.
+About fifty scripts live here: the live pipeline, the crawlers that feed it,
+one-off repairs, and a couple of shelved prototypes. The filenames don't say which
+is which, so this index does.
 
-They deliberately are *not* split into subdirectories. Every one is referenced
-by name from `build_public_site.py`, `PIPELINE.md`, `DECISIONS.md` and
-`CLAUDE.md`, and several are documented in commit messages going back months;
-moving them would break those references for a gain this file already
-delivers. If a real reorganisation happens, it should update those together.
+They are deliberately not split into subfolders. `build_public_site.py`,
+`PIPELINE.md`, `DECISIONS.md` and `CLAUDE.md` all refer to them by name, and so do
+many old commit messages. If they are ever reorganised, update those together.
 
 ## The build
 
-Everything below runs as one command. **Start here.**
+Start here. One command runs everything in this section.
 
-| Script | Role |
+| Script | What it does |
 | --- | --- |
-| `deploy.py` | The single deploy command: runs the full build, commits to `main`, publishes `public/` to `gh-pages`. |
-| `build_public_site.py` | The build itself: merge → repair → aggregate → test → publish → data release. Everything else on this page is either called by it or feeds the files it reads. |
-| `run_tests.py` | The full test suite. Runs in CI too. |
+| `deploy.py` | The deploy command. `--preview` publishes to the staging site, `--promote` publishes that build to production. With no flags it builds, commits to `main`, publishes and backs up the corpus. |
+| `build_public_site.py` | The build itself: merge, repair, aggregate, test, publish, data release. Every other script here is either called by it or produces files it reads. |
+| `run_tests.py` | The full test suite. CI runs it too. |
+| `backup_corpus.py`, `restore_corpus.py` | Save `papers_full.json` and `citation_graph.json` to a draft GitHub Release, and pull them back on a new machine. `deploy.py` runs the backup after each deploy. |
 
 ## Pipeline core
 
-Called by `build_public_site.py`, in this order.
+`build_public_site.py` runs these in this order.
 
-| Script | Role |
+| Script | What it does |
 | --- | --- |
-| `merge_corpus.py` | Merges `data/venues/*.json` into `data/papers_full.json`, dedupes by normalized title, carries enrichment over, reclassifies everything. |
-| `classify.py` | Assigns a category and an AV-relevance label. A module, not a standalone script. |
-| `aggregate.py` | Turns the corpus into `data/stats.json` — every number every page shows. |
-| `build_data_release.py` | Writes the downloadable CSVs under `public/download/`. |
-| `repair_garbled_authors_detail.py`, `repair_glued_institution_strings.py` | Idempotent fixes for real, already-shipped data bugs. Run every build so a recrawl-from-scratch reproduces the same corpus. |
+| `merge_corpus.py` | Merges `data/venues/*.json` into `data/papers_full.json`, removes duplicates by normalized title, keeps existing enrichment, and reclassifies everything. |
+| `classify.py` | Gives each paper a category and an AV-relevance label. A module, not a script you run. |
+| `repair_garbled_authors_detail.py`, `repair_glued_institution_strings.py`, `repair_openalex_institution_errors.py` | Fixes for real data bugs that had already shipped. Safe to re-run, and run on every build so a recrawl from scratch gives the same corpus. |
+| `aggregate.py` | Turns the corpus into `data/stats.json`, which holds every number the pages show. |
+| `build_data_release.py` | Writes the downloadable CSVs to `public/download/`. |
 
 ## Collection (stage 1)
 
-Pull complete, unfiltered proceedings. Run by hand, not by the build.
+These pull complete, unfiltered proceedings. Run them by hand, not through the
+build.
 
-| Script | Role |
+| Script | What it does |
 | --- | --- |
-| `fetch_cvf.py`, `fetch_cvf_history.py` | CVPR/ICCV/WACV from CVF Open Access. |
+| `fetch_cvf.py`, `fetch_cvf_history.py` | CVPR, ICCV and WACV from CVF Open Access. |
 | `fetch_ecva_history.py` | ECCV from ecva.net. |
 | `fetch_neurips.py`, `fetch_neurips_history.py` | NeurIPS proceedings. |
-| `fetch_corl_history.py` | CoRL via PMLR. |
-| `fetch_dblp_listing.py` | Venues with no scrapable proceedings site (RSS, ICLR, AAAI, and the journals). Titles and authors only, no abstracts. |
-| `fetch_ieee_openalex.py` | ICRA/IROS via OpenAlex — IEEE Xplore blocks direct access. |
-| `fetch_github_paper_lists.py` | ICRA/IROS years OpenAlex doesn't cover. |
-| `fetch_arxiv.py` | arXiv preprints by top corpus authors. |
-| `fetch_common.py` | Shared HTTP plumbing for every `fetch_*.py`. |
+| `fetch_corl_history.py` | CoRL from PMLR. |
+| `fetch_dblp_listing.py` | Venues with no proceedings site to scrape (RSS, ICLR, AAAI and the journals). Titles and authors only, no abstracts. |
+| `fetch_ieee_openalex.py` | ICRA and IROS through OpenAlex, because IEEE Xplore blocks direct access. |
+| `fetch_github_paper_lists.py` | ICRA and IROS years that OpenAlex doesn't cover. |
+| `fetch_arxiv.py` | arXiv preprints by the corpus's top authors. |
+| `fetch_common.py` | Shared HTTP code used by every `fetch_*.py`. |
 
 ## Enrichment (stage 3)
 
-Affiliations, links, abstracts. Each `fetch_*` writes a side file; the paired
-`apply_*` folds it into `papers_full.json` — that split exists so two crawlers
-can run at once without racing over the same file.
+Affiliations, links and abstracts. Most crawlers come in pairs: `fetch_*` writes a
+side file and the matching `apply_*` folds it into `papers_full.json`. The split
+lets two crawlers run at the same time without fighting over one file.
 
-| Script | Role |
+| Script | What it does |
 | --- | --- |
-| `fetch_cvf_affiliations.py` → `apply_cvf_affiliations.py` | Affiliations from page 1 of CVF PDFs. |
-| `fetch_affiliations_arxiv.py` → `apply_affiliations_arxiv.py` | Affiliations from arXiv HTML. |
-| `enrich_av_authors.py` | Affiliations + author IDs via OpenAlex title search. Writes `papers_full.json` directly. |
-| `enrich_av_authors_by_doi.py` | The same, batched 50 DOIs per request. Much cheaper where a DOI exists. |
+| `fetch_cvf_affiliations.py` → `apply_cvf_affiliations.py` | Affiliations from the first page of CVF PDFs. |
+| `fetch_affiliations_arxiv.py` → `apply_affiliations_arxiv.py` | Affiliations from arXiv's HTML pages. |
+| `enrich_av_authors.py` | Affiliations and author IDs from an OpenAlex title search. Writes `papers_full.json` directly. |
+| `enrich_av_authors_by_doi.py` | The same, but 50 DOIs per request, which is much cheaper for papers that have a DOI. |
 | `fetch_arxiv_links.py` → `apply_arxiv_links.py` | An arXiv link for each core paper. |
 | `mine_abstracts.py` → `apply_abstracts_arxiv.py` | Abstracts for papers whose venue source had none. |
+| `fetch_abstracts_semanticscholar.py` → `apply_abstracts_semanticscholar.py` | A Semantic Scholar fallback for the abstracts still missing, mostly from DBLP venues. Never overwrites an abstract that already exists. |
 | `fetch_s2_author_ids.py`, `fetch_orcids.py` | Stable author identifiers. |
-| `fetch_institution_countries.py` | Institution → country. |
-| `fetch_institution_logos.py`, `fetch_venue_logos.py` | Logos, via Wikipedia pageimages. |
-| `institution_extraction_llm.py` | Clean institution names out of raw affiliation text, using a local LLM against a registry. |
+| `fetch_institution_countries.py` | Which country each institution is in. |
+| `fetch_institution_logos.py`, `fetch_venue_logos.py` | Logos, taken from Wikipedia page images. |
+| `institution_extraction_llm.py` | Pulls clean institution names out of raw affiliation text, using a local LLM and a registry of known institutions. |
 
-**Never run two `papers_full.json` writers at once.** `enrich_av_authors.py`,
-`enrich_av_authors_by_doi.py` and every `apply_*.py` write it directly; the
-`fetch_*` scripts only write their own side files and are safe to run
-alongside.
+**Never run two writers of `papers_full.json` at once.** That means
+`enrich_av_authors.py`, `enrich_av_authors_by_doi.py` and every `apply_*.py`. The
+`fetch_*` scripts only write their own side files, so they are safe to run
+alongside anything.
 
 ## Citation graph (stage 4)
 
-| Script | Role |
+| Script | What it does |
 | --- | --- |
-| `build_citation_graph.py` | Parses reference lists into in-corpus citation edges. |
-| `apply_citation_sources.py` | Folds the edge counts into `papers_full.json`. |
-| `fetch_semanticscholar_citing.py` | Reverse-citation discovery; can surface new papers, which re-enter at stage 1. |
-| `backfill_citing_venues.py` | Fixes venue strings on papers that discovery originally filed as plain "arXiv". |
+| `build_citation_graph.py` | Parses reference lists into citation edges between papers in the corpus. |
+| `apply_citation_sources.py` | Adds the citation counts to `papers_full.json`. |
+| `fetch_semanticscholar_citing.py` | Finds papers that cite the corpus. This can surface new papers, which then go back through stage 1. |
+| `backfill_citing_venues.py` | Fixes the venue on papers that were first filed under plain "arXiv". |
 
 ## Classifier development
 
-Not part of a build. These produced the trained model and the labels
+Not part of a build. These produced the trained model and the labels that
 `classify.py` reads.
 
-| Script | Role |
+| Script | What it does |
 | --- | --- |
-| `train_relevance_classifier.py` | Trains the scorer, writes `data/relevance_model.json`. |
-| `fetch_llm_relevance_labels.py`, `..._v2.py` | Local-LLM labelling passes (Ollama). |
-| `evaluate_llm_relevance.py` | Grades those labels against hand-labelled ground truth. |
-| `select_labeling_candidates.py`, `build_labeling_tool.py` | Pick a sample and stamp it into the hand-labelling page (now `dev/label_relevance.html`). |
-| `select_near_threshold_candidates.py` | Recall-focused triage sample: "adjacent" papers in a driving-named category with real vehicle/traffic framing, for a targeted hand-labelling pass -- not a general training sample like the two scripts above. |
-| `flag_ambiguous_authors.py` | Flags name-keyed records that likely conflate several people. |
-| `classify_code_links_llm.py`, `audit_code_links_llm.py` | The `has_code_link` classifier and an audit of it. Its Insights panel is parked until coverage is trustworthy. |
+| `train_relevance_classifier.py` | Trains the scorer and writes `data/relevance_model.json`. |
+| `fetch_llm_relevance_labels.py`, `fetch_llm_relevance_labels_v2.py` | Labelling passes with a local LLM (Ollama). |
+| `fetch_llm_category_labels.py` | Uses a local LLM to pick a category for AV papers that are stuck in "misc" because they only have a title. |
+| `evaluate_llm_relevance.py` | Checks those labels against hand-labelled ground truth. |
+| `select_labeling_candidates.py`, `build_labeling_tool.py` | Pick a sample and generate the hand-labelling page, `dev/label_relevance.html` (gitignored). |
+| `select_near_threshold_candidates.py` | A sample aimed at recall: papers marked "adjacent" that are in a driving-named category and clearly about vehicles or traffic. For a targeted round of hand labelling, unlike the two general-purpose samplers above. |
+| `flag_ambiguous_authors.py` | Flags author records that probably mix up several people. |
+| `classify_code_links_llm.py`, `audit_code_links_llm.py` | The `has_code_link` classifier and its audit. The Insights panel that uses it is parked until coverage is good enough to trust. |
 
 ## One-off and shelved
 
-Kept because they document something, not because they run.
+Kept because they document something, not because anyone runs them.
 
-| Script | Role |
+| Script | What it does |
 | --- | --- |
-| `strip_redundant_venue_fields.py` | A completed repo-size cleanup of `data/venues/*.json`. |
-| `build_sqlite.py` | Prototype only. Feeds `dev/authors_sql_prototype.html`, which was measured and not adopted — see DECISIONS.md's "sql.js-httpvfs prototype". |
+| `strip_redundant_venue_fields.py` | A finished cleanup that shrank `data/venues/*.json`. |
+| `build_sqlite.py` | A prototype for `dev/authors_sql_prototype.html`, an author page backed by a SQLite file. It was measured and not adopted. |
