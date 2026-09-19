@@ -3,57 +3,205 @@
 """
 Single deploy command for AV Atlas.
 
-1. Runs build_public_site.py's full pipeline (merge_corpus -> aggregate ->
-   run_tests -> build), which aborts before publishing if anything fails.
-2. Commits and pushes any source changes to `main`.
-3. Publishes public/ to the `gh-pages` branch, via a throwaway git worktree
-   so this never needs a second full checkout.
+Two-stage flow (preview first, then promote):
 
-Usage: python scripts/deploy.py
-   or: python scripts/deploy.py --no-main-commit   # publish without touching main
-   or: python scripts/deploy.py --skip-build       # HTML/JS/CSS-only change: skip
-                                                   # the corpus rebuild + tests
+    python scripts/deploy.py --preview    # build, publish to the staging site only
+    python scripts/deploy.py --promote    # publish the previewed build to production
+
+    python scripts/deploy.py              # one-shot: build + production, no preview
+
+A full run:
+1. Builds public/ (build_public_site.py). The corpus rebuild is skipped
+   automatically when nothing under data/ or scripts/ changed since the last
+   full build (see build_fingerprint); tests always run. --full forces the
+   rebuild, --skip-build skips it and the tests (HTML/JS/CSS-only changes).
+2. Commits and pushes any source changes to `main` (production only).
+3. Publishes public/ to the target repo's `gh-pages` branch through a
+   persistent clone in .deploy-cache/, so only files that changed since the
+   last deploy are re-hashed and uploaded.
+
+Targets:
+  production -- this repo's gh-pages (https://nightrome.github.io/av-atlas/)
+  staging    -- a second repo's gh-pages (default nightrome/av-atlas-staging);
+                HTML gets noindex + a PREVIEW banner, robots.txt disallows all,
+                canonical/og URLs point at the staging URL. See DECISIONS.md.
 """
 import argparse
+import hashlib
+import json
+import os
 import shutil
+import stat
 import subprocess
 import sys
-import tempfile
 import time
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
 PUBLIC_DIR = BASE / "public"
+CACHE_DIR = BASE / ".deploy-cache"
+STATE_FILE = CACHE_DIR / "state.json"
+
+PROD_URL = "https://nightrome.github.io/av-atlas"
+STAGING_REPO = os.environ.get("AV_ATLAS_STAGING_REPO", "https://github.com/nightrome/av-atlas-staging.git")
+STAGING_URL = os.environ.get("AV_ATLAS_STAGING_URL", "https://nightrome.github.io/av-atlas-staging")
+
+BUILD_INFO_NAME = "BUILD_INFO.json"
+TRANSFORMED_SUFFIXES = (".html",)
+TRANSFORMED_NAMES = ("robots.txt", "sitemap.xml")
+
+PREVIEW_BANNER = (
+    '<div style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#f59e0b;'
+    'color:#000;font:600 12px/1 system-ui,sans-serif;text-align:center;padding:6px;'
+    'pointer-events:none">PREVIEW BUILD &mdash; not the public site</div>'
+)
 
 
-def run(cmd, cwd=None, check=True):
-    return subprocess.run(cmd, cwd=cwd or BASE, check=check)
+def run(cmd, cwd=None, check=True, **kw):
+    return subprocess.run(cmd, cwd=cwd or BASE, check=check, **kw)
 
 
-def _clear_readonly_and_retry(func, path, exc_info):
-    import os
-    import stat
-    os.chmod(path, stat.S_IWRITE)
-    func(path)
+def git_out(args, cwd):
+    return subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, check=True).stdout.strip()
 
 
-def rmtree_retry(path, attempts=5, delay=0.5):
-    for i in range(attempts):
+# ---------------------------------------------------------------- pure helpers
+
+def make_preview_html(html, prod_url=PROD_URL, preview_url=STAGING_URL):
+    """Turn a production page into its staging twin: staging URLs in the
+    canonical/og/twitter tags, noindex so search engines never see two copies,
+    and a visible banner so nobody mistakes it for the live site."""
+    html = html.replace(prod_url, preview_url)
+    if "<head>" in html:
+        html = html.replace("<head>", '<head>\n<meta name="robots" content="noindex,nofollow">', 1)
+    if "</body>" in html:
+        html = html.replace("</body>", PREVIEW_BANNER + "\n</body>", 1)
+    return html
+
+
+def make_preview_bytes(name, data, prod_url=PROD_URL, preview_url=STAGING_URL):
+    """Preview transform for one published file, keyed by file name."""
+    if name == "robots.txt":
+        return b"User-agent: *\nDisallow: /\n"
+    text = data.decode("utf-8")
+    if name == "sitemap.xml":
+        return text.replace(prod_url, preview_url).encode("utf-8")
+    return make_preview_html(text, prod_url, preview_url).encode("utf-8")
+
+
+def hash_tree(root):
+    """Content hash of every file under root (BUILD_INFO excluded), independent
+    of mtimes -- identifies exactly what a build contains."""
+    root = Path(root)
+    h = hashlib.sha256()
+    for p in sorted(x for x in root.rglob("*") if x.is_file()):
+        rel = p.relative_to(root).as_posix()
+        if rel == BUILD_INFO_NAME:
+            continue
+        h.update(rel.encode() + b"\0")
+        with open(p, "rb") as f:
+            for chunk in iter(lambda: f.read(1 << 20), b""):
+                h.update(chunk)
+    return h.hexdigest()
+
+
+def _is_transformed(rel):
+    return rel.endswith(TRANSFORMED_SUFFIXES) or rel in TRANSFORMED_NAMES
+
+
+def sync_tree(src, dst, transform=None):
+    """Mirror src into dst, touching only what changed. Untransformed files are
+    compared by size+exact mtime (copy2 preserves mtime, so unchanged data files are
+    skipped and git's stat cache in dst stays valid); files the transform
+    rewrites are compared by content. Never touches dst/.git. Returns
+    (written, removed) counts."""
+    src, dst = Path(src), Path(dst)
+    written = removed = 0
+    wanted = set()
+    for p in src.rglob("*"):
+        if not p.is_file():
+            continue
+        rel = p.relative_to(src).as_posix()
+        wanted.add(rel)
+        target = dst / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if transform and _is_transformed(rel):
+            new = transform(p.name, p.read_bytes())
+            if not target.exists() or target.read_bytes() != new:
+                target.write_bytes(new)
+                written += 1
+            continue
+        if target.exists():
+            a, b = p.stat(), target.stat()
+            if a.st_size == b.st_size and a.st_mtime_ns == b.st_mtime_ns:
+                continue
+        shutil.copy2(p, target)
+        written += 1
+    for p in list(dst.rglob("*")):
+        if not p.is_file() or ".git" in p.relative_to(dst).parts:
+            continue
+        rel = p.relative_to(dst).as_posix()
+        if rel not in wanted and rel != BUILD_INFO_NAME:
+            os.chmod(p, stat.S_IWRITE)
+            p.unlink()
+            removed += 1
+    return written, removed
+
+
+def build_fingerprint(base=BASE):
+    """Fingerprint of everything a full corpus rebuild reads: the pipeline
+    scripts, the git-tracked sources under data/ (venue JSON, profiles, ...)
+    and the crawler-written papers_full.json. Cheap (stat only). If it matches
+    the fingerprint saved after the last full build, merge_corpus/aggregate
+    would just reproduce the stats.json already on disk."""
+    base = Path(base)
+    files = [base / "data" / "papers_full.json"]
+    files += sorted((base / "scripts").glob("*.py"))
+    tracked = subprocess.run(["git", "ls-files", "data"], cwd=base, capture_output=True, text=True).stdout.split()
+    files += [base / t for t in tracked]
+    h = hashlib.sha256()
+    for f in sorted(set(files)):
         try:
-            shutil.rmtree(path, onexc=_clear_readonly_and_retry)
-            return
-        except PermissionError:
-            if i == attempts - 1:
-                raise
-            time.sleep(delay)
+            st = f.stat()
+        except OSError:
+            continue
+        h.update(f"{f.relative_to(base).as_posix()}|{st.st_size}|{st.st_mtime_ns}\n".encode())
+    return h.hexdigest()
 
 
-def build(skip_build=False):
+def load_state():
+    try:
+        return json.loads(STATE_FILE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def save_state(**updates):
+    state = load_state()
+    state.update(updates)
+    CACHE_DIR.mkdir(exist_ok=True)
+    STATE_FILE.write_text(json.dumps(state, indent=2), encoding="utf-8")
+
+
+# ---------------------------------------------------------------------- steps
+
+def build(mode):
+    """mode: 'auto' (skip the corpus rebuild if the fingerprint is unchanged),
+    'full', or 'skip' (publish-only, no tests)."""
     print("--- Building AV Atlas ---")
-    cmd = [sys.executable, "build_public_site.py"]
-    if skip_build:
-        cmd.append("--publish-only")
-    subprocess.run(cmd, cwd=BASE / "scripts", check=True)
+    scripts = BASE / "scripts"
+    if mode == "skip":
+        subprocess.run([sys.executable, "build_public_site.py", "--publish-only"], cwd=scripts, check=True)
+        return
+    stats_ok = (BASE / "data" / "stats.json").exists()
+    if mode == "auto" and stats_ok and load_state().get("build_fingerprint") == build_fingerprint():
+        print("Corpus inputs unchanged since the last full build -- skipping merge/aggregate, running tests.")
+        subprocess.run([sys.executable, "run_tests.py"], cwd=scripts, check=True)
+        subprocess.run([sys.executable, "build_public_site.py", "--publish-only"], cwd=scripts, check=True)
+        return
+    subprocess.run([sys.executable, "build_public_site.py"], cwd=scripts, check=True)
+    # Fingerprint *after* the build: merge_corpus rewrites papers_full.json.
+    save_state(build_fingerprint=build_fingerprint())
 
 
 def commit_sources(msg):
@@ -64,8 +212,7 @@ def commit_sources(msg):
     # line-ending-only diffs (or any other change `git add`'s clean filters
     # would normalize away) can make `git status` claim there's something to
     # commit when `git add` actually stages nothing, and `git commit` then
-    # fails outright with no clear error. See family-portal's deploy.py for
-    # the concrete case this was found in.
+    # fails outright with no clear error.
     result = subprocess.run(["git", "status", "--porcelain"], cwd=BASE, capture_output=True, text=True)
     if not result.stdout.strip():
         print("Sources: nothing to commit.")
@@ -81,94 +228,114 @@ def commit_sources(msg):
     return True
 
 
-def deploy_gh_pages():
-    print("\n--- Deploying to gh-pages ---")
+def ensure_cache_clone(name, remote):
+    """Persistent clone used only to build gh-pages commits. Primed once with the
+    remote's current tip (index only) so git knows which blobs the server
+    already has and a push sends just what changed."""
+    clone = CACHE_DIR / name
+    if (clone / ".git").exists():
+        if git_out(["remote", "get-url", "origin"], clone) != remote:
+            run(["git", "remote", "set-url", "origin", remote], cwd=clone)
+        return clone
+    clone.mkdir(parents=True, exist_ok=True)
+    run(["git", "init", "--quiet"], cwd=clone)
+    run(["git", "config", "core.autocrlf", "false"], cwd=clone)
+    run(["git", "remote", "add", "origin", remote], cwd=clone)
+    fetched = run(["git", "fetch", "--quiet", "--depth", "1", "origin", "gh-pages"], cwd=clone, check=False)
+    if fetched.returncode == 0:
+        run(["git", "read-tree", "FETCH_HEAD"], cwd=clone)
+    return clone
+
+
+def publish(name, remote, transform, label, commit_msg):
+    """Sync public/ into the cache clone and force-push it to gh-pages as a single
+    parentless commit (gh-pages is pure build output -- see DECISIONS.md)."""
+    print(f"\n--- Deploying to {label} ---")
     if not PUBLIC_DIR.exists():
         raise SystemExit(f"{PUBLIC_DIR} not found -- build did not produce output")
+    clone = ensure_cache_clone(name, remote)
+    written, removed = sync_tree(PUBLIC_DIR, clone, transform)
+    content_hash = hash_tree(PUBLIC_DIR)
+    info = {
+        "target": name,
+        "content_hash": content_hash,
+        "source_commit": git_out(["rev-parse", "--short", "HEAD"], BASE),
+        "built_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+    }
+    (clone / BUILD_INFO_NAME).write_text(json.dumps(info, indent=2), encoding="utf-8")
+    print(f"Synced: {written} file(s) written, {removed} removed.")
 
-    # Always publishes as a single fresh orphan commit, force-pushed --
-    # never builds on top of gh-pages' existing history. gh-pages is 100%
-    # generated build output (stats.json/non_av_papers/, mostly, ~140MB
-    # per snapshot) with no reviewable diffs and no reason anyone would ever
-    # want an old commit back; committing on top of history the normal way
-    # made every deploy add a genuinely new, largely non-delta-compressible
-    # multi-MB chunk to the repo forever (confirmed: `git verify-pack`
-    # showed only 17 of 315 objects in the pack had ANY delta chain -- 24
-    # accumulated deploys were purely additive, not shrinking via reuse).
-    # Squashing to one commit keeps gh-pages' contribution to repo size
-    # flat at ~one snapshot, regardless of how many more times the site
-    # gets deployed -- see DECISIONS.md. No `git fetch origin gh-pages`
-    # needed anymore either, since
-    # nothing here reads its prior content.
-    worktree = Path(tempfile.mkdtemp(prefix="av-atlas-ghp-"))
-    worktree.rmdir()
-    try:
-        run(["git", "worktree", "add", "--detach", str(worktree)])
-        run(["git", "checkout", "--orphan", "gh-pages-publish"], cwd=worktree)
-        run(["git", "rm", "-rf", "--quiet", "."], cwd=worktree, check=False)
+    run(["git", "add", "-A"], cwd=clone)
+    tree = git_out(["write-tree"], clone)
+    commit = git_out(["-c", "user.name=AV Atlas deploy", "-c", "user.email=holger@it-caesar.com",
+                      "commit-tree", tree, "-m", commit_msg], clone)
+    run(["git", "push", "--force", "origin", f"{commit}:refs/heads/gh-pages"], cwd=clone)
+    print(f"{label}: pushed (single commit {commit[:8]}).")
+    return content_hash
 
-        for item in worktree.iterdir():
-            if item.name == ".git":
-                continue
-            if item.is_dir():
-                rmtree_retry(item)
-            else:
-                item.unlink()
-        for item in PUBLIC_DIR.iterdir():
-            dst = worktree / item.name
-            if item.is_dir():
-                shutil.copytree(item, dst)
-            else:
-                shutil.copy2(item, dst)
 
-        run(["git", "add", "-A"], cwd=worktree)
-        status = subprocess.run(["git", "status", "--porcelain"], cwd=worktree, capture_output=True, text=True)
-        if not status.stdout.strip():
-            print("gh-pages: nothing changed.")
-            return
-        run(["git", "commit", "-m", "Publish AV Atlas"], cwd=worktree)
-        run(["git", "push", "--force", "origin", "HEAD:gh-pages"], cwd=worktree)
-        print("gh-pages pushed (squashed to a single commit).")
-    finally:
-        run(["git", "worktree", "remove", "--force", str(worktree)], check=False)
-        rmtree_retry(worktree) if worktree.exists() else None
-        run(["git", "worktree", "prune"], check=False)
-        # `git worktree remove` above only detaches the worktree, it doesn't
-        # delete the local branch created inside it -- without this, the
-        # SECOND deploy's `git checkout --orphan gh-pages-publish` fails
-        # outright (branch already exists), confirmed the hard way: the
-        # deploy immediately after this squash-to-one-commit change shipped
-        # broke on exactly this. -D (not -d) since an orphan branch has no
-        # merge-base with anything, so git can't tell it's "merged" the
-        # normal way -d checks for.
-        run(["git", "branch", "-D", "gh-pages-publish"], check=False)
+def deploy_production():
+    return publish("production", git_out(["remote", "get-url", "origin"], BASE), None,
+                   "production gh-pages", "Publish AV Atlas")
+
+
+def deploy_staging(remote):
+    return publish("staging", remote, make_preview_bytes, "staging preview", "Publish AV Atlas preview")
 
 
 def backup_corpus():
     print("\n--- Backing up papers_full.json + citation_graph.json ---")
     # Best-effort and non-fatal (check=False): the site is already live by
-    # the time this runs (deploy_gh_pages() above already succeeded), so a
-    # backup problem -- no token configured, a transient GitHub API error --
-    # shouldn't be reported as a failed deploy. backup_corpus.py itself
-    # prints why it skipped or failed; nothing to duplicate here.
+    # the time this runs, so a backup problem -- no token configured, a
+    # transient GitHub API error -- shouldn't be reported as a failed deploy.
     subprocess.run([sys.executable, "backup_corpus.py"], cwd=BASE / "scripts", check=False)
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    stage = parser.add_mutually_exclusive_group()
+    stage.add_argument("--preview", action="store_true",
+                       help="Build and publish to the staging site only; production and main are untouched.")
+    stage.add_argument("--promote", action="store_true",
+                       help="Publish the current public/ (no rebuild) to production, after checking it is "
+                            "the build that was last previewed.")
+    parser.add_argument("--staging-repo", default=STAGING_REPO, help="Git URL of the staging repo.")
     parser.add_argument("--no-main-commit", action="store_true",
-                         help="Skip committing/pushing source changes to main; just build and deploy gh-pages.")
+                        help="Skip committing/pushing source changes to main.")
+    parser.add_argument("--full", action="store_true",
+                        help="Force the corpus rebuild even if the inputs look unchanged.")
     parser.add_argument("--skip-build", action="store_true",
-                         help="Skip the corpus rebuild (merge_corpus/aggregate) and the test suite; just "
-                              "re-copy the current pages and the existing data/stats.json into public/ and "
-                              "publish. Only safe for HTML/JS/CSS-only changes where nothing under data/ moved; "
-                              "a previous full build must have left data/stats.json in place.")
+                        help="Skip the corpus rebuild and the tests; just re-copy the current pages and the "
+                             "existing data/stats.json into public/. Only safe for HTML/JS/CSS-only changes.")
+    parser.add_argument("--force-promote", action="store_true",
+                        help="With --promote: publish even if public/ differs from the last preview.")
     args = parser.parse_args()
 
-    build(skip_build=args.skip_build)
+    if args.promote:
+        if not PUBLIC_DIR.exists():
+            raise SystemExit("No public/ to promote -- run --preview first.")
+        previewed = load_state().get("previewed_hash")
+        current = hash_tree(PUBLIC_DIR)
+        if previewed != current and not args.force_promote:
+            raise SystemExit(
+                "public/ is not the build that was last previewed "
+                f"(previewed {str(previewed)[:12]}, current {current[:12]}). Run --preview again, "
+                "or pass --force-promote to publish it anyway.")
+        if not args.no_main_commit:
+            commit_sources("Update AV Atlas")
+        save_state(promoted_hash=deploy_production())
+        backup_corpus()
+        print("\nDone.")
+        return
+
+    build("skip" if args.skip_build else "full" if args.full else "auto")
+    if args.preview:
+        save_state(previewed_hash=deploy_staging(args.staging_repo))
+        print(f"\nPreview: {STAGING_URL}/\nLooks right? python scripts/deploy.py --promote")
+        return
     if not args.no_main_commit:
         commit_sources("Update AV Atlas")
-    deploy_gh_pages()
+    save_state(promoted_hash=deploy_production())
     backup_corpus()
     print("\nDone.")
 

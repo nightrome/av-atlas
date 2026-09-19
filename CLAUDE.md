@@ -23,7 +23,11 @@ split out into this standalone repo so it can be developed and linked to indepen
 # publishing if any step fails.
 python scripts/build_public_site.py
 
-# Build, commit sources to main, and push the built site to gh-pages
+# Preview on the staging site, then publish that build to production
+python scripts/deploy.py --preview
+python scripts/deploy.py --promote
+
+# One-shot: build, commit sources to main, push the built site to gh-pages
 python scripts/deploy.py
 
 # Same, but skip committing to main (e.g. nothing source-side changed)

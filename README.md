@@ -48,14 +48,32 @@ but with no author, institution, or citation data to show.
 
 ## Deploying
 
+Preview first, then promote:
+
 ```bash
-python scripts/deploy.py
+python scripts/deploy.py --preview   # build + publish to the staging site only
+python scripts/deploy.py --promote   # publish that exact build to production
 ```
 
-Runs the full build/test pipeline (see below), commits and pushes any
-source changes to `main`, publishes `public/` to the `gh-pages`
-branch, then backs up the corpus (see below). Live at
+`--preview` publishes to a second repo's Pages site
+(https://nightrome.github.io/av-atlas-staging/ by default; override with
+`--staging-repo` / `AV_ATLAS_STAGING_REPO` and `AV_ATLAS_STAGING_URL`). Staging
+pages carry `noindex`, a PREVIEW banner and staging canonical URLs, and its
+`robots.txt` disallows everything. `--promote` refuses to publish if `public/`
+is not the build that was last previewed (`--force-promote` overrides).
+
+`python scripts/deploy.py` alone still does the one-shot build → `main` commit →
+production publish, then backs up the corpus (see below). Live at
 https://nightrome.github.io/av-atlas/.
+
+Speed: the corpus rebuild is skipped automatically when nothing under `data/`
+or `scripts/` changed since the last full build (`--full` forces it; tests
+always run; `--skip-build` also skips the tests). Publishing goes through a
+persistent clone in `.deploy-cache/`, so only changed files are re-uploaded.
+
+**One-time setup for staging:** create an empty public repo
+`nightrome/av-atlas-staging` and enable Pages from its `gh-pages` branch (after
+the first `--preview` has created it). Its branch rules must allow force pushes.
 
 ## Backing up and restoring the crawled corpus
 

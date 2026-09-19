@@ -735,3 +735,25 @@ correctness, for a per-paper cost (one page, not an early-stop bug) far
 smaller than what made the citation-graph swap worth the risk. Not
 currently even running (last touched a side file three days before this
 check), so there's no active throughput problem to justify it either.
+
+## Staging site and incremental gh-pages deploys
+
+`gh-pages` is force-pushed as a parentless commit every deploy (see above), which
+requires the branch ruleset to exempt `gh-pages` (protect `main` only). Two
+changes make that cheap and give a preview step:
+
+- **Persistent clone, single-commit push.** `deploy.py` keeps a clone per target in
+  `.deploy-cache/`, mirrors `public/` into it (only changed files) and pushes a
+  `commit-tree` commit with no parent. Because the clone knows the remote's
+  current tip, git sends only blobs the server lacks; history still never
+  accumulates.
+- **Staging = a second repo, not a subfolder or branch of this one.** A separate
+  repo keeps 167 MB preview snapshots out of this repo's size, needs no ruleset
+  exemption on the main repo, and gets its own Pages URL. Staging HTML is the
+  production HTML post-processed at publish time (noindex, banner, staging
+  canonical URLs) so `--promote` ships the byte-identical build that was
+  previewed; `.deploy-cache/state.json` records the previewed content hash.
+- **Auto-skip of the corpus rebuild** keys on a stat fingerprint of `scripts/*.py`,
+  git-tracked `data/` sources and `papers_full.json`, saved after each full
+  build. Tests still run on the fast path.
+
