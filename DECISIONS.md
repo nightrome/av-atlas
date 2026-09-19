@@ -1,576 +1,574 @@
-# AV Atlas — design decisions
+# AV Atlas: design decisions
 
-The reasoning behind choices that aren't obvious from the code, so a future
-change doesn't quietly undo something deliberate. `PIPELINE.md` documents which
-script pulls which venue; this file is the "why".
+The reasoning behind choices that aren't obvious from the code, so a future change
+doesn't quietly undo something deliberate. `PIPELINE.md` says which script pulls
+which venue. This file is the "why".
 
 ## Citations are counted only between papers in the corpus
 
-The site never shows an external citation count. `citation_count()`
-(`aggregate.py`) reads only `citations_by_source.in_corpus` — how many other
-corpus papers' scanned reference lists cite this one. An external figure
-(OpenAlex `cited_by_count`, a Scholar number) measures impact on a different,
-far larger population, and lets a paper famous for something unrelated dominate
-every AV leaderboard. In-corpus graph coverage is partial and only grows, so
-every count is a floor, not a final number — stated as a known gap on the About
-page.
+The site never shows an external citation count. `citation_count()` in
+`aggregate.py` reads only `citations_by_source.in_corpus`: how many other corpus
+papers' scanned reference lists cite this one. An external figure (OpenAlex's
+`cited_by_count`, a Scholar number) measures impact on a different and far larger
+population, and lets a paper that is famous for something unrelated dominate every
+AV leaderboard. Coverage of the in-corpus graph is partial and only grows, so every
+count is a floor, not a final number. The About page says so.
 
 ## `None` vs `0` for an unknown citation count
 
-`citation_count()` returns `None`, not `0`, when no reference-list scan has
-reached a paper yet. Treating "unknown" as "zero" drags every average toward
-zero for the years and venues with sparse coverage. `aggregate.py`'s sort keys,
-`best_by_year` / `best_by_venue` selection (a paper with no citation data can't
-be "best"), and `filters.js`'s `aggregateByDimension` (an uncited paper counts
-toward a group's paper count but not its average's denominator) all keep the
-distinction. Display falls back to "—", never a misleading "0".
+`citation_count()` returns `None`, not `0`, when no reference-list scan has reached
+a paper yet. Treating "unknown" as "zero" drags every average toward zero for years
+and venues with sparse coverage. These all keep the distinction:
+
+- the sort keys in `aggregate.py`
+- the `best_by_year` and `best_by_venue` selection (a paper with no citation data
+  can't be "best")
+- `aggregateByDimension` in `filters.js` (an uncited paper counts toward a group's
+  paper count but not toward the denominator of its average)
+
+The display shows "—", never a misleading "0".
 
 ## AV-relevance is a layered, auditable classifier
 
-`classify.py` decides AV vs. non-AV from title + abstract text, in layers
-that each push only one way:
+`classify.py` decides AV or non-AV from the title and abstract, in layers that each
+push in only one direction:
 
-1. Hard scope filters (mechanical/hardware-only papers, non-road platforms like
-   aerial/underwater/legged robots) → non-AV.
-2. Keyword floor: an AV-specific phrase anywhere, or a standalone driving word
-   in the title → AV. A floor later layers can add to but never override.
-3. A small linear model (`data/relevance_model.json`: per-phrase weights plus a
-   threshold, trained on hand labels) → AV, only for papers the keyword
+1. Hard scope filters (mechanical or hardware-only papers, and non-road platforms
+   such as aerial, underwater or legged robots) mean non-AV.
+2. Keyword floor: an AV-specific phrase anywhere, or a standalone driving word in
+   the title, means AV. Later layers can add to this but never override it.
+3. A small linear model (`data/relevance_model.json`: per-phrase weights and a
+   threshold, trained on hand labels) means AV, but only for papers the keyword
    floor missed.
-4. A local-LLM "it's AV" verdict, folded in as a promotion-only signal.
+4. A local-LLM "it's AV" verdict, used only to promote a paper.
 
-The classifier stays grep-able end to end — any paper's result can be explained
-from the code. The LLM is a second opinion, graded against a hand-labeled eval
-set and never trusted blind; it never writes the ground-truth label file.
+The classifier can be searched end to end, and any paper's result can be explained
+from the code. The LLM is a second opinion. It is graded against a hand-labelled
+evaluation set, never trusted blindly, and never writes the ground-truth label file.
 
 ## Numbers are shown as whole numbers
 
-Citation counts and averages are rounded to integers everywhere they're
-computed (`aggregate.py`, `filters.js`). "213.68 cit./paper" reads as precise;
-the underlying signal is a keyword heuristic over a partial citation graph and
+Citation counts and averages are rounded to integers everywhere they're computed
+(`aggregate.py`, `filters.js`). "213.68 cit./paper" looks precise, but the
+underlying signal is a keyword heuristic over a partial citation graph, which
 doesn't support that precision.
 
 ## Filters recompute rankings client-side from `all_papers`
 
-`aggregate.py` ships the full `all_papers` array, not fixed top-N leaderboards.
-`filters.js`'s `aggregateByDimension` rebuilds any ranking from whatever subset
-the active filters leave behind. A server-truncated leaderboard can't be
-re-sliced by a category / country / institution filter, which made every filter
-a dead end on any page but the Overview.
+`aggregate.py` ships the full `all_papers` array, not fixed top-N leaderboards, and
+`aggregateByDimension` in `filters.js` rebuilds any ranking from whatever the active
+filters leave. A leaderboard truncated on the server can't be re-sliced by a
+category, country or institution filter. That made every filter a dead end on any
+page except the Overview.
 
 ## The citation-source view is a client-side toggle
 
 `stats.json` carries every paper's full `citations_by_source` map, not just the
-blended pick. `filters.js`'s `applyCitationSource(stats)` chooses one source and
-mutates `p.citations` in place right after the fetch, before anything renders —
-so switching sources never needs a `stats.json` rebuild or redeploy. Both
-`all_papers` and `top_papers` are mutated (after `JSON.parse` a paper in both is
-two objects); `best_by_year` is recomputed client-side for the same reason. The
-preference lives in `localStorage`, not the URL.
+blended pick. `applyCitationSource(stats)` in `filters.js` chooses one source and
+changes `p.citations` in place right after the fetch and before anything renders, so
+switching sources never needs a `stats.json` rebuild or a redeploy. Both
+`all_papers` and `top_papers` are changed (after `JSON.parse`, a paper that appears
+in both is two separate objects), and `best_by_year` is recomputed client-side for
+the same reason. The preference is kept in `localStorage`, not in the URL.
 
 ## Abstracts are sharded out of `stats.json`
 
-Every page fetches `stats.json`; only `paper.html` ever reads an abstract, one
-at a time. Bundling ~19k abstracts into the shared payload cost every visitor
-several MB of gzip. They live in `data/abstracts/shard-NN.json` (64 shards).
-`shard_index()` is a plain djb2-hash-mod-64 of the title — no index file to keep
-in sync, just the same hash on both ends. `paper.html` reimplements it in JS;
-the two copies must stay byte-identical or every abstract silently 404s.
-`test_aggregate.py`'s `TestShardIndex` pins the Python side.
+Every page fetches `stats.json`, but only `paper.html` ever reads an abstract, one at
+a time. Bundling about 19,000 abstracts into the shared payload cost every visitor
+several MB of gzip. They now live in `data/abstracts/shard-NN.json` (64 shards).
+
+`shard_index()` is a plain djb2 hash of the title, modulo 64. There's no index file
+to keep in sync, just the same hash on both ends. `paper.html` reimplements it in
+JavaScript, and the two copies must stay byte-identical or every abstract silently
+404s. `TestShardIndex` in `test_aggregate.py` pins the Python side.
 
 ## Venue names are aliased at the source
 
 Sources report the same venue differently ("Advances in Neural Information
-Processing Systems" vs. "NeurIPS"). `VENUE_ALIASES` in `aggregate.py` normalizes
-them so a venue doesn't split into two rows. `venues.html` additionally merges a
-few incidental one-off IEEE-journal placements into a single row — display only;
-the `venue` field on each paper is untouched, so filtering by the real name
-elsewhere still works.
+Processing Systems" vs "NeurIPS"). `VENUE_ALIASES` in `aggregate.py` normalizes them
+so a venue doesn't split into two rows. `venues.html` also merges a few incidental
+one-off IEEE-journal placements into a single row. That is display only: the `venue`
+field on each paper is untouched, so filtering by the real name elsewhere still works.
 
 ## Institution names: local-LLM extraction, registry-anchored
 
-Affiliation notes are prose ("...the Division of Robotics, Perception, and
-Learning (RPL), KTH Royal Institute of Technology, Stockholm, Sweden"), not a
-comma-separated list. Splitting on commas produced fragments — "Perception" as
-its own institution — that downstream regex could never fully recover.
-`institution_extraction_llm.py` hands the raw text to a local model and asks for
-the institution name(s) directly. To stop the same place being re-invented as
-"KTH" / "Royal Institute of Technology" / "KTH Royal Institute of Technology",
-each call is shown a token-overlap shortlist from
-`data/institution_registry.json` and must either return an existing canonical
-name exactly or propose a new one, which is added back to the registry.
-`data/institution_aliases_llm.json` is a one-time batched pass folding
-pre-existing registry duplicates (diacritic and abbreviation variants) onto
-canonical names, applied after the hand-typed `INSTITUTION_ALIASES`.
+Affiliation notes are prose ("...the Division of Robotics, Perception, and Learning
+(RPL), KTH Royal Institute of Technology, Stockholm, Sweden"), not a comma-separated
+list. Splitting on commas produced fragments, such as "Perception" as its own
+institution, that later regex steps could never fully repair.
+
+`institution_extraction_llm.py` gives the raw text to a local model and asks for the
+institution names directly. To stop the same place being reinvented as "KTH", "Royal
+Institute of Technology" and "KTH Royal Institute of Technology", each call is shown a
+token-overlap shortlist from `data/institution_registry.json`. The model must either
+return an existing canonical name exactly or propose a new one, which is then added
+to the registry.
+
+`data/institution_aliases_llm.json` is a one-time batched pass that folded existing
+registry duplicates (diacritic and abbreviation variants) onto canonical names. It is
+applied after the hand-typed `INSTITUTION_ALIASES`.
 
 ## Scholar profiles and photos: confirm or skip
 
-A profile is saved to `data/scholar_profiles.json` only after a cross-check
-against a real signal — a shared co-author on a specific corpus paper, or a
-matching institution in the Scholar bio. Ambiguous same-name matches are left
-unresolved. A wrong photo on the wrong person is worse than a missing one on a
-site whose premise is being defensible about what it claims.
+A profile is saved to `data/scholar_profiles.json` only after a cross-check against a
+real signal: a shared co-author on a specific corpus paper, or a matching institution
+in the Scholar bio. Ambiguous same-name matches are left unresolved. A wrong photo on
+the wrong person is worse than a missing one, on a site whose premise is being
+defensible about what it claims.
 
 ## DBLP-sourced venues have no abstracts
 
-RSS, ICLR, and AAAI are pulled from DBLP (their own sites block scripted
-access). DBLP has never carried abstracts, so `is_fully_processed()` requires
-only title + year for these, and `classify.py` falls back to title-only keyword
-matching. These papers carry a weaker relevance/category signal than the rest of
-the corpus, documented as such under Methodology's "Known gaps".
+RSS, ICLR and AAAI are pulled from DBLP, because their own sites block scripted
+access. DBLP has never carried abstracts, so `is_fully_processed()` requires only a
+title and year for these venues, and `classify.py` falls back to title-only keyword
+matching. These papers carry a weaker relevance and category signal than the rest of
+the corpus. The Methodology page lists this under "Known gaps".
 
 ## Misc vs uncategorized
 
-`classify_paper()` (`classify.py`) used to leave every paper that matched no
-category keyword as `"uncategorized"`, whether or not it was AV-relevant —
-`categories.json`'s own `_readme` called this out as deliberate ("a signal the
-taxonomy needs a new category, not that the paper doesn't have one"). In
-practice this meant 3,647 of 25,664 AV papers (14.2%) sat in `"uncategorized"`,
-which `categories.html` hides from the ranked table and shows once as a
-footnote instead — a large, permanently-growing slice of the AV corpus with no
-real visibility (user-requested: "make sure very few papers are uncategorized
-... discern uncategorized papers from misc papers").
+`classify_paper()` in `classify.py` used to leave every paper that matched no category
+keyword as `"uncategorized"`, AV-relevant or not. `categories.json`'s own `_readme`
+called that deliberate: a signal that the taxonomy needs a new category, not that the
+paper has none. In practice 3,647 of 25,664 AV papers (14.2%) sat in `"uncategorized"`,
+which `categories.html` hides from the ranked table and shows once as a footnote. That
+was a large, permanently growing slice of the AV corpus with no real visibility. The
+user asked for very few papers to be uncategorized, and for uncategorized papers to be
+told apart from misc ones.
 
-The fix splits the same fallback in two by `av_relevance`, computed right
-before the split so both values are in hand: an AV paper falls to `"misc"`
-(it already matched an explicit AV-relevance phrase, so it's confirmed
-on-topic — not fitting a specific category doesn't make it any less real, so
-it gets a normal, ranked, browsable bucket like any of the other 30) while a
-non-AV paper still falls to `"uncategorized"` (relevance itself is the
-weaker signal there, and non-AV papers are never shown in the ranked UI
-anyway, so tracking a missing category for them isn't useful the same way).
-This is a pure post-processing split of the existing fallback, not a new
-matching path — nothing about how a category keyword match is scored
-changed. Confirmed on real data: after this change, AV-side `"uncategorized"`
-is exactly 0 (all of it moved to `"misc"`), and `"misc"` never appears on a
-non-AV paper.
+The fix splits the same fallback in two by `av_relevance`, which is computed just
+before the split:
 
-`"misc"` is intentionally NOT listed in `categories.json`'s `categories`
-array — it isn't keyword-matched, so it can't be extended by adding keywords
-the way a real category can, and listing it there would invite exactly that.
-Alongside this split, ~215 papers that used to fall through were reclaimed
-into real categories by extending several categories' keyword lists with
-phrasings a direct audit of the (then-3,647-paper) uncategorized set showed
-were common but unmatched — plurals ("traffic lights control" vs the
-existing "traffic light control"), synonyms ("scene understanding" alongside
-"segmentation"), and missing but unambiguous terms ("kalman filter",
-"valet parking", "emergency braking", "ramp merging", "lane change",
-"temporal logic", "driver activity"/"activity recognition"). `"misc"` at
-13.4% of AV papers was, at that point, the single largest bucket, larger than
-any one real category — a sign the taxonomy still had room to grow, not that
-the job was finished (see the next two entries for what came out of actually
-growing it, which brought `"misc"` down to 12.8%).
+- An **AV paper** falls to `"misc"`. It already matched an explicit AV-relevance
+  phrase, so it's confirmed on-topic. Not fitting a specific category doesn't make it
+  any less real, so it gets a normal, ranked, browsable bucket like the other 30.
+- A **non-AV paper** still falls to `"uncategorized"`. Its relevance is the weaker
+  signal, and non-AV papers never appear in the ranked UI anyway, so tracking a
+  missing category for them isn't useful in the same way.
+
+This is a post-processing split of the existing fallback, not a new matching path, and
+nothing about how a category keyword match is scored changed. On real data, AV-side
+`"uncategorized"` is now exactly 0 (all of it moved to `"misc"`), and `"misc"` never
+appears on a non-AV paper.
+
+`"misc"` is deliberately not listed in the `categories` array in `categories.json`.
+It isn't keyword-matched, so it can't be extended by adding keywords the way a real
+category can, and listing it would invite exactly that.
+
+Alongside the split, about 215 papers that used to fall through were moved into real
+categories. A direct audit of the then-3,647-paper uncategorized set showed some
+common phrasings that no category matched, so several keyword lists were extended:
+
+- plurals ("traffic lights control" next to "traffic light control")
+- synonyms ("scene understanding" alongside "segmentation")
+- missing but unambiguous terms ("kalman filter", "valet parking", "emergency
+  braking", "ramp merging", "lane change", "temporal logic", "driver
+  activity"/"activity recognition")
+
+At that point `"misc"` held 13.4% of AV papers and was the single largest bucket,
+larger than any one real category. That showed the taxonomy still had room to grow.
+The next few entries cover what growing it involved, which brought `"misc"` down to
+12.8%.
 
 ## Surveys/reviews are a paper-type gate, same tier as Datasets
 
-A direct audit of `"misc"` (spot-checking `index.html?category=misc`, sorted
-by citations to prioritize what's most visible) found "A Survey of X" among
-its most-cited entries and, checked corpus-wide, 541 AV papers with
-`\bsurvey\b|\breview\b` in the title — already scattered across every one of
-the other 30 categories by keyword luck, the exact "topic keywords describe
-what a paper covers, not what it IS" problem `dataset-benchmark-paper`
-already exists to solve for dataset papers (see `presents_dataset()`).
-`is_survey_or_review_paper()` (`classify.py`) is the same kind of title gate,
-checked right after the dataset and radar gates (so a radar survey still
-lands in `radar-perception` and a dataset survey still lands in
-`dataset-benchmark-paper`, both by design) and before the topic-keyword
-ranking. It's a bare-word check (`survey`/`review`, not a curated phrase
-list) because auditing all 541 matches turned up only 2 false positives —
-both the *other* sense of "survey" (a questionnaire, not a literature
-review): "An Online Survey" and "...a driver activity survey" — both
-explicitly excluded rather than guessed at generically. `"survey-review-paper"`
-carries no real keywords of its own in `categories.json` (unlike
-`dataset-benchmark-paper`, which also catches a weaker abstract-only
-mention) — not worth the added complexity for a paper type this reliably
-title-detectable.
+An audit of `"misc"` (checking `index.html?category=misc`, sorted by citations)
+found "A Survey of X" among its most-cited entries. Corpus-wide, 541 AV papers have
+`\bsurvey\b|\breview\b` in the title, and they were already scattered across the other
+30 categories by keyword luck. This is the same problem `dataset-benchmark-paper`
+already solves for dataset papers (see `presents_dataset()`): topic keywords describe
+what a paper covers, not what it is.
+
+`is_survey_or_review_paper()` in `classify.py` is the same kind of title gate. It runs
+right after the dataset and radar gates, so a radar survey still lands in
+`radar-perception` and a dataset survey in `dataset-benchmark-paper`, both by design.
+It runs before the topic-keyword ranking.
+
+It checks the bare words `survey` and `review` instead of a curated phrase list,
+because checking all 541 matches turned up only 2 false positives. Both use the other
+sense of "survey" (a questionnaire): "An Online Survey" and "...a driver activity
+survey". Those two are excluded explicitly instead of guessing at a general rule.
+
+`"survey-review-paper"` has no real keywords of its own in `categories.json`.
+`dataset-benchmark-paper` also catches a weaker abstract-only mention, but that added
+complexity isn't worth it for a paper type this reliably detectable from the title.
 
 ## Explainability had to be a last-resort category, not a normal one
 
-Added alongside Surveys/Reviews (same audit, same user request) to cover the
-"Interpretable X" / "Explainable X" cluster in `"misc"` — but a first attempt
-adding it as a normal competing category (like all the other real ones)
-immediately reproduced, in a new form, exactly the bare-word problem
-`categories.json`'s own `_readme` warns about for keyword *phrases*: 193
-papers landed in `"explainability"`, but most of them weren't from
-`"misc"` at all -- they were pulled OUT of a more specific, already-correct
-category. Confirmed on real data: "Hint-AD: Holistically Aligned
-Interpretability in End-to-End Autonomous Driving" (an end-to-end-driving
-paper) and "Interpretable Self-Aware Neural Networks for Robust Trajectory
-Prediction" (a motion-prediction paper) both lost their specific category,
-because an XAI-flavored paper's abstract repeats "interpretable"/"explainable"
-several times as a matter of course, and `score_category()`'s raw occurrence
-count has no defense against a short, frequently-repeated word outscoring a
-topic phrase that only appears once or twice. A multi-word phrase (the
-project's usual mitigation) doesn't fix this one, because the concept
-genuinely doesn't have a longer, more specific phrasing to prefer.
+It was added alongside Surveys/Reviews (same audit, same request) to cover the
+"Interpretable X" / "Explainable X" cluster in `"misc"`. A first attempt added it as a
+normal competing category, like all the others, and immediately reproduced the
+bare-word problem that `categories.json`'s own `_readme` warns about for keyword
+phrases. 193 papers landed in `"explainability"`, but most weren't from `"misc"`. They
+were pulled out of a more specific category that was already correct. Two real
+examples:
 
-Fixed by giving `explainability` a different PRIORITY, not different
-keywords: `LAST_RESORT_CATEGORY_IDS` (`classify.py`) pulls it out of the
-normal ranking pass entirely and only ranks it in a second pass, run only
-when the first pass matched nothing at all. This isn't a scoring tiebreak —
-a last-resort category is never even evaluated against a paper that a
-normal category already claims, so no repeat count can ever let it win one
-away. Dropped the count from 193 to 57 (all previously-miscategorized
-papers listed above went back to their original correct category), which is
-much closer to what a category meant to catch only the "misc" residue
-should look like. Keywords stay in `categories.json` as the single source of
-truth; only the ranking-pass membership is hardcoded, in one small
+- "Hint-AD: Holistically Aligned Interpretability in End-to-End Autonomous Driving"
+  (an end-to-end driving paper)
+- "Interpretable Self-Aware Neural Networks for Robust Trajectory Prediction" (a
+  motion-prediction paper)
+
+Both lost their specific category. An explainability-flavoured abstract repeats
+"interpretable" or "explainable" several times as a matter of course, and the raw
+occurrence count in `score_category()` has no defence against a short, frequently
+repeated word outscoring a topic phrase that appears once or twice. The usual
+mitigation, a multi-word phrase, doesn't work here because the concept has no longer,
+more specific phrasing to prefer.
+
+The fix is a different priority, not different keywords. `LAST_RESORT_CATEGORY_IDS` in
+`classify.py` takes `explainability` out of the normal ranking pass entirely. It's
+ranked only in a second pass, and only when the first pass matched nothing at all.
+That isn't a scoring tiebreak: a last-resort category is never even evaluated against
+a paper that a normal category already claims, so no repeat count can win one away.
+The count dropped from 193 to 57, and all the papers listed above went back to their
+correct categories. That is much closer to what a category meant only for the "misc"
+leftovers should look like. The keywords stay in `categories.json` as the single
+source of truth, and only the ranking-pass membership is hardcoded, in one small
 `frozenset` in `classify.py`.
 
 ## An LLM category guess is the last thing consulted, weaker than any keyword
 
-`fetch_llm_category_labels.py` handles the residue neither keyword matching
-nor a real abstract can reach: title-only papers (DBLP-sourced venues never
-had abstracts — see "DBLP-sourced venues have no abstracts") still stuck in
-`"misc"` after every keyword-based path, including the last-resort tier
-above, has had its turn. `classify_paper()` only ever consults it when
-`category` is still `"uncategorized"` at that point — a single local
-model's single-title guess must never outrank a real keyword match the way
-`explainability`'s bare words accidentally did (see above), so this isn't
-folded into the ranking at all, just checked as the very last fallback
-before the misc/uncategorized split.
+`fetch_llm_category_labels.py` handles what neither keyword matching nor a real
+abstract can reach: title-only papers (DBLP-sourced venues never had abstracts; see
+"DBLP-sourced venues have no abstracts") that are still in `"misc"` after every
+keyword path, including the last-resort tier above, has had its turn.
+`classify_paper()` only consults it when `category` is still `"uncategorized"` at that
+point. One local model's guess from a single title must never outrank a real keyword
+match, the way `explainability`'s bare words accidentally did. So the guess isn't part
+of the ranking at all. It's just the very last fallback before the misc/uncategorized
+split.
 
-Spot-checking the first batch found real value ("A Statistical GPS Error
-Model for Autonomous Driving" → `mapping-localization`, "Real-Time
-Prediction of Multi-Class Lane-Changing Intentions" → `motion-prediction`)
-alongside real imprecision ("Traffic-Responsive Control Technique for
-Fully-Actuated Coordinated Signal..." → `control`, when the paper is about
-traffic-SIGNAL control and belongs in `traffic-flow-management` — the
-model sees only each category's `{id, label}` pair, not enough to
-disambiguate "control" the vehicle-dynamics sense from "control" the
-traffic-signal sense every time). Accepted as a known, bounded tradeoff:
-this tier only ever touches papers that had zero topic signal at all
-before it ran, so a right-ish-but-imprecise guess is still a net
-improvement over an unbroken "misc", and it's the weakest, most clearly
-provisional signal in the whole classification stack — never promoted
-above a real keyword match, and revisit the prompt's category descriptions
-if a specific confusion like this one turns out to be common rather than
-one-off.
+A spot check of the first batch found real value alongside real imprecision:
+
+- "A Statistical GPS Error Model for Autonomous Driving" went to `mapping-localization`
+  and "Real-Time Prediction of Multi-Class Lane-Changing Intentions" to
+  `motion-prediction`, both correct.
+- "Traffic-Responsive Control Technique for Fully-Actuated Coordinated Signal..." went
+  to `control`, but it's about traffic-signal control and belongs in
+  `traffic-flow-management`. The model sees only each category's `{id, label}`, which
+  isn't enough to tell "control" the vehicle-dynamics sense from "control" the
+  traffic-signal sense every time.
+
+We accepted this as a known, bounded tradeoff. This tier only touches papers that had
+no topic signal at all before it ran, so a right-ish guess is still better than an
+unbroken "misc". It is the weakest and most provisional signal in the whole stack and
+is never promoted above a real keyword match. If a specific confusion like this turns
+out to be common and not a one-off, revisit the prompt's category descriptions.
 
 `category: null` (the model's own "none of these fit") is written to
-`data/category_labels_llm.json` and deliberately excluded from what
-`classify.py` reads back — a real, useful answer (don't force a category
-that doesn't exist), but one that must resolve to the same "misc" outcome
-as a paper this pass hasn't looked at yet, not something worth
-distinguishing at the classification layer.
+`data/category_labels_llm.json` but deliberately not read back by `classify.py`. It's a
+useful answer (don't force a category that doesn't exist), but it should give the same
+"misc" result as a paper this pass hasn't looked at yet, so there's nothing to
+distinguish at the classification layer.
 
 ## Object Detection and Mapping & Localization split by sensor/task, not merged
 
-Both were the two largest categories by a wide margin (2,020 and 2,062
-papers respectively) — user-requested: split them for a more even
-distribution, the same way Datasets/Surveys/Explainability already carve
-distinct concerns out of a crowded taxonomy rather than growing it flatter.
+They were the two largest categories by a wide margin (2,020 and 2,062 papers). The
+user asked to split them for a more even distribution, the same way Datasets, Surveys
+and Explainability carve distinct concerns out of a crowded taxonomy instead of making
+it flatter.
 
-`object-detection` → `object-detection-2d` / `object-detection-3d`, split
-on sensor modality: bare "2D"/"3D" mentions turned out to be nearly useless
-as a keyword signal (of 2,020 papers, only 35 said "2D" explicitly — it was
-historically the unmarked default, so nobody writes it), but LiDAR/point-
-cloud/BEV/voxel language is a reliable proxy: 3D-modality papers
-overwhelmingly also say "3D" explicitly (confirmed on real data — "3D
-Object Detection", "LiDAR 3D Vehicle Detection", etc.), and 2D/camera-based
-ones use the shared generic detection vocabulary without it. Result: 1,282
-/ 1,132, about as even as this kind of split gets. `radar-perception`'s
-existing gate (checked before all normal categories) still claims
-radar-based detection first, so "radar" was deliberately left out of the
-3D keyword list — including it would never fire on anything that gate
-hasn't already taken.
+**`object-detection` became `object-detection-2d` and `object-detection-3d`,** split
+by sensor modality. Bare "2D" or "3D" mentions turned out to be almost useless as a
+keyword signal: of 2,020 papers only 35 said "2D" explicitly, because it was
+historically the unmarked default and nobody writes it. LiDAR, point-cloud, BEV and
+voxel language is a reliable proxy, though. 3D papers overwhelmingly also say "3D"
+explicitly ("3D Object Detection", "LiDAR 3D Vehicle Detection", ...), and 2D or
+camera-based ones use the shared generic detection vocabulary without it. The result
+was 1,282 and 1,132 papers, about as even as this kind of split gets. "radar" was
+deliberately left out of the 3D keyword list, because `radar-perception`'s gate (checked
+before all normal categories) already claims radar-based detection first, so it would
+never fire.
 
-`mapping-localization` → `mapping` / `localization`: a cleaner conceptual
-line (HD maps/lane info vs. SLAM/odometry/pose) than a genuinely even one —
-605 / 1,361 on real data, localization being the naturally larger,
-more heavily-researched half. Kept anyway: half the size of one bucket
-beats a single one, and the two are legitimately different reader
-interests (someone hunting for HD-map papers doesn't want the SLAM
-literature mixed in).
+**`mapping-localization` became `mapping` and `localization`.** This is a cleaner
+conceptual line (HD maps and lane information vs SLAM, odometry and pose) than an even
+one: 605 and 1,361 papers, with localization the naturally larger, more heavily
+researched half. We kept it anyway. Halving one bucket beats having a single one, and
+the two are different reader interests, since someone hunting for HD-map papers doesn't
+want the SLAM literature mixed in.
 
 ## The 2D/3D object-detection split needed its own tie-break, not a global one
 
-The split above created a structural collision the original single category
-never had: `object-detection-2d`'s bare `'object detection'` keyword is a
-literal substring of every one of `object-detection-3d`'s specific phrases
-(`'3d object detection'`, `'lidar object detection'`, `'point cloud object
-detection'`, ...). A genuinely 3D paper's title therefore always ties 2D on
-`rank()`'s title-score check (both match), and then whichever OTHER,
-dimensionality-unrelated 2D keyword ("detector", "bounding box") also
-happens to appear in the abstract wins the combined-score tiebreak for 2D
-regardless. Confirmed on real data: "Center-Based 3D Object Detection and
-Tracking" (CenterPoint), DETR3D, Voxel R-CNN, PolarFormer, HDNET, and ~385
-more all landed in `object-detection-2d` this way despite an explicit "3D
-Object Detection" in their own title.
+The split created a collision the original single category never had. The bare
+`'object detection'` keyword in `object-detection-2d` is a literal substring of every
+specific phrase in `object-detection-3d` (`'3d object detection'`, `'lidar object
+detection'`, `'point cloud object detection'`, ...). So a genuinely 3D paper's title
+always ties 2D on the title-score check in `rank()`, since both match. Then whichever
+other, dimension-unrelated 2D keyword ("detector", "bounding box") appears in the
+abstract wins the combined-score tiebreak for 2D. On real data, "Center-Based 3D
+Object Detection and Tracking" (CenterPoint), DETR3D, Voxel R-CNN, PolarFormer, HDNET
+and about 385 more all landed in `object-detection-2d` this way, despite an explicit
+"3D Object Detection" in their own titles.
 
-`rank()`'s own docstring already describes the intended tiebreak order as
-title match, then longest matching keyword, then id — but the actual tuple
-checks combined score before longest-match, so the doc and the code
-disagreed. Tried the literal fix (reorder the tuple so max_len outranks
-combined_score globally) and measured its blast radius before trusting it:
-6,878 of 235,288 papers (~3%) would reclassify, across dozens of unrelated
-category pairs (`llm-vlm-driving` vs `reinforcement-learning`, `segmentation`
-vs `general-cv-ml-method`, ...) with no way to review that many changes
-against real judgment. Rejected as far too broad for what only one category
-pair actually needed.
+`rank()`'s docstring describes the intended tiebreak order as title match, then longest
+matching keyword, then id, but the actual tuple checks combined score before longest
+match, so the docs and the code disagree. We tried the literal fix (reordering the tuple
+so the longest match outranks combined score everywhere) and measured its blast radius
+first. 6,878 of 235,288 papers (about 3%) would be reclassified, across dozens of
+unrelated category pairs (`llm-vlm-driving` vs `reinforcement-learning`, `segmentation`
+vs `general-cv-ml-method`, ...), with no way to review that many changes. That was far
+too broad for a problem that only one category pair had.
 
-Fixed with a narrow, explicit override instead, right after the normal
-ranking loop: if a paper lands on `object-detection-2d` AND
-`object-detection-3d` matched the title at least as well AND 3D's longest
-matching keyword is more specific (longer) than 2D's, use 3D. Scoped to
-exactly the ~388 papers where this exact ambiguity exists (spot-checked: all
-genuinely 3D by title), leaving `rank()`'s general tiebreak — and every
-other category pair — untouched.
+Instead there's a narrow, explicit override right after the normal ranking loop. If a
+paper lands on `object-detection-2d`, and `object-detection-3d` matched the title at
+least as well, and 3D's longest matching keyword is longer (more specific) than 2D's,
+the paper goes to 3D. It's scoped to the roughly 388 papers with exactly this ambiguity
+(spot-checked: all genuinely 3D by title). `rank()`'s general tiebreak and every other
+category pair are untouched.
 
 ## `load_llm_category_labels()` must re-validate against the live taxonomy
 
-The split above orphaned `data/category_labels_llm.json`: 65 entries still
-said `object-detection`, 96 still said `mapping-localization`, both ids that
-no longer exist in `categories.json`. `load_llm_category_labels()` had no
-reason to distrust its own file, so `classify_paper()` applied a dead id
-verbatim wherever it was the last fallback — surfacing on the live site as a
-literal "Mapping Localization (40)" / "Object Detection (33)" row in every
-page's category filter and in the Categories ranking table and Insights'
-category-correlation matrix (`categoryLabel()`'s fallback title-cases
-whatever id it doesn't recognize, rather than hiding it).
+The split above orphaned `data/category_labels_llm.json`. 65 entries still said
+`object-detection` and 96 still said `mapping-localization`, ids that no longer exist in
+`categories.json`. `load_llm_category_labels()` had no reason to distrust its own file,
+so `classify_paper()` applied a dead id as-is wherever it was the last fallback. On the
+live site that appeared as literal "Mapping Localization (40)" and "Object Detection
+(33)" rows in every page's category filter, the Categories ranking table and the
+Insights category-correlation matrix. (`categoryLabel()` title-cases any id it doesn't
+recognize instead of hiding it.)
 
-Fixed by passing the current set of valid ids (built once in
-`merge_corpus.py`'s `main()`, from the same `taxonomy` list already loaded
-for keyword ranking) into `load_llm_category_labels()`, which now drops any
-entry whose `category` isn't in that set — the same "fail safe back to
-misc/uncategorized" behavior an absent or `null` entry already gets, not a
-one-time cleanup of the JSON file. This has to hold for every future
-category split or rename too: the LLM-label file is long-lived cached
-output from an expensive crawl, re-running it isn't a data-quality fix on
-its own, and nothing else in the pipeline re-checks its contents against the
-taxonomy that produced it.
+`merge_corpus.py`'s `main()` now builds the set of currently valid ids, from the same
+`taxonomy` list it already loads for keyword ranking, and passes it to
+`load_llm_category_labels()`. That function drops any entry whose `category` isn't in
+the set, which is the same "fail safe back to misc/uncategorized" behaviour an absent or
+`null` entry already gets. It's a permanent check, not a one-time cleanup of the JSON
+file, and it has to hold for every future category split or rename. The LLM-label file
+is cached output from an expensive crawl, re-running it isn't a data-quality fix on its
+own, and nothing else in the pipeline checks its contents against the taxonomy that
+produced it.
 
 ## Derived data is not tracked; `gh-pages` is a single squashed commit
 
-`data/stats.json`, the sharded `data/non_av_papers/`, and the abstract shards are
-gitignored — cheaply regenerable from `data/papers_full.json` by `aggregate.py`
-alone (well under a minute), and tracking a leaderboard dump bloats every diff
-with numbers that change on every corpus update and aren't reviewable anyway.
-`deploy.py` force-pushes `gh-pages` as one orphan commit each time rather than
-committing on its history: the branch is 100% generated output, and appending
-multi-MB non-delta snapshots would grow the repo forever.
+`data/stats.json`, the sharded `data/non_av_papers/` and the abstract shards are
+gitignored. `aggregate.py` regenerates them from `data/papers_full.json` alone, in well
+under a minute, and tracking a leaderboard dump bloats every diff with numbers that
+change on every corpus update and aren't reviewable anyway. `deploy.py` force-pushes
+`gh-pages` as one orphan commit each time instead of committing on its history. The
+branch is 100% generated output, and appending multi-MB snapshots that don't compress
+against each other would grow the repo forever.
 
-**`data/papers_full.json` and `data/citation_graph.json` are a different
-case, and "fully regenerable" used to overstate what's actually true of
-them.** `merge_corpus.py` only *classifies* papers from scratch correctly
-(that part really is fully regenerable, from the tracked `data/venues/*.json`
-+ `classify.py`); it carries author affiliations, `citations_by_source`,
-abstracts and arXiv links forward from whatever `papers_full.json` already
-exists, rather than re-deriving them. On a checkout with no prior
-`papers_full.json` — confirmed directly, not assumed: a fresh clone rebuilt
-this way produces the right paper list and classification but zero author,
-institution, or country data — recovering that enrichment for real means
-re-running the CVF/arXiv affiliation scrapers and the Semantic
-Scholar/ORCID lookups, which is exactly the "weeks of crawling plus API
-keys" `build_data_release.py`'s own docstring describes elsewhere.
-`citation_graph.json` is a second, separate gap: `aggregate.py` reads its
-`edges` directly for the disruption index and the citation-graph coverage
-table, and losing that file alone (even with `papers_full.json` intact)
-silently blanks those features on the next rebuild — nothing in
-`papers_full.json`'s carry-forward list protects it. Neither file is
-tracked in git (see the size/diff reasoning above), so right now each one
-has exactly one live copy and no backup: whichever machine holds the only
-`papers_full.json` with real enrichment in it is a single point of
-failure. The fix is to snapshot both files somewhere durable after every
-deploy, not to keep believing a fresh rebuild reproduces them.
+**`data/papers_full.json` and `data/citation_graph.json` are a different case, and
+calling them "fully regenerable" used to overstate it.** `merge_corpus.py` only
+*classifies* papers from scratch correctly (that part really is regenerable, from the
+tracked `data/venues/*.json` plus `classify.py`). Author affiliations,
+`citations_by_source`, abstracts and arXiv links are carried forward from whatever
+`papers_full.json` already exists, not re-derived. We confirmed directly that a fresh
+clone rebuilt this way gets the right paper list and classification but no author,
+institution or country data. Recovering that enrichment means re-running the CVF and
+arXiv affiliation scrapers and the Semantic Scholar and ORCID lookups, which is the
+"weeks of crawling plus API keys" that `build_data_release.py`'s docstring describes.
+
+`citation_graph.json` is a second, separate gap. `aggregate.py` reads its `edges`
+directly for the disruption index and the citation-graph coverage table. If that file
+alone is lost, even with `papers_full.json` intact, those features silently go blank on
+the next rebuild, and nothing in `papers_full.json`'s carry-forward list protects it.
+
+Neither file is tracked in git, so each had exactly one live copy and no backup.
+Whichever machine held the only `papers_full.json` with real enrichment in it was a
+single point of failure. The fix is to snapshot both files somewhere durable after
+every deploy, not to keep believing a fresh rebuild reproduces them.
 
 ## By-hand data corrections are scripts, not one-off edits
 
-Any manual fix to `papers_full.json` (an author merge, an institution-name
-correction) goes in a tracked, tested, idempotent `repair_*.py` script wired
-into `build_public_site.py` between `merge_corpus.py` and `aggregate.py` — so a
-corpus rebuilt from scratch after data loss comes back with every correction
-applied. Author-name fixes live in `KNOWN_NAME_FIXES` (`aggregate.py`) and
-institution aliases in the tracked JSON maps, both re-applied on every build.
+Any manual fix to `papers_full.json` (an author merge, an institution-name correction)
+goes in a tracked, tested, idempotent `repair_*.py` script. It's wired into
+`build_public_site.py` between `merge_corpus.py` and `aggregate.py`, so a corpus rebuilt
+from scratch after data loss comes back with every correction applied. Author-name
+fixes live in `KNOWN_NAME_FIXES` in `aggregate.py` and institution aliases in the
+tracked JSON maps, and both are re-applied on every build.
 
 ## One build command, always with tests
 
-`build_public_site.py` runs the whole pipeline in order — rebuild corpus, apply
-repairs, rebuild stats, run the full test suite, publish `public/` — and aborts
-before publishing if any step fails. Crawler scripts write into
-`data/papers_full.json` and stop there; folding every downstream step into the
-one command (the same one `deploy.py` calls) makes "crawled but never published"
-structurally impossible rather than a step to remember.
+`build_public_site.py` runs the whole pipeline in order (rebuild the corpus, apply
+repairs, rebuild stats, run the full test suite, publish `public/`) and aborts before
+publishing if any step fails. Crawler scripts write into `data/papers_full.json` and
+stop there. Folding every later step into one command, the same one `deploy.py` calls,
+makes "crawled but never published" impossible by construction, instead of a step to
+remember.
 
 ## Finding the backup release by tag needs a list-and-filter, not the tags endpoint
 
-`backup_corpus.py` / `restore_corpus.py` look up the `corpus-backup` release by
-tag using `GET /repos/.../releases` and filtering client-side, not
-`GET /repos/.../releases/tags/corpus-backup` (the endpoint that looks like the
-right one). GitHub's "get release by tag" only resolves *published* releases —
-a **draft** release has no real git tag ref, so that endpoint 404s even when a
-draft with that tag_name exists. Confirmed on the live repo: with the old
-tags-endpoint lookup, `get_or_create_release` always 404'd and fell through to
-"create new release", so every `backup_corpus.py` run over this project's
-history silently created a fresh draft instead of reusing the existing one —
-4 duplicate `corpus-backup` drafts had piled up on GitHub, directly
-contradicting this module's own "one fixed tag, one asset, always replaced"
-docstring claim. `restore_corpus.py` had the same tags-endpoint lookup with
-no fallback at all, so it was flatly broken -- every restore attempt raised
-an uncaught `HTTPError: 404` instead of downloading anything, confirmed
-live. Fixed by listing all releases and matching on `tag_name`
-client-side; `backup_corpus.py` also now deletes any stale duplicates it
-finds beyond the most recent, so a repo affected by the old bug self-heals
-on its next backup rather than needing manual cleanup.
+`backup_corpus.py` and `restore_corpus.py` find the `corpus-backup` release by calling
+`GET /repos/.../releases` and filtering by tag on the client, not with
+`GET /repos/.../releases/tags/corpus-backup`, which looks like the right endpoint.
+GitHub's "get release by tag" only resolves *published* releases. A **draft** release
+has no real git tag ref, so that endpoint returns 404 even when a draft with that
+`tag_name` exists.
+
+That was confirmed on the live repo:
+
+- With the old lookup, `get_or_create_release` always got a 404 and fell through to
+  "create new release". Every `backup_corpus.py` run silently created a fresh draft
+  instead of reusing the existing one, and 4 duplicate `corpus-backup` drafts piled up
+  on GitHub, contradicting the module's own "one fixed tag, one asset, always replaced"
+  docstring.
+- `restore_corpus.py` had the same lookup with no fallback, so it was flatly broken.
+  Every restore raised an uncaught `HTTPError: 404` and downloaded nothing.
+
+Both now list all releases and match on `tag_name` on the client. `backup_corpus.py`
+also deletes any stale duplicates beyond the most recent one, so a repo hit by the old
+bug cleans itself up on its next backup.
 
 ## Every crawler processes its queue most-cited-first, not corpus order or random
 
-`fetch_common.by_citations()` (by `citations_by_source.in_corpus.count`, NOT
-the top-level `citations` field -- confirmed dead, 0 of 25,639 AV papers have
-it set, including nuScenes) is now the shared ordering for every incremental
-crawler's pending queue: `mine_abstracts.py`, `fetch_abstracts_
-semanticscholar.py`, `enrich_av_authors.py` (already had its own copy of this,
-now consolidated), `fetch_affiliations_arxiv.py` (ditto), `fetch_arxiv_links.py`,
-`fetch_cvf_affiliations.py`, `build_citation_graph.py`, `fetch_s2_author_ids.py`,
-`fetch_semanticscholar_citing.py`, `fetch_llm_category_labels.py`, and
-`classify_code_links_llm.py` (previously alphabetical by normalized title, a
-tuple-sort accident). User-requested: with every external source in this
-pipeline rate-limited or budget-capped (see PIPELINE.md), a run that gets cut
-off partway through should already have enriched the papers readers actually
-encounter -- top-cited lists, comparison pages, leaderboards -- not whichever
-paper happened to load first from its source venue file.
+`fetch_common.by_citations()` is now the shared ordering for every incremental
+crawler's pending queue. It sorts by `citations_by_source.in_corpus.count`, not the
+top-level `citations` field, which is dead (0 of 25,639 AV papers have it set,
+including nuScenes). It's used by:
 
-Two crawlers were explicitly asked about and kept the OLD behavior anyway,
-by user choice, not oversight:
-- `fetch_s2_author_ids.py` -- an earlier "sort by author-count" ordering was
-  reverted for skewing ORCID/S2-ID coverage toward big-collaboration papers;
-  citation count risks the same skew (a highly-cited paper often has a large
-  author list too). Switched to most-cited-first anyway, user-confirmed,
-  accepting that reopened trade-off.
-- `fetch_semanticscholar_citing.py` -- this one previously WAS citation-sorted,
-  then was reverted after a confirmed, self-defeating bug: a paper (or whole
-  venue) with zero in-corpus citations *because it's never been queried yet*
-  always sorts last under that rule, so it can never earn a citation to rise
-  in priority -- confirmed stuck this way ("IV and arXiv still have no
-  citations") after a run well over a third of the way through the corpus.
-  Switched back anyway, user-confirmed, accepting that long-tail venues may
-  go unqueried again.
+- `mine_abstracts.py`
+- `fetch_abstracts_semanticscholar.py`
+- `enrich_av_authors.py` (already had its own copy, now consolidated)
+- `fetch_affiliations_arxiv.py` (same)
+- `fetch_arxiv_links.py`
+- `fetch_cvf_affiliations.py`
+- `build_citation_graph.py`
+- `fetch_s2_author_ids.py`
+- `fetch_semanticscholar_citing.py`
+- `fetch_llm_category_labels.py`
+- `classify_code_links_llm.py` (previously alphabetical by normalized title, a
+  tuple-sort accident)
 
-Deliberately NOT switched, and shouldn't be: `select_labeling_candidates.py`,
+The user asked for this. Every external source in the pipeline is rate-limited or
+budget-capped (see PIPELINE.md), so a run that gets cut off partway should already have
+enriched the papers readers actually see (top-cited lists, comparison pages,
+leaderboards), not whichever paper happened to load first from its venue file.
+
+Two crawlers were asked about specifically, and the user made a choice on each:
+
+- **`fetch_s2_author_ids.py`.** An earlier "sort by author count" ordering was reverted
+  because it skewed ORCID and S2-ID coverage toward big-collaboration papers. Citation
+  count risks the same skew, since a highly cited paper often has a large author list
+  too. It was switched to most-cited-first anyway, confirmed by the user, accepting that
+  trade-off again.
+- **`fetch_semanticscholar_citing.py`.** This one used to be sorted by citations and was
+  reverted after a confirmed, self-defeating bug. A paper (or a whole venue) with zero
+  in-corpus citations *because it has never been queried* always sorts last, so it can
+  never earn a citation and rise in priority. It got stuck exactly this way ("IV and
+  arXiv still have no citations") after a run well over a third of the way through the
+  corpus. It was switched back anyway, confirmed by the user, accepting that long-tail
+  venues may go unqueried again.
+
+These were deliberately not switched, and shouldn't be: `select_labeling_candidates.py`,
 `select_near_threshold_candidates.py`, `train_relevance_classifier.py`,
-`fetch_llm_relevance_labels.py`/`_v2.py`, and `audit_code_links_llm.py` --
-these all feed or evaluate the relevance classifier and need an unbiased
-random draw, not a priority order; citation-sorting them would systematically
-skew training/eval data toward older, more established, already-popular
-papers.
+`fetch_llm_relevance_labels.py` and `_v2.py`, and `audit_code_links_llm.py`. They all
+feed or evaluate the relevance classifier and need an unbiased random draw, not a
+priority order. Sorting them by citations would skew training and evaluation data toward
+older, already-popular papers.
 
 ## A raw DBLP-suffixed author name in papers_full.json is not a live bug
 
-Investigating the top of the most-cited-authors list surfaced names like
-"Andreas Geiger 0001" in `papers_full.json`'s raw `authors` field (a
-DBLP-assigned disambiguation suffix, present on 2,377 distinct base names /
-several thousand raw occurrences across the corpus). Before writing a fix,
-checked the actual output this feeds: `aggregate.py`'s `clean_author_name()`
-already strips a trailing `\s+\d{4}` unconditionally (`DBLP_DISAMBIG_SUFFIX_
-RE`), confirmed on `stats.json` -- "Andreas Geiger 0001" appears nowhere in
-`all_papers[].authors`, and the real "Andreas Geiger" entry already carries
-the correct, unified 7,098-citation/56-paper total. No fragmentation reaches
-the live site. Recorded here specifically so this doesn't get "fixed" again
-from the same starting point -- this is the second time this session a raw-
-`papers_full.json` diagnostic almost drove a change that the processed
-output already handled (see the institution-alias audit above); the lesson
-holds: check `stats.json`/`stats_detail.json` (what the site actually reads)
-before treating a `papers_full.json` string as evidence of a live bug.
+While looking at the top of the most-cited-authors list, we found names like "Andreas
+Geiger 0001" in the raw `authors` field of `papers_full.json`. That's a DBLP
+disambiguation suffix, present on 2,377 distinct base names and several thousand raw
+occurrences. Before writing a fix we checked the output this feeds.
+`clean_author_name()` in `aggregate.py` already strips a trailing `\s+\d{4}`
+unconditionally (`DBLP_DISAMBIG_SUFFIX_RE`). In `stats.json`, "Andreas Geiger 0001"
+appears nowhere in `all_papers[].authors`, and the real "Andreas Geiger" entry already
+carries the correct, unified 7,098 citations and 56 papers. Nothing fragmented reaches
+the live site.
+
+This is written down so it doesn't get "fixed" again from the same starting point. It
+was the second time in a session that a raw `papers_full.json` check almost drove a
+change that the processed output already handled. The lesson holds: check `stats.json`
+and `stats_detail.json`, which the site actually reads, before treating a string in
+`papers_full.json` as evidence of a live bug.
 
 ## `flag_ambiguous_authors.py`'s heuristics false-positive on prolific lab researchers
 
-Checked its 4 unconfirmed "review"-tier candidates from the current top-60-
-by-citations against Google Scholar directly (Hongyang Li, Long Chen, Hang
-Zhao, Zheng Zhu) rather than leaving them in the queue. All four are real,
-single, extremely prolific researchers in the fast-moving, highly
-collaborative modern AV/world-model research community (OpenDriveLab/
-Shanghai AI Lab-adjacent): Hang Zhao's papers consistently share one email
-(hangzhao@mail.tsinghua.edu.cn); Hongyang Li and Long Chen recur as each
-other's co-authors across a large, coherent, recent (2023-2026) end-to-end-
-driving publication cluster; Zheng Zhu's papers form one coherent "driving
-world models" research thread. None marked ambiguous in
-`scholar_profiles.json` -- doing so would incorrectly warn on a real
-researcher's legitimate, unified profile.
+We checked its 4 unconfirmed "review"-tier candidates from the current top 60 by
+citations (Hongyang Li, Long Chen, Hang Zhao, Zheng Zhu) against Google Scholar instead
+of leaving them in the queue. All four are real, single, extremely prolific researchers
+in the fast-moving, highly collaborative modern AV and world-model community (near
+OpenDriveLab and Shanghai AI Lab):
 
-This is a real, generalizable false-positive mode worth naming: the script's
-structural signals (disjoint co-author clusters, papers/active-year,
-category spread -- see its own docstring) were tuned against the classic
-failure case (a common name silently blending 2-3 unrelated academics), not
-against a newer pattern this corpus's most recent years are full of: one
-person embedded in a large, fast-publishing lab, co-authoring across many
-loosely-connected sub-teams and projects, which structurally looks exactly
-like "several disjoint collaboration circles" even though it's one person.
-A common surname plus high recent output should be weighed as a real prior
-on "prolific lab researcher," not just "possible collision," when the
-corpus's own co-author graph forms one connected, thematically coherent
-recent cluster this consistently. Not changed here (needs care to avoid
-under-flagging the opposite, real case); worth revisiting the scoring
-itself if this pattern keeps showing up at the top of future review runs.
+- Hang Zhao's papers consistently share one email (hangzhao@mail.tsinghua.edu.cn).
+- Hongyang Li and Long Chen keep appearing as each other's co-authors across a large,
+  coherent, recent (2023-2026) end-to-end driving publication cluster.
+- Zheng Zhu's papers form one coherent "driving world models" research thread.
+
+None are marked ambiguous in `scholar_profiles.json`, because that would wrongly warn
+on a real researcher's legitimate, unified profile.
+
+This is a generalizable false-positive mode. The script's structural signals (disjoint
+co-author clusters, papers per active year, category spread; see its docstring) were
+tuned on the classic failure case, a common name silently blending 2-3 unrelated
+academics. They weren't tuned for a newer pattern that this corpus's recent years are
+full of: one person embedded in a large, fast-publishing lab, co-authoring across many
+loosely connected sub-teams and projects. That looks structurally just like "several
+disjoint collaboration circles" even though it's one person. A common surname plus high
+recent output should be weighed as a real prior for "prolific lab researcher", not just
+"possible collision", when the corpus's co-author graph forms one connected,
+thematically coherent recent cluster this consistently.
+
+Nothing was changed here, because it needs care not to under-flag the opposite, real
+case. If this pattern keeps showing up at the top of future review runs, revisit the
+scoring itself.
 
 ## Whole-corpus citations: the feature already existed, only the data didn't
 
-User-requested: integrate "citations from the whole corpus, not just AV
-papers" and make sure every place showing a citation number says clearly
-which one it is. Before building anything, checked what already exists --
-`paper.html` already shows exactly this, in two adjacent stat tiles: "Cited
-by (all papers)" (`paper.citations`, i.e. `citations_by_source.in_corpus.
-count`) and "Cited by (AV papers)" (`paper.citing_papers.length`, the
-subset of those citers that are themselves AV papers), each with its own
-explanatory tooltip. `apply_citation_sources.py`'s `in_corpus_counts()`
-already counts every edge in `citation_graph.json` unconditionally, with no
-AV filter -- confirmed on real data before touching anything: nuScenes
-already showed 2,742 "all papers" vs 1,938 "AV papers", a real, live gap
-this design was already built to represent.
+The user asked to integrate "citations from the whole corpus, not just AV papers" and to
+make sure every place showing a citation number says which one it is. Before building
+anything we checked what already existed. `paper.html` already shows exactly this in two
+adjacent stat tiles, each with its own explanatory tooltip:
 
-What was actually missing was upstream of all that: `build_citation_graph.py`
-only ever scanned `av_relevance=="AV"` papers' own reference lists (both its
-own CVF-PDF fetch and `fetch_affiliations_arxiv.py`'s ar5iv-HTML side
-channel), so `citation_graph.json`'s edges could only ever contain AV
-citers -- "all papers" was structurally capped at "the AV slice" no matter
-how the counting code was written. Fixed at the actual source: `main()`
-now builds its CVF title pool from the whole corpus (34,352 more papers,
-prioritized most-cited-first same as everywhere else -- see fetch_common.
-by_citations), not just the AV subset. `citations_by_source.in_corpus` and
-`citing_papers`/`paper.citations` keep their exact existing meaning and
-code, unchanged -- they just get fed a more complete graph as this crawl
-(now running) works through the backlog over the coming days.
+- "Cited by (all papers)" is `paper.citations`, i.e. `citations_by_source.in_corpus.count`.
+- "Cited by (AV papers)" is `paper.citing_papers.length`, the subset of those citers
+  that are themselves AV papers.
 
-A parallel `in_corpus_all`/`citations_all` field was drafted and then
-reverted before shipping, once this was understood -- it would have
-duplicated the existing `in_corpus`/`citing_papers` pair under new names
-AND (worse) changed `in_corpus`'s own counting to exclude non-AV citers,
-which is backwards from what "Cited by (all papers)" has always meant.
-Recorded here so the same duplicate isn't built again from the same
-starting confusion. The arXiv/ar5iv side (`fetch_affiliations_arxiv.py`,
-~55,534 more non-AV papers with a known arxiv_url) is NOT yet widened the
-same way -- its reference extraction is a side effect of its own
-expensive per-paper LLM affiliation-extraction work, which non-AV papers
-don't need at all, so widening it naively would waste that LLM cost on
-~55k papers for a reference list alone. Left as a follow-up needing its
-own leaner reference-only path, not done here.
+`in_corpus_counts()` in `apply_citation_sources.py` already counts every edge in
+`citation_graph.json` with no AV filter. We confirmed this on real data before touching
+anything: nuScenes already showed 2,742 for "all papers" vs 1,938 for "AV papers".
+
+What was actually missing was upstream. `build_citation_graph.py` only ever scanned the
+reference lists of `av_relevance=="AV"` papers (both its own CVF-PDF fetch and
+`fetch_affiliations_arxiv.py`'s ar5iv-HTML side channel). So `citation_graph.json`'s
+edges could only ever contain AV citers, and "all papers" was capped at "the AV slice"
+however the counting code was written. It's fixed at the source: `main()` now builds its
+CVF title pool from the whole corpus (34,352 more papers, prioritized most-cited-first
+like everywhere else; see `fetch_common.by_citations`), not just the AV subset.
+`citations_by_source.in_corpus`, `citing_papers` and `paper.citations` keep their exact
+meaning and code. They just get fed a more complete graph as the crawl (running at the
+time) works through the backlog over the following days.
+
+We drafted a parallel `in_corpus_all`/`citations_all` field and reverted it before
+shipping. It would have duplicated the existing `in_corpus`/`citing_papers` pair under
+new names and, worse, changed `in_corpus`'s own counting to exclude non-AV citers, which
+is the opposite of what "Cited by (all papers)" has always meant. That's recorded here so
+the same duplicate isn't built again from the same confusion.
+
+The arXiv and ar5iv side (`fetch_affiliations_arxiv.py`, about 55,534 more non-AV papers
+with a known `arxiv_url`) is not widened yet. Its reference extraction is a side effect
+of its expensive per-paper LLM affiliation extraction, which non-AV papers don't need at
+all, so widening it naively would waste that LLM cost on about 55,000 papers just to get
+a reference list. It needs its own leaner, reference-only path, and that's left as a
+follow-up.
 
 ## Manually-sourced abstracts for the top-cited gap
 
-User-requested: look up missing information for the most-cited papers
-specifically. Took the highest-in-corpus-citation AV papers still missing
-an abstract (topped by KITTI's two seed papers, 1,901 and 1,336 citations)
-and checked each one by hand against its own publisher page (IEEE Xplore,
-ACM DL, CMU RI publications) via a real browser session, not a script --
-every one of these had already been queried by `fetch_abstracts_
-semanticscholar.py`'s own API call and come back with no abstract on file
-there either, so this wasn't a case of "the crawler hasn't reached it yet."
-13 verbatim abstracts recovered this way and applied directly to
-`papers_full.json`, stamped `abstract_source: "manual-publisher-page"` so
-this batch's provenance stays distinguishable from every automated source.
+The user asked us to look up missing information for the most-cited papers specifically.
+We took the AV papers with the most in-corpus citations that were still missing an
+abstract (topped by KITTI's two seed papers, with 1,901 and 1,336 citations) and checked
+each by hand against its own publisher page (IEEE Xplore, ACM DL, CMU RI publications)
+in a real browser session, not a script. Every one had already been queried by
+`fetch_abstracts_semanticscholar.py` and came back with no abstract there either, so this
+wasn't a case of the crawler not having reached it yet.
 
-Confirms the same finding as the IEEE Xplore entry above (a real browser
-renders the abstract even though scripted access gets `418`'d) applied at
-small, human-in-the-loop scale rather than automated: this is a one-time,
-bounded (13-paper) patch, not a crawler, and won't be repeated as one --
-see that entry for why turning this into an automated scraper stays off
-the table regardless of how well it would work technically.
+13 verbatim abstracts were recovered this way and applied directly to `papers_full.json`,
+stamped `abstract_source: "manual-publisher-page"` so the batch stays distinguishable
+from every automated source.
+
+This matches the IEEE Xplore finding in PIPELINE.md ("Other abstract sources we looked
+at"): a real browser shows the abstract even though scripted access gets a `418`. Here
+it's applied at small, human-in-the-loop scale, not automated. It was a one-time patch of
+13 papers, not a crawler, and it won't be repeated as one. PIPELINE.md explains why an
+automated scraper stays off the table however well it would work technically.
 
 ## In-corpus citation counts vs. real-world (Google Scholar) counts
 
-User-requested: estimate how accurate this corpus's own citation counts
-are against Google Scholar. Sampled 15 AV papers spanning three orders of
-magnitude (nuScenes at 2,742 in-corpus down to a 5-citation T-ITS paper),
-looked each one up on Google Scholar by hand, and compared:
+The user asked us to estimate how accurate this corpus's own citation counts are compared
+with Google Scholar. We sampled 15 AV papers spanning three orders of magnitude (nuScenes
+at 2,742 in-corpus down to a 5-citation T-ITS paper), looked each up on Google Scholar by
+hand and compared:
 
 | Paper | In-corpus | Scholar | Ratio |
 |---|---:|---:|---:|
@@ -590,170 +588,149 @@ looked each one up on Google Scholar by hand, and compared:
 | Declarative metamorphic testing (2022) | 10 | 79 | 12.7% |
 | Trajectory prediction, T-ITS (2022) | 5 | 120 | 4.2% |
 
-This corpus's own count captures roughly **5-23%** of a paper's true
-citation count -- never close to complete (by design: it only counts
-citations from papers whose reference list this pipeline has actually
-scanned, not all of academic literature), but not wildly inconsistent
-either. Two real patterns, not just noise:
+This corpus's own count captures roughly **5-23%** of a paper's true citation count. It's
+never close to complete, by design: it only counts citations from papers whose reference
+list this pipeline has actually scanned, not all of academic literature. It's not wildly
+inconsistent either. Two real patterns show up, not just noise:
 
-- **How AV-core vs. adjacent-field a paper is matters more than its raw
-  citation count.** The two lowest ratios (4.2%, 5.7%) are a T-ITS traffic-
-  engineering paper and a domain-adaptation/segmentation paper -- both cited
-  heavily by fields this corpus's ~20 tracked venues barely touch (general
-  traffic engineering, general semantic segmentation). The KITTI papers
-  themselves score surprisingly low (8.8%, 9.5%) for the same reason despite
-  being foundational AV datasets: an enormous share of their real citers are
-  generic computer-vision/robotics papers with nothing to do with
-  autonomous driving specifically, sitting outside this corpus's scope by
-  construction, not by a gap in coverage.
-- **No strong bias by citation-count tier itself** -- a highly-cited paper
-  (nuScenes, 22.8%) and a modestly-cited one (IntentNet, 21.6%) can land at
-  nearly the same ratio; the venue/topic-fit pattern above dominates over
-  sheer popularity.
+- **How AV-core or adjacent-field a paper is matters more than its raw citation count.**
+  The two lowest ratios (4.2% and 5.7%) are a T-ITS traffic-engineering paper and a
+  domain-adaptation and segmentation paper. Both are cited heavily by fields that this
+  corpus's roughly 20 tracked venues barely touch (general traffic engineering, general
+  semantic segmentation). The KITTI papers score surprisingly low (8.8% and 9.5%) for the
+  same reason, despite being foundational AV datasets. An enormous share of their real
+  citers are generic computer vision and robotics papers with nothing to do with
+  autonomous driving, which sit outside this corpus's scope by construction and not
+  through a coverage gap.
+- **There's no strong bias by citation-count tier itself.** A highly cited paper (nuScenes,
+  22.8%) and a modestly cited one (IntentNet, 21.6%) can land at nearly the same ratio.
+  The venue and topic fit above matters more than sheer popularity.
 
-Not a reason to change how citations are computed or labeled -- the "Cited
-by (all papers)"/"Cited by (AV papers)" pair on paper.html already states
-plainly that both numbers are corpus-internal, never an external database
-(see the entry below). This is a sanity check on that existing honesty, not
-a finding that anything needs fixing: a reader who wants a truer
-"how-cited-is-this-in-the-world" number already has an explicit, correct
-signal (the tooltip) that this isn't it.
+This is not a reason to change how citations are computed or labelled. The "Cited by (all
+papers)" and "Cited by (AV papers)" pair on `paper.html` already says plainly that both
+numbers are corpus-internal and never come from an external database (see "Whole-corpus
+citations" above). This is a sanity check on that honesty, not a finding that anything
+needs fixing. A reader who wants a truer "how cited is this in the world" number already
+has an explicit, correct signal in the tooltip that this isn't it.
 
 ## `build_citation_graph.py`'s PDF text extraction: pdfplumber -> PyMuPDF, plus a local PDF archive
 
-The overnight widened citation-graph crawl (see the entry above) was running
-at ~23 sec/paper -- confirmed for real, not estimated, by cross-checking
-`data/reference_lists_cvf.json`'s growth against wall-clock time over a
-~21-hour run (only 3,200 of 32,686 CVF papers done; the laptop having slept
-part of that night inflated the wall-clock total further, but didn't explain
-the per-paper rate itself). Root cause: `fetch_pdf_text()`'s own docstring
-claimed to "stop once past" the References section, but the loop actually
-called the expensive `page.extract_text()` on every page from page 1 onward
-just to search each page's text for the word "References" -- no early stop
-of the expensive work ever happened, matching the recurring "Could not get
-FontBBox from font descriptor" pdfplumber warnings seen throughout the log
-(consistent with slow font-parsing overhead, not with network waiting).
+The overnight widened citation-graph crawl (see "Whole-corpus citations" above) was
+running at about 23 seconds per paper. We confirmed that for real, not by estimate, by
+comparing the growth of `data/reference_lists_cvf.json` with wall-clock time over a run
+of about 21 hours: only 3,200 of 32,686 CVF papers were done. The laptop sleeping for
+part of that night inflated the wall-clock total but didn't explain the per-paper rate.
 
-Fixed by switching the PDF backend from `pdfplumber` to `pymupdf` (`import
-pymupdf`, `page.get_text()` in place of `page.extract_text()` -- confirmed
-already installed locally, 1.28.2, before switching; added to
-`scripts/requirements.txt`). Directly measured on identical downloaded PDF
-bytes (network time excluded, so this isolates parsing only): 2.67 sec vs.
-0.13 sec for the same 10-page 2021 CVPR paper -- roughly 20x, in line with
-PyMuPDF's general reputation for bulk text extraction. `fetch_cvf_affiliations.
-py` (page-1-only extraction, a much smaller per-paper cost) was deliberately
-left on pdfplumber -- not the bottleneck this was about, no reason to touch
-a working, unrelated call site while chasing this one.
+The root cause: `fetch_pdf_text()`'s docstring claimed to "stop once past" the References
+section, but the loop actually called the expensive `page.extract_text()` on every page
+from page 1 onward, just to search each page's text for the word "References". No early
+stop of the expensive work ever happened. This matches the recurring "Could not get
+FontBBox from font descriptor" pdfplumber warnings in the log, which point to slow font
+parsing, not network waiting.
 
-Verified equivalent output quality, not just equivalent speed, before
-trusting it: ran both the old pdfplumber path and the new pymupdf path
-against the exact same downloaded PDF bytes for two different papers (an
-old 2013 single-column paper and a modern 2021 two-column paper) and
-confirmed byte-for-byte-equivalent reference-section detection and near-
-identical extracted text and reference-entry counts in both cases,
-including a pre-existing (unrelated, not introduced by this change)
-`split_reference_entries()` quirk on both papers -- a two-column PDF's text
-sometimes interleaves in a way that its `[N] `-without-a-period regex
-doesn't split into separate entries, and a chart's axis-label text can
-occasionally trip the "References" heading search early. Both quirks
-reproduce identically under the old and new backend, so this is a pre-
-existing corpus/regex limitation to note, not a regression from this
-change -- left as-is, out of scope for a PDF-speed/archiving request.
+The fix was to switch the PDF backend from `pdfplumber` to `pymupdf` (`import pymupdf`,
+with `page.get_text()` in place of `page.extract_text()`). We confirmed it was already
+installed locally (1.28.2) before switching, and added it to `scripts/requirements.txt`.
+On identical downloaded PDF bytes (network time excluded, so this isolates parsing),
+the same 10-page 2021 CVPR paper took 2.67 seconds before and 0.13 seconds after, about
+20x faster, in line with PyMuPDF's reputation for bulk text extraction.
 
-Also added (separately requested, same message: "make sure to save all pdfs
-locally in a gitignored folder so we might process them later for other
-things"): every downloaded CVF PDF is now archived to `data/pdfs_cvf/
-<title-key>.pdf` (gitignored -- a many-GB personal cache, not source data),
-written *before* parsing so even a PDF that fails to parse still leaves the
-raw bytes on disk. This is a general-purpose local cache for future
-reprocessing, not something the current pipeline reads back -- nothing else
-in the pipeline depends on this directory existing or being complete.
+`fetch_cvf_affiliations.py` (page-1-only extraction, a much smaller per-paper cost) was
+deliberately left on pdfplumber. It wasn't the bottleneck, and there was no reason to
+touch a working, unrelated call site while chasing this one.
 
-One known gap, left as a deliberate choice rather than an oversight: the
-~3,200 CVF papers the old (pre-fix) crawler run already marked `succeeded`
-before this change won't be re-fetched under the normal pending-exclusion
-logic in `fetch_phase()` (`succeeded` papers are always skipped), so they
-won't retroactively gain an archived PDF just from re-running the crawler.
-A deliberate backfill pass (temporarily ignoring `succeeded` to force a
-re-download) would be needed to close that gap -- not done here since nothing
-required it (their extracted references are already saved and correct; only
-the raw-PDF archive itself would be incomplete for that subset).
+We checked that the output quality is equivalent, not only the speed. We ran both the old
+and new paths on the exact same PDF bytes for two papers, an old 2013 single-column paper
+and a modern 2021 two-column paper. Reference-section detection was identical, and the
+extracted text and reference-entry counts were nearly identical. Both papers also showed
+a pre-existing quirk in `split_reference_entries()` (not introduced by this change): a
+two-column PDF's text sometimes interleaves in a way that its `[N] ` regex (no period)
+doesn't split into separate entries, and a chart's axis-label text can occasionally trip
+the "References" heading search early. Both quirks reproduce identically with the old and
+new backends, so they're an existing limitation and not a regression. We left them alone
+as out of scope for a speed and archiving request.
+
+The user also asked, in the same message, to "save all pdfs locally in a gitignored folder
+so we might process them later for other things". Every downloaded CVF PDF is now archived
+to `data/pdfs_cvf/<title-key>.pdf`, which is gitignored because it's a many-GB personal
+cache and not source data. It's written *before* parsing, so a PDF that fails to parse
+still leaves its raw bytes on disk. It's a general-purpose local cache for future
+reprocessing. Nothing in the current pipeline reads it back or depends on it existing.
+
+One gap was left deliberately. The roughly 3,200 CVF papers that the old (pre-fix) crawler
+run had already marked `succeeded` won't be re-fetched, because `fetch_phase()` always
+skips `succeeded` papers. They won't gain an archived PDF just from re-running the
+crawler. Closing the gap would need a deliberate backfill pass that temporarily ignores
+`succeeded` to force a re-download. We didn't do it because nothing required it: their
+extracted references are already saved and correct, and only the raw-PDF archive is
+incomplete for that subset.
 
 ## `stats_non_av.json` sharded into `data/non_av_papers/`, same scheme as abstracts
 
-The single-file non-AV dataset had grown to 81.5MB -- past GitHub's 50MB
-recommended single-file size (flagged on every gh-pages push: "File
-stats_non_av.json is 77.76 MB... GH001: Large files detected"), a real
-concern raised while assessing whether the site was ready to go public and
-attract real traffic. It also had a second, more direct cost:
-`paper.html`'s fallback lookup (a paper not found in the AV-relevant set is
-also checked against the non-AV set, since a paper can legitimately be
-part of the corpus without being AV-relevant -- e.g. reached only via the
-citation graph) downloaded and parsed the ENTIRE 81.5MB file just to find
-one paper by title.
+The single-file non-AV dataset had grown to 81.5MB, past GitHub's 50MB recommended
+single-file size. Every gh-pages push flagged it ("File stats_non_av.json is 77.76 MB...
+GH001: Large files detected"), a real concern while assessing whether the site was ready
+to go public and attract traffic. It also had a more direct cost. `paper.html`'s fallback
+lookup checks a paper that isn't in the AV-relevant set against the non-AV set too (a
+paper can be in the corpus without being AV-relevant, for example if it was reached only
+through the citation graph). That lookup downloaded and parsed the entire 81.5MB file just
+to find one paper by title.
 
-Fixed the same way `ABSTRACTS_DIR` already solved an identical problem for
-abstract text: sharded into `data/non_av_papers/shard-NN.json` (64 shards,
-same title-hash `shard_index()`/`ABSTRACT_SHARD_COUNT` already used for
-abstracts, reused rather than duplicated) instead of one growing file.
-Largest shard measured 1.32MB -- comfortably under any size limit, with
-room to grow for years before revisiting. `paper.html`'s single-title
-lookup now fetches exactly one shard instead of the whole set. The two
-consumers that genuinely need the WHOLE non-AV set --
-`filters.js`'s `fetchStatsWithRelevance` (the "Show: include non-AV
-papers" dropdown on every listing page) and `author.html`'s per-author
-non-AV paper list -- fetch and concatenate all 64 shards via a new shared
-`window.fetchAllNonAvPapers()` helper in filters.js, rather than each
-re-implementing the same shard-loop. Same total bytes over the wire as
-before for those two cases; only the paper.html fallback lookup actually
-gets less data, but all three consumers stop tripping GitHub's single-file
-warning.
+It's fixed the same way `ABSTRACTS_DIR` solved the same problem for abstract text. The
+data is sharded into `data/non_av_papers/shard-NN.json` (64 shards), reusing the title-hash
+`shard_index()` and `ABSTRACT_SHARD_COUNT` already used for abstracts. The largest shard is
+1.32MB, comfortably under any size limit, with room to grow for years.
 
-`build_public_site.py` copies the shard directory the same
-file-by-file way it already copies `abstracts/` (never `shutil.rmtree`, a
-real OneDrive directory-lock `PermissionError` this repo hit in practice --
-see the abstracts entry). The old single `stats_non_av.json` in `public/`
-is cleaned up automatically by the existing "remove anything not in the
-current expected set" stale-file sweep, the same mechanism that already
-caught a stray `label_relevance.html` once -- no special-case deletion
-needed, just removing the old filename from that expected set.
+- `paper.html`'s single-title lookup now fetches exactly one shard instead of the whole
+  set.
+- Two consumers genuinely need the whole non-AV set: `fetchStatsWithRelevance` in
+  `filters.js` (the "Show: include non-AV papers" dropdown on every listing page) and
+  `author.html`'s per-author non-AV paper list. They fetch and join all 64 shards through
+  a new shared `window.fetchAllNonAvPapers()` helper in `filters.js`, so neither
+  reimplements the same shard loop.
 
-Investigated but declined: converting `fetch_cvf_affiliations.py`'s
-page-1-only pdfplumber extraction to PyMuPDF (the same swap that gave
-`build_citation_graph.py` a 20x win -- see that entry above). Declined
-because the two cases aren't actually alike: that win came from eliminating
-an early-stop bug that made pdfplumber scan every page instead of one, not
-from pdfplumber being slow at a single page. This script already only
-touches page 1, and it hand-tunes a pdfplumber-specific parameter
-(`x_tolerance=1`) that was confirmed against real CVF PDFs to stop
-two-column author/affiliation blocks from losing word spacing entirely
-("University of California at Merced" -> "UniversityofCaliforniaatMerced").
-PyMuPDF's text extraction has no equivalent knob, so swapping backends here
-risks silently reintroducing exactly that bug in a feature (institution
-extraction) this site's Institutions/Countries pages depend on for
-correctness, for a per-paper cost (one page, not an early-stop bug) far
-smaller than what made the citation-graph swap worth the risk. Not
-currently even running (last touched a side file three days before this
-check), so there's no active throughput problem to justify it either.
+Those two cases download the same total bytes as before, and only the `paper.html` fallback
+gets less data. All three consumers stop triggering GitHub's single-file warning.
+
+`build_public_site.py` copies the shard directory file by file, the way it already copies
+`abstracts/`. It never uses `shutil.rmtree`, because of a real OneDrive directory-lock
+`PermissionError` this repo hit in practice (see the abstracts entry). The old single
+`stats_non_av.json` in `public/` is cleaned up by the existing sweep that removes anything
+not in the expected set, the same mechanism that once caught a stray
+`label_relevance.html`. No special deletion was needed, only removing the old filename from
+that expected set.
+
+**Investigated but declined:** converting `fetch_cvf_affiliations.py`'s page-1-only
+pdfplumber extraction to PyMuPDF, the same swap that gave `build_citation_graph.py` a 20x
+win (see the entry above). The two cases aren't alike. That win came from removing an
+early-stop bug that made pdfplumber scan every page instead of one, not from pdfplumber
+being slow on a single page. This script already touches only page 1. It also hand-tunes a
+pdfplumber parameter (`x_tolerance=1`) that we confirmed against real CVF PDFs stops
+two-column author and affiliation blocks from losing word spacing entirely ("University of
+California at Merced" becoming "UniversityofCaliforniaatMerced"). PyMuPDF's text extraction
+has no equivalent setting, so swapping backends risks silently bringing that bug back in a
+feature the Institutions and Countries pages rely on for correctness. The per-paper cost
+saved would be far smaller than in the citation-graph case. The script also wasn't running
+at the time (it had last touched a side file three days before this check), so there was no
+active throughput problem to justify the risk.
 
 ## Staging site and incremental gh-pages deploys
 
-`gh-pages` is force-pushed as a parentless commit every deploy (see above), which
-requires the branch ruleset to exempt `gh-pages` (protect `main` only). Two
-changes make that cheap and give a preview step:
+`gh-pages` is force-pushed as a single commit with no parent on every deploy (see "Derived
+data is not tracked" above), so it has to stay unprotected. Only `main` is protected. Three
+changes make deploys cheap and add a preview step:
 
 - **Persistent clone, single-commit push.** `deploy.py` keeps a clone per target in
-  `.deploy-cache/`, mirrors `public/` into it (only changed files) and pushes a
-  `commit-tree` commit with no parent. Because the clone knows the remote's
-  current tip, git sends only blobs the server lacks; history still never
+  `.deploy-cache/`, copies only changed files from `public/` into it, and pushes a commit
+  made with `commit-tree` and no parent. Because the clone knows the remote's current tip,
+  git sends only the blobs the server doesn't already have, and history still never
   accumulates.
-- **Staging = a second repo, not a subfolder or branch of this one.** A separate
-  repo keeps 167 MB preview snapshots out of this repo's size, needs no ruleset
-  exemption on the main repo, and gets its own Pages URL. Staging HTML is the
-  production HTML post-processed at publish time (noindex, banner, staging
-  canonical URLs) so `--promote` ships the byte-identical build that was
-  previewed; `.deploy-cache/state.json` records the previewed content hash.
-- **Auto-skip of the corpus rebuild** keys on a stat fingerprint of `scripts/*.py`,
-  git-tracked `data/` sources and `papers_full.json`, saved after each full
-  build. Tests still run on the fast path.
-
+- **Staging is a second repo, not a subfolder or branch of this one.** A separate repo keeps
+  167 MB preview snapshots out of this repo's size, needs no branch-protection changes on
+  the main repo, and gets its own Pages URL. Staging HTML is the production HTML
+  post-processed at publish time (noindex, a banner, staging canonical URLs), so `--promote`
+  ships the byte-identical build that was previewed. `.deploy-cache/state.json` records the
+  previewed content hash.
+- **The corpus rebuild is skipped automatically** when a stat fingerprint of `scripts/*.py`,
+  the git-tracked `data/` sources and `papers_full.json` matches the one saved after the
+  last full build. Tests still run on the fast path.
