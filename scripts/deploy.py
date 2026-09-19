@@ -12,8 +12,8 @@ Two-stage flow (preview first, then promote):
 
 A full run:
 1. Builds public/ (build_public_site.py). The corpus rebuild is skipped
-   automatically when nothing under data/ or scripts/ changed since the last
-   full build (see build_fingerprint); tests always run. --full forces the
+   automatically when nothing that feeds the corpus changed since the last
+   full build (data/ or the pipeline scripts, see build_fingerprint); tests always run. --full forces the
    rebuild, --skip-build skips it and the tests (HTML/JS/CSS-only changes).
 2. Commits and pushes any source changes to `main` (production only).
 3. Publishes public/ to the target repo's `gh-pages` branch through a
@@ -30,6 +30,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import stat
 import subprocess
@@ -148,15 +149,36 @@ def sync_tree(src, dst, transform=None):
     return written, removed
 
 
+# Scripts whose edits can't change stats.json, so they shouldn't trigger a full
+# rebuild. build_public_site.py is in here too, but its list of pipeline steps is
+# hashed separately (see pipeline_steps), since adding or reordering a step there
+# does change what a full build produces.
+NON_CORPUS_SCRIPTS = {
+    "deploy.py", "run_tests.py", "backup_corpus.py", "restore_corpus.py",
+    "build_data_release.py", "build_public_site.py",
+}
+STEP_RE = re.compile(r'run_step\(\s*"[^"]*"\s*,\s*"([^"]+)"')
+
+
+def pipeline_steps(base=BASE):
+    """The scripts build_public_site.py runs as pipeline steps, in order."""
+    try:
+        text = (Path(base) / "scripts" / "build_public_site.py").read_text(encoding="utf-8")
+    except OSError:
+        return []
+    return STEP_RE.findall(text)
+
+
 def build_fingerprint(base=BASE):
     """Fingerprint of everything a full corpus rebuild reads: the pipeline
-    scripts, the git-tracked sources under data/ (venue JSON, profiles, ...)
-    and the crawler-written papers_full.json. Cheap (stat only). If it matches
-    the fingerprint saved after the last full build, merge_corpus/aggregate
-    would just reproduce the stats.json already on disk."""
+    scripts (except ones that can't affect stats.json), the order of steps in
+    build_public_site.py, the git-tracked sources under data/ (venue JSON,
+    profiles, ...) and the crawler-written papers_full.json. Cheap (stat only).
+    If it matches the fingerprint saved after the last full build,
+    merge_corpus/aggregate would just reproduce the stats.json already on disk."""
     base = Path(base)
     files = [base / "data" / "papers_full.json"]
-    files += sorted((base / "scripts").glob("*.py"))
+    files += [f for f in sorted((base / "scripts").glob("*.py")) if f.name not in NON_CORPUS_SCRIPTS]
     tracked = subprocess.run(["git", "ls-files", "data"], cwd=base, capture_output=True, text=True).stdout.split()
     files += [base / t for t in tracked]
     h = hashlib.sha256()
@@ -166,6 +188,7 @@ def build_fingerprint(base=BASE):
         except OSError:
             continue
         h.update(f"{f.relative_to(base).as_posix()}|{st.st_size}|{st.st_mtime_ns}\n".encode())
+    h.update(("steps:" + ",".join(pipeline_steps(base))).encode())
     return h.hexdigest()
 
 

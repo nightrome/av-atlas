@@ -77,10 +77,13 @@ python scripts/deploy.py --promote   # publish the previewed build to production
 
 Deploys are quicker than they used to be:
 
-- The corpus rebuild is skipped when nothing in `data/` or `scripts/` changed
-  since the last full build. Tests still run. `--full` forces the rebuild.
-  `--skip-build` skips both the rebuild and the tests, which is only safe for
-  HTML, JS and CSS changes.
+- The corpus rebuild is skipped when nothing that feeds it has changed since the
+  last full build. That means the tracked files in `data/`, `papers_full.json`
+  and the pipeline scripts. Editing `deploy.py`, `run_tests.py`, the backup
+  scripts, or anything in `build_public_site.py` other than its list of steps
+  doesn't count. Tests still run. `--full` forces the rebuild. `--skip-build`
+  skips both the rebuild and the tests, which is only safe for HTML, JS and CSS
+  changes.
 - Only files that changed are uploaded, using a local clone in `.deploy-cache/`.
 
 Run `--preview` and `--promote` from the same checkout, because the preview is
