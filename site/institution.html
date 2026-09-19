@@ -142,7 +142,38 @@ setDetailPageMeta(name, name
   ? `${name}'s autonomous vehicle research in AV Atlas: papers, citations within AV research, and the researchers behind them.`
   : null);
 
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(fetchStatsDetail).then(render).catch(err => {
+// institution_authors and author_detail are sharded by name now (see
+// aggregate.py's AUTHOR_DETAIL_DIR comment) instead of one whole-corpus
+// file fetched in full. This page only ever needs ONE institution's own
+// roster (institution_authors[name]) plus author_detail for exactly the
+// authors on that roster -- resolved here, in sequence (the second fetch's
+// name list depends on the first fetch's result), before render() runs.
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats =>
+  window.fetchInstitutionAuthors([name]).then(instMap => {
+    const preciseAuthors = instMap.get(name);
+    stats.institution_authors = preciseAuthors ? { [name]: preciseAuthors } : {};
+    // Same fallback render() itself falls back to when this institution has
+    // no authors_detail-backed roster (institutions with zero affiliation
+    // coverage) -- every distinct author on a paper crediting this
+    // institution, computed the same way aggregateByDimension(papers, p =>
+    // p.authors, {minPapers: 0}) would, just needed here (before render())
+    // to know which author_detail shards to fetch.
+    let authorNames;
+    if (preciseAuthors) {
+      authorNames = preciseAuthors.map(a => a.name);
+    } else {
+      const names = new Set();
+      (stats.all_papers || []).forEach(p => {
+        if ((p.institutions || []).includes(name)) (p.authors || []).forEach(a => names.add(a));
+      });
+      authorNames = [...names];
+    }
+    return window.fetchAuthorDetail(authorNames).then(detailMap => {
+      stats.author_detail = Object.fromEntries(detailMap);
+      return stats;
+    });
+  })
+).then(render).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
 });
 

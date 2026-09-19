@@ -22,11 +22,17 @@ data/non_av_papers/
 # Sharded abstract text split out of stats.json (regenerate with
 # scripts/aggregate.py) -- same reasoning as stats.json above.
 data/abstracts/
-# author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors,
-# split out of stats.json (regenerate with scripts/aggregate.py) since
-# they're ~32% of it by size but only needed by author/authors/countries/
-# institution/paper.html -- same reasoning as stats.json above.
-data/stats_detail.json
+# Sharded citing_papers (which in-corpus papers cite each one) split out of
+# stats.json (regenerate with scripts/aggregate.py) -- see aggregate.py's
+# CITATIONS_DIR comment.
+data/citations/
+# author_detail/non_av_paper_counts+non_av_paper_citations/institution_authors,
+# each sharded by name (regenerate with scripts/aggregate.py) since together
+# they were ~32% of stats.json's size but only ever needed a handful of
+# names at a time -- see aggregate.py's AUTHOR_DETAIL_DIR comment.
+data/author_detail/
+data/institution_authors/
+data/non_av_author_stats/
 # stats_adjacent.json was aggregate.py's original output filename before it
 # was renamed to stats_non_av.json (later sharded into data/non_av_papers/)
 # -- same reasoning as stats.json above, kept ignored in case a stale build
@@ -39,8 +45,11 @@ data/stats_adjacent.json
 # and public/ (the built site); nothing should write these at the root.
 /stats.json
 /non_av_papers/
-/stats_detail.json
 /abstracts/
+/citations/
+/author_detail/
+/institution_authors/
+/non_av_author_stats/
 # One-off evaluation artifact from scripts/audit_code_links_llm.py (LLM
 # second opinion on the has_code_link heuristic) -- rerun to regenerate,
 # not part of the site build.

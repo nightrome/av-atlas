@@ -188,12 +188,6 @@ function runPage(file, opts) {
   if (!inlineScripts.length) return Promise.resolve({ file, error: null, allElements: [], idRegistry: {}, sandbox: null, noInlineScript: true });
 
   const statsRaw = opts.statsRaw || fs.readFileSync(path.join(BASE, 'data', 'stats.json'), 'utf-8');
-  // author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors
-  // live in their own lazily-fetched file now (aggregate.py's
-  // DETAIL_OUT_FILE) -- see filters.js's fetchStatsDetail. Same
-  // real-file-on-disk default as statsRaw above, with the same
-  // opts override hook for a future test that wants specific detail data.
-  const detailRaw = opts.detailRaw || fs.readFileSync(path.join(BASE, 'data', 'stats_detail.json'), 'utf-8');
   const idRegistry = {};
   const body = makeElement('body');
 
@@ -264,11 +258,23 @@ function runPage(file, opts) {
     URLSearchParams,
     URL,
     fetch(url) {
-      if (String(url).includes('stats_detail.json')) {
-        return Promise.resolve({ json: () => Promise.resolve(JSON.parse(detailRaw)) });
-      }
       if (String(url).includes('stats.json')) {
         return Promise.resolve({ json: () => Promise.resolve(JSON.parse(statsRaw)) });
+      }
+      // Every sharded data directory aggregate.py writes (abstracts/,
+      // non_av_papers/, citations/, author_detail/, institution_authors/,
+      // non_av_author_stats/) is served from the real file on disk, same
+      // "real fixture, not a hand-typed stand-in" reasoning as statsRaw
+      // above -- a shard file that doesn't exist yet (a fresh checkout
+      // before its first full aggregate.py run) resolves to {} rather than
+      // rejecting, since an empty/missing shard is a real, valid state the
+      // client code already handles (an absent key just means "no entry").
+      const shardMatch = String(url).match(/^([\w-]+)\/shard-(\d+)\.json$/);
+      if (shardMatch) {
+        const shardPath = path.join(BASE, 'data', shardMatch[1], `shard-${shardMatch[2]}.json`);
+        const empty = shardMatch[1] === 'non_av_papers' ? '[]' : '{}';
+        const raw = fs.existsSync(shardPath) ? fs.readFileSync(shardPath, 'utf-8') : empty;
+        return Promise.resolve({ json: () => Promise.resolve(JSON.parse(raw)) });
       }
       return Promise.reject(new Error('unexpected fetch: ' + url));
     },

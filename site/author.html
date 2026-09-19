@@ -210,7 +210,7 @@ setDetailPageMeta(name, name
   ? `${name}'s autonomous vehicle research in AV Atlas: papers, citations within AV research, co-authors and career span.`
   : null);
 
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(fetchStatsDetail).then(render).catch(err => {
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
 });
 
@@ -235,8 +235,33 @@ function titleLink(p) {
   return a;
 }
 
+// author_detail and non_av_paper_counts/non_av_paper_citations are sharded
+// by name now (see aggregate.py's AUTHOR_DETAIL_DIR comment) instead of
+// living together in one stats_detail.json fetched in full. This page
+// resolves them here, once, for exactly this author plus every co-author
+// shown in the Top co-authors table (citing authors are resolved
+// separately, further down, where their own names first become known --
+// see resolveCitingAuthors), then merges the results back onto `stats`
+// under their old keys so the rest of this function (renderBody) reads
+// stats.author_detail/non_av_paper_counts/non_av_paper_citations exactly
+// as before.
 function render(stats) {
   const papers = (stats.all_papers || []).filter(p => (p.authors || []).includes(name));
+  const coAuthorNames = new Set();
+  papers.forEach(p => (p.authors || []).forEach(a => { if (a !== name) coAuthorNames.add(a); }));
+  Promise.all([
+    window.fetchAuthorDetail([name, ...coAuthorNames]),
+    window.fetchNonAvAuthorStats([name]),
+  ]).then(([detailMap, nonAvMap]) => {
+    stats.author_detail = Object.fromEntries(detailMap);
+    const nonAv = nonAvMap.get(name) || { count: 0, citations: 0 };
+    stats.non_av_paper_counts = { [name]: nonAv.count };
+    stats.non_av_paper_citations = { [name]: nonAv.citations };
+    renderBody(stats, papers);
+  });
+}
+
+function renderBody(stats, papers) {
   const detail = (stats.author_detail || {})[name] || {};
 
   // Where this author sits on the Authors overview page's default ranking.
@@ -523,6 +548,36 @@ function render(stats) {
   }
   renderCoauthors();
 
+  // citing_papers is stripped from most papers' stats.json entries and
+  // sharded into citations/shard-NN.json instead (see aggregate.py's
+  // CITATIONS_DIR comment). This author's own paper list is small and
+  // bounded (unlike the whole corpus), so it's cheap to resolve every one
+  // of their papers' citer lists before rendering the section below --
+  // then, since who those citers actually ARE isn't known until this
+  // resolves, a second fetch for exactly those citing authors' own
+  // author_detail (render()'s earlier fetch only covered this author and
+  // their co-authors). Merged straight into stats.author_detail -- the
+  // authorDetail const below is the same object by reference, so
+  // renderCitingAuthorsSection's authorDetail[coName] lookups see these new
+  // entries without needing their own copy of this map.
+  (function resolveCitingAuthors() {
+    const needTitles = papers.filter(p => !Array.isArray(p.citing_papers)).map(p => p.title);
+    const fetchPromise = needTitles.length ? window.fetchCitingPapers(needTitles) : Promise.resolve(new Map());
+    fetchPromise.then(fetchedCiting => {
+      const byTitle = new Map((stats.all_papers || []).map(p => [p.title, p]));
+      const citingAuthorNames = new Set();
+      papers.forEach(p => (p.citing_papers || fetchedCiting.get(p.title) || []).forEach(citerTitle => {
+        const citer = byTitle.get(citerTitle);
+        (citer && citer.authors || []).forEach(a => { if (a !== name) citingAuthorNames.add(a); });
+      }));
+      window.fetchAuthorDetail([...citingAuthorNames]).then(detailMap => {
+        stats.author_detail = Object.assign(stats.author_detail || {}, Object.fromEntries(detailMap));
+        renderCitingAuthorsSection(fetchedCiting);
+      });
+    });
+  })();
+
+  function renderCitingAuthorsSection(fetchedCiting) {
   // Citing authors: every author of a DIFFERENT paper in this corpus that
   // cites one of this author's papers -- the mirror image of "Top
   // co-authors" above (who they wrote with vs. who cites them). Each edge
@@ -533,7 +588,7 @@ function render(stats) {
   // -- resolved against this same page's all_papers, already fully fetched.
   const byTitle = new Map((stats.all_papers || []).map(p => [p.title, p]));
   const citingAuthorCounts = {};
-  papers.forEach(p => (p.citing_papers || []).forEach(citerTitle => {
+  papers.forEach(p => (p.citing_papers || fetchedCiting.get(p.title) || []).forEach(citerTitle => {
     const citer = byTitle.get(citerTitle);
     if (!citer) return;
     (citer.authors || []).forEach(a => {
@@ -627,6 +682,7 @@ function render(stats) {
     ], renderCitingAuthorsBody);
   }
   renderCitingAuthors();
+  }
 
   // Not-AV-relevant papers aren't in stats.all_papers at all (see
   // aggregate.py's NON_AV_DIR comment) -- fetched lazily, only once

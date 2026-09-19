@@ -558,6 +558,68 @@
     return page + (p.toString() ? '?' + p.toString() : '');
   };
 
+  // Same djb2-hash-mod-N as aggregate.py's shard_index() -- must stay in
+  // sync by construction, not convention. Shared here (not copy-pasted per
+  // page) since abstracts/, non_av_papers/ and citations/ are all sharded
+  // by this exact scheme, and paper.html/index.html/network.html all need
+  // to resolve a paper title to its shard number.
+  const SHARD_COUNT = 64;
+  window.shardIndex = function (title, numShards = SHARD_COUNT) {
+    let h = 5381;
+    for (let i = 0; i < title.length; i++) h = ((h * 33) + title.charCodeAt(i)) >>> 0;
+    return h % numShards;
+  };
+
+  // Every sharded {key: value} directory aggregate.py writes via its
+  // write_sharded_json() (citations/, author_detail/, institution_authors/,
+  // non_av_author_stats/) uses this exact shape: SHARD_COUNT files, each a
+  // flat object, a key living in shard shardIndex(key). Resolves exactly
+  // the given keys by fetching only the shards they hash into, not all
+  // SHARD_COUNT of them -- most callers only need a handful of entries
+  // (one paper's citers, one author's own record, a page of authors), so
+  // this is typically a few shard fetches, not the whole multi-MB set.
+  // Returns a Map<key, value> covering whichever of the given keys actually
+  // have an entry -- a key absent from the map has none, same as an old
+  // inline field being undefined.
+  function fetchNamedShards(dirName, keys) {
+    const shardsNeeded = new Set(keys.map(k => window.shardIndex(k)));
+    return Promise.all([...shardsNeeded].map(i => {
+      const shard = String(i).padStart(2, '0');
+      return fetch(`${dirName}/shard-${shard}.json`).then(r => r.json()).catch(() => ({}));
+    })).then(shards => {
+      const merged = new Map();
+      shards.forEach(shard => { for (const k in shard) merged.set(k, shard[k]); });
+      return merged;
+    });
+  }
+
+  // Same shard set as fetchNamedShards, but every shard is fetched and
+  // merged into one plain object -- for the rare page that genuinely needs
+  // the WHOLE set (countries.html scans every author on every filtered
+  // paper, so no fixed list of names would cover it). Same "fetch
+  // everything, still split into parallel-fetchable pieces, same total
+  // bytes as one big file" fallback fetchAllNonAvPapers below already uses.
+  function fetchAllShards(dirName) {
+    const shardUrls = Array.from({length: SHARD_COUNT},
+      (_, i) => `${dirName}/shard-${String(i).padStart(2, '0')}.json`);
+    return Promise.all(shardUrls.map(u => fetch(u).then(r => r.json())))
+      .then(shards => Object.assign({}, ...shards));
+  }
+
+  // citing_papers is stripped from most papers' stats.json entries and
+  // sharded into citations/shard-NN.json instead -- see aggregate.py's
+  // CITATIONS_DIR comment.
+  window.fetchCitingPapers = titles => fetchNamedShards('citations', titles);
+  // author_detail/institution_authors/non_av_paper_counts+citations used to
+  // live together in one stats_detail.json fetched in full by five pages --
+  // each is now its own directory sharded by name (see aggregate.py's
+  // AUTHOR_DETAIL_DIR comment), so a page fetches only the specific
+  // authors/institutions it's actually about to render.
+  window.fetchAuthorDetail = names => fetchNamedShards('author_detail', names);
+  window.fetchAllAuthorDetail = () => fetchAllShards('author_detail');
+  window.fetchInstitutionAuthors = names => fetchNamedShards('institution_authors', names);
+  window.fetchNonAvAuthorStats = names => fetchNamedShards('non_av_author_stats', names);
+
   // Non-AV papers are sharded into non_av_papers/shard-00.json..shard-63.json
   // (see aggregate.py's NON_AV_DIR comment) rather than one 80MB+ file --
   // fixes a real GitHub 50MB-single-file warning and lets paper.html fetch
@@ -612,23 +674,6 @@
       stats.top_papers = [...stats.all_papers]
         .sort((a, b) => (b.citations != null) - (a.citations != null) || (b.citations || 0) - (a.citations || 0))
         .slice(0, 50);
-      return stats;
-    });
-  };
-
-  // author_detail/non_av_paper_counts/non_av_paper_citations/institution_authors
-  // used to live in stats.json itself -- split into their own lazily-fetched
-  // file (aggregate.py's DETAIL_OUT_FILE) since they're ~32% of it by size
-  // but only read by author.html, authors.html, countries.html,
-  // institution.html and paper.html, not the other listing pages. Merges
-  // straight onto the stats object passed in, mirroring how
-  // fetchStatsWithRelevance's relevance swap mutates stats.all_papers in
-  // place, so callers keep reading e.g. stats.author_detail exactly as
-  // before -- only the page's own load sequence (calling this too, wherever
-  // it wasn't before) changes.
-  window.fetchStatsDetail = function (stats) {
-    return fetch('stats_detail.json').then(r => r.json()).then(detail => {
-      Object.assign(stats, detail);
       return stats;
     });
   };

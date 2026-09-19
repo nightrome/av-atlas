@@ -1059,21 +1059,32 @@ class TestAggregateEndToEnd(unittest.TestCase):
         if citation_graph is not None:
             graph_file.write_text(json.dumps(citation_graph), encoding="utf-8")
 
-        orig_in, orig_out, orig_adjacent, orig_detail, orig_profiles, orig_graph, orig_abstracts = (
-            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE,
-            ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR)
+        orig = (
+            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.SCHOLAR_PROFILES_FILE, ag.CITATION_GRAPH_FILE,
+            ag.ABSTRACTS_DIR, ag.CITATIONS_DIR, ag.AUTHOR_DETAIL_DIR, ag.INSTITUTION_AUTHORS_DIR,
+            ag.NON_AV_AUTHOR_STATS_DIR,
+        )
         ag.IN_FILE, ag.OUT_FILE = in_file, out_file
-        # Patched to a tmp path -- without this, every test run would
-        # silently rmtree+rewrite the real, sharded data/non_av_papers/.
+        # Every one of these patched to a tmp path -- without it, every test
+        # run would silently rmtree+rewrite the real, sharded data/ output
+        # (non_av_papers/, abstracts/, citations/, author_detail/,
+        # institution_authors/, non_av_author_stats/) or overwrite the real
+        # scholar_profiles.json/citation_graph.json.
         ag.NON_AV_DIR = Path(tmpdir.name) / "non_av_papers"
-        # Same reasoning as NON_AV_DIR -- without this, every test run
-        # would overwrite the real data/stats_detail.json.
-        ag.DETAIL_OUT_FILE = Path(tmpdir.name) / "stats_detail.json"
         ag.SCHOLAR_PROFILES_FILE = Path(tmpdir.name) / "scholar_profiles.json"  # deliberately absent
         ag.CITATION_GRAPH_FILE = graph_file  # absent unless citation_graph was passed
-        # Same reasoning as NON_AV_DIR above -- without this, every
-        # test run would rmtree+rewrite the real data/abstracts/ directory.
         ag.ABSTRACTS_DIR = Path(tmpdir.name) / "abstracts"
+        ag.CITATIONS_DIR = Path(tmpdir.name) / "citations"
+        ag.AUTHOR_DETAIL_DIR = Path(tmpdir.name) / "author_detail"
+        ag.INSTITUTION_AUTHORS_DIR = Path(tmpdir.name) / "institution_authors"
+        ag.NON_AV_AUTHOR_STATS_DIR = Path(tmpdir.name) / "non_av_author_stats"
+
+        def flatten(dir_path):
+            merged = {}
+            for shard_path in sorted(dir_path.glob("shard-*.json")):
+                merged.update(json.loads(shard_path.read_text(encoding="utf-8")))
+            return merged
+
         try:
             ag.main()
             # Sharded the same way as ABSTRACTS_DIR -- flatten every shard
@@ -1084,11 +1095,24 @@ class TestAggregateEndToEnd(unittest.TestCase):
                 p for shard_path in sorted(ag.NON_AV_DIR.glob("shard-*.json"))
                 for p in json.loads(shard_path.read_text(encoding="utf-8"))
             ]
-            self.last_detail = json.loads(ag.DETAIL_OUT_FILE.read_text(encoding="utf-8"))
+            # author_detail/institution_authors used to live together in one
+            # stats_detail.json -- existing assertions still read
+            # self.last_detail["author_detail"]/["institution_authors"], so
+            # the flattened shards are reassembled into that same shape here
+            # rather than touching every individual test.
+            self.last_detail = {
+                "author_detail": flatten(ag.AUTHOR_DETAIL_DIR),
+                "institution_authors": flatten(ag.INSTITUTION_AUTHORS_DIR),
+            }
+            self.last_non_av_author_stats = flatten(ag.NON_AV_AUTHOR_STATS_DIR)
+            # Sharded the same way as NON_AV_DIR above -- flattened into one
+            # {title: citing_papers} map so existing/new assertions can look
+            # up a title's citer list without caring which shard it landed in.
+            self.last_citations = flatten(ag.CITATIONS_DIR)
         finally:
-            ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.DETAIL_OUT_FILE, ag.SCHOLAR_PROFILES_FILE, \
-                ag.CITATION_GRAPH_FILE, ag.ABSTRACTS_DIR = (
-                orig_in, orig_out, orig_adjacent, orig_detail, orig_profiles, orig_graph, orig_abstracts)
+            (ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.SCHOLAR_PROFILES_FILE, ag.CITATION_GRAPH_FILE,
+             ag.ABSTRACTS_DIR, ag.CITATIONS_DIR, ag.AUTHOR_DETAIL_DIR, ag.INSTITUTION_AUTHORS_DIR,
+             ag.NON_AV_AUTHOR_STATS_DIR) = orig
 
         return json.loads(out_file.read_text(encoding="utf-8"))
 
@@ -1182,14 +1206,16 @@ class TestAggregateEndToEnd(unittest.TestCase):
                 "citerone": ["citedpaper"], "citertwo": ["citedpaper"],
             }},
         )
-        by_title = {p["title"]: p for p in stats["all_papers"]}
         # Just a list of titles -- each citer is already its own top-level
-        # all_papers entry, see aggregate.py's citing_papers comment.
-        citers = set(by_title["Cited Paper"]["citing_papers"])
+        # all_papers entry, see aggregate.py's citing_papers comment. Sharded
+        # out to CITATIONS_DIR (see aggregate.py's CITATIONS_DIR comment),
+        # not left on the all_papers entry itself -- self.last_citations is
+        # the flattened {title: citing_papers} view of those shards.
+        citers = set(self.last_citations["Cited Paper"])
         self.assertEqual(citers, {"Citer One", "Citer Two"})
         # Sorted oldest first, for a citation-timeline chart: Citer Two is
         # 2021, Citer One is 2022.
-        self.assertEqual(by_title["Cited Paper"]["citing_papers"], ["Citer Two", "Citer One"])
+        self.assertEqual(self.last_citations["Cited Paper"], ["Citer Two", "Citer One"])
 
     def test_insights_highest_impact_author_requires_more_than_10_papers(self):
         # User-requested: a two-paper lucky hit shouldn't win "highest
@@ -1348,7 +1374,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         )
         by_title = {p["title"]: p for p in stats["all_papers"]}
         cited = by_title["Cited Paper"]
-        citers = set(cited["citing_papers"])
+        citers = set(self.last_citations["Cited Paper"])
         self.assertEqual(citers, {"Self Citer", "Independent Citer"})
         self.assertEqual(cited["self_citations"], 1)
 
