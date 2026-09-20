@@ -82,6 +82,69 @@ class TreeTests(unittest.TestCase):
             self.assertEqual(deploy.sync_tree(src, dst, deploy.make_preview_bytes), (0, 0))
 
 
+class FingerprintTests(unittest.TestCase):
+    """The corpus rebuild is skipped only when nothing that feeds it changed."""
+
+    STEPS = ('    run_step("Rebuilding corpus", "merge_corpus.py")\n'
+             '    run_step("Rebuilding stats", "aggregate.py")\n')
+
+    def make_repo(self, root):
+        (root / "scripts").mkdir()
+        (root / "data" / "venues").mkdir(parents=True)
+        for name in ("merge_corpus.py", "aggregate.py", "deploy.py", "run_tests.py",
+                     "backup_corpus.py", "build_data_release.py"):
+            (root / "scripts" / name).write_text("# original\n")
+        (root / "scripts" / "build_public_site.py").write_text("def main():\n" + self.STEPS)
+        (root / "data" / "papers_full.json").write_text("{}")
+        (root / "data" / "venues" / "cvpr.json").write_text("[]")
+        git("init", "--quiet", cwd=root)
+        git("add", "data/venues/cvpr.json", cwd=root)
+
+    def fp_after(self, root, path, text):
+        (root / path).write_text(text)
+        return deploy.build_fingerprint(root)
+
+    def test_only_corpus_inputs_change_the_fingerprint(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            self.make_repo(root)
+            base = deploy.build_fingerprint(root)
+
+            # Scripts that can't affect stats.json: no change.
+            for name in ("deploy.py", "run_tests.py", "backup_corpus.py", "build_data_release.py"):
+                self.assertEqual(self.fp_after(root, f"scripts/{name}", "# edited, and longer\n"), base, name)
+            # Editing the rest of build_public_site.py (not its step list): no change.
+            self.assertEqual(self.fp_after(
+                root, "scripts/build_public_site.py",
+                "# a new comment\ndef main():\n" + self.STEPS + "    copy_pages()\n"), base)
+
+            # A pipeline script, a new script, tracked data, papers_full.json: change.
+            self.assertNotEqual(self.fp_after(root, "scripts/merge_corpus.py", "# edited, and longer\n"), base)
+            fp = deploy.build_fingerprint(root)
+            self.assertNotEqual(self.fp_after(root, "scripts/repair_new.py", "# new\n"), fp)
+            fp = deploy.build_fingerprint(root)
+            self.assertNotEqual(self.fp_after(root, "data/venues/cvpr.json", '[{"title": "x"}]'), fp)
+            fp = deploy.build_fingerprint(root)
+            self.assertNotEqual(self.fp_after(root, "data/papers_full.json", '{"a": 1}'), fp)
+
+    def test_changing_the_pipeline_step_list_changes_the_fingerprint(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            self.make_repo(root)
+            base = deploy.build_fingerprint(root)
+            added = "def main():\n" + self.STEPS + '    run_step("Repair", "repair_new.py")\n'
+            self.assertNotEqual(self.fp_after(root, "scripts/build_public_site.py", added), base)
+            reordered = "def main():\n" + "".join(reversed(self.STEPS.splitlines(True)))
+            self.assertNotEqual(self.fp_after(root, "scripts/build_public_site.py", reordered), base)
+
+    def test_pipeline_steps_reads_script_names_in_order(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            self.make_repo(root)
+            self.assertEqual(deploy.pipeline_steps(root), ["merge_corpus.py", "aggregate.py"])
+            self.assertEqual(deploy.pipeline_steps(root / "nowhere"), [])
+
+
 class PublishEndToEndTests(unittest.TestCase):
     def test_publish_force_pushes_single_commit_and_is_repeatable(self):
         with tempfile.TemporaryDirectory() as d:

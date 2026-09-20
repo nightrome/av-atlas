@@ -731,6 +731,11 @@ changes make deploys cheap and add a preview step:
   post-processed at publish time (noindex, a banner, staging canonical URLs), so `--promote`
   ships the byte-identical build that was previewed. `.deploy-cache/state.json` records the
   previewed content hash.
-- **The corpus rebuild is skipped automatically** when a stat fingerprint of `scripts/*.py`,
-  the git-tracked `data/` sources and `papers_full.json` matches the one saved after the
-  last full build. Tests still run on the fast path.
+- **The corpus rebuild is skipped automatically** when a stat fingerprint of the pipeline
+  scripts, the git-tracked `data/` sources and `papers_full.json` matches the one saved
+  after the last full build. Tests still run on the fast path. Scripts that can't change
+  `stats.json` (`deploy.py`, `run_tests.py`, the backup and restore scripts and
+  `build_data_release.py`) are left out of the fingerprint so editing them doesn't force a
+  10-minute rebuild. `build_public_site.py` is also left out, except for its list of
+  `run_step` calls, because adding or reordering a step there does change what a full build
+  produces and would otherwise be skipped silently.
