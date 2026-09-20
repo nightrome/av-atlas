@@ -291,6 +291,15 @@ VENUE_ALIASES = {
     "IEEE Conference on Decision and Control": "CDC",
     "IEEE transactions on multimedia": "T-MM",
     "IEEE International Conference on Acoustics, Speech, and Signal Processing": "ICASSP",
+    # Semantic Scholar expands the acronym "ICIP" to the wrong conference
+    # name for these papers. Every one of the 247 records carrying it is an
+    # IEEE International Conference on Image Processing paper (e.g. 3M3D,
+    # SM3D), so map it to ICIP.
+    "International Conference on Information Photonics": "ICIP",
+    "International Conference on Image Processing": "ICIP",
+    # S2's name for the MDPI journal "Sensors" (50 papers, e.g. the mmWave
+    # radar-vision fusion review), not an Italian conference.
+    "Italian National Conference on Sensors": "Sensors",
     "IEEE International Conference on Systems, Man and Cybernetics": "SMC",
     "IEEE International Joint Conference on Neural Network": "IJCNN",
     "IEEE Transactions on Neural Networks and Learning Systems": "TNNLS",
@@ -2830,7 +2839,12 @@ def main():
         detail = e.get("authors_detail")
         if not detail or len(detail) < 2:
             continue
-        aff_lists = [tuple(sorted(a.get("affiliations") or [])) for a in detail]
+        # Compared after the same cleaning the per-author credit below uses,
+        # so a city/country fragment the parser leaked into every author's
+        # list ("Motional", "Pittsburgh", "USA") doesn't make one real
+        # institution look like a multi-institution block.
+        co_names = {clean_author_name(x.get("name")) for x in detail if x.get("name")}
+        aff_lists = [tuple(sorted(author_affiliations(a, all_author_names, co_names))) for a in detail]
         non_empty = [af for af in aff_lists if af]
         if len(non_empty) >= 2 and len(set(non_empty)) == 1 and len(non_empty[0]) >= 2:
             blanket_shared_papers.add(id(e))
@@ -2956,6 +2970,10 @@ def main():
             # ABSTRACT_CODE_AVAILABILITY_RE's comment for why this can't
             # also supply a False.
             papers[-1]["has_code_link"] = True
+        # Only present when set, to keep stats.json lean. "missing" = the
+        # venue was looked up and none usable exists; see fix_suspect_venues.py.
+        if e.get("venue_status"):
+            papers[-1]["venue_status"] = e["venue_status"]
     # Unknown-citation papers sort after every known-citation paper, regardless
     # of magnitude -- "no data" must never look like "definitely fewer than 1".
     papers.sort(key=lambda p: (p["citations"] is not None, p["citations"] or 0), reverse=True)
@@ -3792,6 +3810,11 @@ def main():
         "corpus_stats": {
             "by_venue": dict(sorted(venue_counts.items(), key=lambda kv: -kv[1])),
             "venue_coverage": venue_coverage,
+            # Arxiv-discovered papers with no venue: "missing" was looked up and has none;
+            # "unparsed" has not been looked up yet (still the arXiv placeholder).
+            "venue_missing": sum(1 for e in entries if e.get("venue_status") == "missing"),
+            "venue_unparsed": sum(1 for e in entries if e.get("source") == "arxiv_s2_citing_discovery"
+                                  and e.get("venue") in ("arXiv preprint", "arXiv") and not e.get("venue_status")),
             "big_venues": big_venues,
             "by_year": {str(y): n for y, n in sorted(year_counts.items())},
             "venues_covered": len(venue_counts),

@@ -15,8 +15,12 @@ Idempotent and resumable: writes back to the same file after every batch, so
 a killed/restarted run just picks up wherever it left off (nothing to
 re-fetch for entries already updated to a real venue).
 
-Usage: python backfill_citing_venues.py
+Usage: python backfill_citing_venues.py [--data-file PATH]
+
+--data-file works on a copy of the venue file instead of the tracked one, for
+when another process may be rebuilding the corpus at the same time.
 """
+import argparse
 import json
 import re
 import sys
@@ -53,6 +57,10 @@ def s2_post_batch(ids):
 
 
 def main():
+    global DATA_FILE
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data-file", type=Path, default=DATA_FILE)
+    DATA_FILE = parser.parse_args().data_file
     entries = json.loads(DATA_FILE.read_text(encoding="utf-8"))
     print(f"{len(entries)} total entries")
 
@@ -61,8 +69,8 @@ def main():
     # previous partial pass of this same script) are skipped for free.
     todo = []
     for e in entries:
-        if e.get("conference") != "arXiv preprint":
-            continue
+        if e.get("conference") != "arXiv preprint" or e.get("venue_status"):
+            continue  # a real venue, or already looked up and found missing
         m = ARXIV_ID_RE.search(e.get("doi") or "")
         if m:
             todo.append((e, m.group(1)))
@@ -83,6 +91,10 @@ def main():
             if venue and venue.strip():
                 entry["conference"] = venue.strip()
                 updated += 1
+            elif result is not None:
+                # S2 knows the paper and has no venue for it: missing
+                # information, distinct from a paper not looked up yet.
+                entry["venue_status"] = "missing"
         DATA_FILE.write_text(json.dumps(entries, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
         print(f"  batch {i // BATCH_SIZE + 1}/{(len(todo) - 1) // BATCH_SIZE + 1}: "
               f"{updated} updated so far", flush=True)

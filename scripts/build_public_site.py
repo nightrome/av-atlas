@@ -307,6 +307,7 @@ def main():
     if args.publish_only:
         print("--- Publish-only: skipping corpus rebuild, repairs and tests ---")
     else:
+        run_step("Fixing suspect venue names", "fix_suspect_venues.py")
         run_step("Rebuilding corpus (merge_corpus.py)", "merge_corpus.py")
         # One-off data repairs, applied here (not just left as scripts to remember
         # to run by hand) so a full recrawl-from-scratch reproduces the same

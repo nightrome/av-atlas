@@ -295,6 +295,9 @@ def main():
                     # exact source needs recording per paper, not just once
                     # in a docstring.
                     "source_url": p.get("source_url"),
+                    # "missing" = looked up, no usable venue exists; absent on an
+                    # arXiv record = venue not looked up yet (see fix_suspect_venues.py).
+                    "venue_status": p.get("venue_status"),
                 }
             elif arxiv_url and not merged[key].get("arxiv_url"):
                 # A dual-listed paper: already merged from a real venue's

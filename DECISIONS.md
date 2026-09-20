@@ -821,3 +821,25 @@ changes make deploys cheap and add a preview step:
   10-minute rebuild. `build_public_site.py` is also left out, except for its list of
   `run_step` calls, because adding or reordering a step there does change what a full build
   produces and would otherwise be skipped silently.
+
+## Wrong venue names from Semantic Scholar, and "missing" vs "not yet parsed"
+
+Semantic Scholar's `venue` string for arXiv-discovered papers is sometimes wrong: it
+expanded ICIP to "International Conference on Information Photonics" (247 papers), showed
+the MDPI journal Sensors as "Italian National Conference on Sensors", and gave short names
+like "Most", "Delta" or "Machine-mediated learning" that are unrelated to the paper.
+
+- **Verified renames** (`aggregate.py`'s `VENUE_ALIASES` for ICIP and Sensors,
+  `scripts/fix_suspect_venues.py` for the rest) were each checked against the paper's own
+  S2 journal name or DOI. Real journals in adjacent fields (Optics Express, Nature
+  Communications, Physica A) are left alone; they do publish AV papers.
+- **Short names that can't be tied to a real venue are discarded, not guessed.** The record
+  goes back to `conference: "arXiv preprint"` and gets `venue_status: "missing"`, with the
+  discarded string kept in `venue_raw`.
+- **`venue_status: "missing"` means "we looked, there is no usable venue".** An arXiv record
+  with no `venue_status` means "not looked up yet". The two used to look identical.
+  `backfill_citing_venues.py` sets `missing` when S2 has no venue and skips records that
+  already have a status. `stats.json` reports both counts as
+  `corpus_stats.venue_missing` and `venue_unparsed`.
+- The S2 source file is gitignored, so `fix_suspect_venues.py` runs first in
+  `build_public_site.py`, so a fresh crawl can't bring the bad names back.
