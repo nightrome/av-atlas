@@ -229,6 +229,84 @@ test('withParam / getFilters round-trip through location.search', () => {
   assert.strictEqual(sandbox.withParam('index.html', 'category', null), 'index.html?venue=CVPR');
 });
 
+// latexToPlain -- real snippets taken from abstracts in the corpus.
+const { latexToPlain } = loadFilters();
+const NBSP = '\u00a0';
+
+test('latexToPlain: the UniBEV abstract case, a percent sign inside maths', () => {
+  assert.strictEqual(latexToPlain('achieves $52.5 \\%$ mAP on average'), 'achieves 52.5% mAP on average');
+  assert.strictEqual(latexToPlain('($43.5 \\%$ mAP for BEVFusion)'), '(43.5% mAP for BEVFusion)');
+});
+
+test('latexToPlain: times, degrees, Greek letters and relations', () => {
+  assert.strictEqual(latexToPlain('$256\\times 704$'), '256×704');
+  assert.strictEqual(latexToPlain('$>180^{\\circ}$'), '>180°');
+  assert.strictEqual(latexToPlain('$360^{\\circ}\\times(0^{\\circ}\\sim 93.5^{\\circ})$'), '360°×(0°∼93.5°)');
+  assert.strictEqual(latexToPlain('$\\alpha=0.5$ and $r=0.74$'), 'α=0.5 and r=0.74');
+  assert.strictEqual(latexToPlain('$\\approx 15\\%$'), '≈15%');
+});
+
+test('latexToPlain: styling commands keep their text and drop the spaced-out digits', () => {
+  assert.strictEqual(latexToPlain('$\\textbf{40\\%}$'), '40%');
+  assert.strictEqual(latexToPlain('$\\mathbf{1 5. 7 \\%}$'), '15.7%');
+  assert.strictEqual(latexToPlain('$\\text{88}-\\text{96}\\%$'), '88-96%');
+  assert.strictEqual(latexToPlain('The \\emph{proposed} method, \\textit{ModelNet40}'), 'The proposed method, ModelNet40');
+});
+
+test('latexToPlain: super and subscripts use Unicode where they exist, plain text where not', () => {
+  assert.strictEqual(latexToPlain('$10^{-3}$'), '10⁻³');
+  assert.strictEqual(latexToPlain('$\\mathbb{R}^3$'), 'ℝ³');
+  assert.strictEqual(latexToPlain('$O(N)+O(m^{2})$'), 'O(N)+O(m²)');
+  assert.strictEqual(latexToPlain('$H_{\\infty }$'), 'H_∞');
+  assert.strictEqual(latexToPlain('${AP}_{3D}$'), 'AP_3D');
+  assert.strictEqual(latexToPlain('$\\mathrm{TSR}_{0.5}$'), 'TSR_0.5');
+});
+
+test('latexToPlain: nested groups, fractions and spacing', () => {
+  assert.strictEqual(latexToPlain('$\\sim {\\mathrm {300~\\text {m}\\text {W} }}$'), '∼300' + NBSP + 'mW');
+  assert.strictEqual(latexToPlain('$\\frac{1}{2}$ and $\\sqrt{x}$'), '1/2 and √x');
+});
+
+test('latexToPlain: text-mode escapes and links outside maths', () => {
+  assert.strictEqual(latexToPlain('gains 3\\% on R\\&D, code at \\url{https://github.com/a/b}'),
+    'gains 3% on R&D, code at https://github.com/a/b');
+  assert.strictEqual(latexToPlain('saves \\$5 per trip'), 'saves $5 per trip');
+});
+
+test('latexToPlain: money and unknown macros are left alone', () => {
+  assert.strictEqual(latexToPlain('costs $5 million and $10 million'), 'costs $5 million and $10 million');
+  assert.strictEqual(latexToPlain('We propose \\method{} for driving'), 'We propose \\method{} for driving');
+  assert.strictEqual(latexToPlain('plain text, nothing to do'), 'plain text, nothing to do');
+  assert.strictEqual(latexToPlain(''), '');
+});
+
+// computeEntityRanks(...).paper -- tied citation counts share a rank range.
+test('paper ranks: papers with equal citations share a range, not distinct positions', () => {
+  const { computeEntityRanks } = loadFilters();
+  const papers = [
+    { title: 'Top', citations: 50, venue: 'CVPR', year: 2020 },
+    { title: 'Mid A', citations: 5, venue: 'CVPR', year: 2021 },
+    { title: 'Mid B', citations: 5, venue: 'IV', year: 2021 },
+    { title: 'Zero A', citations: 0, venue: 'IV', year: 2022 },
+    { title: 'Zero B', citations: 0, venue: 'IV', year: 2022 },
+    { title: 'Zero C', citations: 0, venue: 'CVPR', year: 2022 },
+  ];
+  const ranks = computeEntityRanks({ all_papers: papers });
+  const top = ranks.paper('Top');
+  assert.strictEqual(top[0].rank, 1);
+  assert.strictEqual(top[0].rankTo, undefined, 'a unique count is a single rank');
+  const zero = ranks.paper('Zero B')[0];
+  assert.strictEqual(zero.rank, 4);
+  assert.strictEqual(zero.rankTo, 6);
+  assert.strictEqual(zero.total, 6);
+  assert.ok(/3 papers have 0 citations/.test(zero.tip), zero.tip);
+  const mid = ranks.paper('Mid A')[0];
+  assert.deepStrictEqual([mid.rank, mid.rankTo], [2, 3]);
+  // Within IV in 2022 the two zero-citation papers still tie, but only with each other.
+  const inYear = ranks.paper('Zero A').find(b => b.label === 'in 2022');
+  assert.deepStrictEqual([inYear.rank, inYear.rankTo, inYear.total], [1, 3, 3]);
+});
+
 if (failures > 0) {
   console.log(`\n${failures} test(s) failed`);
   process.exit(1);

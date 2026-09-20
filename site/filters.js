@@ -1507,21 +1507,39 @@
       venue: name => badgesFor(venueLists(), name, 'venues.html', ['total', 'papers', 'avg']),
       paper(title) {
         const list = papersByCitations();
-        const i = list.findIndex(p => p.title === title);
-        if (i === -1) return [];
-        const p = list[i];
-        const out = [{ rank: i + 1, total: list.length, label: 'by citations', href: 'index.html' }];
+        const p = list.find(q => q.title === title);
+        if (!p) return [];
+        const cites = p.citations == null ? -Infinity : p.citations;
+        // Papers with the same citation count share a rank, shown as the
+        // range they span. Numbering them one after another would put a paper
+        // with 0 citations at "#2,127 of 25,749" just because of where it sits
+        // among thousands of equals, which says nothing about it.
+        function badge(sub, label, href) {
+          let ahead = 0, tiedOrAhead = 0;
+          sub.forEach(q => {
+            const c = q.citations == null ? -Infinity : q.citations;
+            if (c > cites) ahead++;
+            if (c >= cites) tiedOrAhead++;
+          });
+          const out = { rank: ahead + 1, total: sub.length, label, href };
+          if (tiedOrAhead > ahead + 1) {
+            const tied = tiedOrAhead - ahead;
+            out.rankTo = tiedOrAhead;
+            out.tip = `${tied.toLocaleString()} papers ${p.citations == null ? 'have no citation count'
+              : `have ${p.citations.toLocaleString()} citation${p.citations === 1 ? '' : 's'}`}, `
+              + `so they share ranks ${out.rank.toLocaleString()} to ${out.rankTo.toLocaleString()}.`;
+          }
+          return out;
+        }
+        const out = [badge(list, 'by citations', 'index.html')];
         // Within its own venue / year -- the "most-cited first" paper tables
         // on venue.html and index.html?year= are exactly these orderings.
         if (p.venue) {
-          const sub = list.filter(q => q.venue === p.venue);
-          out.push({ rank: sub.findIndex(q => q.title === title) + 1, total: sub.length,
-            label: 'at ' + p.venue, href: 'venue.html?name=' + encodeURIComponent(p.venue) });
+          out.push(badge(list.filter(q => q.venue === p.venue), 'at ' + p.venue,
+            'venue.html?name=' + encodeURIComponent(p.venue)));
         }
         if (p.year) {
-          const sub = list.filter(q => q.year === p.year);
-          out.push({ rank: sub.findIndex(q => q.title === title) + 1, total: sub.length,
-            label: 'in ' + p.year, href: 'index.html?year=' + p.year });
+          out.push(badge(list.filter(q => q.year === p.year), 'in ' + p.year, 'index.html?year=' + p.year));
         }
         return out;
       },
@@ -1538,8 +1556,10 @@
       const a = document.createElement('a');
       a.className = 'rank-badge';
       a.href = it.href;
+      if (it.tip) a.title = it.tip;
       const b = document.createElement('b');
-      b.textContent = '#' + it.rank.toLocaleString();
+      b.textContent = '#' + it.rank.toLocaleString()
+        + (it.rankTo ? ' to ' + it.rankTo.toLocaleString() : '');
       a.appendChild(b);
       a.append(' ' + it.label + ' ');
       const of = document.createElement('span');
@@ -1717,6 +1737,189 @@
     if (instName && map[instName]) return map[instName];
     const list = authorCountries || [];
     return list.length === 1 ? list[0] : null;
+  };
+
+  // Some abstracts still carry the LaTeX they were written in: "$52.5 \%$",
+  // "$256\times 704$", "\textbf{40\%}". About 6% of them. latexToPlain() turns
+  // that into readable text, using Unicode for symbols and super/subscripts,
+  // instead of shipping a maths renderer for a few hundred abstracts. Anything
+  // it doesn't recognise is left exactly as written, so an unknown macro shows
+  // up as itself rather than vanishing.
+  const LATEX_SYMBOLS = {
+    times: '×', cdot: '·', pm: '±', mp: '∓', div: '÷', sim: '∼', approx: '≈', neq: '≠', ne: '≠',
+    leq: '≤', le: '≤', geq: '≥', ge: '≥', ll: '≪', gg: '≫', infty: '∞', circ: '°', deg: '°', degree: '°',
+    rightarrow: '→', to: '→', leftarrow: '←', leftrightarrow: '↔', Rightarrow: '⇒', Leftarrow: '⇐',
+    implies: '⟹', in: '∈', notin: '∉', subset: '⊂', cup: '∪', cap: '∩', forall: '∀', exists: '∃',
+    partial: '∂', nabla: '∇', sum: '∑', prod: '∏', int: '∫', ell: 'ℓ', ldots: '…', dots: '…',
+    cdots: '⋯', propto: '∝', equiv: '≡', ie: 'i.e.', eg: 'e.g.', etal: 'et al.',
+    ast: '∗', succ: '≻', prec: '≺', subseteq: '⊆', lceil: '⌈', rceil: '⌉', lfloor: '⌊', rfloor: '⌋',
+    circledR: '®',
+    alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', epsilon: 'ε', varepsilon: 'ε', zeta: 'ζ', eta: 'η',
+    theta: 'θ', vartheta: 'ϑ', iota: 'ι', kappa: 'κ', lambda: 'λ', mu: 'μ', nu: 'ν', xi: 'ξ', pi: 'π',
+    rho: 'ρ', sigma: 'σ', tau: 'τ', upsilon: 'υ', phi: 'φ', varphi: 'φ', chi: 'χ', psi: 'ψ', omega: 'ω',
+    Gamma: 'Γ', Delta: 'Δ', Theta: 'Θ', Lambda: 'Λ', Xi: 'Ξ', Pi: 'Π', Sigma: 'Σ', Phi: 'Φ', Psi: 'Ψ',
+    Omega: 'Ω',
+  };
+  // Commands that only style their argument: drop the command, keep the text.
+  // The first group is read as maths inside the braces, the second as text
+  // (so spaces survive: \text{m W} keeps its space, \mathrm{1 5} does not).
+  const LATEX_MATH_WRAPPERS = new Set(['mathrm', 'mathbf', 'mathit', 'mathsf', 'mathtt', 'mathcal',
+    'mathscr', 'mathfrak', 'boldsymbol', 'bm', 'operatorname']);
+  const LATEX_TEXT_WRAPPERS = new Set(['text', 'textbf', 'textit', 'textrm', 'textsf', 'texttt',
+    'textsc', 'textnormal', 'emph', 'mbox', 'hbox', 'underline']);
+  const LATEX_IGNORED = new Set(['left', 'right', 'bf', 'it', 'rm', 'em', 'tt', 'sc', 'sf', 'itshape',
+    'bfseries', 'displaystyle', 'limits', 'big', 'Big', 'bigg', 'Bigg']);
+  const LATEX_OPERATORS = new Set(['log', 'ln', 'exp', 'sin', 'cos', 'tan', 'sec', 'cot', 'min', 'max',
+    'lim', 'sup', 'inf', 'det', 'arg', 'argmax', 'argmin']);
+  // Text-mode accents (\'e, \"o, \v{C}): a combining mark on the letter.
+  const LATEX_TEXT_ACCENTS = { "'": '\u0301', '`': '\u0300', '^': '\u0302', '"': '\u0308', '~': '\u0303',
+    '.': '\u0307', '=': '\u0304', v: '\u030c', c: '\u0327', u: '\u0306', H: '\u030b' };
+  const LATEX_CITES = new Set(['cite', 'citep', 'citet', 'citeauthor', 'label']);
+  const LATEX_ACCENTS = { tilde: '\u0303', widetilde: '\u0303', hat: '\u0302', widehat: '\u0302',
+    bar: '\u0304', vec: '\u20d7', dot: '\u0307' };
+  const LATEX_BLACKBOARD = { R: 'ℝ', N: 'ℕ', Z: 'ℤ', Q: 'ℚ', C: 'ℂ' };
+  const SUPERSCRIPTS = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷',
+    '8': '⁸', '9': '⁹', '+': '⁺', '-': '⁻', '−': '⁻', '=': '⁼', '(': '⁽', ')': '⁾', a: 'ᵃ', b: 'ᵇ',
+    c: 'ᶜ', d: 'ᵈ', e: 'ᵉ', f: 'ᶠ', g: 'ᵍ', h: 'ʰ', i: 'ⁱ', j: 'ʲ', k: 'ᵏ', l: 'ˡ', m: 'ᵐ', n: 'ⁿ',
+    o: 'ᵒ', p: 'ᵖ', r: 'ʳ', s: 'ˢ', t: 'ᵗ', u: 'ᵘ', v: 'ᵛ', w: 'ʷ', x: 'ˣ', y: 'ʸ', z: 'ᶻ' };
+  const SUBSCRIPTS = { '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄', '5': '₅', '6': '₆', '7': '₇',
+    '8': '₈', '9': '₉', '+': '₊', '-': '₋', '−': '₋', '=': '₌', '(': '₍', ')': '₎', a: 'ₐ', e: 'ₑ',
+    h: 'ₕ', i: 'ᵢ', j: 'ⱼ', k: 'ₖ', l: 'ₗ', m: 'ₘ', n: 'ₙ', o: 'ₒ', p: 'ₚ', r: 'ᵣ', s: 'ₛ', t: 'ₜ',
+    u: 'ᵤ', v: 'ᵥ', x: 'ₓ' };
+
+  function scriptText(text, table, marker) {
+    if (marker === '^' && text === '°') return text; // ^{\circ} is just the degree sign
+    const mapped = [...text].map(c => table[c]);
+    if (text && mapped.every(Boolean)) return mapped.join('');
+    return [...text].length === 1 || /^[A-Za-z0-9.]+$/.test(text) ? marker + text : `${marker}(${text})`;
+  }
+
+  const LATEX_CMD = /\\([A-Za-z]+|[^A-Za-z])/y;
+  const has = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+  function convertLatex(src, math) {
+    let out = '';
+    let i = 0;
+    const n = src.length;
+    // One {group}, one backslash command, or one character -- what a
+    // command like \frac or ^ takes as its argument.
+    function readArg() {
+      while (i < n && src[i] === ' ') i++;
+      if (src[i] === '{') {
+        let depth = 0;
+        const start = i + 1;
+        for (; i < n; i++) {
+          if (src[i] === '{') depth++;
+          else if (src[i] === '}' && --depth === 0) break;
+        }
+        const inner = src.slice(start, i);
+        i = Math.min(i + 1, n);
+        return inner;
+      }
+      if (src[i] === '\\') {
+        LATEX_CMD.lastIndex = i;
+        const m = LATEX_CMD.exec(src);
+        if (m) { i += m[0].length; return m[0]; }
+      }
+      return i < n ? src[i++] : '';
+    }
+    const simple = s => /^[A-Za-z0-9.]+$/.test(s);
+
+    while (i < n) {
+      const ch = src[i];
+      if (ch === '\\') {
+        LATEX_CMD.lastIndex = i;
+        const m = LATEX_CMD.exec(src);
+        if (!m) { out += ch; i++; continue; }
+        const name = m[1];
+        const start = i;
+        i += m[0].length;
+        if (has(LATEX_SYMBOLS, name)) out += LATEX_SYMBOLS[name];
+        else if ('%&_#{}$'.includes(name)) out += name;
+        else if (name === ',' || name === ';' || name === ':' || name === 'quad' || name === 'qquad') out += ' ';
+        else if (name === ' ' || name === '\\') out += ' ';
+        else if (name === '!') { /* nothing to show */ }
+        else if (LATEX_IGNORED.has(name)) { while (src[i] === ' ') i++; } // a control word eats the space after it
+        else if (LATEX_OPERATORS.has(name)) out += name;
+        else if (LATEX_CITES.has(name)) {
+          // A citation key means nothing to a reader. Drop the space or ~ that led into it too.
+          readArg();
+          out = out.replace(/[ \u00a0~]+$/, '');
+        } else if (name === 'textcolor') {
+          if (src[i] === '[') i = src.indexOf(']', i) + 1 || n; // optional colour model, e.g. [RGB]
+          readArg(); // the colour
+          out += convertLatex(readArg(), false);
+        } else if (name === 'enquote') out += `“${convertLatex(readArg(), false)}”`;
+        else if (name === 'textsubscript') out += scriptText(convertLatex(readArg(), false), SUBSCRIPTS, '_');
+        else if (name === 'textsuperscript') out += scriptText(convertLatex(readArg(), false), SUPERSCRIPTS, '^');
+        else if (name === 'unicodex' || name === 'unicode') {
+          const hex = /^[0-9A-Fa-f]{4}/.exec(src.slice(i, i + 4));
+          if (hex) { out += String.fromCodePoint(parseInt(hex[0], 16)); i += 4; } else out += src.slice(start, i);
+        } else if (name === 'SI') {
+          const a = convertLatex(readArg(), true), b = convertLatex(readArg(), false);
+          out += `${a} ${b}`;
+        } else if (has(LATEX_TEXT_ACCENTS, name)) {
+          const a = convertLatex(readArg(), false);
+          out += [...a].length === 1 ? (a + LATEX_TEXT_ACCENTS[name]).normalize('NFC') : a;
+        } else if (LATEX_MATH_WRAPPERS.has(name)) out += convertLatex(readArg(), math);
+        else if (LATEX_TEXT_WRAPPERS.has(name)) out += convertLatex(readArg(), false);
+        else if (name === 'mathbb') { const a = convertLatex(readArg(), true); out += LATEX_BLACKBOARD[a] || a; }
+        else if (name === 'url') out += readArg();
+        else if (name === 'href') { readArg(); out += convertLatex(readArg(), false); }
+        else if (name === 'frac') {
+          const a = convertLatex(readArg(), true), b = convertLatex(readArg(), true);
+          out += `${simple(a) ? a : `(${a})`}/${simple(b) ? b : `(${b})`}`;
+        } else if (name === 'sqrt') {
+          const a = convertLatex(readArg(), true);
+          out += '√' + (simple(a) ? a : `(${a})`);
+        } else if (has(LATEX_ACCENTS, name)) {
+          const a = convertLatex(readArg(), true);
+          out += [...a].length === 1 ? a + LATEX_ACCENTS[name] : a;
+        } else out += src.slice(start, i); // unknown: keep it as written
+        continue;
+      }
+      if (!math && ch === '{') {
+        // "\degree{}" leaves an empty group, and "{\em changes}" / "{\deg}" are
+        // groups whose braces only served the command inside them. (After a
+        // macro we couldn't read, the {} stays with it, as written.)
+        if (src[i + 1] === '}' && !/\\[A-Za-z]+$/.test(out)) { i += 2; continue; }
+        if (/^\{\s*\\/.test(src.slice(i, i + 12))) { out += convertLatex(readArg(), false); continue; }
+      }
+      if (math) {
+        if (ch === '^' || ch === '_') {
+          i++;
+          out += scriptText(convertLatex(readArg(), true), ch === '^' ? SUPERSCRIPTS : SUBSCRIPTS, ch);
+          continue;
+        }
+        // Maths mode ignores spaces, and a bare {group} is only grouping.
+        if (ch === ' ' || ch === '\n' || ch === '\t' || ch === '{' || ch === '}') { i++; continue; }
+        if (ch === '~') { out += '\u00a0'; i++; continue; }
+      }
+      out += ch;
+      i++;
+    }
+    return out;
+  }
+
+  // "$5 million and $10 million" is money, not maths: a digit run followed by
+  // an ordinary word between two dollar signs.
+  const LOOKS_LIKE_MONEY = /^\d[\d,.]*\s+[A-Za-z]{3,}/;
+
+  window.latexToPlain = function (text) {
+    if (!text || (text.indexOf('\\') === -1 && text.indexOf('$') === -1)) return text || '';
+    const ESCAPED_DOLLAR = '';
+    // Publisher leftovers first: a whole LaTeX preamble pasted after the value
+    // it typesets (the plain version is already in the sentence), and the XML
+    // tags around an inline formula.
+    let s = text.replace(/\\documentclass[\s\S]*?\\end\s*\{document\}/g, '')
+      .replace(/<\/?(?:inline-formula|disp-formula|tex-math)\b[^>]*>/g, '')
+      .replace(/\\\$/g, ESCAPED_DOLLAR);
+    s = s.replace(/\$\$([\s\S]{1,400}?)\$\$|\$([^$]{1,400}?)\$|\\\(([\s\S]{1,400}?)\\\)|\\\[([\s\S]{1,400}?)\\\]/g,
+      (whole, display, inline, paren, bracket) => {
+        const body = [display, inline, paren, bracket].find(x => x != null);
+        return LOOKS_LIKE_MONEY.test(body.trim()) ? whole : convertLatex(body, true);
+      });
+    return convertLatex(s, false).split(ESCAPED_DOLLAR).join('$');
   };
 
   // Row-selection for the Compare view (compare.html).

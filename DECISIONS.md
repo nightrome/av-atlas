@@ -14,6 +14,25 @@ population, and lets a paper that is famous for something unrelated dominate eve
 AV leaderboard. Coverage of the in-corpus graph is partial and only grows, so every
 count is a floor, not a final number. The About page says so.
 
+## The citation graph is re-keyed to match paper titles
+
+`data/citation_graph.json` is keyed by a plain lowercase-and-digits version of each
+title. `aggregate.py`'s own title key also drops a final "s", so that "Networks" and
+"Network" count as one paper. Joined as they came, a paper whose title ends in a plural
+word ("...against Missing Sensor Modalities") matched none of its edges, neither as the
+citing nor as the cited paper. About 46% of all edges were being thrown away this way.
+
+It showed up on UniBEV's paper page: "Cited by (all papers): 14" next to "Cited by (AV
+papers): 0". The first number is stamped from the whole graph by
+`apply_citation_sources.py`, the second is the list that survived the join. All 14
+citers are AV papers.
+
+`rekey_citation_graph()` puts the edges into the same key space as the titles when
+`aggregate.py` loads the graph, so nothing has to be rebuilt. AV-to-AV citation links
+went from about 90,600 to 161,600. Everything computed from them moves too: the citer
+lists, dataset adoption on Insights, the disruption index and the self-citation counts.
+Those numbers were low before, and they are now correct rather than different in meaning.
+
 ## `None` vs `0` for an unknown citation count
 
 `citation_count()` returns `None`, not `0`, when no reference-list scan has reached
@@ -107,6 +126,53 @@ to the registry.
 `data/institution_aliases_llm.json` is a one-time batched pass that folded existing
 registry duplicates (diacritic and abbreviation variants) onto canonical names. It is
 applied after the hand-typed `INSTITUTION_ALIASES`.
+
+## An institution typed into an author field must not veto that institution
+
+`author_affiliations()` throws away any "institution" that is really a person's name,
+by exact match against every author name in the corpus. That works until one paper
+lists an institution as an author. One BoundED paper has "Delft University of
+Technology" in its author list, one HeightFormer paper has "Southeast University", one
+survey has "Graz University of Technology". From then on every genuine TU Delft,
+Southeast and Graz affiliation on the site was rejected as "a person's name". TU Delft
+had no row at all on the Institutions page (71 AV papers), Southeast 41, Graz 29.
+
+The set of author names now skips anything that reads as an institution (the same
+`_LOOKS_ACADEMICISH_RE` that `is_valid_institution` uses). The check that catches real
+leaked names ("Ben Sapp" showing up as an institution) is unchanged.
+
+## A city glued onto an institution name
+
+An address line like "Technical University of Darmstadt, Darmstadt" sometimes loses its
+comma and arrives as "Technical University of Darmstadt Darmstadt", which then counted
+as a second institution next to the real one. `strip_glued_city_suffix()` handles the two
+shapes that are safe to be sure about: the last word repeats the word before it, or it
+repeats the very first word of a name that still reads as an institution without it
+("Seoul National University Seoul"). It leaves "Hong Kong University of Science and
+Technology Hong Kong" alone on purpose, because a two-word city could cut the real name
+in half. "TU Dortmund" and "TU Dortmund University" (12 and 3 papers) are one alias now.
+
+## Institution country is only a fallback, and a company can span countries
+
+`data/institution_countries.json` holds one country per institution. It exists for the
+case where OpenAlex gave an author an institution but no country. It was applied to
+every institution on a paper, whatever the authors' own countries were. A company works
+in several places (Bosch in Germany and China, Huawei in Canada, France and Sweden,
+Uber ATG in Toronto), so a paper by Bosch's Shanghai authors also got Germany.
+
+An industry institution now only supplies its country for an author who has none of their
+own. Universities stay in one place, so for them nothing changed. This removed a country
+from 93 AV papers. The two country calculations in `aggregate.py` (the per-paper list and
+the leaderboard tally) go through the same `institution_country_applies()` so they agree.
+
+Three map entries were wrong and are fixed: Vector Institute was Russia (it is in
+Toronto), York University was the UK (it is in Toronto too), and Technical University of
+Darmstadt was missing, which left 4 of its 10 papers with no country.
+
+Not changed: an institution still has exactly one country on the Institutions page, its
+detail page and the country filter, so a multinational shows up under its home country
+only. Authors whose country was already stamped into `authors_detail` from a wrong map
+entry keep it until their affiliations are applied again.
 
 ## Scholar profiles and photos: confirm or skip
 
@@ -224,6 +290,22 @@ correct categories. That is much closer to what a category meant only for the "m
 leftovers should look like. The keywords stay in `categories.json` as the single
 source of truth, and only the ranking-pass membership is hardcoded, in one small
 `frozenset` in `classify.py`.
+
+There is one exception. "Textual Explanations for Self-Driving Vehicles" was sitting in
+Control, because its abstract says "controller" five times (the network being explained)
+and that wins the abstract-wide count. Its title says what the paper is about. So when a
+title itself matches an explainability keyword and no normal category is named anywhere in
+that title, explainability now takes the paper. This is the same "a title states what the
+paper is" reasoning the tie-break above already uses. Hint-AD ("... Interpretability in
+End-to-End Autonomous Driving") and the trajectory-prediction paper still keep their
+categories, because their titles name a normal topic too.
+
+It does move papers: AV papers in Explainability went from 55 to 164. Nearly all have
+"explainable", "interpretable" or "explanation" in the title, for example "Explaining How a
+Deep Neural Network Trained with End-to-End Learning Steers a Car" and "Explainable
+Object-Induced Action Decision for Autonomous Vehicles" (which had been in Segmentation).
+If that turns out to be too many, the fix is to require the title keyword to be
+"explanation" or "explaining" only, which is the narrower part of the change.
 
 ## An LLM category guess is the last thing consulted, weaker than any keyword
 

@@ -700,7 +700,10 @@ function render(ins, stats) {
   // -- Dataset adoption over time --
   const curatedDatasets = stats.datasets || [];
   if (curatedDatasets.length) {
-    const curatedTitles = curatedDatasets.map(d => d.paper_title);
+    // Every title a curated row already covers, including the extra papers
+    // merged into it (both nuPlan papers, both KITTI ones), so none of them
+    // can come back as a second, separate row from extraDatasetsFromCategory.
+    const curatedTitles = curatedDatasets.flatMap(d => [d.paper_title, ...(d.also_introduced_in || []).map(x => x.title)]);
     const n = renderTopNControl(document.getElementById('dataset-topn-container'), 'insights-datasets-topn', {
       default: 10, min: 1, max: 40,
       onChange: (topN) => renderDatasetTimeline(

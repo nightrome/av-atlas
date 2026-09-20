@@ -161,7 +161,34 @@ def normalize_title(t):
         t = m.group(1)
     t = _TITLE_MATH_RE.sub("", _EMOJI_RE.sub("", t.translate(_SUPERSCRIPT_DIGITS)))
     key = re.sub(r"[^a-z0-9]", "", t.lower())
+    return _strip_trailing_plural(key)
+
+
+def _strip_trailing_plural(key):
     return key if key.endswith("ss") else _TRAILING_PLURAL_S_RE.sub("", key)
+
+
+def rekey_citation_graph(graph):
+    """Puts the edge keys of data/citation_graph.json into the same key space
+    normalize_title() gives every paper.
+
+    build_citation_graph.py writes its keys with a plain lowercase-alphanumeric
+    title, without the trailing-"s" strip normalize_title() applies. Joined as
+    they came, every paper whose title ends in a plural word ("...against
+    Missing Sensor Modalities") found none of its edges, neither as the citing
+    nor as the cited paper. About half of all edges were being dropped, so
+    such papers showed no citing papers at all while their citation count
+    (stamped by apply_citation_sources.py from the very same graph) was
+    right. Found on UniBEV: 14 citations, "0" AV papers citing it.
+
+    Two keys that only differed by that final "s" are one paper here, so their
+    edges are merged."""
+    edges = {}
+    for citer_key, cited_keys in (graph.get("edges") or {}).items():
+        edges.setdefault(_strip_trailing_plural(citer_key), set()).update(
+            _strip_trailing_plural(k) for k in cited_keys)
+    return {**graph, "edges": {k: sorted(v) for k, v in edges.items()}}
+
 
 COUNTRY_NAMES = {
     "US": "United States", "CN": "China", "DE": "Germany", "GB": "United Kingdom",
@@ -1423,6 +1450,8 @@ INSTITUTION_ALIASES = {
     "Un. Sofia": "Sofia University",
     "Sofia University St. Kliment Ohridski": "Sofia University",
     "Nanyang Technological": "Nanyang Technological University",
+    # Same university, two spellings on different papers (15 papers split 12/3).
+    "TU Dortmund": "TU Dortmund University",
     # Tsinghua's own sub-lab/department/center names, seen on their own with
     # no parent institution attached (user-flagged: these were fragmenting
     # e.g. "Jun Zhu"'s institution list into 8 separate-looking entries that
@@ -1868,6 +1897,50 @@ TRAILING_EMAIL_RE = re.compile(
 UNIV_ABBREV_RE = re.compile(r"\bUniv\.?(?=\s+of\s)")
 
 
+# A footnote number stuck straight onto the last word ("Delft University of
+# Technology1", "Stanford University1"). One digit, right after a lowercase
+# letter, so "Voxel51" and "Tech4i2" are not touched.
+GLUED_FOOTNOTE_DIGIT_RE = re.compile(r"(?<=[a-z])\d$")
+
+
+def strip_glued_city_suffix(name):
+    """Drops a city name the affiliation parser glued onto the end of an
+    institution that already carries it: "Technical University of Darmstadt
+    Darmstadt" (a "... Darmstadt, Germany" address line with the comma lost),
+    "TU Dortmund Dortmund", "Seoul National University Seoul". Left alone
+    they split one institution into two rows on the Institutions page (user-
+    flagged for TU Darmstadt).
+
+    Only two shapes, both cheap to be sure about: the last word repeats the
+    word right before it, or it repeats the very first word of a name that
+    still reads as an institution once it is gone. "Hong Kong University of
+    Science and Technology Hong Kong" is deliberately not touched -- a
+    multi-word city could take the real name apart."""
+    words = name.split()
+    if len(words) < 3:
+        return name
+    last = words[-1]
+    if len(last) < 4 or not last[0].isupper():
+        return name
+    if words[-2] == last:
+        return " ".join(words[:-1])
+    base = " ".join(words[:-1])
+    # A base ending in a lowercase connector ("... University of" + Oxford)
+    # means the repeated word is the real end of the name, not a glued city.
+    if words[0] == last and words[-2][0].isupper() and _LOOKS_ACADEMICISH_RE.search(base):
+        return base
+    return name
+
+
+def _apply_institution_aliases(name):
+    name = INSTITUTION_ALIASES.get(name, name)
+    name = INSTITUTION_ALIASES_LLM.get(name, name)
+    # Re-apply the hand dict: the LLM pass may land on a form the hand dict
+    # canonicalizes further (e.g. LLM "... -> Technical University of Munich",
+    # hand "Technical University of Munich -> ... (TUM)").
+    return INSTITUTION_ALIASES.get(name, name)
+
+
 def normalize_institution(name):
     name = html.unescape((name or "").strip()).strip().rstrip(".").strip()
     name = fix_mojibake_diacritics(name)
@@ -1894,6 +1967,8 @@ def normalize_institution(name):
     # separate pass. Re-strip a trailing period afterward ("Nankai
     # University. †" -> "Nankai University." -> "Nankai University").
     name = TRAILING_FOOTNOTE_MARKER_RE.sub("", name).strip().rstrip(".").strip()
+    if _LOOKS_ACADEMICISH_RE.search(name):
+        name = GLUED_FOOTNOTE_DIGIT_RE.sub("", name)
     name = LEADING_ARTICLE_RE.sub("", name).strip()
     name = LEADING_FOOTNOTE_NUMBER_RE.sub("", name).strip()
     name = NEXTAFF_PREFIX_RE.sub("", name).strip()
@@ -1904,12 +1979,13 @@ def normalize_institution(name):
     # (e.g. "HKISI_CAS") -- not part of the institution's actual name.
     name = name.replace("_", " ")
     name = re.sub(r"\s+", " ", name).strip()
-    name = INSTITUTION_ALIASES.get(name, name)
-    name = INSTITUTION_ALIASES_LLM.get(name, name)
-    # Re-apply the hand dict: the LLM pass may land on a form the hand dict
-    # canonicalizes further (e.g. LLM "... -> Technical University of Munich",
-    # hand "Technical University of Munich -> ... (TUM)").
-    name = INSTITUTION_ALIASES.get(name, name)
+    name = _apply_institution_aliases(name)
+    # After the alias lookups, not before: some alias keys are the full glued
+    # string ("Department of Control Methods ... Technical University of
+    # Darmstadt Darmstadt"), and those should still match as written.
+    unglued = strip_glued_city_suffix(name)
+    if unglued != name:
+        name = _apply_institution_aliases(unglued)
     # Final cosmetic pass: en/em-dash -> ASCII hyphen, now that every alias
     # key (some of which carry an en-dash) has had its chance to match.
     return name.replace("–", "-").replace("—", "-")
@@ -2137,6 +2213,21 @@ def author_country_codes(a):
     affs = a.get("affiliations") or []
     bad = {code for inst, code in COUNTRY_MISLABELS if inst in affs}
     return [c for c in (a.get("countries") or []) if c not in bad]
+
+
+def institution_country_applies(inst, author_codes):
+    """Whether data/institution_countries.json's one country for `inst` should
+    be credited for an author who has `author_codes` of their own.
+
+    That map is a fallback for an author OpenAlex gave no country at all. A
+    company works in several countries though (Bosch in Germany and China,
+    Huawei in Canada, France and Sweden, Microsoft Research in Cambridge and
+    Zurich), and the map can only hold its home one. Crediting that home
+    country on top of the author's own would put Germany on a paper whose
+    Bosch authors all sit in Shanghai, so an industry institution only fills
+    in for an author with no country of their own. Universities stay in one
+    place, so for them the map still applies either way."""
+    return not author_codes or classify_institution_sector(inst) != "industry"
 
 
 def _looks_like_a_coauthor_with_garbage_suffix(candidate, co_author_names):
@@ -2649,11 +2740,19 @@ def main():
     # exactly two capitalized words with no institutional keyword). No
     # institution in this corpus happens to share its exact display name
     # with a real author, so this check is both safe and effective.
+    #
+    # ...which stopped being true once a stray institution turned up in some
+    # paper's author list. One BoundED paper lists "Delft University of
+    # Technology" as an author, one HeightFormer paper "Southeast University",
+    # one survey "Graz University of Technology" -- and every real TU Delft,
+    # Southeast and Graz affiliation on the site (hundreds of author records)
+    # was then thrown out as "a person's name". A string that reads as an
+    # institution is never added to the set.
     all_author_names = set()
     for e in entries:
         for name in (e.get("authors") or "").split(","):
             name = clean_author_name(name)
-            if name:
+            if name and not _LOOKS_ACADEMICISH_RE.search(name):
                 all_author_names.add(name)
 
     # A wrong-paper enrichment match: authors_detail ends up holding some
@@ -2769,13 +2868,13 @@ def main():
         details = e.get("authors_detail") or []
         co_author_names = {clean_author_name(x.get("name")) for x in details if x.get("name")}
         for a in details:
-            for code in author_country_codes(a):
+            own_codes = author_country_codes(a)
+            for code in own_codes:
                 countries.add(COUNTRY_NAMES.get(code, code))
             for aff in author_affiliations(a, all_author_names, co_author_names):
                 institutions.add(aff)
-        for inst in institutions:
-            if inst in institution_countries:
-                countries.add(institution_countries[inst])
+                if aff in institution_countries and institution_country_applies(aff, own_codes):
+                    countries.add(institution_countries[aff])
         return sorted(countries), sorted(institutions)
 
     def paper_authors(e):
@@ -2869,7 +2968,7 @@ def main():
     # rather than trying to recover it from a count.
     citation_graph = {}
     if CITATION_GRAPH_FILE.exists():
-        citation_graph = json.loads(CITATION_GRAPH_FILE.read_text(encoding="utf-8"))
+        citation_graph = rekey_citation_graph(json.loads(CITATION_GRAPH_FILE.read_text(encoding="utf-8")))
     by_norm_title = {normalize_title(p["title"]): p for p in papers}
     citing_by_target = defaultdict(list)
     # A self-citation (the citing paper shares at least one author with the
@@ -3010,7 +3109,10 @@ def main():
         ("ScenarioNet", ["ScenarioNet: Open-Source Platform for Large-Scale Traffic Scenario Simulation and Modeling"]),
         ("SafeShift", ["SafeShift: Safety-Informed Distribution Shifts for Robust Trajectory Prediction in Autonomous Driving"]),
         ("V2V4Real", ["V2V4Real: A Real-World Large-Scale Dataset for Vehicle-to-Vehicle Cooperative Perception"]),
-        ("nuPlan", ["nuPlan: A closed-loop ML-based planning benchmark for autonomous vehicles"]),
+        ("nuPlan", [
+            "nuPlan: A closed-loop ML-based planning benchmark for autonomous vehicles",
+            "Towards Learning-Based Planning: The nuPlan Benchmark for Real-World Autonomous Driving",
+        ]),
         ("ONCE", ["One Million Scenes for Autonomous Driving: ONCE Dataset"]),
         ("DDAD", ["DDAD: Detachable Crowd Density Estimation Assisted Pedestrian Detection"]),
         ("A*3D", ["A*3D Dataset: Towards Autonomous Driving in Challenging Environments"]),
@@ -3307,16 +3409,16 @@ def main():
                         rec["last_year"] = year if rec["last_year"] is None else max(rec["last_year"], year)
             paper_institutions.update(own_affs)
             paper_countries.update(codes)
-        # Same institution-name fallback as paper_countries_institutions()
-        # above -- this loop builds the Countries leaderboard from author
-        # country codes directly and has its own separate paper_countries
-        # set, so the fallback has to be applied here too, not just once.
-        # paper_countries holds raw 2-letter codes at this point (resolved
-        # to display names below), so the raw-code fallback map is used, not
-        # the display-name one paper_countries_institutions() uses.
-        for aff in paper_institutions:
-            if aff in institution_country_codes:
-                paper_countries.add(institution_country_codes[aff])
+            # Same institution-name fallback as paper_countries_institutions()
+            # above -- this loop builds the Countries leaderboard from author
+            # country codes directly and has its own separate paper_countries
+            # set, so the fallback has to be applied here too, not just once.
+            # paper_countries holds raw 2-letter codes at this point (resolved
+            # to display names below), so the raw-code fallback map is used,
+            # not the display-name one paper_countries_institutions() uses.
+            for aff in own_affs:
+                if aff in institution_country_codes and institution_country_applies(aff, codes):
+                    paper_countries.add(institution_country_codes[aff])
         for aff in paper_institutions:
             inst_citations[aff] += c
             inst_papers[aff] += 1

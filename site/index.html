@@ -41,6 +41,15 @@
   td a:hover { text-decoration: underline; }
   .badge { display: inline-block; font-size: 0.7em; padding: 1px 6px; border-radius: 8px; margin-left: 6px; flex-shrink: 0; }
   .badge.verified { background: #1f6f43; color: #fff; }
+  /* Every row is one line tall: a long venue name ("2020 IEEE/CVF Conference
+     on Computer Vision and Pattern Recognition Workshops (CVPRW)") is clipped
+     with an ellipsis, and the full name shows on hover. */
+  #papers-body td { white-space: nowrap; vertical-align: middle; }
+  #papers-body tr { height: 38px; }
+  .venue-cell {
+    display: inline-block; max-width: 170px; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; vertical-align: bottom;
+  }
   .title-cell { display: flex; align-items: center; gap: 6px; max-width: 480px; }
   .title-cell .title-text {
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
@@ -221,21 +230,23 @@ function sourceCell(p) {
     a.title = 'arXiv (exact link not yet resolved)';
     links.appendChild(a);
   }
-  // Only offer a Google Scholar title search for a paper we actually have a
-  // bibliographic record for -- at least one author, or an arXiv/DOI id. A
-  // citation-graph stub that is nothing but a title string scavenged from
-  // someone else's reference list has no established identity to look up,
-  // and a Scholar query on a fragment ("Adaptive", a bare venue name) just
-  // returns noise (user-reported).
-  if ((p.authors && p.authors.length) || p.arxiv_url || p.doi) {
-    const scholar = document.createElement('a');
-    scholar.href = `https://scholar.google.com/scholar?q=${encodeURIComponent(p.title)}`;
-    scholar.target = '_blank'; scholar.rel = 'noopener';
-    scholar.textContent = '🎓';
-    scholar.title = 'Google Scholar';
-    links.appendChild(scholar);
-  }
+  // No Google Scholar link: a title search is not a link to the paper (see
+  // paper.html). It returns once each AV paper has a confirmed Scholar URL.
   return links;
+}
+
+// How many links a paper has here (DOI, arXiv), so the Source column can be
+// sorted like every other column: papers with the most links first.
+function sourceLinkCount(p) {
+  return (p.doi ? 1 : 0) + (p.arxiv_url || p.venue === 'arXiv' ? 1 : 0);
+}
+
+function venueCell(p) {
+  const span = document.createElement('span');
+  span.className = 'venue-cell';
+  span.textContent = p.venue || '';
+  if (p.venue) span.title = p.venue;
+  return span;
 }
 
 // Citation counts are always whole numbers -- only an average may carry one
@@ -522,7 +533,7 @@ function renderResults() {
   function renderPapersBody(rows) {
     papersBody.innerHTML = '';
     rows.forEach((p, i) => papersBody.appendChild(row([
-      pagination.offset + i + 1, titleCell(p), categoryCell(p), p.year || '', p.venue || '', sourceCell(p), citationsCell(p), earlyCitationsCell(p),
+      pagination.offset + i + 1, titleCell(p), categoryCell(p), p.year || '', venueCell(p), sourceCell(p), citationsCell(p), earlyCitationsCell(p),
     ])));
     appendSumRow(papersBody, rows, [null, null, null, null, null, null, p => p.citations, p => p.early_citations]);
   }
@@ -532,7 +543,7 @@ function renderResults() {
     { accessor: p => p.category || '', numeric: false },
     { accessor: p => p.year, numeric: true },
     { accessor: p => p.venue, numeric: false },
-    null,
+    { accessor: p => sourceLinkCount(p), numeric: true },
     { accessor: p => p.citations, numeric: true },
     { accessor: p => p.early_citations, numeric: true },
   ], renderPapersBody);
