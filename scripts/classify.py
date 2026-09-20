@@ -702,13 +702,25 @@ def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known
         if obj_2d and obj_3d and obj_3d[0] >= obj_2d[0] and obj_3d[2] > obj_2d[2]:
             category = "object-detection-3d"
 
-    # Last-resort categories only get a turn once nothing normal matched --
-    # see LAST_RESORT_CATEGORY_IDS above for why explainability lives here
+    # Last-resort categories mostly only get a turn once nothing normal matched
+    # -- see LAST_RESORT_CATEGORY_IDS above for why explainability lives here
     # instead of in the main ranking.
-    if category == "uncategorized" and last_resort_categories:
+    #
+    # One exception: a title that itself names the topic, when no normal
+    # category is named anywhere in that title. "Textual Explanations for
+    # Self-Driving Vehicles" is about explanations, but its abstract says
+    # "controller" five times (the network being explained), which is enough
+    # to win the abstract-wide count and land it in Control (user-flagged).
+    # Papers like "Hint-AD: ... Interpretability in End-to-End Autonomous
+    # Driving" also name a normal topic in the title, so they still keep it.
+    if last_resort_categories:
         last_resort_ranked = sorted((rank(cat) for cat in last_resort_categories), reverse=True)
-        if last_resort_ranked[0][1] > 0:
-            category = last_resort_ranked[0][3]
+        title_score, combined_score, _, last_resort_id = last_resort_ranked[0]
+        title_names_normal_topic = any(r[0] > 0 for r in ranked)
+        if title_score > 0 and not title_names_normal_topic:
+            category = last_resort_id
+        elif category == "uncategorized" and combined_score > 0:
+            category = last_resort_id
 
     # Weaker still than even the last-resort categories above: one local
     # LLM's single-title guess (see fetch_llm_category_labels.py), only for

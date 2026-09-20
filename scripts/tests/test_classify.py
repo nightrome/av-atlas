@@ -495,6 +495,35 @@ class TestClassifyPaper(unittest.TestCase):
         self.assertEqual(category, "explainability")
         self.assertEqual(relevance, "AV")
 
+    def test_title_naming_the_last_resort_topic_beats_abstract_only_matches(self):
+        # Real case: "Textual Explanations for Self-Driving Vehicles" says
+        # "controller" five times in its abstract (the network being
+        # explained) and landed in Control. Its title names explanations, and
+        # no normal category is named in the title, so explainability wins.
+        categories = self.CATEGORIES + [
+            {"id": "control", "keywords": ["controller"]},
+            {"id": "explainability", "keywords": ["explanation"]},
+        ]
+        category, relevance = cl.classify_paper(
+            "Textual Explanations for Self-Driving Vehicles",
+            "The controller drives the car. The controller's attention explains the controller. "
+            "Controller, controller.",
+            categories,
+        )
+        self.assertEqual(category, "explainability")
+        self.assertEqual(relevance, "AV")
+
+    def test_last_resort_title_match_yields_when_the_title_names_a_normal_topic_too(self):
+        categories = self.CATEGORIES + [
+            {"id": "explainability", "keywords": ["explainable"]},
+        ]
+        category, _ = cl.classify_paper(
+            "Explainable Object Detection for Autonomous Driving",
+            "We explain what the detector sees.",
+            categories,
+        )
+        self.assertEqual(category, "object-detection")
+
     def test_category_independent_of_relevance(self):
         # A generic segmentation paper with no AV terms at all: categorized,
         # but not AV -- category keywords must never leak into relevance.

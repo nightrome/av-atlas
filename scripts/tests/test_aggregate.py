@@ -456,6 +456,41 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertEqual(ag.normalize_institution("University of Southern California"),
                          "University of Southern California")
 
+    def test_drops_a_city_glued_onto_the_end_of_the_name(self):
+        # User-flagged: "Technical University of Darmstadt" showed up as two
+        # institutions because one paper's parser kept the city too.
+        for glued, real in (
+            ("Technical University of Darmstadt Darmstadt", "Technical University of Darmstadt"),
+            ("University of Bonn Bonn", "University of Bonn"),
+            ("Seoul National University Seoul", "Seoul National University"),
+            ("Wuhan University of Technology Wuhan", "Wuhan University of Technology"),
+        ):
+            self.assertEqual(ag.normalize_institution(glued), real, glued)
+        # "TU Dortmund" is also spelled out in full elsewhere; both end up as one.
+        self.assertEqual(ag.normalize_institution("TU Dortmund Dortmund"), "TU Dortmund University")
+
+    def test_strips_a_footnote_digit_glued_onto_an_institution(self):
+        # "Delft University of Technology1" was a second TU Delft row.
+        for glued, real in (
+            ("Delft University of Technology1", "Delft University of Technology"),
+            ("Stanford University1", "Stanford University"),
+            ("Fraunhofer Institute6", "Fraunhofer Institute"),
+        ):
+            self.assertEqual(ag.normalize_institution(glued), real, glued)
+        # A digit that is part of the name stays.
+        self.assertEqual(ag.normalize_institution("University of Michigan and Voxel51"),
+                         "University of Michigan and Voxel51")
+
+    def test_glued_city_strip_leaves_real_names_alone(self):
+        for name in (
+            "University of Oxford",
+            "Oxford Robotics Institute Department of Engineering Science University of Oxford",
+            "Hong Kong University of Science and Technology Hong Kong",
+            "Toyota Research Institute",
+            "Technical University of Darmstadt",
+        ):
+            self.assertEqual(ag.strip_glued_city_suffix(name), name, name)
+
     def test_strips_leading_punctuation_and_dangling_and(self):
         self.assertEqual(ag.normalize_institution("-University of California"),
                          "University of California")
@@ -1038,6 +1073,36 @@ class TestAuthorCountryCodes(unittest.TestCase):
         self.assertEqual(ag.author_country_codes({}), [])
 
 
+class TestRekeyCitationGraph(unittest.TestCase):
+    def test_edge_keys_get_the_same_trailing_s_strip_as_titles(self):
+        graph = ag.rekey_citation_graph({"generated_at": "2026-01-01", "edges": {
+            "citerone": ["robustnessagainstmissingmodalities", "pointclouds"],
+        }})
+        self.assertEqual(graph["generated_at"], "2026-01-01")
+        self.assertEqual(graph["edges"], {"citerone": ["pointcloud", "robustnessagainstmissingmodalitie"]})
+
+    def test_keys_that_only_differed_by_a_final_s_are_merged(self):
+        graph = ag.rekey_citation_graph({"edges": {
+            "widgetnetwork": ["a"], "widgetnetworks": ["b"],
+        }})
+        self.assertEqual(graph["edges"], {"widgetnetwork": ["a", "b"]})
+
+    def test_a_missing_or_empty_graph_stays_empty(self):
+        self.assertEqual(ag.rekey_citation_graph({}), {"edges": {}})
+
+
+class TestInstitutionCountryApplies(unittest.TestCase):
+    def test_a_company_only_fills_in_for_an_author_with_no_country(self):
+        self.assertFalse(ag.institution_country_applies("Bosch", ["CN"]))
+        self.assertTrue(ag.institution_country_applies("Bosch", []))
+
+    def test_a_university_is_credited_either_way(self):
+        # A university stays in one country, so its mapped country can be
+        # added even next to a country OpenAlex did attach to the author.
+        self.assertTrue(ag.institution_country_applies("ETH Zürich", ["US"]))
+        self.assertTrue(ag.institution_country_applies("ETH Zürich", []))
+
+
 class TestAggregateEndToEnd(unittest.TestCase):
     """Runs aggregate.main() against small fixture data by redirecting its
     IN_FILE/OUT_FILE module-level paths, then inspects the written stats.json."""
@@ -1217,6 +1282,23 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # 2021, Citer One is 2022.
         self.assertEqual(self.last_citations["Cited Paper"], ["Citer Two", "Citer One"])
 
+    def test_citers_of_a_paper_whose_title_ends_in_a_plural_word_are_found(self):
+        # The citation graph is keyed by the plain lowercase title; aggregate's
+        # own title key also drops a final "s". Before the graph was re-keyed
+        # on load, a title like this one lost every edge, in both directions.
+        self._run(
+            [
+                {"title": "Robustness against Missing Modalities", "year": 2024, "venue": "IV", "av_relevance": "AV"},
+                {"title": "Sensor Failures", "year": 2025, "venue": "CVPR", "av_relevance": "AV"},
+            ],
+            citation_graph={"generated_at": "2026-01-01", "edges": {
+                "sensorfailures": ["robustnessagainstmissingmodalities"],
+                "robustnessagainstmissingmodalities": ["sensorfailures"],
+            }},
+        )
+        self.assertEqual(self.last_citations["Robustness against Missing Modalities"], ["Sensor Failures"])
+        self.assertEqual(self.last_citations["Sensor Failures"], ["Robustness against Missing Modalities"])
+
     def test_insights_highest_impact_author_requires_more_than_10_papers(self):
         # User-requested: a two-paper lucky hit shouldn't win "highest
         # average impact" on the Insights page, even though it legitimately
@@ -1318,6 +1400,59 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # and not profile and not orcid" guard just above where it's built).
         for name in ("Alice Blanket", "Bob Blanket", "Carol Blanket"):
             self.assertNotIn(name, author_detail)
+
+    def test_company_home_country_is_not_added_over_the_authors_own_country(self):
+        # Bosch is mapped to Germany, but these authors sit in China (OpenAlex
+        # gave them CN). The paper should count for China only. The second
+        # paper has an author with no country at all, so Bosch's home country
+        # still fills the gap there.
+        stats = self._run([
+            {"title": "Bosch Shanghai Paper", "year": 2025, "venue": "CVPR", "av_relevance": "AV",
+             "authors": "Wei Zhang, Li Chen",
+             "authors_detail": [
+                 {"name": "Wei Zhang", "affiliations": ["Bosch"], "countries": ["CN"]},
+                 {"name": "Li Chen", "affiliations": ["Bosch"], "countries": ["CN"]},
+             ]},
+            {"title": "Bosch No Country Paper", "year": 2025, "venue": "CVPR", "av_relevance": "AV",
+             "authors": "Anna Keller, Jonas Weber",
+             "authors_detail": [
+                 {"name": "Anna Keller", "affiliations": ["Bosch"], "countries": []},
+                 {"name": "Jonas Weber", "affiliations": ["Bosch"], "countries": []},
+             ]},
+        ])
+        by_title = {p["title"]: p for p in stats["all_papers"]}
+        self.assertEqual(by_title["Bosch Shanghai Paper"]["countries"], ["China"])
+        self.assertEqual(by_title["Bosch No Country Paper"]["countries"], ["Germany"])
+        country_papers = {c["name"]: c["papers"] for c in stats["top_countries"]}
+        self.assertEqual(country_papers, {"China": 1, "Germany": 1})
+
+    def test_an_institution_typed_into_one_authors_field_does_not_erase_that_institution(self):
+        # Real case: a paper lists "Delft University of Technology" as if it
+        # were an author, and the leaked-person-name filter then rejected
+        # every genuine TU Delft affiliation on the site.
+        stats = self._run([
+            {"title": "Odd Author List Paper", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
+             "authors": "Delft University of Technology, Pim Vermeer"},
+            {"title": "Real Delft Paper", "year": 2025, "venue": "IV", "av_relevance": "AV",
+             "authors": "Anna de Vries, Jan Bakker",
+             "authors_detail": [
+                 {"name": "Anna de Vries", "affiliations": ["Delft University of Technology"], "countries": ["NL"]},
+                 {"name": "Jan Bakker", "affiliations": ["Delft University of Technology"], "countries": ["NL"]},
+             ]},
+        ])
+        by_title = {p["title"]: p for p in stats["all_papers"]}
+        self.assertEqual(by_title["Real Delft Paper"]["institutions"], ["Delft University of Technology"])
+
+    def test_a_persons_name_leaked_into_an_affiliation_is_still_dropped(self):
+        stats = self._run([
+            {"title": "Leaky Affiliation Paper", "year": 2025, "venue": "CVPR", "av_relevance": "AV",
+             "authors": "Erin Fields, Omar Haddad",
+             "authors_detail": [
+                 {"name": "Erin Fields", "affiliations": ["ETH Zürich", "Omar Haddad"], "countries": ["CH"]},
+                 {"name": "Omar Haddad", "affiliations": ["ETH Zürich"], "countries": ["CH"]},
+             ]},
+        ])
+        self.assertEqual(stats["all_papers"][0]["institutions"], ["ETH Zürich"])
 
     def test_genuinely_shared_single_institution_is_still_credited(self):
         # Contrast case for the guard above: every author landing on the
