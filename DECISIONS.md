@@ -182,6 +182,22 @@ in the Scholar bio. Ambiguous same-name matches are left unresolved. A wrong pho
 the wrong person is worse than a missing one, on a site whose premise is being
 defensible about what it claims.
 
+## Paper Scholar links come from author profiles, never from title searches
+
+`paper.html` and the Source column used to link to a Scholar search for the paper's
+title. A search can land on a different paper, a citing paper or nothing, so those
+links were removed. A paper now shows a Scholar link only if `scholar_url` is in
+`stats.json`, which `aggregate.py` takes from `data/scholar_paper_links.json`.
+
+`fetch_scholar_paper_links.py` fills that file for the 1000 most-cited AV papers. It
+never searches Scholar. It reads the profile pages already in `scholar_profiles.json`,
+whose rows carry a stable `citation_for_view` URL. A row is accepted only if the
+normalized title is identical, one author agrees (surname plus initial), and the years
+are within one year. Titles that are ambiguous among the target papers or listed twice
+on a profile are skipped. Scholar answers HTTP 429 after roughly 70 profile pages in a
+row, so the script paces itself, stops at the first block and resumes from
+`profiles_done` on the next run.
+
 ## DBLP-sourced venues have no abstracts
 
 RSS, ICLR and AAAI are pulled from DBLP, because their own sites block scripted
