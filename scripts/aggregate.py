@@ -110,6 +110,9 @@ ABSTRACT_SHARD_COUNT = 64
 # not worth a second lazy-fetch code path in insights.html for.
 CITATIONS_DIR = BASE / "data" / "citations"
 SCHOLAR_PROFILES_FILE = BASE / "data" / "scholar_profiles.json"
+# {"links": {normalized title: the paper's own Google Scholar citation URL}},
+# written by fetch_scholar_paper_links.py, which only saves confirmed matches.
+SCHOLAR_PAPER_LINKS_FILE = BASE / "data" / "scholar_paper_links.json"
 ORCIDS_FILE = BASE / "data" / "orcids.json"
 INSTITUTION_LOGOS_FILE = BASE / "data" / "institution_logos.json"
 INSTITUTION_COUNTRIES_FILE = BASE / "data" / "institution_countries.json"
@@ -2700,6 +2703,19 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
     return insights
 
 
+def load_scholar_paper_links():
+    if not SCHOLAR_PAPER_LINKS_FILE.exists():
+        return {}
+    return json.loads(SCHOLAR_PAPER_LINKS_FILE.read_text(encoding="utf-8")).get("links", {})
+
+
+def scholar_url_field(links, title):
+    """{"scholar_url": url} when this paper has a confirmed link, else {} --
+    the key is left out entirely so the site can test for its presence."""
+    url = links.get(normalize_title(title))
+    return {"scholar_url": url} if url else {}
+
+
 def main():
     all_entries = json.loads(IN_FILE.read_text(encoding="utf-8"))
     # LLM code-link verdicts (scripts/classify_code_links_llm.py) -- the
@@ -2714,6 +2730,7 @@ def main():
     code_links_llm = {}
     if CODE_LINKS_LLM_FILE.exists():
         code_links_llm = json.loads(CODE_LINKS_LLM_FILE.read_text(encoding="utf-8"))
+    scholar_paper_links = load_scholar_paper_links()
     for e in all_entries:
         if e.get("venue"):
             e["venue"] = normalize_venue(e["venue"])
@@ -2926,6 +2943,9 @@ def main():
             "authors": authors,
             "author_verification": (e.get("author_verification") or "no_reference_record"),
             "arxiv_url": e.get("arxiv_url"),
+            # Only present for papers whose own Scholar page was confirmed
+            # (a generic Scholar search link is deliberately never used).
+            **scholar_url_field(scholar_paper_links, e.get("title")),
             # How this paper entered the corpus -- "venue_listing" (a real
             # conference/journal's own proceedings), "arxiv_author_pull"
             # (fetch_arxiv.py, biased toward authors already prominent

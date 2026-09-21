@@ -337,10 +337,16 @@ function renderPaperBody(stats, paper, isAdjacent) {
     a.textContent = 'Source listing';
     links.push(a);
   }
-  // No Google Scholar link on purpose. It used to be a search for the title,
-  // which is not a link to the paper: it can land on a different paper, a
-  // citing one, or nothing. It comes back once each AV paper has a confirmed
-  // Scholar URL of its own.
+  // Only a confirmed link to this paper's own Scholar page (scholar_url is
+  // absent otherwise). It was once a title search, which can land on a
+  // different paper, so that is never used.
+  if (paper.scholar_url) {
+    const a = document.createElement('a');
+    a.href = paper.scholar_url;
+    a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = 'Google Scholar';
+    links.push(a);
+  }
   links.forEach((el, i) => {
     if (i > 0) linksMeta.append(' · ');
     linksMeta.appendChild(el);

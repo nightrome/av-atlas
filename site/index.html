@@ -57,6 +57,10 @@
   .title-cell .title-text:hover { text-decoration: underline !important; }
   .paper-links { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
   .paper-links a { color: var(--accent); text-decoration: none; font-size: 0.85em; display: inline-flex; align-items: center; }
+  .scholar-badge {
+    font-size: 0.62em; font-weight: 700; letter-spacing: 0.02em; color: #fff;
+    background: #4285F4; border-radius: 3px; padding: 1px 4px; line-height: 1.4;
+  }
   .ieee-badge {
     font-size: 0.62em; font-weight: 700; letter-spacing: 0.02em; color: #fff;
     background: #00629B; border-radius: 3px; padding: 1px 4px; line-height: 1.4;
@@ -230,15 +234,27 @@ function sourceCell(p) {
     a.title = 'arXiv (exact link not yet resolved)';
     links.appendChild(a);
   }
-  // No Google Scholar link: a title search is not a link to the paper (see
-  // paper.html). It returns once each AV paper has a confirmed Scholar URL.
+  // Only a confirmed link to the paper's own Scholar page (scholar_url is left
+  // out of stats.json otherwise). Never a title search, which can land on a
+  // different paper.
+  if (p.scholar_url) {
+    const a = document.createElement('a');
+    a.href = p.scholar_url;
+    a.target = '_blank'; a.rel = 'noopener';
+    const badge = document.createElement('span');
+    badge.className = 'scholar-badge';
+    badge.textContent = 'Scholar';
+    a.appendChild(badge);
+    a.title = 'Google Scholar';
+    links.appendChild(a);
+  }
   return links;
 }
 
-// How many links a paper has here (DOI, arXiv), so the Source column can be
+// How many links a paper has here (DOI, arXiv, Scholar), so the Source column can be
 // sorted like every other column: papers with the most links first.
 function sourceLinkCount(p) {
-  return (p.doi ? 1 : 0) + (p.arxiv_url || p.venue === 'arXiv' ? 1 : 0);
+  return (p.doi ? 1 : 0) + (p.arxiv_url || p.venue === 'arXiv' ? 1 : 0) + (p.scholar_url ? 1 : 0);
 }
 
 function venueCell(p) {

@@ -20,6 +20,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import aggregate as ag
 
 
+class TestScholarUrlField(unittest.TestCase):
+    def test_present_only_when_confirmed(self):
+        links = {ag.normalize_title("Some Paper: A Study"): "https://scholar.google.com/x"}
+        self.assertEqual(ag.scholar_url_field(links, "Some paper - a study"),
+                         {"scholar_url": "https://scholar.google.com/x"})
+        self.assertEqual(ag.scholar_url_field(links, "Another Paper"), {})
+        self.assertEqual(ag.scholar_url_field({}, None), {})
+
+
 class TestIsValidInstitution(unittest.TestCase):
     def test_rejects_bare_country_and_city_names(self):
         for bad in ("China", "USA", "Germany", "Beijing", "Los Angeles"):
