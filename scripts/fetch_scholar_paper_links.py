@@ -1,12 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Finds each top AV paper's own Google Scholar URL and writes the confirmed
+Finds each AV paper's own Google Scholar URL and writes the confirmed
 ones to data/scholar_paper_links.json ({"links": {normalized title: url}}).
 
-Google Scholar has no API and blocks bulk scraping, so this never searches
-by title (a search can land on a different paper). Instead it reads the
-Scholar profile pages already in data/scholar_profiles.json. A paper listed
+Two ways, chosen with --mode:
+
+search (default): searches Scholar for the quoted title and accepts a result
+only when its title is exactly the paper's (aggregate.normalize_title) and its
+year, when Scholar shows one, is within two years of the paper's. The link is
+the result's Scholar cluster (https://scholar.google.com/scholar?cluster=...),
+which is Scholar's own page for that paper's versions. Papers already searched
+without a match are remembered ("searched" in the output file) and not asked
+again. Most-cited papers first. With --wait-minutes the run waits out a block
+and carries on, so it can sit in the background for days.
+
+profiles: the older route. It reads the Scholar profile pages already in
+data/scholar_profiles.json, which needs no search but only reaches papers
+whose author has a known profile. A paper listed
 on an author's profile has a stable citation URL:
   https://scholar.google.com/citations?view_op=view_citation&hl=en
       &citation_for_view=<user>:<id>
@@ -20,13 +31,14 @@ A profile row only counts as the paper when ALL of these hold (see DECISIONS.md,
   - the title is unique among the target papers and unique on that profile.
 Anything else stays without a link.
 
-Only the --top most-cited AV papers (default 1000) are looked at, and only the
-profiles of their authors are fetched, most-cited paper first. One request
-every few seconds; the run stops at the first block (HTTP 429/403, a CAPTCHA
-or an unexpected page) and can be rerun later, since finished profiles are
-recorded in the output file.
+In profiles mode only the --top most-cited AV papers (default 1000) are looked
+at, and only the profiles of their authors are fetched, most-cited paper first.
+One request every few seconds; the run stops at the first block (HTTP 429/403,
+a CAPTCHA or an unexpected page) and can be rerun later, since finished
+profiles are recorded in the output file.
 
-Usage: python scripts/fetch_scholar_paper_links.py [--top 1000] [--max-profiles N]
+Usage: python scripts/fetch_scholar_paper_links.py [--mode search|profiles]
+           [--top N] [--max-searches N] [--wait-minutes 45] [--max-profiles N]
 """
 import argparse
 import html
@@ -37,6 +49,7 @@ import sys
 import time
 import unicodedata
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import date
 from pathlib import Path
@@ -205,6 +218,132 @@ def fetch_page(user, cstart):
     return body
 
 
+# ---- search mode -------------------------------------------------------------------
+
+SEARCH_DELAY_SECONDS = (12.0, 25.0)
+SEARCH_YEAR_TOLERANCE = 2
+CITATION_TAIL_CHARS = 40
+RESULT_TAG_RE = re.compile(r'<div[^>]*class="gs_r [^"]*"[^>]*>')
+RESULT_TITLE_RE = re.compile(r'<h3 class="gs_rt"[^>]*>(.*?)</h3>', re.S)
+RESULT_META_RE = re.compile(r'<div class="gs_a"[^>]*>(.*?)</div>', re.S)
+LEADING_TYPE_RE = re.compile(r"^(?:\[[A-Za-z]+\]\s*)+")
+YEAR_IN_TEXT_RE = re.compile(r"\b((?:19|20)\d{2})\b")
+
+
+def cluster_url(cid):
+    return f"https://scholar.google.com/scholar?cluster={cid}&hl=en"
+
+
+def parse_search_results(page_html):
+    """Every result on a Scholar search page: title, cluster id, year (or None)."""
+    tags = list(RESULT_TAG_RE.finditer(page_html))
+    results = []
+    for i, tag in enumerate(tags):
+        cid = re.search(r'data-cid="([^"]+)"', tag.group(0))
+        end = tags[i + 1].start() if i + 1 < len(tags) else len(page_html)
+        block = page_html[tag.end():end]
+        t = RESULT_TITLE_RE.search(block)
+        if not cid or not t:
+            continue
+        title = html.unescape(TAG_RE.sub("", t.group(1))).strip()
+        citation_only = "[CITATION]" in title
+        title = LEADING_TYPE_RE.sub("", title).strip()
+        meta = RESULT_META_RE.search(block)
+        years = YEAR_IN_TEXT_RE.findall(html.unescape(TAG_RE.sub("", meta.group(1)))) if meta else []
+        results.append({"title": title, "cid": html.unescape(cid.group(1)),
+                        "year": int(years[-1]) if years else None, "citation_only": citation_only})
+    return results
+
+
+def match_search_result(results, paper):
+    """The Scholar URL of the first result whose title is exactly this paper's,
+    or None. A year that is far off rules a result out (the same title is
+    sometimes used by an unrelated paper); a missing year does not.
+
+    One loosening: a "[CITATION]" record (a reference Scholar has no page for)
+    often carries the citation text after the title, e.g. "..., CoRR
+    abs/1604.01685". It counts when it starts with the exact title and adds
+    at most CITATION_TAIL_CHARS more characters."""
+    want = normalize_title(paper.get("title"))
+    try:
+        py = int(paper.get("year"))
+    except (TypeError, ValueError):
+        py = None
+    for r in results:
+        got = normalize_title(r["title"])
+        if got != want and not (r.get("citation_only") and got.startswith(want)
+                                and len(got) - len(want) <= CITATION_TAIL_CHARS):
+            continue
+        if r["year"] and py and abs(r["year"] - py) > SEARCH_YEAR_TOLERANCE:
+            continue
+        return cluster_url(r["cid"])
+    return None
+
+
+def fetch_search(title):
+    url = ("https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q="
+           + urllib.parse.quote('"' + title + '"'))
+    req = urllib.request.Request(url, headers={"User-Agent": BROWSER_UA})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            body = r.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as e:
+        raise Blocked(f"HTTP {e.code}")
+    if "gs_r" not in body and "did not match any articles" not in body:
+        raise Blocked("unexpected page (CAPTCHA or block?)")
+    return body
+
+
+def search_todo(papers, idx, state):
+    """Target papers still to search, most-cited first: not linked, not already
+    searched, and whose title no other target paper shares."""
+    out = []
+    for p in papers:
+        n = normalize_title(p.get("title"))
+        if idx.get(n) is None or n in state["links"] or n in state["searched"]:
+            continue
+        out.append(p)
+    return out
+
+
+def run_search(papers, idx, state, max_searches=0, wait_minutes=0, sleep=time.sleep, fetch=fetch_search):
+    todo = search_todo(papers, idx, state)
+    print(f"{len(todo)} papers to search, {len(state['links'])} links so far")
+    done = blocks = 0
+    i = 0
+    while i < len(todo):
+        if max_searches and done >= max_searches:
+            break
+        p = todo[i]
+        sleep(random.uniform(*SEARCH_DELAY_SECONDS))
+        try:
+            results = parse_search_results(fetch(p["title"]))
+        except Blocked as e:
+            save_state(state)
+            blocks += 1
+            if not wait_minutes or blocks > 20:
+                print("stopping:", e)
+                break
+            print(f"blocked ({e}); waiting {wait_minutes} min (block {blocks})", flush=True)
+            sleep(wait_minutes * 60)
+            continue
+        blocks = 0
+        n = normalize_title(p["title"])
+        url = match_search_result(results, p)
+        if url:
+            state["links"][n] = url
+        else:
+            state["searched"][n] = date.today().isoformat()
+        i += 1
+        done += 1
+        if done % 5 == 0:
+            save_state(state)
+        if done % 25 == 0:
+            print(f"{done} searched, {len(state['links'])} links", flush=True)
+    save_state(state)
+    print(f"done: {done} searched this run, {len(state['links'])} links in total")
+
+
 def load_state():
     if LINKS_FILE.exists():
         s = json.loads(LINKS_FILE.read_text(encoding="utf-8"))
@@ -212,6 +351,7 @@ def load_state():
         s = {}
     s.setdefault("links", {})
     s.setdefault("profiles_done", {})
+    s.setdefault("searched", {})
     return s
 
 
@@ -222,12 +362,21 @@ def save_state(state):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--top", type=int, default=1000)
-    ap.add_argument("--max-profiles", type=int, default=0, help="0 = no limit")
+    ap.add_argument("--mode", choices=["search", "profiles"], default="search")
+    ap.add_argument("--top", type=int, default=None,
+                    help="most-cited AV papers to look at (search: all, profiles: 1000)")
+    ap.add_argument("--max-profiles", type=int, default=0, help="profiles mode; 0 = no limit")
+    ap.add_argument("--max-searches", type=int, default=0, help="search mode; 0 = no limit")
+    ap.add_argument("--wait-minutes", type=int, default=0,
+                    help="search mode: wait this long after a block and carry on (0 = stop)")
     args = ap.parse_args()
 
     stats = json.loads(STATS_FILE.read_text(encoding="utf-8"))
-    papers = target_papers(stats["all_papers"], args.top)
+    if args.mode == "search":
+        papers = target_papers(stats["all_papers"], args.top or 10**9)
+        run_search(papers, index_by_title(papers), load_state(), args.max_searches, args.wait_minutes)
+        return
+    papers = target_papers(stats["all_papers"], args.top or 1000)
     idx = index_by_title(papers)
     profiles = json.loads(PROFILES_FILE.read_text(encoding="utf-8"))
     todo = profile_users_for(papers, profiles)
