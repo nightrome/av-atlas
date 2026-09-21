@@ -65,6 +65,8 @@
   }
   .chart .bar-wrap:hover .tooltip { display: block; }
   .empty-note { color: var(--muted); font-size: 0.9em; }
+  /* One line per row in both author tables; long cells are clipped and carry the full text on hover. */
+  #author-body td, #citing-authors-body td { white-space: nowrap; vertical-align: middle; }
   .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
   .related-card {
     display: block; background: var(--panel2); border: 1px solid var(--border); border-radius: 10px;
@@ -99,7 +101,10 @@
 
 <div class="panel">
   <div class="panel-title-row"><h2>Authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="The paper&#x27;s authors and, next to each, the institution(s) they were credited with around this paper&#x27;s year. Each links to its page; a photo shows when a Google Scholar profile has been matched." data-tip="The paper&#x27;s authors and, next to each, the institution(s) they were credited with around this paper&#x27;s year. Each links to its page; a photo shows when a Google Scholar profile has been matched.">i</span></div>
-  <table id="author-table"><thead><tr><th>Author</th><th>Affiliation</th></tr></thead>
+  <table id="author-table"><thead><tr><th>Author</th>
+  <th class="num" title="Total citations across this author's own papers in this corpus.">Citations</th>
+  <th class="num" title="Total papers by this author in this corpus.">Papers</th>
+  <th>Country</th><th>Institution</th></tr></thead>
   <tbody id="author-body"></tbody></table>
   <div class="empty-note" id="author-empty" style="display:none;"></div>
 </div>
@@ -129,7 +134,7 @@
   <div id="citing-authors-pagination"></div>
   <table><thead><tr><th>Author</th><th class="num" data-term="citing_instances">Citing instances</th>
   <th class="num" title="Total citations across this citing author's own papers in this corpus.">Citations</th>
-  <th class="num" title="Total papers by this citing author in this corpus.">Papers</th>
+  <th title="Papers by this author that cite this paper.">Citing papers</th>
   <th>Country</th><th>Institution</th></tr></thead>
   <tbody id="citing-authors-body"></tbody></table>
 </div>
@@ -345,7 +350,8 @@ function renderPaperBody(stats, paper, isAdjacent) {
     const a = document.createElement('a');
     a.href = paper.scholar_url;
     a.target = '_blank'; a.rel = 'noopener';
-    a.textContent = 'Google Scholar';
+    a.appendChild(window.scholarIcon());
+    a.title = 'Google Scholar';
     links.push(a);
   }
   links.forEach((el, i) => {
@@ -422,7 +428,14 @@ function renderPaperBody(stats, paper, isAdjacent) {
     const nearest = window.institutionForYears(insts, year == null ? [] : [year]);
     return { list: nearest ? [nearest] : [], approx: !!nearest };
   }
-  (paper.authors || []).forEach(name => {
+  // Each author's overall standing in the corpus, same numbers as the
+  // Citing authors table below.
+  const authorPaperStats = computeAuthorPaperStats(stats.all_papers);
+  function yearsLabel(inst) {
+    if (inst.first_year == null) return '';
+    return inst.first_year === inst.last_year ? ` (${inst.first_year})` : ` (${inst.first_year} to ${inst.last_year})`;
+  }
+  const authorRows = (paper.authors || []).map(name => {
     const detail = authorDetail[name] || {};
     const a = document.createElement('a');
     a.className = 'author-card';
@@ -450,18 +463,49 @@ function renderPaperBody(stats, paper, isAdjacent) {
       link.href = `institution.html?name=${encodeURIComponent(inst.name)}`;
       link.textContent = inst.name;
       affCell.appendChild(link);
-      if (approx && inst.first_year != null) {
-        const yrs = inst.first_year === inst.last_year ? inst.first_year : `${inst.first_year} to ${inst.last_year}`;
+      // The years the author was credited with this institution, always;
+      // greyed and explained when it is only the closest one on record.
+      const yrs = yearsLabel(inst);
+      if (yrs) {
         const note = document.createElement('span');
         note.style.color = 'var(--muted)';
-        note.textContent = ` (${yrs})`;
-        note.title = "This is the closest affiliation on record; none is recorded for this paper's year.";
+        note.textContent = yrs;
+        if (approx) note.title = "This is the closest affiliation on record; none is recorded for this paper's year.";
         affCell.appendChild(note);
       }
     });
     if (!list.length) { affCell.textContent = 'n/a'; affCell.style.color = 'var(--muted)'; }
-    authorBody.appendChild(row([a, affCell]));
+    // Derived from the institution(s) shown beside it, so the two cells never
+    // disagree -- see countryForInstitution() in filters.js.
+    const countries = [...new Set(list.map(inst =>
+      countryForInstitution(stats, inst.name, detail.countries || [])).filter(Boolean))];
+    if (!list.length && (detail.countries || []).length === 1) countries.push(detail.countries[0]);
+    const s = authorPaperStats[name] || {};
+    return {
+      name, a, affCell,
+      citations: s.citations || 0, papers: s.papers || 0,
+      country: countries.join(', '),
+      institution: list.map(i => i.name).join(', '),
+    };
   });
+  function renderAuthorsBody(rows) {
+    authorBody.innerHTML = '';
+    rows.forEach(r => {
+      r.affCell.className = 'truncate-cell';
+      r.affCell.style.maxWidth = '300px';
+      r.affCell.title = r.affCell.textContent;
+      authorBody.appendChild(row([r.a, r.citations, r.papers, r.country || 'n/a', r.affCell]));
+    });
+  }
+  // Authors stay in byline order until a header is clicked.
+  makeSortableSafe(authorBody.closest('table'), authorRows, [
+    { accessor: r => r.name, numeric: false },
+    { accessor: r => r.citations, numeric: true },
+    { accessor: r => r.papers, numeric: true },
+    // '\uffff' sorts after any real name, so rows with nothing land last in an A-Z sort.
+    { accessor: r => r.country || '\uffff', numeric: false },
+    { accessor: r => r.institution || '\uffff', numeric: false },
+  ], renderAuthorsBody);
   if (!(paper.authors || []).length) {
     document.getElementById('author-table').style.display = 'none';
     const empty = document.getElementById('author-empty');
@@ -589,12 +633,13 @@ function renderPaperBody(stats, paper, isAdjacent) {
   // author.html's own "Citing authors" panel (user-requested: design this
   // page similarly, with the same citations/papers columns for each citing
   // author's own overall standing).
-  const authorPaperStats = computeAuthorPaperStats(stats.all_papers);
   const citingAuthorCounts = {};
   const citingAuthorYears = {};
+  const citingAuthorPapers = {};
   citing.forEach(c => (c.authors || []).forEach(a => {
     citingAuthorCounts[a] = (citingAuthorCounts[a] || 0) + 1;
     (citingAuthorYears[a] || (citingAuthorYears[a] = [])).push(c.year);
+    (citingAuthorPapers[a] || (citingAuthorPapers[a] = [])).push(c);
   }));
   let citingAuthors = Object.entries(citingAuthorCounts)
     .map(([coName, count]) => {
@@ -608,6 +653,8 @@ function renderPaperBody(stats, paper, isAdjacent) {
       const paperStats = authorPaperStats[coName] || {};
       return {
         name: coName, count,
+        // The papers of this author that cite this one, newest first.
+        citingPapers: (citingAuthorPapers[coName] || []).sort((x, y) => (y.year || 0) - (x.year || 0)),
         totalPapers: paperStats.papers || 0,
         totalCitations: paperStats.citations || 0,
         institution: lastInst ? lastInst.name : null,
@@ -637,9 +684,25 @@ function renderPaperBody(stats, paper, isAdjacent) {
           : c.institutionFirstYear === c.institutionLastYear ? ` (${c.institutionFirstYear})`
           : ` (${c.institutionFirstYear} to ${c.institutionLastYear})`;
         instLink.textContent = c.institution + yr;
-        instCell = instLink;
+        instLink.title = instLink.textContent;
+        instCell = document.createElement('span');
+        instCell.className = 'truncate-cell';
+        instCell.style.maxWidth = '220px';
+        instCell.appendChild(instLink);
       }
-      citingAuthorsBody.appendChild(row([link, c.count, c.totalCitations, c.totalPapers, c.country || 'n/a', instCell]));
+      // One clipped line so every row stays the same height; hover lists them all.
+      const papersCell = document.createElement('span');
+      papersCell.className = 'truncate-cell';
+      papersCell.style.maxWidth = '200px';
+      papersCell.title = c.citingPapers.map(p => p.title).join('\n');
+      c.citingPapers.forEach((p, i) => {
+        if (i > 0) papersCell.append('; ');
+        const pl = document.createElement('a');
+        pl.href = `paper.html?title=${encodeURIComponent(p.title)}`;
+        pl.textContent = p.title;
+        papersCell.appendChild(pl);
+      });
+      citingAuthorsBody.appendChild(row([link, c.count, c.totalCitations, papersCell, c.country || 'n/a', instCell]));
     });
     if (!rows.length) {
       const tr = document.createElement('tr');
@@ -672,7 +735,7 @@ function renderPaperBody(stats, paper, isAdjacent) {
       { accessor: c => c.name, numeric: false },
       { accessor: c => c.count, numeric: true },
       { accessor: c => c.totalCitations, numeric: true },
-      { accessor: c => c.totalPapers, numeric: true },
+      { accessor: c => (c.citingPapers[0] || {}).title || '', numeric: false },
       // '￿' sorts after any real name, so rows with no country/
       // institution land at the bottom of an A-Z sort instead of the top.
       { accessor: c => c.country || '￿', numeric: false },

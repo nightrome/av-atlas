@@ -57,10 +57,6 @@
   .title-cell .title-text:hover { text-decoration: underline !important; }
   .paper-links { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
   .paper-links a { color: var(--accent); text-decoration: none; font-size: 0.85em; display: inline-flex; align-items: center; }
-  .scholar-badge {
-    font-size: 0.62em; font-weight: 700; letter-spacing: 0.02em; color: #fff;
-    background: #4285F4; border-radius: 3px; padding: 1px 4px; line-height: 1.4;
-  }
   .ieee-badge {
     font-size: 0.62em; font-weight: 700; letter-spacing: 0.02em; color: #fff;
     background: #00629B; border-radius: 3px; padding: 1px 4px; line-height: 1.4;
@@ -241,10 +237,7 @@ function sourceCell(p) {
     const a = document.createElement('a');
     a.href = p.scholar_url;
     a.target = '_blank'; a.rel = 'noopener';
-    const badge = document.createElement('span');
-    badge.className = 'scholar-badge';
-    badge.textContent = 'Scholar';
-    a.appendChild(badge);
+    a.appendChild(window.scholarIcon());
     a.title = 'Google Scholar';
     links.appendChild(a);
   }

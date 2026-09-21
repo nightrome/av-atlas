@@ -75,8 +75,8 @@ ROBOTS_TXT = "User-agent: *\nAllow: /\n"
 PUBLISHED_HTML = [
     "index.html", "authors.html", "institutions.html", "venues.html",
     "countries.html", "categories.html", "network.html", "insights.html",
-    "about.html", "author.html", "institution.html", "venue.html", "paper.html",
-    "compare.html",
+    "about.html", "author.html", "institution.html", "venue.html", "country.html",
+    "paper.html", "compare.html",
 ]
 
 
@@ -146,6 +146,9 @@ def write_sitemap(page_dir, stats_path):
     add("institution.html", "name", by_papers(inst_papers, SITEMAP_LIMITS["institutions"]))
     add("venue.html", "name",
         list((stats.get("corpus_stats") or {}).get("by_venue", {}))[:SITEMAP_LIMITS["venues"]])
+    # There are only ~55 countries, so every one gets a page in the sitemap.
+    add("country.html", "name",
+        sorted({c for p in papers for c in (p.get("countries") or [])}))
 
     today = time.strftime("%Y-%m-%d")
     body = "\n".join(
