@@ -60,6 +60,8 @@ from aggregate import clean_author_name, normalize_title
 from fetch_common import BASE, by_citations
 
 PROFILES_FILE = BASE / "data" / "scholar_profiles.json"
+# Profile URLs people list on their ORCID record (fetch_orcid_scholar_profiles.py).
+CANDIDATES_FILE = BASE / "data" / "scholar_profile_candidates.json"
 LINKS_FILE = BASE / "data" / "scholar_paper_links.json"
 STATS_FILE = BASE / "data" / "stats.json"
 
@@ -334,6 +336,9 @@ def run_search(papers, idx, state, max_searches=0, wait_minutes=0, sleep=time.sl
             state["links"][n] = url
         else:
             state["searched"][n] = date.today().isoformat()
+            # What Scholar did return, so a low hit rate can be explained from the log.
+            seen = [(r["title"][:70], r["year"]) for r in results[:3]]
+            print(f"miss: {p['title'][:70]!r} ({p.get('year')}) -> {len(results)} results {seen}", flush=True)
         i += 1
         done += 1
         if done % 5 == 0:
@@ -342,6 +347,17 @@ def run_search(papers, idx, state, max_searches=0, wait_minutes=0, sleep=time.sl
             print(f"{done} searched, {len(state['links'])} links", flush=True)
     save_state(state)
     print(f"done: {done} searched this run, {len(state['links'])} links in total")
+
+
+def load_profiles():
+    """scholar_profiles.json plus the ORCID-listed candidates. The confirmed
+    profiles win on a name clash. A candidate only says where to look; every
+    paper is still confirmed row by row (find_links)."""
+    profiles = json.loads(PROFILES_FILE.read_text(encoding="utf-8"))
+    if CANDIDATES_FILE.exists():
+        candidates = json.loads(CANDIDATES_FILE.read_text(encoding="utf-8")).get("profiles", {})
+        profiles = {**candidates, **profiles}
+    return profiles
 
 
 def load_state():
@@ -369,7 +385,12 @@ def main():
     ap.add_argument("--max-searches", type=int, default=0, help="search mode; 0 = no limit")
     ap.add_argument("--wait-minutes", type=int, default=0,
                     help="search mode: wait this long after a block and carry on (0 = stop)")
+    ap.add_argument("--delay", type=float, nargs=2, metavar=("MIN", "MAX"), default=None,
+                    help="search mode: seconds between searches (default 12 25)")
     args = ap.parse_args()
+    if args.delay:
+        global SEARCH_DELAY_SECONDS
+        SEARCH_DELAY_SECONDS = tuple(args.delay)
 
     stats = json.loads(STATS_FILE.read_text(encoding="utf-8"))
     if args.mode == "search":
@@ -378,7 +399,7 @@ def main():
         return
     papers = target_papers(stats["all_papers"], args.top or 1000)
     idx = index_by_title(papers)
-    profiles = json.loads(PROFILES_FILE.read_text(encoding="utf-8"))
+    profiles = load_profiles()
     todo = profile_users_for(papers, profiles)
     state = load_state()
     print(f"{len(papers)} target papers, {len(todo)} profiles, "
