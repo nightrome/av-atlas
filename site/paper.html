@@ -37,7 +37,6 @@
   .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
   .panel h2 { margin-top: 0; font-size: 1.1em; }
   .panel p.abstract { line-height: 1.6; color: var(--text); }
-  .author-grid { display: flex; flex-wrap: wrap; gap: 10px; }
   .author-card {
     display: flex; align-items: center; gap: 8px; background: var(--panel2); border: 1px solid var(--border);
     border-radius: 20px; padding: 5px 12px 5px 5px; text-decoration: none; color: var(--text); font-size: 0.9em;
@@ -99,8 +98,10 @@
 </div>
 
 <div class="panel">
-  <div class="panel-title-row"><h2>Authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="The paper&#x27;s authors. Each links to their page; a photo shows when a Google Scholar profile has been matched." data-tip="The paper&#x27;s authors. Each links to their page; a photo shows when a Google Scholar profile has been matched.">i</span></div>
-  <div class="author-grid" id="author-grid"></div>
+  <div class="panel-title-row"><h2>Authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="The paper&#x27;s authors and, next to each, the institution(s) they were credited with around this paper&#x27;s year. Each links to its page; a photo shows when a Google Scholar profile has been matched." data-tip="The paper&#x27;s authors and, next to each, the institution(s) they were credited with around this paper&#x27;s year. Each links to its page; a photo shows when a Google Scholar profile has been matched.">i</span></div>
+  <table id="author-table"><thead><tr><th>Author</th><th>Affiliation</th></tr></thead>
+  <tbody id="author-body"></tbody></table>
+  <div class="empty-note" id="author-empty" style="display:none;"></div>
 </div>
 
 <div class="panel" id="related-panel">
@@ -405,7 +406,22 @@ function renderPaperBody(stats, paper, isAdjacent) {
   loadAbstract(paper.title);
 
   const authorDetail = stats.author_detail || {};
-  const authorGrid = document.getElementById('author-grid');
+  const authorBody = document.getElementById('author-body');
+  const paperInstitutions = new Set(paper.institutions || []);
+  // The institution(s) an author held around this paper's year, not just
+  // their latest one on file. Prefers institutions this paper itself
+  // recorded, then any whose year range covers the paper's year, then
+  // (nothing overlaps) the nearest one, flagged with its own years.
+  function affiliationsAt(insts) {
+    const year = paper.year;
+    const covering = year == null ? [] : insts.filter(i =>
+      i.first_year != null && i.last_year != null && i.first_year <= year && i.last_year >= year);
+    const fromPaper = (covering.length ? covering : insts).filter(i => paperInstitutions.has(i.name));
+    if (fromPaper.length) return { list: fromPaper, approx: false };
+    if (covering.length) return { list: covering, approx: false };
+    const nearest = window.institutionForYears(insts, year == null ? [] : [year]);
+    return { list: nearest ? [nearest] : [], approx: !!nearest };
+  }
   (paper.authors || []).forEach(name => {
     const detail = authorDetail[name] || {};
     const a = document.createElement('a');
@@ -425,9 +441,33 @@ function renderPaperBody(stats, paper, isAdjacent) {
     }
     a.appendChild(avatar);
     a.append(name);
-    authorGrid.appendChild(a);
+
+    const affCell = document.createElement('span');
+    const { list, approx } = affiliationsAt(detail.institutions || []);
+    list.forEach((inst, i) => {
+      if (i > 0) affCell.append(', ');
+      const link = document.createElement('a');
+      link.href = `institution.html?name=${encodeURIComponent(inst.name)}`;
+      link.textContent = inst.name;
+      affCell.appendChild(link);
+      if (approx && inst.first_year != null) {
+        const yrs = inst.first_year === inst.last_year ? inst.first_year : `${inst.first_year} to ${inst.last_year}`;
+        const note = document.createElement('span');
+        note.style.color = 'var(--muted)';
+        note.textContent = ` (${yrs})`;
+        note.title = "This is the closest affiliation on record; none is recorded for this paper's year.";
+        affCell.appendChild(note);
+      }
+    });
+    if (!list.length) { affCell.textContent = 'n/a'; affCell.style.color = 'var(--muted)'; }
+    authorBody.appendChild(row([a, affCell]));
   });
-  if (!(paper.authors || []).length) authorGrid.textContent = 'No author list recorded for this paper.';
+  if (!(paper.authors || []).length) {
+    document.getElementById('author-table').style.display = 'none';
+    const empty = document.getElementById('author-empty');
+    empty.textContent = 'No author list recorded for this paper.';
+    empty.style.display = '';
+  }
 
   // "Related" is scored, not just "same category" -- a shared author is a
   // much stronger signal than a shared topic label (categories are broad
