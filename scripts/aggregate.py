@@ -2723,6 +2723,11 @@ def main():
     code_links_llm = {}
     if CODE_LINKS_LLM_FILE.exists():
         code_links_llm = json.loads(CODE_LINKS_LLM_FILE.read_text(encoding="utf-8"))
+    # Counted before normalize_venue: it turns both the placeholder "arXiv preprint"
+    # (not looked up yet) and S2's own "arXiv.org" (looked up: arXiv only) into "arXiv".
+    venue_unparsed_ids = {id(e) for e in all_entries
+                          if e.get("source") == "arxiv_s2_citing_discovery"
+                          and e.get("venue") == "arXiv preprint" and not e.get("venue_status")}
     for e in all_entries:
         if e.get("venue"):
             e["venue"] = normalize_venue(e["venue"])
@@ -3813,8 +3818,7 @@ def main():
             # Arxiv-discovered papers with no venue: "missing" was looked up and has none;
             # "unparsed" has not been looked up yet (still the arXiv placeholder).
             "venue_missing": sum(1 for e in entries if e.get("venue_status") == "missing"),
-            "venue_unparsed": sum(1 for e in entries if e.get("source") == "arxiv_s2_citing_discovery"
-                                  and e.get("venue") in ("arXiv preprint", "arXiv") and not e.get("venue_status")),
+            "venue_unparsed": sum(1 for e in entries if id(e) in venue_unparsed_ids),
             "big_venues": big_venues,
             "by_year": {str(y): n for y, n in sorted(year_counts.items())},
             "venues_covered": len(venue_counts),

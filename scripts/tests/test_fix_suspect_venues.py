@@ -33,6 +33,17 @@ class TestFixSuspectVenues(unittest.TestCase):
             self.assertFalse(fix.fix_entry(e))
             self.assertNotIn("venue_status", e)
 
+    def test_second_pass_renames_and_missing(self):
+        e = {"conference": "International Conference on Information Control Systems & Technologies"}
+        self.assertTrue(fix.fix_entry(e))
+        self.assertEqual(e["conference"], "ICST")
+        e = {"conference": "Robotics"}
+        fix.fix_entry(e)
+        self.assertEqual(e["conference"], "RSS")
+        e = {"conference": "Interacción"}
+        fix.fix_entry(e)
+        self.assertEqual(e["venue_status"], "missing")
+
     def test_is_idempotent(self):
         e = {"conference": "Make"}
         fix.fix_entry(e)

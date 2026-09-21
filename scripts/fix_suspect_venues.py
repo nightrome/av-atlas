@@ -46,10 +46,30 @@ RENAMES = {
     "International Congress of Mathematicans": "ICM",
     "Micro": "MICRO",
     "UI": "International Conference on Automotive User Interfaces and Interactive Vehicular Applications",
+    # Second pass, after the full venue backfill. Each was checked against
+    # the paper's DOI / S2 journal name (RSS, ICST, FUSION, ... DOIs).
+    "International Conference on Information Control Systems & Technologies": "ICST",
+    "Robotics": "RSS",
+    "Fusion": "International Conference on Information Fusion",
+    "Findings": "Findings of the Association for Computational Linguistics",
+    "Coins": "COINS",
+    "Control": "UKACC International Conference on Control",
+    "La Main": "MAIN",
+    "Mind": "MIND",
+    "Asia": "ISPCE-ASIA",
+    "The Compass": "COMPASS",
+    "Sai": "SAI",
+    "SPIN": "SPIN Symposium on Model Checking of Software",
+    "FROM": "FROM Working Formal Methods Symposium",
+    "Complex": "Complexity",
+    "Bioinform.": "Bioinformatics",
+    "Secur. Saf.": "Security and Safety",
+    "Radar": "IEEE International Radar Conference",
 }
 
 # Short names with no verifiable real venue behind them.
-MISSING_VENUES = {"Delta", "Make", "Engineering", "Proceedings", "Inf.", "De Computis", "ROBOT"}
+MISSING_VENUES = {"Delta", "Make", "Engineering", "Proceedings", "Inf.", "De Computis", "ROBOT",
+                  "Interacción", "Time", "Softw."}
 
 
 def fix_entry(entry):
