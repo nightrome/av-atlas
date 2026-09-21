@@ -282,7 +282,7 @@ function render() {
     tile.style.gridColumn = col + 1;
     tile.title = `${name}: ${c.citations} citations, ${c.papers} papers (avg ${fmtAvg(c.avg_citations)})`;
     tile.textContent = countryCode(name, currentStats);
-    tile.href = `index.html?country=${encodeURIComponent(name)}`;
+    tile.href = `country.html?name=${encodeURIComponent(name)}`;
     const t = Math.min(1, (c[rankMetricKey] || 0) / max);
     const step = Math.min(SEQ_RAMP.length - 1, Math.round(t * (SEQ_RAMP.length - 1)));
     tile.style.background = SEQ_RAMP[step];
@@ -306,7 +306,7 @@ function render() {
     tbody.innerHTML = '';
     data.forEach((c, i) => {
       const nameLink = document.createElement('a');
-      nameLink.href = `index.html?country=${encodeURIComponent(c.name)}`;
+      nameLink.href = `country.html?name=${encodeURIComponent(c.name)}`;
       nameLink.textContent = c.name;
       nameLink.style.color = 'var(--text)';
       const tr = row([pageOffset + i + 1, nameLink, c.papers, c.authors, c.citations, fmtAvg(c.avg_citations)]);

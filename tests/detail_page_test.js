@@ -86,6 +86,18 @@ async function testInstitutionPage() {
   check(`institution.html (${name}): must not throw`, !error);
 }
 
+async function testCountryPage() {
+  const counts = {};
+  (stats.all_papers || []).forEach(p => (p.countries || []).forEach(c => { counts[c] = (counts[c] || 0) + 1; }));
+  const [name] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0] || [];
+  if (!name) { check('country.html: no country found in data to test against', false); return; }
+
+  const { error, idRegistry } = await runPage('country.html', { search: `?name=${encodeURIComponent(name)}` });
+  check(`country.html (${name}): must not throw`, !error);
+  const rows = ((idRegistry || {})['papers-body'] || { children: [] }).children.filter(c => c.tagName === 'TR');
+  check('country.html: papers-body has at least one row', rows.length > 0);
+}
+
 // Regression guard for the user-reported bug (institution.html?name=Singapore
 // %20%E2%80%A0 -- a bare country name plus a stray footnote marker,
 // surviving as its own fake "institution"): no institution in the actual
@@ -117,6 +129,7 @@ function testNoJunkInstitutionsInRealData() {
 async function main() {
   await testAuthorPage();
   await testInstitutionPage();
+  await testCountryPage();
   testNoJunkInstitutionsInRealData();
 
   const elapsed = Date.now() - startedAt;

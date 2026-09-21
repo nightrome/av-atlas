@@ -174,6 +174,21 @@ detail page and the country filter, so a multinational shows up under its home c
 only. Authors whose country was already stamped into `authors_detail` from a wrong map
 entry keep it until their affiliations are applied again.
 
+## Countries get their own page
+
+Clicking a country used to jump to the Papers page filtered to it, which answered "what
+did this country publish" and nothing else. `country.html?name=` now shows a country the
+way `institution.html` shows an institution: totals, papers by year, top authors, top
+institutions, categories, venues and the paper list. It is computed in the browser from
+`all_papers` and the author-detail shards, so the build has nothing new to produce. The
+Papers-page link is still on it ("See these in the Papers page").
+
+A country's authors are the ones whose own record lists that country, not every author
+of a paper that touches it (the reasoning in `countries.html`). Its institutions are the
+ones `institution_countries.json` places there, so a foreign co-author's university
+doesn't show up under it. That is also why the authors and institutions lists are lower
+bounds: only people and places with an affiliation on record can appear.
+
 ## Scholar profiles and photos: confirm or skip
 
 A profile is saved to `data/scholar_profiles.json` only after a cross-check against a

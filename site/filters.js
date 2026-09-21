@@ -1493,6 +1493,13 @@
       }
       return cache.venue;
     }
+    function countryLists() {
+      if (!cache.country) {
+        cache.country = byMetric(
+          window.aggregateByDimension(allPapers, p => p.countries, { minPapers: 0, minCitedForAvg: 3 }));
+      }
+      return cache.country;
+    }
     function papersByCitations() {
       if (!cache.paper) {
         cache.paper = [...allPapers].sort((a, b) =>
@@ -1505,6 +1512,7 @@
       author: name => badgesFor(authorLists(), name, 'authors.html', ['total', 'papers', 'avg']),
       institution: name => badgesFor(institutionLists(), name, 'institutions.html', ['total', 'papers', 'avg']),
       venue: name => badgesFor(venueLists(), name, 'venues.html', ['total', 'papers', 'avg']),
+      country: name => badgesFor(countryLists(), name, 'countries.html', ['total', 'papers', 'avg']),
       paper(title) {
         const list = papersByCitations();
         const p = list.find(q => q.title === title);
@@ -1920,6 +1928,24 @@
         return LOOKS_LIKE_MONEY.test(body.trim()) ? whole : convertLatex(body, true);
       });
     return convertLatex(s, false).split(ESCAPED_DOLLAR).join('$');
+  };
+
+  // Google Scholar's own logo (the blue hat), from Wikimedia Commons'
+  // Google_Scholar_logo.svg. It is four shapes, so it is inlined as a data URI
+  // rather than shipped as a separate file. Shown instead of the word
+  // "Scholar" wherever a paper links to its Scholar page.
+  const SCHOLAR_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">'
+    + '<path fill="#4285f4" d="M256 411.12L0 202.667 256 0z"/>'
+    + '<path fill="#356ac3" d="M256 411.12l256-208.453L256 0z"/>'
+    + '<circle fill="#a0c3ff" cx="256" cy="362.667" r="149.333"/>'
+    + '<path fill="#76a7fa" d="M121.037 298.667c23.968-50.453 75.392-85.334 134.963-85.334s110.995 34.881 134.963 85.334H121.037z"/>'
+    + '</svg>';
+  window.scholarIcon = function () {
+    const img = document.createElement('img');
+    img.src = 'data:image/svg+xml,' + encodeURIComponent(SCHOLAR_LOGO_SVG);
+    img.alt = 'Google Scholar';
+    img.style.cssText = 'width:14px;height:14px;vertical-align:middle;';
+    return img;
   };
 
   // Row-selection for the Compare view (compare.html).
