@@ -158,6 +158,81 @@ CI runs the same command on every push and pull request. The last three tests ne
 `data/stats.json`, which is gitignored. Without it they are skipped with a notice
 instead of failing, so run `scripts/build_public_site.py` first for a full run.
 
+## Monthly update
+
+`.github/workflows/monthly-update.yml` updates the site on its own, at 03:17 UTC on
+the 4th of every month. It runs `scripts/monthly_update.py`, which:
+
+1. restores the corpus backup (`restore_corpus.py`);
+2. fetches what's new: arXiv preprints (`fetch_arxiv_monthly.py`), new conference
+   editions (`check_new_editions.py`, which runs the right fetcher itself), journal
+   papers from Crossref (`fetch_crossref.py journals`), and Semantic Scholar
+   abstracts and reference lists for papers that don't have them yet;
+3. builds the site with `build_public_site.py`, including the tests and the check
+   that the corpus didn't shrink;
+4. publishes to production with `deploy.py --skip-build --no-main-commit` (it never
+   commits to `main`);
+5. backs the corpus up again (`backup_corpus.py`);
+6. if any tracked file changed, such as a new venue file or the arXiv ledger, pushes
+   it to the `auto/monthly-update` branch and opens or updates a pull request.
+
+Nothing waits for a review. The site stays correct even if that pull request is never
+merged: each run starts from `main` plus whatever the bot branch has that `main`
+doesn't, and everything else a run needs is in the backup. Merge it when convenient
+to keep `main` in step. There is no LLM step, and no PDF is involved.
+
+If a step fails, the job opens an issue called "Monthly update failed" (or comments on
+the open one) with the step table and the end of the log. A failed source (arXiv down,
+say) doesn't stop the rest; a failed restore, build or publish does, and then
+production keeps last month's site.
+
+To try it without changing anything, run the workflow by hand from the Actions tab
+with "Only print what would run" ticked, or locally:
+
+```bash
+python scripts/monthly_update.py --dry-run
+```
+
+Don't run it for real on the laptop. It publishes to production and pushes the bot
+branch.
+
+**Secrets.** The maintainer adds two repository secrets (Settings, Secrets and
+variables, Actions):
+
+- `AV_ATLAS_BOT_TOKEN`: a fine-grained personal access token with access to
+  `nightrome/av-atlas` only, and "Contents" and "Pull requests" set to read and
+  write. It is used for the gh-pages push, the backup release and the pull request.
+  It can't be the built-in `GITHUB_TOKEN`: a gh-pages push made with that doesn't
+  start a Pages build, and a pull request it opens doesn't run the tests. Fine-grained
+  tokens expire, so renew it before then; an expired token shows up as a failed
+  restore in the issue.
+- `SEMANTIC_SCHOLAR_API_KEY`: the same key as in `.env`.
+
+The failure issue and keeping the schedule switched on use the built-in token. GitHub
+turns off scheduled workflows in a public repo after 60 days without activity, so each
+run switches its own workflow back on, which resets that clock.
+
+**Two writers of the backup.** The laptop and the monthly job both work on the same
+corpus, through the backup release. The rule is that every laptop session that
+changes the corpus starts with `python scripts/restore_corpus.py` and ends with
+`python scripts/backup_corpus.py` (a deploy does the backup for you). Don't run
+crawlers on the laptop while the monthly job is running. If the two do overlap, the
+second backup is refused rather than overwriting the first, and the issue says so.
+
+**The first full Semantic Scholar crawl.** `fetch_s2_references.py` has to look up
+every paper once, which takes longer than one job can run. The job gives it whatever
+time is left before the build, stops it cleanly, and the next month carries on from
+the backup, so it gets there after a few months on its own. To have it done at once,
+run it on the laptop:
+
+```bash
+python scripts/restore_corpus.py
+python scripts/fetch_s2_references.py
+python scripts/deploy.py --no-main-commit   # builds, publishes and backs up
+```
+
+After that, each month only has the new papers to look up.
+
 ## Reporting a data error
 
 Every page has a "spot an error?" link that opens an email pre-filled with the
