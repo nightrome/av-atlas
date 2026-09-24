@@ -192,6 +192,11 @@
   {
     "title": "Curiosity Driven Exploration of Learned Disentangled Goal Spaces",
     "authors": "Adrien Laversanne-Finot, Alexandre Pere, Pierre-Yves Oudeyer",
+    "abstract": "Intrinsically motivated goal exploration processes enable agents to explore efficiently complex environments with high-dimensional continuous actions. They have been applied successfully to real world robots to discover repertoires of policies producing a wide diversity of effects. Often these algorithms relied on engineered goal spaces but it was recently shown that one can use deep representation learning algorithms to learn an adequate goal space in simple environments. In this paper we show that using a disentangled goal space (i.e. a representation where each latent variable is sensitive to a single degree of freedom) leads to better exploration performances than an entangled one. We further show that when the representation is disentangled, one can leverage it by sampling goals that maximize learning progress in a modular manner. Finally, we show that the measure of learning progress, used to drive curiosity-driven exploration, can be used simultaneously to discover abstract independently controllable features of the environment."
+  },
+  {
+    "title": "Mapping Navigation Instructions to Continuous Control Actions with Position-Visitation Prediction",
+    "authors": "Valts Blukis, Dipendra Misra, Ross A. Knepper, Yoav Artzi",
     "abstract": "We propose an approach for mapping natural language instructions and raw observations to continuous control of a quadcopter drone. Our model predicts interpretable position-visitation distributions indicating where the agent should go during execution and where it should stop, and uses the predicted distributions to select the actions to execute. This two-step model decomposition allows for simple and efficient training using a combination of supervised learning and imitation learning. We evaluate our approach with a realistic drone simulator, and demonstrate absolute task-completion accuracy improvements of 16.85% over two state-of-the-art instruction-following methods."
   },
   {
