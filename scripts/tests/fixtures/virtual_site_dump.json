@@ -1,0 +1,67 @@
+{
+  "count": 7,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "name": "Driving World Models &amp; Planning",
+      "authors": [
+        {"fullname": "Ada Lovelace", "institution": "University of London"},
+        {"fullname": "Alan Turing", "institution": null}
+      ],
+      "decision": "Accept (Poster)",
+      "event_type": "Poster",
+      "virtualsite_url": "/virtual/2026/poster/101",
+      "sourceurl": "https://openreview.net/group?id=ICML.cc/2026/Conference"
+    },
+    {
+      "name": "Driving World Models & Planning",
+      "authors": [{"fullname": "Ada Lovelace"}, {"fullname": "Alan Turing"}],
+      "decision": "Accept (Oral)",
+      "event_type": "Oral",
+      "abstract": "We plan with a learned world model.",
+      "virtualsite_url": "/virtual/2026/oral/901",
+      "sourceurl": "https://openreview.net/group?id=ICML.cc/2026/Conference"
+    },
+    {
+      "name": "Position: Benchmarks Should Report Variance",
+      "authors": [{"fullname": "Grace Hopper"}],
+      "decision": "Accept (regular)",
+      "event_type": "Poster",
+      "virtualsite_url": "/virtual/2026/poster/102",
+      "sourceurl": "https://openreview.net/group?id=ICML.cc/2026/Position_Paper_Track"
+    },
+    {
+      "name": "A Blog Post About Attention",
+      "authors": [{"fullname": "Blog Author"}],
+      "decision": "Accept (Poster)",
+      "event_type": "Blog Track Poster",
+      "virtualsite_url": "/virtual/2026/poster/103",
+      "sourceurl": "https://openreview.net/group?id=ICML.cc/2026/BlogPosts"
+    },
+    {
+      "name": "A TMLR Paper Presented At The Conference",
+      "authors": [{"fullname": "Journal Author"}],
+      "decision": null,
+      "event_type": "Poster",
+      "virtualsite_url": "/virtual/2026/poster/104",
+      "sourceurl": "TMLR-2026"
+    },
+    {
+      "name": "Last Year's Paper",
+      "authors": [{"fullname": "Old Author"}],
+      "decision": "Accept (Poster)",
+      "event_type": "Poster",
+      "virtualsite_url": "/virtual/2025/poster/105",
+      "sourceurl": "https://openreview.net/group?id=ICML.cc/2025/Conference"
+    },
+    {
+      "name": "Oral Presentations",
+      "authors": [],
+      "decision": null,
+      "event_type": "Oral",
+      "virtualsite_url": "/virtual/2026/session/1",
+      "sourceurl": null
+    }
+  ]
+}

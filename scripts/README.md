@@ -41,7 +41,8 @@ build.
 | `fetch_cvf.py`, `fetch_cvf_history.py` | CVPR, ICCV and WACV from CVF Open Access. |
 | `fetch_ecva_history.py` | ECCV from ecva.net. |
 | `fetch_neurips.py`, `fetch_neurips_history.py` | NeurIPS proceedings. |
-| `fetch_corl_history.py` | CoRL from PMLR. |
+| `fetch_pmlr.py`, `fetch_corl_history.py` | ICML (from 2025) and CoRL from PMLR, with abstracts. |
+| `fetch_virtual_site.py` | New ICLR, ICML and ECCV editions from the conference's virtual-site JSON, before any proceedings page exists. |
 | `fetch_dblp_listing.py` | Venues with no proceedings site to scrape (RSS, ICLR, AAAI and the journals). Titles and authors only, no abstracts. |
 | `fetch_ieee_openalex.py` | ICRA and IROS through OpenAlex, because IEEE Xplore blocks direct access. |
 | `fetch_github_paper_lists.py` | ICRA and IROS years that OpenAlex doesn't cover. |
