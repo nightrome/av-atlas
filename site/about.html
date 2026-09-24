@@ -298,6 +298,7 @@
   those. Venues under 500 collected papers (mostly incidental, discovered via the citation graph
   rather than a full pull) aren't listed here.
 </p>
+<p class="section-intro" id="coverage-updated"></p>
 <div style="display:flex;align-items:center;gap:8px;position:relative;justify-content:flex-end;">
   <span class="info-tip" tabindex="0" role="img" aria-label="Per venue: the year range of papers pulled and whether abstracts have been collected for all years, some, or none. Generated from the corpus itself." data-tip="Per venue: the year range of papers pulled and whether abstracts have been collected for all years, some, or none. Generated from the corpus itself.">i</span>
 </div>
@@ -493,8 +494,11 @@
 <script src="filters.js"></script>
 <script>
 fetch('stats.json').then(r => r.json()).then(stats => {
-  if (stats.generated_at) {
-    document.getElementById('freshness-note').textContent = `Data last updated ${stats.generated_at}.`;
+  const updated = dataUpdatedText(stats);
+  if (updated) {
+    document.getElementById('freshness-note').textContent = `${updated}.`;
+    document.getElementById('coverage-updated').textContent =
+      `${updated}. This is the last time a paper, author list, citation count or corpus total changed; a rebuild that changes none of them keeps the date.`;
   }
 
   const cs = stats.corpus_stats || {};

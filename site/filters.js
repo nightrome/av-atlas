@@ -342,7 +342,8 @@
     },
     citations_per_paper: {
       label: 'Citations / paper',
-      short: 'Average in-corpus citations per paper. A small group with one famous paper can score '
+      short: 'Average in-corpus citations per paper: the group\'s citations divided by all its papers, '
+        + 'uncited ones included, rounded to a whole number. A small group with one famous paper can score '
         + 'very highly here, so read it alongside the paper count.',
     },
     early_citations: {
@@ -1369,6 +1370,28 @@
     return { offset, pageSize, page: current, totalPages };
   };
 
+  // "Citations / paper", the one definition every page uses: total in-corpus
+  // citations divided by every paper in the group, uncited ones included,
+  // rounded to a whole number. The listing pages used to divide by cited
+  // papers only while the detail pages divided by all of them, so the same
+  // author or country showed two different averages one click apart. A
+  // paper with no citation number at all (null, not 0) is left out of both
+  // sides; applyCitationSource gives every paper a number, so in practice
+  // that never happens on the site. null when there is nothing to average.
+  function citationsPerPaper(total, paperCount) {
+    return paperCount ? Math.round(total / paperCount) : null;
+  }
+  window.citationsPerPaper = citationsPerPaper;
+  window.avgCitations = function (papers) {
+    let total = 0, n = 0;
+    (papers || []).forEach(p => {
+      if (p.citations == null) return;
+      total += p.citations;
+      n += 1;
+    });
+    return citationsPerPaper(total, n);
+  };
+
   // Aggregates a set of papers by an arbitrary dimension (authors,
   // institutions, countries, category, venue, ...), so every page can compute
   // its own ranking from whatever subset of all_papers the active filters
@@ -1393,17 +1416,16 @@
     // citations/paper" off a single cited paper, reading as a real zero
     // rather than "we only have data for 1 paper from this country").
     const minCitedForAvg = options.minCitedForAvg || 0;
-    // citedCounts tracks only papers with at least one citation, so the
-    // average stays "citations per cited paper" -- a paper the corpus
-    // doesn't reference (a real 0 now, no longer null) is counted in
-    // `papers` but kept out of the average's denominator rather than
-    // dragging it toward zero.
-    const citations = {}, counts = {}, citedCounts = {};
+    // The average divides by every paper with a citation number (a real 0
+    // included), the same as avgCitations above. citedCounts, papers with at
+    // least one citation, only drives the two reliability floors above.
+    const citations = {}, counts = {}, citedCounts = {}, withCountCounts = {};
     papers.forEach(p => {
       const vals = accessor(p) || [];
       new Set(vals).forEach(v => {
         if (!v) return;
         counts[v] = (counts[v] || 0) + 1;
+        if (p.citations != null) withCountCounts[v] = (withCountCounts[v] || 0) + 1;
         if (p.citations) {
           citations[v] = (citations[v] || 0) + p.citations;
           citedCounts[v] = (citedCounts[v] || 0) + 1;
@@ -1416,7 +1438,7 @@
       .map(k => ({
         name: k, citations: Math.round(citations[k] || 0), papers: counts[k],
         avg_citations: (citedCounts[k] || 0) >= Math.max(1, minCitedForAvg)
-          ? Math.round(citations[k] / citedCounts[k]) : null,
+          ? citationsPerPaper(citations[k] || 0, withCountCounts[k] || 0) : null,
         // How many papers the average is actually built from. Exposed so a
         // table can mark a thin average rather than presenting "112
         // citations/paper" off two data points exactly like one off fifty --
@@ -1972,9 +1994,8 @@
     mark.textContent = ' *';
     mark.style.color = 'var(--muted)';
     cell.appendChild(mark);
-    cell.title = `Averaged over ${citedPapers} paper${citedPapers === 1 ? '' : 's'} with a citation `
-      + `count, out of ${totalPapers}. The rest have no in-corpus citer found yet, so they are left `
-      + `out of the average rather than counted as zero.`;
+    cell.title = `Only ${citedPapers} of these ${totalPapers} papers are cited by anything in the `
+      + `corpus yet. The rest count as 0 in the average, so it rests on very few papers.`;
     return cell;
   };
 
@@ -1989,7 +2010,7 @@
   window.thinAverageNoteText = function (thinCount) {
     return thinCount
       ? `* ${thinCount} of the Citations / paper figures shown ${thinCount === 1 ? 'is' : 'are'} based on `
-        + `fewer than ${THIN_AVERAGE_BELOW} papers with a citation count.`
+        + `fewer than ${THIN_AVERAGE_BELOW} cited papers.`
       : '';
   };
 
@@ -2100,6 +2121,31 @@
     syncBar();
   };
 
+  // The parameters that say which entity a detail page shows: ?name= on
+  // author/institution/venue/country, ?title= on paper, ?type=&names= on
+  // compare. Listed in the order they go into the URL.
+  const IDENTITY_PARAMS = ['type', 'name', 'names', 'title'];
+
+  // Same escaping as Python's urllib.parse.quote(v, safe=''), which is what
+  // build_public_site.py's write_sitemap uses, so the canonical URL of a
+  // page and its sitemap entry are the same string. encodeURIComponent
+  // alone leaves ! ' ( ) * as they are, and paper titles have brackets.
+  function quoteParam(value) {
+    return encodeURIComponent(value).replace(/[!'()*]/g,
+      c => '%' + c.charCodeAt(0).toString(16).toUpperCase());
+  }
+
+  function detailCanonicalUrl(loc) {
+    const params = new URLSearchParams(loc.search || '');
+    const query = IDENTITY_PARAMS
+      .filter(k => params.get(k))
+      .map(k => `${k}=${quoteParam(params.get(k))}`)
+      .join('&');
+    const origin = loc.origin || `${loc.protocol}//${loc.host}`;
+    return origin + loc.pathname + (query ? `?${query}` : '');
+  }
+  window.detailCanonicalUrl = detailCanonicalUrl;
+
   // Sets a detail page's title and description to the entity it is actually
   // showing.
   //
@@ -2115,19 +2161,57 @@
   // (Google does) see the real title. Link-preview crawlers generally do not
   // run JS and will still show the site-level card; fixing that would need
   // pre-rendered per-entity HTML, which is a much larger change.
+  //
+  // It also adds the page's canonical link. The detail pages ship without
+  // one on purpose: a static <link rel="canonical"> pointing at the bare
+  // author.html told search engines that every ?name= page was a copy of
+  // the empty template, and Google advises against changing a canonical
+  // from JS once the HTML has set one. So the only canonical these pages
+  // get is this one, built from the path plus the parameter that says which
+  // entity it is. Filter, sort and paging parameters are left out so every
+  // view of one author folds into one URL. og:url gets the same value.
   window.setDetailPageMeta = function (title, description) {
+    const head = document.head;
+    if (head && head.querySelector) {
+      const url = detailCanonicalUrl(location);
+      let link = head.querySelector('link[rel="canonical"]');
+      if (!link) {
+        link = document.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        head.appendChild(link);
+      }
+      link.setAttribute('href', url);
+      let og = head.querySelector('meta[property="og:url"]');
+      if (!og) {
+        og = document.createElement('meta');
+        og.setAttribute('property', 'og:url');
+        head.appendChild(og);
+      }
+      og.setAttribute('content', url);
+    }
     if (!title) return;
     document.title = `${title} — AV Atlas`;
     const set = (selector, value) => {
-      const el = document.head && document.head.querySelector(selector);
+      const el = head && head.querySelector(selector);
       if (el && value) el.setAttribute('content', value);
     };
     set('meta[name="description"]', description);
     set('meta[property="og:title"]', document.title);
     set('meta[property="og:description"]', description);
-    set('meta[property="og:url"]', location.href);
     set('meta[name="twitter:title"]', document.title);
     set('meta[name="twitter:description"]', description);
+  };
+
+  // "Data last updated 24 Sep 2026", from stats.json's content_updated: the
+  // date the published papers or counts last changed (see content_hash in
+  // aggregate.py), not when the site was last built or deployed. Spelled
+  // out by hand so it reads the same in every browser locale. '' when the
+  // field is missing, so a page never falls back to the build date.
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  window.dataUpdatedText = function (stats) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec((stats && stats.content_updated) || '');
+    if (!m || !MONTHS[Number(m[2]) - 1]) return '';
+    return `Data last updated ${Number(m[3])} ${MONTHS[Number(m[2]) - 1]} ${m[1]}`;
   };
 
   // Who runs this site. Used to disclose, in place, when the maintainer's

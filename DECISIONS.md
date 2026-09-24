@@ -42,8 +42,9 @@ and venues with sparse coverage. These all keep the distinction:
 - the sort keys in `aggregate.py`
 - the `best_by_year` and `best_by_venue` selection (a paper with no citation data
   can't be "best")
-- `aggregateByDimension` in `filters.js` (an uncited paper counts toward a group's
-  paper count but not toward the denominator of its average)
+- `aggregateByDimension` and `avgCitations` in `filters.js` (a paper with no citation
+  number is left out of an average entirely; a real 0 counts, see "Citations per paper"
+  below)
 
 The display shows "—", never a misleading "0".
 
@@ -71,6 +72,27 @@ Citation counts and averages are rounded to integers everywhere they're computed
 (`aggregate.py`, `filters.js`). "213.68 cit./paper" looks precise, but the
 underlying signal is a keyword heuristic over a partial citation graph, which
 doesn't support that precision.
+
+## Citations per paper has one definition
+
+"Citations / paper" is a group's in-corpus citations divided by all of its papers, uncited
+ones included, rounded to a whole number. Every page gets it from one helper,
+`avgCitations` in `filters.js` (`aggregateByDimension` uses the same division), and the
+Insights panel computed in `aggregate.py` divides the same way.
+
+Until September 2026 there were two definitions under the same label. The listing pages
+divided by the papers with at least one citation, and the detail pages divided by all
+papers and showed one decimal. Clicking from a ranking to an entity's own page changed its
+number by 20 to 35%: Holger Caesar read 155 on Researchers and 118.7 on his own page. All
+papers is the right denominator now that every paper has a real in-corpus count, where 0
+means "nothing here cites it yet". Leaving those papers out made a group with many uncited
+papers look better than one whose papers are all cited a little.
+
+The listing pages still hide the average when fewer than three of a group's papers are
+cited (`minCitedForAvg`; Researchers drops the whole row instead, `minCitedPapers`). That
+only decides whether a number is shown. When it is shown, it is the same number the
+detail page shows, and `tests/filters.test.js` checks that for every author with more
+than four papers in the built `stats.json`.
 
 ## Filters recompute rankings client-side from `all_papers`
 
@@ -889,6 +911,45 @@ changes make deploys cheap and add a preview step:
   10-minute rebuild. `build_public_site.py` is also left out, except for its list of
   `run_step` calls, because adding or reordering a step there does change what a full build
   produces and would otherwise be skipped silently.
+
+## "Data last updated" is when the content changed, not when the site was built
+
+`aggregate.py` writes two fields into `stats.json`. `content_hash` is a sha256 over what the
+site shows about each AV paper (title, venue, year, authors, citation count, in any order)
+plus the corpus totals. `content_updated` is the date that hash last changed: if the
+previous `stats.json` has the same hash, its date is carried over, otherwise it is today.
+The Overview and About pages show `content_updated`, and the sitemap uses it as `lastmod`.
+
+Before this, the About page showed `generated_at`, which moves on every build. With
+monthly automatic builds, a month with no new papers or citations would still have said
+"updated today", and every deploy told crawlers that all 9,000 sitemap pages had changed.
+`generated_at` stays in the file as the build date, but no page shows it.
+
+A rebuild that changes only page code, abstracts or other fields keeps the old date. A
+missing or older `stats.json` without these fields counts as changed.
+
+## Detail pages get their canonical URL from JS
+
+Author, paper, institution, venue, country and compare pages are one HTML file each, with
+the entity in the query string. They used to ship a static `<link rel="canonical">` and
+`og:url` pointing at the bare file (`author.html`), which told search engines that every
+`?name=` page in the sitemap was a copy of an empty template.
+
+Those pages now ship no canonical and no `og:url`. `setDetailPageMeta` in `filters.js` adds
+one of each, set to the page's own origin and path plus only the parameter that names the
+entity (`?name=`, `?title=`, or `?type=&names=` on compare). Filter, sort and paging
+parameters are left out. Google's JavaScript SEO guide advises against changing a canonical
+from JS when the HTML already has one, which is why the static tag is removed rather than
+overwritten. The value is escaped the same way as `write_sitemap` escapes its URLs, so a
+page's canonical and its sitemap entry are the same string.
+
+Because the URL is built from `location`, staging pages get staging URLs without
+`deploy.py` rewriting anything; staging is also `noindex`. The listing pages keep their
+static tags, which `deploy.py` still rewrites for staging. The sitemap no longer lists the
+bare detail templates, and lists only venues that have AV papers.
+
+Crawlers that don't run JS (most link-preview bots) still see no per-page tags. Fixing
+that needs pre-rendered HTML per entity, which is a much bigger change.
 
 ## Page views are counted with GoatCounter, not Google Analytics
 

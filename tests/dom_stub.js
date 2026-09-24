@@ -143,7 +143,9 @@ function queryAll(root, sel) {
   const out = [];
   const seen = new Set();
   sel.split(',').map(s => s.trim()).filter(Boolean).forEach(one => {
-    if (one.includes('>') || one.includes('+') || one.includes('~') || one.includes(':')) return;
+    // A ':' inside [attr="..."] is part of the value (og:url), not a pseudo-class.
+    const outsideBrackets = one.replace(/\[[^\]]*\]/g, '');
+    if (['>', '+', '~', ':'].some(c => outsideBrackets.includes(c))) return;
     const parts = one.split(/\s+/);
     let current = [root];
     parts.forEach(part => {
@@ -239,6 +241,7 @@ function runPage(file, opts) {
   const locationProxy = {
     get search() { return locationState.search; },
     get pathname() { return locationState.pathname; },
+    get origin() { return 'http://localhost'; },
     get href() { return 'http://localhost' + locationState.pathname + locationState.search; },
     set href(v) { locationState.hrefAssignments.push(v); },
     reload() {},

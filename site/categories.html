@@ -172,7 +172,7 @@ function computeYearAgg(papers) {
     out[y] = {
       papers: v.papers,
       citations: v.citations,
-      avg_citations: v.papersWithCitations ? Math.round(v.citations / v.papersWithCitations) : null,
+      avg_citations: citationsPerPaper(v.citations, v.papersWithCitations),
     };
   });
   return out;

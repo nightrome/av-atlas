@@ -91,11 +91,14 @@
     padding: 5px 10px; font-size: 0.82em; cursor: pointer;
   }
   .export-buttons button:hover { border-color: var(--accent); color: var(--accent); }
+  .data-updated { color: var(--muted); font-size: 0.85em; margin: 0 0 10px; }
+  .data-updated:empty { display: none; }
 
 </style>
 </head>
 <body>
 <nav id="topnav"></nav>
+<p class="data-updated" id="data-updated"></p>
 <div id="filter-bar-container"></div>
 
 <div class="panel" id="timeline-panel">
@@ -301,6 +304,7 @@ let currentTimelineDraw = null;
 const relevance = new URLSearchParams(location.search).get('relevance') || '';
 fetchStatsWithRelevance(relevance).then(stats => {
   currentStats = stats;
+  document.getElementById('data-updated').textContent = dataUpdatedText(stats);
   // The filter bar (incl. the search input) is built once per page load --
   // category/venue/year selects navigate to a new URL on change anyway, and
   // rebuilding the search <input> on every keystroke (as a full render(stats)
