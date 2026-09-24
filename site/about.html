@@ -18,6 +18,7 @@
 <meta name="twitter:description" content="How AV Atlas finds, classifies, and scores autonomous vehicle research papers, and two independent checks on how reliable the numbers actually are.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preload" href="about.json" as="fetch" crossorigin>
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="theme-light.css">
 <style>
@@ -216,12 +217,21 @@
       category breakdowns are computed and published to every page on this site.</li>
 </ul>
 <p>
+  <strong>Where the papers come from.</strong> About <span id="src-listing-pct">55%</span> of the
+  AV papers (<span id="src-listing-n">14,209</span>) come from the complete venue listings that
+  stage&nbsp;1 collects. The other <span id="src-found-pct">45%</span>
+  (<span id="src-found-n">11,540</span>) were found in stage&nbsp;4 because they cite a paper that
+  was already in the corpus. Those include journal and workshop papers from outside the covered
+  venues, and <span id="src-arxiv-n">6,155</span> arXiv preprints that never appeared at a venue we
+  index, about <span id="src-arxiv-pct">24%</span> of all AV papers.
+</p>
+<p>
   <strong>A note on preprints.</strong> Conferences and journals each publish a fixed, known set of
-  accepted papers every year &mdash; that fixed list is what stage&nbsp;1 collects, in full. Papers
-  that only ever appeared as preprints, with no peer review and no such fixed list, are not
-  collected that way. A preprint is only included if it was also published at a covered venue (as a
-  source of full text), or if it's found through the citation graph in stage&nbsp;4 because
-  something already in the corpus cites it.
+  accepted papers every year &mdash; that fixed list is what stage&nbsp;1 collects, in full. arXiv
+  has no such list, so preprints are not collected that way. A preprint is included only if it
+  cites a paper already in the corpus (stage&nbsp;4 above), or if it was later published at a
+  covered venue, in which case it counts as that venue's paper. Preprints count in every ranking
+  and total on this site, the same as published papers.
 </p>
 </div>
 </details>
@@ -492,7 +502,9 @@
 </script>
 <script src="filters.js"></script>
 <script>
-fetch('stats.json').then(r => r.json()).then(stats => {
+// about.json is the part of stats.json this page reads, written by
+// build_public_site.py, so the About page doesn't download every paper.
+fetch('about.json').then(r => r.json()).then(stats => {
   if (stats.generated_at) {
     document.getElementById('freshness-note').textContent = `Data last updated ${stats.generated_at}.`;
   }
@@ -523,6 +535,20 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   tile((cs.total_institutions || 0).toLocaleString(), 'Institutions');
   tile(((cs.big_venues || []).length || cs.venues_covered || 0).toLocaleString(), 'Venues');
   tile((cs.total_countries || (stats.top_countries || []).length || 0).toLocaleString(), 'Countries');
+
+  // -- Where the papers come from (the static text holds the September 2026
+  // numbers; these keep it current after each rebuild). --
+  const src = stats.paper_sources || {};
+  if (src.total) {
+    const share = n => Math.round((n / src.total) * 100) + '%';
+    const setText = (id, text) => { document.getElementById(id).textContent = text; };
+    setText('src-listing-pct', share(src.venue_listing));
+    setText('src-listing-n', src.venue_listing.toLocaleString());
+    setText('src-found-pct', share(src.citation_found));
+    setText('src-found-n', src.citation_found.toLocaleString());
+    setText('src-arxiv-n', src.arxiv_only.toLocaleString());
+    setText('src-arxiv-pct', share(src.arxiv_only));
+  }
 
   // -- Data coverage table (generated from the corpus itself, see
   // aggregate.py's venue_coverage -- never hand-typed, can't go stale). --

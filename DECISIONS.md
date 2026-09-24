@@ -80,15 +80,15 @@ filters leave. A leaderboard truncated on the server can't be re-sliced by a
 category, country or institution filter. That made every filter a dead end on any
 page except the Overview.
 
-## The citation-source view is a client-side toggle
+## Citations are set client-side from `citations_by_source`
 
-`stats.json` carries every paper's full `citations_by_source` map, not just the
-blended pick. `applyCitationSource(stats)` in `filters.js` chooses one source and
-changes `p.citations` in place right after the fetch and before anything renders, so
-switching sources never needs a `stats.json` rebuild or a redeploy. Both
-`all_papers` and `top_papers` are changed (after `JSON.parse`, a paper that appears
-in both is two separate objects), and `best_by_year` is recomputed client-side for
-the same reason. The preference is kept in `localStorage`, not in the URL.
+There used to be a picker for the citation source, with the choice kept in
+`localStorage`. It's gone: citations are always the in-corpus count. `stats.json`
+still carries each paper's `citations_by_source` map, and `applyCitationSource(stats)`
+in `filters.js` sets `p.citations` from its `in_corpus` entry right after the fetch
+and before anything renders, the same rule `aggregate.py`'s `citation_count()`
+applies. Nothing on the site reads `best_by_year` any more, and the published
+`stats.json` no longer has it or `top_papers` (see the next entry).
 
 ## Abstracts are sharded out of `stats.json`
 
@@ -100,6 +100,25 @@ several MB of gzip. They now live in `data/abstracts/shard-NN.json` (64 shards).
 to keep in sync, just the same hash on both ends. `paper.html` reimplements it in
 JavaScript, and the two copies must stay byte-identical or every abstract silently
 404s. `TestShardIndex` in `test_aggregate.py` pins the Python side.
+
+## The published `stats.json` is slimmer than `data/stats.json`
+
+Every page except About waits for `stats.json` before it shows anything, and in
+September 2026 that was 4.6 MB gzip. About a fifth of it was data no page reads:
+`best_by_venue`, `best_by_year`, `top_papers`, `top_authors`, `top_institutions` and
+`venue_images` at the top level, and `citations_updated` (always null),
+`has_code_link`, `cd_n_citers` and `venue_status` on each paper. The data release,
+the sitemap and the tests still use them, so `aggregate.py` keeps writing them to
+`data/stats.json` and `build_public_site.py` drops them, plus null paper fields, when
+it writes `public/stats.json`. That took it from 23.8 MB to 17.6 MB raw and from
+4.6 MB to 3.7 MB gzip. The drop lists are a denylist on purpose, so a key a later
+change adds reaches the pages without anyone having to remember this step.
+
+The About page only needs corpus totals and coverage numbers, so it reads its own
+`about.json` (about 34 KB gzip) instead. `test_build_public_site.py` checks that no
+page reads anything that gets dropped, and `run_tests.py` runs the smoke test a
+second time against the published payloads. Every page also preloads the file it
+fetches, so the download starts before `filters.js` has loaded.
 
 ## Venue names are aliased at the source
 

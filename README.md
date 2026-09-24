@@ -2,10 +2,14 @@
 
 A dashboard of autonomous vehicle (AV) research: who is publishing, which
 institutions and countries are active, how topics have changed over time, and
-which papers are cited most *within AV research*. It is built from the complete
+which papers are cited most *within AV research*. It starts from the complete
 proceedings of about 20 major computer vision and robotics venues, not from a
-keyword-filtered subset. The [About page](site/about.html) explains how papers
-are found, classified and scored.
+keyword-filtered subset. About 55% of the AV papers come from those listings.
+The other 45% were found because they cite a paper already in the corpus; those
+include journal papers from other venues and arXiv preprints (about 24% of all AV
+papers), and preprints count in the rankings like any other paper. The
+[About page](site/about.html) explains how papers are found, classified and
+scored.
 
 Live site: https://nightrome.github.io/av-atlas/
 
@@ -126,7 +130,8 @@ Five stages, run roughly in this order. The About page has a diagram.
 4. **Citation graph.** `build_citation_graph.py` parses reference lists, and
    `fetch_semanticscholar_citing.py` finds papers that cite the corpus. That can
    turn up new paper titles, which feed back into stage 1.
-5. **Aggregate.** `aggregate.py` writes `data/stats.json`, which every page reads.
+5. **Aggregate.** `aggregate.py` writes `data/stats.json`. `build_public_site.py`
+   publishes a slimmer copy for the pages, plus a small `about.json` for the About page.
 
 ## Setup
 
@@ -154,7 +159,7 @@ This runs the Python unit tests (`scripts/tests/`), the JavaScript logic tests
 (`tests/*.test.js`, plain Node, nothing to install), and smoke, regression and
 detail-page tests that load every page's script against real data.
 
-CI runs the same command on every push and pull request. The last three tests need
+CI runs the same command on every push and pull request. The page tests need
 `data/stats.json`, which is gitignored. Without it they are skipped with a notice
 instead of failing, so run `scripts/build_public_site.py` first for a full run.
 

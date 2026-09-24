@@ -98,6 +98,78 @@ def html_pages():
     return pages
 
 
+# data/stats.json holds more than the pages read: aggregate.py also writes it
+# for the data release, the sitemap and the tests. Every page downloads the
+# published copy before it can show anything (4.7 MB gzip in September 2026),
+# so the build ships a slimmer one and leaves data/stats.json as it is.
+#
+# Top-level keys no page reads. top_papers is only touched by filters.js to
+# keep it in step with all_papers when something swaps the paper list.
+UNUSED_STATS_KEYS = (
+    "best_by_venue", "best_by_year", "top_papers", "top_authors",
+    "top_institutions", "venue_images",
+)
+# Per-paper fields no page reads. Null fields are dropped as well: every page
+# checks paper fields with `!= null` or plain truthiness, so a missing key
+# reads the same as a null one.
+UNUSED_PAPER_FIELDS = ("citations_updated", "has_code_link", "cd_n_citers", "venue_status")
+
+# What about.html reads. It only needs corpus totals and coverage numbers, so
+# it gets its own small file instead of the whole stats.json.
+ABOUT_KEYS = (
+    "generated_at", "generated_from", "content_updated", "content_hash",
+    "av_relevant", "corpus_stats", "verification", "top_countries",
+)
+
+
+def is_version_key(key):
+    return key == "version" or key.startswith("version_") or key.endswith("_version")
+
+
+def slim_stats(stats):
+    """The stats.json the pages get: data/stats.json minus what no page reads."""
+    out = {k: v for k, v in stats.items() if k not in UNUSED_STATS_KEYS}
+    out["all_papers"] = [
+        {k: v for k, v in p.items() if v is not None and k not in UNUSED_PAPER_FIELDS}
+        for p in stats.get("all_papers") or []
+    ]
+    return out
+
+
+def paper_sources(stats):
+    """How the AV papers got into the corpus, for the About page's text.
+
+    A paper either came from a venue's complete listing, or was found
+    because it cites a paper already in the corpus (the Semantic Scholar
+    crawl). Of the second kind, the ones whose venue is arXiv are preprints
+    that were never published anywhere we index.
+    """
+    papers = stats.get("all_papers") or []
+    listed = sum(1 for p in papers if p.get("source") == "venue_listing")
+    found = [p for p in papers if p.get("source") != "venue_listing"]
+    preprints = sum(1 for p in found if "arxiv" in (p.get("venue") or "").lower())
+    return {"total": len(papers), "venue_listing": listed,
+            "citation_found": len(found), "arxiv_only": preprints}
+
+
+def about_payload(stats):
+    """The small about.json that about.html reads instead of stats.json."""
+    out = {k: stats[k] for k in stats if k in ABOUT_KEYS or is_version_key(k)}
+    out["paper_sources"] = paper_sources(stats)
+    return out
+
+
+def write_json(path, data):
+    path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")),
+                    encoding="utf-8", newline="\n")
+
+
+def write_page_payloads(stats, page_dir):
+    """Writes the slimmed stats.json and about.json into page_dir."""
+    write_json(page_dir / "stats.json", slim_stats(stats))
+    write_json(page_dir / "about.json", about_payload(stats))
+
+
 SITE_URL = "https://nightrome.github.io/av-atlas"
 
 # How many of each kind of detail page to list in the sitemap. Every author,
@@ -199,7 +271,7 @@ def build_public_site():
         html = add_cache_bust(html)
         (page_dir / html_path.name).write_text(html, encoding="utf-8", newline="\n")
 
-    shutil.copy2(stats_path, page_dir / "stats.json")
+    write_page_payloads(json.loads(stats_path.read_text(encoding="utf-8")), page_dir)
 
     # Every sharded data directory aggregate.py writes (see its AUTHOR_
     # DETAIL_DIR/ABSTRACTS_DIR/etc. comments) -- copied file-by-file rather
@@ -266,7 +338,7 @@ def build_public_site():
     # part of the current expected output. Caught in practice: label_relevance.html
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
-        | {"stats.json", "theme.css", "theme-light.css",
+        | {"stats.json", "about.json", "theme.css", "theme-light.css",
            "logo.svg", "og-image.png", "sitemap.xml", "robots.txt"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
@@ -282,7 +354,7 @@ def build_public_site():
         print(f"  {html_path.name}")
     for js_path in SITE_DIR.glob("*.js"):
         print(f"  {js_path.name}")
-    print(f"  stats.json")
+    print(f"  stats.json, about.json")
     for name, dst in (
         ("abstracts", abstracts_dst), ("non_av_papers", non_av_dst), ("citations", citations_dst),
         ("author_detail", author_detail_dst), ("institution_authors", institution_authors_dst),
