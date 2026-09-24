@@ -146,6 +146,10 @@ class BuildOutputTests(unittest.TestCase):
                              "0.1.2")
             self.assertEqual(json.loads((public / "stats.json").read_text(encoding="utf-8"))["site_version"],
                              "0.1.2")
+            # about.json is written from the same stats and stamped the same
+            # way; the About page shows its site_version.
+            self.assertEqual(json.loads((public / "about.json").read_text(encoding="utf-8"))["site_version"],
+                             "0.1.2")
             nav = (public / "nav.js").read_text(encoding="utf-8")
             self.assertIn("const SITE_VERSION = '0.1.2';", nav)
             for page in public.glob("*.html"):
