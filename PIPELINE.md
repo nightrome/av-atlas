@@ -193,8 +193,12 @@ RAMP-VO). Under that standard:
 ICRA 2022 and IROS 2021-2022, but it has moved to a paid, budget-limited API
 (confirmed 2026-08-17: `"Insufficient budget"`, `dailyRemainingUsd: 0`), and the
 project's no-paid-APIs rule means it isn't used to widen coverage. Everything else
-comes from `hrjp/ICRA-IROS-PaperList`, an index of per-year community repos (title
-and authors only, no abstracts) covering 2019-2025 for both conferences. The repos
+comes from `hrjp/ICRA-IROS-PaperList`, an index of per-year community repos (no
+abstracts) covering 2019-2025 for both conferences. Most give title and authors,
+but the PaoPaoRobot lists (ICRA 2019-2020, IROS 2019, 2020 and 2022) and the
+dectrfov lists (ICRA and IROS 2021) have titles only, so those papers have no
+author names unless an arXiv copy with the same arXiv id fills them in
+(`merge_corpus.py`), and `paper.html` says the source list has none. The repos
 use three different formats:
 
 - plain bullets under `## Category` headings
@@ -233,9 +237,14 @@ Intelligent Vehicles"). It's fixed by mapping "IV" to `ivs` in `CONF_DBLP_PATH` 
 ## Merge, classify, enrich, aggregate
 
 - **`merge_corpus.py`** removes duplicates by normalized title across every
-  `data/venues/*.json` file, gives each paper a `category` (topic) and an
-  `av_relevance` (AV or non-AV) using `classify.py`, and writes
-  `data/papers_full.json`.
+  `data/venues/*.json` file, then drops an arXiv-file record whose arXiv id a
+  venue record already carries, so a preprint renamed for its camera-ready
+  version isn't counted twice (the venue record wins and only takes the
+  authors or abstract it lacks). It unescapes HTML entities in titles and venue
+  names, and rewrites NeurIPS's "Last, First, Last, First" and ECCV 2018's
+  BibTeX "Last, First and Last, First" author strings to "First Last, First
+  Last". It gives each paper a `category` (topic) and an `av_relevance` (AV or
+  non-AV) using `classify.py`, and writes `data/papers_full.json`.
 - **`classify.py`** assigns categories by keyword matching (`data/categories.json`,
   a living taxonomy, not a fixed one). AV relevance comes from an explicit list of
   AV-specific phrases (`AV_RELEVANCE_TERMS`) and is independent of category. The

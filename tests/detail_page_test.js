@@ -98,6 +98,32 @@ async function testCountryPage() {
   check('country.html: papers-body has at least one row', rows.length > 0);
 }
 
+// A paper with no authors: one from an ICRA/IROS GitHub list that has only
+// titles says the source has no author names, any other keeps the generic
+// line. Two copies of a real paper are added to the real stats with their
+// authors removed.
+async function testPaperPageWithoutAuthors() {
+  const base = (stats.all_papers || [])[0];
+  if (!base) { check('paper.html: no paper found in data to test against', false); return; }
+  const cases = [
+    { title: 'Author-less test paper from a titles-only list',
+      source_url: 'https://github.com/PaoPaoRobot/ICRA2020-paper-list',
+      expected: 'The source list for this venue has no author names.' },
+    { title: 'Author-less test paper from elsewhere', source_url: null,
+      expected: 'No author list recorded for this paper.' },
+  ];
+  const patched = JSON.parse(JSON.stringify(stats));
+  cases.forEach(c => patched.all_papers.push({ ...base, title: c.title, authors: [], source_url: c.source_url }));
+  const statsRaw = JSON.stringify(patched);
+  for (const c of cases) {
+    const { error, idRegistry } = await runPage('paper.html', { search: `?title=${encodeURIComponent(c.title)}`, statsRaw });
+    check(`paper.html (${c.title}): must not throw`, !error);
+    if (error) continue;
+    const empty = idRegistry['author-empty'];
+    check(`paper.html (${c.title}): author note reads "${c.expected}"`, !!empty && empty.textContent === c.expected);
+  }
+}
+
 // Regression guard for the user-reported bug (institution.html?name=Singapore
 // %20%E2%80%A0 -- a bare country name plus a stray footnote marker,
 // surviving as its own fake "institution"): no institution in the actual
@@ -130,6 +156,7 @@ async function main() {
   await testAuthorPage();
   await testInstitutionPage();
   await testCountryPage();
+  await testPaperPageWithoutAuthors();
   testNoJunkInstitutionsInRealData();
 
   const elapsed = Date.now() - startedAt;

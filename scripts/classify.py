@@ -38,6 +38,7 @@ paper is clearly about AVs) or "non-AV" with a real category (a general CV
 method paper that happens to be about e.g. segmentation but isn't about
 driving).
 """
+import html
 import json
 import re
 from pathlib import Path
@@ -57,7 +58,19 @@ LAST_RESORT_CATEGORY_IDS = frozenset({"explainability"})
 
 
 def normalize_title(t):
-    return re.sub(r"[^a-z0-9]", "", (t or "").lower())
+    # Unescaped first, so "Detection &amp; Recognition" and "Detection &
+    # Recognition" are one key (merge_corpus.py unescapes stored titles).
+    return re.sub(r"[^a-z0-9]", "", html.unescape(t or "").lower())
+
+
+def _label_keys(key, entry):
+    """The stored key plus the key its own title gives now. Label files
+    written before titles were unescaped have an "amp"/"quot" left in some
+    keys, and re-deriving from the title keeps those labels matching."""
+    keys = {key}
+    if isinstance(entry, dict) and entry.get("title"):
+        keys.add(normalize_title(entry["title"]))
+    return keys
 
 
 def load_hard_labels():
@@ -95,7 +108,9 @@ def load_llm_av_titles():
     for f in (LLM_LABELS_FILE, LLM_LABELS_V2_FILE):
         if f.exists():
             labels = json.loads(f.read_text(encoding="utf-8"))
-            titles |= {key for key, v in labels.items() if v.get("label") == "AV"}
+            for key, v in labels.items():
+                if v.get("label") == "AV":
+                    titles |= _label_keys(key, v)
     return titles
 
 
@@ -126,8 +141,9 @@ def load_llm_category_labels(valid_ids=None):
         return {}
     labels = json.loads(CATEGORY_LABELS_LLM_FILE.read_text(encoding="utf-8"))
     return {
-        key: v["category"] for key, v in labels.items()
+        k: v["category"] for key, v in labels.items()
         if v.get("category") and (valid_ids is None or v["category"] in valid_ids)
+        for k in _label_keys(key, v)
     }
 
 # Phrases specific enough to AVs that their presence is real signal, unlike
