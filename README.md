@@ -53,8 +53,9 @@ Then open http://localhost:8747/index.html.
 `stats.json` is produced by the pipeline and is gitignored, so a fresh clone has
 no data. Restore the crawled corpus first (see
 [Backing up and restoring](#backing-up-and-restoring-the-crawled-corpus)).
-Otherwise the build finishes quickly but the site has no author, institution or
-citation data.
+Without it the build stops at the merge step: about 45% of the AV papers come
+from `data/venues/arxiv_s2_citing.json`, which is gitignored too, and the rest
+would have no author, institution or citation data.
 
 ## Deploying
 
@@ -96,11 +97,15 @@ or set `AV_ATLAS_STAGING_REPO` and `AV_ATLAS_STAGING_URL`.
 
 ## Backing up and restoring the crawled corpus
 
-`data/papers_full.json` and `data/citation_graph.json` are gitignored, and unlike
-`stats.json` they can't be fully regenerated. DECISIONS.md explains why, under
-"Derived data is not tracked". After every successful deploy,
-`scripts/backup_corpus.py` saves both to a draft GitHub Release on this repo. It
-skips this if no `GITHUB_TOKEN` is set.
+Some gitignored files in `data/` can't be regenerated the way `stats.json` can:
+`papers_full.json` (the enrichment), `venues/arxiv_s2_citing.json` (the papers
+found through Semantic Scholar citations, about 45% of the AV corpus),
+`citation_graph.json`, and the crawlers' resume files. DECISIONS.md explains
+why, under "Derived data is not tracked". After every successful deploy,
+`scripts/backup_corpus.py` saves them to a draft GitHub Release on this repo.
+The full list is `BACKUP_FILES` in that script; PDFs are never included. It
+skips the backup if no `GITHUB_TOKEN` is set, and any other failure ends the
+deploy with "BACKUP FAILED".
 
 On a new machine, restore before building:
 
@@ -109,7 +114,16 @@ python scripts/restore_corpus.py     # pulls the latest backup into data/
 python scripts/build_public_site.py  # now builds with the real enrichment
 ```
 
-Backing up and restoring both need `GITHUB_TOKEN` in `.env` (see Setup).
+The laptop and the monthly GitHub Actions job both write backups. To keep one
+from overwriting a newer backup made by the other, `backup_corpus.py` only
+replaces the backup this checkout last restored or wrote (it keeps a note in
+the gitignored `data/corpus_backup_state.json`). If it refuses, run
+`restore_corpus.py` first, or pass `--force` to replace the backup with this
+checkout's data on purpose. The new archive is uploaded before the old one is
+deleted, so a failed upload leaves the previous backup in place.
+
+Backing up and restoring both need `GITHUB_TOKEN`, either in `.env` (see Setup)
+or as an environment variable.
 
 ## The pipeline
 

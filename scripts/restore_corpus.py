@@ -1,33 +1,46 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Restores data/papers_full.json and data/citation_graph.json from the draft
-GitHub Release scripts/backup_corpus.py maintains -- the fast path to a
-working corpus on a fresh machine, instead of re-crawling for weeks (see
-DECISIONS.md's "Derived data is not tracked" entry for why those two files
-in particular can't just be regenerated from what's in git).
+Restores the gitignored corpus files (papers_full.json,
+venues/arxiv_s2_citing.json, citation_graph.json and the crawlers' resume
+files -- the list is backup_corpus.py's BACKUP_FILES) from the draft GitHub
+Release scripts/backup_corpus.py maintains. It's the fast path to a working
+corpus on a fresh machine or in the monthly GitHub Actions job, instead of
+re-crawling for weeks (see DECISIONS.md's "Derived data is not tracked"
+entry for why those files can't just be regenerated from what's in git).
 
 Run this BEFORE scripts/build_public_site.py on a new checkout: merge_corpus.py
 carries enrichment (author affiliations, citation counts, abstracts) forward
-from whatever papers_full.json already exists, so restoring it first is what
-makes the rebuild fast and complete rather than fast and empty.
+from whatever papers_full.json already exists, and builds about 45% of the
+AV papers from venues/arxiv_s2_citing.json, so restoring first is what makes
+the rebuild complete rather than fast and half-empty. It overwrites those
+files in data/; each one is swapped in whole, so an interrupted restore
+never leaves a half-written file.
 
-Requires GITHUB_TOKEN in av-atlas/.env (gitignored) with read access to this
-repo -- the backup release is a draft, so its asset isn't downloadable
-anonymously the way a normal release's would be. Same token as
-backup_corpus.py; see .env.example.
+Also records which backup asset it restored (data/corpus_backup_state.json),
+so a later backup_corpus.py run from this checkout can tell whether someone
+else has backed up in between.
+
+Requires GITHUB_TOKEN (environment variable, or a line in av-atlas/.env,
+which is gitignored) with read access to this repo -- the backup release is
+a draft, so its asset isn't downloadable anonymously the way a normal
+release's would be. Same token as backup_corpus.py; see .env.example.
 
 Usage: python restore_corpus.py
 """
 import gzip
 import json
+import os
 import shutil
 import sys
 import tarfile
+import tempfile
 import urllib.error
 import urllib.request
 from io import BytesIO
 from pathlib import Path
+
+import backup_corpus as bc
 
 BASE = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE / "data"
@@ -46,6 +59,9 @@ HEADERS_BASE = {
 
 
 def load_github_token():
+    token = os.environ.get("GITHUB_TOKEN", "").strip()
+    if token:
+        return token
     if not ENV_FILE.exists():
         raise SystemExit(f"Missing {ENV_FILE} -- add a line GITHUB_TOKEN=... (see .env.example), "
                           "a token with read access to this repo is enough")
@@ -121,25 +137,46 @@ def find_asset(token):
     if release is None:
         raise SystemExit(f"No '{BACKUP_TAG}' release found -- "
                           "has scripts/backup_corpus.py ever run successfully?")
-    for asset in release.get("assets", []):
-        if asset["name"] == ARCHIVE_NAME:
-            return asset
-    raise SystemExit(f"No '{ARCHIVE_NAME}' asset on the '{BACKUP_TAG}' release -- "
-                      "has scripts/backup_corpus.py ever run successfully?")
+    # Normally the ARCHIVE_NAME asset; the newest temporary upload if a
+    # backup run died between deleting the old asset and renaming the new.
+    asset, _ = bc.select_current_asset(release.get("assets", []))
+    if asset is None:
+        raise SystemExit(f"No '{ARCHIVE_NAME}' asset on the '{BACKUP_TAG}' release -- "
+                          "has scripts/backup_corpus.py ever run successfully?")
+    return asset
 
 
 def extract_archive(archive_bytes):
+    """Extracts into a temp folder inside data/ first and then moves each
+    file into place with os.replace, so a failure partway (a corrupt
+    archive, a full disk) leaves the existing files as they were. Members
+    that aren't on backup_corpus.py's list -- in particular any PDF -- are
+    skipped. Returns the restored member names."""
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    with gzip.GzipFile(fileobj=BytesIO(archive_bytes), mode="rb") as gz:
-        with tarfile.open(fileobj=gz, mode="r") as tar:
-            names = tar.getnames()
-            # extractall's default filter changed across Python versions and
-            # a bare call warns/behaves differently depending on which one's
-            # running -- "data" is the standard library's own recommended
-            # safe default (no path traversal, no device files) and pins the
-            # behavior explicitly instead of depending on interpreter version.
-            tar.extractall(DATA_DIR, filter="data")
-    return names
+    staging = Path(tempfile.mkdtemp(prefix=".restore-", dir=DATA_DIR))
+    try:
+        with gzip.GzipFile(fileobj=BytesIO(archive_bytes), mode="rb") as gz:
+            with tarfile.open(fileobj=gz, mode="r") as tar:
+                members = []
+                for m in tar.getmembers():
+                    if m.isfile() and bc.is_allowed_member(m.name):
+                        members.append(m)
+                    else:
+                        print(f"  skipping unexpected archive member {m.name}")
+                # extractall's default filter changed across Python versions and
+                # a bare call warns/behaves differently depending on which one's
+                # running -- "data" is the standard library's own recommended
+                # safe default (no path traversal, no device files) and pins the
+                # behavior explicitly instead of depending on interpreter version.
+                tar.extractall(staging, members=members, filter="data")
+        names = [m.name for m in members]
+        for name in names:
+            target = DATA_DIR / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            os.replace(staging / name, target)
+        return names
+    finally:
+        shutil.rmtree(staging, ignore_errors=True)
 
 
 def main():
@@ -151,7 +188,11 @@ def main():
     if len(archive_bytes) != asset["size"]:
         raise SystemExit(f"Downloaded {len(archive_bytes)} bytes, expected {asset['size']} -- try again")
     names = extract_archive(archive_bytes)
+    bc.save_state(asset, "restore")
     print(f"Restored into {DATA_DIR}: {', '.join(names)}")
+    if "venues/arxiv_s2_citing.json" not in names:
+        print("  note: this backup predates venues/arxiv_s2_citing.json being backed up; "
+              "the build will refuse to merge without it")
     print("Now run: python build_public_site.py")
 
 
