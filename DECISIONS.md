@@ -221,6 +221,18 @@ title and year for these venues, and `classify.py` falls back to title-only keyw
 matching. These papers carry a weaker relevance and category signal than the rest of
 the corpus. The Methodology page lists this under "Known gaps".
 
+## RSS and BMVC from their own proceedings sites from 2025
+
+DBLP stopped being reachable for scripts (it now serves a bot check), so RSS 2025-2026
+and BMVC 2025 had no source. Both conferences publish plain HTML proceedings with
+abstracts, so `fetch_rss.py` reads roboticsproceedings.org and `fetch_bmvc.py` reads
+the BMVC 2025 site. The earlier reason for using DBLP for RSS, that the site has no
+abstracts and no reliable volume-to-year mapping, turned out to be wrong: every paper
+page has an abstract, and the volume is year minus 2004, which the script checks
+against each page's own date. The older years stay on DBLP for now. BMVC's site
+changes every year, so its fetcher keeps one listing URL per year and refuses to write
+a file when the listing parses to nothing.
+
 ## Misc vs uncategorized
 
 `classify_paper()` in `classify.py` used to leave every paper that matched no category
