@@ -7,6 +7,9 @@ public/ -- the published copy of the AV research dashboard, ready to be
 pushed to gh-pages by scripts/deploy.py.
 
 Runs, in order, and aborts (non-zero exit) if any step fails:
+  0. fix_suspect_venues.py / email_addresses.py -- clean the tracked sources
+     under data/ that a fresh crawl can make dirty again: wrong venue names,
+     and email addresses (each replaced by its domain, see email_addresses.py).
   1. merge_corpus.py -- rebuilds data/papers_full.json from data/venues/*.json
      plus arXiv, carrying over enrichment (author detail, citations,
      abstracts, ...) from the previous run, and reclassifies every paper.
@@ -311,6 +314,7 @@ def main():
         print("--- Publish-only: skipping corpus rebuild, repairs and tests ---")
     else:
         run_step("Fixing suspect venue names", "fix_suspect_venues.py")
+        run_step("Stripping email addresses from tracked data", "email_addresses.py")
         run_step("Rebuilding corpus (merge_corpus.py)", "merge_corpus.py")
         # One-off data repairs, applied here (not just left as scripts to remember
         # to run by hand) so a full recrawl-from-scratch reproduces the same

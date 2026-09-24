@@ -25,6 +25,7 @@ Start here. One command runs everything in this section.
 
 | Script | What it does |
 | --- | --- |
+| `email_addresses.py` | Replaces every email address in the tracked `data/` files with its domain, since a crawl can bring them back. Also the helper the affiliation cache and `aggregate.py` use to keep addresses out. |
 | `merge_corpus.py` | Merges `data/venues/*.json` into `data/papers_full.json`, removes duplicates by normalized title, keeps existing enrichment, and reclassifies everything. |
 | `classify.py` | Gives each paper a category and an AV-relevance label. A module, not a script you run. |
 | `repair_garbled_authors_detail.py`, `repair_glued_institution_strings.py`, `repair_openalex_institution_errors.py` | Fixes for real data bugs that had already shipped. Safe to re-run, and run on every build so a recrawl from scratch gives the same corpus. |

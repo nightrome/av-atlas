@@ -36,6 +36,8 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from email_addresses import find_email_addresses, strip_email_addresses
+
 BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
 OUT_FILE = BASE / "data" / "stats.json"
@@ -1636,8 +1638,8 @@ LEADING_ARTICLE_RE = re.compile(r"^the\s+", re.I)
 # to "M" before this got tightened (caught in testing, not live).
 LEADING_FOOTNOTE_NUMBER_RE = re.compile(r"^\d+(?=[A-Z][a-z]{2,})")
 
-# An obfuscated email address ("l.ferranti at tudelft.nl" instead of
-# "l.ferranti@tudelft.nl", a common anti-spam convention in PDF-extracted
+# An obfuscated email address ("j.doe at tudelft.nl" instead of
+# "j.doe@tudelft.nl", a common anti-spam convention in PDF-extracted
 # author blocks) -- EMAIL_LABEL_RE above only catches an explicit
 # "email:"/"e-mail:" label, not this "X at Y.tld" form with no label at all.
 OBFUSCATED_EMAIL_RE = re.compile(
@@ -2113,6 +2115,11 @@ def is_valid_institution(name):
     if EMAIL_LABEL_RE.search(name):
         return False
     if OBFUSCATED_EMAIL_RE.search(name):
+        return False
+    # An address left in the middle of the name (normalize_institution only
+    # strips a trailing one), or the user name of one whose domain it did
+    # strip ("ylliu @", "Valeo DARfirstname.lastname@"). Never published.
+    if find_email_addresses(name) or name.endswith("@"):
         return False
     if FUNDING_CREDIT_RE.search(name):
         return False
@@ -4015,7 +4022,9 @@ def main():
     for e in entries:
         title, abstract = e.get("title"), e.get("abstract")
         if title and abstract:
-            shards[shard_index(title)][title] = abstract
+            # Abstracts pulled out of PDFs sometimes end in a "Corresponding
+            # author: name@host" footnote. Only the domain is published.
+            shards[shard_index(title)][title] = strip_email_addresses(abstract)
             n_abstracts += 1
     for i, shard in enumerate(shards):
         shard_path = ABSTRACTS_DIR / f"shard-{i:02d}.json"

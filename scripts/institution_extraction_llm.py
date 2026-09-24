@@ -37,8 +37,11 @@ future runs -- have an ever-larger shortlist to match against instead of
 re-proposing the same institution under a slightly different name.
 
 Cache: av-atlas/data/affiliations_llm_extracted.json, raw affiliation text
--> extraction result. Keyed by the exact raw text (not a hash) so it doubles
-as a human-readable audit trail of what the model was actually shown.
+-> extraction result. Keyed by the text itself (not a hash) so it doubles as
+a human-readable audit trail of what the model was actually shown. Email
+addresses are replaced by their domain first (cache_key() below): this file
+is tracked in a public repo, and only the domain was ever useful, since it
+can help name the institution.
 
 A module, not a standalone script -- fetch_affiliations_arxiv.py imports
 extract_institutions() and calls it per author. No file I/O of its own
@@ -50,6 +53,8 @@ import json
 import re
 import urllib.request
 from pathlib import Path
+
+from email_addresses import scrub, strip_email_addresses
 
 BASE = Path(__file__).resolve().parent.parent
 REGISTRY_FILE = BASE / "data" / "institution_registry.json"
@@ -193,8 +198,17 @@ def load_registry():
 
 def save_registry(institutions):
     REGISTRY_FILE.write_text(
-        json.dumps({"institutions": sorted(set(institutions))}, ensure_ascii=False, indent=2),
+        json.dumps({"institutions": sorted({strip_email_addresses(n) for n in institutions})},
+                   ensure_ascii=False, indent=2),
         encoding="utf-8", newline="\n")
+
+
+def cache_key(raw_text):
+    """The affiliation text as it is cached and shown to the model, with
+    every email address replaced by its domain ("... Germany {a, b}@fzi.de"
+    -> "... Germany fzi.de"). Look the cache up with this, not the raw
+    text."""
+    return strip_email_addresses(raw_text)
 
 
 def load_cache():
@@ -204,4 +218,6 @@ def load_cache():
 
 
 def save_cache(cache):
-    CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
+    # Keys should already have gone through cache_key(). Scrubbing again here
+    # means no address reaches the tracked file even if a caller forgot.
+    CACHE_FILE.write_text(json.dumps(scrub(cache), ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")

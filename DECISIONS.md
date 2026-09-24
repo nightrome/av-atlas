@@ -127,6 +127,32 @@ to the registry.
 registry duplicates (diacritic and abbreviation variants) onto canonical names. It is
 applied after the hand-typed `INSTITUTION_ALIASES`.
 
+## Email addresses are stripped from tracked data, the domain is kept
+
+The extraction cache for the step above, `data/affiliations_llm_extracted.json`, was
+keyed by the raw affiliation note, and those notes usually end in the authors' email
+addresses. Once the repo went public it held about 2,100 scraped addresses (counting
+each name in a `{a, b}@host` group), some of them students' mailboxes and private
+webmail. A few more sat in ECCV and NeurIPS abstracts, one ECCV author string, the
+institution registry and the LLM flag list.
+
+Every address is now replaced by its domain: `x.y@tongji.edu.cn` becomes
+`tongji.edu.cn` and `{a, b}@fzi.de` becomes `fzi.de`. The domain stays because it can
+help name the institution. The part before the `@` never helped with anything.
+`scripts/email_addresses.py` does this for every caller. The cache is keyed with the
+stripped text, and the model is shown the same text. Notes that only differed in
+whose address they carried now share one entry, so 124 keys were merged; where their
+answers differed, the most common one was kept. `build_public_site.py` scrubs every
+tracked `data/` file before each build, because a new crawl can bring addresses back.
+`aggregate.py` strips abstracts before sharding them and drops institution names that
+still contain an address. A test fails if any tracked file under `data/` holds one,
+and another checks the built `stats.json` and shards when they exist.
+
+Only something that ends in a real top-level domain counts as an address, so metric
+notation such as `mAP@0.5` or `PointASNL@Sem.KITTI` is left alone. The old addresses
+are still in the git history. Removing them from there would mean a history rewrite,
+which is a separate decision.
+
 ## An institution typed into an author field must not veto that institution
 
 `author_affiliations()` throws away any "institution" that is really a person's name,
@@ -594,7 +620,7 @@ of leaving them in the queue. All four are real, single, extremely prolific rese
 in the fast-moving, highly collaborative modern AV and world-model community (near
 OpenDriveLab and Shanghai AI Lab):
 
-- Hang Zhao's papers consistently share one email (hangzhao@mail.tsinghua.edu.cn).
+- Hang Zhao's papers consistently share one email address (at mail.tsinghua.edu.cn).
 - Hongyang Li and Long Chen keep appearing as each other's co-authors across a large,
   coherent, recent (2023-2026) end-to-end driving publication cluster.
 - Zheng Zhu's papers form one coherent "driving world models" research thread.
