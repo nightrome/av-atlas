@@ -46,6 +46,12 @@ def main():
     result = subprocess.run(["node", str(sortable_test)], cwd=BASE)
     failed = failed or result.returncode != 0
 
+    # Uses a hand-made new_papers.json, so unlike the three below it needs
+    # no built data and always runs.
+    print("\n=== JS tests (tests/new_page_test.js) ===")
+    result = subprocess.run(["node", str(BASE / "tests" / "new_page_test.js")], cwd=BASE)
+    failed = failed or result.returncode != 0
+
     for label, script in (("QA smoke test", "qa_smoke_test.js"),
                           ("UI regression test", "ui_regression_test.js"),
                           ("Detail page test", "detail_page_test.js")):

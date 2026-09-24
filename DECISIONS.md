@@ -480,6 +480,32 @@ Whichever machine held the only `papers_full.json` with real enrichment in it wa
 single point of failure. The fix is to snapshot both files somewhere durable after
 every deploy, not to keep believing a fresh rebuild reproduces them.
 
+## "New papers" are dated by when they entered the corpus
+
+The New papers page and `feed.xml` list papers by `first_seen`, the date a paper first
+turned up in `papers_full.json`, not by publication year. Readers who follow the feed
+want to know what changed on the site, and a paper found late (an older ICRA paper that
+only just got cited, a CVPR edition fetched a month after the conference) is news to
+them even if it's two years old.
+
+No source records that date, so `merge_corpus.py` keeps it the same way it keeps
+enrichment: it copies the value from the previous `papers_full.json`, matching by
+normalized title and then by arXiv ID, and only a paper found in neither gets today's
+date. That makes the date exactly as durable as `papers_full.json` itself, which is one
+more reason that file has to be backed up (see above).
+
+Everything already in the corpus when this started got a placeholder, 2026-09-01, which
+the page and feed ignore. The same placeholder is used when there's no previous
+`papers_full.json` at all. Otherwise a fresh clone or a lost file would stamp all 235k
+papers with today's date and announce the whole corpus as new. For the same reason, a
+run where more than 20,000 papers are unknown to the previous file gives them the
+placeholder too. A normal month adds a few thousand at most, so that many means a venue
+file was missing from the last build and came back (the ~49k-paper
+`arxiv_s2_citing.json` is the likely one), or a whole venue history was backfilled.
+
+The feed has titles, venues, years and authors, but no abstracts: most abstracts here
+come from sources whose terms don't cover republishing them.
+
 ## By-hand data corrections are scripts, not one-off edits
 
 Any manual fix to `papers_full.json` (an author merge, an institution-name correction)

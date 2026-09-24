@@ -48,6 +48,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_data_release  # noqa: E402  (needs the sys.path line above)
+import new_papers  # noqa: E402
 
 BASE = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -76,7 +77,7 @@ PUBLISHED_HTML = [
     "index.html", "authors.html", "institutions.html", "venues.html",
     "countries.html", "categories.html", "network.html", "insights.html",
     "about.html", "author.html", "institution.html", "venue.html", "country.html",
-    "paper.html", "compare.html",
+    "paper.html", "compare.html", "new.html",
 ]
 
 
@@ -158,6 +159,24 @@ def write_sitemap(page_dir, stats_path):
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         f"{body}\n</urlset>\n", encoding="utf-8", newline="\n")
     print(f"  sitemap.xml: {len(urls)} URLs")
+
+
+def write_new_papers(page_dir):
+    """new_papers.json (aggregate.py's list, for new.html) and feed.xml, the
+    Atom feed built from it. A build without the list -- e.g. a
+    --publish-only run on a checkout that never ran the new aggregate.py --
+    still ships both, empty, so new.html shows "nothing new" instead of an
+    error and the feed URL never 404s."""
+    src = BASE / "data" / "new_papers.json"
+    if src.exists():
+        payload = json.loads(src.read_text(encoding="utf-8"))
+    else:
+        print(f"  note: {src.name} not found -- publishing an empty new-papers list")
+        payload = {"generated_at": time.strftime("%Y-%m-%d"), "papers": []}
+    (page_dir / "new_papers.json").write_text(
+        json.dumps(payload, ensure_ascii=False), encoding="utf-8", newline="\n")
+    (page_dir / "feed.xml").write_text(new_papers.render_atom(payload), encoding="utf-8", newline="\n")
+    print(f"  new_papers.json + feed.xml: {len(payload.get('papers') or [])} papers")
 
 
 def build_public_site():
@@ -264,7 +283,8 @@ def build_public_site():
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
         | {"stats.json", "theme.css", "theme-light.css",
-           "logo.svg", "og-image.png", "sitemap.xml", "robots.txt"}
+           "logo.svg", "og-image.png", "sitemap.xml", "robots.txt",
+           "new_papers.json", "feed.xml"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()
@@ -273,6 +293,7 @@ def build_public_site():
     (PUBLIC_DIR / "robots.txt").write_text(
         ROBOTS_TXT + f"\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8", newline="\n")
     write_sitemap(page_dir, stats_path)
+    write_new_papers(page_dir)
 
     print(f"Wrote {PUBLIC_DIR}")
     for html_path in html_pages():

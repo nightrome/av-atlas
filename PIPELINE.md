@@ -235,7 +235,10 @@ Intelligent Vehicles"). It's fixed by mapping "IV" to `ivs` in `CONF_DBLP_PATH` 
 - **`merge_corpus.py`** removes duplicates by normalized title across every
   `data/venues/*.json` file, gives each paper a `category` (topic) and an
   `av_relevance` (AV or non-AV) using `classify.py`, and writes
-  `data/papers_full.json`.
+  `data/papers_full.json`. It also stamps each paper with `first_seen`, the date it
+  first appeared, carried over from the previous `papers_full.json` (papers that were
+  already there when tracking started in September 2026 carry the placeholder
+  2026-09-01).
 - **`classify.py`** assigns categories by keyword matching (`data/categories.json`,
   a living taxonomy, not a fixed one). AV relevance comes from an explicit list of
   AV-specific phrases (`AV_RELEVANCE_TERMS`) and is independent of category. The
@@ -299,7 +302,10 @@ Intelligent Vehicles"). It's fixed by mapping "IV" to `ivs` in `CONF_DBLP_PATH` 
 - **`aggregate.py`** reads `data/papers_full.json` and writes `data/stats.json`,
   which is what the UI reads. Leaderboards rank AV papers only. It also writes
   `data/abstracts/shard-NN.json`, abstracts sharded out of `stats.json` so only
-  `paper.html` pays for them (see DECISIONS.md).
+  `paper.html` pays for them (see DECISIONS.md). And it writes
+  `data/new_papers.json`, the AV papers first seen in the last three months, which
+  `build_public_site.py` publishes along with `feed.xml`, an Atom feed of the newest
+  100 of them. `new.html` shows the list by month.
 
 ## Citation counts
 

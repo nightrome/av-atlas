@@ -36,9 +36,15 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+import new_papers
+
 BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
 OUT_FILE = BASE / "data" / "stats.json"
+# AV papers first seen in the last three months, for new.html and feed.xml
+# (see new_papers.py). Small, and only that page needs it, so it stays out
+# of stats.json.
+NEW_PAPERS_FILE = BASE / "data" / "new_papers.json"
 # Separate from stats.json (not a field inside it) because of scale: ~212k
 # non-AV (not AV) papers, now over 80MB as a single file -- versus stats.json's
 # own size for the ~26k AV papers everything else on the site is built from.
@@ -2999,6 +3005,11 @@ def main():
         # venue was looked up and none usable exists; see fix_suspect_venues.py.
         if e.get("venue_status"):
             papers[-1]["venue_status"] = e["venue_status"]
+    # Picked here, while entries and papers still line up one to one:
+    # first_seen is only on the papers_full entry, the display fields
+    # (cleaned author names, normalized venue) only on the paper.
+    new_papers_payload = new_papers.recent_papers(
+        zip(entries, papers), datetime.now(timezone.utc).strftime("%Y-%m-%d"))
     # Unknown-citation papers sort after every known-citation paper, regardless
     # of magnitude -- "no data" must never look like "definitely fewer than 1".
     papers.sort(key=lambda p: (p["citations"] is not None, p["citations"] or 0), reverse=True)
@@ -3976,6 +3987,10 @@ def main():
     print(f"  {len(papers)} ranked papers, {len(author_citations)} authors, "
           f"{len(inst_citations)} institutions, {len(country_citations)} countries")
     print(f"  papers_with_author_detail={n_with_author_detail} verified={n_verified} excluded_mismatch={n_excluded}")
+
+    NEW_PAPERS_FILE.write_text(json.dumps(new_papers_payload, ensure_ascii=False), encoding="utf-8", newline="\n")
+    print(f"Wrote {NEW_PAPERS_FILE} ({len(new_papers_payload['papers'])} papers first seen since "
+          f"{new_papers_payload['since']})")
 
     # See AUTHOR_DETAIL_DIR's comment above -- these four used to live
     # together in one stats_detail.json, now each sharded by name.

@@ -65,12 +65,14 @@ the fresh merge.
 - `site/` -- every source file the published site is built from: `index.html`,
   `authors.html`, `institutions.html`, `venues.html`, `countries.html`,
   `categories.html`, `network.html`, `insights.html`, `about.html`, `author.html`,
-  `institution.html`, `venue.html`, `paper.html`, `compare.html` (the pages), the
+  `institution.html`, `venue.html`, `paper.html`, `compare.html`, `new.html` (the pages), the
   shared JS/CSS below, `logo.svg`/`og-image.png`, and `site/assets/` (vendored
   institution/venue logos). `build_public_site.py` copies this tree into `public/`
   alongside a fresh `stats.json`; there's no build step for the pages themselves.
   Each page reads `stats.json` (or the sharded `non_av_papers/shard-NN.json`
-  files for the "include non-AV papers" view) at runtime.
+  files for the "include non-AV papers" view) at runtime. `new.html` is the exception:
+  it reads only `new_papers.json` (see `scripts/new_papers.py`), and the build also
+  writes `feed.xml` from it.
 - `site/nav.js` -- shared top nav bar, injected into every page via `<nav id="topnav">`.
 - `site/filters.js` -- shared filter-bar component (`renderFilterBar`) used across the
   listing pages.
