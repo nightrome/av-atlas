@@ -112,8 +112,8 @@ ABSTRACT_SHARD_COUNT = 64
 # not worth a second lazy-fetch code path in insights.html for.
 CITATIONS_DIR = BASE / "data" / "citations"
 SCHOLAR_PROFILES_FILE = BASE / "data" / "scholar_profiles.json"
-# {"links": {normalized title: the paper's own Google Scholar citation URL}},
-# written by fetch_scholar_paper_links.py, which only saves confirmed matches.
+# {"links": {normalized title: the paper's own Google Scholar page}}, edited by
+# hand (DECISIONS.md, "Paper Scholar links are added by hand").
 SCHOLAR_PAPER_LINKS_FILE = BASE / "data" / "scholar_paper_links.json"
 ORCIDS_FILE = BASE / "data" / "orcids.json"
 INSTITUTION_LOGOS_FILE = BASE / "data" / "institution_logos.json"

@@ -74,6 +74,10 @@ lets two crawlers run at the same time without fighting over one file.
 `fetch_*` scripts only write their own side files, so they are safe to run
 alongside anything.
 
+Nothing here talks to Google Scholar, which doesn't allow automated queries.
+`data/scholar_profiles.json` and `data/scholar_paper_links.json` are edited by hand
+(see DECISIONS.md, "Paper Scholar links are added by hand").
+
 ## Citation graph (stage 4)
 
 | Script | What it does |

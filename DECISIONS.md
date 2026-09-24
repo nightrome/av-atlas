@@ -223,21 +223,32 @@ in the Scholar bio. Ambiguous same-name matches are left unresolved. A wrong pho
 the wrong person is worse than a missing one, on a site whose premise is being
 defensible about what it claims.
 
-## Paper Scholar links come from author profiles, never from title searches
+## Paper Scholar links are added by hand
 
 `paper.html` and the Source column used to link to a Scholar search for the paper's
 title. A search can land on a different paper, a citing paper or nothing, so those
 links were removed. A paper now shows a Scholar link only if `scholar_url` is in
 `stats.json`, which `aggregate.py` takes from `data/scholar_paper_links.json`.
 
-`fetch_scholar_paper_links.py` fills that file for the 1000 most-cited AV papers. It
-never searches Scholar. It reads the profile pages already in `scholar_profiles.json`,
-whose rows carry a stable `citation_for_view` URL. A row is accepted only if the
-normalized title is identical, one author agrees (surname plus initial), and the years
-are within one year. Titles that are ambiguous among the target papers or listed twice
-on a profile are skipped. Scholar answers HTTP 429 after roughly 70 profile pages in a
-row, so the script paces itself, stops at the first block and resumes from
-`profiles_done` on the next run.
+That file was first filled by a script, `fetch_scholar_paper_links.py`. On 2026-09-21
+it read the Scholar profile pages of 68 authors in `scholar_profiles.json` and took a
+paper's link from a profile row only if the normalized title was identical, one author
+agreed (surname plus initial) and the years were within one year. That gave 246 links.
+The same day, a short trial searched Scholar for each paper's exact title instead. It
+found 11 more links before Google blocked it.
+
+Scholar's terms don't allow automated queries, and its robots.txt disallows search
+pages and paging through a profile (`cstart=`), which the profile route did on every
+request. So the script was removed rather than trimmed down. The top-100 papers still
+without a link were then looked up by hand, and 27 of them got their "Cited by" page
+(PR #21). Four of the top 100 still have none.
+
+The file is now edited by hand. The key is `normalize_title()` of the paper's title,
+and the value is the paper's own Scholar page: the citation page on an author's
+profile (`citation_for_view=`), its "Cited by" page (`scholar?cites=`) or its versions
+page (`scholar?cluster=`), never a search. `profiles_done` in the file is left over
+from the script and nothing reads it. `test_scholar_paper_links.py` checks the keys
+and links, and that no script in `scripts/` has a Scholar URL in its code.
 
 ## DBLP-sourced venues have no abstracts
 

@@ -200,7 +200,11 @@
       plenty of non-AV papers.</li>
   <li><strong>3. Enrich.</strong> For AV-relevant papers only: each author's affiliation and a
       stable ID that tells apart authors who share a name are looked up where that information can
-      be found, plus profile photos for top-ranked authors.</li>
+      be found. Some top-ranked authors also get a link to their Google Scholar profile and its
+      photo, and most of the 100 most-cited papers get a link to their own Scholar page. Google
+      Scholar doesn't allow automated queries, so these links are now checked and added by hand.
+      Most of the paper links were first collected by a script in September 2026, which has since
+      been removed.</li>
   <li><strong>4. Citation graph.</strong> For every paper whose full text is available, its
       reference list is checked against the rest of the corpus to work out which papers cite which.
       Separately, we check whether any paper that isn't in the corpus yet cites one that already is.
@@ -595,11 +599,11 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   }
 }).catch(() => {});
 
-// Google Scholar citation-count comparison study, hand-collected in-session
-// (Google Scholar's own robots.txt/ToS don't permit automated scraping, so
-// this was 27 individual manual lookups, not a repeatable script) --
-// hardcoded here as a one-time empirical result, not something aggregate.py
-// recomputes.
+// Google Scholar citation-count comparison study, looked up by hand one paper
+// at a time: 52 lookups, not a repeatable script, since Scholar's terms don't
+// allow automated queries (no script in this repo queries Scholar; see
+// DECISIONS.md, "Paper Scholar links are added by hand"). Hardcoded here as a
+// one-time result, not something aggregate.py recomputes.
 const SCHOLAR_STUDY = [
   ["Pseudo-LiDAR++: Accurate Depth for 3D Object Detection in Autonomous Driving", 77, 607],
   ["Objects Are Different: Flexible Monocular 3D Object Detection", 68, 466],
