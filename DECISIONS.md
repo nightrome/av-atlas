@@ -221,6 +221,27 @@ title and year for these venues, and `classify.py` falls back to title-only keyw
 matching. These papers carry a weaker relevance and category signal than the rest of
 the corpus. The Methodology page lists this under "Known gaps".
 
+## Journals, ITSC and IV come from Crossref now, and which year a journal paper gets
+
+DBLP started answering scripts with a bot check in September 2026, so the six
+journals, IV, ITSC and GCPR are now fetched from Crossref by `fetch_crossref.py`.
+Crossref has DOIs but no abstracts for IEEE papers, so abstracts come from Semantic
+Scholar by DOI. An abstract that's already there is never replaced.
+
+A journal article on Crossref can have two dates: when it went online (IEEE's "early
+access", often months earlier) and the issue it was printed in. DBLP only listed an
+article once it was in an issue, and used the issue's year. To keep the years we
+already have consistent, a paper gets its issue year when Crossref has one and its
+online year otherwise. When an early-access paper is later assigned to an issue, the
+next monthly run sees the updated record and corrects its year. On the 2026-09-24
+backlog run, none of the 5,838 existing journal papers that matched a Crossref
+record by title had a different issue year on Crossref, so the two sources agree.
+
+New papers are matched to existing ones by normalized title, the same key
+`merge_corpus.py` dedupes on. A title that appears more than once in a journal file
+("Scanning the Issue", "Editorial") is only touched when the DOI matches, since the
+title alone can't say which one it is.
+
 ## Misc vs uncategorized
 
 `classify_paper()` in `classify.py` used to leave every paper that matched no category
