@@ -13,6 +13,9 @@ data/papers_full.json
 # copies whatever's currently on disk into the published output, same as
 # always; this only affects what git tracks in the repo, not what deploys.
 data/stats.json
+# The shrink check's numbers from before a build (scripts/publish_gate.py),
+# kept only until that build passes.
+data/publish_gate_baseline.json
 # Same reasoning as stats.json above -- regenerable, not reviewable as a
 # diff. Sharded into data/non_av_papers/shard-NN.json (regenerate with
 # scripts/aggregate.py) rather than one growing single file, over 80MB and

@@ -57,12 +57,17 @@ def in_corpus_counts(graph):
     return incoming
 
 
-def main():
-    papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    graph = load_json(GRAPH_FILE, {"edges": {}})
-    incoming = in_corpus_counts(graph)
+def apply_counts(papers, graph, clear_missing=True):
+    """Writes each paper's in-corpus count from the graph onto it, in place.
+    Returns (set, cleared) counts.
 
-    n_in_corpus = 0
+    A paper the graph no longer has any edge into loses its old count
+    (clear_missing). Without that, a false citation edge that a later
+    matcher fix removed kept its count forever, since merge_corpus.py
+    carries citations_by_source over from one build to the next.
+    """
+    incoming = in_corpus_counts(graph)
+    n_set = n_cleared = 0
     for p in papers:
         key = normalize_title(p.get("title"))
         by_source = p.setdefault("citations_by_source", {})
@@ -72,13 +77,27 @@ def main():
             entry = {"count": count, "updated": graph.get("generated_at") or TODAY}
             if by_source.get("in_corpus") != entry:
                 by_source["in_corpus"] = entry
-                n_in_corpus += 1
+                n_set += 1
+        elif clear_missing and "in_corpus" in by_source:
+            del by_source["in_corpus"]
+            n_cleared += 1
 
         if not by_source:
             del p["citations_by_source"]
+    return n_set, n_cleared
+
+
+def main():
+    papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
+    # No graph file at all means "nothing known", not "nobody cites
+    # anything" -- keep the counts already on papers_full.json then.
+    have_graph = GRAPH_FILE.exists()
+    graph = load_json(GRAPH_FILE, {"edges": {}})
+    n_in_corpus, n_cleared = apply_counts(papers, graph, clear_missing=have_graph)
 
     PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
-    print(f"Applied {n_in_corpus} in-corpus counts to {PAPERS_FILE}")
+    print(f"Applied {n_in_corpus} in-corpus counts to {PAPERS_FILE}"
+          f" (cleared {n_cleared} no longer backed by any edge)")
 
 
 if __name__ == "__main__":

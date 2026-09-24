@@ -15,6 +15,8 @@ A full run:
    automatically when nothing that feeds the corpus changed since the last
    full build (data/ or the pipeline scripts, see build_fingerprint); tests always run. --full forces the
    rebuild, --skip-build skips it and the tests (HTML/JS/CSS-only changes).
+   The build stops if the corpus shrank by more than 3% (see
+   publish_gate.py); --allow-shrink lets an intended drop through.
 2. Commits and pushes any source changes to `main` (production only).
 3. Publishes public/ to the target repo's `gh-pages` branch through a
    persistent clone in .deploy-cache/, so only files that changed since the
@@ -155,8 +157,13 @@ def sync_tree(src, dst, transform=None):
 # does change what a full build produces.
 NON_CORPUS_SCRIPTS = {
     "deploy.py", "run_tests.py", "backup_corpus.py", "restore_corpus.py",
-    "build_data_release.py", "build_public_site.py",
+    "build_data_release.py", "build_public_site.py", "publish_gate.py",
 }
+# What the build writes under data/, as opposed to what it reads. Left out of
+# the fingerprint so a build doesn't look like a change to the next one.
+# data/pdfs_cvf/ and the shard folders are never looked at in the first
+# place (see build_fingerprint).
+BUILD_OUTPUTS = {"stats.json", "stats_non_av.json", "stats_adjacent.json", "publish_gate_baseline.json"}
 STEP_RE = re.compile(r'run_step\(\s*"[^"]*"\s*,\s*"([^"]+)"')
 
 
@@ -172,15 +179,26 @@ def pipeline_steps(base=BASE):
 def build_fingerprint(base=BASE):
     """Fingerprint of everything a full corpus rebuild reads: the pipeline
     scripts (except ones that can't affect stats.json), the order of steps in
-    build_public_site.py, the git-tracked sources under data/ (venue JSON,
-    profiles, ...) and the crawler-written papers_full.json. Cheap (stat only).
+    build_public_site.py, and every data file the build reads, tracked or
+    not. Cheap (stat only: size and mtime, no hashing of the 100-300 MB files).
     If it matches the fingerprint saved after the last full build,
-    merge_corpus/aggregate would just reproduce the stats.json already on disk."""
+    merge_corpus/aggregate would just reproduce the stats.json already on disk.
+
+    Data files are found by globbing data/*.json and data/venues/*.json, not
+    by asking git: several real inputs are gitignored (papers_full.json,
+    citation_graph.json, the reference lists, venues/arxiv_s2_citing.json,
+    the abstract and affiliation side files), and a venue file a fetcher just
+    wrote isn't tracked until someone adds it. Asking git missed all of
+    those, so a deploy after a crawl could skip the rebuild and publish the
+    old stats.json. Tracked files elsewhere under data/ are still included.
+    data/pdfs_cvf/ and the build's own shard folders are never read."""
     base = Path(base)
-    files = [base / "data" / "papers_full.json"]
-    files += [f for f in sorted((base / "scripts").glob("*.py")) if f.name not in NON_CORPUS_SCRIPTS]
+    data = base / "data"
+    files = [f for f in sorted((base / "scripts").glob("*.py")) if f.name not in NON_CORPUS_SCRIPTS]
+    files += [f for f in data.glob("*.json") if f.name not in BUILD_OUTPUTS]
+    files += list((data / "venues").glob("*.json"))
     tracked = subprocess.run(["git", "ls-files", "data"], cwd=base, capture_output=True, text=True).stdout.split()
-    files += [base / t for t in tracked]
+    files += [base / t for t in tracked if not t.startswith("data/pdfs_cvf/")]
     h = hashlib.sha256()
     for f in sorted(set(files)):
         try:
@@ -208,21 +226,23 @@ def save_state(**updates):
 
 # ---------------------------------------------------------------------- steps
 
-def build(mode):
+def build(mode, allow_shrink=False):
     """mode: 'auto' (skip the corpus rebuild if the fingerprint is unchanged),
-    'full', or 'skip' (publish-only, no tests)."""
+    'full', or 'skip' (publish-only, no tests). allow_shrink is passed on to
+    build_public_site.py's shrink check."""
     print("--- Building AV Atlas ---")
     scripts = BASE / "scripts"
+    extra = ["--allow-shrink"] if allow_shrink else []
     if mode == "skip":
-        subprocess.run([sys.executable, "build_public_site.py", "--publish-only"], cwd=scripts, check=True)
+        subprocess.run([sys.executable, "build_public_site.py", "--publish-only", *extra], cwd=scripts, check=True)
         return
     stats_ok = (BASE / "data" / "stats.json").exists()
     if mode == "auto" and stats_ok and load_state().get("build_fingerprint") == build_fingerprint():
         print("Corpus inputs unchanged since the last full build -- skipping merge/aggregate, running tests.")
         subprocess.run([sys.executable, "run_tests.py"], cwd=scripts, check=True)
-        subprocess.run([sys.executable, "build_public_site.py", "--publish-only"], cwd=scripts, check=True)
+        subprocess.run([sys.executable, "build_public_site.py", "--publish-only", *extra], cwd=scripts, check=True)
         return
-    subprocess.run([sys.executable, "build_public_site.py"], cwd=scripts, check=True)
+    subprocess.run([sys.executable, "build_public_site.py", *extra], cwd=scripts, check=True)
     # Fingerprint *after* the build: merge_corpus rewrites papers_full.json.
     save_state(build_fingerprint=build_fingerprint())
 
@@ -332,6 +352,9 @@ def main():
                              "existing data/stats.json into public/. Only safe for HTML/JS/CSS-only changes.")
     parser.add_argument("--force-promote", action="store_true",
                         help="With --promote: publish even if public/ differs from the last preview.")
+    parser.add_argument("--allow-shrink", action="store_true",
+                        help="Passed on to build_public_site.py: publish even if the corpus shrank by more "
+                             "than 3%% on a gated number (for an intended drop, e.g. after a matcher fix).")
     args = parser.parse_args()
 
     if args.promote:
@@ -351,7 +374,7 @@ def main():
         print("\nDone.")
         return
 
-    build("skip" if args.skip_build else "full" if args.full else "auto")
+    build("skip" if args.skip_build else "full" if args.full else "auto", allow_shrink=args.allow_shrink)
     if args.preview:
         save_state(previewed_hash=deploy_staging(args.staging_repo))
         print(f"\nPreview: {STAGING_URL}/\nLooks right? python scripts/deploy.py --promote")

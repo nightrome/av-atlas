@@ -35,5 +35,29 @@ class TestInCorpusCounts(unittest.TestCase):
         self.assertEqual(counts.get("target", 0), 2)
 
 
+class TestApplyCounts(unittest.TestCase):
+    def test_sets_changed_counts(self):
+        papers = [{"title": "Target"}]
+        graph = {"generated_at": "2026-09-01", "edges": {"a": ["target"], "b": ["target"]}}
+        self.assertEqual(acs.apply_counts(papers, graph), (1, 0))
+        self.assertEqual(papers[0]["citations_by_source"]["in_corpus"],
+                         {"count": 2, "updated": "2026-09-01"})
+        # Same graph again: nothing to change.
+        self.assertEqual(acs.apply_counts(papers, graph), (0, 0))
+
+    def test_count_with_no_edge_left_is_cleared(self):
+        papers = [{"title": "Gone", "citations_by_source": {"in_corpus": {"count": 7, "updated": "2026-01-01"}}},
+                  {"title": "Other", "citations_by_source": {"in_corpus": {"count": 3, "updated": "2026-01-01"},
+                                                             "scholar": {"count": 9}}}]
+        self.assertEqual(acs.apply_counts(papers, {"edges": {}}), (0, 2))
+        self.assertNotIn("citations_by_source", papers[0])
+        self.assertEqual(papers[1]["citations_by_source"], {"scholar": {"count": 9}})
+
+    def test_missing_graph_keeps_existing_counts(self):
+        papers = [{"title": "Kept", "citations_by_source": {"in_corpus": {"count": 7, "updated": "2026-01-01"}}}]
+        self.assertEqual(acs.apply_counts(papers, {"edges": {}}, clear_missing=False), (0, 0))
+        self.assertEqual(papers[0]["citations_by_source"]["in_corpus"]["count"], 7)
+
+
 if __name__ == "__main__":
     unittest.main()

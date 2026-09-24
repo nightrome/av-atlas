@@ -17,9 +17,16 @@ Runs, in order, and aborts (non-zero exit) if any step fails:
      corpus: all three patch papers_full.json directly, which step 1
      rebuilds from data/venues/*.json alone and would otherwise silently
      drop them.
-  3. aggregate.py -- rebuilds data/stats.json + the sharded data/non_av_papers/.
-  4. run_tests.py -- the full test suite (Python + JS + smoke + regression).
-  5. build_public_site() below -- publishes the built HTML/stats.
+  3. build_citation_graph.py --match-only, then apply_citation_sources.py --
+     rematches the saved reference lists against the rebuilt corpus (offline,
+     no PDFs or network) and writes the in-corpus counts onto papers_full.json,
+     so a new or fixed graph always reaches stats.json.
+  4. aggregate.py -- rebuilds data/stats.json + the sharded data/non_av_papers/.
+  5. publish_gate.py -- stops the build if the new stats.json lost more than
+     3% on any of a few headline numbers (see its docstring); --allow-shrink
+     lets an intended drop through.
+  6. run_tests.py -- the full test suite (Python + JS + smoke + regression).
+  7. build_public_site() below -- publishes the built HTML/stats.
 
 This exists because crawler scripts (mine_abstracts.py,
 backfill_citing_venues.py, enrich_av_authors.py, ...) write straight into
@@ -33,8 +40,9 @@ published" structurally impossible instead of a step to remember, and
 means a single command is always both the test run and the deploy.
 
 Usage: python build_public_site.py
-   or: python build_public_site.py --publish-only   # steps 1-4 skipped; only re-copy
+   or: python build_public_site.py --publish-only   # steps 1-6 skipped; only re-copy
                                                     # current pages + existing stats.json
+   or: python build_public_site.py --allow-shrink   # publish even if the corpus shrank
 """
 import argparse
 import json
@@ -48,6 +56,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_data_release  # noqa: E402  (needs the sys.path line above)
+import publish_gate  # noqa: E402
 
 BASE = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -290,9 +299,9 @@ def build_public_site():
     print(f"  robots.txt (allow all)")
 
 
-def run_step(label, script_name):
+def run_step(label, script_name, *args):
     print(f"\n--- {label} ---")
-    result = subprocess.run([sys.executable, script_name], cwd=SCRIPTS_DIR)
+    result = subprocess.run([sys.executable, script_name, *args], cwd=SCRIPTS_DIR)
     if result.returncode != 0:
         raise SystemExit(f"{script_name} failed (exit {result.returncode}) -- aborting before publish.")
 
@@ -305,11 +314,23 @@ def main():
                              "data/stats.json into public/. Use this only for a pages-only change where "
                              "nothing under data/ moved -- a previous full build must have left "
                              "data/stats.json (and data/abstracts/) in place.")
+    parser.add_argument("--allow-shrink", action="store_true",
+                        help="Publish even if the new stats.json dropped more than 3%% on a gated number "
+                             "(AV papers, papers with institutions or abstracts, in-corpus citations, "
+                             "venues). For an intended drop, e.g. the first build after a matcher fix.")
     args = parser.parse_args()
 
     if args.publish_only:
         print("--- Publish-only: skipping corpus rebuild, repairs and tests ---")
+        # A baseline left behind means the last full build was stopped by the
+        # shrink check (or crashed). Check what's on disk against it, so
+        # --publish-only can't be a way around that.
+        if publish_gate.BASELINE_FILE.exists():
+            print("\n--- Checking the corpus didn't shrink ---")
+            publish_gate.check(allow_shrink=args.allow_shrink)
     else:
+        print("\n--- Saving the shrink-check baseline ---")
+        publish_gate.save_baseline()
         run_step("Fixing suspect venue names", "fix_suspect_venues.py")
         run_step("Rebuilding corpus (merge_corpus.py)", "merge_corpus.py")
         # One-off data repairs, applied here (not just left as scripts to remember
@@ -322,7 +343,17 @@ def main():
         run_step("Repairing garbled authors_detail", "repair_garbled_authors_detail.py")
         run_step("Repairing glued institution strings", "repair_glued_institution_strings.py")
         run_step("Repairing wrong OpenAlex institutions", "repair_openalex_institution_errors.py")
+        # The graph used to be rebuilt only when someone ran
+        # build_citation_graph.py by hand, and the counts only when someone
+        # then remembered apply_citation_sources.py too -- so a new graph
+        # could sit on disk while stats.json kept the old counts. Both are
+        # offline here: --match-only reads just the saved reference lists.
+        run_step("Rematching citations (build_citation_graph.py --match-only)",
+                 "build_citation_graph.py", "--match-only")
+        run_step("Applying citation counts", "apply_citation_sources.py")
         run_step("Rebuilding stats (aggregate.py)", "aggregate.py")
+        print("\n--- Checking the corpus didn't shrink ---")
+        publish_gate.check(allow_shrink=args.allow_shrink)
         run_step("Running tests (run_tests.py)", "run_tests.py")
     print("\n--- Publishing public site ---")
     build_public_site()

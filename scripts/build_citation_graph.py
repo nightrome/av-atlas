@@ -42,9 +42,8 @@ requests at all.
 
 Matching: a naive "does this corpus title appear in the reference text"
 check across all ~66k titles per reference would be O(refs x corpus) and far
-too slow. Instead builds an inverted index (distinctive title word -> paper
-keys) once per run, and for each reference entry only checks the small
-candidate set whose distinctive words actually appear in that entry's text.
+too slow. Instead builds an index of title prefixes once per run and looks
+each position of the reference entry up in it (see CorpusMatchIndex).
 
 data/reference_lists_cvf.json is this script's own file, in the same
 succeeded/failed/side-file pattern as fetch_citations_openalex.py /
@@ -53,7 +52,14 @@ to run this alongside those. data/citation_graph.json is likewise only ever
 written by this script.
 
 Usage: python build_citation_graph.py
+   or: python build_citation_graph.py --match-only   # phase 2 alone, no network
+
+build_public_site.py runs the --match-only form on every build, so a
+corpus change always reaches the graph (and from there stats.json) without
+anyone remembering to rerun this script. It needs only the saved reference
+lists, never the PDFs or the network.
 """
+import argparse
 import json
 import re
 import time
@@ -62,8 +68,6 @@ import urllib.request
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
-
-import pymupdf
 
 from fetch_common import by_citations
 
@@ -139,17 +143,50 @@ def build_cvf_pdf_url_index():
     return index
 
 
+# Length of the normalized-title prefix the match index is keyed on (see
+# CorpusMatchIndex). Long enough that a prefix is nearly unique, short enough
+# that almost every title is at least this long.
+PREFIX_LEN = 12
+
+
+class CorpusMatchIndex:
+    """What match_references needs to know about the corpus.
+
+    A reference entry matches a corpus title when the normalized title is a
+    substring of the normalized entry and the two share at least one
+    distinctive word. The first version looked up every title sharing any
+    word with the entry and substring-checked each one, which is fine for a
+    few reference lists but took well over 20 minutes for the full set
+    against the ~235k-title corpus, too slow to run on every build. Titles
+    are now found by their first PREFIX_LEN characters at each position of
+    the entry instead, which gives the same matches. Titles shorter than
+    that (rare) still go through the word lookup.
+    """
+
+    def __init__(self):
+        self.words = defaultdict(set)          # key -> its distinctive words
+        self.by_prefix = defaultdict(set)      # key[:PREFIX_LEN] -> long keys
+        self.short_by_word = defaultdict(set)  # word -> keys shorter than PREFIX_LEN
+
+    def add(self, key, words):
+        self.words[key] |= words
+        if len(key) >= PREFIX_LEN:
+            self.by_prefix[key[:PREFIX_LEN]].add(key)
+        else:
+            for w in words:
+                self.short_by_word[w].add(key)
+
+
 def build_corpus_match_index(papers):
-    """distinctive title word -> candidate normalized titles, for every paper in the corpus."""
-    word_index = defaultdict(list)
+    """The match index (see CorpusMatchIndex) for every paper in the corpus."""
+    index = CorpusMatchIndex()
     for p in papers:
         key = normalize_title(p.get("title"))
         words = significant_words(p.get("title"))
         if not key or not words:
             continue
-        for w in words:
-            word_index[w].append(key)
-    return word_index
+        index.add(key, words)
+    return index
 
 
 def fetch_with_retries(url, max_retries=3):
@@ -195,6 +232,9 @@ def fetch_pdf_text(url, key):
     # PyMuPDF's get_text() is backed by MuPDF's C parser and is the standard
     # go-to for bulk text extraction where layout fidelity doesn't matter --
     # confirmed already installed locally (1.28.2) before switching.
+    # Imported here rather than at the top so the match phase, which the
+    # build runs every time, works on a machine without PyMuPDF.
+    import pymupdf
     with pymupdf.open(stream=raw, filetype="pdf") as pdf:
         pages_text = []
         started = False
@@ -220,21 +260,26 @@ def split_reference_entries(text):
     return [p.strip() for p in parts if len(p.strip()) > 15]
 
 
-def match_references(entries, word_index):
+def match_references(entries, index):
+    """Corpus title keys cited by these reference entries. index is a
+    CorpusMatchIndex (build_corpus_match_index)."""
     matched = set()
+    by_prefix, words = index.by_prefix, index.words
     for raw_entry in entries:
         norm_entry = re.sub(r"[^a-z0-9]", "", raw_entry.lower())
         entry_words = significant_words(raw_entry)
-        # Candidate generation is just an efficiency narrowing step (checking
-        # all ~66k titles against every entry would be too slow) -- the
-        # actual match criterion is the normalized title appearing verbatim
-        # as a substring of the normalized reference text.
-        candidates = set()
+        # The match criterion is the normalized title appearing verbatim as a
+        # substring of the normalized reference text, plus at least one
+        # distinctive word in common (the old candidate filter, kept so the
+        # matches don't change).
+        for i in range(len(norm_entry) - PREFIX_LEN + 1):
+            for key in by_prefix.get(norm_entry[i:i + PREFIX_LEN], ()):
+                if key not in matched and norm_entry.startswith(key, i) and not words[key].isdisjoint(entry_words):
+                    matched.add(key)
         for w in entry_words:
-            candidates.update(word_index.get(w, ()))
-        for key in candidates:
-            if key and key in norm_entry:
-                matched.add(key)
+            for key in index.short_by_word.get(w, ()):
+                if key in norm_entry:
+                    matched.add(key)
     return matched
 
 
@@ -332,12 +377,21 @@ def fetch_phase(cvf_titles, pdf_url_index):
     return True
 
 
-def match_phase(word_index):
+def match_phase(match_index):
     # Always runs, fetch or no fetch -- pure local computation over whatever
     # raw reference text has been saved so far by either source, against
     # whatever the corpus looks like right now. This is what lets a later
     # corpus expansion surface new edges for a paper scanned long ago,
     # without re-fetching anything.
+    #
+    # With no saved reference lists at all (a fresh clone, or a CI runner
+    # that wasn't given them), rematching would overwrite a good graph with
+    # an empty one and wipe every in-corpus count on the next build. Leave
+    # the existing graph alone instead.
+    if not REFS_CVF_FILE.exists() and not REFS_ARXIV_FILE.exists():
+        print("Match phase skipped: no saved reference lists "
+              f"({REFS_CVF_FILE.name}, {REFS_ARXIV_FILE.name}); keeping the existing graph.", flush=True)
+        return False
     cvf_all_refs = load_refs_cvf()
     cvf_refs = cvf_all_refs["references"]
     arxiv_refs = load_json(REFS_ARXIV_FILE, {})
@@ -349,7 +403,7 @@ def match_phase(word_index):
     edges = {}
     total_edges = 0
     for source, entries in {**cvf_refs, **arxiv_refs}.items():
-        matches = sorted(match_references(entries, word_index) - {source})
+        matches = sorted(match_references(entries, match_index) - {source})
         if matches:
             edges[source] = matches
             total_edges += len(matches)
@@ -364,10 +418,20 @@ def match_phase(word_index):
     print(f"Match phase: {len(cvf_refs)} CVF + {len(arxiv_refs)} arXiv reference lists rematched "
           f"against the current corpus -- {total_edges} in-corpus citation edges found "
           f"across {len(edges)} papers.", flush=True)
+    return True
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Build the in-corpus citation graph.")
+    parser.add_argument("--match-only", action="store_true",
+                        help="Skip the PDF fetch phase and only rematch the saved reference lists "
+                             "against the current corpus (offline).")
+    args = parser.parse_args()
+
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
+    if args.match_only:
+        match_phase(build_corpus_match_index(papers))
+        return
     # Whole corpus, not just av_relevance=="AV" -- user-requested: a paper's
     # citation count should reflect who cites it anywhere in this corpus,
     # not just its AV-relevant slice (see aggregate.py's citations_by_
@@ -383,10 +447,10 @@ def main():
         )
     ]
     pdf_url_index = build_cvf_pdf_url_index()
-    word_index = build_corpus_match_index(papers)
+    match_index = build_corpus_match_index(papers)
 
     fetch_phase(cvf_titles, pdf_url_index)
-    match_phase(word_index)
+    match_phase(match_index)
 
 
 if __name__ == "__main__":

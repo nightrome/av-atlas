@@ -492,11 +492,46 @@ tracked JSON maps, and both are re-applied on every build.
 ## One build command, always with tests
 
 `build_public_site.py` runs the whole pipeline in order (rebuild the corpus, apply
-repairs, rebuild stats, run the full test suite, publish `public/`) and aborts before
-publishing if any step fails. Crawler scripts write into `data/papers_full.json` and
-stop there. Folding every later step into one command, the same one `deploy.py` calls,
-makes "crawled but never published" impossible by construction, instead of a step to
-remember.
+repairs, rematch citations, rebuild stats, run the full test suite, publish `public/`)
+and aborts before publishing if any step fails. Crawler scripts write into
+`data/papers_full.json` and stop there. Folding every later step into one command, the
+same one `deploy.py` calls, makes "crawled but never published" impossible by
+construction, instead of a step to remember.
+
+The citation steps were missing for a while. The graph was only rebuilt when someone
+ran `build_citation_graph.py` by hand, and the counts only reached `papers_full.json`
+when someone then also ran `apply_citation_sources.py`, so a new graph could sit on
+disk while the site kept the old counts (PolarFormer showed 37 citations where the
+graph had 79). The build now runs `build_citation_graph.py --match-only`, which only
+rematches the saved reference lists and needs no PDFs or network, then
+`apply_citation_sources.py`. The match step leaves the graph alone when there are no
+reference lists at all, and apply now drops a count the graph no longer backs.
+
+Running the match on every build needed a faster matcher. The old one substring-checked
+every corpus title that shared a word with a reference entry, which works out to hours
+for the full 32k reference lists against 235k titles. It now looks titles up by their
+first 12 normalized characters at each position of the entry, which finds exactly the
+same matches (checked on 300 random reference lists) and does the whole set in about 4
+to 5 minutes.
+
+## A build that shrinks the corpus doesn't publish
+
+After `aggregate.py`, `publish_gate.py` compares the new `stats.json` with the previous
+one on five numbers (AV papers, AV papers with an institution, AV papers with an
+abstract, in-corpus citations, venues covered) and stops the build if any of them fell
+by more than 3%. The failures this is for don't crash anything: an interrupted crawler
+save that truncates `papers_full.json`, a venue file that no longer parses, or a build
+on a machine missing the gitignored inputs. Each of those produces a smaller but valid
+`stats.json`, and before this it went out like any other build, with the corpus backup
+overwritten right after.
+
+The numbers from before the build are kept in `data/publish_gate_baseline.json` until a
+build passes, so a stopped build can't make its own shrunk output the next build's
+baseline, and `--publish-only` is checked against it too. Without a local `stats.json`
+the baseline comes from the live site; if that can't be fetched either, the build warns
+and goes ahead. 3% is meant to let ordinary month-to-month changes through while still
+catching a lost venue or a lost enrichment field. An intended drop goes through with
+`--allow-shrink`.
 
 ## Finding the backup release by tag needs a list-and-filter, not the tags endpoint
 
@@ -844,9 +879,13 @@ changes make deploys cheap and add a preview step:
   post-processed at publish time (noindex, a banner, staging canonical URLs), so `--promote`
   ships the byte-identical build that was previewed. `.deploy-cache/state.json` records the
   previewed content hash.
-- **The corpus rebuild is skipped automatically** when a stat fingerprint of the pipeline
-  scripts, the git-tracked `data/` sources and `papers_full.json` matches the one saved
-  after the last full build. Tests still run on the fast path. Scripts that can't change
+- **The corpus rebuild is skipped automatically** when a stat fingerprint (size and mtime)
+  of the pipeline scripts and every JSON file in `data/` and `data/venues/` matches the one
+  saved after the last full build. It used to take the `data/` files from `git ls-files`,
+  which missed the gitignored inputs (`arxiv_s2_citing.json`, `citation_graph.json`, the
+  reference lists) and any venue file not yet added to git, so a deploy after a crawl
+  could skip the rebuild and publish the old `stats.json`. The build's own output and
+  `data/pdfs_cvf/` are left out. Tests still run on the fast path. Scripts that can't change
   `stats.json` (`deploy.py`, `run_tests.py`, the backup and restore scripts and
   `build_data_release.py`) are left out of the fingerprint so editing them doesn't force a
   10-minute rebuild. `build_public_site.py` is also left out, except for its list of
