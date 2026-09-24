@@ -60,6 +60,7 @@ import urllib.request
 from difflib import SequenceMatcher
 from pathlib import Path
 
+from atomic_write import write_json_atomic
 from fetch_common import by_citations
 
 BASE = Path(__file__).resolve().parent.parent
@@ -200,7 +201,7 @@ def main():
             else:
                 consecutive_failures += 1
 
-        IN_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+        write_json_atomic(IN_FILE, papers, indent=2)
         print(f"  [{processed}/{total_pending}] progress saved ({done} enriched so far)", flush=True)
 
         if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:

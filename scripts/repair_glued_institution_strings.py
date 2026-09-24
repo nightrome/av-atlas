@@ -35,6 +35,8 @@ Usage: python repair_glued_institution_strings.py
 import json
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 REGISTRY_FILE = BASE / "data" / "institution_registry.json"
@@ -106,7 +108,7 @@ def main():
             n_papers += 1
 
     if n_papers:
-        PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+        write_json_atomic(PAPERS_FILE, papers, indent=2)
     print(f"Repaired {n_authors} author-records across {n_papers} papers with a glued institution string")
 
     # The now-obsolete glued entries shouldn't linger in the registry --
@@ -122,7 +124,7 @@ def main():
         ]
         removed = before - len(registry["institutions"])
         if removed:
-            REGISTRY_FILE.write_text(json.dumps(registry, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+            write_json_atomic(REGISTRY_FILE, registry, indent=2)
         print(f"Removed {removed} obsolete glued entries from institution_registry.json")
 
 

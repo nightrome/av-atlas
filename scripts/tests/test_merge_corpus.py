@@ -119,29 +119,80 @@ class TestConferenceAndYearForFile(unittest.TestCase):
 
 
 class TestMergeCorpusEndToEnd(unittest.TestCase):
-    def _run(self, venue_papers, prior_papers_full=None, venue_filename="cvpr2024.json"):
+    def _run(self, venue_papers, prior_papers_full=None, venue_filename="cvpr2024.json",
+             prior_raw=None, extra_venue_files=None, argv=None):
         tmpdir = tempfile.TemporaryDirectory()
         self.addCleanup(tmpdir.cleanup)
         base = Path(tmpdir.name)
         venues_dir = base / "venues"
         venues_dir.mkdir()
         (venues_dir / venue_filename).write_text(json.dumps(venue_papers), encoding="utf-8")
+        for name, raw in (extra_venue_files or {}).items():
+            (venues_dir / name).write_text(raw, encoding="utf-8")
 
         categories_file = base / "categories.json"
         categories_file.write_text(json.dumps({"categories": []}), encoding="utf-8")
 
         out_file = base / "papers_full.json"
-        if prior_papers_full is not None:
+        self.out_file = out_file
+        if prior_raw is not None:
+            out_file.write_text(prior_raw, encoding="utf-8")
+        elif prior_papers_full is not None:
             out_file.write_text(json.dumps(prior_papers_full), encoding="utf-8")
 
         orig = (mc.VENUES_DIR, mc.OUT_FILE, mc.CATEGORIES_FILE)
         mc.VENUES_DIR, mc.OUT_FILE, mc.CATEGORIES_FILE = (venues_dir, out_file, categories_file)
         try:
-            mc.main()
+            mc.main(argv)
         finally:
             mc.VENUES_DIR, mc.OUT_FILE, mc.CATEGORIES_FILE = orig
 
         return json.loads(out_file.read_text(encoding="utf-8"))
+
+    def test_corrupt_prior_file_fails_and_is_left_alone(self):
+        # A crawler killed halfway through saving papers_full.json. This
+        # used to print a note and rebuild with no carried-over enrichment.
+        truncated = '[{"title": "Some Paper", "authors_detail": [{"na'
+        venue_papers = [{"title": "Some Paper", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        with self.assertRaises(SystemExit) as ctx:
+            self._run(venue_papers, prior_raw=truncated)
+        self.assertNotEqual(ctx.exception.code, 0)
+        self.assertEqual(self.out_file.read_text(encoding="utf-8"), truncated)
+
+    def test_unparsable_venue_file_fails(self):
+        venue_papers = [{"title": "Some Paper", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        with self.assertRaises(SystemExit) as ctx:
+            self._run(venue_papers, extra_venue_files={"iccv2023.json": '[{"title": "Cut off'})
+        self.assertNotEqual(ctx.exception.code, 0)
+
+    def test_refuses_to_drop_every_s2_discovered_paper(self):
+        # The previous corpus had papers from arxiv_s2_citing.json, but that
+        # gitignored file isn't here (a fresh clone, a worktree).
+        prior = [
+            {"title": "Venue Paper", "source": "venue_listing"},
+            {"title": "Found Through S2", "source": "arxiv_s2_citing_discovery"},
+        ]
+        venue_papers = [{"title": "Venue Paper", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        with self.assertRaises(SystemExit) as ctx:
+            self._run(venue_papers, prior_papers_full=prior)
+        self.assertNotEqual(ctx.exception.code, 0)
+        self.assertEqual(json.loads(self.out_file.read_text(encoding="utf-8")), prior)
+
+    def test_allow_s2_loss_writes_the_smaller_merge(self):
+        prior = [{"title": "Found Through S2", "source": "arxiv_s2_citing_discovery"}]
+        venue_papers = [{"title": "Venue Paper", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        papers = self._run(venue_papers, prior_papers_full=prior, argv=["--allow-s2-loss"])
+        self.assertEqual([p["title"] for p in papers], ["Venue Paper"])
+
+    def test_s2_file_present_passes_the_guard(self):
+        prior = [{"title": "Found Through S2", "source": "arxiv_s2_citing_discovery"}]
+        venue_papers = [{"title": "Venue Paper", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        s2 = json.dumps([{"title": "Found Through S2", "authors": "C D", "conference": "arXiv preprint",
+                          "year": 2025, "doi": "https://arxiv.org/abs/2501.00001"}])
+        papers = self._run(venue_papers, prior_papers_full=prior,
+                           extra_venue_files={"arxiv_s2_citing.json": s2})
+        self.assertEqual(sorted(p["source"] for p in papers),
+                         ["arxiv_s2_citing_discovery", "venue_listing"])
 
     def test_carries_over_authors_detail_from_prior_run(self):
         prior = [{

@@ -18,6 +18,7 @@ Usage: python apply_abstracts_arxiv.py
 import json
 from pathlib import Path
 
+from atomic_write import write_json_atomic
 import mine_abstracts as ma
 
 BASE = Path(__file__).resolve().parent.parent
@@ -43,7 +44,7 @@ def main():
             p["abstract_search_exhausted"] = True
             n_exhausted += 1
 
-    PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(PAPERS_FILE, papers, indent=2)
     print(f"Applied {n_abstracts} abstracts and {n_exhausted} confirmed-no-match markers to papers_full.json")
 
 

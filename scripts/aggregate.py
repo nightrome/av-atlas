@@ -36,6 +36,8 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+
 BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
 OUT_FILE = BASE / "data" / "stats.json"
@@ -3970,7 +3972,7 @@ def main():
     # just below (indent=2's per-key newline+spacing roughly doubled this
     # file's size at corpus scale, which is what pushed it over GitHub's
     # 100MB file limit and got a gh-pages push rejected outright).
-    OUT_FILE.write_text(json.dumps(stats, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(OUT_FILE, stats)
     print(f"Wrote {OUT_FILE}")
     print(f"  {len(all_entries)} total papers, {len(entries)} AV")
     print(f"  {len(papers)} ranked papers, {len(author_citations)} authors, "

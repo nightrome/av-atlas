@@ -29,6 +29,8 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+
 BASE = Path(__file__).resolve().parent.parent
 DATA_FILE = BASE / "data" / "venues" / "arxiv_s2_citing.json"
 API_BASE = "https://api.semanticscholar.org/graph/v1"
@@ -61,6 +63,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-file", type=Path, default=DATA_FILE)
     DATA_FILE = parser.parse_args().data_file
+    if not DATA_FILE.exists():
+        # Nothing to backfill, e.g. a fresh clone before restore_corpus.py
+        # has brought the file back. Not an error for a batch job.
+        print(f"backfill_citing_venues.py: {DATA_FILE} not found, nothing to do "
+              "(restore it with scripts/restore_corpus.py)")
+        return
     entries = json.loads(DATA_FILE.read_text(encoding="utf-8"))
     print(f"{len(entries)} total entries")
 
@@ -95,7 +103,7 @@ def main():
                 # S2 knows the paper and has no venue for it: missing
                 # information, distinct from a paper not looked up yet.
                 entry["venue_status"] = "missing"
-        DATA_FILE.write_text(json.dumps(entries, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+        write_json_atomic(DATA_FILE, entries, indent=2)
         print(f"  batch {i // BATCH_SIZE + 1}/{(len(todo) - 1) // BATCH_SIZE + 1}: "
               f"{updated} updated so far", flush=True)
         time.sleep(REQUEST_DELAY)

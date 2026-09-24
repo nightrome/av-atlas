@@ -31,6 +31,8 @@ Usage: python fix_suspect_venues.py
 import json
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+
 BASE = Path(__file__).resolve().parent.parent
 DATA_FILE = BASE / "data" / "venues" / "arxiv_s2_citing.json"
 
@@ -88,10 +90,17 @@ def fix_entry(entry):
 
 
 def main():
+    if not DATA_FILE.exists():
+        # A fresh clone or a worktree without the gitignored S2 file. Not
+        # this script's job to fail the build over it: merge_corpus.py, the
+        # next step, is what refuses to write a corpus that lost those papers.
+        print(f"  {DATA_FILE.name} not found, nothing to fix "
+              "(restore it with scripts/restore_corpus.py)")
+        return
     entries = json.loads(DATA_FILE.read_text(encoding="utf-8"))
     changed = sum(fix_entry(e) for e in entries)
     if changed:
-        DATA_FILE.write_text(json.dumps(entries, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+        write_json_atomic(DATA_FILE, entries, indent=2)
     print(f"  fixed {changed} suspect venue names in {DATA_FILE.name}")
 
 

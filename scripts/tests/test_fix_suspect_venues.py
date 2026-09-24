@@ -3,7 +3,9 @@
 """
 Usage: python -m unittest discover -s av-atlas/scripts/tests
 """
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -48,6 +50,27 @@ class TestFixSuspectVenues(unittest.TestCase):
         e = {"conference": "Make"}
         fix.fix_entry(e)
         self.assertFalse(fix.fix_entry(e))
+
+    def _use_temp_data_file(self):
+        tmpdir = tempfile.TemporaryDirectory()
+        self.addCleanup(tmpdir.cleanup)
+        orig = fix.DATA_FILE
+        fix.DATA_FILE = Path(tmpdir.name) / "arxiv_s2_citing.json"
+        self.addCleanup(setattr, fix, "DATA_FILE", orig)
+
+    def test_missing_s2_file_is_a_notice_not_a_crash(self):
+        # Build step 1 on a fresh clone, before restore_corpus.py has run.
+        self._use_temp_data_file()
+        fix.main()
+        self.assertFalse(fix.DATA_FILE.exists())
+
+    def test_main_rewrites_the_file_when_something_changed(self):
+        self._use_temp_data_file()
+        fix.DATA_FILE.write_text(json.dumps([{"conference": "Delta"}, {"conference": "CVPR"}]), encoding="utf-8")
+        fix.main()
+        entries = json.loads(fix.DATA_FILE.read_text(encoding="utf-8"))
+        self.assertEqual(entries[0]["venue_status"], "missing")
+        self.assertEqual(entries[1], {"conference": "CVPR"})
 
 
 if __name__ == "__main__":

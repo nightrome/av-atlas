@@ -32,6 +32,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+
 BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
 CONTACT_EMAIL = "holger@it-caesar.com"
@@ -131,7 +133,7 @@ def main():
             p["authors_detail"] = ad
             p["authors_detail_source"] = "openalex"
             n += 1
-    IN_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(IN_FILE, papers, indent=2)
     print(f"Wrote authors_detail onto {n} papers.", flush=True)
 
 
