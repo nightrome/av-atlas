@@ -94,6 +94,10 @@
   .export-buttons button:hover { border-color: var(--accent); color: var(--accent); }
   .data-updated { color: var(--muted); font-size: 0.85em; margin: 0 0 10px; }
   .data-updated:empty { display: none; }
+  .download-intro { color: var(--muted); font-size: 0.88em; margin: 0 0 8px; }
+  .download-intro a, .download-list a { color: var(--accent); }
+  .download-list { font-size: 0.9em; line-height: 1.7; padding-left: 20px; margin: 0; }
+  .download-list a { overflow-wrap: anywhere; }
 
 </style>
 </head>
@@ -126,6 +130,32 @@
   <table><thead><tr><th>#</th><th>Title</th><th>Category</th><th>Year</th><th>Venue</th><th>Source</th><th class="num" data-term="citations">Citations</th><th class="num" data-term="early_citations">Early citations</th></tr></thead>
   <tbody id="papers-body"></tbody></table>
   </div>
+</div>
+
+<!-- The file names carry the version; build_public_site.py fills it in and
+     build_data_release.py writes files with the same names
+     (scripts/tests/test_build_data_release.py checks the two agree). -->
+<div class="panel" id="download">
+  <h2>Download the data (v__AV_ATLAS_VERSION__)</h2>
+  <p class="download-intro">
+    The corpus behind this version of the site, as four gzipped CSVs that join on
+    <code>paper_id</code>. Read the README first: citation counts only cover this corpus,
+    affiliations are known for a minority of papers, and author names are not disambiguated.
+    Published under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>.
+    More on <a href="about.html#download">the About page</a>.
+  </p>
+  <ul class="download-list">
+    <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-papers.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-papers.csv.gz</a>
+        &mdash; one row per AV paper: title, year, venue, category, in-corpus citations, institutions, countries.</li>
+    <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-authorship.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-authorship.csv.gz</a>
+        &mdash; paper-to-author rows, with author position.</li>
+    <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-citations.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-citations.csv.gz</a>
+        &mdash; the in-corpus citation edge list.</li>
+    <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-institutions.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-institutions.csv.gz</a>
+        &mdash; institutions with country, sector and totals.</li>
+    <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-README.md">av-atlas-v__AV_ATLAS_VERSION__-README.md</a>
+        &mdash; column definitions and what the numbers are not.</li>
+  </ul>
 </div>
 
 <script src="filters.js"></script>

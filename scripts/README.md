@@ -15,7 +15,7 @@ Start here. One command runs everything in this section.
 | Script | What it does |
 | --- | --- |
 | `deploy.py` | The deploy command. `--preview` publishes to the staging site, `--promote` publishes that build to production. With no flags it builds, commits to `main`, publishes and backs up the corpus. |
-| `build_public_site.py` | The build itself: merge, repair, aggregate, test, publish, data release. Every other script here is either called by it or produces files it reads. |
+| `build_public_site.py` | The build itself: merge, repair, aggregate, test, publish, data release. It also assigns the site version. Every other script here is either called by it or produces files it reads. |
 | `run_tests.py` | The full test suite. CI runs it too. |
 | `backup_corpus.py`, `restore_corpus.py` | Save `papers_full.json` and `citation_graph.json` to a draft GitHub Release, and pull them back on a new machine. `deploy.py` runs the backup after each deploy. |
 
@@ -30,7 +30,7 @@ Start here. One command runs everything in this section.
 | `classify.py` | Gives each paper a category and an AV-relevance label. A module, not a script you run. |
 | `repair_garbled_authors_detail.py`, `repair_glued_institution_strings.py`, `repair_openalex_institution_errors.py` | Fixes for real data bugs that had already shipped. Safe to re-run, and run on every build so a recrawl from scratch gives the same corpus. |
 | `aggregate.py` | Turns the corpus into `data/stats.json`, which holds every number the pages show. |
-| `build_data_release.py` | Writes the downloadable CSVs to `public/download/`. |
+| `build_data_release.py` | Writes the downloadable CSVs to `public/download/`, named with the site version. |
 
 ## Collection (stage 1)
 

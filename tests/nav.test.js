@@ -23,7 +23,7 @@ const ENDPOINT = 'https://av-atlas.goatcounter.com/count';
 // Runs nav.js as if the page were at https://<hostname><pathname><search>.
 // Returns the <script> elements it added to <head>, plus the sandbox so a
 // test can look at window.goatcounter.
-function loadNav(hostname, pathname, search) {
+function loadNav(hostname, pathname, search, source) {
   const head = makeElement('head');
   const body = makeElement('body');
   const topnav = makeElement('nav');
@@ -46,8 +46,9 @@ function loadNav(hostname, pathname, search) {
   };
   sandbox.window = sandbox;
   vm.createContext(sandbox);
-  vm.runInContext(NAV_JS, sandbox, { filename: 'nav.js' });
-  return { scripts: head.children.filter(el => el.tagName === 'SCRIPT'), sandbox };
+  vm.runInContext(source || NAV_JS, sandbox, { filename: 'nav.js' });
+  const nav = body.children.find(el => el.className === 'topbar');
+  return { scripts: head.children.filter(el => el.tagName === 'SCRIPT'), sandbox, nav };
 }
 
 // {directive: [sources]} from a page's <meta http-equiv="Content-Security-Policy">.
@@ -141,6 +142,23 @@ test('no page or shared script loads Google Analytics', () => {
     const hit = /googletagmanager|google-analytics|analytics\.google|\bgtag\b|\bdataLayer\b/i.exec(text);
     assert.ok(!hit, `${f} mentions "${hit && hit[0]}"`);
   });
+});
+
+// build_public_site.py swaps the placeholder for the build's version.
+test('shows the site version once the build has filled it in', () => {
+  const built = NAV_JS.replace(/__AV_ATLAS_VERSION__/g, '0.1.2');
+  const { nav, sandbox } = loadNav('nightrome.github.io', '/av-atlas/about.html', '', built);
+  const label = nav.children.filter(el => el.className === 'site-version');
+  assert.strictEqual(label.length, 1, 'expected one version label in the nav bar');
+  assert.strictEqual(label[0].textContent, 'v0.1.2');
+  assert.strictEqual(label[0].href, 'index.html#download');
+  assert.strictEqual(sandbox.AV_ATLAS_VERSION, '0.1.2');
+});
+
+test('shows no version label on an unbuilt page', () => {
+  const { nav, sandbox } = loadNav('localhost', '/index.html');
+  assert.strictEqual(nav.children.filter(el => el.className === 'site-version').length, 0);
+  assert.strictEqual(sandbox.AV_ATLAS_VERSION, undefined);
 });
 
 if (failures > 0) {

@@ -970,6 +970,31 @@ bare detail templates, and lists only venues that have AV papers.
 Crawlers that don't run JS (most link-preview bots) still see no per-page tags. Fixing
 that needs pre-rendered HTML per entity, which is a much bigger change.
 
+## Site versions: major.minor by hand, the patch counted from production
+
+Every published build has a version, shown in the nav bar, on the About page, in
+`BUILD_INFO.json`, in the published `stats.json` (`site_version`) and in the names of the
+download files. The tracked `VERSION` file holds major.minor and only the maintainer
+changes it. Nobody edits the patch number: `build_public_site.py` reads the version in
+production's `BUILD_INFO.json` and adds one, or starts at 0 if `VERSION` has moved on
+to a new major.minor. Production had no version field before this, so it counts as
+0.1.1, the version the site was already known as.
+
+Taking the patch from production rather than from a counter in the repo or in
+`.deploy-cache/` means a preview and its promote share one number (promote doesn't
+rebuild), a second preview before promoting doesn't use up another one, and the monthly
+CI job, which starts from a clean checkout, counts on from the live site like a local
+deploy does. If production can't be reached the build counts on from the last version
+`deploy.py` recorded in `.deploy-cache/state.json` and prints a warning. A skipped or
+repeated patch number is harmless; failing the build over it would not be.
+`--version X.Y.Z` sets it outright, for tests and one-off rebuilds.
+
+The download files carry the version in their names (`av-atlas-v0.1.2-papers.csv.gz`)
+so a cached old file can't be served under the current link, and a downloaded file
+says which release it came from. Only the current version's files are kept: the build
+deletes older ones from `public/download/` and the deploy sync deletes them from
+`gh-pages`. Older releases aren't archived anywhere yet.
+
 ## Page views are counted with GoatCounter, not Google Analytics
 
 The site used Google Analytics 4 until September 2026. GA4 sets cookies that last up to two

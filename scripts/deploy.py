@@ -11,7 +11,9 @@ Two-stage flow (preview first, then promote):
     python scripts/deploy.py              # one-shot: build + production, no preview
 
 A full run:
-1. Builds public/ (build_public_site.py). The corpus rebuild is skipped
+1. Builds public/ (build_public_site.py), which also gives the build its site
+   version (one patch above what production serves). --promote reuses the
+   previewed build, so production gets the same version staging showed. The corpus rebuild is skipped
    automatically when nothing that feeds the corpus changed since the last
    full build (data/ or the pipeline scripts, see build_fingerprint); tests always run. --full forces the
    rebuild, --skip-build skips it and the tests (HTML/JS/CSS-only changes).
@@ -192,6 +194,17 @@ def build_fingerprint(base=BASE):
     return h.hexdigest()
 
 
+def build_info(public_dir=None):
+    """The BUILD_INFO.json build_public_site.py wrote into public/: the site
+    version it assigned and when. Publishing copies the version from here
+    rather than working out a new one, so --promote ships the previewed build
+    under the same version."""
+    try:
+        return json.loads((Path(public_dir or PUBLIC_DIR) / BUILD_INFO_NAME).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
 def load_state():
     try:
         return json.loads(STATE_FILE.read_text(encoding="utf-8"))
@@ -279,14 +292,19 @@ def publish(name, remote, transform, label, commit_msg):
     clone = ensure_cache_clone(name, remote)
     written, removed = sync_tree(PUBLIC_DIR, clone, transform)
     content_hash = hash_tree(PUBLIC_DIR)
+    built = build_info(PUBLIC_DIR)
     info = {
         "target": name,
+        "version": built.get("version"),
         "content_hash": content_hash,
         "source_commit": git_out(["rev-parse", "--short", "HEAD"], BASE),
-        "built_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "built_at": built.get("built_at") or time.strftime("%Y-%m-%dT%H:%M:%S%z"),
     }
     (clone / BUILD_INFO_NAME).write_text(json.dumps(info, indent=2), encoding="utf-8")
     print(f"Synced: {written} file(s) written, {removed} removed.")
+
+    if info["version"]:
+        commit_msg = f"{commit_msg} v{info['version']}"
 
     run(["git", "add", "-A"], cwd=clone)
     tree = git_out(["write-tree"], clone)
@@ -298,8 +316,14 @@ def publish(name, remote, transform, label, commit_msg):
 
 
 def deploy_production():
-    return publish("production", git_out(["remote", "get-url", "origin"], BASE), None,
-                   "production gh-pages", "Publish AV Atlas")
+    content_hash = publish("production", git_out(["remote", "get-url", "origin"], BASE), None,
+                           "production gh-pages", "Publish AV Atlas")
+    # What build_public_site.py counts on from if it can't reach production
+    # next time.
+    version = build_info().get("version")
+    if version:
+        save_state(published_version=version)
+    return content_hash
 
 
 def deploy_staging(remote):
