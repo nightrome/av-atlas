@@ -35,9 +35,15 @@ same one scripts/deploy.py already calls) makes "crawled but never
 published" structurally impossible instead of a step to remember, and
 means a single command is always both the test run and the deploy.
 
+Every build also gets a site version, major.minor.patch. major.minor comes
+from the tracked VERSION file at the repo root, which only the maintainer
+edits. The patch is worked out from what production serves right now (see
+resolve_version below), so it goes up by one with every published build.
+
 Usage: python build_public_site.py
    or: python build_public_site.py --publish-only   # steps 1-4 skipped; only re-copy
                                                     # current pages + existing stats.json
+   or: python build_public_site.py --version 0.1.7  # use this version, don't ask production
 """
 import argparse
 import json
@@ -46,7 +52,9 @@ import shutil
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.parse
+import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -99,6 +107,126 @@ def html_pages():
 
 
 SITE_URL = "https://nightrome.github.io/av-atlas"
+
+# Site versioning. VERSION holds major.minor and is only ever changed by the
+# maintainer. The patch number isn't stored anywhere in the repo: it is one
+# more than whatever production's BUILD_INFO.json says, so a preview and the
+# promote of that same build share a number (promote doesn't rebuild), two
+# previews in a row don't burn two numbers, and the monthly CI job, which has
+# no .deploy-cache/, still counts on from the live site.
+VERSION_FILE = BASE / "VERSION"
+PRODUCTION_BUILD_INFO_URL = f"{SITE_URL}/BUILD_INFO.json"
+# deploy.py records the last version it pushed to production here. Only used
+# when production can't be reached.
+DEPLOY_STATE_FILE = BASE / ".deploy-cache" / "state.json"
+# The live site was already v0.1.1 before BUILD_INFO.json carried a version.
+UNVERSIONED_PRODUCTION = (0, 1, 1)
+# Replaced with the build's version in every published page and script.
+VERSION_PLACEHOLDER = "__AV_ATLAS_VERSION__"
+VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+
+
+def parse_version(text):
+    """'0.1.2' -> (0, 1, 2); None for anything that isn't major.minor.patch."""
+    m = VERSION_RE.match(str(text or "").strip())
+    return tuple(int(x) for x in m.groups()) if m else None
+
+
+def format_version(v):
+    return ".".join(str(x) for x in v)
+
+
+def read_major_minor(path=VERSION_FILE):
+    m = re.match(r"^(\d+)\.(\d+)$", Path(path).read_text(encoding="utf-8").strip())
+    if not m:
+        raise SystemExit(f"{path} must hold major.minor, e.g. 0.1")
+    return int(m.group(1)), int(m.group(2))
+
+
+def next_version(major_minor, live):
+    """The version for a new build, given the version production serves.
+
+    Same major.minor as production: one more patch. Different major.minor:
+    the maintainer has bumped VERSION, so the patch starts again at 0."""
+    if tuple(live[:2]) == tuple(major_minor):
+        return (*major_minor, live[2] + 1)
+    return (*major_minor, 0)
+
+
+def fetch_production_version(url=PRODUCTION_BUILD_INFO_URL, timeout=15):
+    """The version production serves, UNVERSIONED_PRODUCTION if its
+    BUILD_INFO.json has no version (or doesn't exist). Raises OSError if
+    production can't be reached at all."""
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as resp:
+            info = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return UNVERSIONED_PRODUCTION
+        raise OSError(f"HTTP {e.code} from {url}") from e
+    except ValueError as e:
+        raise OSError(f"{url} is not valid JSON") from e
+    return parse_version((info or {}).get("version")) or UNVERSIONED_PRODUCTION
+
+
+def last_published_version(state_file=DEPLOY_STATE_FILE):
+    try:
+        state = json.loads(Path(state_file).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return parse_version(state.get("published_version"))
+
+
+def resolve_version(override=None, major_minor=None, fetch=fetch_production_version,
+                    state_file=DEPLOY_STATE_FILE):
+    """The full version string for this build.
+
+    override (the --version flag) wins outright. Otherwise the patch counts
+    on from production. If production can't be reached, it counts on from
+    the last version deploy.py recorded locally, with a warning, since a
+    wrong guess here only means a skipped or repeated patch number."""
+    if override:
+        if not parse_version(override):
+            raise SystemExit(f"--version must look like 0.1.2, got {override!r}")
+        return override
+    major_minor = major_minor or read_major_minor()
+    try:
+        live = fetch()
+    except OSError as e:
+        live = last_published_version(state_file)
+        print(f"  WARNING: couldn't read production's version ({e}); counting on from "
+              f"{format_version(live) + ' (last recorded deploy)' if live else 'v0.1.1, the last unversioned release'}")
+        live = live or UNVERSIONED_PRODUCTION
+    if tuple(live[:2]) > tuple(major_minor):
+        print(f"  WARNING: production is already on {format_version(live)}, newer than "
+              f"VERSION {major_minor[0]}.{major_minor[1]}. Is this checkout out of date?")
+    return format_version(next_version(major_minor, live))
+
+
+def stamp_json_version(path, version):
+    """Add "site_version" to a published JSON object, in place.
+
+    stats.json is tens of MB, so the key is spliced in after the opening
+    brace rather than re-serialising the whole file. That keeps its
+    formatting byte-for-byte apart from the new key."""
+    text = path.read_text(encoding="utf-8")
+    try:
+        data = json.loads(text)
+    except ValueError:
+        return False
+    if not isinstance(data, dict):
+        return False
+    if "site_version" in data:
+        data["site_version"] = version
+        path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8", newline="\n")
+        return True
+    brace = text.index("{")
+    rest = text[brace + 1:]
+    sep = "" if not data else ", "
+    path.write_text(text[:brace + 1] + json.dumps("site_version") + ": " + json.dumps(version)
+                    + sep + rest, encoding="utf-8", newline="\n")
+    return True
+
 
 # How many of each kind of detail page to list in the sitemap. Every author,
 # paper, institution and venue page is a query string on one of four HTML
@@ -163,7 +291,7 @@ def write_sitemap(page_dir, stats_path):
     print(f"  sitemap.xml: {len(urls)} URLs")
 
 
-def build_public_site():
+def build_public_site(version):
     index_path = SITE_DIR / "index.html"
     stats_path = BASE / "data" / "stats.json"
     if not index_path.exists():
@@ -196,10 +324,17 @@ def build_public_site():
     # gets published, so new pages don't need a build-script change to ship.
     for html_path in html_pages():
         html = html_path.read_text(encoding="utf-8")
-        html = add_cache_bust(html)
+        html = add_cache_bust(html).replace(VERSION_PLACEHOLDER, version)
         (page_dir / html_path.name).write_text(html, encoding="utf-8", newline="\n")
 
     shutil.copy2(stats_path, page_dir / "stats.json")
+    # Not in hash_tree's content hash (deploy.py adds its own fields to it at
+    # publish time), but the version it records is also baked into nav.js
+    # and stats.json, which are.
+    (page_dir / "BUILD_INFO.json").write_text(json.dumps({
+        "version": version,
+        "built_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+    }, indent=2), encoding="utf-8", newline="\n")
 
     # Every sharded data directory aggregate.py writes (see its AUTHOR_
     # DETAIL_DIR/ABSTRACTS_DIR/etc. comments) -- copied file-by-file rather
@@ -253,9 +388,11 @@ def build_public_site():
                 shutil.copy2(asset, dst)
 
     # Shared static assets referenced by the HTML pages (e.g. nav.js) but not
-    # matched by the *.html glob above.
+    # matched by the *.html glob above. nav.js shows the site version.
     for js_path in SITE_DIR.glob("*.js"):
-        shutil.copy2(js_path, page_dir / js_path.name)
+        js = js_path.read_text(encoding="utf-8")
+        (page_dir / js_path.name).write_text(
+            js.replace(VERSION_PLACEHOLDER, version), encoding="utf-8", newline="\n")
 
     # page_dir persists across runs (rmtree-ing it hits a real, previously-hit
     # OneDrive directory-lock issue -- see the "Fix build scripts hanging on
@@ -267,11 +404,17 @@ def build_public_site():
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
         | {"stats.json", "theme.css", "theme-light.css",
-           "logo.svg", "og-image.png", "sitemap.xml", "robots.txt"}
+           "logo.svg", "og-image.png", "sitemap.xml", "robots.txt", "BUILD_INFO.json"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()
             print(f"  removed stale {existing.name}")
+
+    # Every published JSON object at the top level (stats.json and any slim
+    # copy of it) says which build it came from. BUILD_INFO.json already does.
+    for json_path in sorted(page_dir.glob("*.json")):
+        if json_path.name != "BUILD_INFO.json" and stamp_json_version(json_path, version):
+            print(f"  {json_path.name}: site_version {version}")
 
     (PUBLIC_DIR / "robots.txt").write_text(
         ROBOTS_TXT + f"\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8", newline="\n")
@@ -308,6 +451,9 @@ def main():
                              "data/stats.json into public/. Use this only for a pages-only change where "
                              "nothing under data/ moved -- a previous full build must have left "
                              "data/stats.json (and data/abstracts/) in place.")
+    parser.add_argument("--version", dest="site_version", metavar="X.Y.Z",
+                        help="Use this site version instead of counting on from production's "
+                             "BUILD_INFO.json. Meant for tests and one-off rebuilds.")
     args = parser.parse_args()
 
     if args.publish_only:
@@ -329,7 +475,9 @@ def main():
         run_step("Rebuilding stats (aggregate.py)", "aggregate.py")
         run_step("Running tests (run_tests.py)", "run_tests.py")
     print("\n--- Publishing public site ---")
-    build_public_site()
+    version = resolve_version(args.site_version)
+    print(f"  site version {version}")
+    build_public_site(version)
     # The downloadable corpus, built from the same stats.json the pages read,
     # so the download can never describe a different corpus than the site.
     print("\n--- Building data release ---")
@@ -337,6 +485,7 @@ def main():
     build_data_release.build(
         json.loads((BASE / "data" / "stats.json").read_text(encoding="utf-8")),
         json.loads(graph_path.read_text(encoding="utf-8")) if graph_path.exists() else {},
+        version,
     )
 
 

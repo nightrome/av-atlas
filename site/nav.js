@@ -27,6 +27,11 @@
     }
     .topbar a:hover { background: var(--panel2); color: var(--text); }
     .topbar a.active { background: var(--accent); color: #fff; }
+    .topbar a.site-version {
+      margin-left: auto; font-weight: 500; font-size: 0.8em; padding: 7px 8px;
+      font-variant-numeric: tabular-nums;
+    }
+    .topbar a.site-version + #hardReload { margin-left: 0; }
     .topbar #hardReload {
       margin-left: auto; background: none; border: 1px solid var(--border); color: var(--muted);
       font-size: 1em; line-height: 1; width: 30px; height: 30px; border-radius: 7px; cursor: pointer;
@@ -101,6 +106,21 @@
   nav.innerHTML = PAGES.map(p =>
     `<a href="${p.href}"${p.href === current ? ' class="active"' : ''}>${p.label}</a>`
   ).join('');
+
+  // The site version, e.g. v0.1.2. build_public_site.py replaces the
+  // placeholder below with the build's version; a page served straight from
+  // site/ (no build) still has the placeholder and shows no label. Links to
+  // the homepage download section, whose files carry the same version.
+  const SITE_VERSION = '__AV_ATLAS_VERSION__';
+  if (/^\d+\.\d+\.\d+$/.test(SITE_VERSION)) {
+    window.AV_ATLAS_VERSION = SITE_VERSION;
+    const versionLink = document.createElement('a');
+    versionLink.className = 'site-version';
+    versionLink.href = 'index.html#download';
+    versionLink.title = `AV Atlas version ${SITE_VERSION}. Download this version's data`;
+    versionLink.textContent = `v${SITE_VERSION}`;
+    nav.appendChild(versionLink);
+  }
 
   // Full page reset. stats.json and the shared JS files are static files
   // behind GitHub Pages' CDN, so a plain refresh can serve a stale cached

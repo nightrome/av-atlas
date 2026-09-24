@@ -31,13 +31,22 @@ why things are the way they are, see [DECISIONS.md](DECISIONS.md).
 ## Downloading the data
 
 The whole corpus is available as four gzipped CSVs: papers, authorship, citations
-between papers in the corpus, and institutions. They join on `paper_id`. You can
-find them through the About page. `scripts/build_data_release.py` regenerates them
-on every build, and they come with their own README.
+between papers in the corpus, and institutions. They join on `paper_id`. They are
+linked at the bottom of the homepage. `scripts/build_data_release.py` regenerates them
+on every build, and they come with their own README. The file names include the site
+version (see below), and only the current version is kept.
 
 Please read that README before using them. In short: citation counts only cover
 this corpus and are incomplete, affiliations are known for only a minority of
 papers, author names are not disambiguated, and all classification is automated.
+
+## Versions
+
+The site has a version like v0.1.2, shown in the nav bar and on the About page. The
+`VERSION` file at the repo root holds the first two parts. Only the maintainer changes
+it, when a release deserves a new minor or major number. The last part goes up by one
+on every published build without anyone touching it: the build reads the version
+production is serving and adds one. DECISIONS.md has the details.
 
 ## Running the site locally
 
