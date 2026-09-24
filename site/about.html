@@ -505,8 +505,8 @@ fetch('about.json').then(r => r.json()).then(stats => {
     document.getElementById('coverage-updated').textContent =
       `${updated}. This is the last time a paper, author list, citation count or corpus total changed; a rebuild that changes none of them keeps the date.`;
   }
-  // Added to the published stats.json by build_public_site.py, so it's the
-  // version of the data this page is showing.
+  // build_public_site.py adds site_version to every published JSON file,
+  // about.json included, so it's the version of the data this page shows.
   if (stats.site_version) {
     const versionNote = document.getElementById('version-note');
     versionNote.textContent = `Site version v${stats.site_version}.`;
