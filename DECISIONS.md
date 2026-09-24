@@ -221,6 +221,20 @@ title and year for these venues, and `classify.py` falls back to title-only keyw
 matching. These papers carry a weaker relevance and category signal than the rest of
 the corpus. The Methodology page lists this under "Known gaps".
 
+## A venue file is only replaced by a complete fetch
+
+`cvpr2022.json` held 774 of CVPR 2022's 2,074 papers for months. An earlier run of
+`fetch_cvf_history.py` stopped partway through, the script had already saved what it
+had, and nothing downstream checked the count, so every CVPR trend on the site showed
+a 2022 dip that wasn't real. The script now keeps its progress in a `.partial` file
+and only writes the real venue file once every listed paper has been fetched, retrying
+failures first. It also never replaces a file with a smaller one: if CVF drops papers
+from a listing, someone has to delete the old file on purpose. Paper pages that return
+404 are dead links on CVF's side (three in CVPR 2022, two in CVPR 2024, one in ICCV
+2017) and don't count as missing. `scripts/tests/test_venue_listing_counts.py` pins
+the expected count of every CVPR, ICCV, WACV and ACCV file, so a short file fails the
+build before it can be published.
+
 ## Misc vs uncategorized
 
 `classify_paper()` in `classify.py` used to leave every paper that matched no category
