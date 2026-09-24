@@ -113,6 +113,12 @@ SITE_URL = "https://nightrome.github.io/av-atlas"
 # worth landing on, ranked by citations.
 SITEMAP_LIMITS = {"papers": 5000, "authors": 3000, "institutions": 1000, "venues": 300}
 
+# Pages that only show something with a ?name=/?title= (or, for compare,
+# ?names=) parameter. Bare, they render "Unknown author" and the like, so
+# they are left out of the sitemap; their real URLs are listed below.
+DETAIL_TEMPLATES = {"author.html", "paper.html", "institution.html", "venue.html",
+                    "country.html", "compare.html"}
+
 
 def write_sitemap(page_dir, stats_path):
     """A sitemap.xml covering the listing pages plus the top detail pages.
@@ -124,7 +130,8 @@ def write_sitemap(page_dir, stats_path):
     import xml.sax.saxutils as sx
 
     stats = json.loads(stats_path.read_text(encoding="utf-8"))
-    urls = [f"{SITE_URL}/{p.name}" for p in sorted(html_pages(), key=lambda p: p.name)]
+    urls = [f"{SITE_URL}/{p.name}" for p in sorted(html_pages(), key=lambda p: p.name)
+            if p.name not in DETAIL_TEMPLATES]
 
     def add(page, key, values):
         for v in values:
@@ -147,15 +154,22 @@ def write_sitemap(page_dir, stats_path):
     by_papers = lambda d, n: sorted(d, key=lambda k: -d[k])[:n]  # noqa: E731
     add("author.html", "name", by_papers(author_papers, SITEMAP_LIMITS["authors"]))
     add("institution.html", "name", by_papers(inst_papers, SITEMAP_LIMITS["institutions"]))
+    # Only venues with AV papers: by_venue counts the whole corpus, and a
+    # venue page for, say, a medical imaging journal says "0 AV papers".
+    av_venues = {p.get("venue") for p in papers}
     add("venue.html", "name",
-        list((stats.get("corpus_stats") or {}).get("by_venue", {}))[:SITEMAP_LIMITS["venues"]])
+        [v for v in (stats.get("corpus_stats") or {}).get("by_venue", {})
+         if v in av_venues][:SITEMAP_LIMITS["venues"]])
     # There are only ~55 countries, so every one gets a page in the sitemap.
     add("country.html", "name",
         sorted({c for p in papers for c in (p.get("countries") or [])}))
 
-    today = time.strftime("%Y-%m-%d")
+    # When the content last changed (see content_updated in aggregate.py),
+    # not the build date, so a rebuild of the same data does not tell
+    # crawlers that all 9,000 pages are new.
+    lastmod = stats.get("content_updated") or time.strftime("%Y-%m-%d")
     body = "\n".join(
-        f"  <url><loc>{sx.escape(u)}</loc><lastmod>{today}</lastmod></url>" for u in urls)
+        f"  <url><loc>{sx.escape(u)}</loc><lastmod>{lastmod}</lastmod></url>" for u in urls)
     (page_dir / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

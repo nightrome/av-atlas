@@ -10,8 +10,6 @@
 <meta property="og:site_name" content="AV Atlas">
 <meta property="og:title" content="AV Atlas: Country">
 <meta property="og:description" content="A country's contribution to autonomous vehicle research: papers, citations, top authors and institutions.">
-<meta property="og:url" content="https://nightrome.github.io/av-atlas/country.html">
-<link rel="canonical" href="https://nightrome.github.io/av-atlas/country.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AV Atlas: Country">
@@ -240,14 +238,14 @@ function render(stats) {
   const inCountry = i => !mapped || instCountries[i] === name;
   const institutions = aggregateByDimension(papers, p => (p.institutions || []).filter(inCountry), { minPapers: 0 });
 
-  const citedPapers = papers.filter(p => p.citations != null);
-  const totalCitations = citedPapers.reduce((s, p) => s + p.citations, 0);
-  const avg = citedPapers.length ? Math.round((totalCitations / citedPapers.length) * 10) / 10 : null;
+  const totalCitations = papers.reduce((s, p) => s + (p.citations || 0), 0);
+  // Same helper and definition as the listing pages (see avgCitations in filters.js).
+  const avg = avgCitations(papers);
 
   const grid = document.getElementById('stat-grid');
   grid.appendChild(stat(papers.length, 'AV papers in corpus'));
   grid.appendChild(stat(totalCitations, 'Citations'));
-  grid.appendChild(stat(avg == null ? 'n/a' : avg, 'Citations / paper', { decimals: 1 }));
+  grid.appendChild(stat(avg == null ? 'n/a' : avg, 'Citations / paper'));
   grid.appendChild(stat(countryAuthors.size, 'Authors on record'));
   grid.appendChild(stat(institutions.length, 'Institutions'));
   if (grid.firstElementChild) {

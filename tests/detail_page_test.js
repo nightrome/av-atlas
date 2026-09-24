@@ -59,9 +59,21 @@ async function testAuthorPage() {
   const [name] = Object.entries(authorCounts).sort((a, b) => b[1] - a[1])[0] || [];
   if (!name) { check('author.html: no author found in data to test against', false); return; }
 
-  const { error, idRegistry } = await runPage('author.html', { search: `?name=${encodeURIComponent(name)}` });
+  const { error, idRegistry, sandbox } = await runPage('author.html',
+    { search: `?name=${encodeURIComponent(name)}&sort=year` });
   check(`author.html (${name}): must not throw`, !error);
   if (error) return;
+
+  // One canonical, set at runtime to this author's own URL (the page ships
+  // none), with the sort parameter dropped.
+  const head = sandbox.document.head;
+  const canon = head.querySelectorAll('link[rel="canonical"]');
+  const expected = `http://localhost/author.html?name=${encodeURIComponent(name)}`;
+  check(`author.html: exactly one canonical (found ${canon.length})`, canon.length === 1);
+  check(`author.html: canonical is ${expected}`, canon.length === 1 && canon[0].attrs.href === expected);
+  const ogUrl = head.querySelectorAll('meta[property="og:url"]');
+  check('author.html: og:url matches the canonical',
+    ogUrl.length === 1 && canon.length === 1 && ogUrl[0].attrs.content === canon[0].attrs.href);
 
   const coauthorRows = (idRegistry['coauthors-body'].children || []).filter(c => c.tagName === 'TR');
   check('author.html: coauthors-body has at least one row', coauthorRows.length > 0);

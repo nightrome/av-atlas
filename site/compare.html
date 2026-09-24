@@ -10,8 +10,6 @@
 <meta property="og:site_name" content="AV Atlas">
 <meta property="og:title" content="AV Atlas: Compare">
 <meta property="og:description" content="Compare researchers, institutions, countries, venues or topics side by side within autonomous vehicle research.">
-<meta property="og:url" content="https://nightrome.github.io/av-atlas/compare.html">
-<link rel="canonical" href="https://nightrome.github.io/av-atlas/compare.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AV Atlas: Compare">
@@ -216,7 +214,6 @@ function papersFor(allPapers, name) {
 }
 
 function metricsFor(papers, subjectName) {
-  const cited = papers.filter(p => p.citations);
   const years = papers.map(p => p.year).filter(Boolean);
   const citations = papers.reduce((n, p) => n + (p.citations || 0), 0);
   // For a researcher this is their co-authors, so the person themselves is
@@ -227,10 +224,8 @@ function metricsFor(papers, subjectName) {
   return {
     papers: papers.length,
     citations,
-    // Averaged over papers with at least one citation, the same denominator
-    // every other page on this site uses -- a paper nothing here cites yet is
-    // as likely to be a coverage gap as a real zero.
-    avg: cited.length ? Math.round(citations / cited.length) : null,
+    // The site's one citations-per-paper definition (avgCitations in filters.js).
+    avg: avgCitations(papers),
     best: papers.reduce((b, p) => ((p.citations || 0) > (b ? b.citations || 0 : -1) ? p : b), null),
     firstYear: years.length ? Math.min(...years) : null,
     lastYear: years.length ? Math.max(...years) : null,

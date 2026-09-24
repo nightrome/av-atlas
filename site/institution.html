@@ -10,8 +10,6 @@
 <meta property="og:site_name" content="AV Atlas">
 <meta property="og:title" content="AV Atlas: Institution">
 <meta property="og:description" content="An institution's publication record within autonomous vehicle research: papers, citations, and top authors.">
-<meta property="og:url" content="https://nightrome.github.io/av-atlas/institution.html">
-<link rel="canonical" href="https://nightrome.github.io/av-atlas/institution.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AV Atlas: Institution">
@@ -231,9 +229,9 @@ function render(stats) {
   // "two independent lookups can disagree" reason.
   document.getElementById('tags').textContent = (stats.institution_countries || {})[name] || 'Country not yet resolved';
 
-  const citedPapers = papers.filter(p => p.citations != null);
-  const totalCitations = citedPapers.reduce((s, p) => s + p.citations, 0);
-  const avg = citedPapers.length ? Math.round((totalCitations / citedPapers.length) * 10) / 10 : null;
+  const totalCitations = papers.reduce((s, p) => s + (p.citations || 0), 0);
+  // Same helper and definition as the listing pages (see avgCitations in filters.js).
+  const avg = avgCitations(papers);
   const authorSet = new Set();
   papers.forEach(p => (p.authors || []).forEach(a => {
     // Only count an author here if this institution is actually among their
@@ -248,7 +246,7 @@ function render(stats) {
   const grid = document.getElementById('stat-grid');
   grid.appendChild(stat(papers.length, 'AV papers in corpus'));
   grid.appendChild(stat(totalCitations, 'Citations'));
-  grid.appendChild(stat(avg == null ? 'n/a' : avg, 'Citations / paper', { decimals: 1 }));
+  grid.appendChild(stat(avg == null ? 'n/a' : avg, 'Citations / paper'));
   grid.appendChild(stat(authorSet.size, 'Distinct authors credited'));
   // Nested inside the first tile rather than floating above the grid in
   // the page's bare background -- see author.html's identical fix for why

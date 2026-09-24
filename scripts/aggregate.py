@@ -27,6 +27,7 @@ not its full breadth; that's a known, disclosed limitation, not a bug.
 
 Usage: python aggregate.py
 """
+import hashlib
 import html
 import json
 import re
@@ -2732,6 +2733,48 @@ def scholar_url_field(links, title):
     return {"scholar_url": url} if url else {}
 
 
+# The fields a reader would notice changing, and the only ones the "Data
+# last updated" date follows. generated_at moves on every build, even one
+# that only changed page code or rebuilt the same data, so it said nothing
+# about how fresh the numbers were. See DECISIONS.md.
+CONTENT_COUNT_KEYS = ("total_researchers", "total_institutions", "total_countries", "venues_covered")
+
+
+def content_hash(papers, generated_from, av_relevant, corpus_stats):
+    """sha256 over what the site publishes about each AV paper (title,
+    venue, year, authors, citation count) plus the top-level counts.
+    Paper order doesn't matter, so a re-sort alone never counts as new
+    content."""
+    rows = sorted(
+        (json.dumps([p.get("title") or "", p.get("venue") or "", p.get("year"),
+                     list(p.get("authors") or []), p.get("citations")],
+                    ensure_ascii=False, default=str)
+         for p in papers))
+    payload = {
+        "papers": rows,
+        "generated_from": generated_from,
+        "av_relevant": av_relevant,
+        "counts": {k: corpus_stats.get(k) for k in CONTENT_COUNT_KEYS},
+    }
+    blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def content_updated_date(new_hash, previous_stats_file, today):
+    """The date the published content last changed: the previous build's
+    date when its content_hash matches, otherwise today. A missing or
+    unreadable previous stats.json, or one from before these fields
+    existed, counts as changed."""
+    try:
+        previous = json.loads(Path(previous_stats_file).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return today
+    if (isinstance(previous, dict) and previous.get("content_hash") == new_hash
+            and previous.get("content_updated")):
+        return previous["content_updated"]
+    return today
+
+
 def main():
     all_entries = json.loads(IN_FILE.read_text(encoding="utf-8"))
     # LLM code-link verdicts (scripts/classify_code_links_llm.py) -- the
@@ -3973,6 +4016,13 @@ def main():
         # Cheap enough to ship inline in stats.json rather than its own file.
         "identity_conflicted_authors": sorted(identity_conflicts),
     }
+    # The date the site shows as "Data last updated". Worked out before
+    # OUT_FILE is overwritten below, since an unchanged hash keeps the
+    # previous build's date.
+    stats["content_hash"] = content_hash(
+        papers, stats["generated_from"], stats["av_relevant"], stats["corpus_stats"])
+    stats["content_updated"] = content_updated_date(
+        stats["content_hash"], OUT_FILE, stats["generated_at"])
     # No indent -- same reasoning as the non_av_papers/abstract shards
     # just below (indent=2's per-key newline+spacing roughly doubled this
     # file's size at corpus scale, which is what pushed it over GitHub's

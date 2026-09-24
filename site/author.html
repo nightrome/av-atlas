@@ -10,8 +10,6 @@
 <meta property="og:site_name" content="AV Atlas">
 <meta property="og:title" content="AV Atlas: Author">
 <meta property="og:description" content="A researcher's publication record within autonomous vehicle research: papers, citations, co-authors, and career trajectory.">
-<meta property="og:url" content="https://nightrome.github.io/av-atlas/author.html">
-<link rel="canonical" href="https://nightrome.github.io/av-atlas/author.html">
 <meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AV Atlas: Author">
@@ -268,12 +266,11 @@ function renderBody(stats, papers) {
   try {
     renderRankBadges(document.getElementById('rank-badges'), computeEntityRanks(stats).author(name));
   } catch (e) { /* ranking is a top-of-page extra, never block the page for it */ }
-  // Real total for "how many citations do their AV papers have" (informational);
-  // the average is only over papers that actually have a citation count, so
-  // an uncited paper doesn't silently drag the average toward zero.
-  const citedPapers = papers.filter(p => p.citations != null);
-  const totalCitations = citedPapers.reduce((s, p) => s + p.citations, 0);
-  const avg = citedPapers.length ? Math.round((totalCitations / citedPapers.length) * 10) / 10 : null;
+  // Real total for "how many citations do their AV papers have". The average
+  // uses the same helper and definition as the Researchers page (see
+  // avgCitations in filters.js), so the two never disagree.
+  const totalCitations = papers.reduce((s, p) => s + (p.citations || 0), 0);
+  const avg = avgCitations(papers);
 
   // Two independent conflation signals, both rendered as the same warning
   // banner: `ambiguous` is a small, manually-reviewed set (scholar_profiles.json)
@@ -404,7 +401,7 @@ function renderBody(stats, papers) {
   // aggregate.py).
   const nonAvCount = (stats.non_av_paper_counts || {})[name] || 0;
   const nonAvCitations = (stats.non_av_paper_citations || {})[name] || 0;
-  const nonAvAvg = nonAvCount ? Math.round((nonAvCitations / nonAvCount) * 10) / 10 : null;
+  const nonAvAvg = citationsPerPaper(nonAvCitations, nonAvCount);
 
   // Three tiles, each an AV/Non-AV pair (user-requested), rather than four
   // separate single-number tiles -- "how much of this is AV work vs.
@@ -415,8 +412,7 @@ function renderBody(stats, papers) {
   grid.appendChild(statPair(totalCitations, 'AV citations', nonAvCitations, 'Non-AV citations'));
   grid.appendChild(statPair(
     avg == null ? 'n/a' : avg, 'AV citations / paper',
-    nonAvAvg == null ? 'n/a' : nonAvAvg, 'Non-AV citations / paper',
-    { decimals: 1 }
+    nonAvAvg == null ? 'n/a' : nonAvAvg, 'Non-AV citations / paper'
   ));
   // Was its own floating icon above the grid, in the page's bare background
   // rather than inside any bordered box (user-reported: "the i logo must be
