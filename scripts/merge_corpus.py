@@ -4,8 +4,9 @@
 Merges the venue-listing pulls into one corpus:
   - av-atlas/data/venues/*.json (CVPR/ICCV/WACV/ECCV/NeurIPS/CoRL/ICRA/IROS/
     RSS/ICLR/AAAI, complete populations, no keyword filtering) plus
-    arxiv*.json (fetch_arxiv.py -- NOT a complete population, an AV-specific
-    keyword search against arXiv itself; see that script's docstring).
+    arxiv*.json (arxiv_s2_citing.json from fetch_semanticscholar_citing.py,
+    and arxiv_monthly_<yyyy>-<mm>.json from fetch_arxiv_monthly.py -- NOT
+    complete populations; see those scripts' docstrings).
     arXiv entries are only ever used to fill a title the other venues don't
     already have -- see the venue_files/arxiv_files split below.
 
@@ -181,6 +182,8 @@ def discovery_source(filename):
     # listing apart from a discovery path with different reliability.
     if filename.startswith("arxiv_s2_citing"):
         return "arxiv_s2_citing_discovery"  # verified citation edge (Semantic Scholar)
+    if filename.startswith("arxiv_monthly"):
+        return "arxiv_monthly_intake"  # fetch_arxiv_monthly.py, new preprints from arXiv's own listings
     if filename.startswith("arxiv"):
         return "arxiv_author_pull"
     return "venue_listing"
@@ -273,7 +276,12 @@ def main():
             # puts the abstract URL in "doi" instead -- lift it into
             # arxiv_url here so every paper's arXiv link lives in one
             # consistent field regardless of which file it came from.
-            arxiv_url = p.get("doi") if is_arxiv_file else None
+            # fetch_arxiv_monthly.py's files already have a real arxiv_url,
+            # and their "doi" is a real DOI (or empty), so for those the
+            # field is taken as is.
+            arxiv_url = None
+            if is_arxiv_file:
+                arxiv_url = p["arxiv_url"] if "arxiv_url" in p else p.get("doi")
             if key not in merged:
                 merged[key] = {
                     "title": clean_title(p.get("title")),

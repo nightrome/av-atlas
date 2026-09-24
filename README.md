@@ -116,8 +116,9 @@ Backing up and restoring both need `GITHUB_TOKEN` in `.env` (see Setup).
 Five stages, run roughly in this order. The About page has a diagram.
 
 1. **Collect.** `fetch_cvf.py`, `fetch_neurips.py`, `fetch_dblp_listing.py`,
-   `fetch_ieee_openalex.py`, `fetch_arxiv.py` and others pull the complete
-   proceedings of each venue from its own source, with no keyword filtering.
+   `fetch_ieee_openalex.py` and others pull the complete proceedings of each
+   venue from its own source, with no keyword filtering. New arXiv preprints come
+   in monthly through `fetch_arxiv_monthly.py`, which keeps only the AV ones.
 2. **Merge and classify.** `merge_corpus.py` removes duplicates across sources and
    `classify.py` gives each paper a category and an AV-relevance label.
 3. **Enrich.** For AV-relevant papers only: author affiliations

@@ -65,6 +65,30 @@ The classifier can be searched end to end, and any paper's result can be explain
 from the code. The LLM is a second opinion. It is graded against a hand-labelled
 evaluation set, never trusted blindly, and never writes the ground-truth label file.
 
+## New arXiv preprints come in monthly, with no review, and count in the rankings
+
+`fetch_arxiv_monthly.py` harvests arXiv once a month and keeps whatever the classifier
+above calls AV. Nobody reviews the list before it goes live: the monthly update publishes
+on its own, and the maintainer decided that some wrong papers are an acceptable price for
+that. On the one day we sampled, 1 of 12 accepted papers was clearly not AV (the "onboard"
+weight in the linear model), and a week-long check in the arXiv research found matches
+only in the abstract to be about half right, against nearly all of the title matches.
+Fixing that belongs in `classify.py`, where it would also fix the same papers already in
+the corpus, not in a separate filter for this one path.
+
+These preprints are ranked like every other paper, the same as the preprints that came in
+through Semantic Scholar citations. When a venue later publishes the paper under the same
+title, the venue record takes over.
+
+We use arXiv's OAI-PMH interface rather than its search API, because the search API
+refuses Python's `urllib` with HTTP 406 while answering curl with the same request. We
+didn't work around that. PIPELINE.md has the details.
+
+The monthly files (`data/venues/arxiv_monthly_<yyyy>-<mm>.json`) and the ledger
+(`data/arxiv_monthly_state.json`) are tracked in git, unlike `arxiv_s2_citing.json`.
+arXiv's metadata is CC0, the files are small, and a job that runs unattended has to be
+able to carry the ledger from one month to the next without the laptop's backup.
+
 ## Numbers are shown as whole numbers
 
 Citation counts and averages are rounded to integers everywhere they're computed
