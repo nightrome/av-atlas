@@ -65,6 +65,39 @@ The classifier can be searched end to end, and any paper's result can be explain
 from the code. The LLM is a second opinion. It is graded against a hand-labelled
 evaluation set, never trusted blindly, and never writes the ground-truth label file.
 
+## One weak phrase isn't enough, and "drive" has to mean driving
+
+The linear model in layer 3 shipped with its threshold only 0.02 above its
+intercept, so any phrase with a positive weight made a paper AV on its own. The
+worst case was "onboard": it alone made 227 papers AV, and a sample of them was
+nearly all drones, trains, space robots and underwater robots. In a one-week arXiv
+sample, all 22 papers the model accepted fired only on "onboard", and none were AV.
+Since the monthly arXiv update now publishes without anyone looking at it, this
+mattered more than the recall it bought.
+
+"onboard" is out of the vocabulary, and the threshold now sits just above the
+largest weight a single abstract phrase can get (`single_phrase_floor()` in
+`train_relevance_classifier.py`, which a retrain also applies). One phrase in an
+abstract never decides; a strong title phrase such as "road user" or "HD map" still
+does. The shipped `relevance_model.json` was edited by hand to match rather than
+retrained, so the other weights are the ones the model learned with "onboard" in it.
+
+The title rule for drive/driver/driving had the same kind of problem in robotics and
+ML titles: harmonic and quasi-direct drives, differential-drive robots, needle
+drivers, and "Pretraining Drives Reasoning". Those senses are blanked out before the
+check (`TITLE_DRIVE_OTHER_SENSES` in `classify.py`), and any other driving word in the
+same title still counts. "wheel drive" is left alone, since front-wheel-drive
+vehicles are cars.
+
+Dataset names that only exist for driving were added as AV phrases: bare "waymo",
+SemanticKITTI, nuPlan, NAVSIM, Bench2Drive, and Boreas when followed by "dataset" or
+"benchmark". Like KITTI they also catch some general 3D papers that run one table on
+them, which the rubric would call non-AV. The KITTI rule itself is unchanged.
+
+Measured on the corpus in September 2026: 536 papers went from AV to non-AV (105 from
+the title rule, the rest from the model) and 141 went the other way (97 of them via
+SemanticKITTI). On the one-week arXiv sample, accepted papers went from 89 to 67.
+
 ## Numbers are shown as whole numbers
 
 Citation counts and averages are rounded to integers everywhere they're computed

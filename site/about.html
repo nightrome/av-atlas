@@ -192,10 +192,11 @@
       as one possible application. A layered
       classifier decides it: hard scope filters first exclude non-road
       platforms (aerial, underwater, legged, manipulation) and pure vehicle-hardware papers; then
-      an explicit AV-specific phrase in the title or abstract, or a standalone driving word in the
-      title, marks a paper as AV; then a small model of learned per-phrase weights (trained on hand
-      labels plus labels from a locally-run language model, with negative weights on phrases that
-      over-fire) and a verdict from that same local language model get the last say on the rest. A paper's category never
+      an explicit AV-specific phrase in the title or abstract, or a driving word in the title
+      (not counting senses like "harmonic drive" or "X drives Y"), marks a paper as AV; then a small
+      model of learned per-phrase weights (trained on hand labels plus labels from a locally-run
+      language model, with a threshold high enough that one phrase in an abstract is never
+      enough on its own) and a verdict from that same local language model get the last say on the rest. A paper's category never
       feeds this decision, since category keywords are generic CV/robotics terms that match
       plenty of non-AV papers.</li>
   <li><strong>3. Enrich.</strong> For AV-relevant papers only: each author's affiliation and a
@@ -242,7 +243,9 @@
 </div>
 <p class="section-intro">
   63 of the 65 were classified the way the reviewer labeled them.
-  Zero false positives: every paper the site calls AV-relevant, a human agreed was AV-relevant.
+  There were no false positives in this sample: every one of the 65 that the classifier called
+  AV-relevant, the reviewer had also labeled AV-relevant. Across the whole corpus some wrong
+  calls do get through, so a small sample can't promise zero.
   The false negatives were borderline computer-vision papers that mention autonomous driving as
   one of several possible applications rather than being about it.
 </p>

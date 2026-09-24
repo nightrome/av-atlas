@@ -89,6 +89,64 @@ class TestClassifyRelevance(unittest.TestCase):
             "AV",
         )
 
+    def test_driving_dataset_names_count_as_av_relevant(self):
+        for abstract in (
+            "Experiments on Waymo show a clear gain.",
+            "We report results on SemanticKITTI.",
+            "Closed-loop results on nuPlan and interPlan.",
+            "We evaluate on NAVSIM v2.",
+            "Bench2Drive closed-loop scores improve.",
+            "Held-out sequences from the Boreas dataset.",
+        ):
+            self.assertEqual(cl.classify_relevance("A Generic Method", abstract), "AV", abstract)
+
+    def test_boreas_needs_dataset_context(self):
+        self.assertEqual(
+            cl.classify_relevance("A Generic Method", "Named after Boreas, the north wind."),
+            "non-AV",
+        )
+
+    def test_mechanical_drive_in_title_is_not_driving(self):
+        for title in (
+            "Dynamic Modeling and Digital Twin of a Harmonic Drive Based Collaborative Robot Joint",
+            "Cycloidal Quasi-Direct Drive Actuator Designs with Learning-Based Torque Estimation",
+            "Multi-Agent Motion Planning for Differential Drive Robots Through Stationary State Search",
+            "Drive-Train Design in JAXON3-P and Realization of Jump Motions",
+            "A Control and Drive System for Pneumatic Soft Robots",
+            "Head-Mounted Hydraulic Needle Driver for Targeted Interventions in Neurosurgery",
+            "Uncertainty-Aware Artificial Intelligence for Gear Fault Diagnosis in Motor Drives",
+        ):
+            self.assertEqual(cl.classify_relevance(title, None), "non-AV", title)
+
+    def test_drives_as_a_verb_in_title_is_not_driving(self):
+        for title in (
+            "Procedural Knowledge in Pretraining Drives Reasoning in Large Language Models",
+            "What Drives Compositional Generalization?",
+            "Elementary School Science and Math Tests as a Driver for AI",
+            "Identifying Spatio-Temporal Drivers of Extreme Events",
+            "Driving up Inference Energy on SNNs",
+        ):
+            self.assertEqual(cl.classify_relevance(title, None), "non-AV", title)
+
+    def test_other_driving_word_survives_the_mechanical_blanking(self):
+        # "differential drive" is blanked, but "driver" is still a driver.
+        self.assertEqual(
+            cl.classify_relevance(
+                "Robust human-machine shared control with differential drive assist steering "
+                "for different driver", None),
+            "AV",
+        )
+        self.assertEqual(
+            cl.classify_relevance("A Model that Drives without Reasoning", None), "AV")
+        self.assertEqual(
+            cl.classify_relevance("Collecting Simulation Scenarios by Analyzing Physical Test Drives", None),
+            "AV",
+        )
+        self.assertEqual(
+            cl.classify_relevance("Modeling Driving Behavior of Human Drivers of Conventional Vehicles", None),
+            "AV",
+        )
+
     def test_llm_core_promotes_a_keyword_adjacent_paper(self):
         self.assertEqual(
             cl.classify_relevance(

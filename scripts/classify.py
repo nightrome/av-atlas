@@ -185,6 +185,14 @@ AV_RELEVANCE_TERMS = [
     # it in the title. "pedestrian intention" is already an AV_TITLE_ONLY
     # term; these two are specific enough to trust anywhere.
     "pedestrian crossing", "crossing pedestrian",
+    # Driving datasets and planning benchmarks that only exist for driving.
+    # Bare "waymo" rather than just the full "Waymo Open Dataset" name,
+    # because abstracts mostly write "experiments on Waymo"; the company name
+    # itself rarely shows up outside driving work either. "boreas" is also a
+    # word and a name, so it only counts next to "dataset" or "benchmark".
+    # SemanticKITTI is its own word, so the KITTI rule above never saw it.
+    "waymo", "semantickitti", "nuplan", "navsim", "bench2drive",
+    "boreas dataset", "boreas benchmark",
 ]
 
 # Weaker on their own: high-precision only when they appear in the paper's
@@ -247,6 +255,41 @@ AV_RELEVANCE_PATTERNS = [re.compile(r"\b" + re.escape(term) + r"s?\b") for term 
 # different, extremely common ML phrase) never matches "driven".
 TITLE_STRONG_TERM_PATTERNS = (r"\bdrive\b", r"\bdrives\b", r"\bdriving\b", r"\bdriver\b", r"\bdrivers\b")
 TITLE_STRONG_PATTERNS = [re.compile(p) for p in TITLE_STRONG_TERM_PATTERNS]
+
+# ...except that robotics and ML titles use the same words for other things.
+# Before the title check these phrases are blanked out, so any other driving
+# word left in the title still counts. Measured on the corpus, the rule was
+# making papers like "Dynamic Modeling and Digital Twin of a Harmonic Drive
+# Based Collaborative Robot Joint", "Head-Mounted Hydraulic Needle Driver"
+# and "Procedural Knowledge in Pretraining Drives Reasoning in Large Language
+# Models" AV. "wheel drive" is left alone on purpose: "front wheel drive
+# autonomous ground vehicles" is a car.
+TITLE_DRIVE_OTHER_SENSES = re.compile(
+    # drivetrain and actuator hardware
+    r"\b(?:harmonic|direct|quasi[- ]direct|differential|cycloidal|planetary|capstan|belt|"
+    r"cable|tendon|wire|screw|ball[- ]screw|eccentric|servo|motor|machine|electric|electrical|"
+    r"electromagnetic|magnetic|piezoelectric|hydraulic|pneumatic|rotary|helix|gear|"
+    r"regenerative|interlock|pmsm|mecanum|synchro|swerve|treadmill|cylindrical)[- ]drives?\b"
+    r"|\bdrives?[- ](?:units?|systems?|trains?|shafts?|mechanisms?|actuators?|motors?|"
+    r"transmissions?|circuits?)\b"
+    r"|\bdrivetrains?\b"
+    r"|\bdriving (?:mechanisms?|servo|joints?)\b"
+    # tools and electronics that are "drivers"
+    r"|\b(?:needle|screw|motor|gate|led|laser|forceps|servo|stepper|pile)[- ]driv(?:er|ers|ing)\b"
+    # "X drives Y" as a verb, and "driver of" in the sense of cause
+    r"|\bwhat drives\b"
+    r"|(?<!that )(?<!which )(?<!who )\bdrives (?!(?:for|in|of|on|with|without|via|and|or|to|"
+    r"at|from|under|using|through|by|as)\b)(?=[a-z])"
+    r"|\bdriving (?:up|down)\b"
+    r"|\bas (?:an? |the |key |main )?drivers? (?:of|for)\b"
+    r"|\b(?:environmental|key|main|underlying|causal) drivers of\b"
+    r"|\bidentifying (?:[\w-]+ )?drivers of\b")
+
+
+def title_without_other_drive_senses(title_l):
+    """Lower-cased title with the non-vehicle uses of drive/driver/driving
+    blanked out, for the title driving-word check."""
+    return TITLE_DRIVE_OTHER_SENSES.sub(" ", title_l)
 
 AV_TITLE_ONLY_PATTERNS = [re.compile(r"\b" + re.escape(t) + r"s?\b") for t in AV_TITLE_ONLY_TERMS]
 OFF_SCOPE_TITLE_PATTERNS = [re.compile(r"\b" + re.escape(t) + r"s?\b") for t in OFF_SCOPE_TITLE_TERMS]
@@ -311,7 +354,7 @@ def relevance_model_score(title, abstract):
         if ac.get(term) and pat.search(a):
             s += ac[term]
     if m.get("title_strong_coef"):
-        clean = _DATA_DRIVEN_RE.sub(" ", t.lower())  # TITLE_STRONG_PATTERNS are case-sensitive
+        clean = title_without_other_drive_senses(_DATA_DRIVEN_RE.sub(" ", t.lower()))  # TITLE_STRONG_PATTERNS are case-sensitive
         if any(p.search(clean) for p in TITLE_STRONG_PATTERNS):
             s += m["title_strong_coef"]
     return s
@@ -402,17 +445,25 @@ def classify_relevance(title, abstract, llm_says_av=False):
        not things to learn from noisy labels.
     2. Keyword floor -> "AV": an explicit AV-specific phrase
        (AV_RELEVANCE_TERMS) anywhere in title/abstract, a standalone driving
-       word in the title, or a title-only phrase in the title. This is the
+       word in the title (after TITLE_DRIVE_OTHER_SENSES blanks out harmonic
+       drives, needle drivers, "X drives Y" and the like), or a title-only
+       phrase in the title. This is the
        historical behavior and it is a *floor* -- the model below can add to
        it but never overrides it, so the obvious hits can't regress.
     3. Trained scorer (data/relevance_model.json) -> "AV": learned
        per-phrase weights (separate weight for a phrase in the title vs the
        abstract) + a threshold, from the hand labels + the two local-LLM
        passes. This is what makes it "more than counting" -- it catches
-       papers where several weak-ish signals add up, and it is trained with
-       negative weights on phrases that over-fire ("driving dataset",
-       "onboard", ...). Only consulted for papers the keyword floor didn't
-       already call AV, so a mis-weighting can't flood AV corpus-wide.
+       papers where several weak-ish signals add up. The threshold sits
+       above the largest weight any single abstract phrase gets (see
+       single_phrase_floor() in train_relevance_classifier.py), so one
+       phrase in an abstract is never enough; only a strong title phrase
+       ("road user", "mixed traffic", "HD map", ...) decides alone. The
+       first shipped threshold was 0.02 above the intercept, so any phrase
+       with a positive weight fired, and "onboard" alone made 227 drone,
+       train and space papers AV. "onboard" has since been dropped from the
+       vocabulary. Only consulted for papers the keyword floor didn't
+       already call AV.
     4. Local-LLM "AV" verdict -> "AV": individually-vetted promotions for
        the generically-titled AV papers (no AV phrase, no abstract) that no
        keyword or weight scheme can see. See fetch_llm_relevance_labels*.py.
@@ -435,7 +486,7 @@ def classify_relevance(title, abstract, llm_says_av=False):
     # 2. keyword floor (never regressed by the model)
     if AV_RELEVANCE_COMBINED.search(title_l) or AV_RELEVANCE_COMBINED.search(abstract_l):
         return "AV"
-    if TITLE_STRONG_COMBINED.search(title_l):
+    if TITLE_STRONG_COMBINED.search(title_without_other_drive_senses(title_l)):
         return "AV"
     if AV_TITLE_ONLY_COMBINED.search(title_l):
         return "AV"
