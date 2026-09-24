@@ -158,6 +158,13 @@ CI runs the same command on every push and pull request. The last three tests ne
 `data/stats.json`, which is gitignored. Without it they are skipped with a notice
 instead of failing, so run `scripts/build_public_site.py` first for a full run.
 
+## Page view counts
+
+The live site counts page views with [GoatCounter](https://www.goatcounter.com),
+site code `av-atlas`. It sets no cookies and stores no personal data. It only runs
+on the production site, so views on staging or a local server aren't counted.
+DECISIONS.md explains why it replaced Google Analytics.
+
 ## Reporting a data error
 
 Every page has a "spot an error?" link that opens an email pre-filled with the

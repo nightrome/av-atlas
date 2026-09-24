@@ -853,6 +853,38 @@ changes make deploys cheap and add a preview step:
   `run_step` calls, because adding or reordering a step there does change what a full build
   produces and would otherwise be skipped silently.
 
+## Page views are counted with GoatCounter, not Google Analytics
+
+The site used Google Analytics 4 until September 2026. GA4 sets cookies that last up to two
+years and sends each visitor's browser, device, rough location and the pages they view to
+Google. In the Netherlands that needs the visitor's consent. The first version asked, but
+the banner was dropped the same day, and the About page said GA collected nothing beyond page
+views. Its script was also about 176 KB gzipped on every page, three times the size of the
+site's own JS.
+
+GoatCounter (site code `av-atlas`) sets no cookies, doesn't store IP addresses, and keeps only
+per-page totals (such as referrer, browser, screen size and country), so there is nothing to
+ask consent for. Its script is about 3 KB gzipped.
+
+- `nav.js` loads it only on `nightrome.github.io/av-atlas/`. Staging lives on the same host
+  under `/av-atlas-staging/`, so the path prefix tells them apart; staging, localhost and
+  forks send nothing, and previewing a build doesn't add to the numbers. `deploy.py`'s staging
+  transform only rewrites HTML, so it doesn't need to know about the counter.
+- It loads GoatCounter's frozen `count.v5.js` with the SRI hash GoatCounter publishes, not the
+  unversioned `count.js`, so the browser refuses the file if it ever changes on their CDN.
+  Moving to a newer version means changing the URL and the hash in `nav.js` together.
+- Every page's CSP allows `https://gc.zgo.at` for the script and only
+  `https://av-atlas.goatcounter.com/count` for the beacon. `tests/nav.test.js` checks each page
+  against what `nav.js` actually loads, since a CSP mismatch fails silently in the browser.
+  That is how the GA tag first shipped without recording anything.
+- The counted path keeps only a detail page's `?name=` or `?title=`, so each author or paper
+  page is counted on its own, but filter settings and the reload button's `?v=` don't split
+  one page into many entries.
+
+The About page's privacy section also names the other places a visitor's browser connects
+to: Google for author photos (loaded straight from scholar.googleusercontent.com), Wikimedia
+for institution images, and GitHub Pages, which logs IP addresses.
+
 ## Wrong venue names from Semantic Scholar, and "missing" vs "not yet parsed"
 
 Semantic Scholar's `venue` string for arXiv-discovered papers is sometimes wrong: it

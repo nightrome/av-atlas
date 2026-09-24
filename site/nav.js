@@ -288,20 +288,46 @@
   }
 
 
-  // Visitor analytics (Google Analytics 4). Only on the production site --
-  // the staging preview lives on the same host under /av-atlas-staging/, so
-  // the path prefix is what tells them apart. localhost and forks on other
-  // hosts send nothing.
-  const GA_ID = 'G-Y2HZ5PRR8W';
+  // Page view counts (GoatCounter, site code av-atlas). It sets no cookies
+  // and keeps only per-page totals, which is why it replaced Google
+  // Analytics (see DECISIONS.md). Only on the production site -- the staging
+  // preview lives on the same host under /av-atlas-staging/, so the path
+  // prefix is what tells them apart. localhost and forks on other hosts send
+  // nothing.
+  //
+  // The script is GoatCounter's frozen v5 build with the SRI hash they
+  // publish at goatcounter.com/help/countjs-versions, so the browser refuses
+  // to run it if the file on their CDN ever changes. Every page's CSP allows
+  // the script host and the count endpoint; tests/nav.test.js checks that
+  // both still match what's here.
+  const GOATCOUNTER = {
+    endpoint: 'https://av-atlas.goatcounter.com/count',
+    script: 'https://gc.zgo.at/count.v5.js',
+    integrity: 'sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ',
+  };
   if (location.hostname === 'nightrome.github.io' &&
       location.pathname.startsWith('/av-atlas/')) {
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', GA_ID);
+    // Count a detail page per record (author.html?name=...), but drop filter,
+    // sort and the reload button's ?v= cache-buster, which would otherwise
+    // split one page into a separate entry for every combination.
+    window.goatcounter = {
+      path() {
+        const prev = new URLSearchParams(location.search);
+        const kept = new URLSearchParams();
+        IDENTITY_PARAMS.forEach(k => {
+          const val = prev.get(k);
+          if (val) kept.set(k, val);
+        });
+        const query = kept.toString();
+        return location.pathname + (query ? '?' + query : '');
+      },
+    };
     const s = document.createElement('script');
     s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    s.src = GOATCOUNTER.script;
+    s.integrity = GOATCOUNTER.integrity;
+    s.crossOrigin = 'anonymous';
+    s.setAttribute('data-goatcounter', GOATCOUNTER.endpoint);
     document.head.appendChild(s);
   }
 })();
