@@ -177,13 +177,13 @@ RAMP-VO). Under that standard:
 
 | Venue | Script | Source | Notes |
 |---|---|---|---|
-| CVPR / ICCV / WACV | `fetch_cvf_history.py` (uses `fetch_cvf.py`) | openaccess.thecvf.com | Full title, authors and abstract, but WACV only from 2020 (CVF has no earlier editions). CVPR 2018-2020 and WACV 2013-2019 fall back to `fetch_dblp_listing.py` (title and authors only). For CVPR, that's because CVF's `?day=all` listing returns a 500 ("Error 1525: Incorrect DATE value") for those three years. |
+| CVPR / ICCV / WACV / ACCV | `fetch_cvf_history.py` (uses `fetch_cvf.py`) | openaccess.thecvf.com | Full title, authors and abstract for CVPR 2013-2026, ICCV 2013-2025, WACV 2020-2026 and ACCV 2020, 2022 and 2024 (CVF has no earlier WACV or ACCV). CVPR 2012, WACV 2012-2019 and ACCV 2012-2018 come from `fetch_dblp_listing.py` (title and authors only). CVF's `?day=all` listing returns a 500 ("Error 1525: Incorrect DATE value") for CVPR 2018-2020, so `fetch_cvf.py` unions the per-day listings for those years. The script only replaces a venue file once every listed paper has been fetched (dead 404 paper pages aside) and keeps its progress in a `.partial` file until then. CVPR 2022 used to hold only 774 of its 2,074 papers because an earlier run stopped partway. `scripts/tests/test_venue_listing_counts.py` pins the expected count for every one of these files, so a short fetch fails the tests. |
 | ECCV | `fetch_ecva_history.py` | ecva.net | Only 2018, 2020, 2022 and 2024 exist there (a biennial mirror). We confirmed on its own listing page that there are no earlier years, so a different fetch script can't help. |
 | NeurIPS | `fetch_neurips_history.py` (uses `fetch_neurips.py`) | proceedings.neurips.cc | The listing link format changed around 2020 (`-Abstract.html` vs `-Abstract-Conference.html`). One regex matches both. |
 | CoRL | `fetch_corl_history.py` | proceedings.mlr.press | The PMLR volume number for each year is hardcoded in `CORL_VOLUMES`, because it can't be derived from the year. |
 | ICRA / IROS | `fetch_github_paper_lists.py` | Community-maintained GitHub paper lists | See "ICRA and IROS" below. |
 | RSS / ICLR / AAAI | `fetch_dblp_listing.py` | DBLP | Title, authors and year only, no abstracts. DBLP is the primary source here, not a fallback: RSS's own site has no reliable volume-to-year mapping, ICLR's OpenReview bulk API now needs a browser-solvable challenge (`403 ChallengeRequiredError`), and AAAI's ojs.aaai.org archive page is JavaScript-rendered. DBLP has a stable URL per year (`dblp.org/db/conf/<key>/<key><year>.html`). |
-| ICML / BMVC / ACCV / ICPR / ICASSP / ICIP | `fetch_dblp_listing.py` | DBLP | See "ICML, BMVC, ACCV, ICPR, ICASSP and ICIP" below. Blocked, see above. |
+| ICML / BMVC / ACCV 2012-2018 / ICPR / ICASSP / ICIP | `fetch_dblp_listing.py` | DBLP | See "ICML, BMVC, ACCV, ICPR, ICASSP and ICIP" below. Blocked, see above. |
 | ITSC / IV | `fetch_dblp_listing.py` | DBLP | Fully fetched. Watch out for the `iv` mix-up described under "IV" below. |
 | T-ITS (IEEE Trans. on Intelligent Transportation Systems) | `fetch_dblp_listing.py --journal` | DBLP | Fully fetched, using the same `--journal` volume-walking path as TOG. |
 | TOG (ACM Trans. on Graphics) | `fetch_dblp_listing.py --journal` | DBLP | Found the same way as ICML and the others below. Not fetched yet, and blocked (see above). |
@@ -194,11 +194,12 @@ ICRA 2022 and IROS 2021-2022, but it has moved to a paid, budget-limited API
 (confirmed 2026-08-17: `"Insufficient budget"`, `dailyRemainingUsd: 0`), and the
 project's no-paid-APIs rule means it isn't used to widen coverage. Everything else
 comes from `hrjp/ICRA-IROS-PaperList`, an index of per-year community repos (no
-abstracts) covering 2019-2025 for both conferences. Most give title and authors,
-but the PaoPaoRobot lists (ICRA 2019-2020, IROS 2019, 2020 and 2022) and the
-dectrfov lists (ICRA and IROS 2021) have titles only, so those papers have no
-author names unless an arXiv copy with the same arXiv id fills them in
-(`merge_corpus.py`), and `paper.html` says the source list has none. The repos
+abstracts) covering 2019-2025 for both conferences, plus ICRA 2026 from
+`DoongLi/ICRA2026-Paper-List`. Most give title and authors, but the PaoPaoRobot
+lists (ICRA 2019-2020, IROS 2019, 2020 and 2022) and the dectrfov lists (ICRA and
+IROS 2021) have titles only, so those papers have no author names unless an arXiv
+copy with the same arXiv id fills them in (`merge_corpus.py`), and `paper.html`
+says the source list has none. The repos
 use three different formats:
 
 - plain bullets under `## Category` headings
@@ -210,7 +211,9 @@ another, because that assumption caused real data corruption during development
 (see the script's docstring and `tests/test_fetch_github_paper_lists.py`). Every
 paper carries a `source_url` (the exact repo it came from) through
 `merge_corpus.py` onto `papers_full.json`, and `paper.html` shows it. 2013-2018 and
-2026 have no known source.
+IROS 2026 have no known source. Only repos from owners already in `REPOS` are
+fetched, never GitHub search results: a lookalike ICRA2026-Paper-List repo from an
+unrelated account showed up in search.
 
 **ICML, BMVC, ACCV, ICPR, ICASSP and ICIP.** These were found by mining
 `data/reference_lists_cvf.json` and `data/reference_lists_arxiv.json` (raw
@@ -219,7 +222,7 @@ are cited often but not yet covered (a user request). ICML alone had 207 raw
 citations. They use the generic DBLP path. ACCV and ICPR are multi-part on DBLP
 (`accv2024-1.html` ... `-N.html`), which the existing ECCV-style pagination fallback
 in `fetch_year()` already handles. ICML and BMVC are fully fetched (2012-2024),
-ACCV reached 2012-2018 (2020, 2022 and 2024 are missing), and ICPR, ICASSP and
+ACCV reached 2012-2018 (2020, 2022 and 2024 now come from CVF Open Access instead), and ICPR, ICASSP and
 ICIP haven't started. One lasting fix came out of this: DBLP began dropping
 connections mid-fetch (`RemoteDisconnected`) and lost an in-progress 15-year ICML
 fetch on year 14, so `fetch_common.py`'s `fetch()` now retries on a bare
@@ -386,7 +389,6 @@ The About page in the UI covers these too.
   collaboration hub) is tagged country `BR` because OpenAlex conflated it with an
   unrelated Brazilian NGO of a similar name. This pipeline can't fix that without
   per-institution manual overrides.
-- CVPR 2018-2020 have no abstracts (DBLP fallback, see above).
 - ICRA and IROS coverage is sparse as a deliberate tradeoff, not a bug (see the
   table above).
 

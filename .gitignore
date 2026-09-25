@@ -105,6 +105,9 @@ data/s2_author_ids_checked_papers.json
 # (resumable via s2_citing_seeds.json), not meaningfully reviewable as a
 # diff, not worth the repo bloat.
 data/venues/arxiv_s2_citing.json
+# fetch_cvf_history.py's in-progress output. It only becomes the real
+# <conf><year>.json once every listed paper has been fetched.
+data/venues/*.partial
 # label_relevance.html is generated (build_labeling_tool.py) and embeds
 # labeling_candidates.json, itself a regenerable sample (fixed seed) of
 # papers_full.json -- neither is source. relevance_labels.json (the actual
