@@ -53,7 +53,7 @@ Then open http://localhost:8747/index.html.
 `stats.json` is produced by the pipeline and is gitignored, so a fresh clone has
 no data. Restore the crawled corpus first (see
 [Backing up and restoring](#backing-up-and-restoring-the-crawled-corpus)).
-Without it the build stops at the merge step: about 45% of the AV papers come
+Without it the build stops before publishing: about 45% of the AV papers come
 from `data/venues/arxiv_s2_citing.json`, which is gitignored too, and the rest
 would have no author, institution or citation data.
 
