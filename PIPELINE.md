@@ -19,10 +19,15 @@ This is an anti-bot gate, not a rate limit. Getting past it would mean automatin
 around bot detection, which this project won't do.
 
 Affected: every venue sourced from `fetch_dblp_listing.py` (RSS, ICLR, AAAI,
-ICML, BMVC, ACCV, ICPR, ICASSP, ICIP, ITSC, IV, T-ITS, TOG), plus the DBLP
-fallback years for CVPR (2018-2020) and WACV (2013-2019). Treat all of them as
-frozen at what is already in `data/venues/`, and revisit only if DBLP's access
-policy changes.
+ICML, BMVC, ACCV, ICPR, ICASSP, ICIP, ITSC, IV, GCPR, and the journals T-ITS,
+RA-L, T-RO, TPAMI, IJCV, IJRR and TOG), plus the DBLP fallback years for CVPR
+(2018-2020) and WACV (2013-2019). Treat all of them as frozen at what is already
+in `data/venues/`, and revisit only if DBLP's access policy changes.
+
+The six journals, ITSC, IV and GCPR have since moved to Crossref
+(`fetch_crossref.py`, see the table below), which also gives each paper a DOI.
+Crossref has no abstracts for IEEE papers, so the same script fills them from
+Semantic Scholar's `/paper/batch` endpoint by DOI, 500 papers per request.
 
 ### OpenAlex and arXiv rate limits (observed 2026-09-14)
 
@@ -184,8 +189,9 @@ RAMP-VO). Under that standard:
 | ICRA / IROS | `fetch_github_paper_lists.py` | Community-maintained GitHub paper lists | See "ICRA and IROS" below. |
 | RSS / ICLR / AAAI | `fetch_dblp_listing.py` | DBLP | Title, authors and year only, no abstracts. DBLP is the primary source here, not a fallback: RSS's own site has no reliable volume-to-year mapping, ICLR's OpenReview bulk API now needs a browser-solvable challenge (`403 ChallengeRequiredError`), and AAAI's ojs.aaai.org archive page is JavaScript-rendered. DBLP has a stable URL per year (`dblp.org/db/conf/<key>/<key><year>.html`). |
 | ICML / BMVC / ACCV 2012-2018 / ICPR / ICASSP / ICIP | `fetch_dblp_listing.py` | DBLP | See "ICML, BMVC, ACCV, ICPR, ICASSP and ICIP" below. Blocked, see above. |
-| ITSC / IV | `fetch_dblp_listing.py` | DBLP | Fully fetched. Watch out for the `iv` mix-up described under "IV" below. |
-| T-ITS (IEEE Trans. on Intelligent Transportation Systems) | `fetch_dblp_listing.py --journal` | DBLP | Fully fetched, using the same `--journal` volume-walking path as TOG. |
+| ITSC / IV | `fetch_crossref.py` (2012-2025 from `fetch_dblp_listing.py`) | Crossref, abstracts from Semantic Scholar | Found by IEEE's exact container title, e.g. "2026 IEEE Intelligent Vehicles Symposium (IV)". IV 2026 is the first year fetched this way. ITSC 2026 wasn't on Crossref yet on 2026-09-24. Rerunning an older year merges into the DBLP file and adds DOIs and abstracts. The DBLP years had the `iv` mix-up described under "IV" below. |
+| T-ITS, RA-L, T-RO, TPAMI, IJCV, IJRR | `fetch_crossref.py` (up to 2026-09 from `fetch_dblp_listing.py --journal`) | Crossref, abstracts from Semantic Scholar | By ISSN, merged by title into the existing `<journal>_all.json`. The monthly run asks for records updated in the last 40 days. The backlog run on 2026-09-24 used everything published since 2025-06-01. |
+| GCPR | `fetch_crossref.py` for 2023, `fetch_dblp_listing.py` for the rest | Crossref | By the Springer book's ISBN, one chapter per paper. Crossref has no abstracts for these and Semantic Scholar only a few. |
 | TOG (ACM Trans. on Graphics) | `fetch_dblp_listing.py --journal` | DBLP | Found the same way as ICML and the others below. Not fetched yet, and blocked (see above). |
 
 **ICRA and IROS.** IEEE Xplore returns HTTP 418 to any direct request. OpenAlex

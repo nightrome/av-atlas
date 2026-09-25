@@ -1,0 +1,242 @@
+[
+  {
+    "title": "Best Practices in Active Learning for Semantic Segmentation",
+    "authors": "Sudhanshu Mittal, Joshua Niemeijer, Jörg P. Schäfer, Thomas Brox",
+    "abstract": "Active learning is particularly of interest for semantic segmentation, where annotations are costly. Previous academic studies focused on datasets that are already very diverse and where the model is trained in a supervised manner with a large annotation budget. In contrast, data collected in many driving scenarios is highly redundant, and most medical applications are subject to very constrained annotation budgets. This work investigates the various types of existing active learning methods for semantic segmentation under diverse conditions across three dimensions - data distribution w.r.t. different redundancy levels, integration of semi-supervised learning, and different labeling budgets. We find that these three underlying factors are decisive for the selection of the best active learning approach. As an outcome of our study, we provide a comprehensive usage guide to obtain the best performance for each case. We also propose an exemplary evaluation task for driving scenarios, where data has high redundancy, to showcase the practical implications of our research findings.",
+    "doi": "10.1007/978-3-031-54605-1_28"
+  },
+  {
+    "title": "Point2Vec for Self-supervised Representation Learning on Point Clouds",
+    "authors": "Karim Abou Zeid, Jonas Schult, Alexander Hermans, Bastian Leibe",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_9"
+  },
+  {
+    "title": "Score-Based Generative Models for Medical Image Segmentation Using Signed Distance Functions",
+    "authors": "Lea Bogensperger, Dominik Narnhofer, Filip Ilic, Thomas Pock",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_1"
+  },
+  {
+    "title": "FullFormer: Generating Shapes Inside Shapes",
+    "authors": "Tejaswini Medi, Jawad Tayyub, Muhammad Sarmad, Frank Lindseth, Margret Keuper",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_10"
+  },
+  {
+    "title": "GenLayNeRF: Generalizable Layered Representations with 3D Model Alignment for Human View Synthesis",
+    "authors": "Youssef Abdelkareem, Shady Shehata, Fakhri Karray",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_11"
+  },
+  {
+    "title": "RC-BEVFusion: A Plug-In Module for Radar-Camera Bird’s Eye View Feature Fusion",
+    "authors": "Lukas Stäcker, Shashank Mishra, Philipp Heidenreich, Jason Rambach, Didier Stricker",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_12"
+  },
+  {
+    "title": "Parallax-Aware Image Stitching Based on Homographic Decomposition",
+    "authors": "Simon Seibt, Michael Arold, Bartosz von Rymon Lipinski, Uwe Wienkopf, Marc Erich Latoschik",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_13"
+  },
+  {
+    "title": "DustNet: Attention to Dust",
+    "authors": "Andreas Michel, Martin Weinmann, Fabian Schenkel, Tomas Gomez, Mark Falvey, Rainer Schmitz, Wolfgang Middelmann, Stefan Hinz",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_14"
+  },
+  {
+    "title": "Leveraging Bioclimatic Context for Supervised and Self-supervised Land Cover Classification",
+    "authors": "Johannes Leonhardt, Lukas Drees, Jürgen Gall, Ribana Roscher",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_15"
+  },
+  {
+    "title": "Automatic Reverse Engineering: Creating Computer-Aided Design (CAD) Models from Multi-view Images",
+    "authors": "Henrik Jobczyk, Hanno Homann",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_16"
+  },
+  {
+    "title": "Characterization of Out-of-distribution Samples from Uncertainty Maps Using Supervised Machine Learning",
+    "authors": "Lina E. Budde, Dimitri Bulatov, Eva Strauss, Kevin Qiu, Dorota Iwaszczuk",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_17"
+  },
+  {
+    "title": "Underwater Multiview Stereo Using Axial Camera Models",
+    "authors": "Felix Seegräber, Patricia Schöntag, Felix Woelk, Kevin Köser",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_18"
+  },
+  {
+    "title": "3D Retinal Vessel Segmentation in OCTA Volumes: Annotated Dataset MORE3D and Hybrid U-Net with Flattening Transformation",
+    "authors": "Julian Kuhlmann, Kai Rothaus, Xiaoyi Jiang, Henrik Faatz, Daniel Pauleikhoff, Matthias Gutfleisch",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_19"
+  },
+  {
+    "title": "A Trimodal Dataset: RGB, Thermal, and Depth for Human Segmentation and Temporal Action Detection",
+    "authors": "Christian Stippel, Thomas Heitzinger, Martin Kampel",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_2"
+  },
+  {
+    "title": "M(otion)-Mode Based Prediction of Ejection Fraction Using Echocardiograms",
+    "authors": "Ece Ozkan, Thomas M. Sutter, Yurong Hu, Sebastian Balzer, Julia E. Vogt",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_20"
+  },
+  {
+    "title": "Improving Data Efficiency for Plant Cover Prediction with Label Interpolation and Monte-Carlo Cropping",
+    "authors": "Matthias Körschens, Solveig Franziska Bucher, Christine Römermann, Joachim Denzler",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_21"
+  },
+  {
+    "title": "Learning Channel Importance for High Content Imaging with Interpretable Deep Input Channel Mixing",
+    "authors": "Daniel Siegismund, Mario Wieser, Stephan Heyse, Stephan Steigele",
+    "abstract": "Uncovering novel drug candidates for treating complex diseases remain one of the most challenging tasks in early discovery research. To tackle this challenge, biopharma research established a standardized high content imaging protocol that tags different cellular compartments per image channel. In order to judge the experimental outcome, the scientist requires knowledge about the channel importance with respect to a certain phenotype for decoding the underlying biology. In contrast to traditional image analysis approaches, such experiments are nowadays preferably analyzed by deep learning based approaches which, however, lack crucial information about the channel importance. To overcome this limitation, we present a novel approach which utilizes multi-spectral information of high content images to interpret a certain aspect of cellular biology. To this end, we base our method on image blending concepts with alpha compositing for an arbitrary number of channels. More specifically, we introduce DCMIX, a lightweight, scaleable and end-to-end trainable mixing layer which enables interpretable predictions in high content imaging while retaining the benefits of deep learning based methods. We employ an extensive set of experiments on both MNIST and RXRX1 datasets, demonstrating that DCMIX learns the biologically relevant channel importance without scarifying prediction performance.",
+    "doi": "10.1007/978-3-031-54605-1_22"
+  },
+  {
+    "title": "Self-supervised Learning in Histopathology: New Perspectives for Prostate Cancer Grading",
+    "authors": "Markus Bauer, Christoph Augenstein",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_23"
+  },
+  {
+    "title": "DeViL: Decoding Vision features into Language",
+    "authors": "Meghal Dani, Isabel Rio-Torto, Stephan Alaniz, Zeynep Akata",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_24"
+  },
+  {
+    "title": "Zero-Shot Translation of Attention Patterns in VQA Models to Natural Language",
+    "authors": "Leonard Salewski, A. Sophia Koepke, Hendrik P. A. Lensch, Zeynep Akata",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_25"
+  },
+  {
+    "title": "Beyond Debiasing: Actively Steering Feature Selection via Loss Regularization",
+    "authors": "Jan Blunk, Niklas Penzel, Paul Bodesheim, Joachim Denzler",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_26"
+  },
+  {
+    "title": "Simplified Concrete Dropout - Improving the Generation of Attribution Masks for Fine-Grained Classification",
+    "authors": "Dimitri Korsch, Maha Shadaydeh, Joachim Denzler",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_27"
+  },
+  {
+    "title": "COOLer: Class-Incremental Learning for Appearance-Based Multiple Object Tracking",
+    "authors": "Zhizheng Liu, Mattia Segu, Fisher Yu",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_29"
+  },
+  {
+    "title": "Airborne-Shadow: Towards Fine-Grained Shadow Detection in Aerial Imagery",
+    "authors": "Seyed Majid Azimi, Reza Bahmanyar",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_3"
+  },
+  {
+    "title": "Label Smarter, Not Harder: CleverLabel for Faster Annotation of Ambiguous Image Classification with Higher Quality",
+    "authors": "Lars Schmarje, Vasco Grossmann, Tim Michels, Jakob Nazarenus, Monty Santarossa, Claudius Zelenka, Reinhard Koch",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_30"
+  },
+  {
+    "title": "Speeding Up Online Self-Supervised Learning by Exploiting Its Limitations",
+    "authors": "Sina Mokhtarzadeh Azar, Radu Timofte",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_31"
+  },
+  {
+    "title": "Text-to-Feature Diffusion for Audio-Visual Few-Shot Learning",
+    "authors": "Otniel-Bogdan Mercea, Thomas Hummel, A. Sophia Koepke, Zeynep Akata",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_32"
+  },
+  {
+    "title": "Correlation Clustering of Bird Sounds",
+    "authors": "David Stein, Bjoern Andres",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_33"
+  },
+  {
+    "title": "MargCTGAN: A “Marginally” Better CTGAN for the Low Sample Regime",
+    "authors": "Tejumade Afonja, Dingfan Chen, Mario Fritz",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_34"
+  },
+  {
+    "title": "Detecting Model Misspecification in Amortized Bayesian Inference with Neural Networks",
+    "authors": "Marvin Schmitt, Paul-Christian Bürkner, Ullrich Köthe, Stefan T. Radev",
+    "abstract": "Neural density estimators have proven remarkably powerful in performing efficient simulation-based Bayesian inference in various research domains. In particular, the BayesFlow framework uses a two-step approach to enable amortized parameter estimation in settings where the likelihood function is implicitly defined by a simulation program. But how faithful is such inference when simulations are poor representations of reality? In this paper, we conceptualize the types of model misspecification arising in simulation-based inference and systematically investigate the performance of the BayesFlow framework under these misspecifications. We propose an augmented optimization objective which imposes a probabilistic structure on the latent data space and utilize maximum mean discrepancy (MMD) to detect potentially catastrophic misspecifications during inference undermining the validity of the obtained results. We verify our detection criterion on a number of artificial and realistic misspecifications, ranging from toy conjugate models to complex models of decision making and disease outbreak dynamics applied to real data. Further, we show that posterior inference errors increase as a function of the distance between the true data-generating distribution and the typical set of simulations in the latent summary space. Thus, we demonstrate the dual utility of MMD as a method for detecting model misspecification and as a proxy for verifying the faithfulness of amortized Bayesian inference.",
+    "doi": "10.1007/978-3-031-54605-1_35"
+  },
+  {
+    "title": "Adversarial Perturbations Straight on JPEG Coefficients",
+    "authors": "Kolja Sielmann, Peer Stelldinger",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_36"
+  },
+  {
+    "title": "Certified Robust Models with Slack Control and Large Lipschitz Constants",
+    "authors": "Max Losch, David Stutz, Bernt Schiele, Mario Fritz",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_37"
+  },
+  {
+    "title": "Multiclass Alignment of Confidence and Certainty for Network Calibration",
+    "authors": "Vinith Kugathasan, Muhammad Haris Khan",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_38"
+  },
+  {
+    "title": "Drawing the Same Bounding Box Twice? Coping Noisy Annotations in Object Detection with Repeated Labels",
+    "authors": "David Tschirschwitz, Christian Benz, Morris Florek, Henrik Norderhus, Benno Stein, Volker Rodehorst",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_39"
+  },
+  {
+    "title": "UGainS: Uncertainty Guided Anomaly Instance Segmentation",
+    "authors": "Alexey Nekrasov, Alexander Hermans, Lars Kuhnert, Bastian Leibe",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_4"
+  },
+  {
+    "title": "An Evaluation of Zero-Cost Proxies - From Neural Architecture Performance Prediction to Model Robustness",
+    "authors": "Jovita Lukasik, Michael Moeller, Margret Keuper",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_40"
+  },
+  {
+    "title": "Local Spherical Harmonics Improve Skeleton-Based Hand Action Recognition",
+    "authors": "Katharina Prasse, Steffen Jung, Yuxuan Zhou, Margret Keuper",
+    "abstract": "Hand action recognition is essential. Communication, human-robot interactions, and gesture control are dependent on it. Skeleton-based action recognition traditionally includes hands, which belong to the classes which remain challenging to correctly recognize to date. We propose a method specifically designed for hand action recognition which uses relative angular embeddings and local Spherical Harmonics to create novel hand representations. The use of Spherical Harmonics creates rotation-invariant representations which make hand action recognition even more robust against inter-subject differences and viewpoint changes. We conduct extensive experiments on the hand joints in the First-Person Hand Action Benchmark with RGB-D Videos and 3D Hand Pose Annotations, and on the NTU RGB+D 120 dataset, demonstrating the benefit of using Local Spherical Harmonics Representations. Our code is available at https://github.com/KathPra/LSHR_LSHT.",
+    "doi": "10.1007/978-3-031-54605-1_5"
+  },
+  {
+    "title": "LMD: Light-Weight Prediction Quality Estimation for Object Detection in Lidar Point Clouds",
+    "authors": "Tobias Riedlinger, Marius Schubert, Sarina Penquitt, Jan-Marcel Kezmann, Pascal Colling, Karsten Kahl, Lutz Roese-Koerner, Michael Arnold, Urs Zimmermann, Matthias Rottmann",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_6"
+  },
+  {
+    "title": "A Network Analysis for Correspondence Learning via Linearly-Embedded Functions",
+    "authors": "Sharik Siddiqi, Zorah Lähner",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_7"
+  },
+  {
+    "title": "HiFiHR: Enhancing 3D Hand Reconstruction from a Single Image via High-Fidelity Texture",
+    "authors": "Jiayin Zhu, Zhuoran Zhao, Linlin Yang, Angela Yao",
+    "abstract": null,
+    "doi": "10.1007/978-3-031-54605-1_8"
+  }
+]
