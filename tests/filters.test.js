@@ -66,14 +66,16 @@ function test(name, fn) {
 
 const { aggregateByDimension, filterPapers } = loadFilters();
 
-test('excludes uncited papers from the average denominator, not just the numerator', () => {
+test('the average divides by every paper with a citation number, a real 0 included', () => {
   const papers = [
     { authors: ['A'], citations: 100 },
-    { authors: ['A'], citations: null }, // no data, not a real 0
+    { authors: ['A'], citations: 0 }, // a real 0: counts
+    { authors: ['A'], citations: null }, // no data at all: left out of both sides
   ];
   const [row] = aggregateByDimension(papers, p => p.authors, { minPapers: 0 });
-  assert.strictEqual(row.papers, 2, 'paper count should include the uncited paper');
-  assert.strictEqual(row.avg_citations, 100, 'average must only divide by the 1 cited paper, not both');
+  assert.strictEqual(row.papers, 3, 'paper count should include every paper');
+  assert.strictEqual(row.avg_citations, 50, 'average must divide by both papers that have a number');
+  assert.strictEqual(row.cited_papers, 1);
 });
 
 test('avg_citations is null (not 0) when nothing in the group has citation data', () => {
@@ -305,6 +307,124 @@ test('paper ranks: papers with equal citations share a range, not distinct posit
   // Within IV in 2022 the two zero-citation papers still tie, but only with each other.
   const inYear = ranks.paper('Zero A').find(b => b.label === 'in 2022');
   assert.deepStrictEqual([inYear.rank, inYear.rankTo, inYear.total], [1, 3, 3]);
+});
+
+// The finding this guards: the Researchers/Countries/Institutions/Venues
+// lists divided by cited papers while the detail pages divided by all
+// papers with one decimal, so Holger Caesar read 155 on one page and 118.7
+// on the next. Both sides now go through the same helper.
+test('listing and detail pages give the same citations per paper', () => {
+  const { aggregateByDimension: agg, avgCitations } = loadFilters();
+  const papers = [
+    { authors: ['A', 'B'], countries: ['NL'], citations: 10 },
+    { authors: ['A'], countries: ['NL'], citations: 0 },
+    { authors: ['A'], countries: ['US'], citations: 3 },
+    { authors: ['B'], countries: ['US'], citations: 0 },
+  ];
+  [['authors', p => p.authors], ['countries', p => p.countries]].forEach(([dim, accessor]) => {
+    agg(papers, accessor, { minPapers: 0 }).forEach(row => {
+      const own = papers.filter(p => accessor(p).includes(row.name));
+      assert.strictEqual(row.avg_citations, avgCitations(own), `${dim} ${row.name}`);
+    });
+  });
+  assert.strictEqual(avgCitations(papers.filter(p => p.authors.includes('A'))), 4, '13 / 3 rounds to 4');
+  assert.strictEqual(avgCitations([]), null);
+
+  // The same on the real data when it's there: every author with a
+  // listing average, checked against the average a detail page computes.
+  const statsPath = path.join(__dirname, '..', 'data', 'stats.json');
+  if (fs.existsSync(statsPath)) {
+    const stats = JSON.parse(fs.readFileSync(statsPath, 'utf8'));
+    const all = stats.all_papers.map(p => Object.assign({}, p, {
+      citations: ((p.citations_by_source || {}).in_corpus || {}).count || 0,
+    }));
+    const byAuthor = {};
+    all.forEach(p => new Set(p.authors || []).forEach(a => { (byAuthor[a] = byAuthor[a] || []).push(p); }));
+    const rows = agg(all, p => p.authors, { minPapers: 4 });
+    // A listing leaves the average out (null) when too few papers are cited
+    // to trust it, see minCitedForAvg; only a shown number has to match.
+    const shown = rows.filter(row => row.avg_citations != null);
+    assert.ok(shown.length > 100, 'expected real authors to compare');
+    shown.forEach(row => assert.strictEqual(row.avg_citations, avgCitations(byAuthor[row.name]), row.name));
+  }
+
+  // The detail pages must use the helper, and show a whole number.
+  ['author', 'country', 'institution', 'venue', 'compare'].forEach(page => {
+    const html = fs.readFileSync(path.join(__dirname, '..', 'site', `${page}.html`), 'utf8');
+    assert.ok(/avgCitations\(papers\)/.test(html), `${page}.html should call avgCitations(papers)`);
+    assert.ok(!/decimals:\s*1/.test(html), `${page}.html should not show one decimal place`);
+    assert.ok(!/citedPapers/.test(html), `${page}.html still has its own cited-papers average`);
+  });
+});
+
+test('detailCanonicalUrl keeps only the identity parameter, escaped like the sitemap', () => {
+  const { detailCanonicalUrl } = loadFilters();
+  const loc = (pathname, search) => ({ origin: 'https://nightrome.github.io', pathname, search });
+  assert.strictEqual(
+    detailCanonicalUrl(loc('/av-atlas/author.html', '?name=Jane+Doe&sort=year&v=123&papers_page=2')),
+    'https://nightrome.github.io/av-atlas/author.html?name=Jane%20Doe');
+  // Python's urllib.parse.quote(v, safe='') output for the same title,
+  // which is what write_sitemap puts in sitemap.xml.
+  assert.strictEqual(
+    detailCanonicalUrl(loc('/av-atlas/paper.html', `?title=${encodeURIComponent("Lift, Splat, Shoot (LSS): it's *fast*!")}`)),
+    'https://nightrome.github.io/av-atlas/paper.html?title=Lift%2C%20Splat%2C%20Shoot%20%28LSS%29%3A%20it%27s%20%2Afast%2A%21');
+  assert.strictEqual(
+    detailCanonicalUrl(loc('/av-atlas/compare.html', '?names=A%7CB&type=author&metric=avg')),
+    'https://nightrome.github.io/av-atlas/compare.html?type=author&names=A%7CB');
+  assert.strictEqual(detailCanonicalUrl(loc('/av-atlas/author.html', '')),
+    'https://nightrome.github.io/av-atlas/author.html');
+  // Staging gets its own origin and path, so deploy.py has nothing to rewrite.
+  assert.strictEqual(detailCanonicalUrl(loc('/av-atlas-staging/venue.html', '?name=CVPR')),
+    'https://nightrome.github.io/av-atlas-staging/venue.html?name=CVPR');
+});
+
+test('setDetailPageMeta leaves exactly one canonical and one og:url, both the identity URL', () => {
+  const sandbox = loadFilters('?name=Jane%20Doe&sort=year');
+  const head = {
+    children: [],
+    appendChild(el) { this.children.push(el); return el; },
+    querySelector(sel) {
+      const m = /^(\w+)\[([\w:]+)="([^"]+)"\]$/.exec(sel);
+      return this.children.find(el => el.tagName === m[1] && el.attrs[m[2]] === m[3]) || null;
+    },
+  };
+  sandbox.document.head = head;
+  sandbox.document.createElement = tag => ({ tagName: tag, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; } });
+  sandbox.location.origin = 'https://nightrome.github.io';
+  sandbox.location.pathname = '/av-atlas/author.html';
+  sandbox.setDetailPageMeta('Jane Doe', 'desc');
+  sandbox.setDetailPageMeta('Jane Doe', 'refined desc'); // pages call it twice
+  const canon = head.children.filter(el => el.tagName === 'link' && el.attrs.rel === 'canonical');
+  const ogUrl = head.children.filter(el => el.tagName === 'meta' && el.attrs.property === 'og:url');
+  assert.strictEqual(canon.length, 1);
+  assert.strictEqual(ogUrl.length, 1);
+  assert.strictEqual(canon[0].attrs.href, 'https://nightrome.github.io/av-atlas/author.html?name=Jane%20Doe');
+  assert.strictEqual(ogUrl[0].attrs.content, canon[0].attrs.href);
+});
+
+test('detail templates ship no static canonical or og:url, listing pages keep theirs', () => {
+  const site = path.join(__dirname, '..', 'site');
+  const detail = ['author', 'paper', 'institution', 'venue', 'country', 'compare'];
+  fs.readdirSync(site).filter(f => f.endsWith('.html')).forEach(f => {
+    const html = fs.readFileSync(path.join(site, f), 'utf8');
+    const hasCanonical = /<link rel="canonical"/.test(html);
+    const hasOgUrl = /<meta property="og:url"/.test(html);
+    if (detail.includes(f.replace('.html', ''))) {
+      assert.ok(!hasCanonical && !hasOgUrl, `${f} must leave canonical/og:url to setDetailPageMeta`);
+      assert.ok(/setDetailPageMeta\(/.test(html), `${f} must call setDetailPageMeta`);
+    } else {
+      assert.ok(hasCanonical && hasOgUrl, `${f} should keep its static canonical and og:url`);
+    }
+  });
+});
+
+test('dataUpdatedText shows content_updated as a plain date, never another field', () => {
+  const { dataUpdatedText } = loadFilters();
+  assert.strictEqual(dataUpdatedText({ content_updated: '2026-09-24' }), 'Data last updated 24 Sep 2026');
+  assert.strictEqual(dataUpdatedText({ content_updated: '2026-01-05' }), 'Data last updated 5 Jan 2026');
+  assert.strictEqual(dataUpdatedText({ generated_at: '2026-09-24' }), '');
+  assert.strictEqual(dataUpdatedText({ content_updated: 'soon' }), '');
+  assert.strictEqual(dataUpdatedText(null), '');
 });
 
 if (failures > 0) {

@@ -100,8 +100,9 @@ and venues with sparse coverage. These all keep the distinction:
 - the sort keys in `aggregate.py`
 - the `best_by_year` and `best_by_venue` selection (a paper with no citation data
   can't be "best")
-- `aggregateByDimension` in `filters.js` (an uncited paper counts toward a group's
-  paper count but not toward the denominator of its average)
+- `aggregateByDimension` and `avgCitations` in `filters.js` (a paper with no citation
+  number is left out of an average entirely; a real 0 counts, see "Citations per paper"
+  below)
 
 The display shows "—", never a misleading "0".
 
@@ -163,6 +164,27 @@ Citation counts and averages are rounded to integers everywhere they're computed
 underlying signal is a keyword heuristic over a partial citation graph, which
 doesn't support that precision.
 
+## Citations per paper has one definition
+
+"Citations / paper" is a group's in-corpus citations divided by all of its papers, uncited
+ones included, rounded to a whole number. Every page gets it from one helper,
+`avgCitations` in `filters.js` (`aggregateByDimension` uses the same division), and the
+Insights panel computed in `aggregate.py` divides the same way.
+
+Until September 2026 there were two definitions under the same label. The listing pages
+divided by the papers with at least one citation, and the detail pages divided by all
+papers and showed one decimal. Clicking from a ranking to an entity's own page changed its
+number by 20 to 35%: Holger Caesar read 155 on Researchers and 118.7 on his own page. All
+papers is the right denominator now that every paper has a real in-corpus count, where 0
+means "nothing here cites it yet". Leaving those papers out made a group with many uncited
+papers look better than one whose papers are all cited a little.
+
+The listing pages still hide the average when fewer than three of a group's papers are
+cited (`minCitedForAvg`; Researchers drops the whole row instead, `minCitedPapers`). That
+only decides whether a number is shown. When it is shown, it is the same number the
+detail page shows, and `tests/filters.test.js` checks that for every author with more
+than four papers in the built `stats.json`.
+
 ## Filters recompute rankings client-side from `all_papers`
 
 `aggregate.py` ships the full `all_papers` array, not fixed top-N leaderboards, and
@@ -171,15 +193,15 @@ filters leave. A leaderboard truncated on the server can't be re-sliced by a
 category, country or institution filter. That made every filter a dead end on any
 page except the Overview.
 
-## The citation-source view is a client-side toggle
+## Citations are set client-side from `citations_by_source`
 
-`stats.json` carries every paper's full `citations_by_source` map, not just the
-blended pick. `applyCitationSource(stats)` in `filters.js` chooses one source and
-changes `p.citations` in place right after the fetch and before anything renders, so
-switching sources never needs a `stats.json` rebuild or a redeploy. Both
-`all_papers` and `top_papers` are changed (after `JSON.parse`, a paper that appears
-in both is two separate objects), and `best_by_year` is recomputed client-side for
-the same reason. The preference is kept in `localStorage`, not in the URL.
+There used to be a picker for the citation source, with the choice kept in
+`localStorage`. It's gone: citations are always the in-corpus count. `stats.json`
+still carries each paper's `citations_by_source` map, and `applyCitationSource(stats)`
+in `filters.js` sets `p.citations` from its `in_corpus` entry right after the fetch
+and before anything renders, the same rule `aggregate.py`'s `citation_count()`
+applies. Nothing on the site reads `best_by_year` any more, and the published
+`stats.json` no longer has it or `top_papers` (see the next entry).
 
 ## Abstracts are sharded out of `stats.json`
 
@@ -191,6 +213,25 @@ several MB of gzip. They now live in `data/abstracts/shard-NN.json` (64 shards).
 to keep in sync, just the same hash on both ends. `paper.html` reimplements it in
 JavaScript, and the two copies must stay byte-identical or every abstract silently
 404s. `TestShardIndex` in `test_aggregate.py` pins the Python side.
+
+## The published `stats.json` is slimmer than `data/stats.json`
+
+Every page except About waits for `stats.json` before it shows anything, and in
+September 2026 that was 4.6 MB gzip. About a fifth of it was data no page reads:
+`best_by_venue`, `best_by_year`, `top_papers`, `top_authors`, `top_institutions` and
+`venue_images` at the top level, and `citations_updated` (always null),
+`has_code_link`, `cd_n_citers` and `venue_status` on each paper. The data release,
+the sitemap and the tests still use them, so `aggregate.py` keeps writing them to
+`data/stats.json` and `build_public_site.py` drops them, plus null paper fields, when
+it writes `public/stats.json`. That took it from 23.8 MB to 17.6 MB raw and from
+4.6 MB to 3.7 MB gzip. The drop lists are a denylist on purpose, so a key a later
+change adds reaches the pages without anyone having to remember this step.
+
+The About page only needs corpus totals and coverage numbers, so it reads its own
+`about.json` (about 34 KB gzip) instead. `test_build_public_site.py` checks that no
+page reads anything that gets dropped, and `run_tests.py` runs the smoke test a
+second time against the published payloads. Every page also preloads the file it
+fetches, so the download starts before `filters.js` has loaded.
 
 ## Venue names are aliased at the source
 
@@ -217,6 +258,32 @@ to the registry.
 `data/institution_aliases_llm.json` is a one-time batched pass that folded existing
 registry duplicates (diacritic and abbreviation variants) onto canonical names. It is
 applied after the hand-typed `INSTITUTION_ALIASES`.
+
+## Email addresses are stripped from tracked data, the domain is kept
+
+The extraction cache for the step above, `data/affiliations_llm_extracted.json`, was
+keyed by the raw affiliation note, and those notes usually end in the authors' email
+addresses. Once the repo went public it held about 2,100 scraped addresses (counting
+each name in a `{a, b}@host` group), some of them students' mailboxes and private
+webmail. A few more sat in ECCV and NeurIPS abstracts, one ECCV author string, the
+institution registry and the LLM flag list.
+
+Every address is now replaced by its domain: `x.y@tongji.edu.cn` becomes
+`tongji.edu.cn` and `{a, b}@fzi.de` becomes `fzi.de`. The domain stays because it can
+help name the institution. The part before the `@` never helped with anything.
+`scripts/email_addresses.py` does this for every caller. The cache is keyed with the
+stripped text, and the model is shown the same text. Notes that only differed in
+whose address they carried now share one entry, so 124 keys were merged; where their
+answers differed, the most common one was kept. `build_public_site.py` scrubs every
+tracked `data/` file before each build, because a new crawl can bring addresses back.
+`aggregate.py` strips abstracts before sharding them and drops institution names that
+still contain an address. A test fails if any tracked file under `data/` holds one,
+and another checks the built `stats.json` and shards when they exist.
+
+Only something that ends in a real top-level domain counts as an address, so metric
+notation such as `mAP@0.5` or `PointASNL@Sem.KITTI` is left alone. The old addresses
+are still in the git history. Removing them from there would mean a history rewrite,
+which is a separate decision.
 
 ## An institution typed into an author field must not veto that institution
 
@@ -319,21 +386,32 @@ in the Scholar bio. Ambiguous same-name matches are left unresolved. A wrong pho
 the wrong person is worse than a missing one, on a site whose premise is being
 defensible about what it claims.
 
-## Paper Scholar links come from author profiles, never from title searches
+## Paper Scholar links are added by hand
 
 `paper.html` and the Source column used to link to a Scholar search for the paper's
 title. A search can land on a different paper, a citing paper or nothing, so those
 links were removed. A paper now shows a Scholar link only if `scholar_url` is in
 `stats.json`, which `aggregate.py` takes from `data/scholar_paper_links.json`.
 
-`fetch_scholar_paper_links.py` fills that file for the 1000 most-cited AV papers. It
-never searches Scholar. It reads the profile pages already in `scholar_profiles.json`,
-whose rows carry a stable `citation_for_view` URL. A row is accepted only if the
-normalized title is identical, one author agrees (surname plus initial), and the years
-are within one year. Titles that are ambiguous among the target papers or listed twice
-on a profile are skipped. Scholar answers HTTP 429 after roughly 70 profile pages in a
-row, so the script paces itself, stops at the first block and resumes from
-`profiles_done` on the next run.
+That file was first filled by a script, `fetch_scholar_paper_links.py`. On 2026-09-21
+it read the Scholar profile pages of 68 authors in `scholar_profiles.json` and took a
+paper's link from a profile row only if the normalized title was identical, one author
+agreed (surname plus initial) and the years were within one year. That gave 246 links.
+The same day, a short trial searched Scholar for each paper's exact title instead. It
+found 11 more links before Google blocked it.
+
+Scholar's terms don't allow automated queries, and its robots.txt disallows search
+pages and paging through a profile (`cstart=`), which the profile route did on every
+request. So the script was removed rather than trimmed down. The top-100 papers still
+without a link were then looked up by hand, and 27 of them got their "Cited by" page
+(PR #21). Four of the top 100 still have none.
+
+The file is now edited by hand. The key is `normalize_title()` of the paper's title,
+and the value is the paper's own Scholar page: the citation page on an author's
+profile (`citation_for_view=`), its "Cited by" page (`scholar?cites=`) or its versions
+page (`scholar?cluster=`), never a search. `profiles_done` in the file is left over
+from the script and nothing reads it. `test_scholar_paper_links.py` checks the keys
+and links, and that no script in `scripts/` has a Scholar URL in its code.
 
 ## DBLP-sourced venues have no abstracts
 
@@ -800,7 +878,7 @@ of leaving them in the queue. All four are real, single, extremely prolific rese
 in the fast-moving, highly collaborative modern AV and world-model community (near
 OpenDriveLab and Shanghai AI Lab):
 
-- Hang Zhao's papers consistently share one email (hangzhao@mail.tsinghua.edu.cn).
+- Hang Zhao's papers consistently share one email address (at mail.tsinghua.edu.cn).
 - Hongyang Li and Long Chen keep appearing as each other's co-authors across a large,
   coherent, recent (2023-2026) end-to-end driving publication cluster.
 - Zheng Zhu's papers form one coherent "driving world models" research thread.
@@ -1097,6 +1175,102 @@ changes make deploys cheap and add a preview step:
   10-minute rebuild. `build_public_site.py` is also left out, except for its list of
   `run_step` calls, because adding or reordering a step there does change what a full build
   produces and would otherwise be skipped silently.
+
+## "Data last updated" is when the content changed, not when the site was built
+
+`aggregate.py` writes two fields into `stats.json`. `content_hash` is a sha256 over what the
+site shows about each AV paper (title, venue, year, authors, citation count, in any order)
+plus the corpus totals. `content_updated` is the date that hash last changed: if the
+previous `stats.json` has the same hash, its date is carried over, otherwise it is today.
+The Overview and About pages show `content_updated`, and the sitemap uses it as `lastmod`.
+
+Before this, the About page showed `generated_at`, which moves on every build. With
+monthly automatic builds, a month with no new papers or citations would still have said
+"updated today", and every deploy told crawlers that all 9,000 sitemap pages had changed.
+`generated_at` stays in the file as the build date, but no page shows it.
+
+A rebuild that changes only page code, abstracts or other fields keeps the old date. A
+missing or older `stats.json` without these fields counts as changed.
+
+## Detail pages get their canonical URL from JS
+
+Author, paper, institution, venue, country and compare pages are one HTML file each, with
+the entity in the query string. They used to ship a static `<link rel="canonical">` and
+`og:url` pointing at the bare file (`author.html`), which told search engines that every
+`?name=` page in the sitemap was a copy of an empty template.
+
+Those pages now ship no canonical and no `og:url`. `setDetailPageMeta` in `filters.js` adds
+one of each, set to the page's own origin and path plus only the parameter that names the
+entity (`?name=`, `?title=`, or `?type=&names=` on compare). Filter, sort and paging
+parameters are left out. Google's JavaScript SEO guide advises against changing a canonical
+from JS when the HTML already has one, which is why the static tag is removed rather than
+overwritten. The value is escaped the same way as `write_sitemap` escapes its URLs, so a
+page's canonical and its sitemap entry are the same string.
+
+Because the URL is built from `location`, staging pages get staging URLs without
+`deploy.py` rewriting anything; staging is also `noindex`. The listing pages keep their
+static tags, which `deploy.py` still rewrites for staging. The sitemap no longer lists the
+bare detail templates, and lists only venues that have AV papers.
+
+Crawlers that don't run JS (most link-preview bots) still see no per-page tags. Fixing
+that needs pre-rendered HTML per entity, which is a much bigger change.
+
+## Site versions: major.minor by hand, the patch counted from production
+
+Every published build has a version, shown in the nav bar, on the About page, in
+`BUILD_INFO.json`, in the published `stats.json` (`site_version`) and in the names of the
+download files. The tracked `VERSION` file holds major.minor and only the maintainer
+changes it. Nobody edits the patch number: `build_public_site.py` reads the version in
+production's `BUILD_INFO.json` and adds one, or starts at 0 if `VERSION` has moved on
+to a new major.minor. Production had no version field before this, so it counts as
+0.1.1, the version the site was already known as.
+
+Taking the patch from production rather than from a counter in the repo or in
+`.deploy-cache/` means a preview and its promote share one number (promote doesn't
+rebuild), a second preview before promoting doesn't use up another one, and the monthly
+CI job, which starts from a clean checkout, counts on from the live site like a local
+deploy does. If production can't be reached the build counts on from the last version
+`deploy.py` recorded in `.deploy-cache/state.json` and prints a warning. A skipped or
+repeated patch number is harmless; failing the build over it would not be.
+`--version X.Y.Z` sets it outright, for tests and one-off rebuilds.
+
+The download files carry the version in their names (`av-atlas-v0.1.2-papers.csv.gz`)
+so a cached old file can't be served under the current link, and a downloaded file
+says which release it came from. Only the current version's files are kept: the build
+deletes older ones from `public/download/` and the deploy sync deletes them from
+`gh-pages`. Older releases aren't archived anywhere yet.
+
+## Page views are counted with GoatCounter, not Google Analytics
+
+The site used Google Analytics 4 until September 2026. GA4 sets cookies that last up to two
+years and sends each visitor's browser, device, rough location and the pages they view to
+Google. In the Netherlands that needs the visitor's consent. The first version asked, but
+the banner was dropped the same day, and the About page said GA collected nothing beyond page
+views. Its script was also about 176 KB gzipped on every page, three times the size of the
+site's own JS.
+
+GoatCounter (site code `av-atlas`) sets no cookies, doesn't store IP addresses, and keeps only
+per-page totals (such as referrer, browser, screen size and country), so there is nothing to
+ask consent for. Its script is about 3 KB gzipped.
+
+- `nav.js` loads it only on `nightrome.github.io/av-atlas/`. Staging lives on the same host
+  under `/av-atlas-staging/`, so the path prefix tells them apart; staging, localhost and
+  forks send nothing, and previewing a build doesn't add to the numbers. `deploy.py`'s staging
+  transform only rewrites HTML, so it doesn't need to know about the counter.
+- It loads GoatCounter's frozen `count.v5.js` with the SRI hash GoatCounter publishes, not the
+  unversioned `count.js`, so the browser refuses the file if it ever changes on their CDN.
+  Moving to a newer version means changing the URL and the hash in `nav.js` together.
+- Every page's CSP allows `https://gc.zgo.at` for the script and only
+  `https://av-atlas.goatcounter.com/count` for the beacon. `tests/nav.test.js` checks each page
+  against what `nav.js` actually loads, since a CSP mismatch fails silently in the browser.
+  That is how the GA tag first shipped without recording anything.
+- The counted path keeps only a detail page's `?name=` or `?title=`, so each author or paper
+  page is counted on its own, but filter settings and the reload button's `?v=` don't split
+  one page into many entries.
+
+The About page's privacy section also names the other places a visitor's browser connects
+to: Google for author photos (loaded straight from scholar.googleusercontent.com), Wikimedia
+for institution images, and GitHub Pages, which logs IP addresses.
 
 ## Wrong venue names from Semantic Scholar, and "missing" vs "not yet parsed"
 

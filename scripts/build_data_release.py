@@ -11,15 +11,23 @@ pipeline that produces it needs weeks of crawling plus API keys to re-run.
 The site asks to be treated as a research instrument, so it has to hand over
 its data.
 
-Writes four gzipped CSVs plus a README:
+Writes four gzipped CSVs plus a README, each named with the site version
+(av-atlas-v0.1.2-papers.csv.gz and so on):
 
-  av-atlas-papers.csv.gz       one row per AV paper (title, year, venue,
-                               category, in-corpus citations, institutions,
-                               countries, DOI/arXiv link)
-  av-atlas-authorship.csv.gz   paper <-> author edges, so per-author analysis
-                               doesn't require re-parsing an author column
-  av-atlas-citations.csv.gz    the in-corpus citation edge list
-  av-atlas-institutions.csv.gz one row per institution, with its country
+  papers.csv.gz        one row per AV paper (title, year, venue, category,
+                       in-corpus citations, institutions, countries,
+                       DOI/arXiv link)
+  authorship.csv.gz    paper <-> author edges, so per-author analysis
+                       doesn't require re-parsing an author column
+  citations.csv.gz     the in-corpus citation edge list
+  institutions.csv.gz  one row per institution, with its country
+  README.md            what the columns mean and what they are not
+
+The version is in the file name, not only in the README, so a browser or
+proxy holding an old copy can never hand it out as the current one, and a
+file someone downloaded says which release it came from. Only the current
+version's files are kept in public/download/; deploy.py's sync removes the
+old ones from gh-pages.
 
 CSV rather than JSON because the audience is people who will open this in
 pandas, R or a spreadsheet. Gzipped because the papers table is tens of MB
@@ -32,8 +40,10 @@ exported; the full unfiltered proceedings pull is a means to an end here, not
 something this site has any business redistributing wholesale.
 
 Run by build_public_site.py as part of a normal build. Standalone usage:
-    python build_data_release.py
+    python build_data_release.py              # version from public/BUILD_INFO.json
+    python build_data_release.py --version 0.1.2
 """
+import argparse
 import csv
 import gzip
 import io
@@ -47,8 +57,24 @@ STATS_FILE = BASE / "data" / "stats.json"
 CITATION_GRAPH_FILE = BASE / "data" / "citation_graph.json"
 OUT_DIR = BASE / "public" / "download"
 
+PUBLIC_BUILD_INFO = BASE / "public" / "BUILD_INFO.json"
+
 LICENSE_NAME = "CC BY-NC 4.0"
 SITE_URL = "https://nightrome.github.io/av-atlas"
+
+
+# The parts of the release, in the order the README and the homepage list them.
+RELEASE_PARTS = ("papers.csv.gz", "authorship.csv.gz", "citations.csv.gz",
+                 "institutions.csv.gz", "README.md")
+
+
+def release_file_name(version, part):
+    """av-atlas-v0.1.2-papers.csv.gz for version '0.1.2' and part 'papers.csv.gz'."""
+    return f"av-atlas-v{version}-{part}"
+
+
+def release_file_names(version):
+    return [release_file_name(version, part) for part in RELEASE_PARTS]
 
 
 def normalize_title(t):
@@ -74,8 +100,10 @@ def write_csv_gz(path, header, rows):
     return n
 
 
-def build(stats, citation_graph):
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+def build(stats, citation_graph, version, out_dir=None):
+    out_dir = Path(out_dir or OUT_DIR)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    name = lambda part: out_dir / release_file_name(version, part)  # noqa: E731
     papers = stats.get("all_papers") or []
 
     # A stable id per paper. The corpus has no external identifier for every
@@ -90,7 +118,7 @@ def build(stats, citation_graph):
             paper_ids.setdefault(key, key)
 
     n_papers = write_csv_gz(
-        OUT_DIR / "av-atlas-papers.csv.gz",
+        name("papers.csv.gz"),
         ["paper_id", "title", "year", "venue", "category", "av_relevance",
          "in_corpus_citations", "doi", "institutions", "countries"],
         ([normalize_title(p.get("title")), p.get("title"), p.get("year"), p.get("venue"),
@@ -101,7 +129,7 @@ def build(stats, citation_graph):
          for p in papers if normalize_title(p.get("title"))))
 
     n_authorship = write_csv_gz(
-        OUT_DIR / "av-atlas-authorship.csv.gz",
+        name("authorship.csv.gz"),
         ["paper_id", "author_name", "author_position"],
         ((normalize_title(p.get("title")), name, i + 1)
          for p in papers if normalize_title(p.get("title"))
@@ -119,7 +147,7 @@ def build(stats, citation_graph):
                     yield citer, cited
 
     n_edges = write_csv_gz(
-        OUT_DIR / "av-atlas-citations.csv.gz",
+        name("citations.csv.gz"),
         ["citing_paper_id", "cited_paper_id"], edges())
 
     # Every institution in the corpus, not stats.json's top_institutions --
@@ -134,32 +162,45 @@ def build(stats, citation_graph):
             inst_papers[inst] = inst_papers.get(inst, 0) + 1
             inst_citations[inst] = inst_citations.get(inst, 0) + (p.get("citations") or 0)
     n_inst = write_csv_gz(
-        OUT_DIR / "av-atlas-institutions.csv.gz",
+        name("institutions.csv.gz"),
         ["institution", "country", "sector", "papers", "citations"],
         ([name, inst_countries.get(name, ""), inst_sector.get(name, ""),
           inst_papers[name], inst_citations[name]]
          for name in sorted(inst_papers, key=lambda k: -inst_papers[k])))
 
-    (OUT_DIR / "README.md").write_text(README_TEMPLATE.format(
+    readme = name("README.md")
+    readme.write_text(README_TEMPLATE.format(
         date=date.today().isoformat(), n_papers=f"{n_papers:,}",
         n_authorship=f"{n_authorship:,}", n_edges=f"{n_edges:,}", n_inst=f"{n_inst:,}",
-        license=LICENSE_NAME, site=SITE_URL,
+        license=LICENSE_NAME, site=SITE_URL, version=version,
+        papers=release_file_name(version, "papers.csv.gz"),
+        authorship=release_file_name(version, "authorship.csv.gz"),
+        citations=release_file_name(version, "citations.csv.gz"),
+        institutions=release_file_name(version, "institutions.csv.gz"),
     ), encoding="utf-8", newline="\n")
-    print(f"  README.md")
+    print(f"  {readme.name}")
+
+    # public/ persists between builds, so the previous release's files would
+    # otherwise sit next to this one forever. Only the current version ships.
+    current = set(release_file_names(version))
+    for existing in out_dir.iterdir():
+        if existing.is_file() and existing.name not in current:
+            existing.unlink()
+            print(f"  removed old {existing.name}")
 
 
 README_TEMPLATE = """# AV Atlas data release
 
-Generated {date} from <{site}>.
+Version {version}, generated {date} from <{site}>.
 
 ## Files
 
 | File | Rows | Contents |
 | --- | --- | --- |
-| `av-atlas-papers.csv.gz` | {n_papers} | One row per AV-relevant paper. |
-| `av-atlas-authorship.csv.gz` | {n_authorship} | Paper-to-author edges, with author position. |
-| `av-atlas-citations.csv.gz` | {n_edges} | In-corpus citation edges (citing -> cited). |
-| `av-atlas-institutions.csv.gz` | {n_inst} | Institutions with country, sector and totals. |
+| `{papers}` | {n_papers} | One row per AV-relevant paper. |
+| `{authorship}` | {n_authorship} | Paper-to-author edges, with author position. |
+| `{citations}` | {n_edges} | In-corpus citation edges (citing -> cited). |
+| `{institutions}` | {n_inst} | Institutions with country, sector and totals. |
 
 `paper_id` joins the tables. It is the paper's title lowercased with every
 non-alphanumeric character removed -- the same key the pipeline dedupes on.
@@ -198,17 +239,31 @@ or reference use, go to the original source.
 
 ## Citing this
 
-See `CITATION.cff` in the AV Atlas repository.
+See `CITATION.cff` in the AV Atlas repository, and give the version above
+({version}) so others can tell which release you used. Every build of the
+site gets a new version, and the numbers change between them.
 """
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Build the downloadable data release.")
+    parser.add_argument("--version", dest="site_version", metavar="X.Y.Z",
+                        help="Version to name the files with (default: the one in "
+                             "public/BUILD_INFO.json, written by build_public_site.py).")
+    args = parser.parse_args()
+    version = args.site_version
+    if not version:
+        try:
+            version = json.loads(PUBLIC_BUILD_INFO.read_text(encoding="utf-8"))["version"]
+        except (OSError, ValueError, KeyError):
+            raise SystemExit(f"No version in {PUBLIC_BUILD_INFO} -- pass --version, "
+                             "or run build_public_site.py first")
     if not STATS_FILE.exists():
         raise SystemExit(f"{STATS_FILE} not found -- run aggregate.py first")
     stats = json.loads(STATS_FILE.read_text(encoding="utf-8"))
     graph = (json.loads(CITATION_GRAPH_FILE.read_text(encoding="utf-8"))
              if CITATION_GRAPH_FILE.exists() else {})
-    build(stats, graph)
+    build(stats, graph, version)
 
 
 if __name__ == "__main__":

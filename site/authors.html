@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://av-atlas.goatcounter.com/count; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
 <title>AV Atlas: Authors</title>
 <meta name="description" content="Researchers publishing autonomous vehicle research, ranked by papers and by citations within AV research specifically.">
 <meta property="og:type" content="website">
@@ -18,6 +18,7 @@
 <meta name="twitter:description" content="Researchers publishing autonomous vehicle research, ranked by papers and by citations within AV research specifically.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preload" href="stats.json" as="fetch" crossorigin>
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="theme-light.css">
 <style>
@@ -80,7 +81,7 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2 style="margin-top:0;">All authors</h2>
-    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Every author matching the current filters, ranked by the chosen metric, “Show top” per page. “Citations / paper” averages only over that author’s papers that have at least one citation." data-tip="Every author matching the current filters, ranked by the chosen metric, “Show top” per page. “Citations / paper” averages only over that author’s papers that have at least one citation.">i</span></div>
+    <div id="export-container"><span class="info-tip" tabindex="0" role="img" aria-label="Every author matching the current filters, ranked by the chosen metric, “Show top” per page. “Citations / paper” is the author’s citations divided by all their papers, uncited ones included." data-tip="Every author matching the current filters, ranked by the chosen metric, “Show top” per page. “Citations / paper” is the author’s citations divided by all their papers, uncited ones included.">i</span></div>
   </div>
   <p id="authors-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
   <p id="authors-thin-note" style="color: var(--muted); font-size: 0.8em; margin: -8px 0 12px;"></p>

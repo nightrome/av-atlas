@@ -143,7 +143,9 @@ function queryAll(root, sel) {
   const out = [];
   const seen = new Set();
   sel.split(',').map(s => s.trim()).filter(Boolean).forEach(one => {
-    if (one.includes('>') || one.includes('+') || one.includes('~') || one.includes(':')) return;
+    // A ':' inside [attr="..."] is part of the value (og:url), not a pseudo-class.
+    const outsideBrackets = one.replace(/\[[^\]]*\]/g, '');
+    if (['>', '+', '~', ':'].some(c => outsideBrackets.includes(c))) return;
     const parts = one.split(/\s+/);
     let current = [root];
     parts.forEach(part => {
@@ -169,6 +171,13 @@ function queryAll(root, sel) {
 // fresh sandbox. `opts.search` seeds location.search (default: none).
 // `opts.statsRaw` overrides the stats.json payload fetch('stats.json')
 // resolves with (default: the real data/data/stats.json on disk).
+// fetch('about.json') gets the same full stats.json, which holds everything
+// the built about.json has except paper_sources.
+//
+// With AV_ATLAS_PAYLOAD_DIR set, stats.json and about.json come from that
+// folder instead: run_tests.py points it at the slimmed copies
+// build_public_site.py publishes, so the pages are also checked against
+// exactly what ships.
 //
 // Resolves to {error, allElements, idRegistry, sandbox} -- allElements is
 // every element the page's script created via document.createElement (so a
@@ -187,7 +196,11 @@ function runPage(file, opts) {
   const scripts = [...srcScripts, ...inlineScripts];
   if (!inlineScripts.length) return Promise.resolve({ file, error: null, allElements: [], idRegistry: {}, sandbox: null, noInlineScript: true });
 
-  const statsRaw = opts.statsRaw || fs.readFileSync(path.join(BASE, 'data', 'stats.json'), 'utf-8');
+  const payloadDir = process.env.AV_ATLAS_PAYLOAD_DIR;
+  const statsRaw = opts.statsRaw || fs.readFileSync(
+    payloadDir ? path.join(payloadDir, 'stats.json') : path.join(BASE, 'data', 'stats.json'), 'utf-8');
+  const aboutRaw = payloadDir && !opts.statsRaw
+    ? fs.readFileSync(path.join(payloadDir, 'about.json'), 'utf-8') : statsRaw;
   const idRegistry = {};
   const body = makeElement('body');
 
@@ -239,6 +252,7 @@ function runPage(file, opts) {
   const locationProxy = {
     get search() { return locationState.search; },
     get pathname() { return locationState.pathname; },
+    get origin() { return 'http://localhost'; },
     get href() { return 'http://localhost' + locationState.pathname + locationState.search; },
     set href(v) { locationState.hrefAssignments.push(v); },
     reload() {},
@@ -260,6 +274,9 @@ function runPage(file, opts) {
     fetch(url) {
       if (String(url).includes('stats.json')) {
         return Promise.resolve({ json: () => Promise.resolve(JSON.parse(statsRaw)) });
+      }
+      if (String(url) === 'about.json') {
+        return Promise.resolve({ json: () => Promise.resolve(JSON.parse(aboutRaw)) });
       }
       // Every sharded data directory aggregate.py writes (abstracts/,
       // non_av_papers/, citations/, author_detail/, institution_authors/,

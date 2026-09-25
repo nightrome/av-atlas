@@ -171,7 +171,8 @@ def parse_ar5iv_affiliations(soup, registry, cache):
     # can fully undo (user-flagged, confirmed real cost: "Perception"
     # surviving as its own fake institution -- see aggregate.py's
     # INVALID_INSTITUTIONS comment). `registry` (a set) and `cache` (a dict,
-    # raw text -> extraction result) are threaded through from main() and
+    # affiliation text -> extraction result, keyed by iel.cache_key() so no
+    # email address is stored) are threaded through from main() and
     # mutated in place, so a genuinely new institution or an already-seen
     # raw text is shared across every author and paper in the run instead of
     # being re-extracted or re-invented each time.
@@ -195,6 +196,9 @@ def parse_ar5iv_affiliations(soup, registry, cache):
             text = re.sub(r"\s+", " ", text).strip()
             if not text:
                 continue
+            # The model sees the same text the cache is keyed by: email
+            # addresses replaced by their domain.
+            text = iel.cache_key(text)
             if text in cache:
                 extracted = cache[text]
             else:
