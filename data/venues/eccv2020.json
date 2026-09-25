@@ -6248,7 +6248,7 @@
   {
     "path": "papers/eccv_2020/papers_ECCV/html/4368_ECCV_2020_paper.php",
     "title": "LevelSet R-CNN: A Deep Variational Method for Instance Segmentation",
-    "authors": "Namdar Homayounfar Yuwen Xiong Justin Liang Wei-Chiu Ma Raquel Urtasun {namdar,yuwen,justin.liang,weichiu,urtasun}@uber.com",
+    "authors": "Namdar Homayounfar Yuwen Xiong Justin Liang Wei-Chiu Ma Raquel Urtasun",
     "abstract": "Obtaining precise instance segmentation masks is of high importance in many modern applications such as robotic manipulation and autonomous driving. Currently, many state of the art models are based on the Mask R-CNN framework which, while very powerful, outputs masks at low resolutions which could result in imprecise boundaries. On the other hand, classic variational methods for segmentation impose desirable global and local data and geometry constraints on the masks by optimizing an energy functional. While mathematically elegant, their direct dependence on good initialization, non-robust image cues and manual setting of hyperparameters renders them unsuitable for modern applications. We propose LevelSet R-CNN, which combines the best of both worlds by obtaining powerful feature representations that are combined in an end-to-end manner with a variational segmentation framework. We demonstrate the effectiveness of our approach on COCO and Cityscapes datasets. \""
   },
   {

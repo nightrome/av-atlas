@@ -10,6 +10,7 @@ Usage: python -m unittest discover -s av-atlas/scripts/tests
    or: python av-atlas/scripts/tests/test_institution_extraction_llm.py
 """
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -160,6 +161,33 @@ class TestExtractInstitutions(unittest.TestCase):
                 iel.extract_institutions("Some text", [])
         finally:
             iel.call_ollama = original
+
+
+class TestCacheWithoutEmailAddresses(unittest.TestCase):
+    def setUp(self):
+        tmpdir = tempfile.TemporaryDirectory()
+        self.addCleanup(tmpdir.cleanup)
+        self.addCleanup(setattr, iel, "CACHE_FILE", iel.CACHE_FILE)
+        self.addCleanup(setattr, iel, "REGISTRY_FILE", iel.REGISTRY_FILE)
+        iel.CACHE_FILE = Path(tmpdir.name) / "affiliations_llm_extracted.json"
+        iel.REGISTRY_FILE = Path(tmpdir.name) / "institution_registry.json"
+
+    def test_cache_key_keeps_the_domain_only(self):
+        self.assertEqual(iel.cache_key("FZI, Karlsruhe, Germany {grimm, zipfl}@fzi.de"),
+                         "FZI, Karlsruhe, Germany fzi.de")
+        self.assertEqual(iel.cache_key("KTH Royal Institute of Technology"), "KTH Royal Institute of Technology")
+
+    def test_save_cache_never_writes_an_address(self):
+        # A caller that skipped cache_key() still can't put an address on disk.
+        iel.save_cache({"Delft University of Technology j.doe@tudelft.nl": [
+            {"name": "Delft University of Technology", "matched_existing": True}]})
+        written = iel.CACHE_FILE.read_text(encoding="utf-8")
+        self.assertNotIn("j.doe", written)
+        self.assertEqual(list(iel.load_cache()), ["Delft University of Technology tudelft.nl"])
+
+    def test_save_registry_never_writes_an_address(self):
+        iel.save_registry({"MIT", "Germany j.doe@ uni-hannover.de"})
+        self.assertEqual(iel.load_registry(), ["Germany uni-hannover.de", "MIT"])
 
 
 if __name__ == "__main__":

@@ -2,10 +2,14 @@
 
 A dashboard of autonomous vehicle (AV) research: who is publishing, which
 institutions and countries are active, how topics have changed over time, and
-which papers are cited most *within AV research*. It is built from the complete
+which papers are cited most *within AV research*. It starts from the complete
 proceedings of about 20 major computer vision and robotics venues, not from a
-keyword-filtered subset. The [About page](site/about.html) explains how papers
-are found, classified and scored.
+keyword-filtered subset. About 55% of the AV papers come from those listings.
+The other 45% were found because they cite a paper already in the corpus; those
+include journal papers from other venues and arXiv preprints (about 24% of all AV
+papers), and preprints count in the rankings like any other paper. The
+[About page](site/about.html) explains how papers are found, classified and
+scored.
 
 Live site: https://nightrome.github.io/av-atlas/
 
@@ -31,13 +35,22 @@ why things are the way they are, see [DECISIONS.md](DECISIONS.md).
 ## Downloading the data
 
 The whole corpus is available as four gzipped CSVs: papers, authorship, citations
-between papers in the corpus, and institutions. They join on `paper_id`. You can
-find them through the About page. `scripts/build_data_release.py` regenerates them
-on every build, and they come with their own README.
+between papers in the corpus, and institutions. They join on `paper_id`. They are
+linked at the bottom of the homepage. `scripts/build_data_release.py` regenerates them
+on every build, and they come with their own README. The file names include the site
+version (see below), and only the current version is kept.
 
 Please read that README before using them. In short: citation counts only cover
 this corpus and are incomplete, affiliations are known for only a minority of
 papers, author names are not disambiguated, and all classification is automated.
+
+## Versions
+
+The site has a version like v0.1.2, shown in the nav bar and on the About page. The
+`VERSION` file at the repo root holds the first two parts. Only the maintainer changes
+it, when a release deserves a new minor or major number. The last part goes up by one
+on every published build without anyone touching it: the build reads the version
+production is serving and adds one. DECISIONS.md has the details.
 
 ## Running the site locally
 
@@ -157,7 +170,8 @@ Five stages, run roughly in this order. The About page has a diagram.
 4. **Citation graph.** `build_citation_graph.py` parses reference lists, and
    `fetch_semanticscholar_citing.py` finds papers that cite the corpus. That can
    turn up new paper titles, which feed back into stage 1.
-5. **Aggregate.** `aggregate.py` writes `data/stats.json`, which every page reads.
+5. **Aggregate.** `aggregate.py` writes `data/stats.json`. `build_public_site.py`
+   publishes a slimmer copy for the pages, plus a small `about.json` for the About page.
 
 ## Setup
 
@@ -185,7 +199,7 @@ This runs the Python unit tests (`scripts/tests/`), the JavaScript logic tests
 (`tests/*.test.js`, plain Node, nothing to install), and smoke, regression and
 detail-page tests that load every page's script against real data.
 
-CI runs the same command on every push and pull request. The last three tests need
+CI runs the same command on every push and pull request. The page tests need
 `data/stats.json`, which is gitignored. Without it they are skipped with a notice
 instead of failing, so run `scripts/build_public_site.py` first for a full run.
 
@@ -194,7 +208,8 @@ instead of failing, so run `scripts/build_public_site.py` first for a full run.
 `.github/workflows/monthly-update.yml` updates the site on its own, at 03:17 UTC on
 the 4th of every month. It runs `scripts/monthly_update.py`, which:
 
-1. restores the corpus backup (`restore_corpus.py`);
+1. restores the corpus backup (`restore_corpus.py`), plus the live site's `stats.json`
+   so the "data last updated" date only moves when the content really changed;
 2. fetches what's new: arXiv preprints (`fetch_arxiv_monthly.py`), new conference
    editions (`check_new_editions.py`, which runs the right fetcher itself), journal
    papers from Crossref (`fetch_crossref.py journals`), and Semantic Scholar
@@ -263,6 +278,12 @@ python scripts/deploy.py --no-main-commit   # builds, publishes and backs up
 ```
 
 After that, each month only has the new papers to look up.
+## Page view counts
+
+The live site counts page views with [GoatCounter](https://www.goatcounter.com),
+site code `av-atlas`. It sets no cookies and stores no personal data. It only runs
+on the production site, so views on staging or a local server aren't counted.
+DECISIONS.md explains why it replaced Google Analytics.
 
 ## Reporting a data error
 

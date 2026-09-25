@@ -187,6 +187,15 @@ RAMP-VO). Under that standard:
   deliberately didn't add a general "strip any leading adjective" rule, because
   it could merge different papers that share a generic remainder.
 
+### Google Scholar only by hand
+
+Scholar's terms don't allow automated queries, and its robots.txt disallows search
+pages and paging through a profile (`cstart=`). `fetch_scholar_paper_links.py` did
+both on 2026-09-21 until Google blocked it, and has since been removed. Author
+profiles (`data/scholar_profiles.json`) and paper links
+(`data/scholar_paper_links.json`) are looked up and added by hand. DECISIONS.md has
+the details under "Paper Scholar links are added by hand".
+
 ## Per-venue scripts (current, in use)
 
 | Venue | Script | Source | Notes |

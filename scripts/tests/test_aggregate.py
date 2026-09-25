@@ -48,6 +48,15 @@ class TestIsValidInstitution(unittest.TestCase):
         self.assertFalse(ag.is_valid_institution("44227 Dortmund"))
         self.assertFalse(ag.is_valid_institution("Otto-Hahn-Str. 1"))
 
+    def test_rejects_a_name_with_an_email_address_in_the_middle(self):
+        # A trailing address is stripped by normalize_institution; one in the
+        # middle must never reach the site either.
+        self.assertFalse(ag.is_valid_institution("Tongji University jane.doe@tongji.edu.cn Shanghai"))
+        self.assertFalse(ag.is_valid_institution("Chalmers University {a, b}@chalmers.se Zenseact"))
+        # What normalize_institution leaves of "ylliu @ xmu.edu.cn".
+        self.assertFalse(ag.is_valid_institution("ylliu @"))
+        self.assertTrue(ag.is_valid_institution("Energy Research Institute @ NTU"))
+
     def test_rejects_generic_department_or_person_name(self):
         self.assertFalse(ag.is_valid_institution("Department of Computer Science"))
         self.assertFalse(ag.is_valid_institution("Ye Li"))
@@ -288,13 +297,13 @@ class TestNormalizeInstitution(unittest.TestCase):
         # "X at Y.tld" instead of "X@Y.tld" -- a common anti-spam convention
         # in PDF-extracted author blocks. EMAIL_LABEL_RE only catches an
         # explicit "email:"/"e-mail:" label, not this unlabeled form.
-        self.assertFalse(ag.is_valid_institution("l.ferranti at tudelft.nl"))
+        self.assertFalse(ag.is_valid_institution("j.doe at tudelft.nl"))
 
     def test_rejects_funding_credit_line(self):
         # user-flagged real example, glued onto the end of a genuine
         # institution+email fragment with no separator.
         self.assertFalse(ag.is_valid_institution(ag.normalize_institution(
-            "The Netherlands l.ferranti at tudelft.nl. Her work is supported by the NWO VENI grant (n. 18165).")))
+            "The Netherlands j.doe at tudelft.nl. Her work is supported by the NWO VENI grant (n. 18165).")))
 
     def test_rejects_abbreviated_person_name(self):
         # user-flagged real example: a neighboring author's name-with-initial
@@ -735,10 +744,10 @@ class TestCleanAuthorNameCommaCases(unittest.TestCase):
             ag.clean_author_name("Jonas Frey1,{}^{\\textbf{1,}}2"), "Jonas Frey")
         # A bare "{...}@host" email list is not a person at all.
         self.assertEqual(
-            ag.clean_author_name("{zaechj,dai,vangool}@vision.ee.ethz.ch"), "")
+            ag.clean_author_name("{jdoe,asmith,bchen}@vision.ee.ethz.ch"), "")
         # ...but a real name with an email appended keeps the name.
         self.assertEqual(
-            ag.clean_author_name("Raquel Urtasun{james.tu,mren3}@uber.com"),
+            ag.clean_author_name("Raquel Urtasun{j.doe,asmith}@uber.com"),
             "Raquel Urtasun")
 
     def test_ordinary_names_with_no_comma_are_untouched(self):
@@ -988,6 +997,42 @@ class TestShardIndex(unittest.TestCase):
             self.assertLess(ag.shard_index(title), ag.ABSTRACT_SHARD_COUNT)
 
 
+class TestContentHash(unittest.TestCase):
+    PAPERS = [
+        {"title": "B", "venue": "CVPR", "year": 2022, "authors": ["X"], "citations": 3, "cd_index": 0.1},
+        {"title": "A", "venue": "ICCV", "year": 2021, "authors": ["Y", "Z"], "citations": 0},
+    ]
+    COUNTS = {"total_researchers": 3, "total_institutions": 1, "total_countries": 1, "venues_covered": 2}
+
+    def _hash(self, papers, counts=None):
+        return ag.content_hash(papers, 10, 2, counts or self.COUNTS)
+
+    def test_order_and_unpublished_fields_do_not_matter(self):
+        base = self._hash(self.PAPERS)
+        self.assertEqual(self._hash(list(reversed(self.PAPERS))), base)
+        tweaked = [dict(self.PAPERS[0], cd_index=0.9), self.PAPERS[1]]
+        self.assertEqual(self._hash(tweaked), base)
+
+    def test_each_published_field_changes_the_hash(self):
+        base = self._hash(self.PAPERS)
+        for field, value in (("title", "C"), ("venue", "ECCV"), ("year", 2023),
+                             ("authors", ["X", "W"]), ("citations", 4)):
+            changed = [dict(self.PAPERS[0], **{field: value}), self.PAPERS[1]]
+            self.assertNotEqual(self._hash(changed), base, field)
+        self.assertNotEqual(self._hash(self.PAPERS, dict(self.COUNTS, total_researchers=4)), base)
+        self.assertNotEqual(ag.content_hash(self.PAPERS, 11, 2, self.COUNTS), base)
+
+    def test_missing_or_broken_previous_file_means_today(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "stats.json"
+            self.assertEqual(ag.content_updated_date("h", path, "2026-09-24"), "2026-09-24")
+            path.write_text("{not json", encoding="utf-8")
+            self.assertEqual(ag.content_updated_date("h", path, "2026-09-24"), "2026-09-24")
+            path.write_text(json.dumps({"content_hash": "h", "content_updated": "2026-08-01"}), encoding="utf-8")
+            self.assertEqual(ag.content_updated_date("h", path, "2026-09-24"), "2026-08-01")
+            self.assertEqual(ag.content_updated_date("other", path, "2026-09-24"), "2026-09-24")
+
+
 class TestCitationCount(unittest.TestCase):
     def test_no_source_returns_zero(self):
         # User-decided: "how many papers in this corpus reference it" always
@@ -1143,7 +1188,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
     """Runs aggregate.main() against small fixture data by redirecting its
     IN_FILE/OUT_FILE module-level paths, then inspects the written stats.json."""
 
-    def _run(self, entries, citation_graph=None):
+    def _run(self, entries, citation_graph=None, previous_stats=None):
         tmpdir = tempfile.TemporaryDirectory()
         self.addCleanup(tmpdir.cleanup)
         in_file = Path(tmpdir.name) / "papers_full.json"
@@ -1156,6 +1201,10 @@ class TestAggregateEndToEnd(unittest.TestCase):
         for e in entries:
             e.setdefault("abstract", "placeholder abstract for testing")
         in_file.write_text(json.dumps(entries), encoding="utf-8")
+        # The stats.json a previous build left behind, which main() reads
+        # before overwriting (content_updated carries over from it).
+        if previous_stats is not None:
+            out_file.write_text(json.dumps(previous_stats), encoding="utf-8")
         graph_file = Path(tmpdir.name) / "citation_graph.json"
         if citation_graph is not None:
             graph_file.write_text(json.dumps(citation_graph), encoding="utf-8")
@@ -1212,6 +1261,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
             # up a title's citer list without caring which shard it landed in.
             self.last_citations = flatten(ag.CITATIONS_DIR)
             self.last_new_papers = json.loads(ag.NEW_PAPERS_FILE.read_text(encoding="utf-8"))
+            self.last_abstracts = flatten(ag.ABSTRACTS_DIR)
         finally:
             (ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.SCHOLAR_PROFILES_FILE, ag.CITATION_GRAPH_FILE,
              ag.ABSTRACTS_DIR, ag.CITATIONS_DIR, ag.AUTHOR_DETAIL_DIR, ag.INSTITUTION_AUTHORS_DIR,
@@ -1234,6 +1284,40 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertEqual([p["title"] for p in papers], ["Fresh AV Paper"])
         self.assertEqual(papers[0]["authors"], ["Ada Lovelace", "Alan Turing"])
         self.assertEqual(papers[0]["arxiv_url"], "https://arxiv.org/abs/2609.00001")
+
+    def test_content_updated_carries_over_when_the_content_is_unchanged(self):
+        entries = lambda count: [
+            {"title": "A Core Paper", "year": 2023, "venue": "CVPR", "av_relevance": "AV",
+             "authors": "Jane Doe", "citations_by_source": {"in_corpus": {"count": count}}},
+        ]
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        first = self._run(entries(5))
+        self.assertEqual(first["content_updated"], today)
+        self.assertEqual(len(first["content_hash"]), 64)
+
+        # A rebuild with the same content keeps the earlier date, even though
+        # generated_at moves on.
+        earlier = dict(first, content_updated="2026-01-15", generated_at="2026-01-15")
+        again = self._run(entries(5), previous_stats=earlier)
+        self.assertEqual(again["content_hash"], first["content_hash"])
+        self.assertEqual(again["content_updated"], "2026-01-15")
+        self.assertEqual(again["generated_at"], today)
+
+        # One changed citation count is new content.
+        changed = self._run(entries(6), previous_stats=earlier)
+        self.assertNotEqual(changed["content_hash"], first["content_hash"])
+        self.assertEqual(changed["content_updated"], today)
+
+        # A stats.json from before these fields existed counts as changed.
+        old = {k: v for k, v in first.items() if k not in ("content_hash", "content_updated")}
+        self.assertEqual(self._run(entries(5), previous_stats=old)["content_updated"], today)
+
+    def test_published_abstract_keeps_only_the_domain_of_an_email_address(self):
+        self._run([
+            {"title": "A Core Paper", "year": 2023, "venue": "ECCV", "av_relevance": "AV",
+             "abstract": "We track cars. Corresponding author: jane.doe@tongji.edu.cn"},
+        ])
+        self.assertEqual(self.last_abstracts["A Core Paper"], "We track cars. Corresponding author: tongji.edu.cn")
 
     def test_adjacent_papers_file_excludes_core_and_incomplete_entries(self):
         self._run([

@@ -83,6 +83,29 @@ class TestParseAr5ivAffiliations(unittest.TestCase):
         self.assertEqual(len(calls), 1, "identical raw text across two authors must only call the LLM once")
         self.assertIn("MIT", cache)
 
+    def test_email_addresses_are_stripped_before_caching_and_extraction(self):
+        # The cache file is tracked in a public repo: the model and the cache
+        # key both get the domain only. Two texts that differ only in whose
+        # address they carry share one cache entry.
+        calls = []
+        iel.extract_institutions = lambda text, registry: calls.append(text) or [
+            {"name": "FZI Research Center for Information Technology", "matched_existing": True}]
+        soup = BeautifulSoup("""
+        <span class="ltx_creator ltx_role_author">
+          <span class="ltx_personname">Alice</span>
+          <span class="ltx_role_affiliation">Affiliation: FZI, Karlsruhe, Germany {alice, bob}@fzi.de</span>
+        </span>
+        <span class="ltx_creator ltx_role_author">
+          <span class="ltx_personname">Bob</span>
+          <span class="ltx_role_affiliation">Affiliation: FZI, Karlsruhe, Germany bob.b@fzi.de</span>
+        </span>
+        """, "html.parser")
+        cache = {}
+        result = fa.parse_ar5iv_affiliations(soup, set(), cache)
+        self.assertEqual(calls, ["FZI, Karlsruhe, Germany fzi.de"])
+        self.assertEqual(list(cache), ["FZI, Karlsruhe, Germany fzi.de"])
+        self.assertEqual(result[1]["affiliations"], ["FZI Research Center for Information Technology"])
+
     def test_new_institution_is_added_to_the_registry(self):
         iel.extract_institutions = lambda text, registry: [
             {"name": "Brand New University", "matched_existing": False}]

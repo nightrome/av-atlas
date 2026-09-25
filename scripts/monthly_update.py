@@ -10,6 +10,9 @@ Steps, in order:
   restore       restore_corpus.py -- the gitignored corpus from the backup release
   carry         tracked data files from the last run's bot branch
                 (auto/monthly-update) that main doesn't have yet, see carry_forward()
+  prev_stats    production's stats.json as data/stats.json, when there's none on
+                disk, so aggregate.py can keep its "data last updated" date if
+                nothing changed and the shrink check compares against it
   arxiv         fetch_arxiv_monthly.py -- new AV preprints since the last run
   editions      check_new_editions.py -- runs the fetcher for any new edition
   crossref      fetch_crossref.py journals -- the last 40 days of journal updates
@@ -79,12 +82,14 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.request
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 BASE = SCRIPTS_DIR.parent
+PRODUCTION_STATS_URL = "https://nightrome.github.io/av-atlas/stats.json"
 ENV_FILE = BASE / ".env"
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "nightrome/av-atlas")
@@ -129,6 +134,7 @@ def plan(work_dir):
     return [
         Step("restore", "hard", 30, cmds=(("restore_corpus.py",),)),
         Step("carry", "soft", 10, func="carry_forward", before_build=True),
+        Step("prev_stats", "soft", 5, func="fetch_previous_stats", before_build=True),
         Step("arxiv", "soft", 60, before_build=True,
              cmds=(("fetch_arxiv_monthly.py", "--summary-json", f"{w}/arxiv.json"),)),
         Step("editions", "soft", 120, before_build=True,
@@ -413,6 +419,23 @@ class Orchestrator:
         if kept_main:
             note += f"; {len(kept_main)} changed on main too, main's version kept"
         return "ok", note
+
+    def fetch_previous_stats(self):
+        """Put the live site's stats.json at data/stats.json if there's no
+        local one. stats.json isn't in the corpus backup (it's rebuilt from it),
+        but aggregate.py reads the previous one for content_updated: without
+        it every monthly build would say the data changed today, even when
+        nothing did. The published copy is slimmed, but it keeps content_hash
+        and content_updated, and everything the shrink check reads."""
+        target = self.base / "data" / "stats.json"
+        if target.exists():
+            return "ok", "kept the local stats.json"
+        tmp = target.with_name(target.name + ".download")
+        with urllib.request.urlopen(PRODUCTION_STATS_URL, timeout=120) as resp:
+            tmp.write_bytes(resp.read())
+        json.loads(tmp.read_text(encoding="utf-8"))  # a truncated download fails here
+        os.replace(tmp, target)
+        return "ok", f"fetched {PRODUCTION_STATS_URL}"
 
     def changed_data_files(self):
         out = self.git("status", "--porcelain=v1", "-z", "--untracked-files=all", "--", "data")

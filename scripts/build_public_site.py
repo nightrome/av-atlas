@@ -7,6 +7,9 @@ public/ -- the published copy of the AV research dashboard, ready to be
 pushed to gh-pages by scripts/deploy.py.
 
 Runs, in order, and aborts (non-zero exit) if any step fails:
+  0. fix_suspect_venues.py / email_addresses.py -- clean the tracked sources
+     under data/ that a fresh crawl can make dirty again: wrong venue names,
+     and email addresses (each replaced by its domain, see email_addresses.py).
   1. merge_corpus.py -- rebuilds data/papers_full.json from data/venues/*.json
      plus arXiv, carrying over enrichment (author detail, citations,
      abstracts, ...) from the previous run, and reclassifies every paper.
@@ -39,10 +42,16 @@ same one scripts/deploy.py already calls) makes "crawled but never
 published" structurally impossible instead of a step to remember, and
 means a single command is always both the test run and the deploy.
 
+Every build also gets a site version, major.minor.patch. major.minor comes
+from the tracked VERSION file at the repo root, which only the maintainer
+edits. The patch is worked out from what production serves right now (see
+resolve_version below), so it goes up by one with every published build.
+
 Usage: python build_public_site.py
    or: python build_public_site.py --publish-only   # steps 1-6 skipped; only re-copy
                                                     # current pages + existing stats.json
    or: python build_public_site.py --allow-shrink   # publish even if the corpus shrank
+   or: python build_public_site.py --version 0.1.7  # use this version, don't ask production
 """
 import argparse
 import json
@@ -51,7 +60,9 @@ import shutil
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.parse
+import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -105,7 +116,199 @@ def html_pages():
     return pages
 
 
+# data/stats.json holds more than the pages read: aggregate.py also writes it
+# for the data release, the sitemap and the tests. Every page downloads the
+# published copy before it can show anything (4.7 MB gzip in September 2026),
+# so the build ships a slimmer one and leaves data/stats.json as it is.
+#
+# Top-level keys no page reads. top_papers is only touched by filters.js to
+# keep it in step with all_papers when something swaps the paper list.
+UNUSED_STATS_KEYS = (
+    "best_by_venue", "best_by_year", "top_papers", "top_authors",
+    "top_institutions", "venue_images",
+)
+# Per-paper fields no page reads. Null fields are dropped as well: every page
+# checks paper fields with `!= null` or plain truthiness, so a missing key
+# reads the same as a null one.
+UNUSED_PAPER_FIELDS = ("citations_updated", "has_code_link", "cd_n_citers", "venue_status")
+
+# What about.html reads. It only needs corpus totals and coverage numbers, so
+# it gets its own small file instead of the whole stats.json.
+ABOUT_KEYS = (
+    "generated_at", "generated_from", "content_updated", "content_hash",
+    "av_relevant", "corpus_stats", "verification", "top_countries",
+)
+
+
+def is_version_key(key):
+    return key == "version" or key.startswith("version_") or key.endswith("_version")
+
+
+def slim_stats(stats):
+    """The stats.json the pages get: data/stats.json minus what no page reads."""
+    out = {k: v for k, v in stats.items() if k not in UNUSED_STATS_KEYS}
+    out["all_papers"] = [
+        {k: v for k, v in p.items() if v is not None and k not in UNUSED_PAPER_FIELDS}
+        for p in stats.get("all_papers") or []
+    ]
+    return out
+
+
+def paper_sources(stats):
+    """How the AV papers got into the corpus, for the About page's text.
+
+    A paper either came from a venue's complete listing, or was found
+    because it cites a paper already in the corpus (the Semantic Scholar
+    crawl). Of the second kind, the ones whose venue is arXiv are preprints
+    that were never published anywhere we index.
+    """
+    papers = stats.get("all_papers") or []
+    listed = sum(1 for p in papers if p.get("source") == "venue_listing")
+    found = [p for p in papers if p.get("source") != "venue_listing"]
+    preprints = sum(1 for p in found if "arxiv" in (p.get("venue") or "").lower())
+    return {"total": len(papers), "venue_listing": listed,
+            "citation_found": len(found), "arxiv_only": preprints}
+
+
+def about_payload(stats):
+    """The small about.json that about.html reads instead of stats.json."""
+    out = {k: stats[k] for k in stats if k in ABOUT_KEYS or is_version_key(k)}
+    out["paper_sources"] = paper_sources(stats)
+    return out
+
+
+def write_json(path, data):
+    path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")),
+                    encoding="utf-8", newline="\n")
+
+
+def write_page_payloads(stats, page_dir):
+    """Writes the slimmed stats.json and about.json into page_dir."""
+    write_json(page_dir / "stats.json", slim_stats(stats))
+    write_json(page_dir / "about.json", about_payload(stats))
+
+
 SITE_URL = "https://nightrome.github.io/av-atlas"
+
+# Site versioning. VERSION holds major.minor and is only ever changed by the
+# maintainer. The patch number isn't stored anywhere in the repo: it is one
+# more than whatever production's BUILD_INFO.json says, so a preview and the
+# promote of that same build share a number (promote doesn't rebuild), two
+# previews in a row don't burn two numbers, and the monthly CI job, which has
+# no .deploy-cache/, still counts on from the live site.
+VERSION_FILE = BASE / "VERSION"
+PRODUCTION_BUILD_INFO_URL = f"{SITE_URL}/BUILD_INFO.json"
+# deploy.py records the last version it pushed to production here. Only used
+# when production can't be reached.
+DEPLOY_STATE_FILE = BASE / ".deploy-cache" / "state.json"
+# The live site was already v0.1.1 before BUILD_INFO.json carried a version.
+UNVERSIONED_PRODUCTION = (0, 1, 1)
+# Replaced with the build's version in every published page and script.
+VERSION_PLACEHOLDER = "__AV_ATLAS_VERSION__"
+VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+
+
+def parse_version(text):
+    """'0.1.2' -> (0, 1, 2); None for anything that isn't major.minor.patch."""
+    m = VERSION_RE.match(str(text or "").strip())
+    return tuple(int(x) for x in m.groups()) if m else None
+
+
+def format_version(v):
+    return ".".join(str(x) for x in v)
+
+
+def read_major_minor(path=VERSION_FILE):
+    m = re.match(r"^(\d+)\.(\d+)$", Path(path).read_text(encoding="utf-8").strip())
+    if not m:
+        raise SystemExit(f"{path} must hold major.minor, e.g. 0.1")
+    return int(m.group(1)), int(m.group(2))
+
+
+def next_version(major_minor, live):
+    """The version for a new build, given the version production serves.
+
+    Same major.minor as production: one more patch. Different major.minor:
+    the maintainer has bumped VERSION, so the patch starts again at 0."""
+    if tuple(live[:2]) == tuple(major_minor):
+        return (*major_minor, live[2] + 1)
+    return (*major_minor, 0)
+
+
+def fetch_production_version(url=PRODUCTION_BUILD_INFO_URL, timeout=15):
+    """The version production serves, UNVERSIONED_PRODUCTION if its
+    BUILD_INFO.json has no version (or doesn't exist). Raises OSError if
+    production can't be reached at all."""
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as resp:
+            info = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return UNVERSIONED_PRODUCTION
+        raise OSError(f"HTTP {e.code} from {url}") from e
+    except ValueError as e:
+        raise OSError(f"{url} is not valid JSON") from e
+    return parse_version((info or {}).get("version")) or UNVERSIONED_PRODUCTION
+
+
+def last_published_version(state_file=DEPLOY_STATE_FILE):
+    try:
+        state = json.loads(Path(state_file).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return parse_version(state.get("published_version"))
+
+
+def resolve_version(override=None, major_minor=None, fetch=fetch_production_version,
+                    state_file=DEPLOY_STATE_FILE):
+    """The full version string for this build.
+
+    override (the --version flag) wins outright. Otherwise the patch counts
+    on from production. If production can't be reached, it counts on from
+    the last version deploy.py recorded locally, with a warning, since a
+    wrong guess here only means a skipped or repeated patch number."""
+    if override:
+        if not parse_version(override):
+            raise SystemExit(f"--version must look like 0.1.2, got {override!r}")
+        return override
+    major_minor = major_minor or read_major_minor()
+    try:
+        live = fetch()
+    except OSError as e:
+        live = last_published_version(state_file)
+        print(f"  WARNING: couldn't read production's version ({e}); counting on from "
+              f"{format_version(live) + ' (last recorded deploy)' if live else 'v0.1.1, the last unversioned release'}")
+        live = live or UNVERSIONED_PRODUCTION
+    if tuple(live[:2]) > tuple(major_minor):
+        print(f"  WARNING: production is already on {format_version(live)}, newer than "
+              f"VERSION {major_minor[0]}.{major_minor[1]}. Is this checkout out of date?")
+    return format_version(next_version(major_minor, live))
+
+
+def stamp_json_version(path, version):
+    """Add "site_version" to a published JSON object, in place.
+
+    stats.json is tens of MB, so the key is spliced in after the opening
+    brace rather than re-serialising the whole file. That keeps its
+    formatting byte-for-byte apart from the new key."""
+    text = path.read_text(encoding="utf-8")
+    try:
+        data = json.loads(text)
+    except ValueError:
+        return False
+    if not isinstance(data, dict):
+        return False
+    if "site_version" in data:
+        data["site_version"] = version
+        path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8", newline="\n")
+        return True
+    brace = text.index("{")
+    rest = text[brace + 1:]
+    sep = "" if not data else ", "
+    path.write_text(text[:brace + 1] + json.dumps("site_version") + ": " + json.dumps(version)
+                    + sep + rest, encoding="utf-8", newline="\n")
+    return True
+
 
 # How many of each kind of detail page to list in the sitemap. Every author,
 # paper, institution and venue page is a query string on one of four HTML
@@ -120,6 +323,12 @@ SITE_URL = "https://nightrome.github.io/av-atlas"
 # worth landing on, ranked by citations.
 SITEMAP_LIMITS = {"papers": 5000, "authors": 3000, "institutions": 1000, "venues": 300}
 
+# Pages that only show something with a ?name=/?title= (or, for compare,
+# ?names=) parameter. Bare, they render "Unknown author" and the like, so
+# they are left out of the sitemap; their real URLs are listed below.
+DETAIL_TEMPLATES = {"author.html", "paper.html", "institution.html", "venue.html",
+                    "country.html", "compare.html"}
+
 
 def write_sitemap(page_dir, stats_path):
     """A sitemap.xml covering the listing pages plus the top detail pages.
@@ -131,7 +340,8 @@ def write_sitemap(page_dir, stats_path):
     import xml.sax.saxutils as sx
 
     stats = json.loads(stats_path.read_text(encoding="utf-8"))
-    urls = [f"{SITE_URL}/{p.name}" for p in sorted(html_pages(), key=lambda p: p.name)]
+    urls = [f"{SITE_URL}/{p.name}" for p in sorted(html_pages(), key=lambda p: p.name)
+            if p.name not in DETAIL_TEMPLATES]
 
     def add(page, key, values):
         for v in values:
@@ -154,15 +364,22 @@ def write_sitemap(page_dir, stats_path):
     by_papers = lambda d, n: sorted(d, key=lambda k: -d[k])[:n]  # noqa: E731
     add("author.html", "name", by_papers(author_papers, SITEMAP_LIMITS["authors"]))
     add("institution.html", "name", by_papers(inst_papers, SITEMAP_LIMITS["institutions"]))
+    # Only venues with AV papers: by_venue counts the whole corpus, and a
+    # venue page for, say, a medical imaging journal says "0 AV papers".
+    av_venues = {p.get("venue") for p in papers}
     add("venue.html", "name",
-        list((stats.get("corpus_stats") or {}).get("by_venue", {}))[:SITEMAP_LIMITS["venues"]])
+        [v for v in (stats.get("corpus_stats") or {}).get("by_venue", {})
+         if v in av_venues][:SITEMAP_LIMITS["venues"]])
     # There are only ~55 countries, so every one gets a page in the sitemap.
     add("country.html", "name",
         sorted({c for p in papers for c in (p.get("countries") or [])}))
 
-    today = time.strftime("%Y-%m-%d")
+    # When the content last changed (see content_updated in aggregate.py),
+    # not the build date, so a rebuild of the same data does not tell
+    # crawlers that all 9,000 pages are new.
+    lastmod = stats.get("content_updated") or time.strftime("%Y-%m-%d")
     body = "\n".join(
-        f"  <url><loc>{sx.escape(u)}</loc><lastmod>{today}</lastmod></url>" for u in urls)
+        f"  <url><loc>{sx.escape(u)}</loc><lastmod>{lastmod}</lastmod></url>" for u in urls)
     (page_dir / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -188,7 +405,7 @@ def write_new_papers(page_dir):
     print(f"  new_papers.json + feed.xml: {len(payload.get('papers') or [])} papers")
 
 
-def build_public_site():
+def build_public_site(version):
     index_path = SITE_DIR / "index.html"
     stats_path = BASE / "data" / "stats.json"
     if not index_path.exists():
@@ -221,10 +438,17 @@ def build_public_site():
     # gets published, so new pages don't need a build-script change to ship.
     for html_path in html_pages():
         html = html_path.read_text(encoding="utf-8")
-        html = add_cache_bust(html)
+        html = add_cache_bust(html).replace(VERSION_PLACEHOLDER, version)
         (page_dir / html_path.name).write_text(html, encoding="utf-8", newline="\n")
 
-    shutil.copy2(stats_path, page_dir / "stats.json")
+    write_page_payloads(json.loads(stats_path.read_text(encoding="utf-8")), page_dir)
+    # Not in hash_tree's content hash (deploy.py adds its own fields to it at
+    # publish time), but the version it records is also baked into nav.js
+    # and stats.json, which are.
+    (page_dir / "BUILD_INFO.json").write_text(json.dumps({
+        "version": version,
+        "built_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+    }, indent=2), encoding="utf-8", newline="\n")
 
     # Every sharded data directory aggregate.py writes (see its AUTHOR_
     # DETAIL_DIR/ABSTRACTS_DIR/etc. comments) -- copied file-by-file rather
@@ -278,9 +502,11 @@ def build_public_site():
                 shutil.copy2(asset, dst)
 
     # Shared static assets referenced by the HTML pages (e.g. nav.js) but not
-    # matched by the *.html glob above.
+    # matched by the *.html glob above. nav.js shows the site version.
     for js_path in SITE_DIR.glob("*.js"):
-        shutil.copy2(js_path, page_dir / js_path.name)
+        js = js_path.read_text(encoding="utf-8")
+        (page_dir / js_path.name).write_text(
+            js.replace(VERSION_PLACEHOLDER, version), encoding="utf-8", newline="\n")
 
     # page_dir persists across runs (rmtree-ing it hits a real, previously-hit
     # OneDrive directory-lock issue -- see the "Fix build scripts hanging on
@@ -291,13 +517,19 @@ def build_public_site():
     # part of the current expected output. Caught in practice: label_relevance.html
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
-        | {"stats.json", "theme.css", "theme-light.css",
-           "logo.svg", "og-image.png", "sitemap.xml", "robots.txt",
+        | {"stats.json", "about.json", "theme.css", "theme-light.css",
+           "logo.svg", "og-image.png", "sitemap.xml", "robots.txt", "BUILD_INFO.json",
            "new_papers.json", "feed.xml"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()
             print(f"  removed stale {existing.name}")
+
+    # Every published JSON object at the top level (stats.json and any slim
+    # copy of it) says which build it came from. BUILD_INFO.json already does.
+    for json_path in sorted(page_dir.glob("*.json")):
+        if json_path.name != "BUILD_INFO.json" and stamp_json_version(json_path, version):
+            print(f"  {json_path.name}: site_version {version}")
 
     (PUBLIC_DIR / "robots.txt").write_text(
         ROBOTS_TXT + f"\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8", newline="\n")
@@ -309,7 +541,7 @@ def build_public_site():
         print(f"  {html_path.name}")
     for js_path in SITE_DIR.glob("*.js"):
         print(f"  {js_path.name}")
-    print(f"  stats.json")
+    print(f"  stats.json, about.json")
     for name, dst in (
         ("abstracts", abstracts_dst), ("non_av_papers", non_av_dst), ("citations", citations_dst),
         ("author_detail", author_detail_dst), ("institution_authors", institution_authors_dst),
@@ -339,6 +571,9 @@ def main():
                         help="Publish even if the new stats.json dropped more than 3%% on a gated number "
                              "(AV papers, papers with institutions or abstracts, in-corpus citations, "
                              "venues). For an intended drop, e.g. the first build after a matcher fix.")
+    parser.add_argument("--version", dest="site_version", metavar="X.Y.Z",
+                        help="Use this site version instead of counting on from production's "
+                             "BUILD_INFO.json. Meant for tests and one-off rebuilds.")
     args = parser.parse_args()
 
     if args.publish_only:
@@ -353,6 +588,7 @@ def main():
         print("\n--- Saving the shrink-check baseline ---")
         publish_gate.save_baseline()
         run_step("Fixing suspect venue names", "fix_suspect_venues.py")
+        run_step("Stripping email addresses from tracked data", "email_addresses.py")
         run_step("Rebuilding corpus (merge_corpus.py)", "merge_corpus.py")
         # One-off data repairs, applied here (not just left as scripts to remember
         # to run by hand) so a full recrawl-from-scratch reproduces the same
@@ -377,7 +613,9 @@ def main():
         publish_gate.check(allow_shrink=args.allow_shrink)
         run_step("Running tests (run_tests.py)", "run_tests.py")
     print("\n--- Publishing public site ---")
-    build_public_site()
+    version = resolve_version(args.site_version)
+    print(f"  site version {version}")
+    build_public_site(version)
     # The downloadable corpus, built from the same stats.json the pages read,
     # so the download can never describe a different corpus than the site.
     print("\n--- Building data release ---")
@@ -385,6 +623,7 @@ def main():
     build_data_release.build(
         json.loads((BASE / "data" / "stats.json").read_text(encoding="utf-8")),
         json.loads(graph_path.read_text(encoding="utf-8")) if graph_path.exists() else {},
+        version,
     )
 
 

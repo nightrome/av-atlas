@@ -77,6 +77,10 @@ class ScriptedOrchestrator(mu.Orchestrator):
         self.calls.append("carry_forward()")
         return "ok", ""
 
+    def fetch_previous_stats(self):
+        self.calls.append("fetch_previous_stats()")
+        return "ok", ""
+
     def commit_data(self):
         self.calls.append("commit_data()")
         self.committed = ["data/venues/x.json"]
@@ -102,7 +106,7 @@ class StepOrderTests(unittest.TestCase):
         orch = ScriptedOrchestrator(self.work)
         self.assertEqual(orch.run(), 0)
         self.assertEqual(orch.calls, [
-            "restore_corpus.py", "carry_forward()", "fetch_arxiv_monthly.py", "check_new_editions.py",
+            "restore_corpus.py", "carry_forward()", "fetch_previous_stats()", "fetch_arxiv_monthly.py", "check_new_editions.py",
             "fetch_crossref.py", "fix_suspect_venues.py", "merge_corpus.py",
             "fetch_abstracts_semanticscholar.py", "apply_abstracts_semanticscholar.py",
             "fetch_s2_references.py", "build_public_site.py", "commit_data()", "deploy.py",

@@ -28,6 +28,11 @@
     }
     .topbar a:hover { background: var(--panel2); color: var(--text); }
     .topbar a.active { background: var(--accent); color: #fff; }
+    .topbar a.site-version {
+      margin-left: auto; font-weight: 500; font-size: 0.8em; padding: 7px 8px;
+      font-variant-numeric: tabular-nums;
+    }
+    .topbar a.site-version + #hardReload { margin-left: 0; }
     .topbar #hardReload {
       margin-left: auto; background: none; border: 1px solid var(--border); color: var(--muted);
       font-size: 1em; line-height: 1; width: 30px; height: 30px; border-radius: 7px; cursor: pointer;
@@ -102,6 +107,21 @@
   nav.innerHTML = PAGES.map(p =>
     `<a href="${p.href}"${p.href === current ? ' class="active"' : ''}>${p.label}</a>`
   ).join('');
+
+  // The site version, e.g. v0.1.2. build_public_site.py replaces the
+  // placeholder below with the build's version; a page served straight from
+  // site/ (no build) still has the placeholder and shows no label. Links to
+  // the homepage download section, whose files carry the same version.
+  const SITE_VERSION = '__AV_ATLAS_VERSION__';
+  if (/^\d+\.\d+\.\d+$/.test(SITE_VERSION)) {
+    window.AV_ATLAS_VERSION = SITE_VERSION;
+    const versionLink = document.createElement('a');
+    versionLink.className = 'site-version';
+    versionLink.href = 'index.html#download';
+    versionLink.title = `AV Atlas version ${SITE_VERSION}. Download this version's data`;
+    versionLink.textContent = `v${SITE_VERSION}`;
+    nav.appendChild(versionLink);
+  }
 
   // Full page reset. stats.json and the shared JS files are static files
   // behind GitHub Pages' CDN, so a plain refresh can serve a stale cached
@@ -289,20 +309,46 @@
   }
 
 
-  // Visitor analytics (Google Analytics 4). Only on the production site --
-  // the staging preview lives on the same host under /av-atlas-staging/, so
-  // the path prefix is what tells them apart. localhost and forks on other
-  // hosts send nothing.
-  const GA_ID = 'G-Y2HZ5PRR8W';
+  // Page view counts (GoatCounter, site code av-atlas). It sets no cookies
+  // and keeps only per-page totals, which is why it replaced Google
+  // Analytics (see DECISIONS.md). Only on the production site -- the staging
+  // preview lives on the same host under /av-atlas-staging/, so the path
+  // prefix is what tells them apart. localhost and forks on other hosts send
+  // nothing.
+  //
+  // The script is GoatCounter's frozen v5 build with the SRI hash they
+  // publish at goatcounter.com/help/countjs-versions, so the browser refuses
+  // to run it if the file on their CDN ever changes. Every page's CSP allows
+  // the script host and the count endpoint; tests/nav.test.js checks that
+  // both still match what's here.
+  const GOATCOUNTER = {
+    endpoint: 'https://av-atlas.goatcounter.com/count',
+    script: 'https://gc.zgo.at/count.v5.js',
+    integrity: 'sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ',
+  };
   if (location.hostname === 'nightrome.github.io' &&
       location.pathname.startsWith('/av-atlas/')) {
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', GA_ID);
+    // Count a detail page per record (author.html?name=...), but drop filter,
+    // sort and the reload button's ?v= cache-buster, which would otherwise
+    // split one page into a separate entry for every combination.
+    window.goatcounter = {
+      path() {
+        const prev = new URLSearchParams(location.search);
+        const kept = new URLSearchParams();
+        IDENTITY_PARAMS.forEach(k => {
+          const val = prev.get(k);
+          if (val) kept.set(k, val);
+        });
+        const query = kept.toString();
+        return location.pathname + (query ? '?' + query : '');
+      },
+    };
     const s = document.createElement('script');
     s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    s.src = GOATCOUNTER.script;
+    s.integrity = GOATCOUNTER.integrity;
+    s.crossOrigin = 'anonymous';
+    s.setAttribute('data-goatcounter', GOATCOUNTER.endpoint);
     document.head.appendChild(s);
   }
 })();

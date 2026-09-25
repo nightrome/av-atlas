@@ -7,8 +7,11 @@ needed). Exits non-zero if anything fails, so it's CI-friendly.
 
 Usage: python av-atlas/scripts/run_tests.py
 """
+import json
+import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -52,6 +55,11 @@ def main():
     result = subprocess.run(["node", str(BASE / "tests" / "new_page_test.js")], cwd=BASE)
     failed = failed or result.returncode != 0
 
+    print("\n=== JS tests (tests/nav.test.js) ===")
+    nav_test = BASE / "tests" / "nav.test.js"
+    result = subprocess.run(["node", str(nav_test)], cwd=BASE)
+    failed = failed or result.returncode != 0
+
     for label, script in (("QA smoke test", "qa_smoke_test.js"),
                           ("UI regression test", "ui_regression_test.js"),
                           ("Detail page test", "detail_page_test.js")):
@@ -66,6 +74,28 @@ def main():
         except subprocess.TimeoutExpired:
             print(f"{label} exceeded its time budget and was killed.")
             failed = True
+
+    # The pages actually get a slimmed stats.json and a separate about.json
+    # (see build_public_site.py), so run the smoke test once more against
+    # exactly those, to catch a page that reads something the slimming drops.
+    label = "QA smoke test on the published payload"
+    print(f"\n=== {label} (tests/qa_smoke_test.js, capped at 1 minute) ===")
+    if not have_stats:
+        print(f"SKIPPED: needs {STATS_FILE}, which is gitignored and rebuilt by the pipeline.")
+        skipped.append(label)
+    else:
+        sys.path.insert(0, str(SCRIPTS_DIR))
+        import build_public_site
+        with tempfile.TemporaryDirectory() as payload_dir:
+            build_public_site.write_page_payloads(
+                json.loads(STATS_FILE.read_text(encoding="utf-8")), Path(payload_dir))
+            try:
+                result = subprocess.run(["node", str(BASE / "tests" / "qa_smoke_test.js")], cwd=BASE,
+                                        timeout=75, env={**os.environ, "AV_ATLAS_PAYLOAD_DIR": payload_dir})
+                failed = failed or result.returncode != 0
+            except subprocess.TimeoutExpired:
+                print(f"{label} exceeded its time budget and was killed.")
+                failed = True
 
     if failed:
         print("\nSome tests failed.")

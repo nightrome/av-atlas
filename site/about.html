@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://av-atlas.goatcounter.com/count; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
 <title>AV Atlas: About</title>
 <meta name="description" content="How AV Atlas finds, classifies, and scores autonomous vehicle research papers, and two independent checks on how reliable the numbers actually are.">
 <meta property="og:type" content="website">
@@ -18,6 +18,7 @@
 <meta name="twitter:description" content="How AV Atlas finds, classifies, and scores autonomous vehicle research papers, and two independent checks on how reliable the numbers actually are.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preload" href="about.json" as="fetch" crossorigin>
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="theme-light.css">
 <style>
@@ -28,8 +29,6 @@
   h3 { font-size: 1em; margin: 20px 0 8px; }
   p { line-height: 1.6; }
   .section-intro { color: var(--muted); font-size: 0.88em; margin: 0 0 16px; }
-  .download-list { font-size: 0.9em; line-height: 1.7; padding-left: 20px; }
-  .download-list a { color: var(--accent); }
   .freshness-note { color: var(--muted); font-size: 0.85em; margin-top: -8px; }
   table.data-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.92em; }
   table.data-table th, table.data-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--border); }
@@ -85,6 +84,7 @@
 <body>
 <nav id="topnav"></nav>
 <p class="freshness-note" id="freshness-note"></p>
+<p class="freshness-note" id="version-note" hidden></p>
 
 <details class="detail-section" open>
 <summary>What AV Atlas is</summary>
@@ -207,7 +207,11 @@
       plenty of non-AV papers.</li>
   <li><strong>3. Enrich.</strong> For AV-relevant papers only: each author's affiliation and a
       stable ID that tells apart authors who share a name are looked up where that information can
-      be found, plus profile photos for top-ranked authors.</li>
+      be found. Some top-ranked authors also get a link to their Google Scholar profile and its
+      photo, and most of the 100 most-cited papers get a link to their own Scholar page. Google
+      Scholar doesn't allow automated queries, so these links are now checked and added by hand.
+      Most of the paper links were first collected by a script in September 2026, which has since
+      been removed.</li>
   <li><strong>4. Citation graph.</strong> For every paper whose full text is available, its
       reference list is checked against the rest of the corpus to work out which papers cite which.
       Reference lists from Semantic Scholar are added on top; those already point at specific
@@ -224,12 +228,21 @@
       category breakdowns are computed and published to every page on this site.</li>
 </ul>
 <p>
+  <strong>Where the papers come from.</strong> About <span id="src-listing-pct">55%</span> of the
+  AV papers (<span id="src-listing-n">14,209</span>) come from the complete venue listings that
+  stage&nbsp;1 collects. The other <span id="src-found-pct">45%</span>
+  (<span id="src-found-n">11,540</span>) were found in stage&nbsp;4 because they cite a paper that
+  was already in the corpus. Those include journal and workshop papers from outside the covered
+  venues, and <span id="src-arxiv-n">6,155</span> arXiv preprints that never appeared at a venue we
+  index, about <span id="src-arxiv-pct">24%</span> of all AV papers.
+</p>
+<p>
   <strong>A note on preprints.</strong> Conferences and journals each publish a fixed, known set of
-  accepted papers every year &mdash; that fixed list is what stage&nbsp;1 collects, in full. Papers
-  that only ever appeared as preprints, with no peer review and no such fixed list, are not
-  collected that way. A preprint is only included if it was also published at a covered venue (as a
-  source of full text), or if it's found through the citation graph in stage&nbsp;4 because
-  something already in the corpus cites it.
+  accepted papers every year &mdash; that fixed list is what stage&nbsp;1 collects, in full. arXiv
+  has no such list, so preprints are not collected that way. A preprint is included only if it
+  cites a paper already in the corpus (stage&nbsp;4 above), or if it was later published at a
+  covered venue, in which case it counts as that venue's paper. Preprints count in every ranking
+  and total on this site, the same as published papers.
 </p>
 </div>
 </details>
@@ -308,6 +321,7 @@
   those. Venues under 500 collected papers (mostly incidental, discovered via the citation graph
   rather than a full pull) aren't listed here.
 </p>
+<p class="section-intro" id="coverage-updated"></p>
 <div style="display:flex;align-items:center;gap:8px;position:relative;justify-content:flex-end;">
   <span class="info-tip" tabindex="0" role="img" aria-label="Per venue: the year range of papers pulled and whether abstracts have been collected for all years, some, or none. Generated from the corpus itself." data-tip="Per venue: the year range of papers pulled and whether abstracts have been collected for all years, some, or none. Generated from the corpus itself.">i</span>
 </div>
@@ -357,19 +371,12 @@
   so anything here can be checked, extended, or plotted a different way without re-running
   the pipeline. <code>paper_id</code> joins the tables.
 </p>
-<ul class="download-list">
-  <li><a href="download/av-atlas-papers.csv.gz">av-atlas-papers.csv.gz</a>
-      — one row per AV paper: title, year, venue, category, in-corpus citations,
-      institutions, countries.</li>
-  <li><a href="download/av-atlas-authorship.csv.gz">av-atlas-authorship.csv.gz</a>
-      — paper-to-author rows, with author position.</li>
-  <li><a href="download/av-atlas-citations.csv.gz">av-atlas-citations.csv.gz</a>
-      — the in-corpus citation edge list.</li>
-  <li><a href="download/av-atlas-institutions.csv.gz">av-atlas-institutions.csv.gz</a>
-      — institutions with country, sector and totals.</li>
-  <li><a href="download/README.md">README.md</a>
-      — column definitions and, more importantly, what these numbers are not.</li>
-</ul>
+<p class="section-intro">
+  The files for the current version (papers, authorship, citations, institutions and a README)
+  are linked <a href="index.html#download">at the bottom of the homepage</a>. Their names carry
+  the site version, for example <code>av-atlas-v0.1.2-papers.csv.gz</code>, so a downloaded
+  file always says which release it came from. Only the current version is available.
+</p>
 <p class="section-intro">
   Read the README before using them. Citation counts are internal to this corpus and
   incomplete; affiliations are resolved for a minority of papers; author names are not
@@ -379,7 +386,8 @@
 </p>
 <p class="section-intro">
   Citing this: a <a href="https://github.com/nightrome/av-atlas/blob/main/CITATION.cff"
-  target="_blank" rel="noopener">CITATION.cff</a> is in the repository.
+  target="_blank" rel="noopener">CITATION.cff</a> is in the repository. Please give the
+  site version you used as well, since the numbers change from one version to the next.
 </p>
 </div>
 </details>
@@ -395,13 +403,32 @@
 <h3>Privacy</h3>
 <p>
   This site indexes bibliographic metadata (titles, author names, affiliations, venues, years, and
-  citation relationships) about published academic papers. The site uses Google Analytics to
-  count page views and see which pages are visited; it collects no other information about
-  visitors. If you are an author and believe your information is displayed
+  citation relationships) about published academic papers, taken from the public sources listed
+  under License below. For some authors it also links their Google Scholar profile and shows the
+  photo from it. Holger Caesar (see Contact above) is responsible for this data. It is published
+  to give an overview of autonomous-vehicle research, on the basis of legitimate interest
+  (Art. 6(1)(f) GDPR), and an entry stays for as long as its paper is in the corpus.
+</p>
+<p>
+  If you are an author and believe your information is displayed
   inaccurately, or you'd like your name, affiliation, or photo removed or corrected, use the
   <strong>"Report an error on this page"</strong> button (🚩) in the navigation bar, or
   <a href="#" id="about-report-link">click here</a>. No account or sign-up required, and this
-  applies equally to a data correction and a privacy takedown request.
+  applies equally to a data correction and a privacy takedown request. You can also complain to
+  the Dutch data protection authority, the
+  <a href="https://autoriteitpersoonsgegevens.nl/" style="color: var(--accent);">Autoriteit Persoonsgegevens</a>.
+</p>
+<p>
+  As a visitor: page views are counted with
+  <a href="https://www.goatcounter.com/" style="color: var(--accent);">GoatCounter</a>, which sets
+  no cookies and doesn't store IP addresses or anything else that identifies you. It keeps only
+  totals per page, such as the referring site, browser, screen size and country. Author photos are
+  loaded from Google's servers (scholar.googleusercontent.com), so Google sees your IP address
+  whenever a photo is shown. Some institution images are loaded from Wikimedia's servers in the
+  same way. The site is hosted on GitHub Pages, which logs visitors' IP addresses for
+  security purposes; see
+  <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+  style="color: var(--accent);">GitHub's privacy statement</a>.
 </p>
 <h3>Source code and design notes</h3>
 <p>
@@ -487,9 +514,21 @@
 </script>
 <script src="filters.js"></script>
 <script>
-fetch('stats.json').then(r => r.json()).then(stats => {
-  if (stats.generated_at) {
-    document.getElementById('freshness-note').textContent = `Data last updated ${stats.generated_at}.`;
+// about.json is the part of stats.json this page reads, written by
+// build_public_site.py, so the About page doesn't download every paper.
+fetch('about.json').then(r => r.json()).then(stats => {
+  const updated = dataUpdatedText(stats);
+  if (updated) {
+    document.getElementById('freshness-note').textContent = `${updated}.`;
+    document.getElementById('coverage-updated').textContent =
+      `${updated}. This is the last time a paper, author list, citation count or corpus total changed; a rebuild that changes none of them keeps the date.`;
+  }
+  // build_public_site.py adds site_version to every published JSON file,
+  // about.json included, so it's the version of the data this page shows.
+  if (stats.site_version) {
+    const versionNote = document.getElementById('version-note');
+    versionNote.textContent = `Site version v${stats.site_version}.`;
+    versionNote.hidden = false;
   }
 
   const cs = stats.corpus_stats || {};
@@ -518,6 +557,20 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   tile((cs.total_institutions || 0).toLocaleString(), 'Institutions');
   tile(((cs.big_venues || []).length || cs.venues_covered || 0).toLocaleString(), 'Venues');
   tile((cs.total_countries || (stats.top_countries || []).length || 0).toLocaleString(), 'Countries');
+
+  // -- Where the papers come from (the static text holds the September 2026
+  // numbers; these keep it current after each rebuild). --
+  const src = stats.paper_sources || {};
+  if (src.total) {
+    const share = n => Math.round((n / src.total) * 100) + '%';
+    const setText = (id, text) => { document.getElementById(id).textContent = text; };
+    setText('src-listing-pct', share(src.venue_listing));
+    setText('src-listing-n', src.venue_listing.toLocaleString());
+    setText('src-found-pct', share(src.citation_found));
+    setText('src-found-n', src.citation_found.toLocaleString());
+    setText('src-arxiv-n', src.arxiv_only.toLocaleString());
+    setText('src-arxiv-pct', share(src.arxiv_only));
+  }
 
   // -- Data coverage table (generated from the corpus itself, see
   // aggregate.py's venue_coverage -- never hand-typed, can't go stale). --
@@ -594,11 +647,11 @@ fetch('stats.json').then(r => r.json()).then(stats => {
   }
 }).catch(() => {});
 
-// Google Scholar citation-count comparison study, hand-collected in-session
-// (Google Scholar's own robots.txt/ToS don't permit automated scraping, so
-// this was 27 individual manual lookups, not a repeatable script) --
-// hardcoded here as a one-time empirical result, not something aggregate.py
-// recomputes.
+// Google Scholar citation-count comparison study, looked up by hand one paper
+// at a time: 52 lookups, not a repeatable script, since Scholar's terms don't
+// allow automated queries (no script in this repo queries Scholar; see
+// DECISIONS.md, "Paper Scholar links are added by hand"). Hardcoded here as a
+// one-time result, not something aggregate.py recomputes.
 const SCHOLAR_STUDY = [
   ["Pseudo-LiDAR++: Accurate Depth for 3D Object Detection in Autonomous Driving", 77, 607],
   ["Objects Are Different: Flexible Monocular 3D Object Detection", 68, 466],

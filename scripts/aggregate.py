@@ -27,6 +27,7 @@ not its full breadth; that's a known, disclosed limitation, not a bug.
 
 Usage: python aggregate.py
 """
+import hashlib
 import html
 import json
 import re
@@ -38,6 +39,7 @@ from pathlib import Path
 
 from atomic_write import write_json_atomic
 import new_papers
+from email_addresses import find_email_addresses, strip_email_addresses
 
 BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
@@ -117,8 +119,8 @@ ABSTRACT_SHARD_COUNT = 64
 # not worth a second lazy-fetch code path in insights.html for.
 CITATIONS_DIR = BASE / "data" / "citations"
 SCHOLAR_PROFILES_FILE = BASE / "data" / "scholar_profiles.json"
-# {"links": {normalized title: the paper's own Google Scholar citation URL}},
-# written by fetch_scholar_paper_links.py, which only saves confirmed matches.
+# {"links": {normalized title: the paper's own Google Scholar page}}, edited by
+# hand (DECISIONS.md, "Paper Scholar links are added by hand").
 SCHOLAR_PAPER_LINKS_FILE = BASE / "data" / "scholar_paper_links.json"
 ORCIDS_FILE = BASE / "data" / "orcids.json"
 INSTITUTION_LOGOS_FILE = BASE / "data" / "institution_logos.json"
@@ -1644,8 +1646,8 @@ LEADING_ARTICLE_RE = re.compile(r"^the\s+", re.I)
 # to "M" before this got tightened (caught in testing, not live).
 LEADING_FOOTNOTE_NUMBER_RE = re.compile(r"^\d+(?=[A-Z][a-z]{2,})")
 
-# An obfuscated email address ("l.ferranti at tudelft.nl" instead of
-# "l.ferranti@tudelft.nl", a common anti-spam convention in PDF-extracted
+# An obfuscated email address ("j.doe at tudelft.nl" instead of
+# "j.doe@tudelft.nl", a common anti-spam convention in PDF-extracted
 # author blocks) -- EMAIL_LABEL_RE above only catches an explicit
 # "email:"/"e-mail:" label, not this "X at Y.tld" form with no label at all.
 OBFUSCATED_EMAIL_RE = re.compile(
@@ -2121,6 +2123,11 @@ def is_valid_institution(name):
     if EMAIL_LABEL_RE.search(name):
         return False
     if OBFUSCATED_EMAIL_RE.search(name):
+        return False
+    # An address left in the middle of the name (normalize_institution only
+    # strips a trailing one), or the user name of one whose domain it did
+    # strip ("ylliu @", "Valeo DARfirstname.lastname@"). Never published.
+    if find_email_addresses(name) or name.endswith("@"):
         return False
     if FUNDING_CREDIT_RE.search(name):
         return False
@@ -2748,6 +2755,48 @@ def scholar_url_field(links, title):
     the key is left out entirely so the site can test for its presence."""
     url = links.get(normalize_title(title))
     return {"scholar_url": url} if url else {}
+
+
+# The fields a reader would notice changing, and the only ones the "Data
+# last updated" date follows. generated_at moves on every build, even one
+# that only changed page code or rebuilt the same data, so it said nothing
+# about how fresh the numbers were. See DECISIONS.md.
+CONTENT_COUNT_KEYS = ("total_researchers", "total_institutions", "total_countries", "venues_covered")
+
+
+def content_hash(papers, generated_from, av_relevant, corpus_stats):
+    """sha256 over what the site publishes about each AV paper (title,
+    venue, year, authors, citation count) plus the top-level counts.
+    Paper order doesn't matter, so a re-sort alone never counts as new
+    content."""
+    rows = sorted(
+        (json.dumps([p.get("title") or "", p.get("venue") or "", p.get("year"),
+                     list(p.get("authors") or []), p.get("citations")],
+                    ensure_ascii=False, default=str)
+         for p in papers))
+    payload = {
+        "papers": rows,
+        "generated_from": generated_from,
+        "av_relevant": av_relevant,
+        "counts": {k: corpus_stats.get(k) for k in CONTENT_COUNT_KEYS},
+    }
+    blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def content_updated_date(new_hash, previous_stats_file, today):
+    """The date the published content last changed: the previous build's
+    date when its content_hash matches, otherwise today. A missing or
+    unreadable previous stats.json, or one from before these fields
+    existed, counts as changed."""
+    try:
+        previous = json.loads(Path(previous_stats_file).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return today
+    if (isinstance(previous, dict) and previous.get("content_hash") == new_hash
+            and previous.get("content_updated")):
+        return previous["content_updated"]
+    return today
 
 
 def main():
@@ -4000,6 +4049,13 @@ def main():
         # Cheap enough to ship inline in stats.json rather than its own file.
         "identity_conflicted_authors": sorted(identity_conflicts),
     }
+    # The date the site shows as "Data last updated". Worked out before
+    # OUT_FILE is overwritten below, since an unchanged hash keeps the
+    # previous build's date.
+    stats["content_hash"] = content_hash(
+        papers, stats["generated_from"], stats["av_relevant"], stats["corpus_stats"])
+    stats["content_updated"] = content_updated_date(
+        stats["content_hash"], OUT_FILE, stats["generated_at"])
     # No indent -- same reasoning as the non_av_papers/abstract shards
     # just below (indent=2's per-key newline+spacing roughly doubled this
     # file's size at corpus scale, which is what pushed it over GitHub's
@@ -4053,7 +4109,9 @@ def main():
     for e in entries:
         title, abstract = e.get("title"), e.get("abstract")
         if title and abstract:
-            shards[shard_index(title)][title] = abstract
+            # Abstracts pulled out of PDFs sometimes end in a "Corresponding
+            # author: name@host" footnote. Only the domain is published.
+            shards[shard_index(title)][title] = strip_email_addresses(abstract)
             n_abstracts += 1
     for i, shard in enumerate(shards):
         shard_path = ABSTRACTS_DIR / f"shard-{i:02d}.json"

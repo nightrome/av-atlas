@@ -7,6 +7,7 @@ the staging remote -- no network involved.
 
 Usage: python -m unittest discover -s av-atlas/scripts/tests
 """
+import json
 import subprocess
 import sys
 import tempfile
@@ -70,6 +71,18 @@ class TreeTests(unittest.TestCase):
             self.assertFalse((dst / "old.json").exists())
             # Second run is a no-op: nothing re-written.
             self.assertEqual(deploy.sync_tree(src, dst), (0, 0))
+
+    def test_sync_drops_the_previous_versions_download_files(self):
+        with tempfile.TemporaryDirectory() as s, tempfile.TemporaryDirectory() as d:
+            src, dst = Path(s), Path(d)
+            (src / "download").mkdir()
+            (src / "download" / "av-atlas-v0.1.3-papers.csv.gz").write_bytes(b"new")
+            (dst / "download").mkdir()
+            (dst / "download" / "av-atlas-v0.1.2-papers.csv.gz").write_bytes(b"old")
+            (dst / "download" / "av-atlas-papers.csv.gz").write_bytes(b"older")
+            deploy.sync_tree(src, dst)
+            self.assertEqual(sorted(p.name for p in (dst / "download").iterdir()),
+                             ["av-atlas-v0.1.3-papers.csv.gz"])
 
     def test_sync_transform_applies_to_html_only_and_is_idempotent(self):
         with tempfile.TemporaryDirectory() as s, tempfile.TemporaryDirectory() as d:
@@ -238,6 +251,42 @@ class PublishEndToEndTests(unittest.TestCase):
             self.assertIn('"v": 2', git("show", "gh-pages:stats.json", cwd=remote))
             self.assertIn("PREVIEW BUILD", git("show", "gh-pages:index.html", cwd=remote))
             self.assertIn(h2, git("show", f"gh-pages:{deploy.BUILD_INFO_NAME}", cwd=remote))
+
+    def test_publish_keeps_the_version_the_build_assigned(self):
+        # build_public_site.py writes the version into public/BUILD_INFO.json.
+        # Publishing (preview or promote) must carry it over, not work out a
+        # new one, and a production deploy records it for the offline fallback.
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            remote = root / "remote.git"
+            subprocess.run(["git", "init", "--bare", "--quiet", str(remote)], check=True)
+            public = root / "public"
+            public.mkdir()
+            (public / "index.html").write_text(PAGE)
+            (public / deploy.BUILD_INFO_NAME).write_text(
+                json.dumps({"version": "0.1.2", "built_at": "2026-09-24T10:00:00+0200"}))
+            repo = root / "repo"
+            repo.mkdir()
+            git("init", "--quiet", cwd=repo)
+            git("remote", "add", "origin", str(remote), cwd=repo)
+            git("-c", "user.name=t", "-c", "user.email=t@t", "commit", "--allow-empty", "-m", "x", cwd=repo)
+
+            cache = root / "cache"
+            with mock.patch.object(deploy, "PUBLIC_DIR", public), \
+                 mock.patch.object(deploy, "CACHE_DIR", cache), \
+                 mock.patch.object(deploy, "STATE_FILE", cache / "state.json"), \
+                 mock.patch.object(deploy, "BASE", repo):
+                deploy.deploy_staging(str(remote))
+                staged = json.loads(git("show", f"gh-pages:{deploy.BUILD_INFO_NAME}", cwd=remote))
+                deploy.deploy_production()
+                live = json.loads(git("show", f"gh-pages:{deploy.BUILD_INFO_NAME}", cwd=remote))
+                state = deploy.load_state()
+
+            self.assertEqual(staged["version"], "0.1.2")
+            self.assertEqual(live["version"], "0.1.2")
+            self.assertEqual(live["built_at"], "2026-09-24T10:00:00+0200")
+            self.assertEqual(state["published_version"], "0.1.2")
+            self.assertEqual(git("log", "-1", "--format=%s", "gh-pages", cwd=remote), "Publish AV Atlas v0.1.2")
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ Start here. One command runs everything in this section.
 | Script | What it does |
 | --- | --- |
 | `deploy.py` | The deploy command. `--preview` publishes to the staging site, `--promote` publishes that build to production. With no flags it builds, commits to `main`, publishes and backs up the corpus. |
-| `build_public_site.py` | The build itself: merge, repair, aggregate, test, publish, data release. Every other script here is either called by it or produces files it reads. |
+| `build_public_site.py` | The build itself: merge, repair, aggregate, test, publish, data release. It also assigns the site version. Every other script here is either called by it or produces files it reads. |
 | `run_tests.py` | The full test suite. CI runs it too. |
 | `monthly_update.py` | The monthly update that GitHub Actions runs: restore, fetch, build, publish, back up, and a pull request for changed tracked files. `--dry-run` prints the plan. See README.md. |
 | `backup_corpus.py`, `restore_corpus.py` | Save `papers_full.json` and `citation_graph.json` to a draft GitHub Release, and pull them back on a new machine. `deploy.py` runs the backup after each deploy. |
@@ -26,11 +26,12 @@ Start here. One command runs everything in this section.
 
 | Script | What it does |
 | --- | --- |
+| `email_addresses.py` | Replaces every email address in the tracked `data/` files with its domain, since a crawl can bring them back. Also the helper the affiliation cache and `aggregate.py` use to keep addresses out. |
 | `merge_corpus.py` | Merges `data/venues/*.json` into `data/papers_full.json`, removes duplicates by normalized title, keeps existing enrichment, and reclassifies everything. |
 | `classify.py` | Gives each paper a category and an AV-relevance label. A module, not a script you run. |
 | `repair_garbled_authors_detail.py`, `repair_glued_institution_strings.py`, `repair_openalex_institution_errors.py` | Fixes for real data bugs that had already shipped. Safe to re-run, and run on every build so a recrawl from scratch gives the same corpus. |
 | `aggregate.py` | Turns the corpus into `data/stats.json`, which holds every number the pages show. |
-| `build_data_release.py` | Writes the downloadable CSVs to `public/download/`. |
+| `build_data_release.py` | Writes the downloadable CSVs to `public/download/`, named with the site version. |
 
 ## Collection (stage 1)
 
@@ -78,6 +79,10 @@ lets two crawlers run at the same time without fighting over one file.
 `enrich_av_authors.py`, `enrich_av_authors_by_doi.py` and every `apply_*.py`. The
 `fetch_*` scripts only write their own side files, so they are safe to run
 alongside anything.
+
+Nothing here talks to Google Scholar, which doesn't allow automated queries.
+`data/scholar_profiles.json` and `data/scholar_paper_links.json` are edited by hand
+(see DECISIONS.md, "Paper Scholar links are added by hand").
 
 ## Citation graph (stage 4)
 
