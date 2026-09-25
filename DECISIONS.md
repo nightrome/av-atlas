@@ -378,6 +378,23 @@ New papers are matched to existing ones by normalized title, the same key
 ("Scanning the Issue", "Editorial") is only touched when the DOI matches, since the
 title alone can't say which one it is.
 
+## New ICML, ICLR and ECCV editions come from PMLR and the conference sites
+
+With DBLP behind a bot check and OpenReview's API behind a challenge, ICML 2025
+comes from PMLR (v267, with abstracts, through the same `fetch_pmlr.py` as CoRL),
+and ICLR 2026, ICML 2026 and ECCV 2026 come from each conference's virtual-site
+JSON dump (`fetch_virtual_site.py`). Only the main-conference track is kept, plus
+ICML's position paper track because it's printed in the ICML proceedings (PMLR
+v267 has 3,330 papers, the ICML 2025 dump has 3,331 on those two tracks). Blog
+posts and TMLR/JMLR papers presented at the conference are left out.
+
+The 2026 dumps have no abstracts, so ICLR and ICML abstracts come from one
+poster-page request per paper. ECCV's poster pages carry text pulled from the PDF
+with the spaces at line breaks missing, so ECCV 2026 goes in without abstracts
+until ecva.net publishes its own page or the arXiv/Semantic Scholar backfills
+reach it. Once ecva.net has a 2026 section, `fetch_ecva_history.py` should
+replace `eccv2026.json`.
+
 ## Misc vs uncategorized
 
 `classify_paper()` in `classify.py` used to leave every paper that matched no category
