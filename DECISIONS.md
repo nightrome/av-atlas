@@ -1194,6 +1194,42 @@ changes make deploys cheap and add a preview step:
   `run_step` calls, because adding or reordering a step there does change what a full build
   produces and would otherwise be skipped silently.
 
+## The monthly update publishes on its own, from GitHub Actions
+
+`scripts/monthly_update.py`, run once a month by `.github/workflows/monthly-update.yml`,
+fetches new papers, rebuilds and publishes straight to production. There is no human
+review step. The maintainer decided that some wrong papers are an acceptable price for
+a site that stays current without anyone remembering to run it. What protects
+production instead is the build itself: the tests, and the check that stops a build
+whose corpus shrank. If either fails, nothing is published and an issue is opened.
+
+It runs in GitHub Actions rather than on the laptop because the laptop isn't always on,
+and a job that depends on it would quietly stop. The runner starts empty, so it restores
+the corpus backup first, and everything a later run needs is either in that backup or
+recomputed. No LLM runs in it, and the PDFs never leave the laptop.
+
+Some things it writes are tracked files: new venue files and the arXiv ledger. The job
+must not commit to `main`, so it proposes them in a pull request from the
+`auto/monthly-update` branch. We didn't want the site to depend on that pull request
+being merged, so each run starts from `main` plus whatever that branch has that `main`
+doesn't (`main` wins where both changed a file). The branch is rebuilt each time as
+`main` plus one commit, not by merging `main` into it: a pushed merge commit that
+touches `.github/workflows/` is refused unless the token has the workflows permission,
+and we'd rather not give the bot that. Only a run that published pushes the branch, so
+data that failed the build can't block every later run.
+
+The laptop is still a second writer of the corpus, through the same backup release.
+The rule for the laptop is: start a session with `restore_corpus.py` and end it with
+`backup_corpus.py`. `backup_corpus.py` refuses to replace a backup this checkout didn't
+start from, so if the laptop and the job overlap, the later one fails loudly instead of
+throwing away the other's work.
+
+The first Semantic Scholar reference crawl covers the whole corpus and takes longer than
+the 6 hours a job may run. The job gives it the time left before the build, stops it
+with SIGINT so it saves, and backs up what it got; the next month resumes. The
+alternative was a separate crawl-only workflow, but a single job with a time budget per
+step was simpler to reason about.
+
 ## Wrong venue names from Semantic Scholar, and "missing" vs "not yet parsed"
 
 Semantic Scholar's `venue` string for arXiv-discovered papers is sometimes wrong: it
