@@ -35,5 +35,26 @@ class TestInCorpusCounts(unittest.TestCase):
         self.assertEqual(counts.get("target", 0), 2)
 
 
+class TestApplyCounts(unittest.TestCase):
+    def test_count_dropped_from_the_graph_is_removed(self):
+        # A rebuilt graph can lose edges (the stricter matcher took
+        # "Welcome" from 29 to 0); the old count must not linger.
+        papers = [{"title": "Welcome", "citations_by_source": {"in_corpus": {"count": 29, "updated": "2026-09-08"}}}]
+        self.assertEqual(acs.apply_counts(papers, {"generated_at": "2026-09-24", "edges": {}}), 1)
+        self.assertNotIn("citations_by_source", papers[0])
+
+    def test_unchanged_count_keeps_its_date(self):
+        papers = [{"title": "Target", "citations_by_source": {"in_corpus": {"count": 1, "updated": "2026-09-08"}}}]
+        graph = {"generated_at": "2026-09-24", "edges": {"citer": ["target"]}}
+        self.assertEqual(acs.apply_counts(papers, graph), 0)
+        self.assertEqual(papers[0]["citations_by_source"]["in_corpus"]["updated"], "2026-09-08")
+
+    def test_changed_count_is_restamped(self):
+        papers = [{"title": "Target"}]
+        graph = {"generated_at": "2026-09-24", "edges": {"a": ["target"], "b": ["target"]}}
+        acs.apply_counts(papers, graph)
+        self.assertEqual(papers[0]["citations_by_source"]["in_corpus"], {"count": 2, "updated": "2026-09-24"})
+
+
 if __name__ == "__main__":
     unittest.main()

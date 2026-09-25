@@ -10,6 +10,10 @@ Runs, in order, and aborts (non-zero exit) if any step fails:
   1. merge_corpus.py -- rebuilds data/papers_full.json from data/venues/*.json
      plus arXiv, carrying over enrichment (author detail, citations,
      abstracts, ...) from the previous run, and reclassifies every paper.
+     Then build_citation_graph.py --match-only rematches every saved
+     reference list against that corpus (no network) and
+     apply_citation_sources.py stamps the new in-corpus counts, so the
+     graph never lags behind the reference lists on disk.
   2. repair_garbled_authors_detail.py / repair_glued_institution_strings.py /
      repair_openalex_institution_errors.py -- idempotent one-off fixes for
      real, already-shipped data bugs. Run here (not left as a step to
@@ -290,9 +294,9 @@ def build_public_site():
     print(f"  robots.txt (allow all)")
 
 
-def run_step(label, script_name):
+def run_step(label, script_name, *args):
     print(f"\n--- {label} ---")
-    result = subprocess.run([sys.executable, script_name], cwd=SCRIPTS_DIR)
+    result = subprocess.run([sys.executable, script_name, *args], cwd=SCRIPTS_DIR)
     if result.returncode != 0:
         raise SystemExit(f"{script_name} failed (exit {result.returncode}) -- aborting before publish.")
 
@@ -312,6 +316,9 @@ def main():
     else:
         run_step("Fixing suspect venue names", "fix_suspect_venues.py")
         run_step("Rebuilding corpus (merge_corpus.py)", "merge_corpus.py")
+        run_step("Rematching citations (build_citation_graph.py --match-only)",
+                 "build_citation_graph.py", "--match-only")
+        run_step("Applying in-corpus citation counts", "apply_citation_sources.py")
         # One-off data repairs, applied here (not just left as scripts to remember
         # to run by hand) so a full recrawl-from-scratch reproduces the same
         # corpus without a manual step: merge_corpus.py rebuilds papers_full.json
