@@ -431,6 +431,23 @@ page has an abstract, and the volume is year minus 2004, which the script checks
 against each page's own date. The older years stay on DBLP for now. BMVC's site
 changes every year, so its fetcher keeps one listing URL per year and refuses to write
 a file when the listing parses to nothing.
+## New editions are found by a monthly check, and fetched only where a fetcher exists
+
+`scripts/check_new_editions.py` runs with the monthly update. For each conference it
+compares the years in `data/venues/` with what the venue's own proceedings site (or
+Crossref, for IEEE and Springer) lists, and runs the matching fetcher straight away
+when this checkout has one. Nobody reviews that step, which is in line with the
+monthly updates publishing on their own: a wrong edition is cheaper to fix after the
+fact than a missing one.
+
+What it won't do on its own: write a parser for a new site layout (BMVC moves every
+year), add a GitHub paper list from an account that isn't already in its owner list
+(a lookalike ICRA 2026 list from an unknown account turned up in search), or refetch
+a file that is shorter than its live listing. Those go into the run summary instead.
+A listing that has fewer papers than our file (withdrawn papers, as with 26 CVPR 2026
+papers) is also only reported, since dropping papers is a call for a person. The DBLP
+check is a single page request that says whether the bot challenge is still up; it
+never tries to get past it.
 
 ## Misc vs uncategorized
 

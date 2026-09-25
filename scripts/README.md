@@ -38,6 +38,7 @@ build.
 
 | Script | What it does |
 | --- | --- |
+| `check_new_editions.py` | Finds conference editions that are out but not in `data/venues/` yet and runs the matching fetcher. Also flags venue files that are shorter than the live listing, and says whether DBLP still blocks scripts. |
 | `fetch_cvf.py`, `fetch_cvf_history.py` | CVPR, ICCV, WACV and ACCV from CVF Open Access. |
 | `fetch_ecva_history.py` | ECCV from ecva.net. |
 | `fetch_neurips.py`, `fetch_neurips_history.py` | NeurIPS proceedings. |

@@ -29,6 +29,15 @@ The six journals, ITSC, IV and GCPR have since moved to Crossref
 Crossref has no abstracts for IEEE papers, so the same script fills them from
 Semantic Scholar's `/paper/batch` endpoint by DOI, 500 papers per request.
 
+### New editions and short files are checked monthly
+
+`scripts/check_new_editions.py` looks for editions that are out but not in
+`data/venues/` yet, and fetches them when a fetcher exists (see its docstring for
+the source it asks for each venue). It also compares the paper count of recent
+venue files with the live listing, which is how a fetch that stopped partway
+(CVPR 2022, 774 of 2,074 papers) gets noticed, and it reports whether DBLP still
+serves its bot challenge. `--no-fetch` gives the report without fetching anything.
+
 ### OpenAlex and arXiv rate limits (observed 2026-09-14)
 
 Two backfill scripts exist to collect data that these sources still give away
