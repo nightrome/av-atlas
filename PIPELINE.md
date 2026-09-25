@@ -411,10 +411,7 @@ the laptop.
 - **`aggregate.py`** reads `data/papers_full.json` and writes `data/stats.json`,
   which is what the UI reads. Leaderboards rank AV papers only. It also writes
   `data/abstracts/shard-NN.json`, abstracts sharded out of `stats.json` so only
-  `paper.html` pays for them (see DECISIONS.md). And it writes
-  `data/new_papers.json`, the AV papers first seen in the last three months, which
-  `build_public_site.py` publishes along with `feed.xml`, an Atom feed of the newest
-  100 of them. `new.html` shows the list by month.
+  `paper.html` pays for them (see DECISIONS.md).
 
 ## Citation counts
 

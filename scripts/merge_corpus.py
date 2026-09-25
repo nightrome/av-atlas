@@ -201,15 +201,16 @@ def normalize_title(t):
 
 
 # first_seen: the date (UTC, YYYY-MM-DD) a paper first showed up in
-# papers_full.json. It feeds the "New papers" page and the Atom feed (see
-# new_papers.py). Nothing in the venue files records it, so it lives only in
+# papers_full.json. Nothing reads it now (the "New papers" page and Atom
+# feed that used it were removed), but it's cheap to keep. Nothing in the
+# venue files records it, so it lives only in
 # papers_full.json and is carried from one run to the next like the
 # enrichment fields below: matched by normalized title, then by arXiv ID so
 # a preprint whose title changed between versions isn't counted as new again.
 #
 # Tracking started in September 2026. Every paper already in the corpus then
 # got FIRST_SEEN_BASELINE instead of a real date -- it means "on or before
-# this date", and new_papers.py never lists a paper carrying it. The same
+# this date", and was never shown as new. The same
 # baseline is used when there's no previous papers_full.json to carry dates
 # from (a fresh clone, or a lost file): stamping 250k papers with today's date
 # would announce the whole corpus as new.

@@ -27,7 +27,7 @@ const PAGES = [
   'index.html', 'authors.html', 'institutions.html', 'venues.html',
   'countries.html', 'categories.html', 'about.html',
   'paper.html', 'author.html', 'institution.html', 'venue.html', 'country.html', 'network.html',
-  'insights.html', 'compare.html', 'new.html',
+  'insights.html', 'compare.html',
 ];
 
 function checkPage(file) {

@@ -813,7 +813,11 @@ this checkout last restored or backed up.
 
 ## "New papers" are dated by when they entered the corpus
 
-The New papers page and `feed.xml` list papers by `first_seen`, the date a paper first
+The New papers page and the Atom feed have since been removed: the site is about how
+the AV research field looks as a whole, not about following individual new papers.
+`merge_corpus.py` still records `first_seen`; the rest of this entry is how it worked.
+
+The New papers page and `feed.xml` listed papers by `first_seen`, the date a paper first
 turned up in `papers_full.json`, not by publication year. Readers who follow the feed
 want to know what changed on the site, and a paper found late (an older ICRA paper that
 only just got cited, a CVPR edition fetched a month after the conference) is news to
@@ -826,7 +830,7 @@ date. That makes the date exactly as durable as `papers_full.json` itself, which
 more reason that file has to be backed up (see above).
 
 Everything already in the corpus when this started got a placeholder, 2026-09-01, which
-the page and feed ignore. The same placeholder is used when there's no previous
+the page and feed ignored. The same placeholder is used when there's no previous
 `papers_full.json` at all. Otherwise a fresh clone or a lost file would stamp all 235k
 papers with today's date and announce the whole corpus as new. For the same reason, a
 run where more than 20,000 papers are unknown to the previous file gives them the
@@ -834,7 +838,7 @@ placeholder too. A normal month adds a few thousand at most, so that many means 
 file was missing from the last build and came back (the ~49k-paper
 `arxiv_s2_citing.json` is the likely one), or a whole venue history was backfilled.
 
-The feed has titles, venues, years and authors, but no abstracts: most abstracts here
+The feed had titles, venues, years and authors, but no abstracts: most abstracts here
 come from sources whose terms don't cover republishing them.
 
 ## By-hand data corrections are scripts, not one-off edits
