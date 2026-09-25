@@ -783,6 +783,13 @@ and the graph uses every saved reference list" for why. `apply_citation_sources.
 leaves the counts alone when there is no `citation_graph.json` at all, since a missing
 file means nothing is known, not that nobody cites anything.
 
+A checkout without the raw CVF and arXiv reference lists (about 350 MB, not in the corpus
+backup), like the monthly job's runner, can't rematch those. There `--match-only` keeps
+the restored graph's edges as they are and adds the Semantic Scholar edges on top, so the
+reference lists the monthly job fetches from Semantic Scholar still reach the site.
+Rematching from the S2 lists alone would have thrown away most of the text-matched edges,
+and the shrink check below would then have stopped every monthly publish.
+
 ## A build that shrinks the corpus doesn't publish
 
 After `aggregate.py`, `publish_gate.py` compares the new `stats.json` with the previous

@@ -591,33 +591,62 @@ def s2_edges(refs_s2, s2_ids, corpus_keys=None):
     return edges
 
 
-def match_phase(index):
+def carried_edges(previous_graph, corpus_keys):
+    """The edges of an existing citation_graph.json, minus papers that have
+    left the corpus. Stands in for the text-matched edges when the raw CVF
+    and arXiv reference lists aren't on disk (see match_phase)."""
+    edges = {}
+    for citer, cited in (previous_graph.get("edges") or {}).items():
+        if citer in corpus_keys:
+            kept = set(cited) & corpus_keys
+            if kept:
+                edges[citer] = kept
+    return edges
+
+
+def match_phase(index, previous_graph=None):
     # Always runs, fetch or no fetch -- pure local computation over whatever
     # raw reference text has been saved so far by either source, against
     # whatever the corpus looks like right now. This is what lets a later
     # corpus expansion surface new edges for a paper scanned long ago,
     # without re-fetching anything.
-    cvf_all_refs = load_refs_cvf()
-    cvf_refs = cvf_all_refs["references"]
-    arxiv_refs = load_json(REFS_ARXIV_FILE, {})
-    # Confirmed-404 papers can never be fetched no matter how many times this
-    # reruns -- counted as "done" (nothing left to do), not "still pending",
-    # by aggregate.py's coverage stat.
-    cvf_permanent_failures = sum(1 for v in cvf_all_refs["failed"].values() if v.get("permanent"))
-
+    #
+    # previous_graph is for a checkout without the raw CVF/arXiv reference
+    # lists, like the monthly job's runner: they aren't in the corpus backup
+    # (about 350 MB). There the existing graph's edges are kept as they are
+    # and only the Semantic Scholar edges are added fresh, so new S2
+    # reference lists still reach the site.
     refs_s2 = load_json(REFS_S2_FILE, {})
+    s2_map = s2_edges(refs_s2, load_json(S2_IDS_FILE, {}), index.keys)
 
-    # One edge map per source of citation data, merged below. A new source
-    # (another kind of saved reference list, or edges that already come
-    # resolved) only needs an entry here and in sources_scanned. Semantic
-    # Scholar's lists come already resolved to CorpusIds, so they need no
-    # title matching; keys that have left the corpus are dropped.
-    edge_maps = {
-        "cvf": reference_list_edges(cvf_refs, index),
-        "arxiv": reference_list_edges(arxiv_refs, index),
-        "s2": s2_edges(refs_s2, load_json(S2_IDS_FILE, {}), index.keys),
-    }
-    text_edges = merge_edge_sources([edge_maps["cvf"], edge_maps["arxiv"]])
+    if previous_graph is not None:
+        cvf_refs, arxiv_refs = {}, {}
+        old_scanned = previous_graph.get("sources_scanned") or {}
+        n_cvf, n_arxiv = old_scanned.get("cvf", 0), old_scanned.get("arxiv", 0)
+        cvf_permanent_failures = previous_graph.get("cvf_permanent_failures", 0)
+        edge_maps = {"carried": carried_edges(previous_graph, index.keys), "s2": s2_map}
+        text_edges = edge_maps["carried"]
+    else:
+        cvf_all_refs = load_refs_cvf()
+        cvf_refs = cvf_all_refs["references"]
+        arxiv_refs = load_json(REFS_ARXIV_FILE, {})
+        n_cvf, n_arxiv = len(cvf_refs), len(arxiv_refs)
+        # Confirmed-404 papers can never be fetched no matter how many times this
+        # reruns -- counted as "done" (nothing left to do), not "still pending",
+        # by aggregate.py's coverage stat.
+        cvf_permanent_failures = sum(1 for v in cvf_all_refs["failed"].values() if v.get("permanent"))
+
+        # One edge map per source of citation data, merged below. A new source
+        # (another kind of saved reference list, or edges that already come
+        # resolved) only needs an entry here and in sources_scanned. Semantic
+        # Scholar's lists come already resolved to CorpusIds, so they need no
+        # title matching; keys that have left the corpus are dropped.
+        edge_maps = {
+            "cvf": reference_list_edges(cvf_refs, index),
+            "arxiv": reference_list_edges(arxiv_refs, index),
+            "s2": s2_map,
+        }
+        text_edges = merge_edge_sources([edge_maps["cvf"], edge_maps["arxiv"]])
     s2_only_edges = sum(len(cited - text_edges.get(citer, set()))
                         for citer, cited in edge_maps["s2"].items())
     edges, n_year_dropped = apply_year_guard(merge_edge_sources(edge_maps.values()), index)
@@ -625,7 +654,7 @@ def match_phase(index):
 
     graph = {
         "generated_at": TODAY,
-        "sources_scanned": {"cvf": len(cvf_refs), "arxiv": len(arxiv_refs),
+        "sources_scanned": {"cvf": n_cvf, "arxiv": n_arxiv,
                             "s2": len(refs_s2.get("references") or {})},
         "cvf_permanent_failures": cvf_permanent_failures,
         "edges_by_source": {name: sum(len(v) for v in m.values()) for name, m in edge_maps.items()},
@@ -633,7 +662,9 @@ def match_phase(index):
         "edges": {k: sorted(v) for k, v in sorted(edges.items())},
     }
     save_json(GRAPH_FILE, graph)
-    print(f"Match phase: {len(cvf_refs)} CVF + {len(arxiv_refs)} arXiv + "
+    text_part = ("the existing graph's edges" if previous_graph is not None
+                 else f"{len(cvf_refs)} CVF + {len(arxiv_refs)} arXiv")
+    print(f"Match phase: {text_part} + "
           f"{len(refs_s2.get('references') or {})} Semantic Scholar reference lists rematched "
           f"against the current corpus -- {total_edges} in-corpus citation edges found "
           f"across {len(edges)} papers ({s2_only_edges} edges came only from Semantic Scholar, "
@@ -650,13 +681,19 @@ def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     index = TitleIndex(papers)
     if args.match_only:
-        # The corpus backup (backup_corpus.py) carries citation_graph.json but
-        # not the reference lists, so a restored checkout has a graph and
-        # nothing to rebuild it from. Rematching there would replace it with
-        # a near-empty one.
+        # The corpus backup (backup_corpus.py) carries citation_graph.json and
+        # the Semantic Scholar lists but not the raw CVF/arXiv reference lists,
+        # so a restored checkout can't rematch those. Rematching there would
+        # replace the graph with a near-empty one; instead its edges are kept
+        # and only the S2 edges are added on top.
         missing = [f.name for f in (REFS_CVF_FILE, REFS_ARXIV_FILE) if not f.exists()]
         if missing and GRAPH_FILE.exists():
-            print(f"Keeping the existing {GRAPH_FILE.name}: {', '.join(missing)} not on disk.", flush=True)
+            if not REFS_S2_FILE.exists():
+                print(f"Keeping the existing {GRAPH_FILE.name}: {', '.join(missing)} not on disk.", flush=True)
+                return
+            print(f"{', '.join(missing)} not on disk: keeping the existing {GRAPH_FILE.name} edges and "
+                  f"adding the Semantic Scholar ones.", flush=True)
+            match_phase(index, previous_graph=load_json(GRAPH_FILE, {}))
             return
         match_phase(index)
         return
