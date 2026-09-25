@@ -100,6 +100,74 @@ class TestNormalizeTitle(unittest.TestCase):
         self.assertNotEqual(mc.normalize_title("Progress"), mc.normalize_title("Progres"))
 
 
+class TestHtmlEntitiesInTitles(unittest.TestCase):
+    def test_entities_are_unescaped_in_the_stored_title(self):
+        self.assertEqual(mc.clean_title("RoadText-1K: Text Detection &amp; Recognition Dataset"),
+                         "RoadText-1K: Text Detection & Recognition Dataset")
+        self.assertEqual(mc.clean_title("Piecewise B&#233;zier Curve"), "Piecewise B\u00e9zier Curve")
+        self.assertEqual(mc.clean_title("CHASE Algorithm: &#34;Ease of Driving&#34; Classification"),
+                         'CHASE Algorithm: "Ease of Driving" Classification')
+
+    def test_escaped_and_plain_copies_share_a_key(self):
+        self.assertEqual(mc.normalize_title("Navya3DSeg - Dataset Design &#38; Split Generation"),
+                         mc.normalize_title("Navya3DSeg - Dataset Design & Split Generation"))
+
+
+class TestAuthorStrings(unittest.TestCase):
+    def test_neurips_last_first_pairs_become_first_last(self):
+        self.assertEqual(
+            mc.normalize_author_string("Fan, Lue, Wang, Feng, Wang, Naiyan, ZHANG, ZHAO-XIANG", last_first=True),
+            "Lue Fan, Feng Wang, Naiyan Wang, ZHAO-XIANG ZHANG")
+
+    def test_two_word_given_names_stay_with_their_surname(self):
+        # Split on commas alone, "Gim Hee" was a person on the site.
+        self.assertEqual(mc.normalize_author_string("Lee, Gim Hee, Van Gool, Luc", last_first=True),
+                         "Gim Hee Lee, Luc Van Gool")
+
+    def test_nickname_in_parentheses_is_kept_for_the_name_cleaner(self):
+        self.assertEqual(mc.normalize_author_string("Peng, Zhenghao (Mark), Zhou, Bolei", last_first=True),
+                         "Zhenghao (Mark) Peng, Bolei Zhou")
+
+    def test_an_odd_number_of_parts_is_left_alone(self):
+        s = "Choo, XianJun, Davin, Jin, Billy"
+        self.assertEqual(mc.normalize_author_string(s, last_first=True), s)
+
+    def test_bibtex_and_form(self):
+        self.assertEqual(mc.normalize_author_string("Tsoli, Aggeliki and Argyros, Antonis A."),
+                         "Aggeliki Tsoli, Antonis A. Argyros")
+
+    def test_plain_list_ending_in_and_loses_the_and(self):
+        self.assertEqual(mc.normalize_author_string("Lisa Mais, Peter Hirsch and Dagmar Kainmueller"),
+                         "Lisa Mais, Peter Hirsch, Dagmar Kainmueller")
+        self.assertEqual(mc.normalize_author_string("Subeesh Vasu, Leonardo Citraro, and Pascal Fua"),
+                         "Subeesh Vasu, Leonardo Citraro, Pascal Fua")
+
+    def test_ordinary_strings_are_untouched(self):
+        for s in ("Nathan Kallus, Ashok Cutkosky", "Christopher H. Lin, Mausam, Daniel S. Weld",
+                  "Aakash, Indranil Saha 0001", "", None):
+            self.assertEqual(mc.normalize_author_string(s), s)
+
+    def test_file_level_detection(self):
+        neurips = [{"authors": "Kallus, Nathan"}, {"authors": "Fan, Lue, Wang, Feng"},
+                   {"authors": "Lee, Gim Hee, Tan, Robby"}]
+        self.assertTrue(mc.uses_last_first_authors(neurips))
+        eccv2018 = [{"authors": "Tsoli, Aggeliki and Argyros, Antonis A."}, {"authors": "Sekii, Taiki"}]
+        self.assertTrue(mc.uses_last_first_authors(eccv2018))
+        aaai = [{"authors": "Aakash, Indranil Saha 0001"}, {"authors": "Ligong Han, Ruijiang Gao"},
+                {"authors": "Takuma Udagawa, Akiko Aizawa"}, {"authors": "Nathan Kallus"}]
+        self.assertFalse(mc.uses_last_first_authors(aaai))
+        self.assertFalse(mc.uses_last_first_authors([]))
+
+
+class TestArxivId(unittest.TestCase):
+    def test_url_forms(self):
+        self.assertEqual(mc.arxiv_id("https://arxiv.org/abs/2003.08799"), "2003.08799")
+        self.assertEqual(mc.arxiv_id("http://arxiv.org/abs/2003.08799v2"), "2003.08799")
+        self.assertEqual(mc.arxiv_id("https://arxiv.org/pdf/2003.08799v1.pdf"), "2003.08799")
+        self.assertIsNone(mc.arxiv_id("10.1109/CVPR.2021.00001"))
+        self.assertIsNone(mc.arxiv_id(None))
+
+
 class TestConferenceAndYearForFile(unittest.TestCase):
     def test_derives_conference_and_year_from_a_per_venue_year_filename(self):
         self.assertEqual(mc.conference_and_year_for_file("cvpr2024.json"), ("CVPR", 2024))
@@ -119,13 +187,15 @@ class TestConferenceAndYearForFile(unittest.TestCase):
 
 
 class TestMergeCorpusEndToEnd(unittest.TestCase):
-    def _run(self, venue_papers, prior_papers_full=None, venue_filename="cvpr2024.json"):
+    def _run(self, venue_papers, prior_papers_full=None, venue_filename="cvpr2024.json", extra_files=None):
         tmpdir = tempfile.TemporaryDirectory()
         self.addCleanup(tmpdir.cleanup)
         base = Path(tmpdir.name)
         venues_dir = base / "venues"
         venues_dir.mkdir()
         (venues_dir / venue_filename).write_text(json.dumps(venue_papers), encoding="utf-8")
+        for name, entries in (extra_files or {}).items():
+            (venues_dir / name).write_text(json.dumps(entries), encoding="utf-8")
 
         categories_file = base / "categories.json"
         categories_file.write_text(json.dumps({"categories": []}), encoding="utf-8")
@@ -250,6 +320,70 @@ class TestMergeCorpusEndToEnd(unittest.TestCase):
         ]
         papers = self._run(venue_papers)
         self.assertEqual(len(papers), 3)
+
+    def test_neurips_author_strings_are_rewritten(self):
+        venue_papers = [
+            {"title": "Fully Sparse 3D Object Detection", "authors": "Fan, Lue, Wang, Feng, Wang, Naiyan"},
+            {"title": "Another Paper", "authors": "Kallus, Nathan"},
+        ]
+        papers = self._run(venue_papers, venue_filename="neurips2022.json")
+        by_title = {p["title"]: p for p in papers}
+        self.assertEqual(by_title["Fully Sparse 3D Object Detection"]["authors"],
+                         "Lue Fan, Feng Wang, Naiyan Wang")
+        self.assertEqual(by_title["Another Paper"]["authors"], "Nathan Kallus")
+
+    def test_title_and_venue_entities_are_unescaped(self):
+        venue_papers = [{"title": "Detection &amp; Recognition", "authors": "A B",
+                          "conference": "Journal of Intelligent &amp; Robotic Systems", "year": 2020}]
+        papers = self._run(venue_papers, venue_filename="ijrr_all.json")
+        self.assertEqual(papers[0]["title"], "Detection & Recognition")
+        self.assertEqual(papers[0]["venue"], "Journal of Intelligent & Robotic Systems")
+
+    def test_renamed_preprint_folds_into_the_venue_record_by_arxiv_id(self):
+        # The venue record's arxiv_url comes from the previous run (it's
+        # stamped onto papers_full.json by apply_arxiv_links.py).
+        prior = [{"title": "Generalizable Pedestrian Detection: The Elephant in the Room",
+                  "arxiv_url": "https://arxiv.org/abs/2003.08799"}]
+        venue_papers = [{"title": "Generalizable Pedestrian Detection: The Elephant in the Room",
+                          "authors": ""}]
+        arxiv_papers = [{"title": "Pedestrian Detection: The Elephant In The Room",
+                          "authors": "Irtiza Hasan, Shengcai Liao", "abstract": "Pedestrians.",
+                          "conference": "arXiv.org", "year": 2020,
+                          "doi": "https://arxiv.org/abs/2003.08799v2"}]
+        papers = self._run(venue_papers, prior_papers_full=prior, venue_filename="cvpr2021.json",
+                           extra_files={"arxiv_s2_citing.json": arxiv_papers})
+        self.assertEqual(len(papers), 1)
+        p = papers[0]
+        self.assertEqual(p["title"], "Generalizable Pedestrian Detection: The Elephant in the Room")
+        self.assertEqual((p["venue"], p["year"], p["source"]), ("CVPR", 2021, "venue_listing"))
+        # ...and takes only what it was missing from the arXiv copy.
+        self.assertEqual(p["authors"], "Irtiza Hasan, Shengcai Liao")
+        self.assertEqual(p["abstract"], "Pedestrians.")
+
+    def test_two_venue_records_sharing_an_arxiv_id_are_both_kept(self):
+        # A conference paper and its journal version are two listings.
+        prior = [{"title": "Benchmarking the Robustness of Segmentation",
+                  "arxiv_url": "https://arxiv.org/abs/1908.05005"},
+                 {"title": "Benchmarking the Robustness of Segmentation Models Extended",
+                  "arxiv_url": "https://arxiv.org/abs/1908.05005"}]
+        papers = self._run(
+            [{"title": "Benchmarking the Robustness of Segmentation", "authors": "A B"}],
+            prior_papers_full=prior, venue_filename="cvpr2020.json",
+            extra_files={"ijcv_all.json": [{"title": "Benchmarking the Robustness of Segmentation Models Extended",
+                                            "authors": "A B", "year": 2021}]})
+        self.assertEqual(len(papers), 2)
+
+    def test_two_arxiv_records_sharing_an_arxiv_id_are_both_kept(self):
+        # Semantic Scholar sometimes files a second paper by the same
+        # authors under one arXiv id.
+        arxiv_papers = [
+            {"title": "Extend the Safety Horizon", "conference": "arXiv preprint", "year": 2026,
+             "doi": "https://arxiv.org/abs/2608.14603"},
+            {"title": "HMS-SCP: Task-Oriented Semantic Communication", "conference": "arXiv preprint",
+             "year": 2026, "doi": "https://arxiv.org/abs/2608.14603"},
+        ]
+        papers = self._run([], extra_files={"arxiv_s2_citing.json": arxiv_papers})
+        self.assertEqual(len(papers), 2)
 
     def test_dedupes_by_normalized_title(self):
         venue_papers = [

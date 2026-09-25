@@ -60,6 +60,8 @@ from pathlib import Path
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 
+from classify import AV_RELEVANCE_COMBINED, title_without_other_drive_senses
+
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 HAND_FILE = BASE / "data" / "relevance_labels.json"
@@ -93,8 +95,11 @@ STRONG_VOCAB = [
     "intelligent vehicle", "driving simulator", "takeover request",
     "hd map", "high-definition map", "scenario-based testing", "safety of the intended functionality",
     "sotif", "operational design domain", "eco-driving", "cut-in", "car following model",
-    "traffic participant", "road user", "onboard", "driving scenario", "highway driving",
+    "traffic participant", "road user", "driving scenario", "highway driving",
     "urban driving", "cooperative driving", "mixed traffic", "mixed autonomy",
+    # "onboard" used to be here. It got a positive weight and, on its own, made
+    # 227 papers AV that were mostly drones, trains, space and underwater
+    # robots, so it's out of the vocabulary rather than left for the model.
     # generic CV/robotics terms ("point cloud", "odometry", "sensor fusion",
     # "3d object detection", "occupancy grid", "bev", "slam") are NOT here on
     # purpose -- same flood risk as the WEAK terms below.
@@ -128,7 +133,8 @@ def featurize(title, abstract):
     af = [1 if p.search(a) else 0 for p in PATTERNS]
     # strong driving word standalone in the title, but not as part of the
     # very common "*-driven" ML phrase (data-driven, goal-driven, ...)
-    ts = 1 if TITLE_STRONG_RE.search(DATA_DRIVEN_RE.sub(" ", t)) else 0
+    ts = 1 if TITLE_STRONG_RE.search(
+        title_without_other_drive_senses(DATA_DRIVEN_RE.sub(" ", t).lower())) else 0
     return tf + af + [ts]
 
 
@@ -174,6 +180,23 @@ def load_labels():
         p = by_norm[k]
         hold.append((featurize(p.get("title"), p.get("abstract")), 1 if lab == "AV" else 0))
     return by_norm, train, hold
+
+
+# How far above the strongest single abstract phrase the threshold has to sit.
+SINGLE_PHRASE_MARGIN = 0.01
+
+
+def single_phrase_floor(intercept, abs_coef):
+    """Lowest threshold at which no single phrase in an abstract can make a
+    paper AV on its own. The model only sees papers the keyword floor in
+    classify.py already turned down, so phrases the floor accepts anywhere
+    don't count here. The first model shipped with its threshold 0.02 above
+    the intercept, which meant any one phrase with a positive weight was
+    enough ("onboard" alone promoted 227 papers, mostly drones and trains).
+    With this floor an abstract needs two or more phrases that add up, or the
+    title needs a strong phrase such as "road user" or "HD map"."""
+    weak = [w for t, w in abs_coef.items() if w > 0 and not AV_RELEVANCE_COMBINED.search(t)]
+    return intercept + max(weak, default=0.0) + SINGLE_PHRASE_MARGIN
 
 
 def pr_at(y, scores, thr):
@@ -264,6 +287,11 @@ def main():
         chosen = float(min(relaxed, key=lambda x: x[0])[0]) if relaxed else \
             float(max(rows, key=lambda r: (2*r[1]*r[2]/(r[1]+r[2]) if r[1]+r[2] else 0))[0])
         print("  (primary criterion unmet -- relaxed to hand-precision only)")
+
+    floor = single_phrase_floor(intercept, abs_coef)
+    if chosen < floor:
+        print(f"  threshold {chosen:+.3f} lets a single abstract phrase through; raised to {floor:+.3f}")
+        chosen = floor
 
     hp, hr, hf = pr_at(yho, sc_ho, chosen)
     wp, wr, wf = pr_at_weighted(ytr, sc_tr, wtr, chosen)

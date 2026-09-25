@@ -33,6 +33,64 @@ went from about 90,600 to 161,600. Everything computed from them moves too: the 
 lists, dataset adoption on Insights, the disruption index and the self-citation counts.
 Those numbers were low before, and they are now correct rather than different in meaning.
 
+## Citations match whole titles only, and the graph uses every saved reference list
+
+`build_citation_graph.py` used to count a citation whenever a corpus title, with
+everything but letters and digits stripped, appeared anywhere in a reference's text. A
+short title then collected the citations of every longer title containing it. "Objects as
+Points" was credited with most citations of "Tracking Objects as Points", "Learning To
+Simulate" with those of TrafficSim, "Deep Reinforcement Learning for Autonomous Driving"
+with every citation of the survey of the same name plus ": A Survey", and "Decision Making
+for Autonomous Vehicles", a 2023 preprint, reached 286 citations, many from papers
+published years before it. Front matter like "Welcome" (29) and "Editorial" (24) picked up
+citations from any reference that happened to contain the word.
+
+The matcher now still compares stripped text, because PDF extraction often loses spaces
+("Multi-modalDatasetforAutonomousDriving"), but the match has to start and end at
+reference structure in the raw text: the start or end of the entry, a period, comma,
+quote or bracket, a year, a following "In", or, for ar5iv's bibliographies, straight after
+the last author's initial and surname. Two-column PDF text mixes the two columns line by
+line, so a title may also start right after a line break or after the other column's
+hyphenated line end ("Predictingfu- Self-supervisedmonoculardepthhints. InICCV"). A colon
+or a hyphen inside a line doesn't count, so a title that is the second half of
+"TrafficSim: Learning to Simulate ..." or "Decision-Making for ..." doesn't match. Titles
+under three words or 15 characters need a period, quote or year on both sides (or "In"
+after them) and their own year nearby. When two corpus titles match at overlapping
+places, only the longer one counts. Last, an edge is dropped when the citing paper is
+more than two years older than the cited one. Two years, not one, because a journal paper
+is often dated years after the preprint that was cited.
+
+What this costs: a title cut in two by text from the other column was never matched and
+still isn't, and a reference with no punctuation at all around the title (a few ar5iv
+styles) is now missed. A paper whose corpus title is wrong or cut short also loses
+citations it used to get by accident, for example "Weight Uncertainty in Neural Network"
+(the real title ends in "Networks") or "The Open Images Dataset V4" without its subtitle.
+Those are title problems to fix in the corpus, not in the matcher.
+
+Separately, `citation_graph.json` had been built from only 2,136 of the 19,481 CVF
+reference lists on disk. The match phase only ran at the end of a complete fetch run, and
+the long whole-corpus crawl was stopped before it finished, so the graph kept whatever
+the last completed run had seen. `build_public_site.py` now runs
+`build_citation_graph.py --match-only` (saved lists only, no network, no PDFs) and then
+`apply_citation_sources.py` on every build. `apply_citation_sources.py` now also removes a
+count that has dropped to zero instead of leaving the old one in place.
+
+Measured on the 2026-09-24 corpus. The 2026-09-08 graph had 377,242 edges from 14,782
+citing papers. The old matcher run over all 19,481 CVF and 13,300 arXiv lists gives
+790,909 edges from 31,783 citing papers; the new one gives 775,325 from 31,779, after
+dropping 147 edges on the year check. Against the old matcher on the same lists, 24,594
+edges are gone and 9,010 are new, most of the new ones for short titles the old word
+index never looked up, like "Mask R-CNN" and "Fast R-CNN". Per paper, from the 2026-09-08
+graph to the new one: "Decision Making for Autonomous Vehicles" 286 to 0, "Deep
+Reinforcement Learning for Autonomous Driving" 259 to 23, "Learning To Simulate" 212 to 9,
+"Multi Lane Detection" 64 to 0, "Welcome" 29 to 0, "Editorial" 24 to 0, "Objects as
+Points" 356 to 398 (513 with the old matcher on all lists), nuScenes 2,742 to 2,830, the
+KITTI benchmark paper 1,901 to 2,144, PointPillars 1,094 to 1,127, BEVFormer 716 to 743,
+CenterPoint 742 to 768. Of 20 removed edges checked by hand, 13 were false matches, 3 were
+real citations after the other column's hyphenated line end (the rule above that now
+accepts this was added because of them), and 4 are the title problems just described. All
+20 new edges checked were real citations.
+
 ## `None` vs `0` for an unknown citation count
 
 `citation_count()` returns `None`, not `0`, when no reference-list scan has reached
@@ -64,6 +122,39 @@ push in only one direction:
 The classifier can be searched end to end, and any paper's result can be explained
 from the code. The LLM is a second opinion. It is graded against a hand-labelled
 evaluation set, never trusted blindly, and never writes the ground-truth label file.
+
+## One weak phrase isn't enough, and "drive" has to mean driving
+
+The linear model in layer 3 shipped with its threshold only 0.02 above its
+intercept, so any phrase with a positive weight made a paper AV on its own. The
+worst case was "onboard": it alone made 227 papers AV, and a sample of them was
+nearly all drones, trains, space robots and underwater robots. In a one-week arXiv
+sample, all 22 papers the model accepted fired only on "onboard", and none were AV.
+Since the monthly arXiv update now publishes without anyone looking at it, this
+mattered more than the recall it bought.
+
+"onboard" is out of the vocabulary, and the threshold now sits just above the
+largest weight a single abstract phrase can get (`single_phrase_floor()` in
+`train_relevance_classifier.py`, which a retrain also applies). One phrase in an
+abstract never decides; a strong title phrase such as "road user" or "HD map" still
+does. The shipped `relevance_model.json` was edited by hand to match rather than
+retrained, so the other weights are the ones the model learned with "onboard" in it.
+
+The title rule for drive/driver/driving had the same kind of problem in robotics and
+ML titles: harmonic and quasi-direct drives, differential-drive robots, needle
+drivers, and "Pretraining Drives Reasoning". Those senses are blanked out before the
+check (`TITLE_DRIVE_OTHER_SENSES` in `classify.py`), and any other driving word in the
+same title still counts. "wheel drive" is left alone, since front-wheel-drive
+vehicles are cars.
+
+Dataset names that only exist for driving were added as AV phrases: bare "waymo",
+SemanticKITTI, nuPlan, NAVSIM, Bench2Drive, and Boreas when followed by "dataset" or
+"benchmark". Like KITTI they also catch some general 3D papers that run one table on
+them, which the rubric would call non-AV. The KITTI rule itself is unchanged.
+
+Measured on the corpus in September 2026: 536 papers went from AV to non-AV (105 from
+the title rule, the rest from the model) and 141 went the other way (97 of them via
+SemanticKITTI). On the one-week arXiv sample, accepted papers went from 89 to 67.
 
 ## Numbers are shown as whole numbers
 
@@ -152,6 +243,24 @@ repeats the very first word of a name that still reads as an institution without
 Technology Hong Kong" alone on purpose, because a two-word city could cut the real name
 in half. "TU Dortmund" and "TU Dortmund University" (12 and 3 papers) are one alias now.
 
+## HTML entities are unescaped when the corpus is merged
+
+DBLP and Semantic Scholar hand over some titles and venue names with HTML entities
+still in them ("Detection &amp; Recognition", "B&#233;zier", "Journal of Intelligent
+&amp; Robotic Systems"). The pages set titles as plain text, so 60 AV titles and 12
+venue names showed the entity literally. `merge_corpus.py` now unescapes titles and
+venues, and `aggregate.py` unescapes venue names too.
+
+The title keys change with it: "&amp;" used to leave "amp" in the key. Every
+`normalize_title()` that feeds a lookup (`merge_corpus.py`, `aggregate.py`,
+`classify.py`) unescapes first, so the carry-over from the previous `papers_full.json`
+still finds these papers. The LLM label files have 116 keys written from escaped titles
+(19 category labels, 97 relevance labels); `classify.py` also keys each label by its stored
+title, so those still match without rewriting the files. The unescaped titles also
+merge 43 records that were only apart because of an entity (the same paper listed with
+"&#38;" by one source and "&" by another). The cost: `?title=` links to about 460
+papers (60 of them AV) change, because the title in the URL changes.
+
 ## Institution country is only a fallback, and a company can span countries
 
 `data/institution_countries.json` holds one country per institution. It exists for the
@@ -173,6 +282,19 @@ Not changed: an institution still has exactly one country on the Institutions pa
 detail page and the country filter, so a multinational shows up under its home country
 only. Authors whose country was already stamped into `authors_detail` from a wrong map
 entry keep it until their affiliations are applied again.
+
+## The institution-country map is looked up by display name
+
+`data/institution_countries.json` is keyed by the raw institution names its sources
+used ("Technical University of Munich"), but every lookup in `aggregate.py` uses the
+name after `normalize_institution()` and the aliases ("Technical University of Munich
+(TUM)"). TUM, KIT, BeiHang and UC San Diego had a country in the file and none on the
+site, so Germany's two biggest AV institutions were missing from the country filter.
+`institution_country_map()` now also enters each key under its normalized name when the
+file is loaded. A raw key that already is a display name wins over one that only
+normalizes to it ("Bosch" DE beats "Bosch (China) Investment Ltd" CN). Of the 200
+institutions with the most AV papers, 38 had no country; 26 still don't, and those are
+real gaps in the file (DFKI, TU Berlin, INRIA, Mila, ...), not key mismatches.
 
 ## Countries get their own page
 
@@ -220,6 +342,70 @@ access. DBLP has never carried abstracts, so `is_fully_processed()` requires onl
 title and year for these venues, and `classify.py` falls back to title-only keyword
 matching. These papers carry a weaker relevance and category signal than the rest of
 the corpus. The Methodology page lists this under "Known gaps".
+
+## A venue file is only replaced by a complete fetch
+
+`cvpr2022.json` held 774 of CVPR 2022's 2,074 papers for months. An earlier run of
+`fetch_cvf_history.py` stopped partway through, the script had already saved what it
+had, and nothing downstream checked the count, so every CVPR trend on the site showed
+a 2022 dip that wasn't real. The script now keeps its progress in a `.partial` file
+and only writes the real venue file once every listed paper has been fetched, retrying
+failures first. It also never replaces a file with a smaller one: if CVF drops papers
+from a listing, someone has to delete the old file on purpose. Paper pages that return
+404 are dead links on CVF's side (three in CVPR 2022, two in CVPR 2024, one in ICCV
+2017) and don't count as missing. `scripts/tests/test_venue_listing_counts.py` pins
+the expected count of every CVPR, ICCV, WACV and ACCV file, so a short file fails the
+build before it can be published.
+
+## Journals, ITSC and IV come from Crossref now, and which year a journal paper gets
+
+DBLP started answering scripts with a bot check in September 2026, so the six
+journals, IV, ITSC and GCPR are now fetched from Crossref by `fetch_crossref.py`.
+Crossref has DOIs but no abstracts for IEEE papers, so abstracts come from Semantic
+Scholar by DOI. An abstract that's already there is never replaced.
+
+A journal article on Crossref can have two dates: when it went online (IEEE's "early
+access", often months earlier) and the issue it was printed in. DBLP only listed an
+article once it was in an issue, and used the issue's year. To keep the years we
+already have consistent, a paper gets its issue year when Crossref has one and its
+online year otherwise. When an early-access paper is later assigned to an issue, the
+next monthly run sees the updated record and corrects its year. On the 2026-09-24
+backlog run, none of the 5,838 existing journal papers that matched a Crossref
+record by title had a different issue year on Crossref, so the two sources agree.
+
+New papers are matched to existing ones by normalized title, the same key
+`merge_corpus.py` dedupes on. A title that appears more than once in a journal file
+("Scanning the Issue", "Editorial") is only touched when the DOI matches, since the
+title alone can't say which one it is.
+
+## New ICML, ICLR and ECCV editions come from PMLR and the conference sites
+
+With DBLP behind a bot check and OpenReview's API behind a challenge, ICML 2025
+comes from PMLR (v267, with abstracts, through the same `fetch_pmlr.py` as CoRL),
+and ICLR 2026, ICML 2026 and ECCV 2026 come from each conference's virtual-site
+JSON dump (`fetch_virtual_site.py`). Only the main-conference track is kept, plus
+ICML's position paper track because it's printed in the ICML proceedings (PMLR
+v267 has 3,330 papers, the ICML 2025 dump has 3,331 on those two tracks). Blog
+posts and TMLR/JMLR papers presented at the conference are left out.
+
+The 2026 dumps have no abstracts, so ICLR and ICML abstracts come from one
+poster-page request per paper. ECCV's poster pages carry text pulled from the PDF
+with the spaces at line breaks missing, so ECCV 2026 goes in without abstracts
+until ecva.net publishes its own page or the arXiv/Semantic Scholar backfills
+reach it. Once ecva.net has a 2026 section, `fetch_ecva_history.py` should
+replace `eccv2026.json`.
+
+## RSS and BMVC from their own proceedings sites from 2025
+
+DBLP stopped being reachable for scripts (it now serves a bot check), so RSS 2025-2026
+and BMVC 2025 had no source. Both conferences publish plain HTML proceedings with
+abstracts, so `fetch_rss.py` reads roboticsproceedings.org and `fetch_bmvc.py` reads
+the BMVC 2025 site. The earlier reason for using DBLP for RSS, that the site has no
+abstracts and no reliable volume-to-year mapping, turned out to be wrong: every paper
+page has an abstract, and the volume is year minus 2004, which the script checks
+against each page's own date. The older years stay on DBLP for now. BMVC's site
+changes every year, so its fetcher keeps one listing URL per year and refuses to write
+a file when the listing parses to nothing.
 
 ## Misc vs uncategorized
 
@@ -586,6 +772,26 @@ change that the processed output already handled. The lesson holds: check `stats
 and `stats_detail.json`, which the site actually reads, before treating a string in
 `papers_full.json` as evidence of a live bug.
 
+## NeurIPS and ECCV 2018 author strings are rewritten when the corpus is merged
+
+NeurIPS's proceedings pages give each author as "Last, First", and the fetcher joined
+them with ", ", so a record reads "Fan, Lue, Wang, Feng, Wang, Naiyan". ECCV 2018 carries
+BibTeX ("Tsoli, Aggeliki and Argyros, Antonis A."). Split on commas, every one-word part
+was dropped as a bare surname: 163 NeurIPS and 19 ECCV 2018 AV papers had no authors on
+the site, and two-word given names turned into people ("Gim Hee", "Seung Wook").
+
+`merge_corpus.py` rewrites both forms to "First Last, First Last", so every place that
+splits the string (`aggregate.py`, the data release) gets it right without a refetch. A
+single string can't say which form it is ("Aakash, Indranil Saha" in AAAI 2024 is two
+people, one with a single name), so the pair form is decided per file: most multi-name
+strings have an even number of parts and at least one one-word part. That picks out every
+NeurIPS year and ECCV 2018 and nothing else. A NeurIPS string with an odd number of parts
+(5 records, e.g. a two-part given name) is left as it was. On the real data 25,434 strings
+change, 11 more are plain lists that ended in "and", and 49 of 50 sampled rewrites were
+right; the one miss came from a source string that listed "OpenAI" as a person. AV papers
+without `authors_detail` whose author list came out empty went from 506 to 332, and those
+332 are all ICRA/IROS papers from GitHub lists that have titles only.
+
 ## `flag_ambiguous_authors.py`'s heuristics false-positive on prolific lab researchers
 
 We checked its 4 unconfirmed "review"-tier candidates from the current top 60 by
@@ -655,6 +861,45 @@ of its expensive per-paper LLM affiliation extraction, which non-AV papers don't
 all, so widening it naively would waste that LLM cost on about 55,000 papers just to get
 a reference list. It needs its own leaner, reference-only path, and that's left as a
 follow-up.
+
+## Whole-corpus citations from Semantic Scholar reference lists
+
+Until now only about 15,000 papers had a reference list at all (the CVF PDFs and the
+ar5iv pages), so a paper's in-corpus count only included citations from that slice.
+`fetch_s2_references.py` gets Semantic Scholar's reference list for any paper in the
+corpus. It maps each paper to an S2 CorpusId once (`data/s2_paper_ids.json`), stores
+each paper's references as CorpusIds (`data/reference_lists_s2.json`), and
+`build_citation_graph.py` turns a reference into an edge when its id maps back to a
+corpus paper. There's no title matching on this path, so it can't produce the
+near-miss matches the text matcher has to guard against.
+
+We ran it on a sample of 1,998 papers (222 at random from each of CVPR, NeurIPS, ICLR,
+ICRA, IROS, T-ITS, ITSC, IV and arXiv-only) before merging:
+
+- 1,950 (97.6%) got an S2 id: 453 by arXiv id, 57 by DOI, 1,302 from the per-venue
+  bulk scan and 138 by per-title search. The lowest venue was IROS at 92%.
+- Only 917 of those came back with a reference list. For 934 S2 knows how many
+  references there are but withholds the list at the publisher's request. It's worst
+  for IEEE: T-ITS 29 of 222, ITSC 30, IV 56, while arXiv-only got 208 and ICLR 159.
+  CVPR (106) and NeurIPS (121) sit in between.
+- The 917 lists hold 20,637 in-corpus citations. The current graph had 3,139 for the
+  same papers, so 17,749 are new, and 732 of the 917 papers had no reference list of
+  any kind before. Of the 3,139 existing edges, only 251 aren't in S2's lists.
+
+Scaled up by venue size, that's roughly 1.5 million new edges from these nine venues
+alone, against 377,000 in the whole graph today. The full crawl takes something like
+half a day to a day at S2's rate limit, most of it the per-title searches for the
+roughly 9% of papers that neither an id nor the venue scan finds. It's resumable and
+runs most-cited-first like every other crawler.
+
+The withheld lists can sometimes still be had from the one-paper
+`/paper/{id}/references` endpoint. A probe of 27 withheld papers found them for all 6
+arXiv-only papers, 2 of 7 CVPR papers and none of the 14 from ICLR, NeurIPS, ICRA,
+T-ITS and ITSC. That costs one request per paper, so `--step elided` exists but isn't part of
+the default run, and it's meant for the arXiv venues.
+
+The S2 edges are merged with the text-matched CVF and arXiv edges per citing paper and
+deduplicated, so a citation found by both counts once.
 
 ## Manually-sourced abstracts for the top-cited gap
 
@@ -874,3 +1119,21 @@ like "Most", "Delta" or "Machine-mediated learning" that are unrelated to the pa
   `corpus_stats.venue_missing` and `venue_unparsed`.
 - The S2 source file is gitignored, so `fix_suspect_venues.py` runs first in
   `build_public_site.py`, so a fresh crawl can't bring the bad names back.
+
+## A preprint and its venue version merge by arXiv id
+
+Dedupe used to be by normalized title only, so a preprint renamed for its camera-ready
+version stayed a second paper ("Pedestrian Detection: The Elephant In The Room" next to
+CVPR 2021's "Generalizable Pedestrian Detection: The Elephant in the Room"). 75 arXiv ids
+were carried by more than one record. `merge_corpus.py` now drops an arXiv-file record
+when a venue record carries the same arXiv id. The venue record keeps everything it has
+and only takes what it lacks from the arXiv copy (authors for a titles-only ICRA/IROS
+list, an abstract, a citation count). On the current corpus that folds 66 records, 48 of
+them AV.
+
+Two cases are deliberately left alone. Two venue records with one arXiv id (3 cases) are a
+conference paper and its journal version, which the site counts as two listings. Two
+arXiv-file records with one id (6 cases) include at least one where Semantic Scholar filed
+a different paper by the same authors under the id, so merging them would lose a paper.
+The venue record's arXiv id comes from the previous `papers_full.json` (stamped there by
+`apply_arxiv_links.py`), which is why the fold runs after the carry-over.

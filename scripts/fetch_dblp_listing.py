@@ -8,9 +8,8 @@ abstract (DBLP doesn't have those). Two uses:
    broken server-side (confirmed for CVPR 2018-2020: "Error 1525: Incorrect
    DATE value: 'all'").
 2. Primary source for venues with no bulk-scrapable proceedings site at all --
-   RSS (roboticsproceedings.org has titles/authors but no abstracts either,
-   and volume-number-to-year isn't reliably inferable from the site itself;
-   DBLP already resolves that), ICLR (OpenReview's bulk API now requires a
+   RSS up to 2024 (fetch_rss.py reads roboticsproceedings.org from 2025,
+   with abstracts), ICLR up to 2025 (OpenReview's bulk API now requires a
    browser-solvable challenge, see DECISIONS.md), and AAAI (ojs.aaai.org's
    archive page is JS-rendered, not scrapable via a plain HTTP fetch).
 

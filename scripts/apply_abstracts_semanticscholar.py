@@ -28,21 +28,25 @@ def load_json(path, default):
     return default
 
 
+def fill_missing_abstract(paper, abstract, source=None):
+    """Sets paper["abstract"] only if it has none yet; returns True if it did.
+    Also used by fetch_crossref.py for its venue-file records."""
+    if (paper.get("abstract") or "").strip() or not abstract:
+        return False  # a real abstract already exists from a better source
+    paper["abstract"] = abstract
+    if source:
+        paper["abstract_source"] = source
+    return True
+
+
 def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     abstracts = load_json(ABSTRACTS_FILE, {}).get("abstracts", {})
 
     n_applied = 0
     for p in papers:
-        if (p.get("abstract") or "").strip():
-            continue  # a real abstract already exists from a better source
-        key = normalize_title(p.get("title"))
-        abstract = abstracts.get(key)
-        if not abstract:
-            continue
-        p["abstract"] = abstract
-        p["abstract_source"] = "semanticscholar"
-        n_applied += 1
+        if fill_missing_abstract(p, abstracts.get(normalize_title(p.get("title"))), "semanticscholar"):
+            n_applied += 1
 
     PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
     print(f"Applied Semantic-Scholar-sourced abstracts to {n_applied} papers")

@@ -16,7 +16,7 @@ each family's raw README:
     headings, "- Title" bullets. Title only, no authors at all.
   - ryanbgriffiths (2023-2024): a markdown table with a "Authors" column,
     comma-separated full names ("First Last, First Last").
-  - DoongLi (2025): a markdown table with an "Authors" column,
+  - DoongLi (2025-2026): a markdown table with an "Authors" column,
     semicolon-separated "Last, First" pairs -- reformatted to "First Last"
     here so author names read the same way regardless of source, matching
     the convention every other venue in this corpus already uses.
@@ -49,6 +49,7 @@ REPOS = [
     (2023, "ICRA", "ryanbgriffiths/ICRA2023PaperList", "main", "table_comma"),
     (2024, "ICRA", "ryanbgriffiths/ICRA2024PaperList", "main", "table_comma"),
     (2025, "ICRA", "DoongLi/ICRA2025-Paper-List", "main", "table_semicolon"),
+    (2026, "ICRA", "DoongLi/ICRA2026-Paper-List", "main", "table_semicolon"),
     (2019, "IROS", "PaoPaoRobot/IROS2019-paper-list", "master", "table_comma"),
     (2020, "IROS", "PaoPaoRobot/IROS2020-paper-list", "master", "table_comma"),
     (2021, "IROS", "dectrfov/IROS2021PaperList", "main", "bullet"),

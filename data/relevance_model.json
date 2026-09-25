@@ -1,5 +1,5 @@
 {
-  "_comment": "Trained by train_relevance_classifier.py. Loaded by classify.py. score = intercept + sum(title_coef[t] for phrase t in the title) + sum(abstract_coef[t] for phrase t in the abstract) + title_strong_coef if a standalone driving word is in the title; core iff score >= threshold (after classify.py's hard pre-filters).",
+  "_comment": "Trained by train_relevance_classifier.py. Loaded by classify.py. score = intercept + sum(title_coef[t] for phrase t in the title) + sum(abstract_coef[t] for phrase t in the abstract) + title_strong_coef if a standalone driving word is in the title; core iff score >= threshold (after classify.py's hard pre-filters). \"onboard\" was removed and the threshold raised by hand to train_relevance_classifier.py's single_phrase_floor() in September 2026, without retraining the other weights.",
   "vocab": [
     "autonomous driving",
     "autonomous vehicle",
@@ -65,7 +65,6 @@
     "cut-in",
     "traffic participant",
     "road user",
-    "onboard",
     "driving scenario",
     "highway driving",
     "urban driving",
@@ -124,7 +123,6 @@
     "scenario-based testing": 0.379,
     "traffic participant": 2.9388,
     "road user": 3.0517,
-    "onboard": 0.1845,
     "urban driving": 0.4897,
     "mixed traffic": 3.0174,
     "mixed autonomy": 0.7665
@@ -178,14 +176,13 @@
     "cut-in": 0.5203,
     "traffic participant": 0.771,
     "road user": 1.1304,
-    "onboard": 0.6465,
     "driving scenario": 0.7196,
     "highway driving": 2.027,
     "mixed traffic": 1.1789
   },
   "title_strong_coef": 2.8069,
   "intercept": -0.6825,
-  "threshold": -0.6602849550109082,
+  "threshold": 1.3545,
   "penalty": "l1",
   "C": 1.0,
   "target_precision": 0.9,

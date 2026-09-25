@@ -1065,6 +1065,33 @@ class TestNormalizeVenue(unittest.TestCase):
             "Journal of Transportation Engineering, Part A: Systems",
         )
 
+    def test_html_entities_are_unescaped(self):
+        self.assertEqual(ag.normalize_venue("Journal of Intelligent &amp; Robotic Systems"),
+                         "Journal of Intelligent & Robotic Systems")
+
+
+class TestNormalizeTitleEntities(unittest.TestCase):
+    def test_escaped_and_plain_titles_share_a_key(self):
+        self.assertEqual(ag.normalize_title("RoadText-1K: Text Detection &amp; Recognition"),
+                         ag.normalize_title("RoadText-1K: Text Detection & Recognition"))
+
+
+class TestInstitutionCountryMap(unittest.TestCase):
+    def test_raw_keys_are_also_entered_under_their_display_name(self):
+        # The file says "Technical University of Munich"; every lookup uses
+        # the aliased display name.
+        codes = ag.institution_country_map({"Technical University of Munich": "DE", "_readme": "x"})
+        self.assertEqual(codes[ag.normalize_institution("Technical University of Munich")], "DE")
+        self.assertEqual(codes["Technical University of Munich"], "DE")
+        self.assertNotIn("_readme", codes)
+
+    def test_an_exact_display_name_beats_one_that_only_normalizes_to_it(self):
+        codes = ag.institution_country_map({"Bosch (China) Investment Ltd": "CN", "Bosch": "DE"})
+        self.assertEqual(codes["Bosch"], "DE")
+
+    def test_empty_values_are_dropped(self):
+        self.assertEqual(ag.institution_country_map({"Somewhere": ""}), {})
+
 
 class TestAuthorCountryCodes(unittest.TestCase):
     def test_internetlab_brazil_mislabel_is_stripped(self):
@@ -1547,13 +1574,25 @@ class TestAggregateEndToEnd(unittest.TestCase):
         stats = self._run(
             [{"title": "A", "year": 2024, "venue": "CVPR", "av_relevance": "AV"},
              {"title": "B", "year": 2024, "venue": "CVPR", "av_relevance": "AV"}],
-            citation_graph={"edges": {}, "sources_scanned": {"cvf": 1, "arxiv": 0},
+            citation_graph={"edges": {}, "sources_scanned": {"cvf": 1, "arxiv": 0, "s2": 5},
                              "cvf_permanent_failures": 1},
         )
         cov = stats["corpus_stats"]["citation_graph_coverage"]
         self.assertEqual(cov["cvf_scanned"], 1)
+        self.assertEqual(cov["s2_scanned"], 5)
         self.assertEqual(cov["cvf_permanent_failures"], 1)
         self.assertEqual(cov["cvf_av_total"], 2)
+
+    def test_every_paper_is_reachable_once_s2_reference_lists_exist(self):
+        papers = [{"title": "Cvf", "year": 2024, "venue": "CVPR", "av_relevance": "AV"},
+                  {"title": "Ieee", "year": 2024, "venue": "ICRA", "av_relevance": "AV"}]
+        cov = self._run(papers, citation_graph={"edges": {}, "sources_scanned": {"cvf": 0, "arxiv": 0}}
+                        )["corpus_stats"]["citation_graph_coverage"]
+        self.assertEqual(cov["refs_any_eligible"], 1)
+        cov = self._run(papers, citation_graph={"edges": {"ieee": ["cvf"]}, "sources_scanned": {"s2": 1}}
+                        )["corpus_stats"]["citation_graph_coverage"]
+        self.assertEqual(cov["refs_any_eligible"], 2)
+        self.assertEqual(cov["refs_any_scanned"], 1)
 
     def test_arxiv_eligible_total_only_counts_papers_with_a_known_preprint(self):
         # A paper with no arXiv preprint at all could never be reached by
