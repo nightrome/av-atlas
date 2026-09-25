@@ -33,6 +33,64 @@ went from about 90,600 to 161,600. Everything computed from them moves too: the 
 lists, dataset adoption on Insights, the disruption index and the self-citation counts.
 Those numbers were low before, and they are now correct rather than different in meaning.
 
+## Citations match whole titles only, and the graph uses every saved reference list
+
+`build_citation_graph.py` used to count a citation whenever a corpus title, with
+everything but letters and digits stripped, appeared anywhere in a reference's text. A
+short title then collected the citations of every longer title containing it. "Objects as
+Points" was credited with most citations of "Tracking Objects as Points", "Learning To
+Simulate" with those of TrafficSim, "Deep Reinforcement Learning for Autonomous Driving"
+with every citation of the survey of the same name plus ": A Survey", and "Decision Making
+for Autonomous Vehicles", a 2023 preprint, reached 286 citations, many from papers
+published years before it. Front matter like "Welcome" (29) and "Editorial" (24) picked up
+citations from any reference that happened to contain the word.
+
+The matcher now still compares stripped text, because PDF extraction often loses spaces
+("Multi-modalDatasetforAutonomousDriving"), but the match has to start and end at
+reference structure in the raw text: the start or end of the entry, a period, comma,
+quote or bracket, a year, a following "In", or, for ar5iv's bibliographies, straight after
+the last author's initial and surname. Two-column PDF text mixes the two columns line by
+line, so a title may also start right after a line break or after the other column's
+hyphenated line end ("Predictingfu- Self-supervisedmonoculardepthhints. InICCV"). A colon
+or a hyphen inside a line doesn't count, so a title that is the second half of
+"TrafficSim: Learning to Simulate ..." or "Decision-Making for ..." doesn't match. Titles
+under three words or 15 characters need a period, quote or year on both sides (or "In"
+after them) and their own year nearby. When two corpus titles match at overlapping
+places, only the longer one counts. Last, an edge is dropped when the citing paper is
+more than two years older than the cited one. Two years, not one, because a journal paper
+is often dated years after the preprint that was cited.
+
+What this costs: a title cut in two by text from the other column was never matched and
+still isn't, and a reference with no punctuation at all around the title (a few ar5iv
+styles) is now missed. A paper whose corpus title is wrong or cut short also loses
+citations it used to get by accident, for example "Weight Uncertainty in Neural Network"
+(the real title ends in "Networks") or "The Open Images Dataset V4" without its subtitle.
+Those are title problems to fix in the corpus, not in the matcher.
+
+Separately, `citation_graph.json` had been built from only 2,136 of the 19,481 CVF
+reference lists on disk. The match phase only ran at the end of a complete fetch run, and
+the long whole-corpus crawl was stopped before it finished, so the graph kept whatever
+the last completed run had seen. `build_public_site.py` now runs
+`build_citation_graph.py --match-only` (saved lists only, no network, no PDFs) and then
+`apply_citation_sources.py` on every build. `apply_citation_sources.py` now also removes a
+count that has dropped to zero instead of leaving the old one in place.
+
+Measured on the 2026-09-24 corpus. The 2026-09-08 graph had 377,242 edges from 14,782
+citing papers. The old matcher run over all 19,481 CVF and 13,300 arXiv lists gives
+790,909 edges from 31,783 citing papers; the new one gives 775,325 from 31,779, after
+dropping 147 edges on the year check. Against the old matcher on the same lists, 24,594
+edges are gone and 9,010 are new, most of the new ones for short titles the old word
+index never looked up, like "Mask R-CNN" and "Fast R-CNN". Per paper, from the 2026-09-08
+graph to the new one: "Decision Making for Autonomous Vehicles" 286 to 0, "Deep
+Reinforcement Learning for Autonomous Driving" 259 to 23, "Learning To Simulate" 212 to 9,
+"Multi Lane Detection" 64 to 0, "Welcome" 29 to 0, "Editorial" 24 to 0, "Objects as
+Points" 356 to 398 (513 with the old matcher on all lists), nuScenes 2,742 to 2,830, the
+KITTI benchmark paper 1,901 to 2,144, PointPillars 1,094 to 1,127, BEVFormer 716 to 743,
+CenterPoint 742 to 768. Of 20 removed edges checked by hand, 13 were false matches, 3 were
+real citations after the other column's hyphenated line end (the rule above that now
+accepts this was added because of them), and 4 are the title problems just described. All
+20 new edges checked were real citations.
+
 ## `None` vs `0` for an unknown citation count
 
 `citation_count()` returns `None`, not `0`, when no reference-list scan has reached

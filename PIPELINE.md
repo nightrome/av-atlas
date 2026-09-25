@@ -338,7 +338,11 @@ fetching and matching are deliberately separate phases. The matching phase of
 `build_citation_graph.py` runs on every invocation, even if nothing new was
 fetched, and rematches every saved reference list against the current corpus. A
 reference to a paper that wasn't indexed yet starts matching once that paper is
-pulled, with no re-fetching, just a rerun.
+pulled, with no re-fetching, just a rerun. `build_public_site.py` does that rerun on
+every build (`build_citation_graph.py --match-only`, then `apply_citation_sources.py`),
+so the graph always covers every list on disk. A reference only counts when it holds a
+corpus title as a whole title, bounded by reference punctuation, not inside a longer
+title (see DECISIONS.md, "Citations match whole titles only").
 
 All of these write to their own side files, never directly to `papers_full.json`,
 so they can run at the same time without racing over the same multi-MB file (see
