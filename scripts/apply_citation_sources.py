@@ -90,6 +90,11 @@ def apply_counts(papers, graph):
 
 
 def main():
+    # No graph file at all means "nothing known", not "nobody cites
+    # anything": clearing every count then would wipe them all.
+    if not GRAPH_FILE.exists():
+        print(f"No {GRAPH_FILE.name}; leaving the in-corpus counts in {PAPERS_FILE.name} as they are.")
+        return
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     graph = load_json(GRAPH_FILE, {"edges": {}})
     n_changed = apply_counts(papers, graph)

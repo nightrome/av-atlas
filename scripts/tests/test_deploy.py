@@ -127,6 +127,37 @@ class FingerprintTests(unittest.TestCase):
             fp = deploy.build_fingerprint(root)
             self.assertNotEqual(self.fp_after(root, "data/papers_full.json", '{"a": 1}'), fp)
 
+    def test_untracked_and_ignored_inputs_change_the_fingerprint(self):
+        # These are all real build inputs that git doesn't track: the S2
+        # citing dump and the citation graph are gitignored, and a venue
+        # file a fetcher just wrote isn't added yet.
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            self.make_repo(root)
+            (root / ".gitignore").write_text("data/citation_graph.json\ndata/venues/arxiv_s2_citing.json\n")
+            (root / "data" / "citation_graph.json").write_text("{}")
+            (root / "data" / "venues" / "arxiv_s2_citing.json").write_text("[]")
+            fp = deploy.build_fingerprint(root)
+            for path, text in (("data/venues/arxiv_s2_citing.json", '[{"title": "x"}]'),
+                               ("data/citation_graph.json", '{"edges": {}}'),
+                               ("data/venues/cvpr2027.json", "[]"),
+                               ("data/reference_lists_s2.json", "{}")):
+                new = self.fp_after(root, path, text)
+                self.assertNotEqual(new, fp, path)
+                fp = new
+
+    def test_build_outputs_and_pdfs_dont_change_the_fingerprint(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            self.make_repo(root)
+            for sub in ("abstracts", "non_av_papers", "pdfs_cvf"):
+                (root / "data" / sub).mkdir()
+            base = deploy.build_fingerprint(root)
+            for path in ("data/stats.json", "data/stats_non_av.json", "data/publish_gate_baseline.json",
+                         "data/abstracts/shard-00.json", "data/non_av_papers/shard-00.json",
+                         "data/pdfs_cvf/somepaper.pdf", "data/pdfs_cvf/x.json"):
+                self.assertEqual(self.fp_after(root, path, "{}"), base, path)
+
     def test_changing_the_pipeline_step_list_changes_the_fingerprint(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
@@ -143,6 +174,39 @@ class FingerprintTests(unittest.TestCase):
             self.make_repo(root)
             self.assertEqual(deploy.pipeline_steps(root), ["merge_corpus.py", "aggregate.py"])
             self.assertEqual(deploy.pipeline_steps(root / "nowhere"), [])
+
+    def test_real_build_rematches_and_applies_citations_before_aggregate(self):
+        steps = deploy.pipeline_steps()
+        self.assertLess(steps.index("merge_corpus.py"), steps.index("build_citation_graph.py"))
+        self.assertLess(steps.index("build_citation_graph.py"), steps.index("apply_citation_sources.py"))
+        self.assertLess(steps.index("apply_citation_sources.py"), steps.index("aggregate.py"))
+
+
+class BuildModeTests(unittest.TestCase):
+    """--allow-shrink reaches build_public_site.py in every build mode."""
+
+    def build_calls(self, mode, allow_shrink, fingerprint_matches=False):
+        calls = []
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "data").mkdir()
+            (Path(d) / "data" / "stats.json").write_text("{}")
+            with mock.patch.object(deploy, "BASE", Path(d)), \
+                 mock.patch.object(deploy.subprocess, "run", side_effect=lambda cmd, **kw: calls.append(cmd)), \
+                 mock.patch.object(deploy, "load_state", return_value={"build_fingerprint": "fp"}), \
+                 mock.patch.object(deploy, "build_fingerprint",
+                                   return_value="fp" if fingerprint_matches else "other"), \
+                 mock.patch.object(deploy, "save_state"):
+                deploy.build(mode, allow_shrink=allow_shrink)
+        return [c for c in calls if "build_public_site.py" in c]
+
+    def test_allow_shrink_is_passed_through(self):
+        for mode, matches in (("full", False), ("skip", False), ("auto", False), ("auto", True)):
+            (cmd,) = self.build_calls(mode, True, matches)
+            self.assertIn("--allow-shrink", cmd, (mode, matches))
+            (cmd,) = self.build_calls(mode, False, matches)
+            self.assertNotIn("--allow-shrink", cmd, (mode, matches))
+        # An unchanged fingerprint still only re-publishes.
+        self.assertIn("--publish-only", self.build_calls("auto", False, True)[0])
 
 
 class PublishEndToEndTests(unittest.TestCase):

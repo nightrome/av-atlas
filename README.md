@@ -79,13 +79,29 @@ python scripts/deploy.py --promote   # publish the previewed build to production
 Deploys are quicker than they used to be:
 
 - The corpus rebuild is skipped when nothing that feeds it has changed since the
-  last full build. That means the tracked files in `data/`, `papers_full.json`
-  and the pipeline scripts. Editing `deploy.py`, `run_tests.py`, the backup
+  last full build. That means every JSON file in `data/` and `data/venues/`,
+  tracked or not (so `papers_full.json`, `citation_graph.json`, the reference
+  lists and a venue file nobody has added to git yet all count), and the pipeline
+  scripts. The build's own output (`stats.json` and the shard folders) and
+  `data/pdfs_cvf/` don't. Editing `deploy.py`, `run_tests.py`, the backup
   scripts, or anything in `build_public_site.py` other than its list of steps
   doesn't count. Tests still run. `--full` forces the rebuild. `--skip-build`
   skips both the rebuild and the tests, which is only safe for HTML, JS and CSS
   changes.
 - Only files that changed are uploaded, using a local clone in `.deploy-cache/`.
+
+A build also stops, before anything is published, if the new `stats.json` lost
+more than 3% compared with the previous one on any of: AV papers, AV papers with
+an institution, AV papers with an abstract, in-corpus citations, or venues
+covered. It compares with the local `stats.json` from before the build, or the
+live site's when there isn't one. If the drop is expected, pass
+`--allow-shrink` to `deploy.py` or `build_public_site.py`. The first rebuild
+after a change that removes false matches (such as a stricter title matcher)
+will usually need it:
+
+```bash
+python scripts/deploy.py --preview --allow-shrink
+```
 
 Run `--preview` and `--promote` from the same checkout, because the preview is
 remembered there.
