@@ -460,5 +460,90 @@ class TestMergeCorpusEndToEnd(unittest.TestCase):
         self.assertEqual(papers[0]["arxiv_url"], "https://arxiv.org/abs/2608.17420")
 
 
+class TestFirstSeen(unittest.TestCase):
+    """first_seen is carried forward from the previous papers_full.json;
+    only a paper that wasn't there before gets today's date."""
+
+    TODAY = "2026-10-05"
+    _run = TestMergeCorpusEndToEnd._run
+
+    def setUp(self):
+        orig = mc.today_utc
+        mc.today_utc = lambda: self.TODAY
+        self.addCleanup(setattr, mc, "today_utc", orig)
+
+    def _by_title(self, papers):
+        return {p["title"]: p for p in papers}
+
+    def test_existing_date_is_kept_and_a_new_paper_gets_today(self):
+        prior = [{"title": "Old Paper", "first_seen": "2026-09-10"}]
+        venue_papers = [
+            {"title": "Old Paper", "authors": "A B", "conference": "CVPR", "year": 2026},
+            {"title": "Brand New Paper", "authors": "C D", "conference": "CVPR", "year": 2026},
+        ]
+        papers = self._by_title(self._run(venue_papers, prior_papers_full=prior))
+        self.assertEqual(papers["Old Paper"]["first_seen"], "2026-09-10")
+        self.assertEqual(papers["Brand New Paper"]["first_seen"], self.TODAY)
+
+    def test_paper_from_before_tracking_gets_the_baseline(self):
+        # The first run with this code: the previous file has the paper but
+        # no first_seen on it yet.
+        prior = [{"title": "Old Paper"}]
+        venue_papers = [{"title": "Old Paper", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        papers = self._run(venue_papers, prior_papers_full=prior)
+        self.assertEqual(papers[0]["first_seen"], mc.FIRST_SEEN_BASELINE)
+
+    def test_no_prior_file_gives_everything_the_baseline(self):
+        # A lost papers_full.json must not make the whole corpus look new.
+        venue_papers = [{"title": "Some Paper", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        papers = self._run(venue_papers, prior_papers_full=None)
+        self.assertEqual(papers[0]["first_seen"], mc.FIRST_SEEN_BASELINE)
+
+    def test_a_huge_batch_of_unknown_papers_is_a_backfill_not_news(self):
+        # e.g. arxiv_s2_citing.json missing from one build and back in the next.
+        orig = mc.MAX_NEW_PER_RUN
+        mc.MAX_NEW_PER_RUN = 1
+        self.addCleanup(setattr, mc, "MAX_NEW_PER_RUN", orig)
+        prior = [{"title": "Old Paper", "first_seen": "2026-09-10"}]
+        venue_papers = [
+            {"title": "Old Paper", "authors": "A B", "conference": "CVPR", "year": 2026},
+            {"title": "Returning One", "authors": "C D", "conference": "CVPR", "year": 2024},
+            {"title": "Returning Two", "authors": "E F", "conference": "CVPR", "year": 2024},
+        ]
+        papers = self._by_title(self._run(venue_papers, prior_papers_full=prior))
+        self.assertEqual(papers["Old Paper"]["first_seen"], "2026-09-10")
+        self.assertEqual(papers["Returning One"]["first_seen"], mc.FIRST_SEEN_BASELINE)
+        self.assertEqual(papers["Returning Two"]["first_seen"], mc.FIRST_SEEN_BASELINE)
+
+    def test_title_variant_keeps_its_date(self):
+        prior = [{"title": "Depth Anything!", "first_seen": "2026-09-15"}]
+        venue_papers = [{"title": "depth anything", "authors": "A B", "conference": "CVPR", "year": 2024}]
+        papers = self._run(venue_papers, prior_papers_full=prior)
+        self.assertEqual(papers[0]["first_seen"], "2026-09-15")
+
+    def test_retitled_preprint_is_matched_by_arxiv_id(self):
+        prior = [{"title": "Old Preprint Title", "first_seen": "2026-09-20",
+                  "arxiv_url": "https://arxiv.org/abs/2609.01234"}]
+        arxiv_papers = [{"title": "New Preprint Title", "authors": "A B", "conference": "arXiv preprint",
+                         "year": 2026, "doi": "https://arxiv.org/abs/2609.01234v2"}]
+        papers = self._run(arxiv_papers, prior_papers_full=prior, venue_filename="arxiv_s2_citing.json")
+        self.assertEqual(papers[0]["first_seen"], "2026-09-20")
+
+    def test_two_old_records_folding_together_keep_the_earlier_date(self):
+        prior = [{"title": "Same Paper", "first_seen": "2026-10-01"},
+                 {"title": "same paper", "first_seen": "2026-09-12"}]
+        venue_papers = [{"title": "Same Paper", "authors": "A B", "conference": "CVPR", "year": 2026}]
+        papers = self._run(venue_papers, prior_papers_full=prior)
+        self.assertEqual(papers[0]["first_seen"], "2026-09-12")
+
+
+class TestArxivId(unittest.TestCase):
+    def test_version_suffix_and_pdf_links_give_the_bare_id(self):
+        self.assertEqual(mc.arxiv_id("https://arxiv.org/abs/2609.01234v3"), "2609.01234")
+        self.assertEqual(mc.arxiv_id("http://arxiv.org/pdf/1812.0001"), "1812.0001")
+        self.assertIsNone(mc.arxiv_id(None))
+        self.assertIsNone(mc.arxiv_id("https://doi.org/10.1109/x"))
+
+
 if __name__ == "__main__":
     unittest.main()

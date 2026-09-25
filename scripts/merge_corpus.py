@@ -50,6 +50,7 @@ import argparse
 import json
 import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 from atomic_write import write_json_atomic
@@ -199,6 +200,74 @@ def normalize_title(t):
     return key if key.endswith("ss") else _TRAILING_PLURAL_S_RE.sub("", key)
 
 
+# first_seen: the date (UTC, YYYY-MM-DD) a paper first showed up in
+# papers_full.json. It feeds the "New papers" page and the Atom feed (see
+# new_papers.py). Nothing in the venue files records it, so it lives only in
+# papers_full.json and is carried from one run to the next like the
+# enrichment fields below: matched by normalized title, then by arXiv ID so
+# a preprint whose title changed between versions isn't counted as new again.
+#
+# Tracking started in September 2026. Every paper already in the corpus then
+# got FIRST_SEEN_BASELINE instead of a real date -- it means "on or before
+# this date", and new_papers.py never lists a paper carrying it. The same
+# baseline is used when there's no previous papers_full.json to carry dates
+# from (a fresh clone, or a lost file): stamping 250k papers with today's date
+# would announce the whole corpus as new.
+FIRST_SEEN_BASELINE = "2026-09-01"
+# See assign_first_seen().
+MAX_NEW_PER_RUN = 20000
+
+def today_utc():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def first_seen_index(prior_papers):
+    """{"titles": {key: first_seen or None}, "arxiv": {id: first_seen}} from
+    the previous papers_full.json. A title with None was in the corpus but
+    predates tracking."""
+    titles, arxiv = {}, {}
+    for p in prior_papers:
+        key = normalize_title(p.get("title"))
+        if not key:
+            continue
+        seen = p.get("first_seen")
+        # Two old records folding into one key keep the earlier date.
+        old = titles.get(key)
+        titles[key] = min(old, seen) if old and seen else (old or seen)
+        aid = arxiv_id(p.get("arxiv_url"))
+        if aid and seen and (aid not in arxiv or seen < arxiv[aid]):
+            arxiv[aid] = seen
+    return {"titles": titles, "arxiv": arxiv}
+
+
+def assign_first_seen(merged, index, today):
+    """Sets first_seen on every merged record. index is first_seen_index()'s
+    result, or None when there was no previous papers_full.json. Returns how
+    many papers got today's date."""
+    new_records = []
+    for key, p in merged.items():
+        if index is None:
+            p["first_seen"] = FIRST_SEEN_BASELINE
+        elif key in index["titles"]:
+            p["first_seen"] = index["titles"][key] or FIRST_SEEN_BASELINE
+        elif arxiv_id(p.get("arxiv_url")) in index["arxiv"]:
+            p["first_seen"] = index["arxiv"][arxiv_id(p.get("arxiv_url"))]
+        else:
+            new_records.append(p)
+    # A month of new editions plus arXiv intake is a few thousand papers.
+    # Far more than that means a venue file came back after a build that
+    # ran without it (arxiv_s2_citing.json alone is ~49k papers), or a whole
+    # venue history was backfilled at once. Neither is news, so those get the
+    # baseline rather than flooding the New papers page and the feed.
+    if len(new_records) > MAX_NEW_PER_RUN:
+        print(f"  WARNING: {len(new_records)} papers not in the previous {OUT_FILE.name} -- more than "
+              f"{MAX_NEW_PER_RUN}, so treated as a backfill: first_seen={FIRST_SEEN_BASELINE}, not today")
+        today = FIRST_SEEN_BASELINE
+    for p in new_records:
+        p["first_seen"] = today
+    return len(new_records) if today != FIRST_SEEN_BASELINE else 0
+
+
 def discovery_source(filename):
     # A paper's "source" field records HOW it entered the corpus, not just
     # that it did -- lets a reader tell a venue's own official proceedings
@@ -327,6 +396,10 @@ def merge_by_arxiv_id(merged, carry_over_fields=()):
         if target.get("citations") is None and p.get("citations") is not None:
             target["citations"] = p["citations"]
             target["citations_updated"] = p.get("citations_updated")
+        # The earlier date wins, so a camera-ready venue record that only
+        # just turned up doesn't list its months-old preprint as new.
+        if p.get("first_seen") and (not target.get("first_seen") or p["first_seen"] < target["first_seen"]):
+            target["first_seen"] = p["first_seen"]
         folded.append(key)
     for key in folded:
         del merged[key]
@@ -378,6 +451,7 @@ def main(argv=None):
                          "arxiv_url", "abstract", "abstract_search_exhausted", "has_code_link")
     prior_by_field = {field: {} for field in CARRY_OVER_FIELDS}
     n_prior_s2 = 0
+    prior_first_seen = None
     if OUT_FILE.exists():
         # A hard failure, not a printed note: this used to carry on and
         # write a corpus with no carried-over authors, abstracts or
@@ -386,6 +460,7 @@ def main(argv=None):
         # was killed mid-save; restore_corpus.py gets the last backup back.
         try:
             prior_papers = json.loads(OUT_FILE.read_text(encoding="utf-8"))
+            prior_first_seen = first_seen_index(prior_papers)
         except Exception as e:
             raise SystemExit(f"Could not read the previous {OUT_FILE} ({e}). Not rebuilding over it: "
                              "restore it with scripts/restore_corpus.py, or delete it to rebuild "
@@ -483,6 +558,10 @@ def main(argv=None):
             if not p.get(field) and key in prior_by_field[field]:
                 p[field] = prior_by_field[field][key]
                 n_carried_over += 1
+    if prior_first_seen is None:
+        print(f"  no prior {OUT_FILE.name} to carry first_seen from -- every paper gets the "
+              f"baseline date {FIRST_SEEN_BASELINE}")
+    n_first_seen_today = assign_first_seen(merged, prior_first_seen, today_utc())
 
     # After the carry-over, because that is where a venue record gets the
     # arxiv_url apply_arxiv_links.py found for it.
@@ -511,6 +590,7 @@ def main(argv=None):
         print(f"  carried over {n_carried_over} enrichment fields from the previous run")
     if n_arxiv_folded:
         print(f"  folded {n_arxiv_folded} arXiv records into the venue record with the same arXiv id")
+    print(f"  {n_first_seen_today} papers are new since the previous run (first_seen today)")
 
 
 if __name__ == "__main__":

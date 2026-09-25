@@ -11,6 +11,7 @@
     { href: 'categories.html', label: 'Categories' },
     { href: 'network.html', label: 'Network' },
     { href: 'insights.html', label: 'Insights' },
+    { href: 'new.html', label: 'New' },
     { href: 'about.html', label: 'About' },
   ];
 
