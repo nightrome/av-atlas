@@ -163,7 +163,8 @@ NON_CORPUS_SCRIPTS = {
 # the fingerprint so a build doesn't look like a change to the next one.
 # data/pdfs_cvf/ and the shard folders are never looked at in the first
 # place (see build_fingerprint).
-BUILD_OUTPUTS = {"stats.json", "stats_non_av.json", "stats_adjacent.json", "publish_gate_baseline.json"}
+BUILD_OUTPUTS = {"stats.json", "stats_non_av.json", "stats_adjacent.json", "publish_gate_baseline.json",
+                 "new_papers.json"}
 STEP_RE = re.compile(r'run_step\(\s*"[^"]*"\s*,\s*"([^"]+)"')
 
 

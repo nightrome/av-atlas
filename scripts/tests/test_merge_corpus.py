@@ -166,6 +166,8 @@ class TestArxivId(unittest.TestCase):
         self.assertEqual(mc.arxiv_id("https://arxiv.org/pdf/2003.08799v1.pdf"), "2003.08799")
         self.assertIsNone(mc.arxiv_id("10.1109/CVPR.2021.00001"))
         self.assertIsNone(mc.arxiv_id(None))
+        self.assertEqual(mc.arxiv_id("http://arxiv.org/pdf/1812.0001"), "1812.0001")
+        self.assertIsNone(mc.arxiv_id("https://doi.org/10.1109/x"))
 
 
 class TestConferenceAndYearForFile(unittest.TestCase):
@@ -529,20 +531,30 @@ class TestFirstSeen(unittest.TestCase):
         papers = self._run(arxiv_papers, prior_papers_full=prior, venue_filename="arxiv_s2_citing.json")
         self.assertEqual(papers[0]["first_seen"], "2026-09-20")
 
+    def test_camera_ready_folded_onto_an_old_preprint_keeps_the_earlier_date(self):
+        # The CVPR record arrived on 10-01 and has since been given the arXiv
+        # link of a preprint that has been in the corpus, under another
+        # title, since September. Once the two fold into one paper, it is
+        # the September date that counts.
+        prior = [{"title": "Old Preprint Title", "first_seen": "2026-09-20",
+                  "arxiv_url": "https://arxiv.org/abs/2609.01234"},
+                 {"title": "Camera Ready Title", "first_seen": "2026-10-01",
+                  "arxiv_url": "https://arxiv.org/abs/2609.01234"}]
+        venue_papers = [{"title": "Camera Ready Title", "authors": "A B"}]
+        arxiv_papers = [{"title": "Old Preprint Title", "authors": "A B", "conference": "arXiv preprint",
+                         "year": 2026, "doi": "https://arxiv.org/abs/2609.01234"}]
+        papers = self._run(venue_papers, prior_papers_full=prior, venue_filename="cvpr2026.json",
+                           extra_files={"arxiv_s2_citing.json": arxiv_papers})
+        self.assertEqual(len(papers), 1)
+        self.assertEqual(papers[0]["title"], "Camera Ready Title")
+        self.assertEqual(papers[0]["first_seen"], "2026-09-20")
+
     def test_two_old_records_folding_together_keep_the_earlier_date(self):
         prior = [{"title": "Same Paper", "first_seen": "2026-10-01"},
                  {"title": "same paper", "first_seen": "2026-09-12"}]
         venue_papers = [{"title": "Same Paper", "authors": "A B", "conference": "CVPR", "year": 2026}]
         papers = self._run(venue_papers, prior_papers_full=prior)
         self.assertEqual(papers[0]["first_seen"], "2026-09-12")
-
-
-class TestArxivId(unittest.TestCase):
-    def test_version_suffix_and_pdf_links_give_the_bare_id(self):
-        self.assertEqual(mc.arxiv_id("https://arxiv.org/abs/2609.01234v3"), "2609.01234")
-        self.assertEqual(mc.arxiv_id("http://arxiv.org/pdf/1812.0001"), "1812.0001")
-        self.assertIsNone(mc.arxiv_id(None))
-        self.assertIsNone(mc.arxiv_id("https://doi.org/10.1109/x"))
 
 
 if __name__ == "__main__":
