@@ -210,6 +210,24 @@ repeats the very first word of a name that still reads as an institution without
 Technology Hong Kong" alone on purpose, because a two-word city could cut the real name
 in half. "TU Dortmund" and "TU Dortmund University" (12 and 3 papers) are one alias now.
 
+## HTML entities are unescaped when the corpus is merged
+
+DBLP and Semantic Scholar hand over some titles and venue names with HTML entities
+still in them ("Detection &amp; Recognition", "B&#233;zier", "Journal of Intelligent
+&amp; Robotic Systems"). The pages set titles as plain text, so 60 AV titles and 12
+venue names showed the entity literally. `merge_corpus.py` now unescapes titles and
+venues, and `aggregate.py` unescapes venue names too.
+
+The title keys change with it: "&amp;" used to leave "amp" in the key. Every
+`normalize_title()` that feeds a lookup (`merge_corpus.py`, `aggregate.py`,
+`classify.py`) unescapes first, so the carry-over from the previous `papers_full.json`
+still finds these papers. The LLM label files have 116 keys written from escaped titles
+(19 category labels, 97 relevance labels); `classify.py` also keys each label by its stored
+title, so those still match without rewriting the files. The unescaped titles also
+merge 43 records that were only apart because of an entity (the same paper listed with
+"&#38;" by one source and "&" by another). The cost: `?title=` links to about 460
+papers (60 of them AV) change, because the title in the URL changes.
+
 ## Institution country is only a fallback, and a company can span countries
 
 `data/institution_countries.json` holds one country per institution. It exists for the
@@ -231,6 +249,19 @@ Not changed: an institution still has exactly one country on the Institutions pa
 detail page and the country filter, so a multinational shows up under its home country
 only. Authors whose country was already stamped into `authors_detail` from a wrong map
 entry keep it until their affiliations are applied again.
+
+## The institution-country map is looked up by display name
+
+`data/institution_countries.json` is keyed by the raw institution names its sources
+used ("Technical University of Munich"), but every lookup in `aggregate.py` uses the
+name after `normalize_institution()` and the aliases ("Technical University of Munich
+(TUM)"). TUM, KIT, BeiHang and UC San Diego had a country in the file and none on the
+site, so Germany's two biggest AV institutions were missing from the country filter.
+`institution_country_map()` now also enters each key under its normalized name when the
+file is loaded. A raw key that already is a display name wins over one that only
+normalizes to it ("Bosch" DE beats "Bosch (China) Investment Ltd" CN). Of the 200
+institutions with the most AV papers, 38 had no country; 26 still don't, and those are
+real gaps in the file (DFKI, TU Berlin, INRIA, Mila, ...), not key mismatches.
 
 ## Countries get their own page
 
@@ -644,6 +675,26 @@ change that the processed output already handled. The lesson holds: check `stats
 and `stats_detail.json`, which the site actually reads, before treating a string in
 `papers_full.json` as evidence of a live bug.
 
+## NeurIPS and ECCV 2018 author strings are rewritten when the corpus is merged
+
+NeurIPS's proceedings pages give each author as "Last, First", and the fetcher joined
+them with ", ", so a record reads "Fan, Lue, Wang, Feng, Wang, Naiyan". ECCV 2018 carries
+BibTeX ("Tsoli, Aggeliki and Argyros, Antonis A."). Split on commas, every one-word part
+was dropped as a bare surname: 163 NeurIPS and 19 ECCV 2018 AV papers had no authors on
+the site, and two-word given names turned into people ("Gim Hee", "Seung Wook").
+
+`merge_corpus.py` rewrites both forms to "First Last, First Last", so every place that
+splits the string (`aggregate.py`, the data release) gets it right without a refetch. A
+single string can't say which form it is ("Aakash, Indranil Saha" in AAAI 2024 is two
+people, one with a single name), so the pair form is decided per file: most multi-name
+strings have an even number of parts and at least one one-word part. That picks out every
+NeurIPS year and ECCV 2018 and nothing else. A NeurIPS string with an odd number of parts
+(5 records, e.g. a two-part given name) is left as it was. On the real data 25,434 strings
+change, 11 more are plain lists that ended in "and", and 49 of 50 sampled rewrites were
+right; the one miss came from a source string that listed "OpenAI" as a person. AV papers
+without `authors_detail` whose author list came out empty went from 506 to 332, and those
+332 are all ICRA/IROS papers from GitHub lists that have titles only.
+
 ## `flag_ambiguous_authors.py`'s heuristics false-positive on prolific lab researchers
 
 We checked its 4 unconfirmed "review"-tier candidates from the current top 60 by
@@ -971,3 +1022,21 @@ like "Most", "Delta" or "Machine-mediated learning" that are unrelated to the pa
   `corpus_stats.venue_missing` and `venue_unparsed`.
 - The S2 source file is gitignored, so `fix_suspect_venues.py` runs first in
   `build_public_site.py`, so a fresh crawl can't bring the bad names back.
+
+## A preprint and its venue version merge by arXiv id
+
+Dedupe used to be by normalized title only, so a preprint renamed for its camera-ready
+version stayed a second paper ("Pedestrian Detection: The Elephant In The Room" next to
+CVPR 2021's "Generalizable Pedestrian Detection: The Elephant in the Room"). 75 arXiv ids
+were carried by more than one record. `merge_corpus.py` now drops an arXiv-file record
+when a venue record carries the same arXiv id. The venue record keeps everything it has
+and only takes what it lacks from the arXiv copy (authors for a titles-only ICRA/IROS
+list, an abstract, a citation count). On the current corpus that folds 66 records, 48 of
+them AV.
+
+Two cases are deliberately left alone. Two venue records with one arXiv id (3 cases) are a
+conference paper and its journal version, which the site counts as two listings. Two
+arXiv-file records with one id (6 cases) include at least one where Semantic Scholar filed
+a different paper by the same authors under the id, so merging them would lose a paper.
+The venue record's arXiv id comes from the previous `papers_full.json` (stamped there by
+`apply_arxiv_links.py`), which is why the fold runs after the carry-over.

@@ -1065,6 +1065,33 @@ class TestNormalizeVenue(unittest.TestCase):
             "Journal of Transportation Engineering, Part A: Systems",
         )
 
+    def test_html_entities_are_unescaped(self):
+        self.assertEqual(ag.normalize_venue("Journal of Intelligent &amp; Robotic Systems"),
+                         "Journal of Intelligent & Robotic Systems")
+
+
+class TestNormalizeTitleEntities(unittest.TestCase):
+    def test_escaped_and_plain_titles_share_a_key(self):
+        self.assertEqual(ag.normalize_title("RoadText-1K: Text Detection &amp; Recognition"),
+                         ag.normalize_title("RoadText-1K: Text Detection & Recognition"))
+
+
+class TestInstitutionCountryMap(unittest.TestCase):
+    def test_raw_keys_are_also_entered_under_their_display_name(self):
+        # The file says "Technical University of Munich"; every lookup uses
+        # the aliased display name.
+        codes = ag.institution_country_map({"Technical University of Munich": "DE", "_readme": "x"})
+        self.assertEqual(codes[ag.normalize_institution("Technical University of Munich")], "DE")
+        self.assertEqual(codes["Technical University of Munich"], "DE")
+        self.assertNotIn("_readme", codes)
+
+    def test_an_exact_display_name_beats_one_that_only_normalizes_to_it(self):
+        codes = ag.institution_country_map({"Bosch (China) Investment Ltd": "CN", "Bosch": "DE"})
+        self.assertEqual(codes["Bosch"], "DE")
+
+    def test_empty_values_are_dropped(self):
+        self.assertEqual(ag.institution_country_map({"Somewhere": ""}), {})
+
 
 class TestAuthorCountryCodes(unittest.TestCase):
     def test_internetlab_brazil_mislabel_is_stripped(self):

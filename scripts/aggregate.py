@@ -158,7 +158,7 @@ _TRAILING_PLURAL_S_RE = re.compile(r"(?<=[a-z]{4})s$")
 
 
 def normalize_title(t):
-    t = (t or "").strip()
+    t = html.unescape(t or "").strip()
     m = _MARKDOWN_LINK_TITLE_RE.match(t)
     if m:
         t = m.group(1)
@@ -370,6 +370,7 @@ TRAILING_ACRONYM_RE = re.compile(r"\(([A-Z][A-Z0-9\-]{1,9})\)\s*$")
 
 
 def normalize_venue(v):
+    v = html.unescape(v)  # "Journal of Intelligent &amp; Robotic Systems"
     if v in VENUE_ALIASES:
         return VENUE_ALIASES[v]
     stripped = strip_year(v)
@@ -2221,6 +2222,23 @@ def is_valid_institution(name):
     return True
 
 
+def institution_country_map(raw):
+    """data/institution_countries.json keyed the way lookups see institutions.
+
+    The file is keyed by raw names ("Technical University of Munich"), but
+    every lookup uses the name after normalize_institution() and its aliases
+    ("Technical University of Munich (TUM)"), so TUM, KIT, BeiHang and UC San
+    Diego had a country in the file and none on the site. Each key is also
+    entered under its normalized name. A raw key that is already a display
+    name wins over one that only normalizes to it, and otherwise the first
+    key in the file wins."""
+    codes = {k: v for k, v in raw.items() if v and not k.startswith("_")}
+    for k, v in list(codes.items()):
+        codes.setdefault(normalize_institution(k), v)
+    codes.pop("", None)
+    return codes
+
+
 def author_country_codes(a):
     affs = a.get("affiliations") or []
     bad = {code for inst, code in COUNTRY_MISLABELS if inst in affs}
@@ -2890,13 +2908,9 @@ def main():
     # historically, now also backfilled by fetch_institution_countries.py --
     # see that script's docstring): {name: "US", ...} flat map, plus a
     # "_readme" key that isn't a real institution.
-    institution_country_codes = {
-        k: v
-        for k, v in (
-            json.loads(INSTITUTION_COUNTRIES_FILE.read_text(encoding="utf-8"))
-            if INSTITUTION_COUNTRIES_FILE.exists() else {}
-        ).items() if v and not k.startswith("_")
-    }
+    institution_country_codes = institution_country_map(
+        json.loads(INSTITUTION_COUNTRIES_FILE.read_text(encoding="utf-8"))
+        if INSTITUTION_COUNTRIES_FILE.exists() else {})
     institution_countries = {k: COUNTRY_NAMES.get(v, v) for k, v in institution_country_codes.items()}
 
     def paper_countries_institutions(e):

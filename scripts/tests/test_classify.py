@@ -414,6 +414,32 @@ class TestLoadLlmCategoryLabels(unittest.TestCase):
             {"freshpaper": "object-detection-2d"},
         )
 
+    def test_a_key_written_from_an_escaped_title_still_matches(self):
+        # Labelled before merge_corpus.py unescaped titles, so the stored key
+        # still has "amp" in it; the entry's own title gives the current key.
+        self.labels_file.write_text(json.dumps({
+            "detectionamprecognition": {"title": "Detection &amp; Recognition", "category": "object-detection"},
+        }), encoding="utf-8")
+        labels = cl.load_llm_category_labels()
+        self.assertEqual(labels[cl.normalize_title("Detection & Recognition")], "object-detection")
+
+
+class TestNormalizeTitleEntities(unittest.TestCase):
+    def test_escaped_and_plain_titles_share_a_key(self):
+        self.assertEqual(cl.normalize_title("Detection &amp; Recognition"), cl.normalize_title("Detection & Recognition"))
+
+    def test_llm_av_label_from_an_escaped_title_still_matches(self):
+        tmpdir = tempfile.TemporaryDirectory()
+        self.addCleanup(tmpdir.cleanup)
+        v1, v2 = Path(tmpdir.name) / "v1.json", Path(tmpdir.name) / "v2.json"
+        v2.write_text(json.dumps({"roadtextamprecognition": {"title": "RoadText &amp; Recognition", "label": "AV"}}),
+                      encoding="utf-8")
+        orig = (cl.LLM_LABELS_FILE, cl.LLM_LABELS_V2_FILE)
+        cl.LLM_LABELS_FILE, cl.LLM_LABELS_V2_FILE = v1, v2
+        self.addCleanup(setattr, cl, "LLM_LABELS_FILE", orig[0])
+        self.addCleanup(setattr, cl, "LLM_LABELS_V2_FILE", orig[1])
+        self.assertIn(cl.normalize_title("RoadText & Recognition"), cl.load_llm_av_titles())
+
 
 class TestClassifyPaper(unittest.TestCase):
     CATEGORIES = [
