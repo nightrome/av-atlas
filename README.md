@@ -36,7 +36,7 @@ why things are the way they are, see [DECISIONS.md](DECISIONS.md).
 
 The whole corpus is available as four gzipped CSVs: papers, authorship, citations
 between papers in the corpus, and institutions. They join on `paper_id`. They are
-linked at the bottom of the homepage. `scripts/build_data_release.py` regenerates them
+linked from the About page's download section. `scripts/build_data_release.py` regenerates them
 on every build, and they come with their own README. The file names include the site
 version (see below), and only the current version is kept.
 

@@ -1350,7 +1350,9 @@ step was simpler to reason about.
 site shows about each AV paper (title, venue, year, authors, citation count, in any order)
 plus the corpus totals. `content_updated` is the date that hash last changed: if the
 previous `stats.json` has the same hash, its date is carried over, otherwise it is today.
-The Overview and About pages show `content_updated`, and the sitemap uses it as `lastmod`.
+Every page shows `content_updated` next to the site version in the nav bar, as one line
+("Version 0.1.2 · data as of 25 Sep 2026"; see the site versions entry), the About page
+repeats that line in its data coverage section, and the sitemap uses it as `lastmod`.
 
 Before this, the About page showed `generated_at`, which moves on every build. With
 monthly automatic builds, a month with no new papers or citations would still have said
@@ -1387,7 +1389,12 @@ that needs pre-rendered HTML per entity, which is a much bigger change.
 
 Every published build has a version, shown in the nav bar, on the About page, in
 `BUILD_INFO.json`, in the published `stats.json` (`site_version`) and in the names of the
-download files. The tracked `VERSION` file holds major.minor and only the maintainer
+download files, which are linked from the About page's download section.
+
+The version and the data date are shown together, as "Version 0.1.2 · data as of 25 Sep
+2026", never as two separate lines. The version goes up with every published build while
+the date only moves when the papers or counts change, so a separate "Site version" and
+"Data last updated" looked like two dates that disagreed. The tracked `VERSION` file holds major.minor and only the maintainer
 changes it. Nobody edits the patch number: `build_public_site.py` reads the version in
 production's `BUILD_INFO.json` and adds one, or starts at 0 if `VERSION` has moved on
 to a new major.minor. Production had no version field before this, so it counts as

@@ -134,7 +134,8 @@ class BuildOutputTests(unittest.TestCase):
             base, public = Path(d), Path(d) / "public"
             (base / "data").mkdir()
             (base / "data" / "stats.json").write_text(
-                json.dumps({"generated_at": "2026-09-24", "all_papers": []}), encoding="utf-8")
+                json.dumps({"generated_at": "2026-09-24", "content_updated": "2026-09-20",
+                            "all_papers": []}), encoding="utf-8")
             public.mkdir()
             (public / "old-page.html").write_text("stale", encoding="utf-8")
             with mock.patch.object(bps, "BASE", base), mock.patch.object(bps, "PUBLIC_DIR", public), \
@@ -152,16 +153,22 @@ class BuildOutputTests(unittest.TestCase):
                              "0.1.2")
             nav = (public / "nav.js").read_text(encoding="utf-8")
             self.assertIn("const SITE_VERSION = '0.1.2';", nav)
+            self.assertIn("const DATA_DATE = '2026-09-20';", nav)
             for page in public.glob("*.html"):
                 self.assertNotIn(bps.VERSION_PLACEHOLDER, page.read_text(encoding="utf-8"), page.name)
             for script in public.glob("*.js"):
                 self.assertNotIn(bps.VERSION_PLACEHOLDER, script.read_text(encoding="utf-8"), script.name)
+                self.assertNotIn(bps.DATA_DATE_PLACEHOLDER, script.read_text(encoding="utf-8"), script.name)
 
-            # The homepage links exactly the files build_data_release.py writes.
-            index = (public / "index.html").read_text(encoding="utf-8")
-            self.assertIn("Download the data (v0.1.2)", index)
-            linked = re.findall(r'href="download/([^"]+)"', index)
+            # The About page links exactly the files build_data_release.py
+            # writes, and the homepage no longer has a download section.
+            about = (public / "about.html").read_text(encoding="utf-8")
+            self.assertIn("Download the data (v0.1.2)", about)
+            linked = re.findall(r'href="download/([^"]+)"', about)
             self.assertEqual(linked, build_data_release.release_file_names("0.1.2"))
+            index = (public / "index.html").read_text(encoding="utf-8")
+            self.assertNotIn('href="download/', index)
+            self.assertNotIn("Download the data", index)
 
 
 if __name__ == "__main__":

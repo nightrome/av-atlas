@@ -2202,18 +2202,6 @@
     set('meta[name="twitter:description"]', description);
   };
 
-  // "Data last updated 24 Sep 2026", from stats.json's content_updated: the
-  // date the published papers or counts last changed (see content_hash in
-  // aggregate.py), not when the site was last built or deployed. Spelled
-  // out by hand so it reads the same in every browser locale. '' when the
-  // field is missing, so a page never falls back to the build date.
-  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  window.dataUpdatedText = function (stats) {
-    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec((stats && stats.content_updated) || '');
-    if (!m || !MONTHS[Number(m[2]) - 1]) return '';
-    return `Data last updated ${Number(m[3])} ${MONTHS[Number(m[2]) - 1]} ${m[1]}`;
-  };
-
   // Who runs this site. Used to disclose, in place, when the maintainer's
   // own name comes out on top of one of this site's own rankings -- which it
   // does: they are a first author on nuScenes, the most-cited paper in the

@@ -107,18 +107,36 @@
     `<a href="${p.href}"${p.href === current ? ' class="active"' : ''}>${p.label}</a>`
   ).join('');
 
-  // The site version, e.g. v0.1.2. build_public_site.py replaces the
-  // placeholder below with the build's version; a page served straight from
-  // site/ (no build) still has the placeholder and shows no label. Links to
-  // the homepage download section, whose files carry the same version.
+  // One line for the version and the data date, e.g. "Version 0.1.2 · data
+  // as of 25 Sep 2026". The version goes up with every published build; the
+  // date is stats.json's content_updated, the day the papers or counts last
+  // changed (see content_hash in aggregate.py), so it can stay the same
+  // across several versions. One line keeps the two from reading as
+  // conflicting "last updated" dates. The month is spelled out by hand so it
+  // reads the same in every browser locale. Just the version when the date
+  // is missing or malformed (never the build date); '' without a version.
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  window.siteVersionText = function (version, contentUpdated) {
+    if (!/^\d+\.\d+\.\d+$/.test(version || '')) return '';
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(contentUpdated || '');
+    if (!m || !MONTHS[Number(m[2]) - 1]) return `Version ${version}`;
+    return `Version ${version} \u00b7 data as of ${Number(m[3])} ${MONTHS[Number(m[2]) - 1]} ${m[1]}`;
+  };
+
+  // build_public_site.py fills in both placeholders below: the build's
+  // version and stats.json's content_updated. A page served straight from
+  // site/ (no build) still has them and shows no label. Links to the About
+  // page's download section, whose files carry the same version.
   const SITE_VERSION = '__AV_ATLAS_VERSION__';
-  if (/^\d+\.\d+\.\d+$/.test(SITE_VERSION)) {
+  const DATA_DATE = '__AV_ATLAS_DATA_DATE__';
+  const versionText = window.siteVersionText(SITE_VERSION, DATA_DATE);
+  if (versionText) {
     window.AV_ATLAS_VERSION = SITE_VERSION;
     const versionLink = document.createElement('a');
     versionLink.className = 'site-version';
-    versionLink.href = 'index.html#download';
-    versionLink.title = `AV Atlas version ${SITE_VERSION}. Download this version's data`;
-    versionLink.textContent = `v${SITE_VERSION}`;
+    versionLink.href = 'about.html#download';
+    versionLink.title = `Download the data for version ${SITE_VERSION}`;
+    versionLink.textContent = versionText;
     nav.appendChild(versionLink);
   }
 
