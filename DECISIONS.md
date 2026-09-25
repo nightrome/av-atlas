@@ -666,6 +666,31 @@ Whichever machine held the only `papers_full.json` with real enrichment in it wa
 single point of failure. The fix is to snapshot both files somewhere durable after
 every deploy, not to keep believing a fresh rebuild reproduces them.
 
+An earlier version of this entry said a fresh clone "gets the right paper list". It
+doesn't. `data/venues/arxiv_s2_citing.json` is gitignored too (about 120 MB), and it is
+where the 11,540 AV papers found through Semantic Scholar citations come from, about
+45% of the AV corpus and 19 of the top 100. `merge_corpus.py` builds the paper list only
+from the venue files on disk, so without it those papers are simply gone. It isn't
+cleanly regenerable either: the crawl is seeded from `stats.json`, takes a day or more
+at Semantic Scholar's rate limit, and the file carries venue fixes from
+`backfill_citing_venues.py` and `fix_suspect_venues.py` on top. So the backup now holds
+it as well, plus `s2_citing_seeds.json`, the Semantic Scholar ID and reference side
+files, and the small resume files of the per-paper crawlers. That set is what the
+monthly GitHub Actions job needs to restore and carry on without the laptop. The raw
+`reference_lists_cvf.json`/`reference_lists_arxiv.json` (about 350 MB, parsed from PDFs)
+and `abstracts_arxiv.json` stay out: their results already live in
+`citation_graph.json` and `papers_full.json`. PDFs never leave the laptop.
+
+Losing data quietly is worse than failing, so the pipeline now fails instead.
+`merge_corpus.py` stops when the previous `papers_full.json` or a venue file can't be
+parsed, and when the previous corpus had S2-discovered papers but the new merge has
+none (`--allow-s2-loss` overrides that). Every writer of `papers_full.json`,
+`stats.json`, `citation_graph.json` and `arxiv_s2_citing.json` goes through
+`scripts/atomic_write.py` (temp file, fsync, rename), so a crawler killed mid-save leaves
+the old file, not half of a new one. `backup_corpus.py` uploads before it deletes, exits
+non-zero on any failure, and won't overwrite a backup that another machine wrote after
+this checkout last restored or backed up.
+
 ## By-hand data corrections are scripts, not one-off edits
 
 Any manual fix to `papers_full.json` (an author merge, an institution-name correction)

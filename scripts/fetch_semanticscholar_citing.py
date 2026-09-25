@@ -47,6 +47,7 @@ import urllib.parse
 import urllib.request
 from functools import lru_cache
 
+from atomic_write import write_json_atomic
 from fetch_common import BASE, HEADERS, by_citations
 
 STATS_FILE = BASE / "data" / "stats.json"
@@ -174,7 +175,7 @@ def load_json(path, default):
 
 
 def save_json(path, data):
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(path, data, indent=2)
 
 
 def main():

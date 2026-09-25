@@ -307,11 +307,16 @@ def deploy_staging(remote):
 
 
 def backup_corpus():
-    print("\n--- Backing up papers_full.json + citation_graph.json ---")
-    # Best-effort and non-fatal (check=False): the site is already live by
-    # the time this runs, so a backup problem -- no token configured, a
-    # transient GitHub API error -- shouldn't be reported as a failed deploy.
-    subprocess.run([sys.executable, "backup_corpus.py"], cwd=BASE / "scripts", check=False)
+    print("\n--- Backing up the corpus (backup_corpus.py) ---")
+    # Runs last, after the site is already live. No token configured is a
+    # silent skip (exit 0 from backup_corpus.py). Anything else -- a failed
+    # upload, an expired token, a newer backup from another machine -- used
+    # to scroll past above a cheerful "Done." and let the backup go stale
+    # unnoticed, so it now ends the deploy with a non-zero exit instead.
+    result = subprocess.run([sys.executable, "backup_corpus.py"], cwd=BASE / "scripts", check=False)
+    if result.returncode != 0:
+        raise SystemExit("\nBACKUP FAILED: the site is published, but the corpus backup was not "
+                         "updated (see the error above). Rerun scripts/backup_corpus.py once it's fixed.")
 
 
 def main():

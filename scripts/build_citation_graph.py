@@ -90,6 +90,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from atomic_write import write_json_atomic
 from fetch_common import by_citations
 
 BASE = Path(__file__).resolve().parent.parent
@@ -448,7 +449,7 @@ def load_refs_cvf():
 
 
 def save_json(path, data):
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(path, data, indent=2)
 
 
 def fetch_phase(cvf_titles, pdf_url_index):

@@ -26,6 +26,8 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 GRAPH_FILE = BASE / "data" / "citation_graph.json"
@@ -91,7 +93,7 @@ def main():
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     graph = load_json(GRAPH_FILE, {"edges": {}})
     n_changed = apply_counts(papers, graph)
-    PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(PAPERS_FILE, papers, indent=2)
     print(f"Updated {n_changed} in-corpus counts in {PAPERS_FILE}")
 
 

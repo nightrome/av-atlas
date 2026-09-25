@@ -13,6 +13,8 @@ import json
 import re
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 ABSTRACTS_FILE = BASE / "data" / "abstracts_semanticscholar.json"
@@ -48,7 +50,7 @@ def main():
         if fill_missing_abstract(p, abstracts.get(normalize_title(p.get("title"))), "semanticscholar"):
             n_applied += 1
 
-    PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(PAPERS_FILE, papers, indent=2)
     print(f"Applied Semantic-Scholar-sourced abstracts to {n_applied} papers")
 
 

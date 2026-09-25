@@ -32,13 +32,26 @@ labels papers, it does not decide which papers are included.
 
 Writes av-atlas/data/papers_full.json.
 
-Usage: python merge_corpus.py
+Fails (non-zero exit, previous papers_full.json left alone) rather than
+writing a quietly smaller corpus when: the previous papers_full.json exists
+but can't be parsed (its carried-over enrichment would be lost), a venue file
+can't be parsed (its papers would be lost), or the previous corpus had
+papers from data/venues/arxiv_s2_citing.json and this merge has none (the
+gitignored S2 file is missing or empty -- restore it with restore_corpus.py).
+
+Usage: python merge_corpus.py [--allow-s2-loss]
+
+--allow-s2-loss writes the merge anyway when the S2-discovered papers are
+gone, for a deliberate rebuild without that file.
 """
 import html
+import argparse
 import json
 import re
+import sys
 from pathlib import Path
 
+from atomic_write import write_json_atomic
 import classify as cl
 
 BASE = Path(__file__).resolve().parent.parent
@@ -317,7 +330,15 @@ def merge_by_arxiv_id(merged, carry_over_fields=()):
     return len(folded)
 
 
-def main():
+S2_DISCOVERY_SOURCE = "arxiv_s2_citing_discovery"
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Rebuild data/papers_full.json from data/venues/*.json.")
+    parser.add_argument("--allow-s2-loss", action="store_true",
+                        help="write the merge even if every S2-discovered paper is gone")
+    args = parser.parse_args(argv if argv is not None else [])
+
     taxonomy_full = json.loads(CATEGORIES_FILE.read_text(encoding="utf-8"))
     taxonomy = taxonomy_full["categories"]
     # Lowercased once here rather than inside classify_paper's per-category
@@ -353,25 +374,35 @@ def main():
     CARRY_OVER_FIELDS = ("authors_detail", "authors_detail_source", "citations_by_source",
                          "arxiv_url", "abstract", "abstract_search_exhausted", "has_code_link")
     prior_by_field = {field: {} for field in CARRY_OVER_FIELDS}
+    n_prior_s2 = 0
     if OUT_FILE.exists():
+        # A hard failure, not a printed note: this used to carry on and
+        # write a corpus with no carried-over authors, abstracts or
+        # citations at all, which then got published and backed up over
+        # the last good copy. A truncated file here usually means a crawler
+        # was killed mid-save; restore_corpus.py gets the last backup back.
         try:
             prior_papers = json.loads(OUT_FILE.read_text(encoding="utf-8"))
-            for p in prior_papers:
-                key = normalize_title(p.get("title"))
-                if not key:
-                    continue
-                for field in CARRY_OVER_FIELDS:
-                    # "field in p and not None", not the truthy check this
-                    # used to be -- has_code_link is a real 3-state field
-                    # (True/False/never-checked), and a bare truthy check
-                    # would silently drop every confirmed-False value (a
-                    # paper actually checked and found to have no code
-                    # link), making it indistinguishable from "never
-                    # checked" on the very next rebuild.
-                    if field in p and p[field] is not None:
-                        prior_by_field[field][key] = p[field]
         except Exception as e:
-            print(f"  could not read prior {OUT_FILE.name} for carry-over: {e}")
+            raise SystemExit(f"Could not read the previous {OUT_FILE} ({e}). Not rebuilding over it: "
+                             "restore it with scripts/restore_corpus.py, or delete it to rebuild "
+                             "without any carried-over enrichment.")
+        for p in prior_papers:
+            if p.get("source") == S2_DISCOVERY_SOURCE:
+                n_prior_s2 += 1
+            key = normalize_title(p.get("title"))
+            if not key:
+                continue
+            for field in CARRY_OVER_FIELDS:
+                # "field in p and not None", not the truthy check this
+                # used to be -- has_code_link is a real 3-state field
+                # (True/False/never-checked), and a bare truthy check
+                # would silently drop every confirmed-False value (a
+                # paper actually checked and found to have no code
+                # link), making it indistinguishable from "never
+                # checked" on the very next rebuild.
+                if field in p and p[field] is not None:
+                    prior_by_field[field][key] = p[field]
 
     merged = {}  # normalized title -> record
 
@@ -390,8 +421,8 @@ def main():
         try:
             papers = json.loads(f.read_text(encoding="utf-8"))
         except Exception as e:
-            print(f"  skip {f.name}: {e}")
-            continue
+            # Skipping it would publish a corpus missing that whole venue.
+            raise SystemExit(f"Could not parse {f} ({e}). Fix or re-fetch it before merging.")
         source = discovery_source(f.name)
         is_arxiv_file = f.name.startswith("arxiv")
         file_conference, file_year = conference_and_year_for_file(f.name)
@@ -450,6 +481,13 @@ def main():
     n_arxiv_folded = merge_by_arxiv_id(merged, CARRY_OVER_FIELDS)
 
     papers = list(merged.values())
+    n_s2 = sum(1 for p in papers if p["source"] == S2_DISCOVERY_SOURCE)
+    if n_prior_s2 and not n_s2 and not args.allow_s2_loss:
+        raise SystemExit(
+            f"The previous {OUT_FILE.name} has {n_prior_s2} papers found through Semantic Scholar "
+            f"citations, but this merge has none: {VENUES_DIR / 'arxiv_s2_citing.json'} is missing "
+            "or empty. Restore it with scripts/restore_corpus.py, or pass --allow-s2-loss to "
+            "rebuild without them on purpose.")
     for p in papers:
         category, relevance = cl.classify_paper(
             p.get("title", ""), p.get("abstract"), taxonomy, llm_av_titles, known_dataset_titles,
@@ -457,7 +495,7 @@ def main():
         p["category"] = category
         p["av_relevance"] = relevance
 
-    OUT_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(OUT_FILE, papers, indent=2)
     print(f"Wrote {len(papers)} unique papers to {OUT_FILE}")
     n_av = sum(1 for p in papers if p["av_relevance"] == "AV")
     print(f"  AV={n_av} non-AV={len(papers) - n_av}")
@@ -468,4 +506,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
