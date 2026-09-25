@@ -156,6 +156,31 @@ Measured on the corpus in September 2026: 536 papers went from AV to non-AV (105
 the title rule, the rest from the model) and 141 went the other way (97 of them via
 SemanticKITTI). On the one-week arXiv sample, accepted papers went from 89 to 67.
 
+## New arXiv preprints come in monthly, with no review, and count in the rankings
+
+`fetch_arxiv_monthly.py` harvests arXiv once a month and keeps whatever the classifier
+above calls AV. Nobody reviews the list before it goes live: the monthly update publishes
+on its own, and the maintainer decided that some wrong papers are an acceptable price for
+that. It runs after the classifier changes in the entry above, which were made with this
+intake in mind: before them, one weak abstract phrase such as "onboard" was enough, and
+a week-long check in the arXiv research found matches only in the abstract to be about
+half right, against nearly all of the title matches. Any further fix belongs in
+`classify.py`, where it also fixes the same papers already in the corpus, not in a
+separate filter for this one path.
+
+These preprints are ranked like every other paper, the same as the preprints that came in
+through Semantic Scholar citations. When a venue later publishes the paper under the same
+title, or its listing carries the same arXiv id, the venue record takes over.
+
+We use arXiv's OAI-PMH interface rather than its search API, because the search API
+refuses Python's `urllib` with HTTP 406 while answering curl with the same request. We
+didn't work around that. PIPELINE.md has the details.
+
+The monthly files (`data/venues/arxiv_monthly_<yyyy>-<mm>.json`) and the ledger
+(`data/arxiv_monthly_state.json`) are tracked in git, unlike `arxiv_s2_citing.json`.
+arXiv's metadata is CC0, the files are small, and a job that runs unattended has to be
+able to carry the ledger from one month to the next without the laptop's backup.
+
 ## Numbers are shown as whole numbers
 
 Citation counts and averages are rounded to integers everywhere they're computed

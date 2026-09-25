@@ -444,6 +444,21 @@ class TestMergeCorpusEndToEnd(unittest.TestCase):
         papers = self._run(venue_papers)
         self.assertEqual(len(papers), 1)
 
+    def test_monthly_arxiv_file_keeps_real_doi_and_arxiv_url_apart(self):
+        venue_papers = [{"title": "A Preprint", "authors": "A", "conference": "arXiv preprint", "year": 2026,
+                         "arxiv_id": "2609.12871", "arxiv_url": "https://arxiv.org/abs/2609.12871",
+                         "doi": "10.1109/SDF67080.2025.11331266"}]
+        papers = self._run(venue_papers, venue_filename="arxiv_monthly_2026-09.json")
+        self.assertEqual(papers[0]["arxiv_url"], "https://arxiv.org/abs/2609.12871")
+        self.assertEqual(papers[0]["doi"], "10.1109/SDF67080.2025.11331266")
+        self.assertEqual(papers[0]["source"], "arxiv_monthly_intake")
+
+    def test_legacy_arxiv_file_still_lifts_the_url_out_of_doi(self):
+        venue_papers = [{"title": "Old Preprint", "authors": "A", "conference": "arXiv preprint", "year": 2026,
+                         "doi": "https://arxiv.org/abs/2608.17420"}]
+        papers = self._run(venue_papers, venue_filename="arxiv_s2_citing.json")
+        self.assertEqual(papers[0]["arxiv_url"], "https://arxiv.org/abs/2608.17420")
+
 
 if __name__ == "__main__":
     unittest.main()

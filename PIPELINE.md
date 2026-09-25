@@ -197,6 +197,7 @@ RAMP-VO). Under that standard:
 | ITSC / IV | `fetch_crossref.py` (2012-2025 from `fetch_dblp_listing.py`) | Crossref, abstracts from Semantic Scholar | Found by IEEE's exact container title, e.g. "2026 IEEE Intelligent Vehicles Symposium (IV)". IV 2026 is the first year fetched this way. ITSC 2026 wasn't on Crossref yet on 2026-09-24. Rerunning an older year merges into the DBLP file and adds DOIs and abstracts. The DBLP years had the `iv` mix-up described under "IV" below. |
 | T-ITS, RA-L, T-RO, TPAMI, IJCV, IJRR | `fetch_crossref.py` (up to 2026-09 from `fetch_dblp_listing.py --journal`) | Crossref, abstracts from Semantic Scholar | By ISSN, merged by title into the existing `<journal>_all.json`. The monthly run asks for records updated in the last 40 days. The backlog run on 2026-09-24 used everything published since 2025-06-01. |
 | GCPR | `fetch_crossref.py` for 2023, `fetch_dblp_listing.py` for the rest | Crossref | By the Springer book's ISBN, one chapter per paper. Crossref has no abstracts for these and Semantic Scholar only a few. |
+| arXiv (new preprints) | `fetch_arxiv_monthly.py` | arXiv OAI-PMH | Monthly, AV papers only. See "Monthly arXiv intake" below. |
 | TOG (ACM Trans. on Graphics) | `fetch_dblp_listing.py --journal` | DBLP | Found the same way as ICML and the others below. Not fetched yet, and blocked (see above). |
 
 **ICRA and IROS.** IEEE Xplore returns HTTP 418 to any direct request. OpenAlex
@@ -247,6 +248,73 @@ papers under the "IV" label, and the real symposium's papers were never fetched.
 A user spotted it ("IV has only 0.4% AV-relevant papers... it is literally called
 Intelligent Vehicles"). It's fixed by mapping "IV" to `ivs` in `CONF_DBLP_PATH` in
 `fetch_dblp_listing.py`.
+
+### Monthly arXiv intake
+
+`fetch_arxiv_monthly.py` brings in new AV preprints once a month. Before it, new
+preprints only arrived through `fetch_semanticscholar_citing.py`, which never
+queries a seed paper twice, so nothing newer than about 2026-08-22 was coming in.
+`fetch_arxiv.py` (per-author pulls) never added a paper.
+
+**Why OAI-PMH and not the search API.** Since September 2026 arXiv's search API
+(`export.arxiv.org/api/query`) answers Python's `urllib` with HTTP 406 and an
+empty body on any query its CDN hasn't cached. We compared the two clients on
+2026-09-24: a local listener showed `urllib` sends `Accept-Encoding: identity`,
+`Connection: close` and no `Accept`, and curl sending exactly those headers over
+HTTP/1.1 with the same User-Agent still got 200 from arXiv, while `urllib` with an
+added `Accept: application/atom+xml` still got 406. So it depends on the client
+library, not on anything in the request, and we don't try to get around it (no
+curl wrapper, no header games). arXiv's OAI-PMH interface
+(`https://oaipmh.arxiv.org/oai`, the harvesting interface arXiv documents for bulk
+metadata) answered `urllib` normally: 920 records for `set=cs` on one day in one
+5-second request. `fetch_arxiv.py`, `mine_abstracts.py` and
+`fetch_affiliations_arxiv.py` still use the search API, now over https, and will
+keep getting 406 until arXiv changes this.
+
+**What a run does.**
+
+- Harvests `ListRecords` with `metadataPrefix=arXiv` for the `cs` and `eess` sets,
+  from the previous run's end minus 3 days (the first run starts at 2026-08-15).
+  There's no `until`: a datestamp is a record's last change, so a closed window
+  would lose papers revised shortly after they were announced. Cross-lists are
+  included, because a set holds every paper listed in any of its categories.
+- Keeps papers first submitted on or after 2026-08-15 that aren't in the ledger.
+  The submission month comes from the arXiv ID. The OAI `created` field can't be
+  trusted on its own: the 2022 paper 2204.07865 came back with `created` set to
+  2026-09-11.
+- Relevance is `classify_relevance()` with no review step. Papers in cs.CV or cs.RO
+  go in if the classifier says AV. Anything else in cs or eess also needs an
+  explicit AV phrase in the title or abstract, which is what a phrase query outside
+  those two categories would have returned; it keeps "device driver" papers out.
+  Papers only in other archives (physics.soc-ph traffic papers, for example) aren't
+  harvested.
+- Drops papers the corpus already has, by arXiv ID (from every `data/venues/*.json`
+  file, plus `papers_full.json` and `arxiv_ids.json` when they exist) and then by
+  `merge_corpus.normalize_title()`. Withdrawn papers are skipped.
+- Appends the rest to `data/venues/arxiv_monthly_<yyyy>-<mm>.json` (by run month)
+  and updates `data/arxiv_monthly_state.json` (the window end, each accepted ID
+  and a short log of the last 24 runs). Both files are written only after the
+  whole harvest worked, through a temp file and a rename. A 403 or 429 stops the
+  run with nothing written; a 503 with `Retry-After` (OAI's flow control) is waited
+  out. Requests are 5 seconds apart.
+
+Each record has `arxiv_id`, `arxiv_url`, a real `doi` when the authors gave one,
+`journal_ref`, `comment`, `primary_category`, `categories`, `submitted` and
+`first_seen` (the run date). `merge_corpus.py` treats the files like the other
+`arxiv*.json` files (they only fill titles no venue has) and labels them
+`source: "arxiv_monthly_intake"`. When a venue listing later carries the same
+title, the venue record wins and the preprint only donates its `arxiv_url`.
+
+Measured on the one recorded day (`set=cs`, datestamp 2026-09-14): 920 records,
+653 of them new submissions, 12 accepted, 1 already in the corpus. That is on the
+order of 200 to 300 papers a month. One of the 12 ("AquaCubeAI ... on-board
+Φsat-2", a satellite paper) is a false positive from the linear-model layer's
+"onboard" weight. The `eess` set wasn't sampled.
+
+Run it with `python scripts/fetch_arxiv_monthly.py` (`--dry-run` to see the counts
+without writing, `--from YYYY-MM-DD` to override the window start). Loading the
+dedupe keys reads `papers_full.json` and `arxiv_s2_citing.json`, about a minute on
+the laptop.
 
 ## Merge, classify, enrich, aggregate
 

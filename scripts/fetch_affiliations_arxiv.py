@@ -81,14 +81,13 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 
 import institution_extraction_llm as iel
-from fetch_common import by_citations
+from fetch_common import ARXIV_API_URL as ARXIV_API, by_citations
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 AFFS_FILE = BASE / "data" / "affiliations_arxiv.json"
 REFS_FILE = BASE / "data" / "reference_lists_arxiv.json"
 HEADERS = {"User-Agent": "av-atlas (mailto:holger@it-caesar.com)"}
-ARXIV_API = "http://export.arxiv.org/api/query"
 BATCH_SIZE = 15
 MAX_CONSECUTIVE_FAILURES = 20
 ATOM_NS = {"atom": "http://www.w3.org/2005/Atom"}

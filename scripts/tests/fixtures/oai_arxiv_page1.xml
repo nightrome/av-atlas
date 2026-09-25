@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2026-09-24T13:40:38Z</responseDate>
+                <request verb="ListRecords" metadataPrefix="arXiv" from="2026-09-14" until="2026-09-14" set="cs">http://oaipmh.arxiv.org/oai</request>
+
+
+    <ListRecords><record>
+                <header>
+        <identifier>oai:arXiv.org:2609.12371</identifier>
+        <datestamp>2026-09-14</datestamp>
+            <setSpec>cs:cs:RO</setSpec>
+    </header>
+
+            <metadata>
+                        <arXiv xmlns="http://arxiv.org/OAI/arXiv/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXiv/ https://oaipmh.arxiv.org/OAI/arXiv.xsd">
+        <id>2609.12371</id>
+        <created>2026-09-11</created>
+            <updated>2026-09-14</updated>
+        <authors>
+                <author>
+                    <keyname>Liu</keyname>
+                        <forenames>Zhiyuan</forenames>
+                </author>
+                <author>
+                    <keyname>Tian</keyname>
+                        <forenames>Yuanxin</forenames>
+                </author>
+                <author>
+                    <keyname>Ke</keyname>
+                        <forenames>Zehong</forenames>
+                </author>
+                <author>
+                    <keyname>Li</keyname>
+                        <forenames>Jinhao</forenames>
+                </author>
+                <author>
+                    <keyname>Cheng</keyname>
+                        <forenames>Hao</forenames>
+                </author>
+                <author>
+                    <keyname>Xu</keyname>
+                        <forenames>Zhenhua</forenames>
+                </author>
+                <author>
+                    <keyname>Yu</keyname>
+                        <forenames>Wenhao</forenames>
+                </author>
+                <author>
+                    <keyname>Wang</keyname>
+                        <forenames>Jianqiang</forenames>
+                </author>
+        </authors>
+        <title>READ: Learning Risk-Informed Fields for End-to-End Autonomous Driving</title>
+            <categories>cs.RO</categories>
+            <license>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</license>
+            <abstract>Autonomous driving requires more than recognizing what is present in a scene: a planner must determine how road structure, surrounding agents, and their motion states should influence a future maneuver. Existing learning-based planners can capture these influences through latent scene features and trajectory decoders, but the relationship between environmental factors and candidate actions often remains implicit. This limits the ability to inspect, diagnose, or refine how scene context affects the safety of a predicted trajectory. Classical safety fields provide an explicit spatial representation of this relationship, but their risk shapes and relative weights are prescribed in advance and do not adapt to each scene. We introduce READ, a framework that learns an explicit, planning-aligned risk representation from complementary geometric and behavioral constraints. READ instantiates this representation as a continuous spatiotemporal field, enabling differentiable queries along candidate trajectories. The learned field connects scene understanding with action selection by encouraging predicted trajectories to align with low-risk regions, while retaining a differentiable interface for trajectory evaluation and refinement. READ integrates with both end-to-end planners and Vision-Language-Action models. Experiments on NAVSIM show consistent gains across matched end-to-end backbones and strong performance in a VLA setting; READ also achieves competitive results on NAVSIM v2. These results establish learned spatial risk as an explicit, adaptable representation for safe planning.</abstract>
+    </arXiv>
+
+            </metadata>
+        </record>
+<record>
+                <header>
+        <identifier>oai:arXiv.org:2204.07865</identifier>
+        <datestamp>2026-09-14</datestamp>
+            <setSpec>cs:cs:HC</setSpec>
+    </header>
+
+            <metadata>
+                        <arXiv xmlns="http://arxiv.org/OAI/arXiv/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXiv/ https://oaipmh.arxiv.org/OAI/arXiv.xsd">
+        <id>2204.07865</id>
+        <created>2026-09-11</created>
+            <updated>2026-09-14</updated>
+        <authors>
+                <author>
+                    <keyname>Sun</keyname>
+                        <forenames>Wei</forenames>
+                </author>
+        </authors>
+        <title>RFID-based Relative Localization for Nanodrone Swarm Platooning</title>
+            <categories>cs.HC</categories>
+            <license>http://creativecommons.org/licenses/by-nc-nd/4.0/</license>
+            <abstract>A nanodrone swarm is formulated by multiple lightweight and low-cost nanodrones to perform tasks in very challenging environments. Therefore, it is essential to recognize the relative positions of the nanodrones in the swarm for accurate and safe platooning. However, the camera or LiDAR sensors suffer from the line-of-sight (LoS) sensing. This paper presents the design, implementation, and evaluation of RFDrone, a system that can enable the relative positioning for the nanodrone swarm using the commodity passive RFID tags attached to each nanodrone for safe and accurate platooning. To do so, we propose a novel algorithm for spatial-temporal phase profiling based on the swarm platooning nature and further design a machine-learning model to predict the relative position of the tagged nanodrones in the swarm. Our experiments show that RFDrone can accurately estimate the relative positions of nanodrones in the swarm, whereby the 3D geometry of the nanodrone swarm pattern is easily obtained across different environments, tag diversity, and swarm pattern diversity.</abstract>
+    </arXiv>
+
+            </metadata>
+        </record>
+<record>
+                <header>
+        <identifier>oai:arXiv.org:2603.02638</identifier>
+        <datestamp>2026-09-14</datestamp>
+            <setSpec>eess:eess:SP</setSpec>
+            <setSpec>cs:cs:AI</setSpec>
+            <setSpec>cs:cs:LG</setSpec>
+    </header>
+
+            <metadata>
+                        <arXiv xmlns="http://arxiv.org/OAI/arXiv/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXiv/ https://oaipmh.arxiv.org/OAI/arXiv.xsd">
+        <id>2603.02638</id>
+        <created>2026-09-11</created>
+            <updated>2026-09-14</updated>
+        <authors>
+                <author>
+                    <keyname>Wiedner</keyname>
+                        <forenames>Wilfried</forenames>
+                </author>
+                <author>
+                    <keyname>Eller</keyname>
+                        <forenames>Lukas</forenames>
+                </author>
+                <author>
+                    <keyname>Mussbah</keyname>
+                        <forenames>Mariam</forenames>
+                </author>
+                <author>
+                    <keyname>Rössler</keyname>
+                        <forenames>Dominik</forenames>
+                </author>
+                <author>
+                    <keyname>Maresch</keyname>
+                        <forenames>Valerian</forenames>
+                </author>
+                <author>
+                    <keyname>Svoboda</keyname>
+                        <forenames>Philipp</forenames>
+                </author>
+                <author>
+                    <keyname>Rupp</keyname>
+                        <forenames>Markus</forenames>
+                </author>
+        </authors>
+        <title>The Vienna 4G/5G Drive-Test Dataset</title>
+            <categories>eess.SP cs.AI cs.LG</categories>
+            <comments>22 pages, 13 figures, 11 tables</comments>
+            <journal-ref>Wiedner, W., Eller, L., Mussbah, M. et al. The Vienna 4G/5G Drive-Test Dataset. Sci Data (2026)</journal-ref>
+            <doi>10.1038/s41597-026-08259-z</doi>
+            <license>http://creativecommons.org/licenses/by/4.0/</license>
+            <abstract>Machine learning for mobile network analysis, planning, and optimization is often limited by the lack of large, comprehensive real-world datasets. This paper introduces the Vienna 4G/5G Drive-Test Dataset, a city-scale open dataset of georeferenced Long Term Evolution (LTE) and 5G New Radio (NR) measurements collected across Vienna, Austria. The dataset combines passive wideband scanner observations with active handset logs, providing complementary network-side and user-side views of deployed radio access networks. The measurements cover diverse urban and suburban settings and are aligned with time and location information to support consistent evaluation. For a representative subset of base stations (BSs), we provide inferred deployment descriptors, including estimated BS locations, sector azimuths, and antenna heights. The release further includes high-resolution building and terrain models, enabling geometry-conditioned learning and calibration of deterministic approaches such as ray tracing. To facilitate practical reuse, the data are organized into scanner, handset, estimated cell information, and city-model components, and the accompanying documentation describes the available fields and intended joins between them. The dataset enables reproducible benchmarking across environment-aware learning, propagation modeling, coverage analysis, and ray-tracing calibration workflows.</abstract>
+    </arXiv>
+
+            </metadata>
+        </record>
+<record>
+                <header>
+        <identifier>oai:arXiv.org:2609.12503</identifier>
+        <datestamp>2026-09-14</datestamp>
+            <setSpec>cs:cs:HC</setSpec>
+            <setSpec>cs:cs:CV</setSpec>
+    </header>
+
+            <metadata>
+                        <arXiv xmlns="http://arxiv.org/OAI/arXiv/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXiv/ https://oaipmh.arxiv.org/OAI/arXiv.xsd">
+        <id>2609.12503</id>
+        <created>2026-09-11</created>
+            <updated>2026-09-14</updated>
+        <authors>
+                <author>
+                    <keyname>Hamid</keyname>
+                        <forenames>Kaiser</forenames>
+                </author>
+                <author>
+                    <keyname>Li</keyname>
+                        <forenames>Peihang</forenames>
+                </author>
+                <author>
+                    <keyname>Liang</keyname>
+                        <forenames>Nade</forenames>
+                </author>
+        </authors>
+        <title>When2Talk: When Should a Proactive In-Car Agent Talk?</title>
+            <categories>cs.HC cs.CV</categories>
+            <license>http://creativecommons.org/licenses/by/4.0/</license>
+            <abstract>Proactive in-cabin agents can help passengers understand automated-vehicle (AV) behavior, but communicating every ride event may introduce unnecessary interruptions. We investigated how communication should adapt to event priority and passenger activity. In a mixed-methods within-subject study, 41 participants rode as passenger in a VR simulated fully-automated vehicle. We compared an event-triggered (ET) policy that communicated immediately at every event with a context-sensitive (CS) policy that selected \textit{Immediate}, \textit{Delayed}, or \textit{Silent} communications. CS increased communication appropriateness and substantially reduced perceived interruption. Perceived trust did not differ between policies, although baselines dispositional trust differentiated communication preferences. Findings highlight event consequence, passenger activity, continuing information value, and confirmation need as key considerations for selective in-cabin communication.</abstract>
+    </arXiv>
+
+            </metadata>
+        </record>
+<record>
+                <header>
+        <identifier>oai:arXiv.org:2609.00067</identifier>
+        <datestamp>2026-09-14</datestamp>
+            <setSpec>cs:cs:CL</setSpec>
+            <setSpec>cs:cs:AI</setSpec>
+    </header>
+
+            <metadata>
+                        <arXiv xmlns="http://arxiv.org/OAI/arXiv/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXiv/ https://oaipmh.arxiv.org/OAI/arXiv.xsd">
+        <id>2609.00067</id>
+        <created>2026-09-10</created>
+            <updated>2026-09-14</updated>
+        <authors>
+                <author>
+                    <keyname>Lai</keyname>
+                        <forenames>Yi-Cheng</forenames>
+                </author>
+                <author>
+                    <keyname>Huang</keyname>
+                        <forenames>Hen-Hsen</forenames>
+                </author>
+        </authors>
+        <title>Do Multimodal LLMs See Before They Read? Diagnosing Contextual Sycophancy</title>
+            <categories>cs.CL cs.AI</categories>
+            <license>http://creativecommons.org/licenses/by/4.0/</license>
+            <abstract>External text can override conflicting image evidence in multimodal large language models, a failure we call multimodal contextual sycophancy. We introduce a 998-case diagnostic that independently varies visual evidence, commonsense priors, and external text, and probe when this failure arises by moving the information boundary around a context-blind visual witness. On abnormal images paired with Gemini-generated false text, GPT-5.1 scores 7.9% under joint conditioning, 49.7% when the context-blind witness report is scored directly, 63.7% under a matched two-call witness-arbiter pipeline that exposes the witness to the text, and 84.2% under System-2 Visual Arbitration (S2VA), which withholds the text from the witness. Across six models, S2VA improves over the direct witness report by 19.7 to 44.1 points, with all paired 95% confidence intervals excluding zero. The best information boundary is not uniform: textual context scaffolds some models, and a GPT-4o-regenerated subset changes the relative ordering of joint conditioning, Witness-Only, and S2VA. Contextual sycophancy is therefore sensitive to when text is introduced, as well as to the model and context source.</abstract>
+    </arXiv>
+
+            </metadata>
+        </record>
+<record>
+                <header>
+        <identifier>oai:arXiv.org:2609.04531</identifier>
+        <datestamp>2026-09-14</datestamp>
+            <setSpec>cs:cs:LG</setSpec>
+    </header>
+
+            <metadata>
+                        <arXiv xmlns="http://arxiv.org/OAI/arXiv/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXiv/ https://oaipmh.arxiv.org/OAI/arXiv.xsd">
+        <id>2609.04531</id>
+        <created>2026-09-10</created>
+            <updated>2026-09-14</updated>
+        <authors>
+                <author>
+                    <keyname>Peng</keyname>
+                        <forenames>Fred Zhangzhi</forenames>
+                </author>
+                <author>
+                    <keyname>Zheng</keyname>
+                        <forenames>Kaiwen</forenames>
+                </author>
+                <author>
+                    <keyname>Zhang</keyname>
+                        <forenames>Anru R.</forenames>
+                </author>
+        </authors>
+        <title>Distilled Continuous Diffusion Language Models Can Write Code in Few Steps---or One</title>
+            <categories>cs.LG</categories>
+            <comments>This manuscript is withdrawn to address institutional disclosure requirements concerning the research resources used in this work</comments>
+            <license>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</license>
+            <abstract>Language generation is almost universally treated as a sequential process: autoregressive models emit one token at a time, while diffusion language models replace token-level seriality with a long trajectory of iterative refinement. In this work, we introduce PlaidQ, a 0.7B continuous diffusion language model for code generation, and show that its trajectory can be aggressively distilled into only a few denoising steps---or even one, enabling efficient code generation. PlaidQ repurposes a pretrained autoregressive model as a bidirectional denoiser over continuous token embeddings. We distill PlaidQ with distribution matching for few-step generation and paired-trajectory supervision for one-step generation. At matched model scale, PlaidQ is competitive with discrete diffusion language models on code generation. Distillation then shifts the quality--compute frontier: a 16-step student reaches 31.78 and 40.49 pass@10 on HumanEval and MBPP+, surpassing the same PlaidQ teacher sampled for 512 steps. At the extreme, paired-trajectory distillation achieves 7.07 pass@1 on HumanEval with a single denoising step, producing functionally correct programs. Together, these results establish continuous diffusion as a viable path to few-step and one-step code generation. Broadly, continuous diffusion is not merely another representation for language: it provides an interface through which language models can inherit the acceleration and distillation machinery of continuous diffusion modeling. Training and inference code and model checkpoints are available at https://github.com/pengzhangzhi/plaidq.</abstract>
+    </arXiv>
+
+            </metadata>
+        </record>
+<resumptionToken cursor="0" completeListSize="7">fixture-token-1</resumptionToken>
+</ListRecords>
+</OAI-PMH>

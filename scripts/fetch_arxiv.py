@@ -27,6 +27,11 @@ merge_corpus.py, on its usual terms, so a top author's non-AV papers (they
 all have some) end up "non-AV" like any other non-AV paper, not silently
 forced "AV" just for showing up here.
 
+This script has never added a paper to the corpus (no arxiv_authors.json
+exists), and since September 2026 arXiv's search API answers urllib with
+HTTP 406 (see fetch_common.py). New preprints now come in through
+fetch_arxiv_monthly.py instead, which harvests OAI-PMH.
+
 Writes av-atlas/data/venues/arxiv_authors.json, same schema as every
 other venue file ("conference": "arXiv preprint", so it renders with the
 site's existing arXiv icon -- see index.html's sourceCell()). merge_corpus.py
@@ -45,11 +50,10 @@ import urllib.parse
 import xml.etree.ElementTree as ET
 from collections import Counter
 
-from fetch_common import BASE, HEADERS, fetch as _fetch
+from fetch_common import ARXIV_API_URL as API_URL, BASE, HEADERS, fetch as _fetch
 
 STATS_FILE = BASE / "data" / "stats.json"
 OUT_FILE = BASE / "data" / "venues" / "arxiv_authors.json"
-API_URL = "http://export.arxiv.org/api/query"
 PAGE_SIZE = 100
 # arXiv's own etiquette guidance: no more than one request per 3 seconds.
 REQUEST_DELAY = 3.0

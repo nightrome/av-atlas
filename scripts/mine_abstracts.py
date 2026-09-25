@@ -56,12 +56,11 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from fetch_common import by_citations
+from fetch_common import ARXIV_API_URL as ARXIV_API, by_citations
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 ABSTRACTS_CACHE_FILE = BASE / "data" / "abstracts_arxiv.json"
-ARXIV_API = "http://export.arxiv.org/api/query"
 ATOM_NS = {"atom": "http://www.w3.org/2005/Atom"}
 HEADERS = {"User-Agent": "av-atlas-corpus-builder (contact: h.caesar@tudelft.nl)"}
 REQUEST_DELAY = 3.0

@@ -24,6 +24,21 @@ BASE = Path(__file__).resolve().parent.parent
 OUT_DIR = BASE / "data" / "venues"
 HEADERS = {"User-Agent": "av-atlas (mailto:holger@it-caesar.com)"}
 
+# arXiv's two machine interfaces. The plain-http API address now answers
+# with a 301 to https, so every fetcher uses the https one directly.
+#
+# Since September 2026 the search API refuses Python's urllib with HTTP 406
+# on any query its CDN hasn't cached, while curl sending the identical URL
+# and identical headers (User-Agent, Accept-Encoding: identity, Connection:
+# close, HTTP/1.1) gets 200. An Accept header of */* or application/atom+xml
+# doesn't change that. So the refusal follows the client library itself, and
+# we don't work around it. fetch_arxiv.py, mine_abstracts.py and
+# fetch_affiliations_arxiv.py still use the API and will get 406 until arXiv
+# changes this. The monthly intake (fetch_arxiv_monthly.py) uses OAI-PMH,
+# arXiv's documented harvesting interface, which answers urllib normally.
+ARXIV_API_URL = "https://export.arxiv.org/api/query"
+ARXIV_OAI_URL = "https://oaipmh.arxiv.org/oai"
+
 
 def _in_corpus_citations(p):
     # NOT p.get("citations") -- that top-level field is dead (confirmed on

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2026-09-24T13:40:38Z</responseDate>
+                <request verb="ListRecords" metadataPrefix="arXiv" from="2026-09-14" until="2026-09-14" set="cs">http://oaipmh.arxiv.org/oai</request>
+
+
+    <ListRecords><record>
+                <header>
+        <identifier>oai:arXiv.org:2609.12871</identifier>
+        <datestamp>2026-09-14</datestamp>
+            <setSpec>cs:cs:RO</setSpec>
+            <setSpec>cs:cs:AI</setSpec>
+            <setSpec>cs:cs:CV</setSpec>
+            <setSpec>cs:cs:LG</setSpec>
+    </header>
+
+            <metadata>
+                        <arXiv xmlns="http://arxiv.org/OAI/arXiv/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXiv/ https://oaipmh.arxiv.org/OAI/arXiv.xsd">
+        <id>2609.12871</id>
+        <created>2026-09-11</created>
+            <updated>2026-09-14</updated>
+        <authors>
+                <author>
+                    <keyname>Berthold</keyname>
+                        <forenames>Philipp</forenames>
+                </author>
+                <author>
+                    <keyname>Forkel</keyname>
+                        <forenames>Bianca</forenames>
+                </author>
+                <author>
+                    <keyname>Maehlisch</keyname>
+                        <forenames>Mirko</forenames>
+                </author>
+        </authors>
+        <title>A Multi-Vehicle Dataset with Camera, LiDAR, and Radar Sensors and Scanned 3D Models for Custom Auto-Annotation using RTK-GNSS</title>
+            <categories>cs.RO cs.AI cs.CV cs.LG</categories>
+            <comments>Paper accompanying the dataset &#34;7V-Scanario&#34;</comments>
+            <journal-ref>2025 IEEE Sensor Data Fusion: Trends, Solutions, Applications (SDF)</journal-ref>
+            <doi>10.1109/SDF67080.2025.11331266</doi>
+            <license>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</license>
+            <abstract>Datasets are a crucial element in the development of perception algorithms. They relate sensor measurement data to annotated reference information and allow for the deduction of sensor and object characteristics. In autonomous driving, the reference data commonly consist of semantic image segmentation, point-wise associations, or bounding box annotations. The dataset proposed in this work, however, aims to dig deeper into the evaluation of measurement principles and provides scanned 3D models of all vehicles together with a pose and continuous kinematics reference obtained by RTK-GNSS. Combined, the state of the complete dynamic surrounding of the sensor vehicle is known for any point in time. Subsequent reference formats can be easily computed in user-defined granularity. This dataset involves single-object and multi-object recordings with seven target vehicles. In particular, measurement effects such as occlusion, as well as reflections, can be evaluated, as the normals of the shape of the target vehicles are known. We describe the dataset, discuss the technical background of its development, and briefly present exemplary evaluations.</abstract>
+    </arXiv>
+
+            </metadata>
+        </record>
+<resumptionToken cursor="6" completeListSize="7"></resumptionToken>
+</ListRecords>
+</OAI-PMH>

@@ -2984,8 +2984,9 @@ def main():
             # How this paper entered the corpus -- "venue_listing" (a real
             # conference/journal's own proceedings), "arxiv_author_pull"
             # (fetch_arxiv.py, biased toward authors already prominent
-            # here), or "arxiv_s2_citing_discovery" (fetch_semanticscholar_
-            # citing.py, a verified citation edge via Semantic Scholar).
+            # here), "arxiv_s2_citing_discovery" (fetch_semanticscholar_
+            # citing.py, a verified citation edge via Semantic Scholar), or
+            # "arxiv_monthly_intake" (fetch_arxiv_monthly.py, new preprints).
             "source": e.get("source") or "venue_listing",
             # The exact page this paper's data was pulled from, when the
             # fetcher recorded one (currently only fetch_github_paper_
