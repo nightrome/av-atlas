@@ -38,12 +38,15 @@ build.
 
 | Script | What it does |
 | --- | --- |
-| `fetch_cvf.py`, `fetch_cvf_history.py` | CVPR, ICCV and WACV from CVF Open Access. |
+| `fetch_cvf.py`, `fetch_cvf_history.py` | CVPR, ICCV, WACV and ACCV from CVF Open Access. |
 | `fetch_ecva_history.py` | ECCV from ecva.net. |
 | `fetch_neurips.py`, `fetch_neurips_history.py` | NeurIPS proceedings. |
 | `fetch_pmlr.py`, `fetch_corl_history.py` | ICML (from 2025) and CoRL from PMLR, with abstracts. |
 | `fetch_virtual_site.py` | New ICLR, ICML and ECCV editions from the conference's virtual-site JSON, before any proceedings page exists. |
-| `fetch_dblp_listing.py` | Venues with no proceedings site to scrape (RSS, ICLR, AAAI and the journals). Titles and authors only, no abstracts. |
+| `fetch_rss.py` | RSS from roboticsproceedings.org (2025 on), with abstracts. |
+| `fetch_bmvc.py` | BMVC from that year's own proceedings site (2025 on), with abstracts. |
+| `fetch_crossref.py` | The six journals, IV, ITSC and GCPR from Crossref, with abstracts from Semantic Scholar by DOI. |
+| `fetch_dblp_listing.py` | The older years of RSS, ICLR, AAAI, the journals and the other DBLP venues. Titles and authors only, no abstracts. DBLP now blocks scripts. |
 | `fetch_ieee_openalex.py` | ICRA and IROS through OpenAlex, because IEEE Xplore blocks direct access. |
 | `fetch_github_paper_lists.py` | ICRA and IROS years that OpenAlex doesn't cover. |
 | `fetch_arxiv.py` | arXiv preprints by the corpus's top authors. |

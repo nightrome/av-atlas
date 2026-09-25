@@ -204,6 +204,8 @@
       be found, plus profile photos for top-ranked authors.</li>
   <li><strong>4. Citation graph.</strong> For every paper whose full text is available, its
       reference list is checked against the rest of the corpus to work out which papers cite which.
+      Reference lists from Semantic Scholar are added on top; those already point at specific
+      papers, so they need no title matching.
       A reference counts only when it contains a corpus paper's whole title, so a citation of
       "Tracking Objects as Points" is not also credited to "Objects as Points", and a paper can't
       be cited by one published more than two years before it.
