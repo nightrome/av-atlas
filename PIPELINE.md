@@ -322,7 +322,7 @@ bug. It was removed at the source so it can't come back: the field is stripped
 from `papers_full.json` and no longer fetched.
 
 How papers in the corpus cite each other is a different signal from a global
-count. Two raw-reference sources feed one matching step:
+count. Three reference sources feed one matching step:
 
 - `build_citation_graph.py` downloads the PDF of each AV CVPR, ICCV and WACV paper
   (CVF-hosted, no rate limit) and extracts the references section with pdfplumber.
@@ -331,10 +331,27 @@ count. Two raw-reference sources feed one matching step:
   for affiliations, so it also extracts ar5iv's cleanly structured bibliography
   (one `<li class="ltx_bibitem">` per entry) at no extra network cost. That covers
   any venue with an arXiv preprint, not just CVF.
+- `fetch_s2_references.py` gets Semantic Scholar's reference list for every
+  paper in the corpus, whatever its venue. It first maps each paper to an S2
+  CorpusId (a batch lookup by arXiv id or DOI, then one bulk-search scan per
+  venue matched by exact normalized title, then a per-title search for the
+  rest) and saves the map to `data/s2_paper_ids.json`. Then it fetches the
+  reference lists in batches, most-cited-first, into
+  `data/reference_lists_s2.json`. These references are S2 ids, not text, so
+  they need no title matching: a reference counts when its id maps back to a
+  corpus paper. The matching phase of `build_citation_graph.py` merges these
+  edges with the text-matched ones and drops duplicates. It paces at one
+  request per 1.1 seconds, like the other S2 scripts, and stops on repeated
+  429s. S2 withholds about half of all reference lists from its batch endpoint
+  at the publisher's request (IEEE venues worst: T-ITS and ITSC get a list for
+  only 13-14% of papers). `--step elided` asks the one-paper endpoint for
+  those one at a time, which recovers most arXiv-only preprints and almost
+  nothing else, so it's run for the arXiv venues only.
 
-Both write their raw, unmatched reference lists to their own files
-(`data/reference_lists_cvf.json`, `data/reference_lists_arxiv.json`), because
-fetching and matching are deliberately separate phases. The matching phase of
+All of them write their raw, unmatched reference lists to their own files
+(`data/reference_lists_cvf.json`, `data/reference_lists_arxiv.json`,
+`data/reference_lists_s2.json`), because fetching and matching are
+deliberately separate phases. The matching phase of
 `build_citation_graph.py` runs on every invocation, even if nothing new was
 fetched, and rematches every saved reference list against the current corpus. A
 reference to a paper that wasn't indexed yet starts matching once that paper is

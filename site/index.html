@@ -525,7 +525,11 @@ function renderResults() {
   const cov = (currentStats.corpus_stats || {}).citation_graph_coverage;
   const note = document.getElementById('citation-coverage-note');
   if (note && cov && cov.av_total) {
-    const scanned = (cov.cvf_scanned || 0) + (cov.arxiv_scanned || 0);
+    // refs_any_scanned counts AV papers with a reference list from any
+    // source (CVF, arXiv or Semantic Scholar); older builds lack it.
+    const scanned = cov.refs_any_scanned != null
+      ? cov.refs_any_scanned
+      : (cov.cvf_scanned || 0) + (cov.arxiv_scanned || 0);
     note.textContent = `Ranked by citations from other papers in this corpus. Reference lists have `
       + `been read for ${scanned.toLocaleString()} of ${cov.av_total.toLocaleString()} AV papers `
       + `(${Math.round(100 * scanned / cov.av_total)}%), so every count here is a lower bound that `

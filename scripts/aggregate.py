@@ -3266,6 +3266,10 @@ def main():
         1 for e in entries
         if (e.get("venue") or "") in CVF_CITATION_GRAPH_VENUES or e.get("arxiv_url")
     )
+    # Once fetch_s2_references.py has run, any paper can have a reference
+    # list, whatever its venue, so every AV paper counts as reachable.
+    if sources_scanned.get("s2"):
+        refs_any_eligible = len(entries)
 
     citation_graph_coverage = {
         "cvf_scanned": sources_scanned.get("cvf", 0),
@@ -3273,6 +3277,9 @@ def main():
         "cvf_av_total": cvf_av_total,
         "arxiv_scanned": sources_scanned.get("arxiv", 0),
         "arxiv_eligible_total": arxiv_eligible_total,
+        # Papers with a Semantic Scholar reference list (fetch_s2_references.py).
+        # Any paper can have one, so it has no eligible total of its own.
+        "s2_scanned": sources_scanned.get("s2", 0),
         "refs_any_scanned": refs_any_scanned,
         "refs_any_eligible": refs_any_eligible,
         "av_total": len(entries),

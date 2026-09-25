@@ -656,6 +656,45 @@ all, so widening it naively would waste that LLM cost on about 55,000 papers jus
 a reference list. It needs its own leaner, reference-only path, and that's left as a
 follow-up.
 
+## Whole-corpus citations from Semantic Scholar reference lists
+
+Until now only about 15,000 papers had a reference list at all (the CVF PDFs and the
+ar5iv pages), so a paper's in-corpus count only included citations from that slice.
+`fetch_s2_references.py` gets Semantic Scholar's reference list for any paper in the
+corpus. It maps each paper to an S2 CorpusId once (`data/s2_paper_ids.json`), stores
+each paper's references as CorpusIds (`data/reference_lists_s2.json`), and
+`build_citation_graph.py` turns a reference into an edge when its id maps back to a
+corpus paper. There's no title matching on this path, so it can't produce the
+near-miss matches the text matcher has to guard against.
+
+We ran it on a sample of 1,998 papers (222 at random from each of CVPR, NeurIPS, ICLR,
+ICRA, IROS, T-ITS, ITSC, IV and arXiv-only) before merging:
+
+- 1,950 (97.6%) got an S2 id: 453 by arXiv id, 57 by DOI, 1,302 from the per-venue
+  bulk scan and 138 by per-title search. The lowest venue was IROS at 92%.
+- Only 917 of those came back with a reference list. For 934 S2 knows how many
+  references there are but withholds the list at the publisher's request. It's worst
+  for IEEE: T-ITS 29 of 222, ITSC 30, IV 56, while arXiv-only got 208 and ICLR 159.
+  CVPR (106) and NeurIPS (121) sit in between.
+- The 917 lists hold 20,637 in-corpus citations. The current graph had 3,139 for the
+  same papers, so 17,749 are new, and 732 of the 917 papers had no reference list of
+  any kind before. Of the 3,139 existing edges, only 251 aren't in S2's lists.
+
+Scaled up by venue size, that's roughly 1.5 million new edges from these nine venues
+alone, against 377,000 in the whole graph today. The full crawl takes something like
+half a day to a day at S2's rate limit, most of it the per-title searches for the
+roughly 9% of papers that neither an id nor the venue scan finds. It's resumable and
+runs most-cited-first like every other crawler.
+
+The withheld lists can sometimes still be had from the one-paper
+`/paper/{id}/references` endpoint. A probe of 27 withheld papers found them for all 6
+arXiv-only papers, 2 of 7 CVPR papers and none of the 14 from ICLR, NeurIPS, ICRA,
+T-ITS and ITSC. That costs one request per paper, so `--step elided` exists but isn't part of
+the default run, and it's meant for the arXiv venues.
+
+The S2 edges are merged with the text-matched CVF and arXiv edges per citing paper and
+deduplicated, so a citation found by both counts once.
+
 ## Manually-sourced abstracts for the top-cited gap
 
 The user asked us to look up missing information for the most-cited papers specifically.

@@ -561,7 +561,7 @@ fetch('stats.json').then(r => r.json()).then(stats => {
     // stage exists and isn't the thing holding anything back.
     addRow(statusBody, 'AV classification', stages['2_classified'] || stages['1_discovered'] || 0, coreTotal);
     addRow(statusBody, 'Abstract lookup', stages['3_abstract'] || 0, coreTotal);
-    // Both reference sources (CVF PDFs and arXiv preprints) combined and
+    // All reference sources (CVF PDFs, arXiv preprints, Semantic Scholar) combined and
     // deduplicated by aggregate.py. Denominator is every AV paper some
     // source could reach; older stats.json builds without the combined
     // field fall back to summing the two per-source counts.

@@ -78,6 +78,7 @@ alongside anything.
 | Script | What it does |
 | --- | --- |
 | `build_citation_graph.py` | Parses reference lists into citation edges between papers in the corpus. |
+| `fetch_s2_references.py` | Semantic Scholar reference lists for every corpus paper, matched by S2 id instead of by title. `build_citation_graph.py` merges them in. |
 | `apply_citation_sources.py` | Adds the citation counts to `papers_full.json`. |
 | `fetch_semanticscholar_citing.py` | Finds papers that cite the corpus. This can surface new papers, which then go back through stage 1. |
 | `backfill_citing_venues.py` | Fixes the venue on papers that were first filed under plain "arXiv". |

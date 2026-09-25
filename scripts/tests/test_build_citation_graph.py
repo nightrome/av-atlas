@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Regression tests for build_citation_graph.py's CVF PDF-URL construction.
+Regression tests for build_citation_graph.py's CVF PDF-URL construction and
+for how its match phase merges in the Semantic Scholar edges.
 
 Usage: python -m unittest discover -s av-atlas/scripts/tests
 """
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -51,6 +55,56 @@ class TestPdfUrlFromPath(unittest.TestCase):
         url = bcg.pdf_url_from_path("content_iccv_2015/html/some_iccv_2017_named_paper.html")
         self.assertEqual(url, "https://openaccess.thecvf.com/content_iccv_2015/papers/"
                                "some_iccv_2017_named_paper.pdf")
+
+
+class TestS2Edges(unittest.TestCase):
+    IDS = {"ids": {"nuscenes": 100, "pointpillars": 200, "centerpoint": 300, "droppedpaper": 400}}
+
+    def test_reference_ids_map_back_to_corpus_keys(self):
+        refs = {"references": {"centerpoint": [100, 200, 999], "pointpillars": [200, 100]}}
+        edges = bcg.s2_edges(refs, self.IDS)
+        # 999 isn't a corpus paper, and a paper never cites itself.
+        self.assertEqual(edges, {"centerpoint": {"nuscenes", "pointpillars"}, "pointpillars": {"nuscenes"}})
+
+    def test_papers_no_longer_in_the_corpus_are_dropped(self):
+        refs = {"references": {"centerpoint": [100, 400], "droppedpaper": [100]}}
+        edges = bcg.s2_edges(refs, self.IDS, corpus_keys={"nuscenes", "pointpillars", "centerpoint"})
+        self.assertEqual(edges, {"centerpoint": {"nuscenes"}})
+
+    def test_missing_side_files_give_no_edges(self):
+        self.assertEqual(bcg.s2_edges({}, {}), {})
+
+
+class TestMatchPhaseMergesS2(unittest.TestCase):
+    def test_text_and_s2_edges_are_merged_and_deduplicated(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            files = {
+                "REFS_CVF_FILE": {"succeeded": ["centerpoint"], "failed": {}, "references": {
+                    "centerpoint": ["[1] H. Caesar et al. nuScenes. In CVPR, 2020."]}},
+                "REFS_ARXIV_FILE": {},
+                "REFS_S2_FILE": {"references": {"centerpoint": [100, 200], "bevformer": [100]}},
+                "S2_IDS_FILE": {"ids": {"nuscenes": 100, "pointpillars": 200, "centerpoint": 300,
+                                        "bevformer": 500}},
+            }
+            patches = []
+            for name, data in files.items():
+                path = tmp / f"{name}.json"
+                path.write_text(json.dumps(data), encoding="utf-8")
+                patches.append(patch.object(bcg, name, path))
+            patches.append(patch.object(bcg, "GRAPH_FILE", tmp / "graph.json"))
+            for p in patches:
+                p.start()
+            try:
+                word_index = bcg.build_corpus_match_index(
+                    [{"title": t} for t in ("nuScenes", "PointPillars", "CenterPoint", "BEVFormer")])
+                bcg.match_phase(word_index, {"nuscenes", "pointpillars", "centerpoint", "bevformer"})
+            finally:
+                for p in patches:
+                    p.stop()
+            graph = json.loads((tmp / "graph.json").read_text(encoding="utf-8"))
+        self.assertEqual(graph["edges"], {"bevformer": ["nuscenes"], "centerpoint": ["nuscenes", "pointpillars"]})
+        self.assertEqual(graph["sources_scanned"], {"cvf": 1, "arxiv": 0, "s2": 2})
 
 
 if __name__ == "__main__":
