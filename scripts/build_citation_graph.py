@@ -32,6 +32,12 @@ matches-then-forgets:
     data/reference_lists_arxiv.json (read-only -- that file belongs to
     fetch_affiliations_arxiv.py) and rematches every saved reference list
     against the CURRENT corpus, overwriting data/citation_graph.json fresh.
+    It also adds the Semantic Scholar edges from fetch_s2_references.py
+    (data/reference_lists_s2.json + data/s2_paper_ids.json, both read-only
+    here). Those need no text matching: a reference is an S2 CorpusId, and
+    it's an in-corpus citation when s2_paper_ids.json maps that id to a
+    corpus paper. The two kinds of edges are merged per citing paper and
+    deduplicated.
 
 This split is the direct answer to "papers not yet indexed might be indexed
 later": a reference to a paper that isn't in the corpus yet just doesn't
@@ -91,6 +97,8 @@ PAPERS_FILE = BASE / "data" / "papers_full.json"
 VENUES_DIR = BASE / "data" / "venues"
 REFS_CVF_FILE = BASE / "data" / "reference_lists_cvf.json"
 REFS_ARXIV_FILE = BASE / "data" / "reference_lists_arxiv.json"
+REFS_S2_FILE = BASE / "data" / "reference_lists_s2.json"
+S2_IDS_FILE = BASE / "data" / "s2_paper_ids.json"
 GRAPH_FILE = BASE / "data" / "citation_graph.json"
 PDF_DIR = BASE / "data" / "pdfs_cvf"
 CVF_BASE = "https://openaccess.thecvf.com"
@@ -196,7 +204,7 @@ class TitleIndex:
         self.short = set()
         self.by_prefix = defaultdict(list)
         self.exact = set()
-        seen = set()
+        seen = self.keys = set()
         for p in papers:
             key = normalize_title(p.get("title"))
             if not key:
@@ -562,6 +570,26 @@ def apply_year_guard(edges, index, slack=YEAR_GUARD_SLACK):
     return kept, dropped
 
 
+def s2_edges(refs_s2, s2_ids, corpus_keys=None):
+    """citing key -> set of cited keys, from Semantic Scholar reference
+    lists. Exact by construction: a reference counts only when its CorpusId
+    is the one s2_paper_ids.json holds for a corpus paper. corpus_keys, when
+    given, drops keys that are no longer in the corpus (the id map is only
+    ever added to, papers can leave)."""
+    key_by_id = {}
+    for key, cid in (s2_ids.get("ids") or {}).items():
+        if corpus_keys is None or key in corpus_keys:
+            key_by_id[cid] = key
+    edges = {}
+    for source, cids in (refs_s2.get("references") or {}).items():
+        if corpus_keys is not None and source not in corpus_keys:
+            continue
+        cited = {key_by_id[c] for c in cids if c in key_by_id} - {source}
+        if cited:
+            edges[source] = cited
+    return edges
+
+
 def match_phase(index):
     # Always runs, fetch or no fetch -- pure local computation over whatever
     # raw reference text has been saved so far by either source, against
@@ -576,28 +604,39 @@ def match_phase(index):
     # by aggregate.py's coverage stat.
     cvf_permanent_failures = sum(1 for v in cvf_all_refs["failed"].values() if v.get("permanent"))
 
+    refs_s2 = load_json(REFS_S2_FILE, {})
+
     # One edge map per source of citation data, merged below. A new source
     # (another kind of saved reference list, or edges that already come
-    # resolved) only needs an entry here and in sources_scanned.
+    # resolved) only needs an entry here and in sources_scanned. Semantic
+    # Scholar's lists come already resolved to CorpusIds, so they need no
+    # title matching; keys that have left the corpus are dropped.
     edge_maps = {
         "cvf": reference_list_edges(cvf_refs, index),
         "arxiv": reference_list_edges(arxiv_refs, index),
+        "s2": s2_edges(refs_s2, load_json(S2_IDS_FILE, {}), index.keys),
     }
+    text_edges = merge_edge_sources([edge_maps["cvf"], edge_maps["arxiv"]])
+    s2_only_edges = sum(len(cited - text_edges.get(citer, set()))
+                        for citer, cited in edge_maps["s2"].items())
     edges, n_year_dropped = apply_year_guard(merge_edge_sources(edge_maps.values()), index)
     total_edges = sum(len(v) for v in edges.values())
 
     graph = {
         "generated_at": TODAY,
-        "sources_scanned": {"cvf": len(cvf_refs), "arxiv": len(arxiv_refs)},
+        "sources_scanned": {"cvf": len(cvf_refs), "arxiv": len(arxiv_refs),
+                            "s2": len(refs_s2.get("references") or {})},
         "cvf_permanent_failures": cvf_permanent_failures,
         "edges_by_source": {name: sum(len(v) for v in m.values()) for name, m in edge_maps.items()},
         "year_guard_dropped": n_year_dropped,
         "edges": {k: sorted(v) for k, v in sorted(edges.items())},
     }
     save_json(GRAPH_FILE, graph)
-    print(f"Match phase: {len(cvf_refs)} CVF + {len(arxiv_refs)} arXiv reference lists rematched "
+    print(f"Match phase: {len(cvf_refs)} CVF + {len(arxiv_refs)} arXiv + "
+          f"{len(refs_s2.get('references') or {})} Semantic Scholar reference lists rematched "
           f"against the current corpus -- {total_edges} in-corpus citation edges found "
-          f"across {len(edges)} papers ({n_year_dropped} dropped by the year check).", flush=True)
+          f"across {len(edges)} papers ({s2_only_edges} edges came only from Semantic Scholar, "
+          f"{n_year_dropped} dropped by the year check).", flush=True)
 
 
 def main():
