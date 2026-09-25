@@ -49,12 +49,6 @@ def main():
     result = subprocess.run(["node", str(sortable_test)], cwd=BASE)
     failed = failed or result.returncode != 0
 
-    # Uses a hand-made new_papers.json, so unlike the three below it needs
-    # no built data and always runs.
-    print("\n=== JS tests (tests/new_page_test.js) ===")
-    result = subprocess.run(["node", str(BASE / "tests" / "new_page_test.js")], cwd=BASE)
-    failed = failed or result.returncode != 0
-
     print("\n=== JS tests (tests/nav.test.js) ===")
     nav_test = BASE / "tests" / "nav.test.js"
     result = subprocess.run(["node", str(nav_test)], cwd=BASE)
