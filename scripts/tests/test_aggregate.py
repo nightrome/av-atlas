@@ -1212,7 +1212,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         orig = (
             ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.SCHOLAR_PROFILES_FILE, ag.CITATION_GRAPH_FILE,
             ag.ABSTRACTS_DIR, ag.CITATIONS_DIR, ag.AUTHOR_DETAIL_DIR, ag.INSTITUTION_AUTHORS_DIR,
-            ag.NON_AV_AUTHOR_STATS_DIR,
+            ag.NON_AV_AUTHOR_STATS_DIR, ag.NEW_PAPERS_FILE,
         )
         ag.IN_FILE, ag.OUT_FILE = in_file, out_file
         # Every one of these patched to a tmp path -- without it, every test
@@ -1228,6 +1228,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         ag.AUTHOR_DETAIL_DIR = Path(tmpdir.name) / "author_detail"
         ag.INSTITUTION_AUTHORS_DIR = Path(tmpdir.name) / "institution_authors"
         ag.NON_AV_AUTHOR_STATS_DIR = Path(tmpdir.name) / "non_av_author_stats"
+        ag.NEW_PAPERS_FILE = Path(tmpdir.name) / "new_papers.json"
 
         def flatten(dir_path):
             merged = {}
@@ -1259,13 +1260,30 @@ class TestAggregateEndToEnd(unittest.TestCase):
             # {title: citing_papers} map so existing/new assertions can look
             # up a title's citer list without caring which shard it landed in.
             self.last_citations = flatten(ag.CITATIONS_DIR)
+            self.last_new_papers = json.loads(ag.NEW_PAPERS_FILE.read_text(encoding="utf-8"))
             self.last_abstracts = flatten(ag.ABSTRACTS_DIR)
         finally:
             (ag.IN_FILE, ag.OUT_FILE, ag.NON_AV_DIR, ag.SCHOLAR_PROFILES_FILE, ag.CITATION_GRAPH_FILE,
              ag.ABSTRACTS_DIR, ag.CITATIONS_DIR, ag.AUTHOR_DETAIL_DIR, ag.INSTITUTION_AUTHORS_DIR,
-             ag.NON_AV_AUTHOR_STATS_DIR) = orig
+             ag.NON_AV_AUTHOR_STATS_DIR, ag.NEW_PAPERS_FILE) = orig
 
         return json.loads(out_file.read_text(encoding="utf-8"))
+
+    def test_new_papers_file_lists_only_recent_av_papers(self):
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        self._run([
+            {"title": "Fresh AV Paper", "authors": "Ada Lovelace, Alan Turing", "venue": "CVPR",
+             "year": 2026, "av_relevance": "AV", "first_seen": today,
+             "arxiv_url": "https://arxiv.org/abs/2609.00001"},
+            {"title": "Old AV Paper", "authors": "Ada Lovelace", "venue": "CVPR", "year": 2020,
+             "av_relevance": "AV", "first_seen": "2026-09-01"},
+            {"title": "Fresh Non-AV Paper", "authors": "Grace Hopper", "venue": "CVPR", "year": 2026,
+             "av_relevance": "non-AV", "first_seen": today},
+        ])
+        papers = self.last_new_papers["papers"]
+        self.assertEqual([p["title"] for p in papers], ["Fresh AV Paper"])
+        self.assertEqual(papers[0]["authors"], ["Ada Lovelace", "Alan Turing"])
+        self.assertEqual(papers[0]["arxiv_url"], "https://arxiv.org/abs/2609.00001")
 
     def test_content_updated_carries_over_when_the_content_is_unchanged(self):
         entries = lambda count: [

@@ -252,6 +252,52 @@ class TestMatchPhaseMergesS2(unittest.TestCase):
         self.assertEqual(graph["sources_scanned"], {"cvf": 1, "arxiv": 0, "s2": 2})
         self.assertEqual(graph["edges_by_source"], {"cvf": 1, "arxiv": 0, "s2": 3})
 
+    def test_without_text_lists_the_old_edges_are_kept_and_s2_added(self):
+        # The monthly job's runner: the graph and the S2 lists come back from
+        # the corpus backup, the raw CVF/arXiv lists don't.
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            (tmp / "refs_s2.json").write_text(json.dumps(
+                {"references": {"bevformer": [100, 200]}}), encoding="utf-8")
+            (tmp / "ids.json").write_text(json.dumps(
+                {"ids": {"nuscenes": 100, "pointpillars": 200, "bevformer": 500}}), encoding="utf-8")
+            (tmp / "papers.json").write_text(json.dumps(
+                [{"title": t, "year": y} for t, y in (("nuScenes", 2020), ("PointPillars", 2019),
+                                                     ("CenterPoint", 2021), ("BEVFormer", 2022))]),
+                encoding="utf-8")
+            (tmp / "graph.json").write_text(json.dumps({
+                "sources_scanned": {"cvf": 7, "arxiv": 9}, "cvf_permanent_failures": 2,
+                "edges": {"centerpoint": ["nuscenes", "droppedpaper"], "droppedpaper": ["nuscenes"]}}),
+                encoding="utf-8")
+            with patch.object(bcg, "REFS_CVF_FILE", tmp / "missing_cvf.json"), \
+                    patch.object(bcg, "REFS_ARXIV_FILE", tmp / "missing_arxiv.json"), \
+                    patch.object(bcg, "REFS_S2_FILE", tmp / "refs_s2.json"), \
+                    patch.object(bcg, "S2_IDS_FILE", tmp / "ids.json"), \
+                    patch.object(bcg, "PAPERS_FILE", tmp / "papers.json"), \
+                    patch.object(bcg, "GRAPH_FILE", tmp / "graph.json"), \
+                    patch.object(sys, "argv", ["build_citation_graph.py", "--match-only"]):
+                bcg.main()
+            graph = json.loads((tmp / "graph.json").read_text(encoding="utf-8"))
+        self.assertEqual(graph["edges"], {"bevformer": ["nuscenes", "pointpillars"],
+                                          "centerpoint": ["nuscenes"]})
+        self.assertEqual(graph["sources_scanned"], {"cvf": 7, "arxiv": 9, "s2": 1})
+        self.assertEqual(graph["cvf_permanent_failures"], 2)
+
+    def test_without_any_lists_the_graph_is_left_alone(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            (tmp / "papers.json").write_text(json.dumps([{"title": "nuScenes", "year": 2020}]), encoding="utf-8")
+            old = json.dumps({"edges": {"x": ["y"]}})
+            (tmp / "graph.json").write_text(old, encoding="utf-8")
+            with patch.object(bcg, "REFS_CVF_FILE", tmp / "a.json"), \
+                    patch.object(bcg, "REFS_ARXIV_FILE", tmp / "b.json"), \
+                    patch.object(bcg, "REFS_S2_FILE", tmp / "c.json"), \
+                    patch.object(bcg, "PAPERS_FILE", tmp / "papers.json"), \
+                    patch.object(bcg, "GRAPH_FILE", tmp / "graph.json"), \
+                    patch.object(sys, "argv", ["build_citation_graph.py", "--match-only"]):
+                bcg.main()
+            self.assertEqual((tmp / "graph.json").read_text(encoding="utf-8"), old)
+
 
 if __name__ == "__main__":
     unittest.main()

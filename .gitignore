@@ -13,6 +13,12 @@ data/papers_full.json
 # copies whatever's currently on disk into the published output, same as
 # always; this only affects what git tracks in the repo, not what deploys.
 data/stats.json
+# The shrink check's numbers from before a build (scripts/publish_gate.py),
+# kept only until that build passes.
+data/publish_gate_baseline.json
+# Written by aggregate.py next to stats.json and just as derived: the papers
+# new.html lists, picked by the first_seen dates in papers_full.json.
+data/new_papers.json
 # Same reasoning as stats.json above -- regenerable, not reviewable as a
 # diff. Sharded into data/non_av_papers/shard-NN.json (regenerate with
 # scripts/aggregate.py) rather than one growing single file, over 80MB and
@@ -97,17 +103,26 @@ data/s2_citing_seeds.json
 # scholar_profiles.json).
 data/s2_author_ids.json
 data/s2_author_ids_checked_papers.json
-# arxiv_s2_citing.json (34MB+, ~4x the next-largest venues/*.json file) is
-# a bulk crawl dump, not a hand-curated proceedings listing like every
-# other venues/*.json -- most of its entries don't even pass classify.py's
-# relevance check. Same reasoning as papers_full.json/reference_lists_*.json
-# above: fully regenerable by rerunning fetch_semanticscholar_citing.py
-# (resumable via s2_citing_seeds.json), not meaningfully reviewable as a
-# diff, not worth the repo bloat.
+# arxiv_s2_citing.json (about 120MB, far larger than any other
+# venues/*.json file) is a bulk crawl dump, not a hand-curated proceedings
+# listing like every other venues/*.json -- most of its entries don't even
+# pass classify.py's relevance check. Too big and too noisy to track as a
+# diff. But it is NOT cleanly regenerable: about 45% of the AV papers come
+# only from this file, a recrawl takes a day or more and gives a different
+# result, and it carries venue fixes from backfill_citing_venues.py and
+# fix_suspect_venues.py. So backup_corpus.py backs it up, and
+# restore_corpus.py brings it back (see DECISIONS.md, "Derived data is not
+# tracked").
 data/venues/arxiv_s2_citing.json
 # fetch_cvf_history.py's in-progress output. It only becomes the real
 # <conf><year>.json once every listed paper has been fetched.
 data/venues/*.partial
+# Which corpus backup asset this checkout last restored or uploaded
+# (backup_corpus.py / restore_corpus.py), plus leftovers from an interrupted
+# restore or atomic write. Local state, never source.
+data/corpus_backup_state.json
+data/.restore-*/
+data/**/.*.tmp
 # label_relevance.html is generated (build_labeling_tool.py) and embeds
 # labeling_candidates.json, itself a regenerable sample (fixed seed) of
 # papers_full.json -- neither is source. relevance_labels.json (the actual

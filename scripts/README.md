@@ -17,6 +17,7 @@ Start here. One command runs everything in this section.
 | `deploy.py` | The deploy command. `--preview` publishes to the staging site, `--promote` publishes that build to production. With no flags it builds, commits to `main`, publishes and backs up the corpus. |
 | `build_public_site.py` | The build itself: merge, repair, aggregate, test, publish, data release. It also assigns the site version. Every other script here is either called by it or produces files it reads. |
 | `run_tests.py` | The full test suite. CI runs it too. |
+| `monthly_update.py` | The monthly update that GitHub Actions runs: restore, fetch, build, publish, back up, and a pull request for changed tracked files. `--dry-run` prints the plan. See README.md. |
 | `backup_corpus.py`, `restore_corpus.py` | Save `papers_full.json` and `citation_graph.json` to a draft GitHub Release, and pull them back on a new machine. `deploy.py` runs the backup after each deploy. |
 
 ## Pipeline core
@@ -39,6 +40,7 @@ build.
 
 | Script | What it does |
 | --- | --- |
+| `check_new_editions.py` | Finds conference editions that are out but not in `data/venues/` yet and runs the matching fetcher. Also flags venue files that are shorter than the live listing, and says whether DBLP still blocks scripts. |
 | `fetch_cvf.py`, `fetch_cvf_history.py` | CVPR, ICCV, WACV and ACCV from CVF Open Access. |
 | `fetch_ecva_history.py` | ECCV from ecva.net. |
 | `fetch_neurips.py`, `fetch_neurips_history.py` | NeurIPS proceedings. |

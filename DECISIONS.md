@@ -157,6 +157,31 @@ Measured on the corpus in September 2026: 536 papers went from AV to non-AV (105
 the title rule, the rest from the model) and 141 went the other way (97 of them via
 SemanticKITTI). On the one-week arXiv sample, accepted papers went from 89 to 67.
 
+## New arXiv preprints come in monthly, with no review, and count in the rankings
+
+`fetch_arxiv_monthly.py` harvests arXiv once a month and keeps whatever the classifier
+above calls AV. Nobody reviews the list before it goes live: the monthly update publishes
+on its own, and the maintainer decided that some wrong papers are an acceptable price for
+that. It runs after the classifier changes in the entry above, which were made with this
+intake in mind: before them, one weak abstract phrase such as "onboard" was enough, and
+a week-long check in the arXiv research found matches only in the abstract to be about
+half right, against nearly all of the title matches. Any further fix belongs in
+`classify.py`, where it also fixes the same papers already in the corpus, not in a
+separate filter for this one path.
+
+These preprints are ranked like every other paper, the same as the preprints that came in
+through Semantic Scholar citations. When a venue later publishes the paper under the same
+title, or its listing carries the same arXiv id, the venue record takes over.
+
+We use arXiv's OAI-PMH interface rather than its search API, because the search API
+refuses Python's `urllib` with HTTP 406 while answering curl with the same request. We
+didn't work around that. PIPELINE.md has the details.
+
+The monthly files (`data/venues/arxiv_monthly_<yyyy>-<mm>.json`) and the ledger
+(`data/arxiv_monthly_state.json`) are tracked in git, unlike `arxiv_s2_citing.json`.
+arXiv's metadata is CC0, the files are small, and a job that runs unattended has to be
+able to carry the ledger from one month to the next without the laptop's backup.
+
 ## Numbers are shown as whole numbers
 
 Citation counts and averages are rounded to integers everywhere they're computed
@@ -484,6 +509,23 @@ page has an abstract, and the volume is year minus 2004, which the script checks
 against each page's own date. The older years stay on DBLP for now. BMVC's site
 changes every year, so its fetcher keeps one listing URL per year and refuses to write
 a file when the listing parses to nothing.
+## New editions are found by a monthly check, and fetched only where a fetcher exists
+
+`scripts/check_new_editions.py` runs with the monthly update. For each conference it
+compares the years in `data/venues/` with what the venue's own proceedings site (or
+Crossref, for IEEE and Springer) lists, and runs the matching fetcher straight away
+when this checkout has one. Nobody reviews that step, which is in line with the
+monthly updates publishing on their own: a wrong edition is cheaper to fix after the
+fact than a missing one.
+
+What it won't do on its own: write a parser for a new site layout (BMVC moves every
+year), add a GitHub paper list from an account that isn't already in its owner list
+(a lookalike ICRA 2026 list from an unknown account turned up in search), or refetch
+a file that is shorter than its live listing. Those go into the run summary instead.
+A listing that has fewer papers than our file (withdrawn papers, as with 26 CVPR 2026
+papers) is also only reported, since dropping papers is a call for a person. The DBLP
+check is a single page request that says whether the bot challenge is still up; it
+never tries to get past it.
 
 ## Misc vs uncategorized
 
@@ -744,6 +786,57 @@ Whichever machine held the only `papers_full.json` with real enrichment in it wa
 single point of failure. The fix is to snapshot both files somewhere durable after
 every deploy, not to keep believing a fresh rebuild reproduces them.
 
+An earlier version of this entry said a fresh clone "gets the right paper list". It
+doesn't. `data/venues/arxiv_s2_citing.json` is gitignored too (about 120 MB), and it is
+where the 11,540 AV papers found through Semantic Scholar citations come from, about
+45% of the AV corpus and 19 of the top 100. `merge_corpus.py` builds the paper list only
+from the venue files on disk, so without it those papers are simply gone. It isn't
+cleanly regenerable either: the crawl is seeded from `stats.json`, takes a day or more
+at Semantic Scholar's rate limit, and the file carries venue fixes from
+`backfill_citing_venues.py` and `fix_suspect_venues.py` on top. So the backup now holds
+it as well, plus `s2_citing_seeds.json`, the Semantic Scholar ID and reference side
+files, and the small resume files of the per-paper crawlers. That set is what the
+monthly GitHub Actions job needs to restore and carry on without the laptop. The raw
+`reference_lists_cvf.json`/`reference_lists_arxiv.json` (about 350 MB, parsed from PDFs)
+and `abstracts_arxiv.json` stay out: their results already live in
+`citation_graph.json` and `papers_full.json`. PDFs never leave the laptop.
+
+Losing data quietly is worse than failing, so the pipeline now fails instead.
+`merge_corpus.py` stops when the previous `papers_full.json` or a venue file can't be
+parsed, and when the previous corpus had S2-discovered papers but the new merge has
+none (`--allow-s2-loss` overrides that). Every writer of `papers_full.json`,
+`stats.json`, `citation_graph.json` and `arxiv_s2_citing.json` goes through
+`scripts/atomic_write.py` (temp file, fsync, rename), so a crawler killed mid-save leaves
+the old file, not half of a new one. `backup_corpus.py` uploads before it deletes, exits
+non-zero on any failure, and won't overwrite a backup that another machine wrote after
+this checkout last restored or backed up.
+
+## "New papers" are dated by when they entered the corpus
+
+The New papers page and `feed.xml` list papers by `first_seen`, the date a paper first
+turned up in `papers_full.json`, not by publication year. Readers who follow the feed
+want to know what changed on the site, and a paper found late (an older ICRA paper that
+only just got cited, a CVPR edition fetched a month after the conference) is news to
+them even if it's two years old.
+
+No source records that date, so `merge_corpus.py` keeps it the same way it keeps
+enrichment: it copies the value from the previous `papers_full.json`, matching by
+normalized title and then by arXiv ID, and only a paper found in neither gets today's
+date. That makes the date exactly as durable as `papers_full.json` itself, which is one
+more reason that file has to be backed up (see above).
+
+Everything already in the corpus when this started got a placeholder, 2026-09-01, which
+the page and feed ignore. The same placeholder is used when there's no previous
+`papers_full.json` at all. Otherwise a fresh clone or a lost file would stamp all 235k
+papers with today's date and announce the whole corpus as new. For the same reason, a
+run where more than 20,000 papers are unknown to the previous file gives them the
+placeholder too. A normal month adds a few thousand at most, so that many means a venue
+file was missing from the last build and came back (the ~49k-paper
+`arxiv_s2_citing.json` is the likely one), or a whole venue history was backfilled.
+
+The feed has titles, venues, years and authors, but no abstracts: most abstracts here
+come from sources whose terms don't cover republishing them.
+
 ## By-hand data corrections are scripts, not one-off edits
 
 Any manual fix to `papers_full.json` (an author merge, an institution-name correction)
@@ -756,11 +849,43 @@ tracked JSON maps, and both are re-applied on every build.
 ## One build command, always with tests
 
 `build_public_site.py` runs the whole pipeline in order (rebuild the corpus, apply
-repairs, rebuild stats, run the full test suite, publish `public/`) and aborts before
-publishing if any step fails. Crawler scripts write into `data/papers_full.json` and
-stop there. Folding every later step into one command, the same one `deploy.py` calls,
-makes "crawled but never published" impossible by construction, instead of a step to
-remember.
+repairs, rematch citations, rebuild stats, run the full test suite, publish `public/`)
+and aborts before publishing if any step fails. Crawler scripts write into
+`data/papers_full.json` and stop there. Folding every later step into one command, the
+same one `deploy.py` calls, makes "crawled but never published" impossible by
+construction, instead of a step to remember.
+
+The citation steps (`build_citation_graph.py --match-only`, then
+`apply_citation_sources.py`) were added later; see "Citations match whole titles only,
+and the graph uses every saved reference list" for why. `apply_citation_sources.py`
+leaves the counts alone when there is no `citation_graph.json` at all, since a missing
+file means nothing is known, not that nobody cites anything.
+
+A checkout without the raw CVF and arXiv reference lists (about 350 MB, not in the corpus
+backup), like the monthly job's runner, can't rematch those. There `--match-only` keeps
+the restored graph's edges as they are and adds the Semantic Scholar edges on top, so the
+reference lists the monthly job fetches from Semantic Scholar still reach the site.
+Rematching from the S2 lists alone would have thrown away most of the text-matched edges,
+and the shrink check below would then have stopped every monthly publish.
+
+## A build that shrinks the corpus doesn't publish
+
+After `aggregate.py`, `publish_gate.py` compares the new `stats.json` with the previous
+one on five numbers (AV papers, AV papers with an institution, AV papers with an
+abstract, in-corpus citations, venues covered) and stops the build if any of them fell
+by more than 3%. The failures this is for don't crash anything: an interrupted crawler
+save that truncates `papers_full.json`, a venue file that no longer parses, or a build
+on a machine missing the gitignored inputs. Each of those produces a smaller but valid
+`stats.json`, and before this it went out like any other build, with the corpus backup
+overwritten right after.
+
+The numbers from before the build are kept in `data/publish_gate_baseline.json` until a
+build passes, so a stopped build can't make its own shrunk output the next build's
+baseline, and `--publish-only` is checked against it too. Without a local `stats.json`
+the baseline comes from the live site; if that can't be fetched either, the build warns
+and goes ahead. 3% is meant to let ordinary month-to-month changes through while still
+catching a lost venue or a lost enrichment field. An intended drop goes through with
+`--allow-shrink`.
 
 ## Finding the backup release by tag needs a list-and-filter, not the tags endpoint
 
@@ -1167,15 +1292,54 @@ changes make deploys cheap and add a preview step:
   post-processed at publish time (noindex, a banner, staging canonical URLs), so `--promote`
   ships the byte-identical build that was previewed. `.deploy-cache/state.json` records the
   previewed content hash.
-- **The corpus rebuild is skipped automatically** when a stat fingerprint of the pipeline
-  scripts, the git-tracked `data/` sources and `papers_full.json` matches the one saved
-  after the last full build. Tests still run on the fast path. Scripts that can't change
+- **The corpus rebuild is skipped automatically** when a stat fingerprint (size and mtime)
+  of the pipeline scripts and every JSON file in `data/` and `data/venues/` matches the one
+  saved after the last full build. It used to take the `data/` files from `git ls-files`,
+  which missed the gitignored inputs (`arxiv_s2_citing.json`, `citation_graph.json`, the
+  reference lists) and any venue file not yet added to git, so a deploy after a crawl
+  could skip the rebuild and publish the old `stats.json`. The build's own output and
+  `data/pdfs_cvf/` are left out. Tests still run on the fast path. Scripts that can't change
   `stats.json` (`deploy.py`, `run_tests.py`, the backup and restore scripts and
   `build_data_release.py`) are left out of the fingerprint so editing them doesn't force a
   10-minute rebuild. `build_public_site.py` is also left out, except for its list of
   `run_step` calls, because adding or reordering a step there does change what a full build
   produces and would otherwise be skipped silently.
 
+## The monthly update publishes on its own, from GitHub Actions
+
+`scripts/monthly_update.py`, run once a month by `.github/workflows/monthly-update.yml`,
+fetches new papers, rebuilds and publishes straight to production. There is no human
+review step. The maintainer decided that some wrong papers are an acceptable price for
+a site that stays current without anyone remembering to run it. What protects
+production instead is the build itself: the tests, and the check that stops a build
+whose corpus shrank. If either fails, nothing is published and an issue is opened.
+
+It runs in GitHub Actions rather than on the laptop because the laptop isn't always on,
+and a job that depends on it would quietly stop. The runner starts empty, so it restores
+the corpus backup first, and everything a later run needs is either in that backup or
+recomputed. No LLM runs in it, and the PDFs never leave the laptop.
+
+Some things it writes are tracked files: new venue files and the arXiv ledger. The job
+must not commit to `main`, so it proposes them in a pull request from the
+`auto/monthly-update` branch. We didn't want the site to depend on that pull request
+being merged, so each run starts from `main` plus whatever that branch has that `main`
+doesn't (`main` wins where both changed a file). The branch is rebuilt each time as
+`main` plus one commit, not by merging `main` into it: a pushed merge commit that
+touches `.github/workflows/` is refused unless the token has the workflows permission,
+and we'd rather not give the bot that. Only a run that published pushes the branch, so
+data that failed the build can't block every later run.
+
+The laptop is still a second writer of the corpus, through the same backup release.
+The rule for the laptop is: start a session with `restore_corpus.py` and end it with
+`backup_corpus.py`. `backup_corpus.py` refuses to replace a backup this checkout didn't
+start from, so if the laptop and the job overlap, the later one fails loudly instead of
+throwing away the other's work.
+
+The first Semantic Scholar reference crawl covers the whole corpus and takes longer than
+the 6 hours a job may run. The job gives it the time left before the build, stops it
+with SIGINT so it saves, and backs up what it got; the next month resumes. The
+alternative was a separate crawl-only workflow, but a single job with a time budget per
+step was simpler to reason about.
 ## "Data last updated" is when the content changed, not when the site was built
 
 `aggregate.py` writes two fields into `stats.json`. `content_hash` is a sha256 over what the

@@ -196,11 +196,14 @@ function runPage(file, opts) {
   const scripts = [...srcScripts, ...inlineScripts];
   if (!inlineScripts.length) return Promise.resolve({ file, error: null, allElements: [], idRegistry: {}, sandbox: null, noInlineScript: true });
 
+  // Read on first fetch, not up front: new.html never asks for stats.json,
+  // so its test can run on a checkout that has no built data.
   const payloadDir = process.env.AV_ATLAS_PAYLOAD_DIR;
-  const statsRaw = opts.statsRaw || fs.readFileSync(
-    payloadDir ? path.join(payloadDir, 'stats.json') : path.join(BASE, 'data', 'stats.json'), 'utf-8');
-  const aboutRaw = payloadDir && !opts.statsRaw
-    ? fs.readFileSync(path.join(payloadDir, 'about.json'), 'utf-8') : statsRaw;
+  let statsRaw = opts.statsRaw;
+  const readStats = () => statsRaw || (statsRaw = fs.readFileSync(
+    payloadDir ? path.join(payloadDir, 'stats.json') : path.join(BASE, 'data', 'stats.json'), 'utf-8'));
+  const readAbout = () => payloadDir && !opts.statsRaw
+    ? fs.readFileSync(path.join(payloadDir, 'about.json'), 'utf-8') : readStats();
   const idRegistry = {};
   const body = makeElement('body');
 
@@ -273,10 +276,19 @@ function runPage(file, opts) {
     URL,
     fetch(url) {
       if (String(url).includes('stats.json')) {
-        return Promise.resolve({ json: () => Promise.resolve(JSON.parse(statsRaw)) });
+        return Promise.resolve({ json: () => Promise.resolve(JSON.parse(readStats())) });
+      }
+      // new.html's list: opts.newPapersRaw, else the real file aggregate.py
+      // wrote, else an empty list (what build_public_site.py publishes when
+      // there's no file either).
+      if (String(url) === 'new_papers.json') {
+        const newPath = path.join(BASE, 'data', 'new_papers.json');
+        const raw = opts.newPapersRaw
+          || (fs.existsSync(newPath) ? fs.readFileSync(newPath, 'utf-8') : '{"papers": []}');
+        return Promise.resolve({ json: () => Promise.resolve(JSON.parse(raw)) });
       }
       if (String(url) === 'about.json') {
-        return Promise.resolve({ json: () => Promise.resolve(JSON.parse(aboutRaw)) });
+        return Promise.resolve({ json: () => Promise.resolve(JSON.parse(readAbout())) });
       }
       // Every sharded data directory aggregate.py writes (abstracts/,
       // non_av_papers/, citations/, author_detail/, institution_authors/,

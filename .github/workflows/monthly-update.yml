@@ -1,0 +1,106 @@
+name: monthly-update
+
+# The monthly data update: restore the corpus backup, fetch what's new
+# (arXiv, new conference editions, journal updates on Crossref, Semantic
+# Scholar abstracts and references), rebuild, publish to production, back
+# up, and propose any changed tracked files in a pull request. All of it is
+# in scripts/monthly_update.py; README.md ("Monthly update") covers the
+# secrets and what to do when it fails. No LLM, no PDFs.
+#
+# Needs two repo secrets:
+#   AV_ATLAS_BOT_TOKEN        fine-grained token on nightrome/av-atlas with
+#                             Contents and Pull requests read/write. It has to
+#                             be a personal token, not GITHUB_TOKEN: a gh-pages
+#                             push made with GITHUB_TOKEN doesn't start a Pages
+#                             build, and a PR it opens doesn't run tests.yml.
+#   SEMANTIC_SCHOLAR_API_KEY  the Semantic Scholar API key.
+
+on:
+  schedule:
+    # 03:17 UTC on the 4th of each month (off the hour, when runners are busy).
+    - cron: "17 3 4 * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only print what would run"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monthly-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    # GitHub stops a job at 6 hours. monthly_update.py plans for 320 minutes
+    # and stops its crawlers early to fit; the rest is slack for setup and
+    # the failure report.
+    timeout-minutes: 350
+    permissions:
+      contents: read
+      issues: write     # the failure issue, with GITHUB_TOKEN
+      actions: write    # re-enabling this workflow, see the first step
+    env:
+      PYTHONUNBUFFERED: "1"
+      PYTHONIOENCODING: utf-8
+    steps:
+      # GitHub switches off scheduled workflows in a public repo after 60 days
+      # without activity. Enabling it again on every run resets that clock,
+      # and this runs monthly, so it never gets there.
+      - name: Keep the schedule enabled
+        continue-on-error: true
+        run: gh api -X PUT "repos/$GITHUB_REPOSITORY/actions/workflows/monthly-update.yml/enable"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Full history: carrying files forward from the bot branch needs
+          # its merge base with main.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+
+      - name: Install the crawlers' dependencies
+        run: python -m pip install -r scripts/requirements.txt
+
+      # Every git push (the bot branch here, gh-pages from the clone deploy.py
+      # makes in .deploy-cache/) authenticates with the bot token. The helper
+      # reads it from the environment when git asks, so it is never written
+      # to disk or into a remote URL.
+      - name: Set up git
+        run: |
+          git config --global credential.helper '!f() { test "$1" = get && echo username=x-access-token && echo "password=$AV_ATLAS_BOT_TOKEN"; }; f'
+          git config --global user.name "AV Atlas monthly update"
+          git config --global user.email "holger@it-caesar.com"
+
+      - name: Run the monthly update
+        run: |
+          set -o pipefail
+          args=(--work-dir "$RUNNER_TEMP/monthly-update")
+          if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          python scripts/monthly_update.py "${args[@]}" 2>&1 | tee "$RUNNER_TEMP/monthly-update.log"
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          AV_ATLAS_BOT_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
+          # restore_corpus.py and backup_corpus.py read this name.
+          GITHUB_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
+          GH_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
+          SEMANTIC_SCHOLAR_API_KEY: ${{ secrets.SEMANTIC_SCHOLAR_API_KEY }}
+
+      - name: Open or update the failure issue
+        if: failure()
+        run: python scripts/monthly_update.py --report-failure "$RUNNER_TEMP/monthly-update.log" --work-dir "$RUNNER_TEMP/monthly-update"
+        env:
+          GH_TOKEN: ${{ github.token }}

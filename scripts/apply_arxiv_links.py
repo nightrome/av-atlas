@@ -16,6 +16,8 @@ import json
 import re
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 IDS_FILE = BASE / "data" / "arxiv_ids.json"
@@ -39,7 +41,7 @@ def main():
         p["arxiv_url"] = f"https://arxiv.org/abs/{arxiv_id}"
         n_applied += 1
 
-    PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(PAPERS_FILE, papers, indent=2)
     print(f"Applied arxiv_url to {n_applied} papers")
 
 

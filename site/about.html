@@ -183,7 +183,13 @@
 <ul>
   <li><strong>1. Collect.</strong> Pull the complete proceedings of every covered venue and year
       from the sources above. No keyword filter: every paper from a covered venue is included,
-      AV-related or not, so the site can measure how large a slice of each venue is AV work.</li>
+      AV-related or not, so the site can measure how large a slice of each venue is AV work.
+      The data is updated once a month: new editions of covered venues are fetched as they
+      appear, and new arXiv preprints (computer science and electrical engineering) are added
+      when the classifier in step 2 marks them as AV papers. Unlike the venues, that arXiv
+      intake is filtered, and it isn't exact: in a spot check, roughly a quarter to a third of
+      the preprints it let in were not really about driving.
+      Papers added in the last three months are listed on the <a href="new.html" style="color: var(--accent);">New papers</a> page.</li>
   <li><strong>2. Merge &amp; classify.</strong> Dedupe across sources by normalized title, and by arXiv id so a renamed preprint merges with its published version. Assign
       a <strong>category</strong> (topic, e.g. object detection, planning) from keyword matching,
       and an <strong>AV-relevance</strong> label independently, against a written rubric: a paper

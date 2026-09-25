@@ -37,11 +37,17 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+import new_papers
 from email_addresses import find_email_addresses, strip_email_addresses
 
 BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
 OUT_FILE = BASE / "data" / "stats.json"
+# AV papers first seen in the last three months, for new.html and feed.xml
+# (see new_papers.py). Small, and only that page needs it, so it stays out
+# of stats.json.
+NEW_PAPERS_FILE = BASE / "data" / "new_papers.json"
 # Separate from stats.json (not a field inside it) because of scale: ~212k
 # non-AV (not AV) papers, now over 80MB as a single file -- versus stats.json's
 # own size for the ~26k AV papers everything else on the site is built from.
@@ -3032,8 +3038,9 @@ def main():
             # How this paper entered the corpus -- "venue_listing" (a real
             # conference/journal's own proceedings), "arxiv_author_pull"
             # (fetch_arxiv.py, biased toward authors already prominent
-            # here), or "arxiv_s2_citing_discovery" (fetch_semanticscholar_
-            # citing.py, a verified citation edge via Semantic Scholar).
+            # here), "arxiv_s2_citing_discovery" (fetch_semanticscholar_
+            # citing.py, a verified citation edge via Semantic Scholar), or
+            # "arxiv_monthly_intake" (fetch_arxiv_monthly.py, new preprints).
             "source": e.get("source") or "venue_listing",
             # The exact page this paper's data was pulled from, when the
             # fetcher recorded one (currently only fetch_github_paper_
@@ -3063,6 +3070,11 @@ def main():
         # venue was looked up and none usable exists; see fix_suspect_venues.py.
         if e.get("venue_status"):
             papers[-1]["venue_status"] = e["venue_status"]
+    # Picked here, while entries and papers still line up one to one:
+    # first_seen is only on the papers_full entry, the display fields
+    # (cleaned author names, normalized venue) only on the paper.
+    new_papers_payload = new_papers.recent_papers(
+        zip(entries, papers), datetime.now(timezone.utc).strftime("%Y-%m-%d"))
     # Unknown-citation papers sort after every known-citation paper, regardless
     # of magnitude -- "no data" must never look like "definitely fewer than 1".
     papers.sort(key=lambda p: (p["citations"] is not None, p["citations"] or 0), reverse=True)
@@ -4048,12 +4060,16 @@ def main():
     # just below (indent=2's per-key newline+spacing roughly doubled this
     # file's size at corpus scale, which is what pushed it over GitHub's
     # 100MB file limit and got a gh-pages push rejected outright).
-    OUT_FILE.write_text(json.dumps(stats, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(OUT_FILE, stats)
     print(f"Wrote {OUT_FILE}")
     print(f"  {len(all_entries)} total papers, {len(entries)} AV")
     print(f"  {len(papers)} ranked papers, {len(author_citations)} authors, "
           f"{len(inst_citations)} institutions, {len(country_citations)} countries")
     print(f"  papers_with_author_detail={n_with_author_detail} verified={n_verified} excluded_mismatch={n_excluded}")
+
+    NEW_PAPERS_FILE.write_text(json.dumps(new_papers_payload, ensure_ascii=False), encoding="utf-8", newline="\n")
+    print(f"Wrote {NEW_PAPERS_FILE} ({len(new_papers_payload['papers'])} papers first seen since "
+          f"{new_papers_payload['since']})")
 
     # See AUTHOR_DETAIL_DIR's comment above -- these four used to live
     # together in one stats_detail.json, now each sharded by name.

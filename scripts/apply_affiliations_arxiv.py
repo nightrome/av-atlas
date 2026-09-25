@@ -42,6 +42,8 @@ import json
 import re
 from pathlib import Path
 
+from atomic_write import write_json_atomic
+
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 ARXIV_AFFS_FILE = BASE / "data" / "affiliations_arxiv.json"
@@ -102,7 +104,7 @@ def main():
         p["authors_detail_source"] = "arxiv-html"
         n_applied += 1
 
-    PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    write_json_atomic(PAPERS_FILE, papers, indent=2)
     print(f"Applied arXiv-sourced authors_detail to {n_applied} papers, arxiv_url to {n_linked} papers, "
           f"has_code_link=true to {n_code_link} papers")
 
