@@ -19,10 +19,15 @@ This is an anti-bot gate, not a rate limit. Getting past it would mean automatin
 around bot detection, which this project won't do.
 
 Affected: every venue sourced from `fetch_dblp_listing.py` (RSS, ICLR, AAAI,
-ICML, BMVC, ACCV, ICPR, ICASSP, ICIP, ITSC, IV, T-ITS, TOG), plus the DBLP
-fallback years for CVPR (2018-2020) and WACV (2013-2019). Treat all of them as
-frozen at what is already in `data/venues/`, and revisit only if DBLP's access
-policy changes.
+ICML, BMVC, ACCV, ICPR, ICASSP, ICIP, ITSC, IV, GCPR, and the journals T-ITS,
+RA-L, T-RO, TPAMI, IJCV, IJRR and TOG), plus the DBLP fallback years for CVPR
+(2018-2020) and WACV (2013-2019). Treat all of them as frozen at what is already
+in `data/venues/`, and revisit only if DBLP's access policy changes.
+
+The six journals, ITSC, IV and GCPR have since moved to Crossref
+(`fetch_crossref.py`, see the table below), which also gives each paper a DOI.
+Crossref has no abstracts for IEEE papers, so the same script fills them from
+Semantic Scholar's `/paper/batch` endpoint by DOI, 500 papers per request.
 
 ### OpenAlex and arXiv rate limits (observed 2026-09-14)
 
@@ -177,15 +182,21 @@ RAMP-VO). Under that standard:
 
 | Venue | Script | Source | Notes |
 |---|---|---|---|
-| CVPR / ICCV / WACV | `fetch_cvf_history.py` (uses `fetch_cvf.py`) | openaccess.thecvf.com | Full title, authors and abstract, but WACV only from 2020 (CVF has no earlier editions). CVPR 2018-2020 and WACV 2013-2019 fall back to `fetch_dblp_listing.py` (title and authors only). For CVPR, that's because CVF's `?day=all` listing returns a 500 ("Error 1525: Incorrect DATE value") for those three years. |
+| CVPR / ICCV / WACV / ACCV | `fetch_cvf_history.py` (uses `fetch_cvf.py`) | openaccess.thecvf.com | Full title, authors and abstract for CVPR 2013-2026, ICCV 2013-2025, WACV 2020-2026 and ACCV 2020, 2022 and 2024 (CVF has no earlier WACV or ACCV). CVPR 2012, WACV 2012-2019 and ACCV 2012-2018 come from `fetch_dblp_listing.py` (title and authors only). CVF's `?day=all` listing returns a 500 ("Error 1525: Incorrect DATE value") for CVPR 2018-2020, so `fetch_cvf.py` unions the per-day listings for those years. The script only replaces a venue file once every listed paper has been fetched (dead 404 paper pages aside) and keeps its progress in a `.partial` file until then. CVPR 2022 used to hold only 774 of its 2,074 papers because an earlier run stopped partway. `scripts/tests/test_venue_listing_counts.py` pins the expected count for every one of these files, so a short fetch fails the tests. |
 | ECCV | `fetch_ecva_history.py` | ecva.net | Only 2018, 2020, 2022 and 2024 exist there (a biennial mirror). We confirmed on its own listing page that there are no earlier years, so a different fetch script can't help. |
-| NeurIPS | `fetch_neurips_history.py` (uses `fetch_neurips.py`) | proceedings.neurips.cc | The listing link format changed around 2020 (`-Abstract.html` vs `-Abstract-Conference.html`). One regex matches both. |
-| CoRL | `fetch_corl_history.py` | proceedings.mlr.press | The PMLR volume number for each year is hardcoded in `CORL_VOLUMES`, because it can't be derived from the year. |
+| NeurIPS | `fetch_neurips_history.py` (uses `fetch_neurips.py`) | proceedings.neurips.cc | The listing link format changed around 2020 (`-Abstract.html` vs `-Abstract-Conference.html`). One regex matches both. From 2025 the year page (`/paper_files/paper/<year>`) only shows the small Creative AI book and links to the main track as `/paper_files/paper/<year>/vol<N>-main-conference`, so `list_papers()` follows that link when it's there. Main track only: the Datasets and Benchmarks and Position Paper tracks are not fetched. |
+| ECCV 2026 | `fetch_virtual_site.py` | eccv.ecva.net virtual-site JSON | Titles and authors only, until ecva.net adds a 2026 section (then switch to `fetch_ecva_history.py`). The poster pages have abstracts, but with the spaces at line breaks missing, so they aren't used. |
+| CoRL | `fetch_corl_history.py` (uses `fetch_pmlr.py`) | proceedings.mlr.press | The PMLR volume number for each year is hardcoded in `PMLR_VOLUMES` in `fetch_pmlr.py`, because it can't be derived from the year. Existing years are skipped unless `--force` is given. Before September 2026 the listing parser skipped hyphenated slugs, which gave 14 papers in 2017-2024 the next paper's abstract and dropped 14 others; those years were refetched. |
+| ICML 2025 | `fetch_pmlr.py ICML 2025` | proceedings.mlr.press (v267) | Title, authors and abstract, including the position paper track. |
+| ICLR 2026 / ICML 2026 | `fetch_virtual_site.py --abstracts` | iclr.cc / icml.cc virtual-site JSON, plus one poster page per paper for the abstract | Main track only (and ICML's position papers). Blog posts and TMLR/JMLR presentations are skipped. See DECISIONS.md. The first pull (September 2026) stopped after about 800 poster pages per venue, at roughly 2.5 s a page; `--abstracts --force` picks up the rest (about 4,600 ICLR and 5,800 ICML pages). |
 | ICRA / IROS | `fetch_github_paper_lists.py` | Community-maintained GitHub paper lists | See "ICRA and IROS" below. |
-| RSS / ICLR / AAAI | `fetch_dblp_listing.py` | DBLP | Title, authors and year only, no abstracts. DBLP is the primary source here, not a fallback: RSS's own site has no reliable volume-to-year mapping, ICLR's OpenReview bulk API now needs a browser-solvable challenge (`403 ChallengeRequiredError`), and AAAI's ojs.aaai.org archive page is JavaScript-rendered. DBLP has a stable URL per year (`dblp.org/db/conf/<key>/<key><year>.html`). |
-| ICML / BMVC / ACCV / ICPR / ICASSP / ICIP | `fetch_dblp_listing.py` | DBLP | See "ICML, BMVC, ACCV, ICPR, ICASSP and ICIP" below. Blocked, see above. |
-| ITSC / IV | `fetch_dblp_listing.py` | DBLP | Fully fetched. Watch out for the `iv` mix-up described under "IV" below. |
-| T-ITS (IEEE Trans. on Intelligent Transportation Systems) | `fetch_dblp_listing.py --journal` | DBLP | Fully fetched, using the same `--journal` volume-walking path as TOG. |
+| RSS (to 2024) / ICLR (to 2025) / AAAI | `fetch_dblp_listing.py` | DBLP | Title, authors and year only, no abstracts. DBLP is the primary source here, not a fallback: RSS's own site was thought to have no reliable volume-to-year mapping (wrong, see RSS 2025+ below), ICLR's OpenReview bulk API now needs a browser-solvable challenge (`403 ChallengeRequiredError`), and AAAI's ojs.aaai.org archive page is JavaScript-rendered. DBLP has a stable URL per year (`dblp.org/db/conf/<key>/<key><year>.html`). |
+| ICML (to 2024) / BMVC (to 2024) / ACCV 2012-2018 / ICPR / ICASSP / ICIP | `fetch_dblp_listing.py` | DBLP | See "ICML, BMVC, ACCV, ICPR, ICASSP and ICIP" below. Blocked, see above. |
+| RSS 2025+ | `fetch_rss.py` | roboticsproceedings.org | Title, authors, abstract and DOI from each paper page. The volume is year - 2004 (`rss21` is 2025), and the script checks each page's own year against that, so the old worry that the volume-to-year mapping can't be trusted doesn't apply. RSS 2012-2024 are still the DBLP pull (no abstracts) and could be refetched with this script. |
+| BMVC 2025+ | `fetch_bmvc.py` | bmvc2025.bmva.org | Title and authors with affiliations from the listing, abstract from each paper page. BMVC uses a new site and layout every year, so each year's listing URL is in `LISTINGS` and a new year needs its layout checked. BMVC 2012-2024 are still the DBLP pull. |
+| ITSC / IV | `fetch_crossref.py` (2012-2025 from `fetch_dblp_listing.py`) | Crossref, abstracts from Semantic Scholar | Found by IEEE's exact container title, e.g. "2026 IEEE Intelligent Vehicles Symposium (IV)". IV 2026 is the first year fetched this way. ITSC 2026 wasn't on Crossref yet on 2026-09-24. Rerunning an older year merges into the DBLP file and adds DOIs and abstracts. The DBLP years had the `iv` mix-up described under "IV" below. |
+| T-ITS, RA-L, T-RO, TPAMI, IJCV, IJRR | `fetch_crossref.py` (up to 2026-09 from `fetch_dblp_listing.py --journal`) | Crossref, abstracts from Semantic Scholar | By ISSN, merged by title into the existing `<journal>_all.json`. The monthly run asks for records updated in the last 40 days. The backlog run on 2026-09-24 used everything published since 2025-06-01. |
+| GCPR | `fetch_crossref.py` for 2023, `fetch_dblp_listing.py` for the rest | Crossref | By the Springer book's ISBN, one chapter per paper. Crossref has no abstracts for these and Semantic Scholar only a few. |
 | TOG (ACM Trans. on Graphics) | `fetch_dblp_listing.py --journal` | DBLP | Found the same way as ICML and the others below. Not fetched yet, and blocked (see above). |
 
 **ICRA and IROS.** IEEE Xplore returns HTTP 418 to any direct request. OpenAlex
@@ -193,8 +204,13 @@ RAMP-VO). Under that standard:
 ICRA 2022 and IROS 2021-2022, but it has moved to a paid, budget-limited API
 (confirmed 2026-08-17: `"Insufficient budget"`, `dailyRemainingUsd: 0`), and the
 project's no-paid-APIs rule means it isn't used to widen coverage. Everything else
-comes from `hrjp/ICRA-IROS-PaperList`, an index of per-year community repos (title
-and authors only, no abstracts) covering 2019-2025 for both conferences. The repos
+comes from `hrjp/ICRA-IROS-PaperList`, an index of per-year community repos (no
+abstracts) covering 2019-2025 for both conferences, plus ICRA 2026 from
+`DoongLi/ICRA2026-Paper-List`. Most give title and authors, but the PaoPaoRobot
+lists (ICRA 2019-2020, IROS 2019, 2020 and 2022) and the dectrfov lists (ICRA and
+IROS 2021) have titles only, so those papers have no author names unless an arXiv
+copy with the same arXiv id fills them in (`merge_corpus.py`), and `paper.html`
+says the source list has none. The repos
 use three different formats:
 
 - plain bullets under `## Category` headings
@@ -206,7 +222,9 @@ another, because that assumption caused real data corruption during development
 (see the script's docstring and `tests/test_fetch_github_paper_lists.py`). Every
 paper carries a `source_url` (the exact repo it came from) through
 `merge_corpus.py` onto `papers_full.json`, and `paper.html` shows it. 2013-2018 and
-2026 have no known source.
+IROS 2026 have no known source. Only repos from owners already in `REPOS` are
+fetched, never GitHub search results: a lookalike ICRA2026-Paper-List repo from an
+unrelated account showed up in search.
 
 **ICML, BMVC, ACCV, ICPR, ICASSP and ICIP.** These were found by mining
 `data/reference_lists_cvf.json` and `data/reference_lists_arxiv.json` (raw
@@ -215,7 +233,7 @@ are cited often but not yet covered (a user request). ICML alone had 207 raw
 citations. They use the generic DBLP path. ACCV and ICPR are multi-part on DBLP
 (`accv2024-1.html` ... `-N.html`), which the existing ECCV-style pagination fallback
 in `fetch_year()` already handles. ICML and BMVC are fully fetched (2012-2024),
-ACCV reached 2012-2018 (2020, 2022 and 2024 are missing), and ICPR, ICASSP and
+ACCV reached 2012-2018 (2020, 2022 and 2024 now come from CVF Open Access instead), and ICPR, ICASSP and
 ICIP haven't started. One lasting fix came out of this: DBLP began dropping
 connections mid-fetch (`RemoteDisconnected`) and lost an in-progress 15-year ICML
 fetch on year 14, so `fetch_common.py`'s `fetch()` now retries on a bare
@@ -233,9 +251,14 @@ Intelligent Vehicles"). It's fixed by mapping "IV" to `ivs` in `CONF_DBLP_PATH` 
 ## Merge, classify, enrich, aggregate
 
 - **`merge_corpus.py`** removes duplicates by normalized title across every
-  `data/venues/*.json` file, gives each paper a `category` (topic) and an
-  `av_relevance` (AV or non-AV) using `classify.py`, and writes
-  `data/papers_full.json`.
+  `data/venues/*.json` file, then drops an arXiv-file record whose arXiv id a
+  venue record already carries, so a preprint renamed for its camera-ready
+  version isn't counted twice (the venue record wins and only takes the
+  authors or abstract it lacks). It unescapes HTML entities in titles and venue
+  names, and rewrites NeurIPS's "Last, First, Last, First" and ECCV 2018's
+  BibTeX "Last, First and Last, First" author strings to "First Last, First
+  Last". It gives each paper a `category` (topic) and an `av_relevance` (AV or
+  non-AV) using `classify.py`, and writes `data/papers_full.json`.
 - **`classify.py`** assigns categories by keyword matching (`data/categories.json`,
   a living taxonomy, not a fixed one). AV relevance comes from an explicit list of
   AV-specific phrases (`AV_RELEVANCE_TERMS`) and is independent of category. The
@@ -322,7 +345,7 @@ bug. It was removed at the source so it can't come back: the field is stripped
 from `papers_full.json` and no longer fetched.
 
 How papers in the corpus cite each other is a different signal from a global
-count. Two raw-reference sources feed one matching step:
+count. Three reference sources feed one matching step:
 
 - `build_citation_graph.py` downloads the PDF of each AV CVPR, ICCV and WACV paper
   (CVF-hosted, no rate limit) and extracts the references section with pdfplumber.
@@ -331,14 +354,35 @@ count. Two raw-reference sources feed one matching step:
   for affiliations, so it also extracts ar5iv's cleanly structured bibliography
   (one `<li class="ltx_bibitem">` per entry) at no extra network cost. That covers
   any venue with an arXiv preprint, not just CVF.
+- `fetch_s2_references.py` gets Semantic Scholar's reference list for every
+  paper in the corpus, whatever its venue. It first maps each paper to an S2
+  CorpusId (a batch lookup by arXiv id or DOI, then one bulk-search scan per
+  venue matched by exact normalized title, then a per-title search for the
+  rest) and saves the map to `data/s2_paper_ids.json`. Then it fetches the
+  reference lists in batches, most-cited-first, into
+  `data/reference_lists_s2.json`. These references are S2 ids, not text, so
+  they need no title matching: a reference counts when its id maps back to a
+  corpus paper. The matching phase of `build_citation_graph.py` merges these
+  edges with the text-matched ones and drops duplicates. It paces at one
+  request per 1.1 seconds, like the other S2 scripts, and stops on repeated
+  429s. S2 withholds about half of all reference lists from its batch endpoint
+  at the publisher's request (IEEE venues worst: T-ITS and ITSC get a list for
+  only 13-14% of papers). `--step elided` asks the one-paper endpoint for
+  those one at a time, which recovers most arXiv-only preprints and almost
+  nothing else, so it's run for the arXiv venues only.
 
-Both write their raw, unmatched reference lists to their own files
-(`data/reference_lists_cvf.json`, `data/reference_lists_arxiv.json`), because
-fetching and matching are deliberately separate phases. The matching phase of
+All of them write their raw, unmatched reference lists to their own files
+(`data/reference_lists_cvf.json`, `data/reference_lists_arxiv.json`,
+`data/reference_lists_s2.json`), because fetching and matching are
+deliberately separate phases. The matching phase of
 `build_citation_graph.py` runs on every invocation, even if nothing new was
 fetched, and rematches every saved reference list against the current corpus. A
 reference to a paper that wasn't indexed yet starts matching once that paper is
-pulled, with no re-fetching, just a rerun.
+pulled, with no re-fetching, just a rerun. `build_public_site.py` does that rerun on
+every build (`build_citation_graph.py --match-only`, then `apply_citation_sources.py`),
+so the graph always covers every list on disk. A reference only counts when it holds a
+corpus title as a whole title, bounded by reference punctuation, not inside a longer
+title (see DECISIONS.md, "Citations match whole titles only").
 
 All of these write to their own side files, never directly to `papers_full.json`,
 so they can run at the same time without racing over the same multi-MB file (see
@@ -356,7 +400,6 @@ The About page in the UI covers these too.
   collaboration hub) is tagged country `BR` because OpenAlex conflated it with an
   unrelated Brazilian NGO of a similar name. This pipeline can't fix that without
   per-institution manual overrides.
-- CVPR 2018-2020 have no abstracts (DBLP fallback, see above).
 - ICRA and IROS coverage is sparse as a deliberate tradeoff, not a bug (see the
   table above).
 

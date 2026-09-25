@@ -20,9 +20,29 @@ from fetch_common import BASE, OUT_DIR, fetch
 NEURIPS_BASE = "https://proceedings.neurips.cc"
 
 
+def main_track_url(year, year_page):
+    """The URL of the main-track listing for a year, given that year's page.
+
+    Up to 2024, /paper_files/paper/{year} listed every paper itself. From
+    2025 on it lands on one small book (the 64-paper Creative AI track for
+    2025) and links out to one page per volume instead, e.g.
+    /paper_files/paper/2025/vol38-main-conference. Reading the year page as
+    before found 0 main-track papers and the year was silently skipped. So
+    follow the main-conference volume link when there is one, and fall back
+    to the year page itself for the older layout.
+    """
+    m = re.search(rf'href="(/paper_files/paper/{year}/vol\d+-main-conference)"', year_page)
+    return f"{NEURIPS_BASE}{m.group(1)}" if m else None
+
+
 def list_papers(year):
     html = fetch(f"{NEURIPS_BASE}/paper_files/paper/{year}")
+    main_url = main_track_url(year, html)
+    if main_url:
+        html = fetch(main_url)
     # Older years (pre-2020ish) use "...-Abstract.html" instead of "...-Abstract-Conference.html".
+    # Other tracks (Datasets_and_Benchmarks_Track, Position_Paper_Track, ...)
+    # end differently and are deliberately not matched: main track only.
     entries = re.findall(
         r'<a title="paper title" href="(/paper_files/paper/\d+/hash/[^"]*Abstract(?:-Conference)?\.html)">([^<]*)</a>',
         html,

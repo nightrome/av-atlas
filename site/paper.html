@@ -509,7 +509,12 @@ function renderPaperBody(stats, paper, isAdjacent) {
   if (!(paper.authors || []).length) {
     document.getElementById('author-table').style.display = 'none';
     const empty = document.getElementById('author-empty');
-    empty.textContent = 'No author list recorded for this paper.';
+    // The ICRA/IROS GitHub lists for 2019-2022 (PaoPaoRobot, dectrfov) carry
+    // titles only, so every paper from them lands here. Say so rather than
+    // leave it looking like our own gap.
+    empty.textContent = /^https:\/\/github\.com\/(PaoPaoRobot|dectrfov)\//.test(paper.source_url || '')
+      ? 'The source list for this venue has no author names.'
+      : 'No author list recorded for this paper.';
     empty.style.display = '';
   }
 

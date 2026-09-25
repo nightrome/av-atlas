@@ -32,6 +32,12 @@ matches-then-forgets:
     data/reference_lists_arxiv.json (read-only -- that file belongs to
     fetch_affiliations_arxiv.py) and rematches every saved reference list
     against the CURRENT corpus, overwriting data/citation_graph.json fresh.
+    It also adds the Semantic Scholar edges from fetch_s2_references.py
+    (data/reference_lists_s2.json + data/s2_paper_ids.json, both read-only
+    here). Those need no text matching: a reference is an S2 CorpusId, and
+    it's an in-corpus citation when s2_paper_ids.json maps that id to a
+    corpus paper. The two kinds of edges are merged per citing paper and
+    deduplicated.
 
 This split is the direct answer to "papers not yet indexed might be indexed
 later": a reference to a paper that isn't in the corpus yet just doesn't
@@ -40,11 +46,23 @@ venue pulled, a gap filled) and this script reruns, phase 2 alone picks up
 the newly-matchable edges, for every paper ever scanned, with no new network
 requests at all.
 
-Matching: a naive "does this corpus title appear in the reference text"
-check across all ~66k titles per reference would be O(refs x corpus) and far
-too slow. Instead builds an inverted index (distinctive title word -> paper
-keys) once per run, and for each reference entry only checks the small
-candidate set whose distinctive words actually appear in that entry's text.
+Matching: a corpus title only counts as cited when it appears in the
+reference text as a whole title, not as part of a longer one. Both sides are
+compared with everything but letters and digits removed (PDF text often
+glues words together, "nuScenes: A Multi-modalDatasetforAutonomousDriving"),
+but the match has to start and end where the raw text has reference
+structure around it -- the start or end of the entry, a period, comma,
+quote, bracket, a year, a following "In", or (before it) a line break from
+the other column of a two-column PDF. So "Objects as Points" no
+longer picks up every citation of "Tracking Objects as Points", and
+"Deep Reinforcement Learning for Autonomous Driving" no longer picks up
+"...: A Survey". See TitleIndex/match_references below for the details
+(very short titles, nested matches, the year guard).
+
+The saved CVF lists are mostly one entry each: split_reference_entries()
+only splits on "12." / "12)" markers and PDF text usually uses "[12]", so
+the whole reference section stays one blob. That is fine for this matcher,
+which works on positions inside the text rather than on whole entries.
 
 data/reference_lists_cvf.json is this script's own file, in the same
 succeeded/failed/side-file pattern as fetch_citations_openalex.py /
@@ -52,8 +70,17 @@ fetch_affiliations_arxiv.py -- never written by anything else, so it's safe
 to run this alongside those. data/citation_graph.json is likewise only ever
 written by this script.
 
-Usage: python build_citation_graph.py
+Usage: python build_citation_graph.py               # fetch new PDFs, then match
+   or: python build_citation_graph.py --match-only  # match phase only, no network
+
+build_public_site.py runs the --match-only form on every build, so the graph
+always reflects every reference list saved so far. Before that, the match
+phase only ran at the end of a full fetch run, and a crawl that was stopped
+part way (as the long whole-corpus crawl was) left citation_graph.json built
+from the 2,136 CVF lists that existed at the last completed run, while
+19,481 were on disk.
 """
+import argparse
 import json
 import re
 import time
@@ -63,8 +90,6 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-import pymupdf
-
 from fetch_common import by_citations
 
 BASE = Path(__file__).resolve().parent.parent
@@ -72,6 +97,8 @@ PAPERS_FILE = BASE / "data" / "papers_full.json"
 VENUES_DIR = BASE / "data" / "venues"
 REFS_CVF_FILE = BASE / "data" / "reference_lists_cvf.json"
 REFS_ARXIV_FILE = BASE / "data" / "reference_lists_arxiv.json"
+REFS_S2_FILE = BASE / "data" / "reference_lists_s2.json"
+S2_IDS_FILE = BASE / "data" / "s2_paper_ids.json"
 GRAPH_FILE = BASE / "data" / "citation_graph.json"
 PDF_DIR = BASE / "data" / "pdfs_cvf"
 CVF_BASE = "https://openaccess.thecvf.com"
@@ -81,21 +108,45 @@ BATCH_SIZE = 10
 MAX_CONSECUTIVE_FAILURES = 15
 TODAY = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-STOPWORDS = {
-    "the", "and", "for", "with", "from", "using", "based", "into", "over", "via",
-    "toward", "towards", "learning", "network", "networks", "model", "models",
-    "approach", "method", "methods", "detection", "estimation", "driving",
-    "autonomous", "vision", "image", "images", "data", "deep", "neural",
-}
+# A citing paper can be dated before the paper it cites (a 2021 journal
+# version of a 2018 preprint citing something from 2019), but not by much.
+# An edge whose citer is more than this many years older than the cited
+# paper is dropped as a false match.
+YEAR_GUARD_SLACK = 2
+
+# A title shorter than this (in words or in characters) is too generic to
+# match on boundaries alone ("Welcome", "Editorial", "Objects"). See
+# TitleIndex.is_short.
+SHORT_TITLE_WORDS = 3
+SHORT_TITLE_CHARS = 15
+
+# Reference-structure characters that can sit between the text before a
+# title and the title itself, and between the title and what follows. A
+# colon and a hyphen are deliberately missing: "TrafficSim: Learning to
+# Simulate ..." and "Planning and Decision-Making for ..." must not match
+# "Learning To Simulate" or "Decision Making for Autonomous Vehicles".
+# U+FFFD is in there because many saved lists have their curly quotes
+# replaced by it ("\ufffdThe trimmed iterative closest point algorithm,\ufffd in").
+# A line break counts on the left only: two-column PDF text interleaves the
+# columns line by line, so a title often starts right after a line from the
+# other column ("... Proceed-\nDeep residual learning for image recognition.").
+LEFT_BOUNDARY_CHARS = set('.,;"\u201c\u201d\u2018\ufffd?!()[]\n')
+RIGHT_BOUNDARY_CHARS = set('.,;"\u201c\u201d\u2019\ufffd?!()[]')
+# The stricter set a short title needs on both sides (a whole sentence-like
+# segment of the reference, not a stretch between two commas).
+STRONG_BOUNDARY_CHARS = set('."\u201c\u201d\u2018\u2019\ufffd?!')
+YEAR_RE = re.compile(r"(?:19|20)\d\d[a-z]?")
+RUN_RE = re.compile(r"[A-Za-z0-9]+")
+# How far from a short title's match to look for its publication year.
+SHORT_TITLE_YEAR_WINDOW = 250
+# Matching looks keys up by their first PREFIX_LEN characters (shorter keys
+# by their whole text), so each position in a reference costs a few dict
+# lookups instead of a scan over every corpus title.
+PREFIX_LEN = 16
 
 
 def normalize_title(t):
     return re.sub(r"[^a-z0-9]", "", (t or "").lower())
-
-
-def significant_words(title):
-    words = re.findall(r"[a-zA-Z]{5,}", (title or "").lower())
-    return {w for w in words if w not in STOPWORDS}
 
 
 def pdf_url_from_path(path):
@@ -139,17 +190,57 @@ def build_cvf_pdf_url_index():
     return index
 
 
-def build_corpus_match_index(papers):
-    """distinctive title word -> candidate normalized titles, for every paper in the corpus."""
-    word_index = defaultdict(list)
-    for p in papers:
-        key = normalize_title(p.get("title"))
-        words = significant_words(p.get("title"))
-        if not key or not words:
-            continue
-        for w in words:
-            word_index[w].append(key)
-    return word_index
+class TitleIndex:
+    """Every corpus title key, set up for match_references(): looked up by
+    prefix, with each key's year range and whether it counts as short.
+
+    A key shared by several papers (the same title in two venues, or a
+    preprint and its conference version) keeps the earliest and latest year
+    across them, so the year checks give it the benefit of the doubt."""
+
+    def __init__(self, papers):
+        self.min_year = {}
+        self.max_year = {}
+        self.short = set()
+        self.by_prefix = defaultdict(list)
+        self.exact = set()
+        seen = self.keys = set()
+        for p in papers:
+            key = normalize_title(p.get("title"))
+            if not key:
+                continue
+            year = p.get("year")
+            if isinstance(year, int):
+                self.min_year[key] = min(year, self.min_year.get(key, year))
+                self.max_year[key] = max(year, self.max_year.get(key, year))
+            if key in seen:
+                continue
+            seen.add(key)
+            if self.is_short(p.get("title")):
+                self.short.add(key)
+            if len(key) < PREFIX_LEN:
+                self.exact.add(key)
+            else:
+                self.by_prefix[key[:PREFIX_LEN]].append(key)
+        self.exact_lengths = sorted({len(k) for k in self.exact})
+
+    @staticmethod
+    def is_short(title):
+        return (len(RUN_RE.findall(title or "")) < SHORT_TITLE_WORDS
+                or len(normalize_title(title)) < SHORT_TITLE_CHARS)
+
+    def keys_at(self, norm, pos):
+        """Every key that occurs in `norm` starting exactly at `pos`."""
+        found = []
+        for n in self.exact_lengths:
+            if pos + n > len(norm):
+                break
+            if norm[pos:pos + n] in self.exact:
+                found.append(norm[pos:pos + n])
+        for key in self.by_prefix.get(norm[pos:pos + PREFIX_LEN], ()):
+            if norm.startswith(key, pos):
+                found.append(key)
+        return found
 
 
 def fetch_with_retries(url, max_retries=3):
@@ -195,6 +286,9 @@ def fetch_pdf_text(url, key):
     # PyMuPDF's get_text() is backed by MuPDF's C parser and is the standard
     # go-to for bulk text extraction where layout fidelity doesn't matter --
     # confirmed already installed locally (1.28.2) before switching.
+    # Imported here rather than at the top so the match phase (and its tests)
+    # run without pymupdf installed.
+    import pymupdf
     with pymupdf.open(stream=raw, filetype="pdf") as pdf:
         pages_text = []
         started = False
@@ -220,21 +314,122 @@ def split_reference_entries(text):
     return [p.strip() for p in parts if len(p.strip()) > 15]
 
 
-def match_references(entries, word_index):
+def _gap_has(gap, chars):
+    return any(c in chars for c in gap)
+
+
+def _starts_venue(run):
+    # "In" opening the venue part ("... Title In CVPR" or, with the PDF's
+    # spaces lost, "...Title InIEEE/CVF"), or a page range or arXiv id
+    # following the title with no punctuation in between.
+    return (run in ("In", "pp", "arXiv")
+            or (run.startswith("In") and len(run) > 2 and run[2].isupper()))
+
+
+def _has_year_near(raw, start, end, years):
+    window = raw[max(0, start - SHORT_TITLE_YEAR_WINDOW):end + SHORT_TITLE_YEAR_WINDOW]
+    return any(int(y[:4]) in years for y in re.findall(r"(?<!\d)(?:19|20)\d\d(?!\d)", window))
+
+
+def match_entry(raw, index):
+    """The corpus keys a single raw reference entry cites, as a set.
+
+    The entry is reduced to its runs of letters and digits, joined into one
+    lowercase string, which is what the keys are compared against. A key
+    counts only when its match
+      - starts at the start of a run, with the entry start, a boundary
+        character (LEFT_BOUNDARY_CHARS) or a year right before it,
+      - ends at the end of a run, with the entry end, a boundary character
+        (RIGHT_BOUNDARY_CHARS), a year or "In" right after it,
+      - for a short title (TitleIndex.is_short), has a period, quote or
+        year on both sides (or "In" after it) and the paper's year (+-1)
+        somewhere nearby, since a
+        one-word title like "Editorial" can't be told apart from other text
+        by its boundaries alone,
+      - and isn't inside a longer key that also matched there (when both
+        "Objects as Points" and a longer title containing it are corpus
+        papers, a citation of the longer one only counts for it).
+    """
+    runs = [(m.start(), m.end()) for m in RUN_RE.finditer(raw)]
+    if not runs:
+        return set()
+    texts = [raw[s:e] for s, e in runs]
+    offsets = []
+    total = 0
+    for t in texts:
+        offsets.append(total)
+        total += len(t)
+    norm = "".join(t.lower() for t in texts)
+    run_ending_at = {offsets[i] + len(texts[i]): i for i in range(len(texts))}
+    last = len(runs) - 1
+
+    def gap(i):  # raw text between run i and run i + 1
+        return raw[runs[i][1]:runs[i + 1][0]]
+
+    def after_author(i):
+        # ar5iv's bibliographies put the title straight after the last
+        # author with only a space ("... and O. Beijbom Nuscenes: a
+        # multimodal dataset ..."): an initial, a period, a surname, a space.
+        # The surname can be several runs ("Moreno-Noguer", or a name with
+        # an accented letter, which RUN_RE splits).
+        if not gap(i - 1).isspace():
+            return False
+        j = i - 1
+        while j >= 1 and (gap(j - 1) == "-" or gap(j - 1) == "\ufffd" or gap(j - 1).isalpha()):
+            j -= 1
+        return (j >= 1 and len(texts[j - 1]) == 1 and texts[j - 1].isupper()
+                and "." in gap(j - 1) and texts[j][:1].isupper())
+
+    found = []
+    for i in range(len(runs)):
+        if i > 0:
+            g = gap(i - 1)
+            # A year right before a short title ("(2023) Segment anything.
+            # In ...") pins it down as well as a period does.
+            left_strong = _gap_has(g, STRONG_BOUNDARY_CHARS) or bool(YEAR_RE.fullmatch(texts[i - 1]))
+            # A bare number before the title is a page back-reference
+            # ("..., 2020. 1, 2, 6\nnuScenes: ...") or a year. A hyphen then a
+            # space is the other column's line ending mid-word ("Predicting
+            # fu- Self-supervised monocular depth hints. In ICCV").
+            if not (left_strong or _gap_has(g, LEFT_BOUNDARY_CHARS) or g.startswith("- ")
+                    or YEAR_RE.fullmatch(texts[i - 1]) or texts[i - 1].isdigit() or after_author(i)):
+                continue
+        else:
+            left_strong = True
+        pos = offsets[i]
+        for key in index.keys_at(norm, pos):
+            j = run_ending_at.get(pos + len(key))
+            if j is None:
+                continue
+            if j < last:
+                g = gap(j)
+                # Same after it: "Segment anything, 2023." or "... anything. In".
+                right_strong = (_gap_has(g, STRONG_BOUNDARY_CHARS) or bool(YEAR_RE.fullmatch(texts[j + 1]))
+                                or _starts_venue(texts[j + 1]))
+                if not (right_strong or _gap_has(g, RIGHT_BOUNDARY_CHARS)):
+                    continue
+            else:
+                right_strong = True
+            if key in index.short:
+                if not (left_strong and right_strong):
+                    continue
+                lo, hi = index.min_year.get(key), index.max_year.get(key)
+                if lo is None or not _has_year_near(raw, runs[i][0], runs[j][1], range(lo - 1, hi + 2)):
+                    continue
+            found.append((pos, pos + len(key), key))
+
+    # Longest first; a match lying inside an already-kept one is dropped.
+    kept = []
+    for start, end, key in sorted(found, key=lambda m: m[0] - m[1]):
+        if not any(s <= start and end <= e for s, e, _ in kept):
+            kept.append((start, end, key))
+    return {key for _, _, key in kept}
+
+
+def match_references(entries, index):
     matched = set()
     for raw_entry in entries:
-        norm_entry = re.sub(r"[^a-z0-9]", "", raw_entry.lower())
-        entry_words = significant_words(raw_entry)
-        # Candidate generation is just an efficiency narrowing step (checking
-        # all ~66k titles against every entry would be too slow) -- the
-        # actual match criterion is the normalized title appearing verbatim
-        # as a substring of the normalized reference text.
-        candidates = set()
-        for w in entry_words:
-            candidates.update(word_index.get(w, ()))
-        for key in candidates:
-            if key and key in norm_entry:
-                matched.add(key)
+        matched |= match_entry(raw_entry, index)
     return matched
 
 
@@ -332,7 +527,70 @@ def fetch_phase(cvf_titles, pdf_url_index):
     return True
 
 
-def match_phase(word_index):
+def reference_list_edges(ref_lists, index):
+    """{citing key: set of cited keys} from saved raw reference lists
+    ({citing key: [raw entry, ...]}), leaving out self-matches."""
+    edges = {}
+    for source, entries in ref_lists.items():
+        matches = match_references(entries, index) - {source}
+        if matches:
+            edges[source] = matches
+    return edges
+
+
+def merge_edge_sources(edge_maps):
+    """Unions several {citing key: set of cited keys} maps, one per source
+    of citation data (CVF PDFs, ar5iv, and any later one), into one."""
+    merged = defaultdict(set)
+    for edges in edge_maps:
+        for citer, cited in edges.items():
+            merged[citer] |= set(cited)
+    return dict(merged)
+
+
+def apply_year_guard(edges, index, slack=YEAR_GUARD_SLACK):
+    """Drops edges whose citing paper is dated more than `slack` years
+    before the paper it cites, which a real citation can't be. Uses the
+    latest year for the citer and the earliest for the cited key, so a
+    preprint/conference pair sharing one title isn't penalised. Returns
+    (kept edges, number dropped)."""
+    kept = {}
+    dropped = 0
+    for citer, cited in edges.items():
+        citer_year = index.max_year.get(citer)
+        ok = set()
+        for key in cited:
+            cited_year = index.min_year.get(key)
+            if citer_year is not None and cited_year is not None and citer_year < cited_year - slack:
+                dropped += 1
+            else:
+                ok.add(key)
+        if ok:
+            kept[citer] = ok
+    return kept, dropped
+
+
+def s2_edges(refs_s2, s2_ids, corpus_keys=None):
+    """citing key -> set of cited keys, from Semantic Scholar reference
+    lists. Exact by construction: a reference counts only when its CorpusId
+    is the one s2_paper_ids.json holds for a corpus paper. corpus_keys, when
+    given, drops keys that are no longer in the corpus (the id map is only
+    ever added to, papers can leave)."""
+    key_by_id = {}
+    for key, cid in (s2_ids.get("ids") or {}).items():
+        if corpus_keys is None or key in corpus_keys:
+            key_by_id[cid] = key
+    edges = {}
+    for source, cids in (refs_s2.get("references") or {}).items():
+        if corpus_keys is not None and source not in corpus_keys:
+            continue
+        cited = {key_by_id[c] for c in cids if c in key_by_id} - {source}
+        if cited:
+            edges[source] = cited
+    return edges
+
+
+def match_phase(index):
     # Always runs, fetch or no fetch -- pure local computation over whatever
     # raw reference text has been saved so far by either source, against
     # whatever the corpus looks like right now. This is what lets a later
@@ -346,28 +604,62 @@ def match_phase(word_index):
     # by aggregate.py's coverage stat.
     cvf_permanent_failures = sum(1 for v in cvf_all_refs["failed"].values() if v.get("permanent"))
 
-    edges = {}
-    total_edges = 0
-    for source, entries in {**cvf_refs, **arxiv_refs}.items():
-        matches = sorted(match_references(entries, word_index) - {source})
-        if matches:
-            edges[source] = matches
-            total_edges += len(matches)
+    refs_s2 = load_json(REFS_S2_FILE, {})
+
+    # One edge map per source of citation data, merged below. A new source
+    # (another kind of saved reference list, or edges that already come
+    # resolved) only needs an entry here and in sources_scanned. Semantic
+    # Scholar's lists come already resolved to CorpusIds, so they need no
+    # title matching; keys that have left the corpus are dropped.
+    edge_maps = {
+        "cvf": reference_list_edges(cvf_refs, index),
+        "arxiv": reference_list_edges(arxiv_refs, index),
+        "s2": s2_edges(refs_s2, load_json(S2_IDS_FILE, {}), index.keys),
+    }
+    text_edges = merge_edge_sources([edge_maps["cvf"], edge_maps["arxiv"]])
+    s2_only_edges = sum(len(cited - text_edges.get(citer, set()))
+                        for citer, cited in edge_maps["s2"].items())
+    edges, n_year_dropped = apply_year_guard(merge_edge_sources(edge_maps.values()), index)
+    total_edges = sum(len(v) for v in edges.values())
 
     graph = {
         "generated_at": TODAY,
-        "sources_scanned": {"cvf": len(cvf_refs), "arxiv": len(arxiv_refs)},
+        "sources_scanned": {"cvf": len(cvf_refs), "arxiv": len(arxiv_refs),
+                            "s2": len(refs_s2.get("references") or {})},
         "cvf_permanent_failures": cvf_permanent_failures,
-        "edges": edges,
+        "edges_by_source": {name: sum(len(v) for v in m.values()) for name, m in edge_maps.items()},
+        "year_guard_dropped": n_year_dropped,
+        "edges": {k: sorted(v) for k, v in sorted(edges.items())},
     }
     save_json(GRAPH_FILE, graph)
-    print(f"Match phase: {len(cvf_refs)} CVF + {len(arxiv_refs)} arXiv reference lists rematched "
+    print(f"Match phase: {len(cvf_refs)} CVF + {len(arxiv_refs)} arXiv + "
+          f"{len(refs_s2.get('references') or {})} Semantic Scholar reference lists rematched "
           f"against the current corpus -- {total_edges} in-corpus citation edges found "
-          f"across {len(edges)} papers.", flush=True)
+          f"across {len(edges)} papers ({s2_only_edges} edges came only from Semantic Scholar, "
+          f"{n_year_dropped} dropped by the year check).", flush=True)
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Fetch CVF reference lists and rebuild the in-corpus citation graph.")
+    parser.add_argument("--match-only", action="store_true",
+                        help="Skip fetching; only rematch the saved reference lists against the current "
+                             "corpus and rewrite data/citation_graph.json. No network, no PDFs.")
+    args = parser.parse_args()
+
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
+    index = TitleIndex(papers)
+    if args.match_only:
+        # The corpus backup (backup_corpus.py) carries citation_graph.json but
+        # not the reference lists, so a restored checkout has a graph and
+        # nothing to rebuild it from. Rematching there would replace it with
+        # a near-empty one.
+        missing = [f.name for f in (REFS_CVF_FILE, REFS_ARXIV_FILE) if not f.exists()]
+        if missing and GRAPH_FILE.exists():
+            print(f"Keeping the existing {GRAPH_FILE.name}: {', '.join(missing)} not on disk.", flush=True)
+            return
+        match_phase(index)
+        return
+
     # Whole corpus, not just av_relevance=="AV" -- user-requested: a paper's
     # citation count should reflect who cites it anywhere in this corpus,
     # not just its AV-relevant slice (see aggregate.py's citations_by_
@@ -383,10 +675,9 @@ def main():
         )
     ]
     pdf_url_index = build_cvf_pdf_url_index()
-    word_index = build_corpus_match_index(papers)
 
     fetch_phase(cvf_titles, pdf_url_index)
-    match_phase(word_index)
+    match_phase(index)
 
 
 if __name__ == "__main__":

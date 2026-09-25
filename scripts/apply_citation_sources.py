@@ -57,28 +57,42 @@ def in_corpus_counts(graph):
     return incoming
 
 
-def main():
-    papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    graph = load_json(GRAPH_FILE, {"edges": {}})
-    incoming = in_corpus_counts(graph)
+def apply_counts(papers, graph):
+    """Stamps each paper's in-corpus count from the graph, in place. Returns
+    how many papers changed.
 
-    n_in_corpus = 0
+    A paper the graph no longer has any citer for loses its old count
+    instead of keeping it: a rebuilt graph can drop edges (the stricter
+    title matcher did, see DECISIONS.md), and a stale count left behind
+    would never be corrected. The "updated" date only moves when the count
+    does."""
+    incoming = in_corpus_counts(graph)
+    n_changed = 0
     for p in papers:
         key = normalize_title(p.get("title"))
         by_source = p.setdefault("citations_by_source", {})
+        old = by_source.get("in_corpus")
 
         count = incoming.get(key)
         if count:
-            entry = {"count": count, "updated": graph.get("generated_at") or TODAY}
-            if by_source.get("in_corpus") != entry:
-                by_source["in_corpus"] = entry
-                n_in_corpus += 1
+            if not old or old.get("count") != count:
+                by_source["in_corpus"] = {"count": count, "updated": graph.get("generated_at") or TODAY}
+                n_changed += 1
+        elif old:
+            del by_source["in_corpus"]
+            n_changed += 1
 
         if not by_source:
             del p["citations_by_source"]
+    return n_changed
 
+
+def main():
+    papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
+    graph = load_json(GRAPH_FILE, {"edges": {}})
+    n_changed = apply_counts(papers, graph)
     PAPERS_FILE.write_text(json.dumps(papers, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
-    print(f"Applied {n_in_corpus} in-corpus counts to {PAPERS_FILE}")
+    print(f"Updated {n_changed} in-corpus counts in {PAPERS_FILE}")
 
 
 if __name__ == "__main__":

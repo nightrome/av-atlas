@@ -64,6 +64,12 @@ data/affiliations_arxiv.json
 data/affiliations_cvf.json
 data/reference_lists_cvf.json
 data/reference_lists_arxiv.json
+# fetch_s2_references.py's side files: the S2 id of each corpus paper and
+# the S2 reference list of each. Regenerable, but a full crawl takes hours of
+# rate-limited requests, so they belong in the corpus backup next to
+# citation_graph.json.
+data/s2_paper_ids.json
+data/reference_lists_s2.json
 # Raw PDFs archived by build_citation_graph.py's fetch phase, one per CVF
 # paper it downloads -- kept as a local cache so they can be reprocessed for
 # something else later without re-fetching, but this is a many-GB personal
@@ -99,6 +105,9 @@ data/s2_author_ids_checked_papers.json
 # (resumable via s2_citing_seeds.json), not meaningfully reviewable as a
 # diff, not worth the repo bloat.
 data/venues/arxiv_s2_citing.json
+# fetch_cvf_history.py's in-progress output. It only becomes the real
+# <conf><year>.json once every listed paper has been fetched.
+data/venues/*.partial
 # label_relevance.html is generated (build_labeling_tool.py) and embeds
 # labeling_candidates.json, itself a regenerable sample (fixed seed) of
 # papers_full.json -- neither is source. relevance_labels.json (the actual

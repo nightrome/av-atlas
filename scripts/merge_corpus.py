@@ -18,7 +18,13 @@ method -- a paper's presence depended on whether it happened to cite one of
 everything else is drawn from -- which would have made "how was this paper
 found" an invisible, unstated variable across the whole corpus.
 
-Dedupes by normalized title within the venue pulls.
+Dedupes by normalized title within the venue pulls, then folds an arXiv-file
+record into the venue record that carries the same arXiv id (a preprint that
+was renamed for its camera-ready version).
+
+Rewrites author strings stored as "Last, First, Last, First" (NeurIPS) or
+BibTeX "Last, First and Last, First" (ECCV 2018) into the plain
+"First Last, First Last" form every other source uses.
 
 Classifies every paper (category + av_relevance) via classify.py's
 keyword-taxonomy approach, applied uniformly to the whole corpus -- this
@@ -28,6 +34,7 @@ Writes av-atlas/data/papers_full.json.
 
 Usage: python merge_corpus.py
 """
+import html
 import json
 import re
 from pathlib import Path
@@ -102,7 +109,10 @@ _TRAILING_PLURAL_S_RE = re.compile(r"(?<=[a-z]{4})s$")
 
 
 def clean_title(t):
-    t = (t or "").strip()
+    # Some listings (DBLP, Semantic Scholar) hand over titles with HTML
+    # entities still in them ("Detection &amp; Recognition", "B&#233;zier").
+    # The site renders titles as plain text, so they showed up literally.
+    t = html.unescape(t or "").strip()
     m = _MARKDOWN_LINK_TITLE_RE.match(t)
     if m:
         t = m.group(1).strip()
@@ -186,6 +196,127 @@ def discovery_source(filename):
     return "venue_listing"
 
 
+# Two sources don't store authors as "First Last, First Last":
+#  - NeurIPS (proceedings.neurips.cc) joins its citation_author meta tags,
+#    each "Last, First", with ", " -- "Fan, Lue, Wang, Feng, Wang, Naiyan".
+#    Split on commas that reads as six one-word people, and a two-word
+#    given name ("Lee, Gim Hee") turned up on the site as a person called
+#    "Gim Hee".
+#  - ECCV 2018 carries BibTeX: "Tsoli, Aggeliki and Argyros, Antonis A.".
+# Nothing in a single "Surname, Given" string says which form it is ("Aakash,
+# Indranil Saha" in AAAI 2024 is two people, one with a single name), so the
+# pair form is decided per file: a file where most multi-name strings have an
+# even count and at least one one-word part is in that form. That covers
+# every NeurIPS year and ECCV 2018, and no other venue file comes close
+# (under 1% of any other file has that shape).
+_AUTHOR_AND_RE = re.compile(r"\s*,?\s+and\s+")
+
+
+def _author_parts(s):
+    return [t.strip() for t in s.split(",") if t.strip()]
+
+
+def _is_bibtex_author_string(s):
+    parts = _AUTHOR_AND_RE.split(s.strip())
+    return len(parts) > 1 and all(p.count(",") == 1 for p in parts)
+
+
+def _looks_last_first(s):
+    if _is_bibtex_author_string(s):
+        return True
+    parts = _author_parts(s)
+    return len(parts) % 2 == 0 and any(len(p.split()) == 1 for p in parts)
+
+
+def uses_last_first_authors(papers):
+    """Whether a venue file stores its author strings as "Last, First" pairs
+    (see the comment above). Strings with a single part don't count either
+    way."""
+    strings = [p.get("authors") for p in papers
+               if isinstance(p.get("authors"), str) and len(_author_parts(p["authors"])) > 1]
+    shaped = sum(1 for s in strings if _looks_last_first(s))
+    return bool(strings) and shaped >= 0.5 * len(strings)
+
+
+def normalize_author_string(s, last_first=False):
+    """"First Last, First Last" for any of the author-string forms above.
+    last_first says the file uses "Last, First" pairs; an odd number of
+    parts there can't be paired safely ("Choo, XianJun, Davin, ..." has a
+    two-part given name), so such a string is left as it is. A plain list
+    that ends in "and" ("A B, C D and E F") just loses the "and"."""
+    if not isinstance(s, str) or not s.strip():
+        return s
+    parts = _AUTHOR_AND_RE.split(s.strip())
+    if len(parts) > 1:
+        if all(p.count(",") == 1 for p in parts):
+            return ", ".join(" ".join(reversed([x.strip() for x in p.split(",")])).strip() for p in parts)
+        return ", ".join(p.strip().strip(",").strip() for p in parts if p.strip())
+    if last_first:
+        names = _author_parts(s)
+        if names and len(names) % 2 == 0:
+            return ", ".join(f"{names[i + 1]} {names[i]}" for i in range(0, len(names), 2))
+    return s
+
+
+# An arXiv id in any of the URL forms the corpus stores ("https://arxiv.org/
+# abs/2003.08799", "http://arxiv.org/abs/2003.08799v2"); the version suffix
+# is dropped so v1 and v2 of one preprint match.
+_ARXIV_ID_RE = re.compile(r"arxiv\.org/(?:abs|pdf)/([^\s?#]+?)(?:v\d+)?(?:\.pdf)?/?$", re.I)
+
+
+def arxiv_id(url):
+    m = _ARXIV_ID_RE.search((url or "").strip())
+    return m.group(1).lower() if m else None
+
+
+# Filled on the venue record from the arXiv copy folded into it, when the
+# venue record has nothing of its own. The venue listing wins everything it
+# does have (title, venue, year, authors).
+ARXIV_MERGE_FILL_FIELDS = ("authors", "abstract")
+
+
+def merge_by_arxiv_id(merged, carry_over_fields=()):
+    """Folds each arXiv-file record into a venue-listing record carrying the
+    same arXiv id, so a preprint that was renamed for the camera-ready
+    version ("Pedestrian Detection: The Elephant In The Room" vs CVPR 2021's
+    "Generalizable Pedestrian Detection: ...") is one paper, not two. The
+    venue record keeps its own fields and only takes what it lacks from the
+    arXiv copy (an ICRA/IROS GitHub-list record has no authors, for one).
+
+    Two venue records sharing an id are left alone: that's a conference
+    paper and its journal version (CVPR 2020 and IJCV 2021, IROS and RA-L),
+    two listings the site counts separately. Two arXiv-file records sharing
+    an id are left alone too: Semantic Scholar sometimes files a different
+    paper by the same authors under one arXiv id.
+
+    Mutates `merged` (normalized title -> record) and returns the number of
+    records folded away."""
+    venue_by_id = {}
+    for key, p in merged.items():
+        if p.get("source") == "venue_listing":
+            aid = arxiv_id(p.get("arxiv_url"))
+            if aid:
+                venue_by_id.setdefault(aid, key)
+    folded = []
+    for key, p in merged.items():
+        if p.get("source") == "venue_listing":
+            continue
+        target_key = venue_by_id.get(arxiv_id(p.get("arxiv_url")))
+        if not target_key:
+            continue
+        target = merged[target_key]
+        for field in ARXIV_MERGE_FILL_FIELDS + tuple(carry_over_fields):
+            if target.get(field) in (None, "", [], {}) and p.get(field) not in (None, "", [], {}):
+                target[field] = p[field]
+        if target.get("citations") is None and p.get("citations") is not None:
+            target["citations"] = p["citations"]
+            target["citations_updated"] = p.get("citations_updated")
+        folded.append(key)
+    for key in folded:
+        del merged[key]
+    return len(folded)
+
+
 def main():
     taxonomy_full = json.loads(CATEGORIES_FILE.read_text(encoding="utf-8"))
     taxonomy = taxonomy_full["categories"]
@@ -264,6 +395,7 @@ def main():
         source = discovery_source(f.name)
         is_arxiv_file = f.name.startswith("arxiv")
         file_conference, file_year = conference_and_year_for_file(f.name)
+        last_first = uses_last_first_authors(papers)
         for p in papers:
             key = normalize_title(p.get("title"))
             if not key:
@@ -277,9 +409,9 @@ def main():
             if key not in merged:
                 merged[key] = {
                     "title": clean_title(p.get("title")),
-                    "authors": p.get("authors"),
+                    "authors": normalize_author_string(p.get("authors"), last_first),
                     "abstract": p.get("abstract"),
-                    "venue": p.get("conference") or file_conference,
+                    "venue": html.unescape(p.get("conference") or file_conference or "") or None,
                     "year": p.get("year") or file_year,
                     "citations": p.get("citations"),
                     "citations_updated": p.get("citations_updated"),
@@ -313,6 +445,10 @@ def main():
                 p[field] = prior_by_field[field][key]
                 n_carried_over += 1
 
+    # After the carry-over, because that is where a venue record gets the
+    # arxiv_url apply_arxiv_links.py found for it.
+    n_arxiv_folded = merge_by_arxiv_id(merged, CARRY_OVER_FIELDS)
+
     papers = list(merged.values())
     for p in papers:
         category, relevance = cl.classify_paper(
@@ -327,6 +463,8 @@ def main():
     print(f"  AV={n_av} non-AV={len(papers) - n_av}")
     if n_carried_over:
         print(f"  carried over {n_carried_over} enrichment fields from the previous run")
+    if n_arxiv_folded:
+        print(f"  folded {n_arxiv_folded} arXiv records into the venue record with the same arXiv id")
 
 
 if __name__ == "__main__":
