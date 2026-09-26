@@ -362,7 +362,7 @@
 </details>
 
 <details class="detail-section" id="download">
-<summary>Download the data (v__AV_ATLAS_VERSION__)</summary>
+<summary>Download the data</summary>
 <div class="detail-body">
 <p class="section-intro">
   The whole corpus, as four gzipped CSVs. Every number on this site is computed from these,
@@ -528,8 +528,8 @@
 // about.json is the part of stats.json this page reads, written by
 // build_public_site.py, so the About page doesn't download every paper.
 fetch('about.json').then(r => r.json()).then(stats => {
-  // The same "Version 0.1.2 · data as of 25 Sep 2026" line as the nav bar
-  // (siteVersionText is in nav.js). build_public_site.py adds site_version to
+  // The "Version 0.1.2 · data as of 25 Sep 2026" line. This page is the only
+  // place the version is shown (siteVersionText is in nav.js). build_public_site.py adds site_version to
   // every published JSON file, about.json included.
   const versionLine = siteVersionText(stats.site_version, stats.content_updated);
   if (versionLine) {

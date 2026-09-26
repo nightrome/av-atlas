@@ -27,11 +27,9 @@ python scripts/build_public_site.py
 python scripts/deploy.py --preview
 python scripts/deploy.py --promote
 
-# One-shot: build, commit sources to main, push the built site to gh-pages
+# One-shot: build and push the built site to gh-pages (no preview). Deploys
+# never commit to main; source changes go through pull requests.
 python scripts/deploy.py
-
-# Same, but skip committing to main (e.g. nothing source-side changed)
-python scripts/deploy.py --no-main-commit
 
 # Run just the test suite (stdlib unittest + plain-Node JS, no install needed)
 python scripts/run_tests.py

@@ -144,26 +144,13 @@ test('no page or shared script loads Google Analytics', () => {
   });
 });
 
-// build_public_site.py swaps the placeholders for the build's version and
-// stats.json's content_updated.
-function builtNav(version, date) {
-  return NAV_JS.replace(/__AV_ATLAS_VERSION__/g, version).replace(/__AV_ATLAS_DATA_DATE__/g, date);
-}
-
-test('shows the version and data date as one line once the build has filled them in', () => {
-  const { nav, sandbox } = loadNav('nightrome.github.io', '/av-atlas/about.html', '', builtNav('0.1.2', '2026-09-25'));
-  const label = nav.children.filter(el => el.className === 'site-version');
-  assert.strictEqual(label.length, 1, 'expected one version label in the nav bar');
-  assert.strictEqual(label[0].textContent, 'Version 0.1.2 \u00b7 data as of 25 Sep 2026');
-  assert.strictEqual(label[0].href, 'about.html#download');
-  assert.strictEqual(sandbox.AV_ATLAS_VERSION, '0.1.2');
-});
-
-test('shows just the version when the data date is missing', () => {
-  const { nav } = loadNav('nightrome.github.io', '/av-atlas/index.html', '', builtNav('0.1.3', ''));
-  const label = nav.children.filter(el => el.className === 'site-version');
-  assert.strictEqual(label.length, 1);
-  assert.strictEqual(label[0].textContent, 'Version 0.1.3');
+// The version is shown only on the About page, never in the nav bar.
+test('the nav bar carries no version', () => {
+  assert.ok(!/__AV_ATLAS_VERSION__|__AV_ATLAS_DATA_DATE__|site-version|AV_ATLAS_VERSION/.test(NAV_JS),
+    'nav.js still has version code');
+  const { nav, sandbox } = loadNav('nightrome.github.io', '/av-atlas/about.html');
+  assert.ok(!nav.children.some(el => /Version \d/.test(el.textContent || '')), 'nav bar shows a version');
+  assert.strictEqual(sandbox.AV_ATLAS_VERSION, undefined);
 });
 
 test('siteVersionText formats the date by hand and ignores bad input', () => {
@@ -181,12 +168,6 @@ test('no page has a separate "Data last updated" or "Site version" line any more
     const text = fs.readFileSync(path.join(SITE, f), 'utf8');
     assert.ok(!/Data last updated|Site version v|dataUpdatedText/.test(text), `${f} still has the old line`);
   });
-});
-
-test('shows no version label on an unbuilt page', () => {
-  const { nav, sandbox } = loadNav('localhost', '/index.html');
-  assert.strictEqual(nav.children.filter(el => el.className === 'site-version').length, 0);
-  assert.strictEqual(sandbox.AV_ATLAS_VERSION, undefined);
 });
 
 if (failures > 0) {

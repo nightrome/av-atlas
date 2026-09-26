@@ -19,7 +19,8 @@ A full run:
    rebuild, --skip-build skips it and the tests (HTML/JS/CSS-only changes).
    The build stops if the corpus shrank by more than 3% (see
    publish_gate.py); --allow-shrink lets an intended drop through.
-2. Commits and pushes any source changes to `main` (production only).
+2. (Nothing is committed to `main`: it is protected, so source changes go
+   through pull requests. --no-main-commit is still accepted and does nothing.)
 3. Publishes public/ to the target repo's `gh-pages` branch through a
    persistent clone in .deploy-cache/, so only files that changed since the
    last deploy are re-hashed and uploaded.
@@ -260,30 +261,6 @@ def build(mode, allow_shrink=False):
     save_state(build_fingerprint=build_fingerprint())
 
 
-def commit_sources(msg):
-    branch = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"],
-                            cwd=BASE, capture_output=True, text=True).stdout.strip()
-    run(["git", "add", "-A"])
-    # Check staged changes *after* `git add`, not before -- otherwise stale
-    # line-ending-only diffs (or any other change `git add`'s clean filters
-    # would normalize away) can make `git status` claim there's something to
-    # commit when `git add` actually stages nothing, and `git commit` then
-    # fails outright with no clear error.
-    result = subprocess.run(["git", "status", "--porcelain"], cwd=BASE, capture_output=True, text=True)
-    if not result.stdout.strip():
-        print("Sources: nothing to commit.")
-        return False
-    run(["git", "commit", "-m", msg])
-    push = run(["git", "push", "origin", f"HEAD:{branch}"], check=False)
-    if push.returncode != 0:
-        raise SystemExit(
-            f"Committed to '{branch}' but the push was rejected. Reconcile with the "
-            f"remote (git pull --rebase origin {branch}) and re-run, or re-run with "
-            "--no-main-commit to publish the site without pushing sources.")
-    print(f"Sources committed and pushed to '{branch}'.")
-    return True
-
-
 def ensure_cache_clone(name, remote):
     """Persistent clone used only to build gh-pages commits. Primed once with the
     remote's current tip (index only) so git knows which blobs the server
@@ -373,7 +350,8 @@ def main():
                             "the build that was last previewed.")
     parser.add_argument("--staging-repo", default=STAGING_REPO, help="Git URL of the staging repo.")
     parser.add_argument("--no-main-commit", action="store_true",
-                        help="Skip committing/pushing source changes to main.")
+                        help="No longer needed: deploys never commit to main now. Kept so older "
+                             "commands and the monthly job don't break.")
     parser.add_argument("--full", action="store_true",
                         help="Force the corpus rebuild even if the inputs look unchanged.")
     parser.add_argument("--skip-build", action="store_true",
@@ -396,8 +374,6 @@ def main():
                 "public/ is not the build that was last previewed "
                 f"(previewed {str(previewed)[:12]}, current {current[:12]}). Run --preview again, "
                 "or pass --force-promote to publish it anyway.")
-        if not args.no_main_commit:
-            commit_sources("Update AV Atlas")
         save_state(promoted_hash=deploy_production())
         backup_corpus()
         print("\nDone.")
@@ -408,8 +384,6 @@ def main():
         save_state(previewed_hash=deploy_staging(args.staging_repo))
         print(f"\nPreview: {STAGING_URL}/\nLooks right? python scripts/deploy.py --promote")
         return
-    if not args.no_main_commit:
-        commit_sources("Update AV Atlas")
     save_state(promoted_hash=deploy_production())
     backup_corpus()
     print("\nDone.")
