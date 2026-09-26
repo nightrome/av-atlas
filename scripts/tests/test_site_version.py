@@ -151,19 +151,21 @@ class BuildOutputTests(unittest.TestCase):
             # way; the About page shows its site_version.
             self.assertEqual(json.loads((public / "about.json").read_text(encoding="utf-8"))["site_version"],
                              "0.1.2")
+            # The nav bar carries no version; only the About page shows it.
             nav = (public / "nav.js").read_text(encoding="utf-8")
-            self.assertIn("const SITE_VERSION = '0.1.2';", nav)
-            self.assertIn("const DATA_DATE = '2026-09-20';", nav)
+            self.assertNotIn("SITE_VERSION", nav)
+            self.assertNotIn("site-version", nav)
             for page in public.glob("*.html"):
                 self.assertNotIn(bps.VERSION_PLACEHOLDER, page.read_text(encoding="utf-8"), page.name)
             for script in public.glob("*.js"):
                 self.assertNotIn(bps.VERSION_PLACEHOLDER, script.read_text(encoding="utf-8"), script.name)
-                self.assertNotIn(bps.DATA_DATE_PLACEHOLDER, script.read_text(encoding="utf-8"), script.name)
 
             # The About page links exactly the files build_data_release.py
             # writes, and the homepage no longer has a download section.
             about = (public / "about.html").read_text(encoding="utf-8")
-            self.assertIn("Download the data (v0.1.2)", about)
+            # Section titles never carry the version, only the file names do.
+            self.assertIn("<summary>Download the data</summary>", about)
+            self.assertNotIn("Download the data (v", about)
             linked = re.findall(r'href="download/([^"]+)"', about)
             self.assertEqual(linked, build_data_release.release_file_names("0.1.2"))
             index = (public / "index.html").read_text(encoding="utf-8")

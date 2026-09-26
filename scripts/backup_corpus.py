@@ -54,6 +54,7 @@ import io
 import json
 import os
 import re
+import subprocess
 import sys
 import tarfile
 import urllib.error
@@ -109,11 +110,34 @@ HEADERS_BASE = {
 UPLOAD_TIMEOUT = 600
 
 
+GH_CLI = r"C:\Program Files\GitHub CLI\gh.exe"
+
+
+def gh_cli_token():
+    """The token of the GitHub CLI's current login (`gh auth token`), or None
+    when gh isn't installed or isn't logged in. On the laptop this is the
+    token that's actually kept up to date, unlike a copy pasted into .env."""
+    for exe in ("gh", GH_CLI):
+        try:
+            out = subprocess.run([exe, "auth", "token"], capture_output=True, text=True, timeout=20)
+        except (OSError, subprocess.SubprocessError):
+            continue
+        token = out.stdout.strip()
+        if out.returncode == 0 and token:
+            return token
+    return None
+
+
 def load_github_token():
     """None (not a hard error) when unset -- see module docstring: this
     step is optional, not a pipeline requirement. The environment variable
-    wins, which is how a GitHub Actions job passes it in."""
+    wins, which is how a GitHub Actions job passes it in. Next comes the
+    GitHub CLI's login, and a GITHUB_TOKEN line in .env only after that, so a
+    stale token left in .env can't break a backup when gh is logged in."""
     token = os.environ.get("GITHUB_TOKEN", "").strip()
+    if token:
+        return token
+    token = gh_cli_token()
     if token:
         return token
     if not ENV_FILE.exists():

@@ -59,7 +59,12 @@ HEADERS_BASE = {
 
 
 def load_github_token():
+    """Same order as backup_corpus.py: the environment variable, then the
+    GitHub CLI's login, then a GITHUB_TOKEN line in .env."""
     token = os.environ.get("GITHUB_TOKEN", "").strip()
+    if token:
+        return token
+    token = bc.gh_cli_token()
     if token:
         return token
     if not ENV_FILE.exists():

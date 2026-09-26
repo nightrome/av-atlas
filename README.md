@@ -46,7 +46,7 @@ papers, author names are not disambiguated, and all classification is automated.
 
 ## Versions
 
-The site has a version like v0.1.2, shown in the nav bar and on the About page. The
+The site has a version like v0.1.2, shown on the About page. The
 `VERSION` file at the repo root holds the first two parts. Only the maintainer changes
 it, when a release deserves a new minor or major number. The last part goes up by one
 on every published build without anyone touching it: the build reads the version
@@ -86,8 +86,10 @@ python scripts/deploy.py --promote   # publish the previewed build to production
 - `--promote` refuses to publish if `public/` has changed since the preview.
   `--force-promote` overrides that.
 - Running `python scripts/deploy.py` with no flags skips staging. It builds,
-  commits source changes to `main`, publishes to production, and backs up the
-  corpus.
+  publishes to production, and backs up the corpus. No deploy commits to
+  `main`; source changes go through pull requests. The backup uses the GitHub
+  CLI's login when there's no `GITHUB_TOKEN` in the environment, so a stale
+  token in `.env` doesn't matter.
 
 Deploys are quicker than they used to be:
 
@@ -274,7 +276,7 @@ run it on the laptop:
 ```bash
 python scripts/restore_corpus.py
 python scripts/fetch_s2_references.py
-python scripts/deploy.py --no-main-commit   # builds, publishes and backs up
+python scripts/deploy.py   # builds, publishes and backs up
 ```
 
 After that, each month only has the new papers to look up.

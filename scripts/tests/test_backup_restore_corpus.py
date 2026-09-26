@@ -162,6 +162,15 @@ class TestLoadGithubToken(unittest.TestCase):
         env.start()
         self.addCleanup(env.stop)
         os.environ.pop("GITHUB_TOKEN", None)
+        gh = mock.patch.object(bc, "gh_cli_token", return_value=None)
+        gh.start()
+        self.addCleanup(gh.stop)
+
+    def test_gh_login_beats_a_stale_env_file(self):
+        self.env_file.write_text("GITHUB_TOKEN=stale\n", encoding="utf-8")
+        with mock.patch.object(bc, "gh_cli_token", return_value="from_gh"):
+            self.assertEqual(bc.load_github_token(), "from_gh")
+            self.assertEqual(rc.load_github_token(), "from_gh")
 
     def test_backup_returns_none_when_env_file_missing(self):
         self.assertIsNone(bc.load_github_token())
@@ -402,6 +411,7 @@ class TestBackupMain(unittest.TestCase):
     def test_no_token_skips_with_exit_zero(self):
         os.environ.pop("GITHUB_TOKEN")
         with mock.patch.object(bc, "ENV_FILE", self.data_dir / "no.env"), \
+                mock.patch.object(bc, "gh_cli_token", return_value=None), \
                 mock.patch.object(bc, "api_request", side_effect=AssertionError("no API calls")):
             bc.main([])
 
