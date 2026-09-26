@@ -204,6 +204,10 @@ DEPLOY_STATE_FILE = BASE / ".deploy-cache" / "state.json"
 UNVERSIONED_PRODUCTION = (0, 1, 1)
 # Replaced with the build's version in every published page and script.
 VERSION_PLACEHOLDER = "__AV_ATLAS_VERSION__"
+# Replaced with stats.json's content_updated in nav.js, which shows it next to
+# the version ("Version 0.1.2 · data as of 25 Sep 2026").
+DATA_DATE_PLACEHOLDER = "__AV_ATLAS_DATA_DATE__"
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 
 
@@ -422,7 +426,11 @@ def build_public_site(version):
         html = add_cache_bust(html).replace(VERSION_PLACEHOLDER, version)
         (page_dir / html_path.name).write_text(html, encoding="utf-8", newline="\n")
 
-    write_page_payloads(json.loads(stats_path.read_text(encoding="utf-8")), page_dir)
+    stats = json.loads(stats_path.read_text(encoding="utf-8"))
+    write_page_payloads(stats, page_dir)
+    data_date = str(stats.get("content_updated") or "")
+    if not DATE_RE.match(data_date):
+        data_date = ""
     # Not in hash_tree's content hash (deploy.py adds its own fields to it at
     # publish time), but the version it records is also baked into nav.js
     # and stats.json, which are.
@@ -483,11 +491,12 @@ def build_public_site(version):
                 shutil.copy2(asset, dst)
 
     # Shared static assets referenced by the HTML pages (e.g. nav.js) but not
-    # matched by the *.html glob above. nav.js shows the site version.
+    # matched by the *.html glob above. nav.js shows the site version and the
+    # data date.
     for js_path in SITE_DIR.glob("*.js"):
         js = js_path.read_text(encoding="utf-8")
-        (page_dir / js_path.name).write_text(
-            js.replace(VERSION_PLACEHOLDER, version), encoding="utf-8", newline="\n")
+        js = js.replace(VERSION_PLACEHOLDER, version).replace(DATA_DATE_PLACEHOLDER, data_date)
+        (page_dir / js_path.name).write_text(js, encoding="utf-8", newline="\n")
 
     # page_dir persists across runs (rmtree-ing it hits a real, previously-hit
     # OneDrive directory-lock issue -- see the "Fix build scripts hanging on

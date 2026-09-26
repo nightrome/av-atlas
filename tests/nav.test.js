@@ -144,15 +144,43 @@ test('no page or shared script loads Google Analytics', () => {
   });
 });
 
-// build_public_site.py swaps the placeholder for the build's version.
-test('shows the site version once the build has filled it in', () => {
-  const built = NAV_JS.replace(/__AV_ATLAS_VERSION__/g, '0.1.2');
-  const { nav, sandbox } = loadNav('nightrome.github.io', '/av-atlas/about.html', '', built);
+// build_public_site.py swaps the placeholders for the build's version and
+// stats.json's content_updated.
+function builtNav(version, date) {
+  return NAV_JS.replace(/__AV_ATLAS_VERSION__/g, version).replace(/__AV_ATLAS_DATA_DATE__/g, date);
+}
+
+test('shows the version and data date as one line once the build has filled them in', () => {
+  const { nav, sandbox } = loadNav('nightrome.github.io', '/av-atlas/about.html', '', builtNav('0.1.2', '2026-09-25'));
   const label = nav.children.filter(el => el.className === 'site-version');
   assert.strictEqual(label.length, 1, 'expected one version label in the nav bar');
-  assert.strictEqual(label[0].textContent, 'v0.1.2');
-  assert.strictEqual(label[0].href, 'index.html#download');
+  assert.strictEqual(label[0].textContent, 'Version 0.1.2 \u00b7 data as of 25 Sep 2026');
+  assert.strictEqual(label[0].href, 'about.html#download');
   assert.strictEqual(sandbox.AV_ATLAS_VERSION, '0.1.2');
+});
+
+test('shows just the version when the data date is missing', () => {
+  const { nav } = loadNav('nightrome.github.io', '/av-atlas/index.html', '', builtNav('0.1.3', ''));
+  const label = nav.children.filter(el => el.className === 'site-version');
+  assert.strictEqual(label.length, 1);
+  assert.strictEqual(label[0].textContent, 'Version 0.1.3');
+});
+
+test('siteVersionText formats the date by hand and ignores bad input', () => {
+  const { sandbox } = loadNav('localhost', '/index.html');
+  const f = sandbox.siteVersionText;
+  assert.strictEqual(f('0.1.2', '2026-01-05'), 'Version 0.1.2 \u00b7 data as of 5 Jan 2026');
+  assert.strictEqual(f('0.1.2', 'soon'), 'Version 0.1.2');
+  assert.strictEqual(f('0.1.2', undefined), 'Version 0.1.2');
+  assert.strictEqual(f(undefined, '2026-01-05'), '');
+  assert.strictEqual(f('__AV_ATLAS_VERSION__', '2026-01-05'), '');
+});
+
+test('no page has a separate "Data last updated" or "Site version" line any more', () => {
+  fs.readdirSync(SITE).filter(f => /\.(html|js)$/.test(f)).forEach(f => {
+    const text = fs.readFileSync(path.join(SITE, f), 'utf8');
+    assert.ok(!/Data last updated|Site version v|dataUpdatedText/.test(text), `${f} still has the old line`);
+  });
 });
 
 test('shows no version label on an unbuilt page', () => {

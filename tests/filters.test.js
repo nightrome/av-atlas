@@ -418,13 +418,9 @@ test('detail templates ship no static canonical or og:url, listing pages keep th
   });
 });
 
-test('dataUpdatedText shows content_updated as a plain date, never another field', () => {
-  const { dataUpdatedText } = loadFilters();
-  assert.strictEqual(dataUpdatedText({ content_updated: '2026-09-24' }), 'Data last updated 24 Sep 2026');
-  assert.strictEqual(dataUpdatedText({ content_updated: '2026-01-05' }), 'Data last updated 5 Jan 2026');
-  assert.strictEqual(dataUpdatedText({ generated_at: '2026-09-24' }), '');
-  assert.strictEqual(dataUpdatedText({ content_updated: 'soon' }), '');
-  assert.strictEqual(dataUpdatedText(null), '');
+test('the old separate "Data last updated" helper is gone', () => {
+  // nav.js's siteVersionText shows the version and data date as one line.
+  assert.strictEqual(loadFilters().dataUpdatedText, undefined);
 });
 
 if (failures > 0) {

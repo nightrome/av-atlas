@@ -29,7 +29,8 @@
   h3 { font-size: 1em; margin: 20px 0 8px; }
   p { line-height: 1.6; }
   .section-intro { color: var(--muted); font-size: 0.88em; margin: 0 0 16px; }
-  .freshness-note { color: var(--muted); font-size: 0.85em; margin-top: -8px; }
+  .download-list { line-height: 1.7; padding-left: 20px; margin: 0 0 12px; }
+  .download-list a { color: var(--accent); overflow-wrap: anywhere; }
   table.data-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.92em; }
   table.data-table th, table.data-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--border); }
   table.data-table th { color: var(--muted); font-weight: 600; }
@@ -83,8 +84,6 @@
 </head>
 <body>
 <nav id="topnav"></nav>
-<p class="freshness-note" id="freshness-note"></p>
-<p class="freshness-note" id="version-note" hidden></p>
 
 <details class="detail-section" open>
 <summary>What AV Atlas is</summary>
@@ -363,18 +362,31 @@
 </details>
 
 <details class="detail-section" id="download">
-<summary>Download the data</summary>
+<summary>Download the data (v__AV_ATLAS_VERSION__)</summary>
 <div class="detail-body">
 <p class="section-intro">
   The whole corpus, as four gzipped CSVs. Every number on this site is computed from these,
   so anything here can be checked, extended, or plotted a different way without re-running
   the pipeline. <code>paper_id</code> joins the tables.
 </p>
+<!-- The file names carry the version; build_public_site.py fills it in and
+     build_data_release.py writes files with the same names
+     (scripts/tests/test_site_version.py checks the two agree). -->
+<ul class="download-list">
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-papers.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-papers.csv.gz</a>
+      &mdash; one row per AV paper: title, year, venue, category, in-corpus citations, institutions, countries.</li>
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-authorship.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-authorship.csv.gz</a>
+      &mdash; paper-to-author rows, with author position.</li>
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-citations.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-citations.csv.gz</a>
+      &mdash; the in-corpus citation edge list.</li>
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-institutions.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-institutions.csv.gz</a>
+      &mdash; institutions with country, sector and totals.</li>
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-README.md">av-atlas-v__AV_ATLAS_VERSION__-README.md</a>
+      &mdash; column definitions and what the numbers are not.</li>
+</ul>
 <p class="section-intro">
-  The files for the current version (papers, authorship, citations, institutions and a README)
-  are linked <a href="index.html#download">at the bottom of the homepage</a>. Their names carry
-  the site version, for example <code>av-atlas-v0.1.2-papers.csv.gz</code>, so a downloaded
-  file always says which release it came from. Only the current version is available.
+  The file names carry the site version, so a downloaded file always says which release it
+  came from. Only the current version is available.
 </p>
 <p class="section-intro">
   Read the README before using them. Citation counts are internal to this corpus and
@@ -516,18 +528,13 @@
 // about.json is the part of stats.json this page reads, written by
 // build_public_site.py, so the About page doesn't download every paper.
 fetch('about.json').then(r => r.json()).then(stats => {
-  const updated = dataUpdatedText(stats);
-  if (updated) {
-    document.getElementById('freshness-note').textContent = `${updated}.`;
+  // The same "Version 0.1.2 · data as of 25 Sep 2026" line as the nav bar
+  // (siteVersionText is in nav.js). build_public_site.py adds site_version to
+  // every published JSON file, about.json included.
+  const versionLine = siteVersionText(stats.site_version, stats.content_updated);
+  if (versionLine) {
     document.getElementById('coverage-updated').textContent =
-      `${updated}. This is the last time a paper, author list, citation count or corpus total changed; a rebuild that changes none of them keeps the date.`;
-  }
-  // build_public_site.py adds site_version to every published JSON file,
-  // about.json included, so it's the version of the data this page shows.
-  if (stats.site_version) {
-    const versionNote = document.getElementById('version-note');
-    versionNote.textContent = `Site version v${stats.site_version}.`;
-    versionNote.hidden = false;
+      `${versionLine}. The version goes up with every published build. The date is the last time a paper, author list, citation count or corpus total changed, so a rebuild that changes none of them keeps it.`;
   }
 
   const cs = stats.corpus_stats || {};
