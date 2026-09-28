@@ -71,7 +71,7 @@ import urllib.parse
 import urllib.request
 from functools import lru_cache
 
-from fetch_common import BASE, HEADERS, OUT_DIR, fetch as _fetch
+from fetch_common import BASE, HEADERS, OUT_DIR, S2Auth, describe_http_error, fetch as _fetch, read_s2_key
 from apply_abstracts_semanticscholar import fill_missing_abstract
 from merge_corpus import normalize_title
 
@@ -79,7 +79,6 @@ CROSSREF_API = "https://api.crossref.org/works"
 S2_BATCH_URL = "https://api.semanticscholar.org/graph/v1/paper/batch"
 ENV_FILE = BASE / ".env"
 REQUEST_DELAY = 1.0
-S2_REQUEST_DELAY = 1.1  # documented 1 req/sec with a key, same as the other S2 scripts
 S2_BATCH_SIZE = 500     # the endpoint's documented maximum
 ROWS = 1000             # Crossref's maximum page size
 DEFAULT_LOOKBACK_DAYS = 40  # a monthly run with some overlap; merging is idempotent
@@ -121,7 +120,11 @@ SELECT = "DOI,title,subtitle,author,abstract,published-print,published-online,is
 
 def crossref_get(params):
     url = f"{CROSSREF_API}?{urllib.parse.urlencode(params)}"
-    body = _fetch(url, timeout=60, max_retries=4, retry_status=(429, 500, 502, 503, 504), backoff=20)
+    try:
+        body = _fetch(url, timeout=60, max_retries=4, retry_status=(429, 500, 502, 503, 504), backoff=20)
+    except urllib.error.HTTPError as e:
+        print(f"  Crossref request failed (filter {params.get('filter')}): {describe_http_error(e)}", flush=True)
+        raise
     time.sleep(REQUEST_DELAY)
     return json.loads(body)["message"]
 
@@ -296,39 +299,39 @@ def merge_records(existing, items, with_year):
 
 
 @lru_cache(maxsize=None)
-def load_s2_key():
-    key = os.environ.get("SEMANTIC_SCHOLAR_API_KEY")
-    if key:
-        return key.strip()
-    if ENV_FILE.exists():
-        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
-            if line.startswith("SEMANTIC_SCHOLAR_API_KEY="):
-                return line.split("=", 1)[1].strip()
-    return None  # the batch endpoint also works without a key, just more slowly
+def s2_auth():
+    """The S2 key for this run (the batch endpoint also works without one,
+    just more slowly). Shared, so a key S2 rejects is dropped only once."""
+    return S2Auth.start(read_s2_key(ENV_FILE), log=lambda msg: print(f"  {msg}", flush=True))
 
 
 def s2_batch(dois):
     """POSTs one /paper/batch request; returns a list aligned with dois
-    (None where S2 has no such paper)."""
+    (None where S2 has no such paper). A 403 with the key drops the key and
+    retries without it; see fetch_common.S2Auth."""
     body = json.dumps({"ids": [f"DOI:{d}" for d in dois]}).encode("utf-8")
-    headers = {**HEADERS, "Content-Type": "application/json"}
-    if load_s2_key():
-        headers["x-api-key"] = load_s2_key()
+    auth = s2_auth()
     url = f"{S2_BATCH_URL}?fields=abstract"
     delay = 5
-    for attempt in range(4):
+    attempt = 0
+    while True:
+        headers = {**HEADERS, "Content-Type": "application/json", **auth.headers()}
         req = urllib.request.Request(url, data=body, headers=headers, method="POST")
         try:
             with urllib.request.urlopen(req, timeout=120) as resp:
                 return json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
-            if e.code in (429, 500, 502, 503, 504) and attempt < 3:
+            if e.code == 403 and auth.handle_forbidden(e):
+                continue
+            attempt += 1
+            if e.code in (429, 500, 502, 503, 504) and attempt < 4:
                 time.sleep(delay)
                 delay *= 2
                 continue
+            print(f"  Semantic Scholar batch failed: {describe_http_error(e)}", flush=True)
             raise
         finally:
-            time.sleep(S2_REQUEST_DELAY)
+            time.sleep(auth.delay)
 
 
 def fill_abstracts_by_doi(records, batch=None):
@@ -409,8 +412,13 @@ def run(venue, year, args):
           f"{stats['year_fixed']} years corrected, {stats['abstract_added']} Crossref abstracts, "
           f"{stats['skipped']} skipped")
     if not args.no_abstracts:
-        n = fill_abstracts_by_doi(records)
-        print(f"  {n} abstracts from Semantic Scholar")
+        # The abstracts are a bonus on top of the Crossref records; if S2
+        # is down or refusing, keep the records and fill abstracts next run.
+        try:
+            n = fill_abstracts_by_doi(records)
+            print(f"  {n} abstracts from Semantic Scholar")
+        except (urllib.error.URLError, ConnectionError, TimeoutError) as e:
+            print(f"  skipped the Semantic Scholar abstracts: {e}", flush=True)
     if args.dry_run:
         print(f"  dry run, {out_file.name} not written")
         return
@@ -431,8 +439,18 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     if args.venue == "journals":
+        # One journal failing (a Crossref hiccup, a bad filter) shouldn't
+        # cost the others their update; report it and exit non-zero at the end.
+        failed = []
         for venue in JOURNALS:
-            run(venue, None, args)
+            try:
+                run(venue, None, args)
+            except (urllib.error.URLError, ConnectionError, TimeoutError, ValueError) as e:
+                print(f"{venue}: failed, moving on to the next journal ({e})", flush=True)
+                failed.append(venue)
+        if failed:
+            print(f"Failed: {', '.join(failed)}")
+            return 1
         return
     if args.venue in JOURNALS:
         run(args.venue, None, args)

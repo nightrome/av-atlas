@@ -48,7 +48,7 @@ import urllib.request
 from functools import lru_cache
 
 from atomic_write import write_json_atomic
-from fetch_common import BASE, HEADERS, by_citations
+from fetch_common import BASE, HEADERS, by_citations, normalize_s2_key
 
 STATS_FILE = BASE / "data" / "stats.json"
 SEEDS_FILE = BASE / "data" / "s2_citing_seeds.json"
@@ -69,7 +69,7 @@ def load_api_key():
         raise SystemExit(f"Missing {ENV_FILE} -- add a line SEMANTIC_SCHOLAR_API_KEY=... (never commit this file)")
     for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
         if line.startswith("SEMANTIC_SCHOLAR_API_KEY="):
-            return line.split("=", 1)[1].strip()
+            return normalize_s2_key(line)
     raise SystemExit(f"SEMANTIC_SCHOLAR_API_KEY not found in {ENV_FILE}")
 
 

@@ -15,6 +15,8 @@ genuinely different formats with genuinely different pagination and rate
 limits, and forcing them through one shape would trade real per-source
 correctness for a uniformity that doesn't otherwise buy anything.
 """
+import hashlib
+import os
 import time
 import urllib.error
 import urllib.request
@@ -115,3 +117,145 @@ def fetch(url, timeout=30, max_retries=1, retry_status=(503,), backoff=10, heade
                 time.sleep(backoff)
                 continue
             raise
+
+
+# ---------------------------------------------------------------- errors
+
+# Response headers worth printing when a request fails. The x-amzn ones are
+# how Semantic Scholar's API gateway says *why* it refused (a bad key comes
+# back as ForbiddenException, a throttle as TooManyRequestsException).
+_ERROR_HEADERS = ("content-type", "retry-after", "x-amzn-errortype", "x-ratelimit-limit",
+                  "x-ratelimit-remaining", "x-ratelimit-reset", "x-rate-limit-limit",
+                  "x-rate-limit-interval", "server")
+
+
+def http_error_body(e, limit=300):
+    """First `limit` characters of an HTTPError's body. The body can only be
+    read once, so it's kept on the exception for later callers."""
+    if not hasattr(e, "_av_body"):
+        try:
+            raw = e.read() or b""
+        except Exception:
+            raw = b""
+        e._av_body = raw.decode("utf-8", errors="replace")
+    return " ".join(e._av_body.split())[:limit]
+
+
+def describe_http_error(e, limit=300):
+    """One line saying what a 4xx/5xx actually was: status, URL (without the
+    query string), the start of the body and the headers that explain it."""
+    url = (getattr(e, "url", None) or getattr(e, "filename", None) or "").split("?")[0]
+    headers = []
+    if e.headers:
+        for name in _ERROR_HEADERS:
+            value = e.headers.get(name)
+            if value:
+                headers.append(f"{name}={value}")
+    parts = [f"HTTP {e.code} {e.reason or ''}".rstrip()]
+    if url:
+        parts.append(f"from {url}")
+    body = http_error_body(e, limit)
+    if body:
+        parts.append(f"body: {body}")
+    if headers:
+        parts.append(f"headers: {', '.join(headers)}")
+    return "; ".join(parts)
+
+
+# ---------------------------------------------------------------- Semantic Scholar key
+
+S2_KEY_NAME = "SEMANTIC_SCHOLAR_API_KEY"
+S2_KEYED_DELAY = 1.1      # 1 request/sec with a key, per S2's docs
+S2_ANONYMOUS_DELAY = 3.0  # the keyless pool is shared by everyone; go slower
+
+
+def normalize_s2_key(raw):
+    """The key as S2 expects it: no surrounding whitespace or quotes, and no
+    "SEMANTIC_SCHOLAR_API_KEY=" in front (all easy to paste into a GitHub
+    secret or .env by accident). None when nothing is left."""
+    if raw is None:
+        return None
+    key = raw.strip()
+    if key.startswith(S2_KEY_NAME + "="):
+        key = key[len(S2_KEY_NAME) + 1:].strip()
+    while len(key) >= 2 and key[0] == key[-1] and key[0] in "\"'":
+        key = key[1:-1].strip()
+    return key or None
+
+
+def read_s2_key(env_file, environ=None):
+    """The normalized key from the environment, else from env_file, else None."""
+    environ = os.environ if environ is None else environ
+    key = normalize_s2_key(environ.get(S2_KEY_NAME))
+    if key:
+        return key
+    if env_file and Path(env_file).exists():
+        for line in Path(env_file).read_text(encoding="utf-8").splitlines():
+            if line.strip().startswith(S2_KEY_NAME + "="):
+                key = normalize_s2_key(line)
+                if key:
+                    return key
+    return None
+
+
+def s2_key_fingerprint(key):
+    """Length and a short hash, so a log can show which key was used (to
+    compare with the one that works locally) without showing the key."""
+    if not key:
+        return "no key"
+    return f"{len(key)} chars, sha256 {hashlib.sha256(key.encode('utf-8')).hexdigest()[:8]}"
+
+
+class S2Auth:
+    """The Semantic Scholar key a script sends, and the switch to go without.
+
+    If S2 answers 403 while the key is being sent, the key is the problem
+    (S2's gateway returns 403 Forbidden for a key it doesn't know, and for
+    one with quotes or spaces around it). Rather than failing the step, the
+    script drops the key for the rest of the run and carries on at the
+    anonymous rate, saying so in the log."""
+
+    def __init__(self, key, log=print):
+        self.key = key
+        self.dropped = False
+        self.log = log
+
+    @classmethod
+    def from_env(cls, env_file, log=print):
+        return cls.start(read_s2_key(env_file), log=log)
+
+    @classmethod
+    def start(cls, key, log=print):
+        """An S2Auth for `key` (None for none), after saying in the log
+        which one it is."""
+        auth = cls(normalize_s2_key(key), log=log)
+        if auth.key:
+            log(f"Semantic Scholar: using the API key ({s2_key_fingerprint(auth.key)})")
+        else:
+            log("Semantic Scholar: no API key found, using anonymous requests "
+                f"(one every {S2_ANONYMOUS_DELAY:g} s)")
+        return auth
+
+    @property
+    def keyed(self):
+        return bool(self.key) and not self.dropped
+
+    def headers(self):
+        return {"x-api-key": self.key} if self.keyed else {}
+
+    @property
+    def delay(self):
+        return S2_KEYED_DELAY if self.keyed else S2_ANONYMOUS_DELAY
+
+    def handle_forbidden(self, e):
+        """Call on a 403. Returns True when the key was dropped and the
+        request should be retried without it."""
+        if not self.keyed:
+            return False
+        self.dropped = True
+        self.log(f"Semantic Scholar rejected the API key ({s2_key_fingerprint(self.key)}): "
+                 f"{describe_http_error(e)}")
+        self.log("  Falling back to anonymous requests for the rest of this run "
+                 f"(one every {S2_ANONYMOUS_DELAY:g} s). Check the {S2_KEY_NAME} value: "
+                 "it should be the bare key, no quotes or spaces.")
+        return True

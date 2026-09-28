@@ -61,8 +61,10 @@ Usage:
 (most-cited-first) after the venue/year filter. --no-title-match skips pass c,
 which is the slow one (one request per paper).
 
-Needs SEMANTIC_SCHOLAR_API_KEY in .env. Paced at one request per 1.1 s, backs
-off on 429 and stops after repeated 429/403 rather than pushing through.
+Uses SEMANTIC_SCHOLAR_API_KEY (environment or .env) when there is one. Paced
+at one request per 1.1 s with the key, backs off on 429 and stops after
+repeated 429/403 rather than pushing through. If S2 rejects the key with a
+403, the run drops it and carries on anonymously at a slower pace.
 """
 import argparse
 import json
@@ -78,7 +80,7 @@ from datetime import date, datetime, timezone
 from functools import lru_cache
 from pathlib import Path
 
-from fetch_common import BASE, HEADERS, by_citations
+from fetch_common import BASE, HEADERS, S2Auth, by_citations, describe_http_error, read_s2_key
 
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 S2_CITING_FILE = BASE / "data" / "venues" / "arxiv_s2_citing.json"
@@ -86,7 +88,6 @@ IDS_FILE = BASE / "data" / "s2_paper_ids.json"
 REFS_FILE = BASE / "data" / "reference_lists_s2.json"
 ENV_FILE = BASE / ".env"
 API_BASE = "https://api.semanticscholar.org/graph/v1"
-REQUEST_DELAY = 1.1
 ID_BATCH_SIZE = 500
 REFS_BATCH_SIZE = 250
 MIN_REFS_BATCH_SIZE = 10
@@ -162,16 +163,16 @@ class RateLimited(Exception):
     """S2 kept answering 429/403 after every backoff -- stop the run."""
 
 
-@lru_cache(maxsize=None)
 def load_api_key():
     # Lazy, for the same reason as fetch_s2_author_ids.py: the tests import
-    # this module on machines (CI) that have no .env.
-    if not ENV_FILE.exists():
-        raise SystemExit(f"Missing {ENV_FILE} -- add a line SEMANTIC_SCHOLAR_API_KEY=... (never commit this file)")
-    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
-        if line.startswith("SEMANTIC_SCHOLAR_API_KEY="):
-            return line.split("=", 1)[1].strip()
-    raise SystemExit(f"SEMANTIC_SCHOLAR_API_KEY not found in {ENV_FILE}")
+    # this module on machines (CI) that have no .env. None means no key.
+    return read_s2_key(ENV_FILE)
+
+
+@lru_cache(maxsize=None)
+def s2_auth():
+    """One S2Auth for the whole run, so a rejected key is dropped once."""
+    return S2Auth.start(load_api_key(), log=lambda msg: print(msg, flush=True))
 
 
 def normalize_title(t):
@@ -196,36 +197,47 @@ def doi_of(p):
 def s2_request(path, params, body=None):
     """GET (or POST when body is given) against the Graph API.
 
-    Sleeps REQUEST_DELAY after every call, backs off on 429 (and on 403,
-    which S2 has been seen to send instead while throttling) and raises
-    RateLimited when that doesn't clear it. Other HTTP errors are raised as
-    they are for the caller to decide."""
+    Sleeps after every call (1.1 s with a key, longer without),
+    backs off on 429 (and on 403 without a key, which S2 has been seen to
+    send while throttling) and raises RateLimited when that doesn't clear
+    it. A 403 while the key is being sent means S2 doesn't accept the key:
+    it's dropped for the rest of the run and the request is retried without
+    it. Other HTTP errors are raised as they are for the caller to decide."""
     url = f"{API_BASE}{path}?{urllib.parse.urlencode(params)}"
-    headers = {**HEADERS, "x-api-key": load_api_key()}
+    auth = s2_auth()
     data = None
     if body is not None:
         data = json.dumps(body).encode("utf-8")
-        headers["Content-Type"] = "application/json"
     delay = 5.0
-    for attempt in range(MAX_RATE_LIMIT_RETRIES):
+    attempt = 0
+    while True:
+        headers = {**HEADERS, **auth.headers()}
+        if data is not None:
+            headers["Content-Type"] = "application/json"
         req = urllib.request.Request(url, data=data, headers=headers)
         try:
             with urllib.request.urlopen(req, timeout=120) as resp:
                 return json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
+            if e.code == 403 and auth.handle_forbidden(e):
+                continue  # same request again, now without the key
             if e.code not in (429, 403):
+                print(f"  {describe_http_error(e)}", flush=True)
                 raise
-            if attempt == MAX_RATE_LIMIT_RETRIES - 1:
-                raise RateLimited(f"HTTP {e.code} on {path} after {MAX_RATE_LIMIT_RETRIES} tries")
+            attempt += 1
+            if attempt >= MAX_RATE_LIMIT_RETRIES:
+                raise RateLimited(f"HTTP {e.code} on {path} after {MAX_RATE_LIMIT_RETRIES} tries "
+                                  f"({describe_http_error(e)})")
             retry_after = (e.headers or {}).get("Retry-After") if e.headers else None
             time.sleep(float(retry_after) if (retry_after or "").isdigit() else delay)
             delay = min(delay * 2, 120.0)
         except ConnectionError:
-            if attempt == MAX_RATE_LIMIT_RETRIES - 1:
+            attempt += 1
+            if attempt >= MAX_RATE_LIMIT_RETRIES:
                 raise
             time.sleep(delay)
         finally:
-            time.sleep(REQUEST_DELAY)
+            time.sleep(auth.delay)
 
 
 def load_json(path, default):

@@ -25,6 +25,10 @@ on:
         description: "Only print what would run"
         type: boolean
         default: false
+      fetch_only:
+        description: "Run only the fetch steps (no build, commit, publish, backup or PR)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -90,17 +94,20 @@ jobs:
           set -o pipefail
           args=(--work-dir "$RUNNER_TEMP/monthly-update")
           if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          if [ "$FETCH_ONLY" = "true" ]; then args+=(--fetch-only); fi
           python scripts/monthly_update.py "${args[@]}" 2>&1 | tee "$RUNNER_TEMP/monthly-update.log"
         env:
           DRY_RUN: ${{ inputs.dry_run }}
+          FETCH_ONLY: ${{ inputs.fetch_only }}
           AV_ATLAS_BOT_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
           # restore_corpus.py and backup_corpus.py read this name.
           GITHUB_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
           GH_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
           SEMANTIC_SCHOLAR_API_KEY: ${{ secrets.SEMANTIC_SCHOLAR_API_KEY }}
 
+      # Not for a fetch-only test run: that's someone watching the log anyway.
       - name: Open or update the failure issue
-        if: failure()
+        if: failure() && inputs.fetch_only != true
         run: python scripts/monthly_update.py --report-failure "$RUNNER_TEMP/monthly-update.log" --work-dir "$RUNNER_TEMP/monthly-update"
         env:
           GH_TOKEN: ${{ github.token }}

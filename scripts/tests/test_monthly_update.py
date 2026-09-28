@@ -467,5 +467,37 @@ class DeployFromFreshRunnerTests(unittest.TestCase):
             self.assertEqual(git("rev-list", "--count", "gh-pages", cwd=remote), "1")
 
 
+class FetchOnlyTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.work = Path(self.tmp.name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_fetch_only_skips_everything_from_the_build_on(self):
+        self.assertEqual(mu.FETCH_ONLY_SKIPS, ["build", "commit", "publish", "backup", "pr"])
+        orch = ScriptedOrchestrator(self.work, skip=mu.FETCH_ONLY_SKIPS)
+        self.assertEqual(orch.run(), 0)
+        self.assertEqual(orch.calls[-1], "fetch_s2_references.py")
+        for later in ("build_public_site.py", "commit_data()", "deploy.py", "backup_corpus.py", "open_pr()"):
+            self.assertNotIn(later, orch.calls)
+
+    def test_main_passes_the_skips(self):
+        with mock.patch.object(mu, "Orchestrator") as orch_cls, \
+                mock.patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": ""}), \
+                mock.patch("builtins.print"):
+            orch_cls.return_value.run.return_value = 0
+            orch_cls.return_value.write_summary.return_value = ""
+            self.assertEqual(mu.main(["--fetch-only", "--skip", "arxiv", "--work-dir", str(self.work)]), 0)
+        self.assertEqual(orch_cls.call_args.kwargs["skip"], ["arxiv", *mu.FETCH_ONLY_SKIPS])
+
+    def test_env_file_key_is_written_without_quotes(self):
+        orch = mu.Orchestrator(self.work, base=self.work)
+        with mock.patch.dict(os.environ, {"SEMANTIC_SCHOLAR_API_KEY": ' "k1" \n'}):
+            orch.ensure_env_file()
+        self.assertEqual((self.work / ".env").read_text(encoding="utf-8"), "SEMANTIC_SCHOLAR_API_KEY=k1\n")
+
+
 if __name__ == "__main__":
     unittest.main()

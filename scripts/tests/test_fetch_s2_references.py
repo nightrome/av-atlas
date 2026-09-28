@@ -5,6 +5,8 @@ Tests for fetch_s2_references.py, with every Semantic Scholar call mocked.
 
 Usage: python -m unittest discover -s av-atlas/scripts/tests
 """
+import email.message
+import io
 import json
 import sys
 import tempfile
@@ -16,6 +18,29 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import fetch_s2_references as fsr
+
+
+def s2_error(code, body=b'{"message":"Forbidden"}', errortype="ForbiddenException"):
+    headers = email.message.Message()
+    headers["Content-Type"] = "application/json"
+    if errortype:
+        headers["x-amzn-ErrorType"] = errortype
+    return urllib.error.HTTPError("https://api.semanticscholar.org/graph/v1/paper/batch?fields=x",
+                                  code, "Forbidden", headers, io.BytesIO(body))
+
+
+class FakeResponse:
+    def __init__(self, payload):
+        self.payload = payload
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+    def read(self):
+        return json.dumps(self.payload).encode("utf-8")
 
 
 def http_error(code):
@@ -252,6 +277,44 @@ class TestRateLimit(unittest.TestCase):
             with self.assertRaises(fsr.RateLimited):
                 fsr.s2_request("/paper/batch", {"fields": "corpusId"}, {"ids": ["ARXIV:1"]})
         self.assertEqual(urlopen.call_count, fsr.MAX_RATE_LIMIT_RETRIES)
+
+
+class TestRejectedKey(unittest.TestCase):
+    def setUp(self):
+        fsr.s2_auth.cache_clear()
+        self.addCleanup(fsr.s2_auth.cache_clear)
+
+    def test_403_with_key_retries_anonymously(self):
+        sent = []
+
+        def urlopen(req, timeout):
+            sent.append(req.get_header("X-api-key"))
+            if req.get_header("X-api-key"):
+                raise s2_error(403)
+            return FakeResponse([{"corpusId": 1}])
+
+        with patch.object(fsr, "load_api_key", return_value="bad"), \
+                patch.object(fsr.time, "sleep"), \
+                patch.object(fsr.urllib.request, "urlopen", side_effect=urlopen), \
+                patch("builtins.print"):
+            self.assertEqual(fsr.s2_request("/paper/batch", {"fields": "corpusId"}, {"ids": ["ARXIV:1"]}),
+                             [{"corpusId": 1}])
+            fsr.s2_request("/paper/batch", {"fields": "corpusId"}, {"ids": ["ARXIV:2"]})
+        # The key goes out once; after the 403 every request is anonymous.
+        self.assertEqual(sent, ["bad", None, None])
+
+    def test_403_without_key_still_backs_off_and_stops(self):
+        def urlopen(req, timeout):
+            raise s2_error(403)
+
+        with patch.object(fsr, "load_api_key", return_value=None), \
+                patch.object(fsr.time, "sleep"), \
+                patch.object(fsr.urllib.request, "urlopen", side_effect=urlopen) as mocked, \
+                patch("builtins.print"):
+            with self.assertRaises(fsr.RateLimited) as ctx:
+                fsr.s2_request("/paper/batch", {"fields": "corpusId"}, {"ids": ["ARXIV:1"]})
+        self.assertEqual(mocked.call_count, fsr.MAX_RATE_LIMIT_RETRIES)
+        self.assertIn("ForbiddenException", str(ctx.exception))
 
 
 if __name__ == "__main__":

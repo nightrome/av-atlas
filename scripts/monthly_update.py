@@ -71,6 +71,8 @@ Usage:
   python scripts/monthly_update.py --dry-run             # print the plan, run nothing
   python scripts/monthly_update.py                       # the real thing (CI)
   python scripts/monthly_update.py --skip arxiv --skip s2_refs
+  python scripts/monthly_update.py --fetch-only          # fetchers only: no build, commit,
+                                                         # publish, backup or PR
   python scripts/monthly_update.py --report-failure LOG  # open or update the failure issue
 """
 import argparse
@@ -86,6 +88,8 @@ import urllib.request
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
+
+from fetch_common import normalize_s2_key
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 BASE = SCRIPTS_DIR.parent
@@ -159,6 +163,9 @@ def plan(work_dir):
 
 
 STEP_NAMES = [s.name for s in plan(".")]
+# What --fetch-only leaves out: everything from the build on, so the fetchers
+# can be tried on a runner without publishing or pushing anything.
+FETCH_ONLY_SKIPS = [s.name for s in plan(".") if not s.before_build and s.name != "restore"]
 
 
 # ---------------------------------------------------------------- pure helpers
@@ -374,8 +381,9 @@ class Orchestrator:
         return "ok", ""
 
     def ensure_env_file(self):
-        """The Semantic Scholar scripts read their key from .env only."""
-        key = os.environ.get("SEMANTIC_SCHOLAR_API_KEY", "").strip()
+        """Some Semantic Scholar scripts read their key from .env only.
+        Written without quotes or whitespace, which S2 would reject with a 403."""
+        key = normalize_s2_key(os.environ.get("SEMANTIC_SCHOLAR_API_KEY"))
         if not key:
             return
         env_file = self.base / ".env"
@@ -570,6 +578,8 @@ def main(argv=None):
     ap.add_argument("--dry-run", action="store_true", help="print what would run, run nothing")
     ap.add_argument("--skip", action="append", default=[], choices=STEP_NAMES, metavar="STEP",
                     help=f"skip a step (repeatable): {', '.join(STEP_NAMES)}")
+    ap.add_argument("--fetch-only", action="store_true",
+                    help="run only the restore and fetch steps; skip build, commit, publish, backup and pr")
     ap.add_argument("--deadline-minutes", type=float, default=DEFAULT_DEADLINE_MINUTES)
     ap.add_argument("--report-failure", metavar="LOG",
                     help="open or update the failure issue with the end of this log, then exit")
@@ -580,7 +590,11 @@ def main(argv=None):
         print(report_failure(args.report_failure, args.work_dir, orch.gh))
         return 0
 
-    orch = Orchestrator(args.work_dir, dry_run=args.dry_run, skip=args.skip, deadline=args.deadline_minutes)
+    skip = list(args.skip)
+    if args.fetch_only:
+        skip += FETCH_ONLY_SKIPS
+        print(f"Fetch-only run: skipping {', '.join(FETCH_ONLY_SKIPS)}. Nothing is published.", flush=True)
+    orch = Orchestrator(args.work_dir, dry_run=args.dry_run, skip=skip, deadline=args.deadline_minutes)
     code = orch.run()
     summary = orch.write_summary()
     print("\n" + summary)
