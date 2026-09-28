@@ -461,6 +461,52 @@ class TestMergeCorpusEndToEnd(unittest.TestCase):
         papers = self._run(venue_papers, venue_filename="arxiv_s2_citing.json")
         self.assertEqual(papers[0]["arxiv_url"], "https://arxiv.org/abs/2608.17420")
 
+    def test_ral_paper_on_the_icra_program_is_credited_to_ral(self):
+        # The ICRA 2026 program list sorts before ral_all.json, so the
+        # conference listing used to win and the paper became "ICRA 2026".
+        # It's an RA-L article (10.1109/LRA... DOI) that was only presented
+        # at ICRA, so RA-L and its own year win.
+        icra = [{"title": "Gaussian or Plane? Both: Semantic-Driven Voxel Representation for LiDAR-Inertial Odometry",
+                 "authors": "", "abstract": "From the program.",
+                 "source_url": "https://github.com/DoongLi/ICRA2026-Paper-List"},
+                {"title": "A Real ICRA Paper", "authors": "C D"}]
+        ral = json.dumps([{"title": "Gaussian or Plane? Both: Semantic-Driven Voxel Representation for "
+                                    "LiDAR-Inertial Odometry",
+                           "authors": "Haiyang Wu, George Vosselman", "year": 2025,
+                           "doi": "10.1109/lra.2025.3632730", "abstract": None}])
+        papers = self._run(icra, venue_filename="icra2026_github.json",
+                           extra_venue_files={"ral_all.json": ral})
+        by_title = {p["title"]: p for p in papers}
+        ral_paper = by_title["Gaussian or Plane? Both: Semantic-Driven Voxel Representation for LiDAR-Inertial Odometry"]
+        self.assertEqual((ral_paper["venue"], ral_paper["year"]), ("RA-L", 2025))
+        self.assertEqual(ral_paper["presented_at"], "ICRA 2026")
+        self.assertEqual(ral_paper["doi"], "10.1109/lra.2025.3632730")
+        self.assertEqual(ral_paper["authors"], "Haiyang Wu, George Vosselman")
+        self.assertEqual(ral_paper["abstract"], "From the program.")
+        self.assertIsNone(ral_paper["source_url"])
+        self.assertEqual((by_title["A Real ICRA Paper"]["venue"], by_title["A Real ICRA Paper"]["year"]),
+                         ("ICRA", 2026))
+        self.assertNotIn("presented_at", by_title["A Real ICRA Paper"])
+
+    def test_tro_paper_on_the_iros_program_is_credited_to_tro(self):
+        iros = [{"title": "Some T-RO Paper", "authors": ""}]
+        tro = json.dumps([{"title": "Some T-RO Paper", "authors": "E F", "year": 2025}])
+        papers = self._run(iros, venue_filename="iros2025_github.json",
+                           extra_venue_files={"tro_all.json": tro})
+        self.assertEqual(len(papers), 1)
+        self.assertEqual((papers[0]["venue"], papers[0]["year"], papers[0]["presented_at"]),
+                         ("T-RO", 2025, "IROS 2025"))
+
+    def test_other_journal_sharing_a_conference_title_still_loses(self):
+        # A CVPR paper and its TPAMI extension are two papers; only RA-L
+        # and T-RO have the presented-at-a-conference arrangement.
+        cvpr = [{"title": "Some Method", "authors": "A B", "conference": "CVPR", "year": 2022}]
+        tpami = json.dumps([{"title": "Some Method", "authors": "A B", "year": 2024}])
+        papers = self._run(cvpr, venue_filename="cvpr2022.json",
+                           extra_venue_files={"tpami_all.json": tpami})
+        self.assertEqual((papers[0]["venue"], papers[0]["year"]), ("CVPR", 2022))
+        self.assertNotIn("presented_at", papers[0])
+
 
 class TestFirstSeen(unittest.TestCase):
     """first_seen is carried forward from the previous papers_full.json;
