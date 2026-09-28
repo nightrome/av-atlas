@@ -152,3 +152,5 @@ scripts/*.log
 # Persistent clones deploy.py uses to push gh-pages incrementally, plus its state
 # (last full-build fingerprint, last previewed build hash). Local-only.
 .deploy-cache/
+# Cached ICRA/IROS PaperCept program pages (fetch_papercept_abstracts.py).
+data/papercept_*/
