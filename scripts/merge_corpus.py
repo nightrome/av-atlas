@@ -96,6 +96,45 @@ def conference_and_year_for_file(filename):
     return conference, year
 
 
+# RA-L and T-RO papers can be presented at ICRA or IROS, and the ICRA/IROS
+# program lists (the community GitHub lists) include them next to the real
+# conference papers under the same title. The paper itself is the journal
+# article (IEEE Xplore has it as an RA-L/T-RO DOI, the authors cite it as
+# the journal), so when a title shows up in both, the journal record wins and
+# keeps its own year; the conference only goes into "presented_at". Other
+# journal/conference pairs sharing a title (a CVPR paper and its TPAMI
+# extension) are two different papers and keep the old first-file-wins rule.
+JOURNALS_PRESENTED_AT_CONFERENCES = frozenset({"RA-L", "T-RO"})
+CONFERENCES_PRESENTING_JOURNAL_PAPERS = frozenset({"ICRA", "IROS"})
+
+
+def presented_at_label(record):
+    """"ICRA 2026" for a conference record, or just "ICRA" without a year."""
+    return " ".join(str(x) for x in (record.get("venue"), record.get("year")) if x)
+
+
+def journal_takes_over(existing, journal_venue):
+    """True when `existing` is an ICRA/IROS listing of what's really a
+    RA-L/T-RO paper, so the journal record (venue `journal_venue`) should
+    replace it."""
+    return (journal_venue in JOURNALS_PRESENTED_AT_CONFERENCES
+            and existing.get("venue") in CONFERENCES_PRESENTING_JOURNAL_PAPERS)
+
+
+def take_over_conference_record(conference_record, journal_record):
+    """The journal record, with presented_at set from the conference record
+    and any field it lacks filled from it (a program list sometimes has an
+    abstract the journal listing doesn't). source_url is left alone: it says
+    where the journal record came from, not the program list."""
+    journal_record["presented_at"] = presented_at_label(conference_record)
+    for field, value in conference_record.items():
+        if field == "source_url":
+            continue
+        if journal_record.get(field) in (None, "", [], {}) and value not in (None, "", [], {}):
+            journal_record[field] = value
+    return journal_record
+
+
 # A community paper-list sometimes stores a title as a raw markdown link,
 # "[Real Title](https://arxiv.org/abs/....)" (confirmed: ~600 IROS 2024
 # entries via fetch_github_paper_lists.py) -- or wraps the whole title in
@@ -521,8 +560,8 @@ def main(argv=None):
             arxiv_url = None
             if is_arxiv_file:
                 arxiv_url = p["arxiv_url"] if "arxiv_url" in p else p.get("doi")
-            if key not in merged:
-                merged[key] = {
+            if key not in merged or journal_takes_over(merged[key], file_conference):
+                record = {
                     "title": clean_title(p.get("title")),
                     "authors": normalize_author_string(p.get("authors"), last_first),
                     "abstract": p.get("abstract"),
@@ -546,6 +585,16 @@ def main(argv=None):
                     # arXiv record = venue not looked up yet (see fix_suspect_venues.py).
                     "venue_status": p.get("venue_status"),
                 }
+                if key in merged:
+                    record = take_over_conference_record(merged[key], record)
+                merged[key] = record
+            elif (merged[key].get("venue") in JOURNALS_PRESENTED_AT_CONFERENCES
+                  and file_conference in CONFERENCES_PRESENTING_JOURNAL_PAPERS
+                  and not merged[key].get("presented_at")):
+                # The same pair the other way round (no current filename
+                # sorts that way, but a renamed file shouldn't flip it back).
+                merged[key]["presented_at"] = presented_at_label(
+                    {"venue": file_conference, "year": p.get("year") or file_year})
             elif arxiv_url and not merged[key].get("arxiv_url"):
                 # A dual-listed paper: already merged from a real venue's
                 # own listing (which wins for title/venue/etc, see the
@@ -592,6 +641,10 @@ def main(argv=None):
     if n_arxiv_folded:
         print(f"  folded {n_arxiv_folded} arXiv records into the venue record with the same arXiv id")
     print(f"  {n_first_seen_today} papers are new since the previous run (first_seen today)")
+    n_presented = sum(1 for p in papers if p.get("presented_at"))
+    if n_presented:
+        print(f"  {n_presented} RA-L/T-RO papers also listed by ICRA/IROS are credited to the journal "
+              "(presented_at records the conference)")
 
 
 if __name__ == "__main__":

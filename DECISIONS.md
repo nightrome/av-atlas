@@ -481,6 +481,20 @@ New papers are matched to existing ones by normalized title, the same key
 ("Scanning the Issue", "Editorial") is only touched when the DOI matches, since the
 title alone can't say which one it is.
 
+## RA-L and T-RO papers presented at ICRA or IROS count for the journal
+
+The ICRA and IROS program lists we take from GitHub include the RA-L and T-RO papers
+that were presented at the conference, under the same title as in `ral_all.json` and
+`tro_all.json`. `merge_corpus.py` keeps the first file's record on a title clash, and
+`icra2026_github.json` sorts before `ral_all.json`, so those papers used to show up as
+ICRA or IROS papers with the conference's year. They are journal articles: IEEE
+Xplore lists them under RA-L/T-RO DOIs, and the authors cite them as the journal,
+often with "RA-L & ICRA 2026" on the project page. So when a title is in both, the
+RA-L/T-RO record wins and keeps its own year, and the conference goes into a
+`presented_at` field ("ICRA 2026"). Other journals are left alone: a CVPR paper and a
+TPAMI paper with the same title are usually the conference paper and its later
+extension, two different papers.
+
 ## New ICML, ICLR and ECCV editions come from PMLR and the conference sites
 
 With DBLP behind a bot check and OpenReview's API behind a challenge, ICML 2025
