@@ -230,7 +230,7 @@ class TestRun(unittest.TestCase):
         page = [item("Old One", "10.1109/tits.1", print_year=2025), item("New One", "10.1109/tits.2", print_year=2026)]
         fake, seen = self._pages(page)
         with patch.object(fc, "crossref_get", fake), \
-                patch.object(fc, "s2_batch", lambda dois: [{"abstract": "S2 text."} for _ in dois]):
+                patch.object(fc, "s2_batch", lambda dois, counts=None: [{"abstract": "S2 text."} for _ in dois]):
             fc.main(["T-ITS", "--since", "2026-08-01"])
         raw = path.read_bytes()
         self.assertIn(b"\r\n", raw)
@@ -279,8 +279,40 @@ class TestS2BatchRejectedKey(unittest.TestCase):
                 patch.object(fc.time, "sleep"), \
                 patch.object(fc.urllib.request, "urlopen", side_effect=urlopen), \
                 patch("builtins.print"):
-            self.assertEqual(fc.s2_batch(["10.1/x"]), [{"abstract": "A."}])
+            self.assertEqual(fc.s2_batch(["10.1109/x"]), [{"abstract": "A."}])
         self.assertEqual(sent, ["bad", None])
+
+
+class TestS2BatchBadIds(unittest.TestCase):
+    def setUp(self):
+        fc.s2_auth.cache_clear()
+        self.addCleanup(fc.s2_auth.cache_clear)
+
+    def test_unknown_and_malformed_dois_are_handled_quietly(self):
+        # What S2 does (checked live): unknown ids next to a known one get
+        # null, a batch of only unknown ids gets 400 "No valid paper ids given".
+        known = {"DOI:10.1109/a", "DOI:10.1109/c"}
+        sent = []
+
+        def urlopen(req, timeout):
+            ids = json.loads(req.data)["ids"]
+            sent.append(ids)
+            if not known & set(ids):
+                raise s2_error(400, body=b'{"error":"No valid paper ids given"}', errortype=None)
+            return FakeResponse([{"abstract": "A."} if i in known else None for i in ids])
+
+        counts = fc.new_s2_batch_counts()
+        with patch.object(fc, "read_s2_key", return_value=None),                 patch.object(fc.time, "sleep"),                 patch.object(fc.urllib.request, "urlopen", side_effect=urlopen),                 patch("builtins.print") as log:
+            out = fc.s2_batch(["10.1109/a", "https://doi.org/10.1109/c ", "10.1109/new", "junk"], counts)
+            new = fc.s2_batch(["10.1109/new1", "10.1109/new2"], counts)
+        self.assertEqual(out, [{"abstract": "A."}, {"abstract": "A."}, None, None])
+        self.assertEqual(new, [None, None])
+        self.assertEqual(sent, [["DOI:10.1109/a", "DOI:10.1109/c", "DOI:10.1109/new"],
+                                ["DOI:10.1109/new1", "DOI:10.1109/new2"]])
+        self.assertEqual(counts, {"skipped": 1, "unknown": 2, "rejected": 0})
+        lines = [c.args[0] for c in log.call_args_list if c.args]
+        self.assertIn("  Skipping malformed id DOI:junk", lines)
+        self.assertFalse(any("HTTP 400" in line for line in lines))
 
 
 class TestJournalsKeepGoing(unittest.TestCase):
@@ -311,7 +343,7 @@ class TestJournalsKeepGoing(unittest.TestCase):
             return {"items": [item("New One", "10.1109/tits.2", print_year=2026)],
                     "total-results": 1, "next-cursor": None}
 
-        def s2_down(dois):
+        def s2_down(dois, counts=None):
             raise s2_error(403)
 
         with patch.object(fc, "crossref_get", crossref_get), \

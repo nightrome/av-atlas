@@ -71,7 +71,9 @@ import urllib.parse
 import urllib.request
 from functools import lru_cache
 
-from fetch_common import BASE, HEADERS, OUT_DIR, S2Auth, describe_http_error, fetch as _fetch, read_s2_key
+from fetch_common import (BASE, HEADERS, OUT_DIR, S2Auth, clean_doi, describe_http_error,
+                          describe_s2_batch_counts, fetch as _fetch, new_s2_batch_counts, read_s2_key,
+                          s2_batch_split)
 from apply_abstracts_semanticscholar import fill_missing_abstract
 from merge_corpus import normalize_title
 
@@ -305,11 +307,20 @@ def s2_auth():
     return S2Auth.start(read_s2_key(ENV_FILE), log=lambda msg: print(f"  {msg}", flush=True))
 
 
-def s2_batch(dois):
-    """POSTs one /paper/batch request; returns a list aligned with dois
-    (None where S2 has no such paper). A 403 with the key drops the key and
-    retries without it; see fetch_common.S2Auth."""
-    body = json.dumps({"ids": [f"DOI:{d}" for d in dois]}).encode("utf-8")
+def s2_batch(dois, counts=None):
+    """Looks dois up on /paper/batch; returns a list aligned with dois
+    (None where S2 has no such paper). Malformed DOIs aren't sent and one S2
+    refuses doesn't sink the rest; see fetch_common.s2_batch_split."""
+    counts = new_s2_batch_counts() if counts is None else counts
+    return s2_batch_split(_s2_batch_post, [f"DOI:{clean_doi(d)}" for d in dois], counts,
+                          log=lambda msg: print(msg, flush=True))
+
+
+def _s2_batch_post(ids):
+    """POSTs one /paper/batch request. A 403 with the key drops the key and
+    retries without it; see fetch_common.S2Auth. A 400 is left to
+    s2_batch_split without a log line."""
+    body = json.dumps({"ids": ids}).encode("utf-8")
     auth = s2_auth()
     url = f"{S2_BATCH_URL}?fields=abstract"
     delay = 5
@@ -328,7 +339,8 @@ def s2_batch(dois):
                 time.sleep(delay)
                 delay *= 2
                 continue
-            print(f"  Semantic Scholar batch failed: {describe_http_error(e)}", flush=True)
+            if e.code != 400:
+                print(f"  Semantic Scholar batch failed: {describe_http_error(e)}", flush=True)
             raise
         finally:
             time.sleep(auth.delay)
@@ -337,7 +349,8 @@ def s2_batch(dois):
 def fill_abstracts_by_doi(records, batch=None):
     """Fills missing abstracts on records that have a DOI. Returns the
     number filled."""
-    batch = batch or s2_batch
+    counts = new_s2_batch_counts()
+    batch = batch or (lambda dois: s2_batch(dois, counts))
     pending = [p for p in records if p.get("doi") and not (p.get("abstract") or "").strip()]
     filled = 0
     for i in range(0, len(pending), S2_BATCH_SIZE):
@@ -348,6 +361,8 @@ def fill_abstracts_by_doi(records, batch=None):
             if abstract and fill_missing_abstract(p, abstract):
                 filled += 1
         print(f"  S2: {min(i + S2_BATCH_SIZE, len(pending))} of {len(pending)} looked up, {filled} abstracts", flush=True)
+    if pending:
+        print(f"  {describe_s2_batch_counts(counts)}", flush=True)
     return filled
 
 

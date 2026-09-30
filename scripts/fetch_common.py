@@ -17,6 +17,7 @@ correctness for a uniformity that doesn't otherwise buy anything.
 """
 import hashlib
 import os
+import re
 import time
 import urllib.error
 import urllib.request
@@ -160,6 +161,85 @@ def describe_http_error(e, limit=300):
     if headers:
         parts.append(f"headers: {', '.join(headers)}")
     return "; ".join(parts)
+
+
+# ---------------------------------------------------------------- Semantic Scholar /paper/batch
+
+_DOI_URL_PREFIX = re.compile(r"^https?://(dx\.)?doi\.org/", re.IGNORECASE)
+_DOI_RE = re.compile(r"^10\.\d{4,9}/\S+$")
+_ARXIV_NEW_RE = re.compile(r"^\d{4}\.\d{4,5}(v\d+)?$")
+_ARXIV_OLD_RE = re.compile(r"^[a-z][a-z-]*(\.[A-Z]{2})?/\d{7}(v\d+)?$")
+
+
+def clean_doi(raw):
+    """A DOI without surrounding whitespace or a doi.org URL in front."""
+    return _DOI_URL_PREFIX.sub("", (raw or "").strip()).strip()
+
+
+def looks_like_s2_id(ext_id):
+    """False for a DOI: or ARXIV: id that can't be right, which S2 would
+    answer with a 400 for the whole batch. Other id kinds pass."""
+    kind, _, value = ext_id.partition(":")
+    kind = kind.upper()
+    if kind == "DOI":
+        return bool(_DOI_RE.match(clean_doi(value)))
+    if kind == "ARXIV":
+        return bool(_ARXIV_NEW_RE.match(value) or _ARXIV_OLD_RE.match(value))
+    return True
+
+
+def new_s2_batch_counts():
+    return {"skipped": 0, "unknown": 0, "rejected": 0}
+
+
+def s2_batch_split(fetch, ext_ids, counts, log=print):
+    """Looks ext_ids up with fetch (one /paper/batch call, returning a list
+    aligned with the ids it was given) and returns a list aligned with
+    ext_ids, None where there's no paper.
+
+    Malformed ids aren't sent at all. S2 answers a batch with 400 "No valid
+    paper ids given" when it knows none of the ids (checked live on
+    2026-09-30: a batch with one unknown or garbled id next to a known one
+    gets 200 and a null for the bad one), so that 400 just means "all None"
+    and is not retried. Any other 400 splits the batch in half until the
+    id S2 objects to is on its own. None of these 400s are logged (fetch
+    shouldn't log them either); each id rejected on its own gets one line,
+    and counts keeps the totals for a summary at the end of the run."""
+    out = [None] * len(ext_ids)
+    good = []
+    for i, ext in enumerate(ext_ids):
+        if looks_like_s2_id(ext):
+            good.append(i)
+        else:
+            counts["skipped"] += 1
+            log(f"  Skipping malformed id {ext}")
+
+    def lookup(idx):
+        try:
+            return fetch([ext_ids[i] for i in idx])
+        except urllib.error.HTTPError as e:
+            if e.code != 400:
+                raise
+            if "no valid paper ids" in http_error_body(e).lower():
+                counts["unknown"] += len(idx)
+                return [None] * len(idx)
+            if len(idx) == 1:
+                counts["rejected"] += 1
+                log(f"  Semantic Scholar rejected id {ext_ids[idx[0]]}")
+                return [None]
+            mid = len(idx) // 2
+            return lookup(idx[:mid]) + lookup(idx[mid:])
+
+    if good:
+        for i, rec in zip(good, lookup(good)):
+            out[i] = rec
+    return out
+
+
+def describe_s2_batch_counts(counts):
+    return (f"Semantic Scholar batch: {counts['skipped']} malformed ids skipped, "
+            f"{counts['unknown']} in batches it had no match for, "
+            f"{counts['rejected']} rejected")
 
 
 # ---------------------------------------------------------------- Semantic Scholar key

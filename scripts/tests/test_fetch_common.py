@@ -128,6 +128,36 @@ class TestDescribeHttpError(unittest.TestCase):
         self.assertEqual(fc.http_error_body(e), "x" * 300)
 
 
+class TestS2BatchIds(unittest.TestCase):
+    def test_well_formed_ids_pass(self):
+        for ext in ["DOI:10.1109/CVPR52688.2022.01234", "DOI: https://doi.org/10.1007/978-3-031-19827-4_1 ",
+                    "DOI:http://dx.doi.org/10.1177/02783649231234567", "ARXIV:2203.17270",
+                    "ARXIV:1412.6980v9", "ARXIV:0704.0001", "ARXIV:hep-th/9901001",
+                    "ARXIV:math.GT/0309136", "ARXIV:cs/0112017", "CorpusId:123"]:
+            self.assertTrue(fc.looks_like_s2_id(ext), ext)
+
+    def test_malformed_ids_fail(self):
+        for ext in ["DOI:", "DOI:10.1/x", "DOI:doi 10.1109/x", "DOI:10.1109/has space",
+                    "ARXIV:", "ARXIV:2203.172", "ARXIV:abs/2203.17270", "ARXIV:cs/01120"]:
+            self.assertFalse(fc.looks_like_s2_id(ext), ext)
+
+    def test_clean_doi(self):
+        self.assertEqual(fc.clean_doi(" https://doi.org/10.1109/x "), "10.1109/x")
+        self.assertEqual(fc.clean_doi("HTTPS://DX.DOI.ORG/10.1109/x"), "10.1109/x")
+
+    def test_split_keeps_other_errors(self):
+        def fetch(ids):
+            raise s2_error(500, body=b"boom", errortype=None)
+
+        with self.assertRaises(urllib.error.HTTPError):
+            fc.s2_batch_split(fetch, ["ARXIV:2203.17270"], fc.new_s2_batch_counts(), log=lambda m: None)
+
+    def test_summary_line(self):
+        self.assertEqual(fc.describe_s2_batch_counts({"skipped": 2, "unknown": 5, "rejected": 1}),
+                         "Semantic Scholar batch: 2 malformed ids skipped, 5 in batches it had no match "
+                         "for, 1 rejected")
+
+
 class TestS2Auth(unittest.TestCase):
     def test_forbidden_drops_the_key_once(self):
         logged = []

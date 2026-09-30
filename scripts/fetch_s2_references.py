@@ -80,7 +80,8 @@ from datetime import date, datetime, timezone
 from functools import lru_cache
 from pathlib import Path
 
-from fetch_common import BASE, HEADERS, S2Auth, by_citations, describe_http_error, read_s2_key
+from fetch_common import (BASE, HEADERS, S2Auth, by_citations, clean_doi, describe_http_error,
+                          describe_s2_batch_counts, new_s2_batch_counts, read_s2_key, s2_batch_split)
 
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 S2_CITING_FILE = BASE / "data" / "venues" / "arxiv_s2_citing.json"
@@ -191,10 +192,10 @@ def doi_of(p):
     raw = (p.get("doi") or "").strip()
     if not raw or "arxiv.org" in raw:
         return None
-    return re.sub(r"^https?://(dx\.)?doi\.org/", "", raw) or None
+    return clean_doi(raw) or None
 
 
-def s2_request(path, params, body=None):
+def s2_request(path, params, body=None, quiet=()):
     """GET (or POST when body is given) against the Graph API.
 
     Sleeps after every call (1.1 s with a key, longer without),
@@ -202,7 +203,9 @@ def s2_request(path, params, body=None):
     send while throttling) and raises RateLimited when that doesn't clear
     it. A 403 while the key is being sent means S2 doesn't accept the key:
     it's dropped for the rest of the run and the request is retried without
-    it. Other HTTP errors are raised as they are for the caller to decide."""
+    it. Other HTTP errors are raised as they are for the caller to decide,
+    and logged unless their status is in quiet (for callers that expect
+    them and say what happened themselves)."""
     url = f"{API_BASE}{path}?{urllib.parse.urlencode(params)}"
     auth = s2_auth()
     data = None
@@ -222,7 +225,8 @@ def s2_request(path, params, body=None):
             if e.code == 403 and auth.handle_forbidden(e):
                 continue  # same request again, now without the key
             if e.code not in (429, 403):
-                print(f"  {describe_http_error(e)}", flush=True)
+                if e.code not in quiet:
+                        print(f"  {describe_http_error(e)}", flush=True)
                 raise
             attempt += 1
             if attempt >= MAX_RATE_LIMIT_RETRIES:
@@ -310,20 +314,14 @@ def corpus_id_of(record):
     return int(cid) if cid is not None else None
 
 
-def batch_lookup(ext_ids):
-    """/paper/batch for corpusId, one record (or None) per id. S2 answers 400
-    for the whole batch when a single id is malformed (a DOI with stray
-    characters, say), so a 400 splits the batch until the bad id is alone
-    and gets None."""
-    try:
-        return s2_request("/paper/batch", {"fields": "corpusId"}, {"ids": ext_ids})
-    except urllib.error.HTTPError as e:
-        if e.code != 400:
-            raise
-        if len(ext_ids) == 1:
-            return [None]
-        mid = len(ext_ids) // 2
-        return batch_lookup(ext_ids[:mid]) + batch_lookup(ext_ids[mid:])
+def batch_lookup(ext_ids, counts=None):
+    """/paper/batch for corpusId, one record (or None) per id. Malformed ids
+    aren't sent, and the 400 S2 gives a batch it knows none of just means
+    None for all of them; see fetch_common.s2_batch_split."""
+    def fetch(ids):
+        return s2_request("/paper/batch", {"fields": "corpusId"}, {"ids": ids}, quiet=(400,))
+    counts = new_s2_batch_counts() if counts is None else counts
+    return s2_batch_split(fetch, ext_ids, counts, log=lambda msg: print(msg, flush=True))
 
 
 def map_by_external_ids(papers, state, citing_arxiv):
@@ -334,17 +332,19 @@ def map_by_external_ids(papers, state, citing_arxiv):
         for via, ext in external_ids(p, citing_arxiv):
             wanted.append((key, via, ext))
     found = 0
+    counts = new_s2_batch_counts()
     for i in range(0, len(wanted), ID_BATCH_SIZE):
         chunk = [w for w in wanted[i:i + ID_BATCH_SIZE] if w[0] not in state["ids"]]
         if not chunk:
             continue
-        results = batch_lookup([w[2] for w in chunk])
+        results = batch_lookup([w[2] for w in chunk], counts)
         for (key, via, _), rec in zip(chunk, results):
             cid = corpus_id_of(rec)
             if cid is not None and key not in state["ids"]:
                 state["ids"][key] = cid
                 state["via"][key] = via
                 found += 1
+    print(describe_s2_batch_counts(counts), flush=True)
     return found
 
 
@@ -496,7 +496,7 @@ def fetch_references_batch(keys, ids):
     the reference list from the API, so referenceCount is 40 and references
     is empty."""
     results = s2_request("/paper/batch", {"fields": "referenceCount,references.corpusId"},
-                         {"ids": [f"CorpusId:{ids[k]}" for k in keys]})
+                         {"ids": [f"CorpusId:{ids[k]}" for k in keys]}, quiet=(400, 413))
     out = {}
     for key, rec in zip(keys, results):
         if rec is None:
@@ -534,7 +534,7 @@ def step_refs(papers, ids_state, refs_path):
                     print(f"  HTTP {e.code}, retrying with batches of {batch_size}", flush=True)
                     continue
                 failures += 1
-                print(f"  batch at {i} failed: {e}", flush=True)
+                print(f"  batch at {i} failed: {describe_http_error(e)}", flush=True)
                 if failures >= MAX_CONSECUTIVE_FAILURES:
                     print("  stopping after repeated failures; rerun to resume", flush=True)
                     break
