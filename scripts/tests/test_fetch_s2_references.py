@@ -62,7 +62,7 @@ class FakeS2:
         self.match = match or {}
         self.calls = []
 
-    def __call__(self, path, params, body=None):
+    def __call__(self, path, params, body=None, quiet=()):
         self.calls.append((path, dict(params), body))
         if path == "/paper/batch":
             return [self.batch.get(i) for i in body["ids"]]
@@ -171,18 +171,50 @@ class TestStepIds(unittest.TestCase):
         state = self.run_ids([paper("Welcome", venue="IROS", year=2022)], fake, title_match=False)
         self.assertEqual(state["ids"], {})
 
-    def test_malformed_id_in_a_batch_only_loses_that_id(self):
+    def test_rejected_id_in_a_batch_only_loses_that_id(self):
         calls = []
 
-        def fake(path, params, body=None):
+        def fake(path, params, body=None, quiet=()):
             calls.append(body["ids"])
-            if "DOI:bad" in body["ids"]:
+            self.assertIn(400, quiet)
+            if "DOI:10.1109/bad" in body["ids"]:
                 raise http_error(400)
             return [{"corpusId": 1} for _ in body["ids"]]
 
-        with patch.object(fsr, "s2_request", fake):
-            out = fsr.batch_lookup(["ARXIV:1", "DOI:bad", "ARXIV:2"])
+        counts = fsr.new_s2_batch_counts()
+        with patch.object(fsr, "s2_request", fake), patch("builtins.print") as log:
+            out = fsr.batch_lookup(["ARXIV:2101.00001", "DOI:10.1109/bad", "ARXIV:2101.00002"], counts)
         self.assertEqual(out, [{"corpusId": 1}, None, {"corpusId": 1}])
+        self.assertEqual(counts, {"skipped": 0, "unknown": 0, "rejected": 1})
+        lines = [c.args[0] for c in log.call_args_list]
+        self.assertEqual(lines, ["  Semantic Scholar rejected id DOI:10.1109/bad"])
+
+    def test_batch_s2_knows_none_of_is_not_split(self):
+        calls = []
+
+        def fake(path, params, body=None, quiet=()):
+            calls.append(body["ids"])
+            raise urllib.error.HTTPError("url", 400, "Bad Request", {},
+                                         io.BytesIO(b'{"error":"No valid paper ids given"}'))
+
+        counts = fsr.new_s2_batch_counts()
+        ids = [f"ARXIV:2609.{n:05d}" for n in range(8)]
+        with patch.object(fsr, "s2_request", fake), patch("builtins.print") as log:
+            out = fsr.batch_lookup(ids, counts)
+        self.assertEqual(out, [None] * 8)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(counts, {"skipped": 0, "unknown": 8, "rejected": 0})
+        log.assert_not_called()
+
+    def test_malformed_ids_are_not_sent(self):
+        fake = FakeS2(batch={"ARXIV:2101.00001": {"corpusId": 1}, "DOI:10.1109/ok.1": {"corpusId": 2}})
+        counts = fsr.new_s2_batch_counts()
+        with patch.object(fsr, "s2_request", fake), patch("builtins.print"):
+            out = fsr.batch_lookup(["ARXIV:2101.00001", "DOI:not-a-doi", "ARXIV:abs",
+                                    "DOI:10.1109/ok.1"], counts)
+        self.assertEqual(out, [{"corpusId": 1}, None, None, {"corpusId": 2}])
+        self.assertEqual(fake.calls[0][2]["ids"], ["ARXIV:2101.00001", "DOI:10.1109/ok.1"])
+        self.assertEqual(counts, {"skipped": 2, "unknown": 0, "rejected": 0})
 
 
 class TestStepRefs(unittest.TestCase):
@@ -199,7 +231,7 @@ class TestStepRefs(unittest.TestCase):
                   paper("IEEE Paper"), paper("Unmapped")]
         ids_state = {"ids": {"citingpaper": 1, "norefspaper": 2, "unknownpaper": 3, "ieeepaper": 4}}
 
-        def fake(path, params, body=None):
+        def fake(path, params, body=None, quiet=()):
             self.assertEqual(params["fields"], "referenceCount,references.corpusId")
             by_id = {
                 "CorpusId:1": {"paperId": "a", "references": [
@@ -227,7 +259,7 @@ class TestStepRefs(unittest.TestCase):
         ids_state = {"ids": {f"paper{i}": i for i in range(4)}}
         sizes = []
 
-        def fake(path, params, body=None):
+        def fake(path, params, body=None, quiet=()):
             sizes.append(len(body["ids"]))
             if len(body["ids"]) > 2:
                 raise http_error(400)
@@ -245,7 +277,7 @@ class TestStepRefs(unittest.TestCase):
         fsr.save_json(self.refs_path, {"elided": {"preprint": "2026-01-01", "ieeepaper": "2026-01-01"}})
         calls = []
 
-        def fake(path, params, body=None):
+        def fake(path, params, body=None, quiet=()):
             calls.append((path, params["offset"]))
             if path == "/paper/CorpusId:2/references":
                 return {"offset": 0, "data": []}
