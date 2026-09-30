@@ -38,7 +38,7 @@ import urllib.request
 from functools import lru_cache
 from pathlib import Path
 
-from fetch_common import BASE, HEADERS, by_citations
+from fetch_common import BASE, HEADERS, S2Auth, by_citations, describe_http_error, read_s2_key
 
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 OUT_FILE = BASE / "data" / "abstracts_semanticscholar.json"
@@ -50,16 +50,12 @@ MAX_CONSECUTIVE_FAILURES = 30
 
 
 @lru_cache(maxsize=None)
-def load_api_key():
+def s2_auth():
     # Lazy + memoized, not a module-level call -- importing this module
     # (e.g. from a future test file, same class of bug fixed in
-    # fetch_s2_author_ids.py) must not require .env to exist.
-    if not ENV_FILE.exists():
-        raise SystemExit(f"Missing {ENV_FILE} -- add a line SEMANTIC_SCHOLAR_API_KEY=... (never commit this file)")
-    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
-        if line.startswith("SEMANTIC_SCHOLAR_API_KEY="):
-            return line.split("=", 1)[1].strip()
-    raise SystemExit(f"SEMANTIC_SCHOLAR_API_KEY not found in {ENV_FILE}")
+    # fetch_s2_author_ids.py) must not require .env to exist. Without a key
+    # (or once S2 has rejected it) requests go out anonymously, more slowly.
+    return S2Auth.start(read_s2_key(ENV_FILE), log=lambda msg: print(msg, flush=True))
 
 
 def normalize_title(t):
@@ -69,20 +65,25 @@ def normalize_title(t):
 
 def s2_get(path, params):
     url = f"{API_BASE}{path}?{urllib.parse.urlencode(params)}"
-    req = urllib.request.Request(url, headers={**HEADERS, "x-api-key": load_api_key()})
+    auth = s2_auth()
     delay = REQUEST_DELAY
-    for attempt in range(4):
+    attempt = 0
+    while True:
+        req = urllib.request.Request(url, headers={**HEADERS, **auth.headers()})
         try:
             with urllib.request.urlopen(req, timeout=20) as resp:
                 return json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < 3:
+            if e.code == 403 and auth.handle_forbidden(e):
+                continue  # retry without the key S2 just refused
+            attempt += 1
+            if e.code == 429 and attempt < 4:
                 time.sleep(delay)
                 delay *= 2
                 continue
             raise
         finally:
-            time.sleep(REQUEST_DELAY)
+            time.sleep(auth.delay)
 
 
 def fetch_abstract(title):
@@ -170,7 +171,8 @@ def main():
                 data["failed"].pop(key, None)
                 consecutive_failures = 0
             except Exception as e:
-                print(f"  failed on {title[:70]!r}: {e}", flush=True)
+                why = describe_http_error(e) if isinstance(e, urllib.error.HTTPError) else e
+                print(f"  failed on {title[:70]!r}: {why}", flush=True)
                 data["failed"][key] = {"error": str(e)}
                 consecutive_failures += 1
             processed += 1

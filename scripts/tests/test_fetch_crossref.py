@@ -5,16 +5,42 @@ Tests for fetch_crossref.py, with Crossref and Semantic Scholar mocked out.
 
 Usage: python -m unittest discover -s av-atlas/scripts/tests
 """
+import email.message
+import io
 import json
 import sys
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import fetch_crossref as fc
+
+
+def s2_error(code, body=b'{"message":"Forbidden"}', errortype="ForbiddenException"):
+    headers = email.message.Message()
+    headers["Content-Type"] = "application/json"
+    if errortype:
+        headers["x-amzn-ErrorType"] = errortype
+    return urllib.error.HTTPError("https://api.semanticscholar.org/graph/v1/paper/batch?fields=x",
+                                  code, "Forbidden", headers, io.BytesIO(body))
+
+
+class FakeResponse:
+    def __init__(self, payload):
+        self.payload = payload
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+    def read(self):
+        return json.dumps(self.payload).encode("utf-8")
 
 
 def item(title, doi, authors=(("Jane", "Doe"),), print_year=None, online_year=None,
@@ -233,6 +259,67 @@ class TestRun(unittest.TestCase):
             items = fc.crossref_items(["issn:x"])
         self.assertEqual(len(items), 3)
         self.assertEqual([p["cursor"] for p in seen], ["*", "c0"])
+
+
+class TestS2BatchRejectedKey(unittest.TestCase):
+    def setUp(self):
+        fc.s2_auth.cache_clear()
+        self.addCleanup(fc.s2_auth.cache_clear)
+
+    def test_403_with_key_falls_back_to_anonymous(self):
+        sent = []
+
+        def urlopen(req, timeout):
+            sent.append(req.get_header("X-api-key"))
+            if req.get_header("X-api-key"):
+                raise s2_error(403)
+            return FakeResponse([{"abstract": "A."}])
+
+        with patch.object(fc, "read_s2_key", return_value="bad"), \
+                patch.object(fc.time, "sleep"), \
+                patch.object(fc.urllib.request, "urlopen", side_effect=urlopen), \
+                patch("builtins.print"):
+            self.assertEqual(fc.s2_batch(["10.1/x"]), [{"abstract": "A."}])
+        self.assertEqual(sent, ["bad", None])
+
+
+class TestJournalsKeepGoing(unittest.TestCase):
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.dir = Path(tmp.name)
+        patcher = patch.object(fc, "OUT_DIR", self.dir)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_one_failing_journal_does_not_stop_the_rest(self):
+        def crossref_get(params):
+            if "issn:1524-9050" in params["filter"]:
+                raise s2_error(500, body=b"boom", errortype=None)
+            return {"items": [], "total-results": 0, "next-cursor": None}
+
+        with patch.object(fc, "crossref_get", crossref_get), patch("builtins.print"):
+            code = fc.main(["journals", "--since", "2026-08-01", "--no-abstracts"])
+        self.assertEqual(code, 1)
+        # Every journal after T-ITS still got its (empty) file written.
+        self.assertFalse((self.dir / "tits_all.json").exists())
+        self.assertTrue((self.dir / "ral_all.json").exists())
+        self.assertTrue((self.dir / "ijrr_all.json").exists())
+
+    def test_s2_failure_keeps_the_crossref_records(self):
+        def crossref_get(params):
+            return {"items": [item("New One", "10.1109/tits.2", print_year=2026)],
+                    "total-results": 1, "next-cursor": None}
+
+        def s2_down(dois):
+            raise s2_error(403)
+
+        with patch.object(fc, "crossref_get", crossref_get), \
+                patch.object(fc, "s2_batch", s2_down), \
+                patch("builtins.print"):
+            self.assertIsNone(fc.main(["T-ITS", "--since", "2026-08-01"]))
+        out = json.loads((self.dir / "tits_all.json").read_text(encoding="utf-8"))
+        self.assertEqual([p["title"] for p in out], ["New One"])
 
 
 if __name__ == "__main__":

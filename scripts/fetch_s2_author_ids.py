@@ -40,7 +40,7 @@ import urllib.parse
 import urllib.request
 from functools import lru_cache
 
-from fetch_common import BASE, HEADERS, by_citations
+from fetch_common import BASE, HEADERS, by_citations, normalize_s2_key
 
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 IDS_FILE = BASE / "data" / "s2_author_ids.json"
@@ -65,7 +65,7 @@ def load_api_key():
         raise SystemExit(f"Missing {ENV_FILE} -- add a line SEMANTIC_SCHOLAR_API_KEY=... (never commit this file)")
     for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
         if line.startswith("SEMANTIC_SCHOLAR_API_KEY="):
-            return line.split("=", 1)[1].strip()
+            return normalize_s2_key(line)
     raise SystemExit(f"SEMANTIC_SCHOLAR_API_KEY not found in {ENV_FILE}")
 
 

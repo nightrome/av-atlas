@@ -3,13 +3,41 @@
 """
 Usage: python -m unittest discover -s av-atlas/scripts/tests
 """
+import email.message
+import io
+import json
 import sys
+import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import fetch_common as fc
+
+
+def s2_error(code, body=b'{"message":"Forbidden"}', errortype="ForbiddenException"):
+    headers = email.message.Message()
+    headers["Content-Type"] = "application/json"
+    if errortype:
+        headers["x-amzn-ErrorType"] = errortype
+    return urllib.error.HTTPError("https://api.semanticscholar.org/graph/v1/paper/batch?fields=x",
+                                  code, "Forbidden", headers, io.BytesIO(body))
+
+
+class FakeResponse:
+    def __init__(self, payload):
+        self.payload = payload
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+    def read(self):
+        return json.dumps(self.payload).encode("utf-8")
 
 
 class TestByCitations(unittest.TestCase):
@@ -54,6 +82,72 @@ class TestByCitations(unittest.TestCase):
         gen = ({"title": str(i), "citations_by_source": {"in_corpus": {"count": i}}} for i in range(3))
         result = fc.by_citations(gen)
         self.assertEqual([p["title"] for p in result], ["2", "1", "0"])
+
+
+class TestS2Key(unittest.TestCase):
+    def test_normalize_strips_whitespace_quotes_and_name(self):
+        for raw in ("abc123", " abc123\n", '"abc123"', "'abc123'", ' " abc123 " ',
+                    "SEMANTIC_SCHOLAR_API_KEY=abc123", 'SEMANTIC_SCHOLAR_API_KEY="abc123"\r'):
+            self.assertEqual(fc.normalize_s2_key(raw), "abc123", raw)
+
+    def test_normalize_leaves_inner_characters_alone(self):
+        self.assertEqual(fc.normalize_s2_key("a'b\"c"), "a'b\"c")
+
+    def test_normalize_empty_is_none(self):
+        for raw in (None, "", "  ", '""', "SEMANTIC_SCHOLAR_API_KEY="):
+            self.assertIsNone(fc.normalize_s2_key(raw), raw)
+
+    def test_read_prefers_environment_then_env_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            env_file = Path(d) / ".env"
+            env_file.write_text('OTHER=1\nSEMANTIC_SCHOLAR_API_KEY="fromfile"\n', encoding="utf-8")
+            self.assertEqual(fc.read_s2_key(env_file, {"SEMANTIC_SCHOLAR_API_KEY": " fromenv\n"}), "fromenv")
+            self.assertEqual(fc.read_s2_key(env_file, {"SEMANTIC_SCHOLAR_API_KEY": "  "}), "fromfile")
+            self.assertIsNone(fc.read_s2_key(Path(d) / "missing", {}))
+
+    def test_fingerprint_does_not_contain_the_key(self):
+        fp = fc.s2_key_fingerprint("supersecretkey")
+        self.assertNotIn("supersecretkey", fp)
+        self.assertIn("14 chars", fp)
+
+
+class TestDescribeHttpError(unittest.TestCase):
+    def test_includes_body_headers_and_url_without_query(self):
+        e = s2_error(403)
+        text = fc.describe_http_error(e)
+        self.assertIn("HTTP 403", text)
+        self.assertIn('{"message":"Forbidden"}', text)
+        self.assertIn("x-amzn-errortype=ForbiddenException", text)
+        self.assertIn("/graph/v1/paper/batch", text)
+        self.assertNotIn("fields=x", text)
+        # The body is kept, so a second description still has it.
+        self.assertIn('{"message":"Forbidden"}', fc.describe_http_error(e))
+
+    def test_body_is_cut_to_the_limit(self):
+        e = s2_error(500, body=b"x" * 1000, errortype=None)
+        self.assertEqual(fc.http_error_body(e), "x" * 300)
+
+
+class TestS2Auth(unittest.TestCase):
+    def test_forbidden_drops_the_key_once(self):
+        logged = []
+        auth = fc.S2Auth.start("k", log=logged.append)
+        self.assertEqual(auth.headers(), {"x-api-key": "k"})
+        self.assertEqual(auth.delay, fc.S2_KEYED_DELAY)
+        self.assertTrue(auth.handle_forbidden(s2_error(403)))
+        self.assertEqual(auth.headers(), {})
+        self.assertEqual(auth.delay, fc.S2_ANONYMOUS_DELAY)
+        self.assertFalse(auth.handle_forbidden(s2_error(403)))
+        text = "\n".join(logged)
+        self.assertIn("rejected the API key", text)
+        self.assertIn("ForbiddenException", text)
+
+    def test_without_a_key_nothing_to_drop(self):
+        logged = []
+        auth = fc.S2Auth.start(None, log=logged.append)
+        self.assertEqual(auth.headers(), {})
+        self.assertFalse(auth.handle_forbidden(s2_error(403)))
+        self.assertIn("no API key", logged[0])
 
 
 if __name__ == "__main__":
