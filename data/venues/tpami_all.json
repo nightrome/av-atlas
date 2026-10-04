@@ -11857,7 +11857,8 @@
     "year": 2024,
     "title": "Exploiting Structural Consistency of Chest Anatomy for Unsupervised Anomaly Detection in Radiography Images",
     "authors": "Tiange Xiang, Yixiao Zhang 0001, Yongyi Lu, Alan L. Yuille, Chaoyi Zhang, Tom Weidong Cai, Zongwei Zhou",
-    "abstract": null
+    "abstract": "Radiography imaging protocols focus on particular body regions, therefore producing images of great similarity and yielding recurrent anatomical structures across patients. Exploiting this structured information could potentially ease the detection of anomalies from radiography images. To this end, we propose a Simple Space-Aware Memory Matrix for In-painting and Detecting anomalies from radiography images (abbreviated as SimSID). We formulate anomaly detection as an image reconstruction task, consisting of a space-aware memory matrix and an in-painting block in the feature space. During the training, SimSID can taxonomize the ingrained anatomical structures into recurrent visual patterns, and in the inference, it can identify anomalies (unseen/modified visual patterns) from the test image. Our SimSID surpasses the state of the arts in unsupervised anomaly detection by +8.0%, +5.0%, and +9.9% AUC scores on ZhangLab, COVIDx, and CheXpert benchmark datasets, respectively.",
+    "doi": "10.1109/tpami.2024.3382009"
   },
   {
     "year": 2024,
@@ -40542,7 +40543,7 @@
     "year": 2026,
     "title": "SPIDER: Multi-Layer Semantic Token Pruning and Adaptive Sub-Layer Skipping in Multimodal Large Language Models",
     "authors": "Tianxiang Chen, Zhentao Tan, Zi Ye, Yue Wu, Xiaobing Tu, Jinkui Ren, Xiantao Zhang, Tao Gong, Qi Chu, Nenghai Yu, Xipeng Qiu, Jieping Ye",
-    "abstract": null,
+    "abstract": "Multimodal Large Language Models face significant efficiency challenges that stem from two distinct yet coupled sources: data redundancy and computational redundancy. While most methods focus on data redundancy by pruning visual tokens from the output of the visual encoder or computing redundancy in LLM decoders using blockwise importance, the finer-grained inter-layer representation shifts and the distribution differences within the layers themselves have not been fully explored. In this work, we comprehensively investigate this dual-level inefficiency. We posit that intermediate layer tokens from vision encoders should be considered for effective visual token pruning, as semantic focus shifts across layers, with middle-layer tokens capturing more detailed object-centric information that deeper layers may abstract away. Furthermore, we reveal the differential contributions of Attention and FFNs across distinct LLM decoder layers. Building upon these discoveries, we propose SPIDER, a training-free framework that integrates multi-layer Semantic visual token PrunIng with an aDaptive sub-layER skipping mechanism. Experimental evaluations demonstrate that SPIDER consistently maintains strong performance across various MLLM architectures and reduction ratios. For instance, on LLaVA-NeXT-7B, SPIDER reduces FLOPs by $80\\%$ while maintaining 96$\\%$ of the baseline performance.",
     "doi": "10.1109/tpami.2026.3734987"
   },
   {
@@ -40570,7 +40571,7 @@
     "year": 2026,
     "title": "Robust Bidding Strategies under Censored Feedback for Auction-Based Federated Learning",
     "authors": "Xiaoli Tang, Ying-Peng Tang, Zhuang Qi, Chuan Sun, Qianyu Li, Han Yu, Jie Zhang, Qiang Yang",
-    "abstract": null,
+    "abstract": "Auction-based Federated Learning (AFL) provides a principled framework for incentivizing self-interested data owners (DOs) to participate in collaborative learning initiated by data consumers (DCs) through market mechanisms. A central challenge in AFL is to determine how a budget-constrained DC should bid for data-use rights. Existing methods often conflate the submitted bid with the realized payment. This treatment is inconsistent with the widely adopted second-price sealed-bid (SPSB) mechanism, in which the highest bidder wins but pays the market price determined by the competing bids rather than its own bid. Moreover, the market price is observed by a target DC only after a win; after a loss, the DC observes only that the market price exceeds its submitted bid, producing right-censored feedback. To address these challenges, we propose KMM-AFL, a return-on-investment (ROI)-aware bidding framework that explicitly separates bid price from expected SPSB payment and combines DO utility estimation with request-conditioned market-price modeling. KMM-AFL uses a conditional Kaplan Meier (KM) construction to exploit both winning and losing auction records. Because exact repetitions of high-dimensional bid requests are sparse, a conditional Markov Network estimates the observed winning-price and losing-probability terms required by KM. The recovered request-conditioned market-price distribution and the estimated DO valuation are then used to select the largest bid satisfying a common expected-return requirement and the remaining-budget constraint. Extensive evaluations across 6 benchmark datasets show that KMM-AFL outperforms state-of the-art baselines, achieving a 16.56% increase in DC utility and a 3.36% improvement in FL model accuracy.",
     "doi": "10.1109/tpami.2026.3736862"
   },
   {
@@ -40584,21 +40585,21 @@
     "year": 2026,
     "title": "Towards Transferable Black-Box Attack via Minimizing Maximum Model Discrepancy",
     "authors": "Anqi Zhao, Tong Chu, Yahao Liu, Junliang Xing, Lixin Duan, Wen Li",
-    "abstract": null,
+    "abstract": "Adversarial attacks on black-box models, which operate without direct access to the target system, present a significant challenge due to the lack of a foundational theory for the transferability of adversarial examples. This paper introduces a paradigm shift in black-box adversarial attacks by minimizing model discrepancy. Our key insight is that adversarial transferability is fundamentally linked to the empirical attack error on the substitute model and the maximum model discrepancy among substitute models. We propose a new theory that provides a generalization error bound to analyze attack success on unseen models. Built on this new theory, we develop Minimizing Maximum Model Discrepancy (M3D), a novel framework that crafts adversarial examples with enhanced transferability and robustness against model variations. Our framework significantly boosts the success rate of black-box attacks, as evidenced by extensive experiments across two widely adopted datasets and various neural network architectures. Our algorithms consistently outperform state-of-the-art methods by a substantial margin. In some cases, our framework achieves over a 50$\\%$ increase in both targeted and untargeted attack success rates compared with previous methods. The M3D framework enables more effective and reliable black-box attack strategies, setting a new benchmark for the field.",
     "doi": "10.1109/tpami.2026.3735944"
   },
   {
     "year": 2026,
     "title": "Alternating Distillation and Resource-Adaptive Pruning for Federated Large Model Adaptation",
     "authors": "Xiao Zhang, Yangyang Wang, Xingyu Sun, Mingyi Li, Zengzhe Chen, Yuan Yuan, Yifei Zou, Rajiv Ranjan, Xiuzhen Cheng, Dongxiao Yu",
-    "abstract": null,
+    "abstract": "Adapting large pretrained foundation models (PFMs) to private domains presents significant challenges related to data privacy and limited client resources. In this study, we delve into large PFMs adaptation in the resource-constrained federated learning environment, and propose an innovative framework, which alternates between large model distillation and resource-adaptive pruning, with guaranteed convergence. Our framework, namely ADRAP, confers a dual advantage. First, the alternating pipeline balances retaining intrinsic PFMs capabilities with assimilating new domain knowledge from local private data. Additionally, our novel distilling-while-adaptive-pruning strategy dynamically accommodates heterogeneous client resources, ensuring effective collaborative optimization under arbitrary constraints. Theoretically, we establish upper bounds for parameter updates during both the distillation and pruning-based adaptation stages and further demonstrate that ADRAP maintains an asymptotically optimal convergence rate $O(1/\\sqrt{\\rho TQ})$. Empirical results reveal that ADRAP outperforms state-of-the-art baselines by up to 14.23% (at $a=0.1$) for NLP tasks and 20.55% (under IID) for CV tasks in average accuracy across both domains, demonstrating its effectiveness and adaptability in federated large model adaptation.",
     "doi": "10.1109/tpami.2026.3736784"
   },
   {
     "year": 2026,
     "title": "EgoMotion: Hierarchical Vision-Language Learning and Diffusion for Egocentric Motion Generation",
     "authors": "Ruibing Hou, Mingyue Zhou, Yuwei Gui, Mingshuang Luo, Bingpeng Ma, Hong Chang, Shiguang Shan, Xilin Chen",
-    "abstract": null,
+    "abstract": "Faithfully modeling human behavior in dynamic environments is a foundational challenge for embodied intelligence. While conditional motion synthesis has achieved significant advances, egocentric motion generation remains largely underexplored due to the inherent complexity of first-person perception. In this work, we investigate Egocentric Vision-Language (Ego-VL) motion generation. This task requires synthesizing 3D human motion conditioned jointly on first-person visual observations and natural language instructions. We identify a critical optimization challenge in effectively transferring vision-language understanding to motion generation. Directly optimizing vision-language semantic learning and kinematic motion synthesis in an end-to-end manner can lead to optimization interference, limiting the quality of generated motions. To address this challenge, we propose EgoMotion, a two-stage framework for vision-language-guided egocentric motion generation. In the first stage, a vision-language model (VLM) learns motion-aware semantic representations from multimodal inputs through autoregressive motion token prediction. In the second stage, these learned VLM representations serve as expressive conditioning signals for a diffusion-based motion generator. By performing iterative denoising within a continuous latent space, the generator synthesizes physically plausible and temporally coherent trajectories. Extensive evaluations demonstrate that EgoMotion achieves state-of-the-art performance and produces motion sequences that are both semantically grounded and kinematically superior to existing approaches.",
     "doi": "10.1109/tpami.2026.3736065"
   },
   {
@@ -40612,14 +40613,14 @@
     "year": 2026,
     "title": "Alignment-Consistent Multimodal Learning under Uncertain Correspondence",
     "authors": "Qian Li, Yaheng Wang, Qian Huang, Cheng Ji, Shangguang Wang",
-    "abstract": null,
+    "abstract": "Multimodal learning aims to integrate heterogeneous observations such as images, text, depth, and radar to improve perception and reasoning. However, most existing multimodal models implicitly assume that cross-modal observations are well aligned, an assumption that rarely holds in real-world scenarios due to viewpoint variation, sensor noise, temporal asynchrony, and incomplete observations. Such misalignment introduces substantial uncertainty in cross-modal correspondence, often leading to unreliable feature matching and unstable multimodal representations. In this paper, we revisit multimodal representation learning from the perspective of uncertain cross modal correspondence and introduce the principle of alignment consistency, which states that tokens describing the same semantic entity across modalities should preserve consistent high-level representations even when their low-level correspondence is ambiguous. Based on this principle, we propose an Alignment-Consistent Multimodal Learning (ACML) framework that explicitly models probabilistic token correspondence and enforces alignment-consistent representations through uncertainty-aware matching and globally coherent alignment. Specifically, ACML integrates probabilistic correspondence estimation with uncertainty-aware optimal transport to capture ambiguous cross-modal relations while suppressing unreliable matches, and learns modality-invariant representations via alignment-consistent representation learning. Extensive experiments on diverse multimodal bench-marks, including vision-language understanding, RGB-depth scene understanding, and multimodal remote sensing analysis, demonstrate that ACML consistently improves performance and robustness under cross-modal misalignment, missing modalities, and noisy sensing conditions. The evaluation includes matched-mechanism controls, five-seed statistics, direct SAR-optical tie-point registration, remove-one ablations, calibration diagnostics, sensitivity sweeps, and explicit failure cases. The resulting claim is deliberately bounded: ACML improves uncertainty-aware correspondence and representation stability when the modalities retain appreciable shared semantic support. These results highlight that explicitly modeling correspondence uncertainty provides a principled foundation for robust multimodal representation learning.",
     "doi": "10.1109/tpami.2026.3736070"
   },
   {
     "year": 2026,
     "title": "LoRKD: Low-Rank Knowledge Decomposition for Medical Foundation Models",
     "authors": "Haolin Li, Yuhang Zhou, Ziheng Zhao, Siyuan Du, Jiangchao Yao, Weidi Xie, Ya Zhang, Yanfeng Wang",
-    "abstract": null,
+    "abstract": "The widespread adoption of large-scale pre-training techniques has significantly advanced the development of medical foundation models, enabling them to serve as versatile tools across a broad range of medical tasks. However, despite their strong generalization capabilities, medical foundation models pre-trained on large-scale datasets tend to suffer from domain gaps between heterogeneous data, leading to suboptimal performance on specific tasks compared to specialist models, as evidenced by previous studies. In this paper, we explore a new perspective called \"Knowledge Decomposition\" to improve the performance on specific medical tasks, which deconstructs the foundation model into multiple lightweight expert models, each dedicated to a particular anatomical region, with the aim of enhancing specialization and simultaneously reducing resource consumption. To accomplish the above objective, we propose a novel framework named Low-Rank Knowledge Decomposition (LoRKD), which explicitly separates gradients from different tasks by incorporating low-rank expert modules and efficient knowledge separation convolution. The low-rank expert modules resolve gradient conflicts between heterogeneous data from different anatomical regions, providing strong specialization at lower costs. The efficient knowledge separation convolution significantly improves algorithm efficiency by achieving knowledge separation within a single forward propagation. Extensive experimental results on segmentation and classification tasks demonstrate that our decomposed models achieve competitive performance against the baselines and exhibit superior transferability on downstream tasks, outperforming the original foundation models in task-specific evaluations. Moreover, these compact expert models significantly reduce resource consumption, making them more efficient for practical deployment in region-specific multi-task settings. The code is available at here.",
     "doi": "10.1109/tpami.2026.3736382"
   },
   {
@@ -40633,21 +40634,273 @@
     "year": 2026,
     "title": "HyperCLIP++: Fine-Tuning CLIP for Open-Vocabulary Semantic Segmentation in Hyperbolic Space",
     "authors": "Zelin Peng, Zhengqin Xu, Changsong Wen, Yu Huang, Yaoming Wang, Xiaokang Yang, Wei Shen",
-    "abstract": null,
+    "abstract": "CLIP, a foundational vision-language model, has emerged as a powerful tool for open-vocabulary semantic segmentation. While freezing CLIP's text encoder is known to preserve its generalization capability, recent studies show that fine-tuning both CLIP's text and image encoders jointly significantly enhances segmentation performance, especially for classes from open sets. In this work, we explain this phenomenon from the perspective of hierarchy alignment, since during fine-tuning, the hierarchical level of image embeddings shifts from image-level to pixel-level. We achieve this by leveraging hyperbolic space, which naturally encodes hierarchical structures. Our key observation is that, during fine-tuning, the hyperbolic radius of CLIP's text embeddings decreases, facilitating better alignment with the pixel-level granularity of visual data. Building on this, we propose HyperCLIP++, a novel and parameter-efficient adaptation strategy. HyperCLIP++ directly adjusts the hyperbolic radius of CLIP's embeddings via scaling transformations to achieve a hierarchy alignment to the target task, i.e., segmentation. To ensure this hierarchy alignment is effected consistently across both modalities and preserves their cross-modal alignment during training, HyperCLIP++ integrates a Dual Cross-Relation Communication (DCRC) module that synchronizes these adjustments between the vision and text pathways. Our experiments show that HyperCLIP++ achieves state-of-the-art performance across three benchmarks while fine-tuning only approximately 5% of CLIP's total parameters. More importantly, we observe that after adjustment, CLIP's text embeddings exhibit a relatively fixed hyperbolic radius across datasets, suggesting that the hierarchical level required for this segmentation task might be quantified using the hyperbolic radius.",
     "doi": "10.1109/tpami.2026.3735869"
   },
   {
     "year": 2026,
     "title": "A Structure-Revealing Tensor Network Paradigm and Its Applications",
     "authors": "Yu-Bang Zheng, Xi-Le Zhao, Heng-Chao Li, Junhua Zeng, Chao Li, Qibin Zhao, Ting-Zhu Huang, Qing Zhu",
-    "abstract": null,
+    "abstract": "Tensor network (TN) decomposition is a powerful data representation tool widely used in machine learning and computer vision. However, existing TN decomposition methods are limited by fixed topologies, which constrain their representational capacity. To overcome this limitation, we introduce, for the first time, an energy-based framework that allows us to reveal a data-adaptive TN structure through the optimization of an energy function. Specifically, we propose a novel structure-revealing TN paradigm, termed SVD-inspired TN decomposition (SVDinsTN). This paradigm enables the formulation of an energy function that simultaneously considers representation error and TN structure complexity, facilitating the joint optimization of data representation and the identification of a compact TN structure. Theoretically, we present the principles behind the energy function and derive an upper bound for the TN rank. In contrast to heuristic TN structure search methods, our energy-based method achieves a remarkable acceleration of 100 to 1000 times, making it practical for real-world applications. Experimental results in neural network compression, remote sensing image cloud removal, and tensor robust principal component analysis consistently show that SVDinsTN can identify a TN structure that better aligns with the given data, achieving superior performance over fixed-topology methods.",
     "doi": "10.1109/tpami.2026.3735826"
   },
   {
     "year": 2026,
     "title": "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers: A Comparative Study of Four Approaches",
     "authors": "Doko Bandur, Milos Bandur, Branimir Jaksic",
-    "abstract": null,
+    "abstract": "Vision Transformers (ViTs) rely on positional encoding (PE) because self-attention has no native notion of token order or image-grid location, yet the information-theoretic properties of different PE strategies and their downstream consequences for model behaviour remain insufficiently characterised. We present a systematic comparison of four PE approaches-Learned, Sinusoidal, Rotary Position Embedding (RoPE), and a 1D-ALiBi-style linear-bias variant-together with a targeted 2D-ALiBi-style diagnostic intervention motivated by a raster-distance mismatch diagnosis. ViT-Base models are trained on three low-to-intermediate data-regime datasets (CIFAR-100, TinyImageNet, and ImageNet-100), using a primary cross-method matrix and a canonical paired protocol for the targeted 2D-vs-1D ALiBi-style comparison. We apply a two-track diagnostic suite: embedding-space analyses (per-dimension variance, entropy, PCA, and probes) for additive PE, and attention-space intrinsic analyses (bias-tensor rank and entropy, slope schedule, and RoPE short-wavelength band counting) for attention-space PE, combined with attention-position mutual information (MI), noise ablation, and PE removal. The results reveal four qualitatively distinct encoding regimes: Learned PE is \"quiet and ubiquitous,\" Sinusoidal PE \"loud and structured,\" RoPE attains the highest accuracy with a graceful mid-depth MI decay, and the ALiBi-style variant exhibits a persistent attention-space bias. Direct attention-space analysis shows that the 1D-ALiBi-style bias tensor has full intrinsic rank. PE removal reveals a ${\\sim }10\\times$ dependency spectrum-from Sinusoidal collapse to near-chance to Learned PE retaining most of its accuracy-indicating extensive implicit positional learning. Linear probes show that Sinusoidal PE gives $0\\%$ held-out column accuracy-a protocol-level generalisation failure for the modulo-column label rather than absence of column information-while Learned PE partially recovers 2D structure. Identifying the ALiBi-style raster-scan distance $|i{-}j|$ as mismatched to the 2D geometry of image patch grids, we introduce 2D-ALiBi-style, which replaces it with the 2D Euclidean patch-grid distance. On the canonical CIFAR-100 paired cohort ($n{=}12$ seeds), fixed-slope 2D-ALiBi-style yields a statistically reliable $+0.45$ pp accuracy improvement ($p{=}0.013$), is directionally positive on TinyImageNet, and shows no statistically reliable difference on ImageNet-100. It also lowers CLS-excluded patch-only attention-position MI. The mean-magnitude-matched 2D arm reverses this MI effect and reaches $70.28\\pm 0.35\\%$, the highest accuracy among the three canonical ALiBi-style arms; a secondary within-2D paired contrast ($+1.94$ pp, $12/12$ positive) establishes bias magnitude as a substantial lever without supporting a magnitude-rather-than-geometry interpretation. We therefore frame the contribution as a controlled characterisation plus a modest, statistically supported intervention, not a state-of-the-art PE method. Overall, PE choice affects accuracy, robustness, and attention-space information flow beyond what accuracy alone captures.",
     "doi": "10.1109/tpami.2026.3736257"
+  },
+  {
+    "year": 2026,
+    "title": "Dark Noise Diffusion: Noise Synthesis for Low-Light Image Denoising",
+    "authors": "Liying Lu, Raphael Achddou, Sabine Susstrunk",
+    "abstract": "Low-light photography produces images with low signal-to-noise ratios due to limited photons. In such conditions, common approximations like the Gaussian noise model fall short, and many denoising techniques fail to remove noise effectively. Although deep-learning methods perform well, they require large datasets of paired images that are impractical to acquire. As a remedy, synthesizing realistic low-light noise has gained significant attention. In this paper, we investigate the ability of diffusion models to capture the complex distribution of low-light noise. We show that a naive application of conventional diffusion models is inadequate for this task and propose three key adaptations that enable high-precision noise generation: a two-branch architecture to better model signal-dependent and signal-independent noise, the incorporation of positional information to capture fixed-pattern noise, and a tailored diffusion noise schedule. Consequently, our model enables the generation of large datasets for training low-light denoising networks, leading to state-of-the-art performance. Through comprehensive analysis, including statistical evaluation and noise decomposition, we provide deeper insights into the characteristics of the generated data.",
+    "doi": "10.1109/tpami.2025.3598330"
+  },
+  {
+    "year": 2026,
+    "title": "Depth Dynamics via One-Bit Frequency Probing in Embedded Direct Time-of-Flight Sensing",
+    "authors": "Seth Lindgren, Benjamin R. Johnson, Lucas J. Koerner",
+    "abstract": "Time-of-flight (ToF) sensors with single-photon avalanche diodes (SPADs) estimate depth by accumulating a histogram of photon return times, which discards the timing information required to measure depth dynamics, such as vibrations or transient motions. We introduce a method that transforms a direct ToF sensor into a depth frequency analyzer capable of measuring high-frequency motion and transient events using only lightweight, on-sensor computations. By replacing conventional discrete Fourier transforms (DFTs) with one-bit probing sinusoids generated via oversampled sigma-delta modulation, we enable in-pixel frequency analysis without multipliers or floating-point operations. We extend the lightweight analysis of depth dynamics to Haar wavelets for time-localized detection of brief, non-repetitive depth changes. We validate our approach through simulation and hardware experiments, showing that it achieves noise performance approaching that of full-resolution DFTs, detects sub-millimeter motions above 6 kHz, and localizes millisecond-scale transients. Using a laboratory ToF setup, we demonstrate applications in oscillatory motion analysis and depth edge detection. This work has the potential to enable a new class of compact, motion-aware ToF sensors for embedded deployment in industrial predictive maintenance, structural health monitoring, robotic perception, and dynamic scene understanding.",
+    "doi": "10.1109/tpami.2025.3598593"
+  },
+  {
+    "year": 2026,
+    "title": "Predicting Important Photons for Energy-Efficient Single-Photon Videography",
+    "authors": "Shantanu Gupta, Varun Sundar, Lucas J. Koerner, Claudio Bruschini, Edoardo Charbon, Mohit Gupta",
+    "abstract": "Single-photon avalanche diodes (SPAD) detect individual photons with fine temporal resolutions, enabling capabilities like imaging in near-total darkness, extreme dynamic range, and rapid motion. Due to these capabilities, and coupled with the recent emergence of high-resolution ($> 1$>1 MP) arrays, SPADs have the potential to become workhorses for computer vision systems of the future that need to operate in a wide range of challenging conditions. However, SPADs’ sensitivity comes at a high energy cost due to the underlying avalanche process, which consumes substantial energy per detected photon, limiting the scalability and practicality of high-resolution SPAD arrays. To address this, we propose approaches to predict and sample only the most salient photons for a given vision task. To this end, we design computationally lightweight photon-sampling strategies that allocate energy resources for detecting photons only in areas with significant motion and spatial variation, while continually adapting to changing signals. We demonstrate the effectiveness of the proposed methods in recovering comparable video to a fully-sampled SPAD capture using only a small fraction of the photons (up to $10\\times$10× fewer), across diverse real-world scenes with motion, high dynamic range, and varying light conditions.",
+    "doi": "10.1109/tpami.2025.3598767"
+  },
+  {
+    "year": 2026,
+    "title": "Hardware-Aware Coding Function Design for Compressive Single-Photon 3D Cameras",
+    "authors": "David Parra, Felipe Gutierrez-Barragan, Trevor Seets, Andreas Velten",
+    "abstract": "Single-photon cameras are becoming increasingly popular in time-of-flight 3D imaging because they can time-tag individual photons with extreme resolution. However, their performance is susceptible to hardware limitations, such as system bandwidth, maximum laser power, sensor data rates, and in-sensor memory and compute resources. Compressive histograms were recently introduced as a solution to the challenge of high data rates through an online in-sensor compression of photon timestamp data. Although compressive histograms work within limited in-sensor memory and compute resources, they underperform when subjected to real-world illumination hardware constraints. To address this, we present a constrained optimization approach for designing practical coding functions for compressive single-photon 3D imaging. Using gradient descent, we jointly optimize the illumination and coding matrix (i.e., the coding functions) that adhere to hardware constraints. We show through extensive simulations that our coding functions consistently outperform traditional coding designs under both bandwidth and peak power constraints. This advantage is particularly pronounced in systems constrained by peak power. Finally, we show that our approach adapts to arbitrary parameterized impulse responses by evaluating it on a real-world system with a non-ideal impulse response function.",
+    "doi": "10.1109/tpami.2025.3599073"
+  },
+  {
+    "year": 2026,
+    "title": "Structured Light With a Million Light Planes Per Second",
+    "authors": "Dhawal Sirikonda, Praneeth Chakravarthula, Ioannis Gkioulekas, Adithya Pediredla",
+    "abstract": "We introduce a structured light system that enables full-frame 3D scanning at speeds of 1000 fps, four times faster than the previous fastest systems. Our key innovation is the use of a custom acousto-optic light scanning device capable of projecting two million light planes per second. Coupling this device with an event camera allows our system to overcome the key bottleneck preventing previous structured light systems based on event cameras from achieving higher scanning speeds—the limited rate of illumination steering. Unlike these previous systems, ours uses the event camera’s full-frame bandwidth, shifting the speed bottleneck from the illumination side to the imaging side. To mitigate this new bottleneck and further increase scanning speed, we introduce adaptive scanning strategies that leverage the event camera’s asynchronous operation by selectively illuminating regions of interest, thereby achieving effective scanning speeds an order of magnitude beyond the camera’s theoretical limit.",
+    "doi": "10.1109/tpami.2025.3599143"
+  },
+  {
+    "year": 2026,
+    "title": "Single-Step Latent Diffusion for Underwater Image Restoration",
+    "authors": "Jiayi Wu, Tianfu Wang, Md Abu Bakr Siddique, Md Jahidul Islam, Cornelia Fermuller, Yiannis Aloimonos, Christopher A. Metzler",
+    "abstract": "Underwater image restoration algorithms seek to restore the color, contrast, and appearance of a scene that is imaged underwater. They are a critical tool in applications ranging from marine ecology and aquaculture to underwater construction and archaeology. While existing pixel-domain diffusion-based image restoration approaches are effective at restoring simple scenes with limited depth variation, they are computationally intensive and often generate unrealistic artifacts when applied to scenes with complex geometry and significant depth variation. In this work we overcome these limitations by combining a novel network architecture (SLURPP) with an accurate synthetic data generation pipeline. SLURPP combines pretrained latent diffusion models—which encode strong priors on the geometry and depth of scenes—with an explicit scene decomposition—which allows one to model and account for the effects of light attenuation and backscattering. To train SLURPP we design a physics-based underwater image synthesis pipeline that applies varied and realistic underwater degradation effects to existing terrestrial image datasets. This approach enables the generation of diverse training data with dense medium/degradation annotations. We evaluate our method extensively on both synthetic and real-world benchmarks and demonstrate state-of-the-art performance. Notably, SLURPP is over $200\\times$200× faster than existing diffusion-based methods while offering $ \\sim 3\\,\\text{dB}$∼3dB improvement in PSNR on synthetic benchmarks. It also offers compelling qualitative improvements on real-world data.",
+    "doi": "10.1109/tpami.2025.3599775"
+  },
+  {
+    "year": 2026,
+    "title": "Reconstructing Satellites in 3D From Amateur Telescope Images",
+    "authors": "Zhiming Chang, Boyang Liu, Yifei Xia, Youming Guo, Boxin Shi, He Sun",
+    "abstract": "Monitoring space objects is crucial for space situational awareness, yet reconstructing 3D satellite models from ground-based telescope images is super challenging due to atmospheric turbulence, long observation distances, limited viewpoints, and low signal-to-noise ratios. In this paper, we propose a novel computational imaging framework that overcomes these obstacles by integrating a hybrid image pre-processing pipeline with a joint pose estimation and 3D reconstruction module based on controlled Gaussian Splatting (GS) and Branch-and-Bound (BnB) search. We validate our approach on both synthetic satellite datasets and on-sky observations of China’s Tiangong Space Station and the International Space Station, achieving robust 3D reconstructions of low-Earth orbit satellites from ground-based data. Quantitative evaluations using SSIM, PSNR, LPIPS, and Chamfer Distance demonstrate that our method outperforms state-of-the-art NeRF-based approaches, and ablation studies confirm the critical role of each component. Our framework enables high-fidelity 3D satellite monitoring from Earth, offering a cost-effective alternative for space situational awareness.",
+    "doi": "10.1109/tpami.2025.3599949"
+  },
+  {
+    "year": 2026,
+    "title": "Tomographic Sparse View Selection Using the View Covariance Loss",
+    "authors": "Jingsong Lin, Amirkoushyar Ziabari, Singanallur V. Venkatakrishnan, Obaidullah Rahman, Gregery T. Buzzard, Charles A. Bouman",
+    "abstract": "Standard computed tomography (CT) reconstruction algorithms such as filtered back projection (FBP) and Feldkamp-Davis-Kress (FDK) require many views for producing high-quality reconstructions, which can slow image acquisition and increase cost in non-destructive evaluation (NDE) applications. Over the past 20 years, a variety of methods have been developed for computing high-quality CT reconstructions from sparse views. However, the problem of how to select the best views for CT reconstruction remains open. In this paper, we present a novel view covariance loss (VCL) function that measures the joint information of a set of views by approximating the normalized mean squared error (NMSE) of the reconstruction. We present fast algorithms for computing the VCL along with an algorithm for selecting a subset of views that approximately minimizes its value. Our experiments on simulated and measured data indicate that for a fixed number of views our proposed view covariance loss selection (VCLS) algorithm results in reconstructions with lower NRMSE, fewer artifacts, and greater accuracy than current alternative approaches.",
+    "doi": "10.1109/tpami.2025.3600072"
+  },
+  {
+    "year": 2026,
+    "title": "Centroiding Point-Objects With Event Cameras",
+    "authors": "Connor Hashemi, Dennis Melamed, Albert W. Reed, Nitesh Menon, Keigo Hirakawa, Scott McCloskey",
+    "abstract": "Event-based sensors (EBS), with their low latency and high dynamic range, are a promising means for tracking unresolved point-objects. Conventional EBS centroiding methods assume the generated events follow a Gaussian distribution and require long event streams ($> 1$>1s) for accurate localization. However, these assumptions are inadequate for centroiding unresolved objects, since the EBS circuitry causes non-Gaussian event distributions, and because using long event streams negates the low-latency advantage of EBS. In this work, we derive a closed-form spatiotemporal event distribution that accounts for these non-Gaussian effects and relaxes the long-time window requirement. Using Fisher analysis, we show that the spatial distribution of events in short time windows ($\\leq 20$≤20 ms) contains sufficient information for accurately estimating both position and velocity. To validate our analysis, we create the first EBS dataset of unresolved point-objects with subpixel ground truth using a high-speed monitor. We demonstrate that a small LSTM network can estimate an object’s position within 1 pixel and velocity within $\\pm 17\\%$±17% using only 5 ms of event data, outperforming traditional approaches. These improvements enable accurate and quick centroiding of fast and dim objects, and we publish all code and data to support future research.",
+    "doi": "10.1109/tpami.2025.3604385"
+  },
+  {
+    "year": 2026,
+    "title": "Q-SiT: Teaching LMMs for Image Quality Scoring and Interpreting",
+    "authors": "Zicheng Zhang, Haoning Wu, Ziheng Jia, Weisi Lin, Guangtao Zhai",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3734506"
+  },
+  {
+    "year": 2026,
+    "title": "Difference-Aware Multi-Grained Feature Learning With Memory-Attended Joint Interaction Transformer for Image Difference Captioning",
+    "authors": "Yunbin Tu, Liang Li, Li Su, Zheng-Jun Zha, Qingming Huang",
+    "abstract": "Image Difference Captioning (IDC) aims to describe semantic changes between a pair of similar images using natural language. Most existing approaches rely on off-the-shelf visual backbones to extract features from image pairs. However, these backbones, pre-trained for single-image understanding, often struggle to capture nuances between two images. As a result, the extracted features are less effective for IDC. In this paper, we propose a two-stage training paradigm for IDC. In the first stage, we design a difference-aware multi-grained feature learning (DAMFEL) to adapt a pre-trained CLIP to IDC by jointly modeling coarse- and fine-grained contrastive alignments between image pairs and captions. This paradigm enables the model to sufficiently capture difference-aware features for image pairs. In the second stage, based on these features, we devise a memory-attended joint interaction transformer (MAJIT) for caption generation. MAJIT establishes mutual synergy between (i) cross-image interaction for perceiving visual changes and (ii) cross-modal interaction for grounding these changes to the generated words. At each decoding step, MAJIT employs learnable triplet shared memories to record the shared information among the two images and the partially generated caption, enabling the outcomes of both interactions to complement and reinforce each other. Experiments on four public IDC benchmarks demonstrate strong performance across diverse change scenarios, with consistent advantages over lightweight methods and competitive results relative to MLLM-based approaches.",
+    "doi": "10.1109/tpami.2026.3736459"
+  },
+  {
+    "year": 2026,
+    "title": "Generalizing on Diverse Shifts: A Unified Topology-Aware Reweighting Algorithm for Graphs",
+    "authors": "Jiaxing Li, Jiashuo Liu, Weihuang Zheng, Jiayun Wu, Peng Cui, Youyong Kong",
+    "abstract": "Graph Neural Networks (GNNs) have achieved strong performance in node classification, yet their performance often drops when facing graph distribution shifts between training and testing nodes. Existing methods have been explored to improve generalization under such shifts. However, many of them either rely on environment annotations or do not fully use graph topology, structural noise information, and uncertainty from unlabeled nodes. To address these challenges, we propose Topology-Aware Dynamic Reweighting (TAR+), a model-agnostic framework for node classification under strict graph distribution shifts and related robustness stressors. TAR+ formulates sample reweighting as a gradient flow in graph Wasserstein space, allowing node weights to depend on both prediction difficulty and graph topology. A structure-aware Huber penalty limits the influence of nodes whose losses are inconsistent with structurally related neighbors, while prediction entropy provides node-specific proxy losses for unlabeled nodes. Graph extrapolation further exposes the model to perturbed structures and features. We further provide a free-energy interpretation of the reweighting dynamics and show that each variational step admits a local distributionally robust optimization interpretation. Experiments cover covariate and concept shifts as well as noisy supervision, heterophily, class imbalance, label scarcity, unsupervised learning, and graph anomaly detection. TAR+ achieves competitive performance across these settings, supporting the broad applicability of topology-aware reweighting across heterogeneous graph learning conditions.",
+    "doi": "10.1109/tpami.2026.3734476"
+  },
+  {
+    "year": 2026,
+    "title": "A Universal Nearest-Neighbor Estimator for Intrinsic Dimensionality",
+    "authors": "Eng-Jon Ong, Omer Bobrowski, Gesine Reinert, Primoz Skraba",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3734737"
+  },
+  {
+    "year": 2026,
+    "title": "Beyond Gradient Inversion: Hidden Subset Sum Problem-Based Input Reconstruction for Federated Learning",
+    "authors": "Qiongxiu Li, Lixia Luo, Agnese Gini, Changlong Ji, Zhanhao Hu, Xiao Li, Chengfang Fang, Jie Shi, Xiaolin Hu",
+    "abstract": "In this paper, we introduce Hidden Subset Sum Problem (HSSP), a problem rooted in computational complexity and cryptographic applications, as a rigorous mathematical framework for analyzing privacy vulnerabilities in federated learning (FL). By applying HSSP to FL, this work addresses the limitations of gradient inversion attacks (GIA) by overcoming key challenges such as dependence on label diversity and poor performance with large batch sizes, which hinder existing empirical GIA methods. Additionally, our analysis uncovers the fundamental reasons behind the degradation of empirical GIA with increasing batch sizes. We further demonstrate that employing secure data aggregation techniques, such as secure multiparty computation, can significantly increase the attack's time complexity. To the best of our knowledge, this is the first study to establish the connection between HSSP and FL, providing a robust analytical foundation for developing defense strategies and guiding future research.",
+    "doi": "10.1109/tpami.2026.3735649"
+  },
+  {
+    "year": 2026,
+    "title": "TeZO: Empowering the Low-Rankness on the Temporal Dimension in the Zeroth-Order Optimization for Fine-Tuning LLMs",
+    "authors": "Yan Sun, Qixin Zhang, Liang Ding, Li Shen, Dacheng Tao",
+    "abstract": "Zeroth-order optimization (ZO) has demonstrated remarkable promise in efficient fine-tuning tasks for Large Language Models (LLMs). In particular, recent advances incorporate the low-rankness of gradients, introducing low-rank ZO estimators to further reduce GPU memory consumption. However, most existing works focus solely on the low-rankness of each individual gradient, overlooking a broader property shared by all gradients throughout the training, i.e., all gradients approximately reside within a similar subspace. In this paper, we consider two factors together and propose a novel low-rank ZO estimator, TeZO, which captures the low-rankness across both the model and temporal dimension. Specifically, we represent ZO perturbations along the temporal dimension as a 3D tensor and employ Canonical Polyadic Decomposition (CPD) to extract each low-rank 2D matrix, significantly reducing the training cost. TeZO can also be easily extended to the Adam variant while consuming less memory than MeZO-SGD, and requiring about only 35% memory of MeZO-Adam. Both comprehensive theoretical analysis and extensive experimental research have validated its efficiency, achieving SOTA-comparable results with lower overhead of training time and memory.",
+    "doi": "10.1109/tpami.2026.3734392"
+  },
+  {
+    "year": 2026,
+    "title": "Hermes++: Toward a Unified Driving World Model for 3D Scene Understanding and Generation",
+    "authors": "Xin Zhou, Dingkang Liang, Xiwu Chen, Feiyang Tan, Dingyuan Zhang, Hengshuang Zhao, Xiang Bai",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3735606"
+  },
+  {
+    "year": 2026,
+    "title": "Differentiable Genetic Programming for High-dimensional Symbolic Regression",
+    "authors": "Xiaotian Song, Peng Zeng, Andrew Lensen, Hengzhe Zhang, Yuwei Ou, Yanan Sun, Mengjie Zhang, Jiancheng Lv",
+    "abstract": "Symbolic Regression (SR) aims to uncover hidden relationships within data by generating mathematical expressions, offering a pathway toward interpretable machine learning. Genetic Programming (GP) has traditionally dominated SR due to its flexibility in evolving expression trees. However, as the dimensionality of SR problems increases, the stochastic nature of GP leads to inefficiencies and poor scalability, particularly in high-dimensional real-world tasks. To address this, we propose a novel Differentiable Genetic Programming method, termed DGP, which enables gradient-based optimization for high-dimensional SR for the first time. Specifically, DGP proposes a differentiable symbolic tree that relaxes the discrete structure of GP trees to a continuous representation, thus allowing for efficient gradient based optimization. To bridge the gap between this continuous space and valid symbolic expressions, DGP designs a sampling strategy that ensures structural validity and introduces a di versification mechanism to escape local optima and enhance global search. Extensive experiments on complex regression and expression recovery high-dimensional benchmarks demonstrate that DGP consistently outperforms state-of-the-art GP and neural network-based SR methods, achieving superior accuracy and expression recovery across a range of noise levels. For example, DGP achieves the best R2 score of 0.32 on the DLBCL dataset with 7,400 dimensions, whereas most other methods yield nearly zero or even negative R2 scores. The results demonstrate that DGP offers a reliable and robust solution for tackling complex high-dimensional SR problems, positioning it as a compelling tool for interpretable machine learning. The source code is available at https://github.com/songxt3/DGP.",
+    "doi": "10.1109/tpami.2026.3734437"
+  },
+  {
+    "year": 2026,
+    "title": "Multi-Hop Knowledge Graph Reasoning with Pre-trained Models and Continuous Rule Guidance",
+    "authors": "Weidong Li, Zhiwei Ye, Sibei Chen, Zhengyun Zhou, Jingliang Chen, Jun Shen, Zhi Li",
+    "abstract": "The multi-hop reasoning tasks have been formalized as a sequential decision problem, which rely on multiple walk-based agents (the entity agent and the relation agent) to extend reasoning paths, until the target answer is reached. Knowledge graph embedding models and symbol logical rules are adopted to guide the entity and the relation agents, respectively. However, in an incomplete knowledge graph environment, this formalization will be faced with two main difficulties: (1) how to choose the next step appropriately for both the entity and the relation agents, and (2) the sparse reward signals received by the relation agent, due to the discrete nature of symbolic logical rules. To conquer these two challenges, we propose a novel Pre-trained Transformer Model for Multi-hop Reasoning approach named PTM4MR. Firstly, inspired by the NSP training strategy in pre-trained language model such as BERT, we introduce three pre-trained tasks, such as next action prediction, next entity prediction, and next relation prediction, to enhance the perception ability of multiple agents for next step selection, i.e., to improve their sensitivity for path exploration. Secondly, we propose a relational argument embedding based schema to estimate a numerical and continuous reward, which can alleviate the problem of sparse reward signals caused by the limitation of symbolic logical rules. With extensive experiments on several benchmark datasets, our proposed approach PTM4MR achieves considerable performance improvements compared with state-of-the-art baselines. The source code is publicly available at https://github.com/WeidongLi-KG/PTM4MR.",
+    "doi": "10.1109/tpami.2026.3734451"
+  },
+  {
+    "year": 2026,
+    "title": "Guest Editors’ Introduction: Special Section on Computational Photography (ICCP)",
+    "authors": "Gordon Wetzstein",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3719568"
+  },
+  {
+    "year": 2026,
+    "title": "LLM-Agnostic Semantic Representation Attack",
+    "authors": "Jiawei Lian, Jianhong Pan, Lefan Wang, Yi Wang, Tairan Huang, Shaohui Mei, Lap-Pui Chau",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3735535"
+  },
+  {
+    "year": 2026,
+    "title": "Kalmanized Recursive Least Squares Attention for Streaming Video Understanding",
+    "authors": "Matthew Korban, Peter Youngs, Scott T. Acton",
+    "abstract": "Streaming long-form video understanding requires online temporal reasoning over sequences far longer than typical training clips. Standard temporal self-attention is poorly matched to this setting: its cost grows quadratically with context length, it often degrades under context extrapolation, and it provides no native uncertainty estimate for temporally out-of-distribution events. We propose Kalmanized Recursive Least Squares Attention (KRLS-Attn), a drop-in replacement for temporal attention that recasts attention as online kernel ridge regression. KRLS-Attn maintains a fixed-size memory state-the posterior mean and covariance of a linear predictor-updated exactly via a recursive least-squares/Kalman recursion, eliminating explicit temporal attention matrices while preserving query-conditioned aggregation over the full history and keeping memory and per-step computation independent of stream length. The posterior covariance yields token-level predictive uncertainty, enabling adaptive token admission and confidence-weighted temporal pooling, while regularization and forgetting provide explicit control under temporal drift. We also derive the method's connections to kernel ridge regression and Bayesian filtering, including exact online updates, predictive uncertainty, and stability guarantees. Integrated into a factorized video Transformer, KRLS-Attn yields strong accuracy-efficiency trade-offs and improved context-length extrapolation on Kinetics-400, Something-Something V2, EPIC-KITCHENS-100, and Breakfast.",
+    "doi": "10.1109/tpami.2026.3734826"
+  },
+  {
+    "year": 2026,
+    "title": "Toward a Multi-View Brain Network Foundation Model: Cross-View Consistency Learning across Arbitrary Atlases",
+    "authors": "Jiaxing Xu, Jingying Ma, Xin Lin, Yuxiao Liu, Kai He, Qika Lin, Yiping Ke, Yang Li, Dinggang Shen, Mengling Feng",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3736359"
+  },
+  {
+    "year": 2026,
+    "title": "A Diffusion Prior-based Framework for Imperceptible and Flexible Unrestricted Adversarial Attacks",
+    "authors": "Zhengzhao Pan, Xiaogang Zhang, Hua Chen, Qianyu Chen, Shengjie Hu",
+    "abstract": "Unrestricted Adversarial Examples (UAEs) pose a growing security challenge to Deep Neural Networks by introducing substantial, semantically natural modifications to images. While current diffusion-based methods improve the naturalness of UAEs, they suffer from two key limitations: an underutilization of the diffusion model's learned data distribution, which caps sample quality, and a lack of flexibility for diverse attack scenarios. To address these issues, we reframe the UAE generation as a Bayesian inference problem, leveraging a pre-trained diffusion model as a powerful prior to ensure UAEs are statistically consistent with real data and therefore improve their effectiveness and naturalness. Building upon this foundation, we introduce DiffAdvMAP+, an enhanced framework featuring a novel sample-specific adaptive mechanism. This module dynamically tunes key parameters, such as the diffusion step and adversarial confidence level, based on individual image complexity, thereby boosting both efficacy and efficiency. This principled approach, combining a flexible reconstruction constraint with sample-specific adaptation, allows DiffAdvMAP+ to excel at diverse tasks, including noise-originating and image-similar attacks. Extensive experiments conducted on various model structures, datasets, and defense methods demonstrate that our method achieves a favorable overall trade-off between image quality, flexibility, and transferability compared to existing approaches.",
+    "doi": "10.1109/tpami.2026.3736884"
+  },
+  {
+    "year": 2026,
+    "title": "Interactive Personalized Clustering: Navigating beyond Rigid Criteria and Sample Ambiguity",
+    "authors": "Honglin Liu, Joey Tianyi Zhou, Peng Hu, Yunfan Li, Xi Peng",
+    "abstract": "Clustering methods have made significant strides in recent years, yet most of them remain an inherently static paradigm. Owing to the fixed optimization objective and the exclusive reliance on internal data, this static clustering paradigm faces two fundamental challenges: i) Rigid Criteria: prioritizing semantics under the dominant criterion while overlooking others, and ii) Sample Ambiguity: struggling to discriminate hard samples at cluster boundaries. Recognizing that these two challenges arise from the intrinsic data limitation, we propose incorporating external user interaction to guide the clustering process. To be specific, we present an Interactive Personalized Clustering paradigm (IPC) that consists of two stages, i.e., Criterion Alignment and Grouping Refinement, where each stage is dedicated to resolving one challenge. In the Criterion Alignment stage, IPC derives the representation aligned with the user specified criterion via text basis transformation. Subsequently, in the Grouping Refinement stage, IPC identifies high-value sample pairs for friendly user feedback, utilizing three carefully designed losses to refine cluster assignments. Extensive experiments on 6 datasets across 16 criteria demonstrate that our proposed IPC substantially outperforms state-of-the-art baselines, achieving a 23.6% average performance improvement. Furthermore, IPC exhibits robustness and generalizability across various LLMs and VLMs. The code will be released.",
+    "doi": "10.1109/tpami.2026.3737483"
+  },
+  {
+    "year": 2026,
+    "title": "MMTryon: Multi-Modal Multi-Reference Control for High-Quality Fashion Generation",
+    "authors": "Xujie Zhang, Ente Lin, Michael Kampffmeyer, Zhenyu Xie, Jiang Li, Ting Liu, Xiaochao Qu, Luoqi Liu, Xiaodan Liang",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3729775"
+  },
+  {
+    "year": 2026,
+    "title": "Canvas Beyond Words: Teaching Machines to Sketch Empowers Their Spatial Intelligence",
+    "authors": "Guanlin Wu, Boyan Su, Yang Zhao, Pu Wang, Yichen Lin, Hao Frank Yang",
+    "abstract": "How to encode and evaluate spatial intelligence in foundation models remains an open challenge. Existing approaches often rely on textual proxies and VQA-style evaluation to assess visual-spatial intelligence (VSI), which can obscure geometric structure, encourage linguistic shortcuts, and hinder attribution to genuinely spatial reasoning abilities. To address this limitation, we introduce spatial intelligence grid (SIG), a structured grid-based schema that explicitly represents object layouts, inter-object relations, and physically grounded priors. As a complementary modality to text, SIG offers a faithful and compositional representation of scene structure for foundation-model reasoning. Building on SIG, we further propose SIG-informed evaluation metrics for measuring a model's intrinsic VSI, thereby disentangling spatial competence from language priors. In few-shot in-context learning (ICL) experiments with state-of-the-art multimodal large language models (MLLMs), including GPT- and Gemini-family models, SIG consistently delivers larger, more stable, and more comprehensive improvements across all VSI metrics than VQA-only representations. These results highlight its potential as an effective annotation and training schema for learning VSI. We further demonstrate the generalizability of SIG across diverse scenarios and multiple MLLMs, and systematically examine how data sample selection influences SIG-based ICL through extensive experiments. In addition, we release SIGBench, a benchmark comprising 1.4K driving frames annotated with ground-truth SIG labels and human gaze traces, supporting both grid-based machine VSI tasks and attention-driven, human-like VSI tasks in autonomous-driving settings.",
+    "doi": "10.1109/tpami.2026.3737728"
+  },
+  {
+    "year": 2026,
+    "title": "Think Before You Move: Latent Motion Reasoning for Text-to-Motion Generation",
+    "authors": "Yijie Qian, Juncheng Wang, Yuxiang Feng, Chao Xu, Wang Lu, Yang Liu, Baigui Sun, Yiqiang Chen, Yong Liu, Shujun Wang",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3737484"
+  },
+  {
+    "year": 2026,
+    "title": "Unified Multi-Subject Image Reconstruction From Human Brain Activity",
+    "authors": "Ruijie Quan, Xu Zhang, Wenguan Wang, Yi Yang",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3738650"
+  },
+  {
+    "year": 2026,
+    "title": "GazeManifold: Learning Canonical Gaze Embeddings for Interpretable and Mapping-Efficient Gaze Estimation",
+    "authors": "Yiwei Bao, Feng Lu",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3738559"
+  },
+  {
+    "year": 2026,
+    "title": "Audit-First Recombination for Test-Time LLM Optimization Under Deterministic Verifiers",
+    "authors": "Rui Li, Shuang Cao",
+    "abstract": "Deterministic verifiers make test-time optimization of large language model (LLM) outputs practical, but modern search pipelines still waste budget on candidates that are structurally ineligible for semantic evaluation. Ineligibility includes parse failures, schema violations, and dependency breaks. These dead-on-arrival candidates consume the same scarce backend capacity as informative trials, reduce throughput under rate limits, and make cross-candidate reuse brittle under strict verifiers. We introduce audit-first recombination, a primitive for verifier-backed generation whose central operation is a deterministic compatibility decision for cross-candidate edits before verifier execution. We represent each candidate as an interface-typed reasoning DAG. We emit an untrusted per-edit certificate. We require every nontrivial edit to pass a deterministic structural gate before any verifier execution. The gate checks acyclicity. It checks namespace closure. It checks schema and terminal validity. It checks interface compatibility. The gate certifies structural eligibility only. Correctness remains entirely defined by the external verifier. We instantiate the primitive in Genetic Inference Search (GIS) with certificate-gated recombination (SemanticGraft). We add a stricter deterministic precondition layer (Cert++). Under strictly matched per-instance token budgets that charge all LLM calls, GIS+Cert++ improves accuracy by 4.2-10.3 points over strong same-budget baselines. It reduces wasted verifier executions. On SWE-bench Verified ($n{=}300$), it increases resolved by 7.6 points relative to Agentless. It uses 38% fewer test runs. Targeted audits show that adding Cert++ preconditions consistently reduces runnable-but-mismatched edits without changing the verifier, and that interface extraction degrades gracefully when symbol metadata is sparse. Finally, we report per-edit diagnostics (CertPass, GVR, CUR, PatchSz). They make reuse auditable and falsifiable in deployment.",
+    "doi": "10.1109/tpami.2026.3738491"
+  },
+  {
+    "year": 2026,
+    "title": "Learning Video Exposure Correction: Large-Scale Real-World Dataset and Method",
+    "authors": "Siru Zhang, Huiyuan Fu, Jin Liu, Bo Wang, Chuanming Wang, Chongqi Sun, Huadong Ma",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3739518"
+  },
+  {
+    "year": 2026,
+    "title": "Exploring Multimodal Adapters with Multi-Task Decoders for Video Action Recognition",
+    "authors": "Mengmeng Wang, Zeyi Huang, Boyuan Jiang, Guojiang Shen, Xiangjie Kong, Guang Dai, Yong Liu, Jingdong Wang",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3739421"
+  },
+  {
+    "year": 2026,
+    "title": "Motion Controlled Text-to-4D Generation with Multi-View Video Diffusion Model",
+    "authors": "Runxin Liu, Yang Chen, Yingwei Pan, Hongtao Xie, Yongdong Zhang, Ting Yao, Tao Mei",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3739585"
+  },
+  {
+    "year": 2026,
+    "title": "A Survey on Archetypal Analysis",
+    "authors": "Aleix Alcacer, Irene Epifanio, Sebastian Mair, Morten Morup",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3740133"
+  },
+  {
+    "year": 2026,
+    "title": "Flexible Targeted Adversarial Alignment with Frequency-based Visual Focus for Attacking Large Vision-Language Models",
+    "authors": "Daizong Liu, Tianyao Luo, Junhao Dong, Xiaowen Cai, Hao He, Weidong Wang, Runwei Guan, Jianfeng Dong, Pan Zhou, Bo Du, Hui Xiong",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3740091"
+  },
+  {
+    "year": 2026,
+    "title": "Quickest Causal Change Point Detection by Adaptive Intervention",
+    "authors": "Haijie Xu, Bo Zhang, Jie Guo, Chen Zhang",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3740105"
   }
 ]

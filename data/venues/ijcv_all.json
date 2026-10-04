@@ -15815,7 +15815,7 @@
     "year": 2026,
     "title": "De-biasing Skeleton-Based Action Recognition with Convex Hull Adaptive Shift",
     "authors": "Mengyuan Liu, Yuhang Wen, Yi Zhang, Songtao Wu, Hong Liu, Junsong Yuan, Beichen Ding",
-    "abstract": null,
+    "abstract": "Skeleton sequences can represent both individual actions and multi-entity interactions, encompassing human bodies, hands, objects, and robots. Existing approaches to recognize skeleton-based actions and interactions usually adopt a late fusion strategy, which expects individuals are independent and identically distributed to train a robust weight-shared entity encoder. However, observed entity bias in various skeletal data violates this assumption, leading to suboptimal optimization of backbone models that might produce wrong recognition results. This bias arises from the world coordinate system’s initial configuration, where the choice of origin often creates bias in representation. To this end, we propose a Convex Hull Adaptive Shift based normalization method to reduce Entity bias (CHASE), improving performance across a variety of skeleton-based action and interaction recognition tasks. To adaptively apply plausible shifts to the input skeletons, we formulate a plug-and-play parameterized network that ensures the relocated world origin lies within the skeleton convex hull, which avoids non-convergence by limiting the search space. To further minimize entity bias, we incorporate an auxiliary objective that leverages pair-wise distribution distances to guide network optimization. To support both single- and multi-entity actions, we propose a sub-entity strategy that offers a consistent formulation for both scenarios. Moreover, CHASE demonstrates compatibility with various intra-skeleton modalities, such as bones and velocities, highlighting its adaptability. Essentially, our method works as a normalization approach to reduce entity bias, enabling subsequent classifiers to achieve improved recognition performance across diverse settings. Extensive experiments on seven datasets, including NTU RGB+D, NTU RGB+D 120, H2O, Assembly101, Collective Activity, Volleyball, and HARPER, consistently verify our approach by seamlessly integrating with various backbones and significantly boosting their performance. Our code is publicly available at https://github.com/Necolizer/CHASE.",
     "doi": "10.1007/s11263-026-03037-1"
   },
   {
@@ -15836,7 +15836,7 @@
     "year": 2026,
     "title": "BD-Diff: Generative Diffusion Model for Image Deblurring on Unknown Domains with Blur-Decoupled Learning",
     "authors": "Junhao Cheng, Wei-Ting Chen, Xi Lu, Ming-Hsuan Yang",
-    "abstract": null,
+    "abstract": "Generative diffusion models trained on large-scale datasets have achieved significant progress in image synthesis. In favor of their ability to supplement missing details and generate aesthetically pleasing content, recent works have applied them to image deblurring via training an adapter on blurry-sharp image pairs to provide structural conditions for restoration. However, acquiring substantial realistic paired data is challenging and costly in real-world scenarios. On the other hand, relying solely on synthetic data often results in overfitting, leading to unsatisfactory performance when confronted with unseen blur patterns. To tackle this issue, we propose BD-Diff, a generative-diffusion-based model designed to enhance deblurring performance on unknown domains by decoupling structural features and blur patterns through joint training on three specially designed tasks. We employ two Q-Formers as structural features and blur patterns extractors separately. The features extracted by them will be used for the supervised deblurring task on synthetic data and the unsupervised blur-transfer task by leveraging unpaired blurred images from the target domain simultaneously. We further introduce a reconstruction task to make the structural features and blur patterns complementary. This blur-decoupled learning process enhances the generalization capabilities of BD-Diff when encountering unknown blur patterns. Experiments on real-world datasets demonstrate that BD-Diff effectively removes blur while preserving critical structural details across various challenging scenarios.",
     "doi": "10.1007/s11263-026-03026-4"
   },
   {
@@ -15866,5 +15866,68 @@
     "authors": "Yuanfan Zheng, Jinlin Wu, Wuyang Li, Kailun Yang, Jun Yu, Zhen Chen",
     "abstract": "Universal Domain Adaptive Object Detection (UniDAOD) addresses domain shifts in open-world scenarios without assuming pre-defined shared categories between source and target domains. Despite progress in this field, existing methods rely heavily on thresholding techniques to filter private category samples, which introduces challenges in hyperparameter tuning and handling noisy data. To overcome these limitations, we propose Synergistic Optimization Alignment (SOA), a sampling-free framework that tackles two challenges inherent in UniDAOD: multi-scale discriminator discrepancy and task-dominant gradient conflict. To address the discrepancy among multi-scale discriminators, we propose Multi-Scale Discriminator Alignment (MDA) to adaptively aggregate under-aligned discriminators for shared classes, ensuring consistent feature alignment across scales. To address task-dominant gradient conflicts, we propose Gradient Coordinated Optimization (GCO), which suppresses conflicting domain-alignment gradients and coordinates their magnitudes to prevent domain over-alignment, thereby mitigating private-class interference while preserving beneficial domain-invariant supervision. Extensive experiments on open-set, partial-set, and closed-set domain adaptation benchmarks demonstrate that SOA outperforms state-of-the-art UniDAOD and DAOD methods. Code is available at https://github.com/zyfone/SOA .",
     "doi": "10.1007/s11263-026-03047-z"
+  },
+  {
+    "year": 2026,
+    "title": "Parameter-Efficient Fine-Tuning for Foundation Models",
+    "authors": "Dan Zhang, Tao Feng, Lilong Xue, Yuandong Wang, Yuxiao Dong, Jie Tang",
+    "abstract": "This survey delves into the realm of Parameter-Efficient Fine-Tuning (PEFT) within the context of Foundation Models (FMs). PEFT, a cost-effective fine-tuning technique, minimizes parameters and computational complexity while striving for optimal downstream task performance. FMs, such as GPT, SAM, and FLUX, specialize in language understanding, generative tasks, and multimodal tasks, trained on diverse datasets spanning text, images, and videos. The diversity of FMs guides various adaptation strategies for PEFT. Therefore, this survey aims to provide a comprehensive overview of PEFT techniques applied to diverse FMs and address critical gaps in understanding the techniques, trends, and applications. We start by providing a detailed development of FMs and PEFT. Subsequently, we systematically review the key categories and core mechanisms of PEFT across diverse FMs to offer a comprehensive understanding of trends. We also explore the most recent applications across various FMs to demons trate the versatility of PEFT, shedding light on the integration of systematic PEFT methods with a range of FMs. Furthermore, we identify potential research and development directions for improving PEFTs in the future. This survey provides a valuable resource for both newcomers and experts seeking to understand and use the power of PEFT across FMs. All reviewed papers are listed at Awesome-PEFT.",
+    "doi": "10.1007/s11263-026-03004-w"
+  },
+  {
+    "year": 2026,
+    "title": "High-Fidelity Implicit Text-to-Shape Generation with Voxelized Diffusion",
+    "authors": "Yueqi Duan, Fangfu Liu, Hanyang Wang, Muheng Li, Jiwen Lu, Jie Zhou",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03055-z"
+  },
+  {
+    "year": 2026,
+    "title": "G2S2-IR: Glocal Gaussian Splatting with Surface Awareness for Inverse Rendering",
+    "authors": "Junnan Li, Shengping Zhang, Ru Li, Shunyuan Zheng, Chenyang Wang, Henglu Wei, Xiangyang Ji",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03022-8"
+  },
+  {
+    "year": 2026,
+    "title": "EFC++: Elastic Feature Consolidation with Prototype Re-balancing for Cold Start Exemplar-free Incremental Learning",
+    "authors": "Simone Magistri, Tomaso Trinci, Albin Soutif-Cormerais, Joost van de Weijer, Andrew D. Bagdanov",
+    "abstract": "Exemplar-free Class Incremental Learning (EFCIL) aims to learn from a sequence of tasks without having access to previous task data. In this paper, we consider the challenging Cold Start scenario in which insufficient data is available in the first task to learn a high-quality backbone. This is especially challenging for EFCIL since it requires high plasticity, resulting in feature drift which is difficult to compensate for in the exemplar-free setting. To address this problem, we propose an effective approach to consolidate feature representations by regularizing drift in directions highly relevant to previous tasks while employing prototypes to reduce task-recency bias. Our approach, which we call Elastic Feature Consolidation++ (EFC++), exploits a tractable second-order approximation of feature drift based on a proposed Empirical Feature Matrix (EFM). The EFM induces a pseudo-metric in feature space which we use to regularize feature drift in important directions and to update Gaussian prototypes. In addition, we introduce a post-training prototype re-balancing phase that updates classifiers to compensate for feature drift. This strategy allows to improve over our previous EFC method by mitigating the misalignment between stored prototypes and the evolving feature space. Extensive experimental results on Tiny-ImageNet, ImageNet-Subset, ImageNet-1K, and DomainNet show that EFC++ achieves a strong stability–plasticity trade-off in Cold Start and outperforms recent exemplar-free baselines. Code is available at https://github.com/simomagi/elastic_feature_consolidation .",
+    "doi": "10.1007/s11263-026-03018-4"
+  },
+  {
+    "year": 2026,
+    "title": "Unveiling Representation Expansion: A New Lens on Out-of-Distribution Detection",
+    "authors": "Boxuan Zhang, Jianing Zhu, Zengmao Wang, Tongliang Liu, Bo Du, Bo Han",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03036-2"
+  },
+  {
+    "year": 2026,
+    "title": "UniColorFlow: A Unified Framework for Multimodal-Guided Video Colorization with Consistency Flow",
+    "authors": "Zheng Chang, Lihan Lin, Huan Ouyang, Shuchen Weng, Si Li, Boxin Shi",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03058-w"
+  },
+  {
+    "year": 2026,
+    "title": "DLCL: Deep Learning-Enabled Cooperative Localization for UAV-UGV Team with Adaptive Perception Recovery",
+    "authors": "Veera Venkata Ram Murali Krishna Ra Muvva, Yogesh Chawla, Kunjan Theodore Joseph, Ankita Kalra, Marilyn Wolf, Santosh Pitla",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03028-2"
+  },
+  {
+    "year": 2026,
+    "title": "Progressive Focused Transformer for Image Restoration",
+    "authors": "Wei Long, Jinhua Zhang, Xingyu Zhou, Leheng Zhang, Shuhang Gu",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03053-1"
+  },
+  {
+    "year": 2026,
+    "title": "DOME: A Decoupled Offline-Online Memory Externalization Framework for Interpretable Domain-Generalized Face Anti-spoofing",
+    "authors": "Yanting Wu, Ajian Liu, Siyu Xia, Yunlong Wang, Xinyang Song, Jie Gui, Zhenan Sun, Qi Li",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03010-y"
   }
 ]
