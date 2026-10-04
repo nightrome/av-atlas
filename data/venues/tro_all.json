@@ -1910,7 +1910,8 @@
     "year": 2025,
     "title": "Active Iterative Optimization for Aerial Visual Reconstruction of Wide-Area Natural Environment",
     "authors": "Hongpeng Wang 0001, Zhongzhi Cao, Yue Fei, Peizhao Wang, Yaojing Li, Chuanyu Sun, Ming He, Jianda Han",
-    "abstract": null
+    "abstract": "Autonomous, accurate, and dynamic 3-D reconstruction for wide-area environments is crucial for unmanned aerial vehicle monitoring and rescue tasks, however, when conducted in an unknown complex terrain, the reconstruction result obtained from a single flight suffers poor quality. In this article, we present an Active Iterative Optimization framework for trajectory planning and visual reconstruction. Firstly, the trajectory is planned under the photogrammetric constraints based on rough terrain. Due to the visual field deviation caused by pose error during actual flight, the view loss evaluation is established and keyframes are selected to conduct 3-D reconstruction. A comprehensive metric is designed to quantitatively evaluate reconstruction effect without ground truth. The point cloud is then rasterized and divided into normal or low-scoring region according to the evaluation metric. In the next iteration, trajectory is replanned in low-scoring region to purposefully optimize the point cloud of local area. Thus the reconstruction result can be iteratively optimized. We validated the effectiveness of the proposed framework in simulation and physical experiments.",
+    "doi": "10.1109/tro.2024.3475213"
   },
   {
     "year": 2025,
@@ -2336,7 +2337,8 @@
     "year": 2025,
     "title": "Embedded Hierarchical MPC for Autonomous Navigation",
     "authors": "Dennis Benders, Johannes K&#246;hler 0001, Thijs Niesten, Robert Babuska, Javier Alonso-Mora, Laura Ferranti",
-    "abstract": null
+    "abstract": "To efficiently deploy robotic systems in society, mobile robots must move autonomously and safely through complex environments. Nonlinear model predictive control (MPC) methods provide a natural way to find a dynamically feasible trajectory through the environment without colliding with nearby obstacles. However, the limited computation power available on typical embedded robotic systems, such as quadrotors, poses a challenge to running MPC in real time, including its most expensive tasks: constraints generation and optimization. To address this problem, we propose a novel hierarchical MPC scheme that consists of a planning and a tracking layer. The planner constructs a trajectory with a long prediction horizon at a slow rate, while the tracker ensures trajectory tracking at a relatively fast rate. We prove that the proposed framework avoids collisions and is recursively feasible. Furthermore, we demonstrate its effectiveness in simulations and lab experiments with a quadrotor that needs to reach a goal position in a complex static environment. The code is efficiently implemented on the quadrotor's embedded computer to ensure real-time feasibility. Compared to a state-of-the-art single-layer MPC formulation, this allows us to increase the planning horizon by a factor of 5, which results in significantly better performance.",
+    "doi": "10.1109/tro.2025.3567529"
   },
   {
     "year": 2025,
@@ -3044,7 +3046,8 @@
     "year": 2025,
     "title": "Time-Varying Foot Placement Control for Humanoid Walking on Swaying Rigid Surface",
     "authors": "Yuan Gao 0060, Victor Paredes, Yukai Gong, Zijian He, Ayonga Hereid, Yan Gu",
-    "abstract": null
+    "abstract": "Locomotion on dynamic rigid surface (i.e., rigid surface accelerating in an inertial frame) presents complex challenges for controller design, which are essential to address for deploying humanoid robots in dynamic real-world environments such as moving trains, ships, and airplanes. This article introduces a real-time, provably stabilizing control approach for humanoid walking on periodically swaying rigid surface. The first key contribution is an analytical extension of the classical angular momentum-based linear inverted pendulum model from static to swaying grounds whose motion period may be different than the robot’s gait period. This extension results in a time-varying, nonhomogeneous robot model, which is fundamentally different from the existing pendulum models. We synthesize a discrete footstep control law for the model and derive a new set of sufficient stability conditions that verify the controller’s stabilizing effect. Finally, experiments conducted on a Digit humanoid robot, both in simulations and on hardware, demonstrate the framework’s effectiveness in addressing bipedal locomotion on swaying ground, even under uncertain surface motions and unknown external pushes.",
+    "doi": "10.1109/tro.2025.3612326"
   },
   {
     "year": 2025,
@@ -3530,7 +3533,8 @@
     "year": 2024,
     "title": "Design, Modeling, and Control of AVOCADO: A Multimodal Aerial-Tethered Robot for Tree Canopy Exploration",
     "authors": "Steffen Kirchgeorg, Emanuele Aucone, Florian Wenk, Stefano Mintchev",
-    "abstract": null
+    "abstract": "Forests provide vital resources and services for humanity, but preserving and restoring them is challenging due to the difficulty of obtaining actionable data, especially in inaccessible areas, such as forest canopies. To address this, we follow the lead of arboreal animals that exploit multiple modes of locomotion. We combine aerial and tethered movements to enable AVOCADO to navigate within a tree canopy. Starting from the top of a tree, it can descend with the tether and maneuver around obstacles with thrusters. We extend our previous work with a new mechanical design with a protective shell, increased computational power and cameras for state estimation. We introduce a dynamic model and simulation, and perform a quasistatic and dynamic validation. For autonomy, we derive a control framework in simulation to regulate tether length, tilt, and heading, before transfer to the robot. We evaluate the controllers for trajectory tracking through experiments. AVOCADO can follow trajectories around obstacles and reject disturbances on the tether. Exploiting multimodal mobility will advance the exploration of tree canopies to actively monitor the true value of our forests.",
+    "doi": "10.1109/tro.2023.3334630"
   },
   {
     "year": 2024,
@@ -15715,7 +15719,7 @@
     "year": 2026,
     "title": "Mixture of Flow Matching and Particle Filter for Proprioception-Based Online Contact Estimation",
     "authors": "Seo Wook Han, Min Jun Kim",
-    "abstract": null,
+    "abstract": "In this article, we propose ContactFlowFilter, a novel approach for contact estimation that determines the number of active contacts, their locations, and the associated force vectors. We consider a robot manipulator equipped with joint torque sensors and a base force/torque sensor; such a proprioceptive-only setup presents a challenging inverse problem characterized by, first, multimodality from nonunique solutions, second, temporal dependencies in state evolution, and, third, discrete contact events involving contact addition/removal. Existing approaches, such as particle filters (PFs) and learning-based methods, often struggle to address these challenges simultaneously. To overcome this, ContactFlowFilter integrates a generative model into the PF framework. The recursive structure of the PF captures temporal dependencies, while the flow matching model serves as an auxiliary proposal distribution to track multimodal beliefs and detect contact events. Extensive validation in both simulation and real-world experiments confirms the effectiveness of the proposed method. In real-world settings, ContactFlowFilter achieves the lowest dissimilarity from the target distribution, with errors of only 0.36 cm and 0.88 cm for single- and dual-contact scenarios, respectively, while operating at 0.69 ms and 2.69 ms.",
     "doi": "10.1109/tro.2026.3723975"
   },
   {
@@ -15829,5 +15833,82 @@
     "authors": "Timur Ismagilov, Shakaiba Majeed, Michael Milford, Tan Viet Tuyen Nguyen, Sarvapali D. Ramchurn, Shoaib Ehsan",
     "abstract": null,
     "doi": "10.1109/tro.2026.3734352"
+  },
+  {
+    "year": 2026,
+    "title": "From Ill-Posed to Well-Posed: A Decomposition Framework for Reliable Robot Learning with Foundation Models",
+    "authors": "Yuheng Ji, Cheng Chi, Huajie Tan, Yuting Zhao, Huaihai Lyu, Enshen Zhou, Pengwei Wang, Zhongyuan Wang, Xiaolong Zheng, Shanghang Zhang",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3734126"
+  },
+  {
+    "year": 2026,
+    "title": "Guest Editorial: Special Collection on Event-Based Vision for Robotics",
+    "authors": "Friedrich Fraundorfer, Guillermo Gallego, Fabio Morbidi, Pascal Vasseur",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3723961"
+  },
+  {
+    "year": 2026,
+    "title": "Online Camera-Pose-Free Stereo Endoscopic Tissue Deformation Recovery With Tissue-Invariant Vision-Biomechanics Consistency",
+    "authors": "Jiahe Chen, Naoki Tomii, Ichiro Sakuma, Etsuko Kobayashi",
+    "abstract": "Tissue deformation recovery based on stereo endoscopic images is crucial for tool-tissue interaction analysis and benefits surgical navigation and autonomous soft tissue manipulation. Previous research suffers from the problems raised from camera motion, occlusion, large tissue deformation, lack of tissue-specific biomechanical priors, and reliance on offline processing. Unlike previous studies where the tissue geometry and deformation are represented by 3D points and displacements, the proposed method models tissue geometry as the 3D point and derivative map and tissue deformation as the 3D displacement and local deformation map. For a single surface point, 6 parameters are used to describe its rigid motion and 3 parameters for its local deformation. The method is formulated under the camera-centric setting, where all motions are regarded as the scene motion with respect to the camera. Inter-frame alignment is realized by optimizing the inter-frame deformation, making it unnecessary to estimate camera pose. The concept of the canonical map is introduced to optimize tissue geometry and deformation in an online approach. Quantitative and qualitative experiments were conducted using in vivo and ex vivo laparoscopic datasets. With the inputs of depth and optical flow, the method stably models tissue geometry and deformation even when the tissue is partially occluded or moving outside the field of view. Results show that the 3D reconstruction accuracy in the non-occluded and occluded areas reaches 0.37$\\pm$0.27 mm and 0.39$\\pm$0.21 mm in terms of surface distance, respectively. The method can also estimate surface strain distribution during various manipulations as an extra modality for mechanical-based analysis.",
+    "doi": "10.1109/tro.2026.3734035"
+  },
+  {
+    "year": 2026,
+    "title": "Distributed Secure Learning Control for Large-scale Multirobots under Stealthy Actuator Attacks",
+    "authors": "Xinglong Zhang, Qingwen Ma, Cong Li, Hui Yin, Changxin Zhang, Yueying Wang, Wei Pan, Xin Xu",
+    "abstract": "Distributed learning control for multirobot systems (MRS) offers significant flexibility in presence of uncertainties but lacks provable performance guarantees. A promising direction involves integrating reinforcement learning (RL) into distributed model predictive control (DMPC), leveraging the strengths of RL in nonlinear policy design and the receding-horizon replanning capabilities of DMPC. However, ensuring secure control within such a learning framework under malicious cyber attacks, particularly stealthy ones, remains a critical challenge, because the distributed policies generation depends on information exchange among neighbors, where compromised agents can rapidly influence the behavior of others through the communication network. This article proposes a distributed secure learning control (DSLC) framework for large-scale MRS under malicious, stealthy actuator attacks. Our framework offers two key features: (i) a unified approach that enables secure learning control across various coordination scenarios and (ii) a game-theoretic distributed learning-based predictive control strategy that learns how to balance the attacker and defender through a differential-game based DMPC framework. Specifically, DSLC employs a distributed attacker-actor-critic architecture to learn the optimal defense and attack policies online within each prediction interval. Unlike numerical optimization-based controllers that calculate open-loop control sequences, our method simultaneously generates adversarial attack policies and corresponding defense policies in analytical closed-loop form. The defense policies could be directly generalized to MRS with varying scales and diverse actuator attack probabilities. The effectiveness and scalability of DSLC are validated through comprehensive simulations and real-world experiments in multiple wheeled robots via various control tasks.",
+    "doi": "10.1109/tro.2026.3737565"
+  },
+  {
+    "year": 2026,
+    "title": "Ultrafast Sampling-based Kinodynamic Planning via Differential Flatness",
+    "authors": "Thai Duong, Clayton W. Ramsey, Zachary Kingston, Wil Thomason, Lydia E. Kavraki",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3737703"
+  },
+  {
+    "year": 2026,
+    "title": "Aerial GRIPPER: A Gradient-based Real-time Inverse-game Predictor and Planner",
+    "authors": "Zeshuai Chen, Meng Wang, Jindou Jia, Xiang Yu, Lei Guo",
+    "abstract": "Accurate capture of non-cooperative targets is critical. In an attempt to tackle this intractable challenge, an aerial gripper system integrated with a Gradient-based Real-time Inverse-game Predictor and PlannER (GRIPPER) framework is proposed. The interaction is formulated as a general-sum pursuit-evasion game under incomplete information. Specifically, underlying cost parameters of the target are inferred online, and the open-loop Nash equilibrium (OLNE) strategy is iteratively refined within a receding-horizon loop. To ensure high-frequency execution, a computationally friendly gradient-based inverse-game solver is developed. Without explicit computation of the Hessian inverse, the optimized solution is updated (>50 Hz) based on implicit differentiation and fast Hessian-vector products. Meanwhile, an anti-disturbance controller is developed to overcome disturbances of uncertain payload and gripper actuation, enabling precise tracking of the planned trajectory and accurate grasping of the target. Simulations and real-world experiments illustrate the superior computational efficiency and task performance of GRIPPER. The task of capturing and delivering a non-cooperative target is accomplished, highlighting the robustness, adaptability, and real-time performance of the framework in highly adversarial scenarios.",
+    "doi": "10.1109/tro.2026.3738312"
+  },
+  {
+    "year": 2026,
+    "title": "SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments",
+    "authors": "Kota Kondo, Jesus Tordesillas, Juan Rached, Lili Sun, Yixuan Jia, Jonathan P. How",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3738474"
+  },
+  {
+    "year": 2026,
+    "title": "LIO-MARS: Non-Uniform Continuous-Time Trajectories for Real-Time LiDAR-Inertial-Odometry",
+    "authors": "Jan Quenzel, Sven Behnke",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3738457"
+  },
+  {
+    "year": 2026,
+    "title": "Expanding the Workspace of Electromagnetic Navigation Systems Using Dynamic Feedback for Single- and Multi-Agent Control",
+    "authors": "Jasan Zughaibi, Denis von Arx, Maurus Derungs, Florian Heemeyer, Luca A. Antonelli, Quentin Boehler, Michael Muehlebach, Bradley J. Nelson",
+    "abstract": "Electromagnetic navigation systems (eMNS) enable a number of magnetically guided surgical procedures. A challenge in magnetically manipulating surgical tools is that the effective workspace of an eMNS is often severely constrained by power and thermal limits. We show that system-level control design significantly expands this workspace by reducing the currents needed to achieve a desired motion. We identified five key system approaches that enable this expansion: (i) motion-centric torque/force objectives, (ii) energy-optimal current allocation, (iii) real-time pose estimation, (iv) dynamic feedback, and (v) high-bandwidth eMNS components. As a result, we stabilize a 3D inverted pendulum on an eight-coil OctoMag eMNS with significantly lower currents (0.1-0.2 A vs. 8-14 A), by replacing a field-centric field-alignment strategy with a motion-centric torque/force-based approach. We generalize to multi-agent control by simultaneously stabilizing two inverted pendulums within a shared workspace, exploiting magnetic-field nonlinearity and coil redundancy for independent actuation. A structured analysis compares the electromagnetic workspaces of both paradigms and examines current-allocation strategies that map motion objectives to coil currents. Cross-platform evaluation of the clinically oriented Navion eMNS further demonstrates substantial workspace expansion by maintaining stable balancing at distances up to 50 cm from the coils. The results demonstrate that feedback is a practical path to scalable, efficient, and clinically relevant magnetic manipulation.",
+    "doi": "10.1109/tro.2026.3738468"
+  },
+  {
+    "year": 2026,
+    "title": "Human-in-the-Loop Multi-Robot Information Gathering with Inverse Submodular Maximization",
+    "authors": "Guangyao Shi, Shipeng Liu, Ellen Novoseller, Jiazhen Liu, Feifei Qian, Gaurav Sukhatme",
+    "abstract": "We consider a new type of inverse combinatorial optimization, Inverse Submodular Maximization (ISM), for its application in human-in-the-loop multi-robot information gathering. Forward combinatorial optimization - solving a combinatorial problem given the reward (cost)-related parameters - is widely used in multi-robot coordination. In the standard pipeline, domain experts design the reward (cost)-related parameters offline. These parameters are utilized for coordinating robots online. What if non-expert human supervisors desire to change these parameters during task execution to adapt to some new requirements? We are interested in the case where human supervisors can suggest what path primitives to take, and the robots need to change the internal decision-making parameters accordingly. We study such problems from the perspective of inverse combinatorial optimization, i.e., the process of finding parameters that give certain solutions to the problem. Specifically, we propose a new formulation for ISM for a family of multi-robot information gathering scenarios, in which we aim to find a new set of parameters that minimally deviates from the current parameters while causing a greedy algorithm to output path primitives that are the same as those desired by the human supervisors. We show that for the case with a single suggestion, such problems can be formulated as a Mixed Integer Quadratic Program (MIQP), which is intractable for existing solvers when the problem size is large. We propose a new Branch $\\&$ Bound algorithm to solve such problems. For the case with multiple suggestions from several human supervisors, the problem can be cast as a multi-objective optimization and can be solved using Pareto Monte Carlo Tree Search. In numerical simulations, we demonstrate how to use ISM in multi-robot scientific data collection and event detection-driven coverage control.",
+    "doi": "10.1109/tro.2026.3738463"
+  },
+  {
+    "year": 2026,
+    "title": "A Safety-Projected Primal-Dual Neural Network for RCM-Gated Robot-Assisted Surgery",
+    "authors": "Boyu Zheng, Jingyi Fu, Chunquan Li, Rongfa Yuan, Zhijun Zhang, Junzhi Yu, Peter X. Liu",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3737887"
   }
 ]

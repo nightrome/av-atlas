@@ -16991,7 +16991,8 @@
     "year": 2024,
     "title": "Key Point Estimate Network for Rail-Track Detection",
     "authors": "Songyue Yang, Zhangyu Wang, Guizhen Yu, Wentao Liu",
-    "abstract": null
+    "abstract": "Rail-track detection is a crucial function for an active obstacle avoidance system in trains. However, existing methods face challenges in effectively detecting rail-tracks, particularly in turnout scenarios. This study introduces a novel rail-track detection approach using a key-point estimate network. The network treats the rail-track as a pair and constructs a dedicated model for detection. Additionally, a pseudo-attention mechanism leverages the detection output from previous stages, enabling the network to focus on the rail-track region. Also, a dislocation assignment mechanism is proposed to address label assignment confusion at turnouts. Moreover, a rail-track generalized IoU is also introduced, treating the rail-track as a pair and adds a correction term to enhance detection performance. Experimental results demonstrate that the proposed method achieves a remarkable mF1 score of 69.42%, establishing it as the state-of-the-art (SOTA) in this field. Furthermore, the effectiveness of the proposed method has been validated and applied in real-world testing on the Hong Kong Metro Tsuen Wan Line.",
+    "doi": "10.1109/tits.2023.3327996"
   },
   {
     "year": 2024,
@@ -17591,7 +17592,8 @@
     "year": 2024,
     "title": "Accelerated Risk Assessment for Highly Automated Vehicles: Surrogate-Based Monte Carlo Method",
     "authors": "He Zhang 0022, Jian Sun 0010, Ye Tian 0002",
-    "abstract": null
+    "abstract": "To validate whether Highly Automated Vehicles (HAVs) can live up to human expectations, it is essential to estimate their risk rate within the context of the naturalistic driving environment. Due to the low probability of exposure to risky events, the testing process is exceedingly time-consuming. To tackle this issue, we proposed a Surrogate-based Monte Carlo Method to accelerate the risk assessment for HAVs in scenario-based simulation. Surrogate Models (SMs) were utilized to approximate the outcomes of untested scenarios, hence facilitating the identification of risky scenarios. Therefore, the large number of samples required by Monte Carlo did not need to be tested entirely. Naturalistic distributions fitted from HighD data was used to generate samples. The Car-following and Cut-in scenarios were selected for the case study, as they represented two distinct testing spaces. As such, the capabilities of different SMs can be further analyzed. We proved that the performances of six mainstream SMs were greatly distinguished from each other. Inverse Distance Weighted (IDW), the proven most capable SM, was combined with Monte Carlo. Compared with Monte Carlo, up to 95% of tested samples can be saved. Compared with the Importance Sampling method, another popular improvement in Monte Carlo simulation, the proposed method can further save 58.1% of CPU execution time.",
+    "doi": "10.1109/tits.2023.3335104"
   },
   {
     "year": 2024,
@@ -22193,7 +22195,8 @@
     "year": 2024,
     "title": "Trajectory Planning for Autonomous Driving Featuring Time-Varying Road Curvature and Adhesion Constraints",
     "authors": "Yifan Gao 0002, Wei Li 0235, Yu Hu 0001",
-    "abstract": null
+    "abstract": "Among the various driving situations, there are challenging road conditions where both the texture and curvature are variables over time (e.g., mountainous area). However, it is found that the characteristics of road texture and curvature have been respectively considered in some of the existing studies to determine the vehicle speed for trajectory planning, but the complementary effect of these two factors is still yet to be incorporated. This could lead to unsafe vehicle behaviour. This limitation has led us to develop a trajectory planning method that gives a systematic consideration of road conditions and leverages the complementary effect of road curvature and adhesion on the vehicle speed. It prioritises the trajectory safety through a preview of road constraints (i.e., waypoints, curvature and adhesion) in a look-ahead distance and the real-time computation of the vehicle speed that satisfies the constraints. In the experiment, our method was compared with the state-of-the-art techniques in a simulated mountainous driving environment, namely Model Predictive Control (MPC), Deep Reinforcement Learning (DRL) and Hybrid A*. The environment was built with abundant variation in road curvature and adhesion. The results showed that our approach was able to generate safe and comfort trajectories in both sharp turn and ice-covered driving scenarios, in which the vehicle successfully passed through the whole length of the global path without producing large deviations and exceeding lane boundaries. Whereas, the MPC, DRL and Hybrid A* approaches resulted in the vehicle exceeding lanes at some point with completeness levels of 77.72%, 75.31% and 79.53%, respectively.",
+    "doi": "10.1109/tits.2024.3416289"
   },
   {
     "year": 2024,
@@ -25937,7 +25940,8 @@
     "year": 2023,
     "title": "Transformer-Based Domain-Specific Representation for Unsupervised Domain Adaptive Vehicle Re-Identification",
     "authors": "Ran Wei, Jianyang Gu, Shuting He, Wei Jiang 0009",
-    "abstract": null
+    "abstract": "Fully-supervised vehicle re-identification (re-ID) methods are faced with performance degradation when applied to new image domains. Therefore, developing unsupervised domain adaptation (UDA) to transfer the knowledge from learned source domain to new unlabeled target domain becomes an indispensable task. It is challenging because different domains have various image appearances, such as different backgrounds, illuminations and resolutions, especially when cameras have different viewpoints. To tackle this domain gap issue, a novel Transformer-based Domain-Specific Representation learning network (TDSR) is proposed to dynamically focus on corresponding detailed hints for each domain. Specifically, with the source and target domain being trained simultaneously, a domain encoding module is proposed to introduce domain information into the network. The original features of source and target domains are enriched with these domain encodings first, and then sequentially processed by a Transformer encoder to model contextual information and a decoder to summarize the encoded features into the final domain-specific feature representations. Moreover, we propose a Contrastive Clustering Loss (CCL) to directly optimize the distribution of features at cluster level. Instances are overall pulled closer to the prototype of the same identity, and pushed farther from the prototypes of different identities. It helps compact the clusters in the latent space and improve the discriminative capability of the network, leading to more accurate pseudo-label assignment in TDSR. Our method outperforms the state-of-the-art UDA methods on vehicle re-ID benchmark datasets VeRi and VehicleID on both real-world to real-world and synthetic to real-world settings.",
+    "doi": "10.1109/tits.2022.3225025"
   },
   {
     "year": 2023,
@@ -38009,7 +38013,8 @@
     "year": 2022,
     "title": "FarNet: An Attention-Aggregation Network for Long-Range Rail Track Point Cloud Segmentation",
     "authors": "Zhangyu Wang, Guizhen Yu, Peng Chen 0021, Bin Zhou 0007, Songyue Yang",
-    "abstract": null
+    "abstract": "Rail track segmentation is key to environmental perception of autonomous train. However, due to the complexity of railway track environment, critical issues such as the detection of rail tracks with different curvatures remain to be overcome. In this study, a novel architecture called FarNet is proposed for long-range railway track point cloud segmentation. The proposed FarNet is mainly divided into three parts, i.e., spherical projection, attention-aggregation network and results refinement. Specifically, spherical projection converts the LiDAR point cloud into a pseudo range image, and attention-aggregation network enables railway track detection using the pseudo range image. Furthermore, in the attention-aggregation network two components, i.e., spatial attention module and information aggregation module, are proposed to enhance the capability of rail track segmentation. Last, the results refinement helps further filter out the noise points after segmentation. Experimental results show that the proposed FarNet achieved 98.0% mean intersection-over-union (MIoU) and 98.9% mean pixel accuracy (MPA) for rail track segmentation.",
+    "doi": "10.1109/tits.2021.3119900"
   },
   {
     "year": 2022,
@@ -43871,7 +43876,8 @@
     "year": 2021,
     "title": "A Novel Processing Methodology for Traffic-Speed Road Surveys Using Point Lasers",
     "authors": "Wenda Li 0002, Michael Burrow, Nicole Metje, Yueyue Tao, Gurmel Ghataora",
-    "abstract": null
+    "abstract": "The rapidly increasing traffic volumes using local road networks allied to the implications of climate change drive the demand for cost-effective, reliable and accurate road condition assessment. A particular concern for local road asset managers is the loss of material from the road surface known as fretting which unchecked can lead to potholes. In order to assess the road condition quantitatively and affordably, a system should be designed with low complexity, be capable of operating in a variety of weather conditions and operate at normal traffic-speeds. Many different techniques have been developed for road condition assessment such as ground penetrating radar, visual sensors and mobile scanning lasers. In this work, the use of the point laser technique for scanning the road surface is investigated. It has the advantages of being sufficiently accurate, is relatively unaffected by levels of illumination and it produces relatively low volumes of data. In this work, road fretting/surface disintegration was determined using a novel signal processing approach which considers a number of features of reflected laser signals. The proposed methodology was demonstrated using data collected from the UK’s local road network. The experimental results indicate that the proposed system can assess road fretting to an accuracy which is comparable to a visual inspection, and at Information Quality Level (IQL) 3 which is sufficient for tactical road asset management whereby road sections requiring treatment are selected and appropriate treatments identified.",
+    "doi": "10.1109/tits.2019.2957238"
   },
   {
     "year": 2021,
@@ -58961,7 +58967,8 @@
     "year": 2015,
     "title": "Online Cost-Sharing Mechanism Design for Demand-Responsive Transport Systems",
     "authors": "Masabumi Furuhata, Kenny Daniel, Sven Koenig, Fernando Ord&#243;&#241;ez, Maged M. Dessouky, Marc-Etienne Brunet, Liron Cohen 0002, Xiaoqing Wang",
-    "abstract": null
+    "abstract": "Demand-responsive transport (DRT) systems provide flexible transport services for passengers who request door-to-door rides in shared-ride mode without fixed routes and schedules. DRT systems face interesting coordination challenges. For example, one has to design cost-sharing mechanisms for offering fare quotes to potential passengers so that all passengers are treated fairly. The main issue is how the operating costs of the DRT system should be shared among the passengers (given that different passengers cause different amounts of inconvenience to the other passengers), taking into account that DRT systems should provide fare quotes instantaneously without knowing future ride request submissions. We determine properties of cost-sharing mechanisms that make DRT systems attractive to both the transport providers and passengers, namely online fairness, immediate response, individual rationality, budget balance, and ex-post incentive compatibility. We propose a novel cost-sharing mechanism, which is called Proportional Online Cost Sharing (POCS), which provides passengers with upper bounds on their fares immediately after their ride request submissions despite missing knowledge of future ride request submissions, allowing them to accept their fare quotes or drop out. We examine how POCS satisfies these properties in theory and computational experiments.",
+    "doi": "10.1109/tits.2014.2336212"
   },
   {
     "year": 2015,
@@ -65232,7 +65239,7 @@
     "year": 2026,
     "title": "A Survey on End-to-End Autonomous Driving Training From the Perspectives of Data, Strategy, and Platform",
     "authors": "Chengkai Xu, Yiming Cui, Jiaqi Liu, Yicheng Guo, Cheng Qin, Geyuan Zhang, Xinwei Dong, Shiyu Fang, Peng Hang, Jian Sun",
-    "abstract": null,
+    "abstract": "Autonomous driving is a cornerstone technology for the future of intelligent transportation, where end-to-end learning has emerged as a transformative paradigm that directly maps multimodal sensory inputs to driving actions through unified differentiable models. While offering advantages, the effectiveness of end-to-end autonomous driving (E2E-AD) is ultimately determined by the quality of its training ecosystem. This paper provides a comprehensive review of training methods and ecosystem for E2E-AD. We introduce a Data-Strategy-Platform taxonomy that conceptualizes training as an interdependent system. The data layer defines what can be learned, the strategy layer governs how learning aligns with driving objectives, and the platform layer supports scalability and continuous evolution. Within this framework, we survey recent advances across data-centric pipelines, learning paradigms, and training infrastructures, and analyze their interplay in shaping model performance, robustness, and deployability. Finally, we reflect on current limitations and articulate a forward-looking vision that emphasizes a shift from data quantity to data value, from isolated optimization to foundation-driven generalization, and from static training to integrated training-testing loops, aiming toward robust, scalable, and trustworthy autonomous driving systems. We maintain a continuously updated repository tracking cutting-edge literature and works at \\href{https://github.com/Jiaaqiliu/Awesome-Training-Ecosystem-for-E2E-AD}{Our Project Page}.",
     "doi": "10.1109/tits.2026.3695999"
   },
   {
@@ -66233,7 +66240,7 @@
     "year": 2026,
     "title": "Human-Inspired Graphformer-Tutor: Accelerating and Safeguarding Multi-Agent Driving Learning",
     "authors": "Fan Guo, Chuyu Ma, Dezong Zhao, Jiayang Wang, Zhengqing Yan, Jinbo Hao, Yun Chen, Lianhui Zhang, Kang Song",
-    "abstract": null,
+    "abstract": "—Realistic modeling of interactive behaviors among multiple vehicles is essential for autonomous driving simulation. While Multi-Agent Reinforcement Learning (MARL) provides a promising framework for this task, the pure trial-and-error exploration paradigm often leads to inefficient and biased learning processes, limiting its ability to reproduce realistic driving behaviors. In light of this, inspired by the Tutor–Students learning paradigm and leveraging human expertise, a novel MARL algorithm termed Tutor–Multiple-Students Proximal Policy Optimization (TMSPPO) is proposed. A Graphformer-based tutor agent is developed to capture spatio-temporal driving features from human data and provide anthropomorphic assistance. TMSPPO embeds this tutor agent into the MARL loop through two complementary mechanisms: policy guidance and safety protection. Specifically, the guidance mechanism prevents student agents from cold-starting by integrating seamlessly with exploration, while the safety protection mechanism filters extreme samples yet retains informative near-misses to capture corrective data in near-danger scenarios. To further achieve a principled trade-off between autonomous exploration and tutor dependence, the intervention frequency and intensity are formulated as constrained objectives co-optimized with the learning goal. Consequently, TMSPPO substantially enhances learning efficiency and interactive driving capability, enabling student agents to display diverse and human-like behaviors in complex scenarios.",
     "doi": "10.1109/tits.2026.3709675"
   },
   {
@@ -67313,5 +67320,89 @@
     "authors": "Changwen Li, Joseph Sifakis, Rongjie Yan, Jian Zhang",
     "abstract": null,
     "doi": "10.1109/tits.2026.3713467"
+  },
+  {
+    "year": 2026,
+    "title": "Sliding Mode Control of Vehicle Platoon for Interchange Area Considering Disturbance and Actuator Saturation",
+    "authors": "Shuang Jin, Qianhong Zhu, Hang Zhao, Shixun Wu, Zhongcheng Liu, Lv Luo",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3733533"
+  },
+  {
+    "year": 2026,
+    "title": "Real-Time Secondary Crash Likelihood Prediction Excluding Post Primary Crash Features",
+    "authors": "Lei Han, Mohamed Abdel-Aty, Zubayer Islam, Chenzhu Wang",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3733392"
+  },
+  {
+    "year": 2026,
+    "title": "MMGA: A Multi-Scale Multi-Layer Gated Attention Mechanism for Train Number Recognition",
+    "authors": "Zizheng Guo, Qilin Zhao, Guofa Li, Xinpeng Jiang, Jun Zhang, Yuqiang He",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3730441"
+  },
+  {
+    "year": 2026,
+    "title": "MARS and ETMS: A Large-Scale Dataset and Ship-Size Sensitive Detection Method in Maritime Applications",
+    "authors": "Wen Chen, Xiaojun Wu, Qixun Yang, Haiyan Wei, Peng Li, Yunhui Liu",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3727609"
+  },
+  {
+    "year": 2026,
+    "title": "An Intelligent Degradation Identification Framework for Maglev Transportation Systems Using SDP Images and Concept-Guided Learning",
+    "authors": "Mingda Zhai, Lu Zhang, Leliang Wang, Zhiqiang Long",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3727593"
+  },
+  {
+    "year": 2026,
+    "title": "Expert-Prior-Guided Reinforcement Learning for Cooperative Virtual Coupling Train Control",
+    "authors": "Hairong Dong, Sunyue Qiao, Zixuan Zhang, Shaoqing Liu, Ling Liu",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3734144"
+  },
+  {
+    "year": 2026,
+    "title": "Multipopulation for Multiobjective-Based Ant Colony System for Berth Allocation Problem",
+    "authors": "Si-Cheng Wang, Yi Jiang, Yifei Sun, Sam Kwong, Jun Zhang, Zhi-Hui Zhan",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3713499"
+  },
+  {
+    "year": 2026,
+    "title": "Multi-Train Trajectory Optimization for Local/Express ModeWith Safe Separation",
+    "authors": "Qingyuan Wang, Xiaowen Wang, Zhuang Xiao, Pengfei Sun, Xiaoyun Feng",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3732594"
+  },
+  {
+    "year": 2026,
+    "title": "EFE-TSC: Efficient Fuel-Economic Traffic Signal Control via Hotspot-Aware Multi-Objective Learning",
+    "authors": "Lang Qian, Peng Sun, Jiayue Jin, Jing Cheng, Weiwei Jiang, Wei Zhou, Yang Liu",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3730824"
+  },
+  {
+    "year": 2026,
+    "title": "MUSCLE-Net: Predicted-Multiscale-Aware Network for Pedestrian Trajectory Forecasting",
+    "authors": "Yu Liu, Ming Huang, Xiao Ren, Zhijie Liu, Youfu Li, He Kong",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3708429"
+  },
+  {
+    "year": 2026,
+    "title": "Generation of Synthetic Datasets of Highway Driving Scenarios",
+    "authors": "Marianna Cossu, Riccardo Berta, Luca Lazzaroni, Luca Forneris, Matteo Fresta, Alessandro Pighetti, Alessandro Pilla, Jean-Louis Sauvaget, Hind Touil, Laurent Durville, Thibault Griffon, Ghada Ben Nejma, Fouad Hadj Selem, Francesco Bellotti",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3730710"
+  },
+  {
+    "year": 2026,
+    "title": "Towards Fine-Grained Freight Movement Supervision: Identifying Freight Activity Patterns Using Trajectory Data and Natural Language Processing Techniques",
+    "authors": "Quan Yuan, Xingyu Liang, Ruixu Pan, Mingyang Chen, Ninghua Zhong, Xianlong Chen, Zhiheng Zhang, Chao Yang, Xu Ma",
+    "abstract": null,
+    "doi": "10.1109/tits.2026.3728765"
   }
 ]
