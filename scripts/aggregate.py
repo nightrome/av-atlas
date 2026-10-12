@@ -3462,6 +3462,11 @@ def main():
     # name -> set of distinct OpenAlex author ids seen for that cleaned name
     # across all their papers -- see identity_conflicts below.
     author_openalex_ids = defaultdict(set)
+    # name -> OpenAlex id -> evidence (co-authors, institutions) seen with it,
+    # so ids that merely fragment ONE person can be told from ids that are
+    # really different people -- see identity_conflicts below.
+    author_openalex_evidence = defaultdict(lambda: defaultdict(set))
+    author_openalex_paper_counts = defaultdict(lambda: defaultdict(int))
 
     n_excluded = 0
     n_with_author_detail = 0
@@ -3500,6 +3505,11 @@ def main():
             if oaid:
                 author_openalex_ids[name].add(canonical_openalex_id(oaid))
             own_affs = author_affiliations(a, all_author_names, co_author_names)
+            if oaid:
+                ev = author_openalex_evidence[name][canonical_openalex_id(oaid)]
+                ev.update("co:" + x for x in co_author_names if x != name)
+                ev.update("in:" + x for x in own_affs)
+                author_openalex_paper_counts[name][canonical_openalex_id(oaid)] += 1
             if not blanket_shared:
                 for aff in filter_author_affiliations(name, own_affs):
                     rec = author_institutions[name].setdefault(aff, {"first_year": year, "last_year": year, "papers": 0})
@@ -3554,7 +3564,71 @@ def main():
     # them. This is a second, independent signal from flag_ambiguous_authors.py's
     # structural heuristic (collaboration clusters, affiliation churn, ...);
     # the two don't always agree and both are surfaced.
-    identity_conflicts = {name for name, ids in author_openalex_ids.items() if len(ids) >= 2}
+    #
+    # More than one id alone is NOT enough: OpenAlex routinely leaves a stray
+    # stub id on a single paper of someone with an established profile
+    # (well-known, prolific researchers), and that used to put a
+    # "multiple researchers" banner on their pages and drop them from the
+    # rankings. A real second person shares no co-author and no institution
+    # with the first, so ids are linked whenever they share either one, and
+    # only a name whose ids stay in 2+ unlinked groups counts as a conflict.
+    # A lone paper on its own id next to an established id is that same
+    # stub pattern even when it shares nothing with it (a one-paper stub with
+    # no affiliation and a different co-author set), so a conflict needs two
+    # groups that each carry 2+ papers: a second person with their own repeat
+    # output, not a stub.
+    def _has_id_conflict(ids, evidence, counts):
+        parent = {i: i for i in ids}
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        owner = {}
+        for i in ids:
+            for token in evidence.get(i, ()):
+                if token in owner:
+                    parent[find(i)] = find(owner[token])
+                else:
+                    owner[token] = i
+        group_papers = defaultdict(int)
+        for i in ids:
+            group_papers[find(i)] += counts.get(i, 0)
+        sizes = sorted(group_papers.values(), reverse=True)
+        if len(sizes) < 2:
+            return False
+        return sizes[1] >= 2
+
+    # Established authors (a real publication record here) are presumed to be
+    # one person unless the name is a common romanized Chinese/Korean/
+    # Vietnamese one, where two different researchers sharing the string is
+    # genuinely likely. For those names the id check above still decides.
+    COMMON_NAME_SURNAMES = {
+        "wang", "li", "zhang", "liu", "chen", "yang", "huang", "zhao", "wu",
+        "zhou", "xu", "sun", "ma", "zhu", "hu", "guo", "he", "gao", "lin", "luo",
+        "zheng", "liang", "xie", "tang", "han", "feng", "deng", "cao", "peng",
+        "song", "kim", "lee", "park", "choi", "jung", "kang", "cho", "yoon",
+        "nguyen", "tran", "pham", "yu", "xiao", "jiang", "zeng", "yuan", "wei",
+        "qi", "ye", "ding", "shi", "dong", "ren", "fan", "lu", "wen", "pan",
+    }
+    MIN_ESTABLISHED_PAPERS = 5
+
+    def _presumed_single_person(name, n_papers):
+        if n_papers < MIN_ESTABLISHED_PAPERS:
+            return False
+        tokens = re.split(r"[\s-]+", name.lower().replace(".", ""))
+        return not (tokens and (tokens[-1] in COMMON_NAME_SURNAMES
+                                or tokens[0] in COMMON_NAME_SURNAMES))
+
+    identity_conflicts = {
+        name for name, ids in author_openalex_ids.items()
+        if len(ids) >= 2
+        and not _presumed_single_person(name, author_papers.get(name, 0))
+        and _has_id_conflict(
+            ids, author_openalex_evidence[name], author_openalex_paper_counts[name])
+    }
 
     def top(citations_d, papers_d, n=50):
         # Sorted by total citations (papers this small a sample favors, so surface

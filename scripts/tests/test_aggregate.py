@@ -1801,14 +1801,48 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # pulled out of the ranked leaderboards (still visible via
         # author_detail, badged identity_conflict=True).
         stats = self._run([
-            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "AV", "citations": 50,
-             "authors_detail": [{"name": "Wei Wang", "affiliations": ["MIT"], "openalex_id": "A1111"}]},
-            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "AV", "citations": 50,
-             "authors_detail": [{"name": "Wei Wang", "affiliations": ["Tsinghua University"], "openalex_id": "A2222"}]},
+            {"title": f"Paper {i}", "year": 2020, "venue": "CVPR", "av_relevance": "AV", "citations": 50,
+             "authors_detail": [{"name": "Wei Wang", "affiliations": [inst], "openalex_id": oid}]}
+            for i, (inst, oid) in enumerate([("MIT", "A1111"), ("MIT", "A1111"),
+                                             ("Tsinghua University", "A2222"),
+                                             ("Tsinghua University", "A2222")])
         ])
         names = {a["name"] for a in stats["top_authors"]}
         self.assertNotIn("Wei Wang", names)
         self.assertTrue(self.last_detail["author_detail"]["Wei Wang"]["identity_conflict"])
+
+    def test_stray_openalex_id_sharing_a_coauthor_is_not_a_conflict(self):
+        # Real case: OpenAlex left one paper on a stub id,
+        # but it shares a co-author with his established id's papers, so it
+        # is the same person and must not get a "multiple researchers" banner.
+        stats = self._run([
+            {"title": "Paper One", "year": 2020, "venue": "CVPR", "av_relevance": "AV", "citations": 50,
+             "authors_detail": [{"name": "Anna Example", "affiliations": ["University of Tubingen"], "openalex_id": "A1111"},
+                                {"name": "Ben Sample", "affiliations": ["Zhejiang University"]}]},
+            {"title": "Paper Two", "year": 2021, "venue": "ICCV", "av_relevance": "AV", "citations": 50,
+             "authors_detail": [{"name": "Anna Example", "affiliations": [], "openalex_id": "A2222"},
+                                {"name": "Ben Sample", "affiliations": ["Zhejiang University"]}]},
+        ])
+        names = {a["name"] for a in stats["top_authors"]}
+        self.assertIn("Anna Example", names)
+        self.assertFalse(self.last_detail["author_detail"]["Anna Example"]["identity_conflict"])
+
+    def test_established_non_chinese_name_is_presumed_single_person(self):
+        # Famous authors are assumed to be one person even when OpenAlex
+        # holds two unlinked id groups for the string; only common
+        # romanized Chinese/Korean/Vietnamese names still get flagged.
+        rows = []
+        for i in range(6):
+            for who, inst, oid in (("Carla Famous", "ETH" + str(i % 2), "A1" if i < 3 else "A2"),
+                                   ("Wei Wang", "MIT" + str(i % 2), "B1" if i < 3 else "B2")):
+                rows.append({"title": f"{who} {i}", "year": 2020, "venue": "CVPR", "av_relevance": "AV",
+                             "citations": 10 + i,
+                             "authors_detail": [{"name": who, "affiliations": [inst + ("a" if i < 3 else "b")],
+                                                 "openalex_id": oid}]})
+        self._run(rows)
+        detail = self.last_detail["author_detail"]
+        self.assertFalse(detail["Carla Famous"]["identity_conflict"])
+        self.assertTrue(detail["Wei Wang"]["identity_conflict"])
 
     def test_author_with_one_consistent_openalex_id_is_ranked(self):
         stats = self._run([
