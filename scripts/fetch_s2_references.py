@@ -411,7 +411,7 @@ def match_title(title):
     """Pass c for one paper: CorpusId, or None when S2 has no paper whose
     title normalizes to ours."""
     try:
-        data = s2_request("/paper/search/match", {"query": title, "fields": "title,corpusId"})
+        data = s2_request("/paper/search/match", {"query": title, "fields": "title,corpusId"}, quiet=(404,))
     except urllib.error.HTTPError as e:
         if e.code == 404:  # search/match's way of saying "no match"
             return None
