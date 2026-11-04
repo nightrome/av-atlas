@@ -154,3 +154,6 @@ scripts/*.log
 .deploy-cache/
 # Cached ICRA/IROS PaperCept program pages (fetch_papercept_abstracts.py).
 data/papercept_*/
+
+# fetch_arxiv_monthly.py resume file for an interrupted harvest; deleted on success
+data/arxiv_harvest_checkpoint.jsonl

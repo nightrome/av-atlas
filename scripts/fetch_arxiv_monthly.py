@@ -46,8 +46,15 @@ crash leaves either nothing or papers whose IDs the next run finds in the
 corpus anyway.
 
 Network etiquette: one request at a time, REQUEST_DELAY seconds apart, and
-the OAI flow control is honoured (503 with Retry-After). A 403 or 429 stops
-the run with nothing written.
+the OAI flow control is honoured (503 with Retry-After). A 503 or a dropped
+or timed-out connection is retried with exponential backoff; a 403 or 429
+stops the run with nothing written to the corpus.
+
+Every harvested page is appended to data/arxiv_harvest_checkpoint.jsonl, so
+an interrupted run (arXiv still down after the last retry, or the job's time
+budget ending) resumes at the page it stopped on instead of starting over.
+The checkpoint is only used for the same window start and while it is
+younger than CHECKPOINT_MAX_AGE_HOURS, and is deleted once the run is done.
 
 Usage:
   python scripts/fetch_arxiv_monthly.py                 # window since last run
@@ -74,6 +81,7 @@ from fetch_common import ARXIV_OAI_URL, BASE, OUT_DIR, fetch
 STATE_FILE = BASE / "data" / "arxiv_monthly_state.json"
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 ARXIV_IDS_FILE = BASE / "data" / "arxiv_ids.json"
+CHECKPOINT_FILE = BASE / "data" / "arxiv_harvest_checkpoint.jsonl"
 OUT_PREFIX = "arxiv_monthly_"
 
 SETS = ("cs", "eess")
@@ -84,8 +92,13 @@ FOCUS_CATEGORIES = frozenset({"cs.CV", "cs.RO"})
 INTAKE_START = "2026-08-15"
 OVERLAP_DAYS = 3
 REQUEST_DELAY = 5.0
-MAX_FLOW_CONTROL_WAITS = 5
+# Waits between retries of one page: 10, 20, 40 ... capped at MAX_RETRY_AFTER,
+# or the server's Retry-After when that is longer. 8 waits is about 28 minutes.
+MAX_FLOW_CONTROL_WAITS = 8
+BACKOFF_BASE = 10
 MAX_RETRY_AFTER = 600
+# OAI resumption tokens expire; an older checkpoint is not worth trying.
+CHECKPOINT_MAX_AGE_HOURS = 20
 RUNS_KEPT = 24
 
 OAI_NS = "{http://www.openarchives.org/OAI/2.0/}"
@@ -95,6 +108,10 @@ BARE_ID_RE = re.compile(r"^(?:[0-9]{4}\.[0-9]{4,5}|[a-z\-]+(?:\.[A-Z]{2})?/[0-9]
 
 
 class HarvestError(RuntimeError):
+    pass
+
+
+class BadResumptionToken(HarvestError):
     pass
 
 
@@ -115,7 +132,8 @@ def parse_list_records(xml_text):
     if err is not None:
         if err.get("code") == "noRecordsMatch":
             return [], None
-        raise HarvestError(f"OAI error {err.get('code')}: {(err.text or '').strip()}")
+        cls = BadResumptionToken if err.get("code") == "badResumptionToken" else HarvestError
+        raise cls(f"OAI error {err.get('code')}: {(err.text or '').strip()}")
     list_el = root.find(f"{OAI_NS}ListRecords")
     if list_el is None:
         raise HarvestError("response has neither ListRecords nor error")
@@ -152,28 +170,45 @@ def parse_list_records(xml_text):
 
 
 def _get(url, fetch_fn, sleep_fn):
-    """One polite GET. Waits out OAI flow control (503 + Retry-After) a few
-    times; anything else, 403 and 429 included, ends the run."""
-    for _ in range(MAX_FLOW_CONTROL_WAITS + 1):
+    """One polite GET. Retries flow control (503, honouring Retry-After) and
+    dropped or timed-out connections with exponential backoff; anything else,
+    403 and 429 included, ends the run."""
+    last = None
+    for attempt in range(MAX_FLOW_CONTROL_WAITS + 1):
+        retry_after = 0
         try:
             return fetch_fn(url)
         except urllib.error.HTTPError as e:
             if e.code != 503:
                 raise HarvestError(f"HTTP {e.code} from {url}") from e
+            last = "503"
             try:
-                wait = int(e.headers.get("Retry-After") or 30)
+                retry_after = int(e.headers.get("Retry-After") or 0)
             except (TypeError, ValueError):
-                wait = 30
-            print(f"  OAI flow control: waiting {wait}s", flush=True)
-            sleep_fn(min(max(wait, REQUEST_DELAY), MAX_RETRY_AFTER))
-    raise HarvestError(f"still 503 after {MAX_FLOW_CONTROL_WAITS} waits: {url}")
+                pass
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
+            last = type(e).__name__
+        if attempt == MAX_FLOW_CONTROL_WAITS:
+            break
+        wait = min(max(retry_after, REQUEST_DELAY, BACKOFF_BASE * 2 ** attempt), MAX_RETRY_AFTER)
+        print(f"  {last}, retrying in {wait:.0f}s ({attempt + 1}/{MAX_FLOW_CONTROL_WAITS})", flush=True)
+        sleep_fn(wait)
+    raise HarvestError(f"still failing ({last}) after {MAX_FLOW_CONTROL_WAITS} retries: {url}")
 
 
-def harvest(set_spec, from_date, fetch_fn=None, sleep_fn=time.sleep):
-    """Every record in one OAI set with a datestamp on or after from_date."""
+def harvest(set_spec, from_date, fetch_fn=None, sleep_fn=time.sleep, resume=None, on_page=None):
+    """Every record in one OAI set with a datestamp on or after from_date.
+
+    resume is (records, token) from an interrupted harvest of this set and
+    continues from that token. on_page(records, token) is called after each
+    page with just that page's records and the token for the next one.
+    """
     fetch_fn = fetch_fn or (lambda url: fetch(url, timeout=300))
-    params = {"verb": "ListRecords", "metadataPrefix": "arXiv", "set": set_spec, "from": from_date}
-    out = []
+    out, token = (list(resume[0]), resume[1]) if resume else ([], None)
+    if token:
+        params = {"verb": "ListRecords", "resumptionToken": token}
+    else:
+        params = {"verb": "ListRecords", "metadataPrefix": "arXiv", "set": set_spec, "from": from_date}
     page = 0
     while True:
         if page:
@@ -183,10 +218,50 @@ def harvest(set_spec, from_date, fetch_fn=None, sleep_fn=time.sleep):
         out.extend(records)
         page += 1
         print(f"  set {set_spec}: page {page}, {len(out)} records so far", flush=True)
+        if on_page:
+            on_page(records, token)
         if not token:
             return out
         # After the first page OAI takes the token and nothing else.
         params = {"verb": "ListRecords", "resumptionToken": token}
+
+
+def load_checkpoint(path, from_date, now=None):
+    """Progress of an interrupted harvest -> {set: (records, token or None)},
+    or {} when there is none, it is for another window, or it is too old.
+    A torn last line (killed mid-write) is ignored."""
+    path = Path(path)
+    if not path.exists():
+        return {}
+    now = now or dt.datetime.now(dt.timezone.utc)
+    sets = {}
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+        head = json.loads(lines[0])
+        age = now - dt.datetime.fromisoformat(head["saved"])
+        if head.get("from") != from_date or age > dt.timedelta(hours=CHECKPOINT_MAX_AGE_HOURS):
+            return {}
+        for line in lines[1:]:
+            try:
+                page = json.loads(line)
+            except ValueError:
+                break
+            recs, _ = sets.get(page["set"], ([], None))
+            sets[page["set"]] = (recs + page["records"], page["token"])
+    except (OSError, ValueError, KeyError, IndexError):
+        return {}
+    return sets
+
+
+def _checkpoint_start(path, from_date, now=None):
+    now = now or dt.datetime.now(dt.timezone.utc)
+    Path(path).write_text(json.dumps({"from": from_date, "saved": now.isoformat()}) + "\n",
+                          encoding="utf-8", newline="\n")
+
+
+def _checkpoint_page(path, set_spec, records, token):
+    with open(path, "a", encoding="utf-8", newline="\n") as f:
+        f.write(json.dumps({"set": set_spec, "records": records, "token": token}, ensure_ascii=False) + "\n")
 
 
 def arxiv_id_from(value):
@@ -345,17 +420,44 @@ def write_json_atomic(path, data):
 
 
 def run(fetch_fn=None, sleep_fn=time.sleep, today=None, from_override=None, dry_run=False,
-        venues_dir=OUT_DIR, state_file=STATE_FILE, papers_file=PAPERS_FILE, arxiv_ids_file=ARXIV_IDS_FILE):
+        venues_dir=OUT_DIR, state_file=STATE_FILE, papers_file=PAPERS_FILE, arxiv_ids_file=ARXIV_IDS_FILE,
+        checkpoint_file=CHECKPOINT_FILE):
     today = today or dt.datetime.now(dt.timezone.utc).date().isoformat()
     state = load_state(state_file)
     start = window_start(state, from_override)
     print(f"arXiv monthly intake: sets {', '.join(SETS)}, datestamps from {start}", flush=True)
 
+    progress = load_checkpoint(checkpoint_file, start)
+    if progress:
+        print("  resuming from checkpoint: " + ", ".join(
+            f"{k} {len(v[0])} records{'' if v[1] else ' (complete)'}" for k, v in progress.items()), flush=True)
+    else:
+        _checkpoint_start(checkpoint_file, start)
+
     records = []
     for i, set_spec in enumerate(SETS):
         if i:
             sleep_fn(REQUEST_DELAY)
-        records.extend(harvest(set_spec, start, fetch_fn, sleep_fn))
+
+        def save(recs, token, set_spec=set_spec):
+            _checkpoint_page(checkpoint_file, set_spec, recs, token)
+
+        resume = progress.get(set_spec)
+        if resume and not resume[1]:
+            records.extend(resume[0])  # this set finished before the interruption
+            continue
+        try:
+            records.extend(harvest(set_spec, start, fetch_fn, sleep_fn, resume=resume, on_page=save))
+        except BadResumptionToken:
+            if not resume:
+                raise
+            print(f"  set {set_spec}: saved token expired, harvesting it again from the start", flush=True)
+            # Rebuild the file without this set's stale pages, then start the set over.
+            keep = {k: v for k, v in progress.items() if k != set_spec}
+            _checkpoint_start(checkpoint_file, start)
+            for k, (recs, tok) in keep.items():
+                _checkpoint_page(checkpoint_file, k, recs, tok)
+            records.extend(harvest(set_spec, start, fetch_fn, sleep_fn, on_page=save))
 
     corpus_ids, corpus_titles = load_corpus_keys(venues_dir, papers_file, arxiv_ids_file)
     accepted, counts = select(records, corpus_ids, corpus_titles, set(state.get("seen") or {}))
@@ -367,6 +469,7 @@ def run(fetch_fn=None, sleep_fn=time.sleep, today=None, from_override=None, dry_
     for k, v in counts.items():
         print(f"  {k}: {v}")
     if dry_run:
+        Path(checkpoint_file).unlink(missing_ok=True)
         print("Dry run: nothing written.")
         return summary
 
@@ -383,6 +486,7 @@ def run(fetch_fn=None, sleep_fn=time.sleep, today=None, from_override=None, dry_
     runs = (state.get("runs") or []) + [{k: summary[k] for k in summary if k != "titles"}]
     write_json_atomic(state_file, {"window_end": today, "seen": dict(sorted(seen.items())),
                                    "runs": runs[-RUNS_KEPT:]})
+    Path(checkpoint_file).unlink(missing_ok=True)
     print(f"Added {len(new)} papers to {out_file.name}.")
     return summary
 
@@ -398,7 +502,8 @@ def main(argv=None):
     try:
         summary = run(from_override=args.from_date, dry_run=args.dry_run)
     except HarvestError as e:
-        print(f"Stopped, nothing written: {e}", file=sys.stderr)
+        print(f"Stopped, nothing written: {e}\nHarvest progress is kept in "
+              f"{CHECKPOINT_FILE.name}; rerun to resume.", file=sys.stderr)
         return 1
     if args.summary_json:
         Path(args.summary_json).write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
