@@ -208,7 +208,8 @@ instead of failing, so run `scripts/build_public_site.py` first for a full run.
 ## Monthly update
 
 `.github/workflows/monthly-update.yml` updates the site on its own, at 03:17 UTC on
-the 4th of every month. It runs `scripts/monthly_update.py`, which:
+the 4th of every month, and again at 03:17 and 15:17 UTC through the 10th until a run
+ends green (see "Retries" below). It runs `scripts/monthly_update.py`, which:
 
 1. restores the corpus backup (`restore_corpus.py`), plus the live site's `stats.json`
    so the "data last updated" date only moves when the content really changed;
@@ -233,6 +234,19 @@ If a step fails, the job opens an issue called "Monthly update failed" (or comme
 the open one) with the step table and the end of the log. A failed source (arXiv down,
 say) doesn't stop the rest; a failed restore, build or publish does, and then
 production keeps last month's site.
+
+**Retries.** A run that ends red, say because arXiv was down, is tried again twelve
+hours later, up to the 10th. A first "check" job ends the run at once if a full run
+already finished green this month (a run titled exactly `monthly-update`; dry runs and
+fetch-only runs carry a suffix and don't count). Each retry resumes where the last
+stopped: the arXiv harvest checkpoint is kept in the Actions cache, the Semantic
+Scholar crawlers keep their side files in the corpus backup, and every run
+republishes, so a source that comes back on day two still lands in the same month's
+site. Waiting on a source is not a failure by itself: Semantic Scholar rate limits
+and running out of time on its crawlers count as partial progress, and arXiv is
+retried with exponential backoff before the step gives up. A month where nothing
+ever goes green stops after about 14 attempts and leaves the "Monthly update failed"
+issue open.
 
 To try it without changing anything, run the workflow by hand from the Actions tab
 with "Only print what would run" ticked, or locally:

@@ -1,5 +1,10 @@
 name: monthly-update
 
+# Shows up as "monthly-update" for a scheduled or full manual run. The "check"
+# job below looks for a successful run with exactly this title, so a dry run
+# or fetch-only test gets a different one and never counts as the month's run.
+run-name: monthly-update${{ inputs.dry_run && ' (dry run)' || '' }}${{ inputs.fetch_only && ' (fetch only)' || '' }}
+
 # The monthly data update: restore the corpus backup, fetch what's new
 # (arXiv, new conference editions, journal updates on Crossref, Semantic
 # Scholar abstracts and references), rebuild, publish to production, back
@@ -14,11 +19,22 @@ name: monthly-update
 #                             push made with GITHUB_TOKEN doesn't start a Pages
 #                             build, and a PR it opens doesn't run tests.yml.
 #   SEMANTIC_SCHOLAR_API_KEY  the Semantic Scholar API key.
+#
+# Retries: a run that ends red (a source was down) is tried again at 03:17 and
+# 15:17 UTC on the following days, up to the 10th, until one run ends green.
+# Each retry resumes where the last one stopped (the arXiv harvest checkpoint
+# is cached between runs; the Semantic Scholar crawlers keep their own side
+# files in the corpus backup) and republishes the site, so a source that is
+# down for a day still ends up in that month's site.
 
 on:
   schedule:
-    # 03:17 UTC on the 4th of each month (off the hour, when runners are busy).
+    # 03:17 UTC on the 4th of each month (off the hour, when runners are busy),
+    # then the retry slots: the "check" job ends the run at once when this
+    # month's update has already finished green.
     - cron: "17 3 4 * *"
+    - cron: "17 3,15 5-10 * *"
+    - cron: "17 15 4 * *"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -38,7 +54,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Scheduled runs only: skip when a full run already ended green this month.
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    outputs:
+      skip: ${{ steps.done.outputs.skip }}
+    steps:
+      - id: done
+        run: |
+          skip=false
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            month_start="$(date -u +%Y-%m-01)"
+            n="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow monthly-update.yml --status success                    --created ">=$month_start" --limit 50 --json displayTitle                    --jq '[.[] | select(.displayTitle == "monthly-update")] | length')" || n=0  # if the lookup fails, run the update rather than skip it
+            echo "green full runs since $month_start: $n"
+            if [ "${n:-0}" -gt 0 ]; then skip=true; fi
+          fi
+          echo "skip=$skip" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   update:
+    needs: check
+    if: needs.check.outputs.skip != 'true'
     runs-on: ubuntu-latest
     # GitHub stops a job at 6 hours. monthly_update.py plans for 320 minutes
     # and stops its crawlers early to fit; the rest is slack for setup and
@@ -76,6 +116,16 @@ jobs:
         with:
           node-version: "22"
 
+      # The arXiv harvest writes each page to this file as it goes, and a
+      # retry run picks up from it. Saved even when the run fails (that is
+      # the point); keys are per run, restore takes the newest one.
+      - name: Restore the arXiv harvest checkpoint
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: data/arxiv_harvest_checkpoint.jsonl
+          key: arxiv-checkpoint-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: arxiv-checkpoint-
+
       - name: Install the crawlers' dependencies
         run: python -m pip install -r scripts/requirements.txt
 
@@ -104,6 +154,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
           GH_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
           SEMANTIC_SCHOLAR_API_KEY: ${{ secrets.SEMANTIC_SCHOLAR_API_KEY }}
+
+      - name: Save the arXiv harvest checkpoint
+        if: always()
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: data/arxiv_harvest_checkpoint.jsonl
+          key: arxiv-checkpoint-${{ github.run_id }}-${{ github.run_attempt }}
 
       # Not for a fetch-only test run: that's someone watching the log anyway.
       - name: Open or update the failure issue

@@ -154,6 +154,11 @@ class StepOrderTests(unittest.TestCase):
         self.assertEqual(orch.run(), 0)
         self.assertEqual(orch.results["s2_refs"][0], "partial")
 
+    def test_s2_rate_limit_stop_is_partial_not_a_failure(self):
+        orch = ScriptedOrchestrator(self.work, {"fetch_s2_references.py": (75, False, 5)})
+        self.assertEqual(orch.run(), 0)
+        self.assertEqual(orch.results["s2_refs"][0], "partial")
+
     def test_other_timeouts_are_failures(self):
         orch = ScriptedOrchestrator(self.work, {"check_new_editions.py": (-2, True, 999)})
         self.assertEqual(orch.run(), 1)

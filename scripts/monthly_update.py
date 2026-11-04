@@ -129,6 +129,7 @@ class Step:
     func: str = None          # name of an Orchestrator method instead of cmds
     needs: tuple = ()
     timeout_ok: bool = False  # running out of time is progress, not failure
+    partial_codes: tuple = ()  # exit statuses that mean "stopped early, progress saved"
     before_build: bool = False
     drop_env: tuple = ()
 
@@ -152,6 +153,7 @@ def plan(work_dir):
         Step("s2_apply", "soft", 15, before_build=True, needs=("premerge",),
              cmds=(("apply_abstracts_semanticscholar.py",),)),
         Step("s2_refs", "soft", 180, before_build=True, needs=("premerge",), timeout_ok=True,
+             partial_codes=(75,),
              cmds=(("fetch_s2_references.py",),)),
         Step("build", "hard", 150, cmds=(("build_public_site.py",),)),
         Step("commit", "soft", 5, func="commit_data", needs=("build",)),
@@ -376,6 +378,8 @@ class Orchestrator:
                 if step.timeout_ok:
                     return "partial", f"{cmd[0]} stopped at its time budget; it resumes next month"
                 return "timed out", f"{cmd[0]} ran past {budget:.0f} min"
+            if code in step.partial_codes:
+                return "partial", f"{cmd[0]} was rate limited and stopped; it resumes next run"
             if code != 0:
                 return "failed", f"{cmd[0]} exited with {code}"
         return "ok", ""

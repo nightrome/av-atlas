@@ -91,7 +91,7 @@ FOCUS_CATEGORIES = frozenset({"cs.CV", "cs.RO"})
 # entries are from mid-August 2026.
 INTAKE_START = "2026-08-15"
 OVERLAP_DAYS = 3
-REQUEST_DELAY = 5.0
+REQUEST_DELAY = 10.0
 # Waits between retries of one page: 10, 20, 40 ... capped at MAX_RETRY_AFTER,
 # or the server's Retry-After when that is longer. 8 waits is about 28 minutes.
 MAX_FLOW_CONTROL_WAITS = 8
