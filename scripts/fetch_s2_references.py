@@ -95,7 +95,7 @@ MIN_REFS_BATCH_SIZE = 10
 MAX_RATE_LIMIT_RETRIES = 10
 # Exit status for "S2 kept throttling, progress saved, rerun to resume" (EX_TEMPFAIL).
 # monthly_update.py treats it as partial progress rather than a failure.
-EXIT_RATE_LIMITED = 75
+EXIT_RATE_LIMITED = 75  # same number as fetch_arxiv_monthly.EXIT_TRANSIENT
 MAX_CONSECUTIVE_FAILURES = 10
 SAVE_EVERY = 20
 # A paper S2 had no references for (or didn't know at all) is asked again

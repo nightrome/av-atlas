@@ -1,8 +1,6 @@
 name: monthly-update
 
-# Shows up as "monthly-update" for a scheduled or full manual run. The "check"
-# job below looks for a successful run with exactly this title, so a dry run
-# or fetch-only test gets a different one and never counts as the month's run.
+# Dry runs and fetch-only tests get a suffix so they are easy to tell apart.
 run-name: monthly-update${{ inputs.dry_run && ' (dry run)' || '' }}${{ inputs.fetch_only && ' (fetch only)' || '' }}
 
 # The monthly data update: restore the corpus backup, fetch what's new
@@ -20,8 +18,12 @@ run-name: monthly-update${{ inputs.dry_run && ' (dry run)' || '' }}${{ inputs.fe
 #                             build, and a PR it opens doesn't run tests.yml.
 #   SEMANTIC_SCHOLAR_API_KEY  the Semantic Scholar API key.
 #
-# Retries: a run that ends red (a source was down) is tried again at 03:17 and
-# 15:17 UTC on the following days, up to the 10th, until one run ends green.
+# Retries: when a source is down (arXiv unavailable, say) the run still
+# publishes what it has, ends green and says nothing; it is tried again at
+# 03:17 and 15:17 UTC through the 10th until a run finishes everything, which
+# it records with a tag called monthly-done-YYYY-MM. Only a real problem (a
+# crash, a failed build or publish) or a source still down on the last slot
+# (the 10th, 15:17) turns the run red and opens the failure issue.
 # Each retry resumes where the last one stopped (the arXiv harvest checkpoint
 # is cached between runs; the Semantic Scholar crawlers keep their own side
 # files in the corpus backup) and republishes the site, so a source that is
@@ -54,12 +56,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Scheduled runs only: skip when a full run already ended green this month.
+  # Scheduled runs only: skip when this month's update already finished.
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    permissions:
-      actions: read
     outputs:
       skip: ${{ steps.done.outputs.skip }}
     steps:
@@ -67,10 +67,11 @@ jobs:
         run: |
           skip=false
           if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
-            month_start="$(date -u +%Y-%m-01)"
-            n="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow monthly-update.yml --status success                    --created ">=$month_start" --limit 50 --json displayTitle                    --jq '[.[] | select(.displayTitle == "monthly-update")] | length')" || n=0  # if the lookup fails, run the update rather than skip it
-            echo "green full runs since $month_start: $n"
-            if [ "${n:-0}" -gt 0 ]; then skip=true; fi
+            tag="monthly-done-$(date -u +%Y-%m)"
+            # If the lookup fails, run the update rather than skip it.
+            found="$(git ls-remote "https://github.com/$GITHUB_REPOSITORY" "refs/tags/$tag" || true)"
+            echo "$tag: ${found:-not there yet}"
+            if [ -n "$found" ]; then skip=true; fi
           fi
           echo "skip=$skip" >> "$GITHUB_OUTPUT"
         env:
@@ -145,6 +146,11 @@ jobs:
           args=(--work-dir "$RUNNER_TEMP/monthly-update")
           if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
           if [ "$FETCH_ONLY" = "true" ]; then args+=(--fetch-only); fi
+          # A source that is down only fails the run on the last slot of the
+          # month (the 10th, 15:17 UTC) or when someone started it by hand.
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ] && ! { [ "$(date -u +%-d)" -ge 10 ] && [ "$(date -u +%-H)" -ge 14 ]; }; then
+            args+=(--retry-later)
+          fi
           python scripts/monthly_update.py "${args[@]}" 2>&1 | tee "$RUNNER_TEMP/monthly-update.log"
         env:
           DRY_RUN: ${{ inputs.dry_run }}

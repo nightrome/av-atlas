@@ -90,6 +90,10 @@ class ScriptedOrchestrator(mu.Orchestrator):
         self.calls.append("open_pr()")
         return "ok", ""
 
+    def mark_done(self):
+        self.calls.append("mark_done()")
+        return ("ok", "") if self.complete() else ("skipped", "incomplete")
+
     def file_counts(self, paths):
         return [(p, None, 1) for p in paths]
 
@@ -110,7 +114,7 @@ class StepOrderTests(unittest.TestCase):
             "fetch_crossref.py", "fix_suspect_venues.py", "merge_corpus.py",
             "fetch_abstracts_semanticscholar.py", "apply_abstracts_semanticscholar.py",
             "fetch_s2_references.py", "build_public_site.py", "commit_data()", "deploy.py",
-            "backup_corpus.py", "open_pr()"])
+            "backup_corpus.py", "open_pr()", "mark_done()"])
         summary = (self.work / "summary.md").read_text(encoding="utf-8")
         self.assertIn("| publish | ok |", summary)
         self.assertIn("data/venues/x.json", summary)
@@ -158,6 +162,28 @@ class StepOrderTests(unittest.TestCase):
         orch = ScriptedOrchestrator(self.work, {"fetch_s2_references.py": (75, False, 5)})
         self.assertEqual(orch.run(), 0)
         self.assertEqual(orch.results["s2_refs"][0], "partial")
+
+    def test_arxiv_outage_waits_for_the_next_slot_but_fails_on_the_last(self):
+        out = {"fetch_arxiv_monthly.py": (75, False, 5)}
+        orch = ScriptedOrchestrator(self.work, out, retry_later=True)
+        self.assertEqual(orch.run(), 0)
+        self.assertEqual(orch.results["arxiv"][0], "retry")
+        self.assertEqual(orch.results["mark_done"][0], "skipped")  # no tag, so the next slot runs
+        self.assertIn("publish", orch.results)
+        last = ScriptedOrchestrator(self.work, out)
+        self.assertEqual(last.run(), 1)
+
+    def test_a_real_crash_fails_at_once(self):
+        orch = ScriptedOrchestrator(self.work, {"fetch_arxiv_monthly.py": (1, False, 1)}, retry_later=True)
+        self.assertEqual(orch.run(), 1)
+        self.assertEqual(orch.results["arxiv"][0], "failed")
+        orch = ScriptedOrchestrator(self.work, {"fetch_crossref.py": (1, False, 1)}, retry_later=True)
+        self.assertEqual(orch.run(), 1)
+
+    def test_clean_run_is_tagged_done(self):
+        orch = ScriptedOrchestrator(self.work, {"fetch_s2_references.py": (75, False, 5)}, retry_later=True)
+        self.assertEqual(orch.run(), 0)
+        self.assertEqual(orch.results["mark_done"][0], "ok")
 
     def test_other_timeouts_are_failures(self):
         orch = ScriptedOrchestrator(self.work, {"check_new_editions.py": (-2, True, 999)})
@@ -481,7 +507,7 @@ class FetchOnlyTests(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_fetch_only_skips_everything_from_the_build_on(self):
-        self.assertEqual(mu.FETCH_ONLY_SKIPS, ["build", "commit", "publish", "backup", "pr"])
+        self.assertEqual(mu.FETCH_ONLY_SKIPS, ["build", "commit", "publish", "backup", "pr", "mark_done"])
         orch = ScriptedOrchestrator(self.work, skip=mu.FETCH_ONLY_SKIPS)
         self.assertEqual(orch.run(), 0)
         self.assertEqual(orch.calls[-1], "fetch_s2_references.py")

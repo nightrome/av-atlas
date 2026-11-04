@@ -82,6 +82,9 @@ STATE_FILE = BASE / "data" / "arxiv_monthly_state.json"
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 ARXIV_IDS_FILE = BASE / "data" / "arxiv_ids.json"
 CHECKPOINT_FILE = BASE / "data" / "arxiv_harvest_checkpoint.jsonl"
+# Exit status for "arXiv was unavailable, rerun later" (EX_TEMPFAIL). Every other
+# failure exits 1: monthly_update.py only treats this one as worth waiting out.
+EXIT_TRANSIENT = 75
 OUT_PREFIX = "arxiv_monthly_"
 
 SETS = ("cs", "eess")
@@ -109,6 +112,10 @@ BARE_ID_RE = re.compile(r"^(?:[0-9]{4}\.[0-9]{4,5}|[a-z\-]+(?:\.[A-Z]{2})?/[0-9]
 
 class HarvestError(RuntimeError):
     pass
+
+
+class TransientHarvestError(HarvestError):
+    """arXiv is down, slow or throttling: nothing wrong on our side, try again later."""
 
 
 class BadResumptionToken(HarvestError):
@@ -179,6 +186,8 @@ def _get(url, fetch_fn, sleep_fn):
         try:
             return fetch_fn(url)
         except urllib.error.HTTPError as e:
+            if e.code == 429:
+                raise TransientHarvestError(f"HTTP 429 (throttled) from {url}") from e
             if e.code != 503:
                 raise HarvestError(f"HTTP {e.code} from {url}") from e
             last = "503"
@@ -193,7 +202,7 @@ def _get(url, fetch_fn, sleep_fn):
         wait = min(max(retry_after, REQUEST_DELAY, BACKOFF_BASE * 2 ** attempt), MAX_RETRY_AFTER)
         print(f"  {last}, retrying in {wait:.0f}s ({attempt + 1}/{MAX_FLOW_CONTROL_WAITS})", flush=True)
         sleep_fn(wait)
-    raise HarvestError(f"still failing ({last}) after {MAX_FLOW_CONTROL_WAITS} retries: {url}")
+    raise TransientHarvestError(f"still failing ({last}) after {MAX_FLOW_CONTROL_WAITS} retries: {url}")
 
 
 def harvest(set_spec, from_date, fetch_fn=None, sleep_fn=time.sleep, resume=None, on_page=None):
@@ -504,7 +513,7 @@ def main(argv=None):
     except HarvestError as e:
         print(f"Stopped, nothing written: {e}\nHarvest progress is kept in "
               f"{CHECKPOINT_FILE.name}; rerun to resume.", file=sys.stderr)
-        return 1
+        return EXIT_TRANSIENT if isinstance(e, TransientHarvestError) else 1
     if args.summary_json:
         Path(args.summary_json).write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
                                            encoding="utf-8")

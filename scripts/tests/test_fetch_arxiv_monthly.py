@@ -163,6 +163,16 @@ class TestHarvest(unittest.TestCase):
         self.assertEqual(sleeps[:3], [10, 20, 40])
         self.assertEqual(max(sleeps), fam.MAX_RETRY_AFTER)
 
+    def test_outages_are_transient_but_403_is_not(self):
+        errors = [http_error(503)] * (fam.MAX_FLOW_CONTROL_WAITS + 1)
+        with self.assertRaises(fam.TransientHarvestError):
+            fam.harvest("cs", "2026-08-15", FakeOai(errors=errors), sleep_fn=lambda s: None)
+        with self.assertRaises(fam.TransientHarvestError):
+            fam.harvest("cs", "2026-08-15", FakeOai(errors=[http_error(429)]), sleep_fn=lambda s: None)
+        with self.assertRaises(fam.HarvestError) as cm:
+            fam.harvest("cs", "2026-08-15", FakeOai(errors=[http_error(403)]), sleep_fn=lambda s: None)
+        self.assertNotIsInstance(cm.exception, fam.TransientHarvestError)
+
     def test_retries_timeouts_and_dropped_connections(self):
         sleeps = []
         fake = FakeOai(errors=[TimeoutError(), urllib.error.URLError("reset")])
