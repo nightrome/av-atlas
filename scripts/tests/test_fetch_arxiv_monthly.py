@@ -154,6 +154,41 @@ class TestHarvest(unittest.TestCase):
         fam.harvest("cs", "2026-08-15", fake, sleep_fn=sleeps.append)
         self.assertEqual(sleeps[0], 20)
 
+    def test_backs_off_exponentially_then_gives_up(self):
+        sleeps = []
+        errors = [http_error(503)] * (fam.MAX_FLOW_CONTROL_WAITS + 1)
+        with self.assertRaises(fam.HarvestError):
+            fam.harvest("cs", "2026-08-15", FakeOai(errors=errors), sleep_fn=sleeps.append)
+        self.assertEqual(len(sleeps), fam.MAX_FLOW_CONTROL_WAITS)
+        self.assertEqual(sleeps[:3], [10, 20, 40])
+        self.assertEqual(max(sleeps), fam.MAX_RETRY_AFTER)
+
+    def test_outages_are_transient_but_403_is_not(self):
+        errors = [http_error(503)] * (fam.MAX_FLOW_CONTROL_WAITS + 1)
+        with self.assertRaises(fam.TransientHarvestError):
+            fam.harvest("cs", "2026-08-15", FakeOai(errors=errors), sleep_fn=lambda s: None)
+        with self.assertRaises(fam.TransientHarvestError):
+            fam.harvest("cs", "2026-08-15", FakeOai(errors=[http_error(429)]), sleep_fn=lambda s: None)
+        with self.assertRaises(fam.HarvestError) as cm:
+            fam.harvest("cs", "2026-08-15", FakeOai(errors=[http_error(403)]), sleep_fn=lambda s: None)
+        self.assertNotIsInstance(cm.exception, fam.TransientHarvestError)
+
+    def test_retries_timeouts_and_dropped_connections(self):
+        sleeps = []
+        fake = FakeOai(errors=[TimeoutError(), urllib.error.URLError("reset")])
+        self.assertEqual(len(fam.harvest("cs", "2026-08-15", fake, sleep_fn=sleeps.append)), 7)
+        self.assertEqual(sleeps[:2], [10, 20])
+
+    def test_resumes_from_token(self):
+        fake = FakeOai()
+        first = fam.harvest("cs", "2026-08-15", FakeOai(), sleep_fn=lambda s: None)
+        page1 = first[:6]
+        records = fam.harvest("cs", "2026-08-15", fake, sleep_fn=lambda s: None,
+                              resume=(page1, "fixture-token-1"))
+        self.assertEqual(len(records), 7)
+        self.assertEqual(len(fake.urls), 1)
+        self.assertIn("resumptionToken=fixture-token-1", fake.urls[0])
+
     def test_stops_on_403_and_429(self):
         for code in (403, 429):
             with self.assertRaises(fam.HarvestError):
@@ -209,6 +244,83 @@ class TestRun(unittest.TestCase):
             fam.run(fetch_fn=FakeOai(errors=[http_error(429)]), today="2026-09-24", **self.kw)
         self.assertFalse(self.state.exists())
         self.assertEqual([f.name for f in self.venues.iterdir()], ["cvpr2026.json"])
+
+
+class TestCheckpoint(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        root = Path(self.tmp.name)
+        self.venues = root / "venues"
+        self.venues.mkdir()
+        self.state = root / "state.json"
+        self.ckpt = root / "checkpoint.jsonl"
+        self.kw = dict(sleep_fn=lambda s: None, venues_dir=self.venues, state_file=self.state,
+                       papers_file=root / "missing.json", arxiv_ids_file=root / "missing2.json",
+                       checkpoint_file=self.ckpt)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _fail_on_page2(self):
+        class Fake(FakeOai):
+            def __call__(inner, url):
+                if "resumptionToken=fixture-token-1" in url:
+                    inner.urls.append(url)
+                    raise http_error(429)
+                return super().__call__(url)
+        return Fake()
+
+    def test_failed_run_keeps_pages_and_next_run_resumes(self):
+        with self.assertRaises(fam.HarvestError):
+            fam.run(fetch_fn=self._fail_on_page2(), today="2026-09-24", **self.kw)
+        self.assertTrue(self.ckpt.exists())
+        self.assertFalse(self.state.exists())
+        fake = FakeOai()
+        summary = fam.run(fetch_fn=fake, today="2026-09-24", **self.kw)
+        # page 1 of cs came from the checkpoint: only page 2 and the eess set were fetched
+        self.assertIn("resumptionToken=fixture-token-1", fake.urls[0])
+        self.assertEqual(len(fake.urls), 2)
+        self.assertEqual(summary["accepted"], 3)
+        self.assertFalse(self.ckpt.exists())
+
+    def test_checkpoint_for_another_window_or_too_old_is_ignored(self):
+        with self.assertRaises(fam.HarvestError):
+            fam.run(fetch_fn=self._fail_on_page2(), today="2026-09-24", **self.kw)
+        self.assertEqual(fam.load_checkpoint(self.ckpt, "2026-09-01"), {})
+        later = dt_now_plus(fam.CHECKPOINT_MAX_AGE_HOURS + 1)
+        self.assertEqual(fam.load_checkpoint(self.ckpt, "2026-08-15", now=later), {})
+        self.assertIn("cs", fam.load_checkpoint(self.ckpt, "2026-08-15"))
+
+    def test_torn_last_line_is_ignored(self):
+        with self.assertRaises(fam.HarvestError):
+            fam.run(fetch_fn=self._fail_on_page2(), today="2026-09-24", **self.kw)
+        with open(self.ckpt, "a", encoding="utf-8") as f:
+            f.write('{"set": "cs", "records": [{"id"')
+        recs, token = fam.load_checkpoint(self.ckpt, "2026-08-15")["cs"]
+        self.assertEqual(token, "fixture-token-1")
+        self.assertEqual(len(recs), 6)
+
+    def test_expired_token_restarts_that_set(self):
+        with self.assertRaises(fam.HarvestError):
+            fam.run(fetch_fn=self._fail_on_page2(), today="2026-09-24", **self.kw)
+        bad = ('<?xml version="1.0"?><OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/">'
+               '<error code="badResumptionToken">expired</error></OAI-PMH>')
+
+        class Expired(FakeOai):
+            def __call__(inner, url):
+                if "resumptionToken=fixture-token-1" in url and not inner.urls:
+                    inner.urls.append(url)
+                    return bad
+                return super().__call__(url)
+
+        summary = fam.run(fetch_fn=Expired(), today="2026-09-24", **self.kw)
+        self.assertEqual(summary["harvested"], 7)
+        self.assertEqual(summary["accepted"], 3)
+
+
+def dt_now_plus(hours):
+    import datetime as dt
+    return dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=hours)
 
 
 class TestMergeReadsMonthlyFiles(unittest.TestCase):

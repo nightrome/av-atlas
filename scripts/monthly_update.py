@@ -91,6 +91,8 @@ from pathlib import Path
 
 from fetch_common import normalize_s2_key
 
+EXIT_TRANSIENT = 75  # see fetch_arxiv_monthly.EXIT_TRANSIENT and fetch_s2_references.EXIT_RATE_LIMITED
+
 SCRIPTS_DIR = Path(__file__).resolve().parent
 BASE = SCRIPTS_DIR.parent
 PRODUCTION_STATS_URL = "https://nightrome.github.io/av-atlas/stats.json"
@@ -101,6 +103,7 @@ BASE_BRANCH = "main"
 BOT_BRANCH = "auto/monthly-update"
 PR_TITLE = "Monthly data update"
 ISSUE_TITLE = "Monthly update failed"
+DONE_TAG_PREFIX = "monthly-done-"
 BOT_NAME = "AV Atlas monthly update"
 BOT_EMAIL = "holger@it-caesar.com"
 
@@ -129,6 +132,8 @@ class Step:
     func: str = None          # name of an Orchestrator method instead of cmds
     needs: tuple = ()
     timeout_ok: bool = False  # running out of time is progress, not failure
+    partial_codes: tuple = ()  # exit statuses that mean "stopped early, progress saved"
+    transient: bool = False   # exit 75 or running out of time = the source is unavailable, retry later
     before_build: bool = False
     drop_env: tuple = ()
 
@@ -139,7 +144,7 @@ def plan(work_dir):
         Step("restore", "hard", 30, cmds=(("restore_corpus.py",),)),
         Step("carry", "soft", 10, func="carry_forward", before_build=True),
         Step("prev_stats", "soft", 5, func="fetch_previous_stats", before_build=True),
-        Step("arxiv", "soft", 60, before_build=True,
+        Step("arxiv", "soft", 60, before_build=True, transient=True,
              cmds=(("fetch_arxiv_monthly.py", "--summary-json", f"{w}/arxiv.json"),)),
         Step("editions", "soft", 120, before_build=True,
              cmds=(("check_new_editions.py", "--json", f"{w}/editions.json", "--markdown", f"{w}/editions.md",
@@ -152,6 +157,7 @@ def plan(work_dir):
         Step("s2_apply", "soft", 15, before_build=True, needs=("premerge",),
              cmds=(("apply_abstracts_semanticscholar.py",),)),
         Step("s2_refs", "soft", 180, before_build=True, needs=("premerge",), timeout_ok=True,
+             partial_codes=(EXIT_TRANSIENT,),
              cmds=(("fetch_s2_references.py",),)),
         Step("build", "hard", 150, cmds=(("build_public_site.py",),)),
         Step("commit", "soft", 5, func="commit_data", needs=("build",)),
@@ -159,6 +165,7 @@ def plan(work_dir):
              cmds=(("deploy.py", "--skip-build", "--no-main-commit"),)),
         Step("backup", "soft", 30, needs=("publish",), cmds=(("backup_corpus.py",),)),
         Step("pr", "soft", 10, func="open_pr", needs=("publish", "commit")),
+        Step("mark_done", "soft", 5, func="mark_done", needs=("publish",)),
     ]
 
 
@@ -257,11 +264,12 @@ def code_block(text):
 
 class Orchestrator:
     def __init__(self, work_dir, dry_run=False, skip=(), deadline=DEFAULT_DEADLINE_MINUTES,
-                 clock=time.monotonic, base=BASE, repo=REPO):
+                 clock=time.monotonic, base=BASE, repo=REPO, retry_later=False):
         self.work_dir = Path(work_dir)
         self.dry_run = dry_run
         self.skip = set(skip)
         self.deadline = deadline
+        self.retry_later = retry_later
         self.clock = clock
         self.base = Path(base)
         self.repo = repo
@@ -335,7 +343,15 @@ class Orchestrator:
         return 1 if self.failed() else 0
 
     def failed(self):
-        return any(s in ("failed", "timed out") for s, _, _ in self.results.values())
+        """Does this run need a human? A "retry" (a source was unavailable) only
+        counts on the last scheduled slot of the month or when run by hand;
+        before that the next slot picks it up and nobody is bothered."""
+        bad = ("failed", "timed out") if self.retry_later else ("failed", "timed out", "retry")
+        return any(s in bad for s, _, _ in self.results.values())
+
+    def complete(self):
+        """Everything the month needs is in the published site."""
+        return all(s in ("ok", "partial") for n, (s, _, _) in self.results.items() if n != "mark_done")
 
     def run_step(self, step):
         self.log(f"\n=== {step.name} ({step.kind}) ===")
@@ -375,7 +391,13 @@ class Orchestrator:
             if timed_out:
                 if step.timeout_ok:
                     return "partial", f"{cmd[0]} stopped at its time budget; it resumes next month"
+                if step.transient:
+                    return "retry", f"{cmd[0]} ran past {budget:.0f} min, will retry"
                 return "timed out", f"{cmd[0]} ran past {budget:.0f} min"
+            if step.transient and code == EXIT_TRANSIENT:
+                return "retry", f"{cmd[0]}: source unavailable, will retry"
+            if code in step.partial_codes:
+                return "partial", f"{cmd[0]} was rate limited and stopped; it resumes next run"
             if code != 0:
                 return "failed", f"{cmd[0]} exited with {code}"
         return "ok", ""
@@ -469,6 +491,16 @@ class Orchestrator:
         self.git("-c", f"user.name={BOT_NAME}", "-c", f"user.email={BOT_EMAIL}", "commit", "--quiet", "-F", str(msg))
         self.committed = paths
         return "ok", f"{len(paths)} file(s)"
+
+    def mark_done(self):
+        """Tag this month as finished. The workflow's check job looks for the
+        tag and skips the retry runs once it exists."""
+        if not self.complete():
+            return "skipped", "not every step finished, so no tag: the next slot will run again"
+        tag = f"{DONE_TAG_PREFIX}{date.today().strftime('%Y-%m')}"
+        self.git("tag", "-f", tag, "HEAD")
+        self.git("push", "--force", "origin", f"refs/tags/{tag}")
+        return "ok", f"tagged {tag}"
 
     def open_pr(self):
         if not self.committed:
@@ -580,6 +612,9 @@ def main(argv=None):
                     help=f"skip a step (repeatable): {', '.join(STEP_NAMES)}")
     ap.add_argument("--fetch-only", action="store_true",
                     help="run only the restore and fetch steps; skip build, commit, publish, backup and pr")
+    ap.add_argument("--retry-later", action="store_true",
+                    help="a step whose source is unavailable doesn't fail the run (exit 0, no issue): "
+                         "another scheduled slot will try again. Leave it off on the last slot and by hand.")
     ap.add_argument("--deadline-minutes", type=float, default=DEFAULT_DEADLINE_MINUTES)
     ap.add_argument("--report-failure", metavar="LOG",
                     help="open or update the failure issue with the end of this log, then exit")
@@ -594,7 +629,8 @@ def main(argv=None):
     if args.fetch_only:
         skip += FETCH_ONLY_SKIPS
         print(f"Fetch-only run: skipping {', '.join(FETCH_ONLY_SKIPS)}. Nothing is published.", flush=True)
-    orch = Orchestrator(args.work_dir, dry_run=args.dry_run, skip=skip, deadline=args.deadline_minutes)
+    orch = Orchestrator(args.work_dir, dry_run=args.dry_run, skip=skip, deadline=args.deadline_minutes,
+                        retry_later=args.retry_later)
     code = orch.run()
     summary = orch.write_summary()
     print("\n" + summary)

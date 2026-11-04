@@ -245,7 +245,7 @@ def describe_s2_batch_counts(counts):
 # ---------------------------------------------------------------- Semantic Scholar key
 
 S2_KEY_NAME = "SEMANTIC_SCHOLAR_API_KEY"
-S2_KEYED_DELAY = 1.1      # 1 request/sec with a key, per S2's docs
+S2_KEYED_DELAY = 2.0      # S2 allows 1 request/sec with a key; half that rate stays under it
 S2_ANONYMOUS_DELAY = 3.0  # the keyless pool is shared by everyone; go slower
 
 

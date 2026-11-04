@@ -208,7 +208,8 @@ instead of failing, so run `scripts/build_public_site.py` first for a full run.
 ## Monthly update
 
 `.github/workflows/monthly-update.yml` updates the site on its own, at 03:17 UTC on
-the 4th of every month. It runs `scripts/monthly_update.py`, which:
+the 4th of every month, and again at 03:17 and 15:17 UTC through the 10th until a run
+ends green (see "Retries" below). It runs `scripts/monthly_update.py`, which:
 
 1. restores the corpus backup (`restore_corpus.py`), plus the live site's `stats.json`
    so the "data last updated" date only moves when the content really changed;
@@ -233,6 +234,24 @@ If a step fails, the job opens an issue called "Monthly update failed" (or comme
 the open one) with the step table and the end of the log. A failed source (arXiv down,
 say) doesn't stop the rest; a failed restore, build or publish does, and then
 production keeps last month's site.
+
+**Retries.** When a source is unavailable (arXiv down or throttling, Semantic
+Scholar rate limiting) the run still builds and publishes what it has, ends green
+and opens no issue. It is tried again twelve hours later, up to the 10th, until a
+run finishes every step; that run pushes a tag `monthly-done-YYYY-MM`, and a first
+"check" job ends every later scheduled run of that month at once when it sees the
+tag. The run turns red and opens or updates the "Monthly update failed" issue only
+when something needs you: a crash or other unexpected failure in any step, a failed
+restore, build or publish (these also fail at once, on every slot), a source still
+unavailable on the last slot (the 10th, 15:17 UTC), or any problem in a run you
+started by hand. Each retry resumes where the last stopped: the arXiv harvest checkpoint is kept in the Actions cache, the Semantic
+Scholar crawlers keep their side files in the corpus backup, and every run
+republishes, so a source that comes back on day two still lands in the same month's
+site. Waiting on a source is not a failure by itself: Semantic Scholar rate limits
+and running out of time on its crawlers count as partial progress, and arXiv is
+retried with exponential backoff before the step gives up. Scripts say "unavailable,
+try later" by exiting with status 75; any other non-zero exit counts as a real
+failure.
 
 To try it without changing anything, run the workflow by hand from the Actions tab
 with "Only print what would run" ticked, or locally:

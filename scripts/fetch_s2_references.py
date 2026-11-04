@@ -62,7 +62,7 @@ Usage:
 which is the slow one (one request per paper).
 
 Uses SEMANTIC_SCHOLAR_API_KEY (environment or .env) when there is one. Paced
-at one request per 1.1 s with the key, backs off on 429 and stops after
+at one request per 2 s with the key, backs off on 429 and stops after
 repeated 429/403 rather than pushing through. If S2 rejects the key with a
 403, the run drops it and carries on anonymously at a slower pace.
 """
@@ -92,7 +92,10 @@ API_BASE = "https://api.semanticscholar.org/graph/v1"
 ID_BATCH_SIZE = 500
 REFS_BATCH_SIZE = 250
 MIN_REFS_BATCH_SIZE = 10
-MAX_RATE_LIMIT_RETRIES = 8
+MAX_RATE_LIMIT_RETRIES = 10
+# Exit status for "S2 kept throttling, progress saved, rerun to resume" (EX_TEMPFAIL).
+# monthly_update.py treats it as partial progress rather than a failure.
+EXIT_RATE_LIMITED = 75  # same number as fetch_arxiv_monthly.EXIT_TRANSIENT
 MAX_CONSECUTIVE_FAILURES = 10
 SAVE_EVERY = 20
 # A paper S2 had no references for (or didn't know at all) is asked again
@@ -198,7 +201,7 @@ def doi_of(p):
 def s2_request(path, params, body=None, quiet=()):
     """GET (or POST when body is given) against the Graph API.
 
-    Sleeps after every call (1.1 s with a key, longer without),
+    Sleeps after every call (2 s with a key, longer without),
     backs off on 429 (and on 403 without a key, which S2 has been seen to
     send while throttling) and raises RateLimited when that doesn't clear
     it. A 403 while the key is being sent means S2 doesn't accept the key:
@@ -661,7 +664,7 @@ def main(argv=None):
             step_elided(papers, ids_state, refs_path)
     except RateLimited as e:
         print(f"Stopping: {e}. Progress is saved; rerun later to resume.", flush=True)
-        return 1
+        return EXIT_RATE_LIMITED
     return 0
 
 
