@@ -1910,7 +1910,8 @@
     "year": 2025,
     "title": "Active Iterative Optimization for Aerial Visual Reconstruction of Wide-Area Natural Environment",
     "authors": "Hongpeng Wang 0001, Zhongzhi Cao, Yue Fei, Peizhao Wang, Yaojing Li, Chuanyu Sun, Ming He, Jianda Han",
-    "abstract": null
+    "abstract": "Autonomous, accurate, and dynamic 3-D reconstruction for wide-area environments is crucial for unmanned aerial vehicle monitoring and rescue tasks, however, when conducted in an unknown complex terrain, the reconstruction result obtained from a single flight suffers poor quality. In this article, we present an Active Iterative Optimization framework for trajectory planning and visual reconstruction. Firstly, the trajectory is planned under the photogrammetric constraints based on rough terrain. Due to the visual field deviation caused by pose error during actual flight, the view loss evaluation is established and keyframes are selected to conduct 3-D reconstruction. A comprehensive metric is designed to quantitatively evaluate reconstruction effect without ground truth. The point cloud is then rasterized and divided into normal or low-scoring region according to the evaluation metric. In the next iteration, trajectory is replanned in low-scoring region to purposefully optimize the point cloud of local area. Thus the reconstruction result can be iteratively optimized. We validated the effectiveness of the proposed framework in simulation and physical experiments.",
+    "doi": "10.1109/tro.2024.3475213"
   },
   {
     "year": 2025,
@@ -2336,7 +2337,8 @@
     "year": 2025,
     "title": "Embedded Hierarchical MPC for Autonomous Navigation",
     "authors": "Dennis Benders, Johannes K&#246;hler 0001, Thijs Niesten, Robert Babuska, Javier Alonso-Mora, Laura Ferranti",
-    "abstract": null
+    "abstract": "To efficiently deploy robotic systems in society, mobile robots must move autonomously and safely through complex environments. Nonlinear model predictive control (MPC) methods provide a natural way to find a dynamically feasible trajectory through the environment without colliding with nearby obstacles. However, the limited computation power available on typical embedded robotic systems, such as quadrotors, poses a challenge to running MPC in real time, including its most expensive tasks: constraints generation and optimization. To address this problem, we propose a novel hierarchical MPC scheme that consists of a planning and a tracking layer. The planner constructs a trajectory with a long prediction horizon at a slow rate, while the tracker ensures trajectory tracking at a relatively fast rate. We prove that the proposed framework avoids collisions and is recursively feasible. Furthermore, we demonstrate its effectiveness in simulations and lab experiments with a quadrotor that needs to reach a goal position in a complex static environment. The code is efficiently implemented on the quadrotor's embedded computer to ensure real-time feasibility. Compared to a state-of-the-art single-layer MPC formulation, this allows us to increase the planning horizon by a factor of 5, which results in significantly better performance.",
+    "doi": "10.1109/tro.2025.3567529"
   },
   {
     "year": 2025,
@@ -3044,7 +3046,8 @@
     "year": 2025,
     "title": "Time-Varying Foot Placement Control for Humanoid Walking on Swaying Rigid Surface",
     "authors": "Yuan Gao 0060, Victor Paredes, Yukai Gong, Zijian He, Ayonga Hereid, Yan Gu",
-    "abstract": null
+    "abstract": "Locomotion on dynamic rigid surface (i.e., rigid surface accelerating in an inertial frame) presents complex challenges for controller design, which are essential to address for deploying humanoid robots in dynamic real-world environments such as moving trains, ships, and airplanes. This article introduces a real-time, provably stabilizing control approach for humanoid walking on periodically swaying rigid surface. The first key contribution is an analytical extension of the classical angular momentum-based linear inverted pendulum model from static to swaying grounds whose motion period may be different than the robot’s gait period. This extension results in a time-varying, nonhomogeneous robot model, which is fundamentally different from the existing pendulum models. We synthesize a discrete footstep control law for the model and derive a new set of sufficient stability conditions that verify the controller’s stabilizing effect. Finally, experiments conducted on a Digit humanoid robot, both in simulations and on hardware, demonstrate the framework’s effectiveness in addressing bipedal locomotion on swaying ground, even under uncertain surface motions and unknown external pushes.",
+    "doi": "10.1109/tro.2025.3612326"
   },
   {
     "year": 2025,
@@ -3530,7 +3533,8 @@
     "year": 2024,
     "title": "Design, Modeling, and Control of AVOCADO: A Multimodal Aerial-Tethered Robot for Tree Canopy Exploration",
     "authors": "Steffen Kirchgeorg, Emanuele Aucone, Florian Wenk, Stefano Mintchev",
-    "abstract": null
+    "abstract": "Forests provide vital resources and services for humanity, but preserving and restoring them is challenging due to the difficulty of obtaining actionable data, especially in inaccessible areas, such as forest canopies. To address this, we follow the lead of arboreal animals that exploit multiple modes of locomotion. We combine aerial and tethered movements to enable AVOCADO to navigate within a tree canopy. Starting from the top of a tree, it can descend with the tether and maneuver around obstacles with thrusters. We extend our previous work with a new mechanical design with a protective shell, increased computational power and cameras for state estimation. We introduce a dynamic model and simulation, and perform a quasistatic and dynamic validation. For autonomy, we derive a control framework in simulation to regulate tether length, tilt, and heading, before transfer to the robot. We evaluate the controllers for trajectory tracking through experiments. AVOCADO can follow trajectories around obstacles and reject disturbances on the tether. Exploiting multimodal mobility will advance the exploration of tree canopies to actively monitor the true value of our forests.",
+    "doi": "10.1109/tro.2023.3334630"
   },
   {
     "year": 2024,
@@ -5552,7 +5556,8 @@
     "year": 2023,
     "title": "Teleoperation of Humanoid Robots: A Survey",
     "authors": "Kourosh Darvish, Luigi Penco, Jo&#227;o Ramos 0004, Rafael Cisneros 0001, Jerry E. Pratt, Eiichi Yoshida, Serena Ivaldi, Daniele Pucci",
-    "abstract": null
+    "abstract": "Teleoperation of humanoid robots enables the integration of the cognitive skills and domain expertise of humans with the physical capabilities of humanoid robots. The operational versatility of humanoid robots makes them the ideal platform for a wide range of applications when teleoperating in a remote environment. However, the complexity of humanoid robots imposes challenges for teleoperation, particularly in unstructured dynamic environments with limited communication. Many advancements have been achieved in the last decades in this area, but a comprehensive overview is still missing. This survey article gives an extensive overview of humanoid robot teleoperation, presenting the general architecture of a teleoperation system and analyzing the different components. We also discuss different aspects of the topic, including technological and methodological advances, as well as potential applications.",
+    "doi": "10.1109/tro.2023.3236952"
   },
   {
     "year": 2023,
@@ -7964,7 +7969,8 @@
     "year": 2022,
     "title": "Adaptive B&#233;zier Degree Reduction and Splitting for Computationally Efficient Motion Planning",
     "authors": "&#214;m&#252;r Arslan, Aron Tiemessen",
-    "abstract": null
+    "abstract": "As a parametric polynomial curve family, Bézier curves are widely used in safe and smooth motion design of intelligent robotic systems from flying drones to autonomous vehicles to robotic manipulators. In such motion planning settings, the critical features of high-order Bézier curves such as curve length, distance-to-collision, maximum curvature/velocity/acceleration are either numerically computed at a high computational cost or inexactly approximated by discrete samples. To address these issues, in this article we present a novel computationally efficient approach for adaptive approximation of high-order Bézier curves by multiple low-order Bézier segments at any desired level of accuracy that is specified in terms of a Bézier metric. Accordingly, we introduce a new Bézier degree reduction method, called parameterwise matching reduction, which approximates Bézier curves more accurately compared to the standard least squares and Taylor reduction methods. We also propose a new Bézier metric, called the maximum control-point distance, that can be computed analytically, has a strong equivalence relation with other existing Bézier metrics, and defines a geometric relative bound between Bézier curves. We provide extensive numerical evidence to demonstrate the effectiveness of our proposed Bézier approximation approach. As a rule of thumb, based on the degree-one matching reduction error, we conclude that an $ n^{\\rm{th}} $-order Bézier curve can be accurately approximated by $3(n-1)$ quadratic and $6(n-1)$ linear Bézier segments, which is fundamental for Bézier discretization.",
+    "doi": "10.1109/tro.2022.3187296"
   },
   {
     "year": 2022,
@@ -8294,7 +8300,8 @@
     "year": 2021,
     "title": "Bioinspired Visuomotor Feedback in a Multiagent Group/Swarm Context",
     "authors": "Md Arif Billah, Imraan A. Faruque",
-    "abstract": null
+    "abstract": "Practical aerial swarm applications are limited by the need to provide fast, robust feedback. To consider how biological agents incorporate visual feedback in multiagent environments, this study extends a well-developed model of bioinspired visual feedback for individual agent to feedback in multiagent dynamic environments. A multiagent visual model is developed and analyzed for an individual agent operating in a group of other agents. The theoretical model indicates a stable equilibrium trajectory within the neighboring agents. When a minority of agents conducting bioinspired visual feedback are introduced into a planar swarm simulation, results show robustness of agents to perturbations from reference condition. The bioinspired feedback rule is implemented experimentally using ground microbots for two cases identified by a theoretical observability condition. The experimental performance of the single agent in an established swarm is consistent with the theoretical stability and observability predictions. The results indicate insect visuomotor response can help participate in established swarms, and indicate the importance of optic flow input in maintaining group motion.",
+    "doi": "10.1109/tro.2020.3033703"
   },
   {
     "year": 2021,
@@ -10004,7 +10011,8 @@
     "year": 2019,
     "title": "Robotic Artificial Muscles: Current Progress and Future Perspectives",
     "authors": "Jun Zhang 0025, Jun Sheng, Ciar&#225;n T. O'Neill, Conor J. Walsh, Robert J. Wood, Jee-Hwan Ryu, Jaydev P. Desai, Michael C. Yip",
-    "abstract": null
+    "abstract": "Robotic artificial muscles are a subset of artificial muscles that are capable of producing biologically inspired motions useful for robot systems, i.e., large power-to-weight ratios, inherent compliance, and large range of motions. These actuators, ranging from shape memory alloys to dielectric elastomers, are increasingly popular for biomimetic robots as they may operate without using complex linkage designs or other cumbersome mechanisms. Recent achievements in fabrication, modeling, and control methods have significantly contributed to their potential utilization in a wide range of applications. However, no survey paper has gone into depth regarding considerations pertaining to their selection, design, and usage in generating biomimetic motions. In this paper, we discuss important characteristics and considerations in the selection, design, and implementation of various prominent and unique robotic artificial muscles for biomimetic robots, and provide perspectives on next-generation muscle-powered robots.",
+    "doi": "10.1109/tro.2019.2894371"
   },
   {
     "year": 2019,
@@ -10202,7 +10210,8 @@
     "year": 2019,
     "title": "Bioinspired Approaches for Autonomous Small-Object Detection and Avoidance",
     "authors": "Hector D. Escobar-Alvarez, Michael Ohradzansky, Jishnu Keshavan, Badri N. Ranganathan, J. Sean Humbert",
-    "abstract": null
+    "abstract": "Small-object detection and avoidance in unknown environments is a significant challenge to overcome for small autonomous vehicles that are generally highly agile and restricted in payload and computational processing power. Typical machine-vision and range measurement-based solutions suffer either from restricted fields-of-view or significant computational complexity and are, hence, not easily portable to small platforms. In order to overcome these drawbacks, in this paper, two novel bioinspired approaches are proposed to extract information about small-field objects contained in planar optic flow. The first approach, which is analogous to the small-field extraction process hypothesized to occur in the lobula plate of the fly visual system, is based on the Fourier residual analysis of instantaneous optic flow. Alternatively, the flow-of-flow method is the engineering analogue of the small-field extraction process thought to occur in the fruit-fly's medulla, and extracts high-frequency content of optic flow by means of an elementary motion detector array. Both approaches extract instantaneous relative range and bearing of small-field obstacles from planar optic flow in a local environment characterized by small and wide-field obstacles, which is then combined with an artificial potential function-based low-order steering control law. The proposed sensing and control scheme is experimentally validated with a quadrotor vehicle that is able to effectively navigate an unknown environment laden with small-field clutter. This bioinspired approach is computationally efficient, which renders extraction of vehicle velocity and local environment structure superfluous, and thus, serves as a robust, reflexive solution to the problem of small-object detection, and avoidance for small autonomous robots.",
+    "doi": "10.1109/tro.2019.2922472"
   },
   {
     "year": 2019,
@@ -10970,7 +10979,8 @@
     "year": 2018,
     "title": "On the Combined Inverse-Dynamics/Passivity-Based Control of Elastic-Joint Robots",
     "authors": "Andrea Giusti 0004, J&#246;rn Malzahn, Nikolaos G. Tsagarakis, Matthias Althoff",
-    "abstract": null
+    "abstract": "In this paper, we present a novel global tracking control approach for elastic-joint robots that can be efficiently computed and is robust against model uncertainties and input disturbances. Elastic-joint robots provide enhanced safety and resiliency for interaction with the environment and humans. On the other hand, the joint elasticity complicates the motion-control problem especially when robust and precise trajectory tracking is required. Our proposed control approach allows us to merge the main benefits of the two well-known control schemes: inverse-dynamics (ID) control, which can be efficiently computed thanks to modern recursive algorithms, and passivity-based (PB) tracking control, which provides enhanced robustness to model uncertainty and external disturbances. As an extension of our previous work, we present a detailed robustness analysis of our combined ID/PB controller, a new variant of the original scheme that shows practically relevant implications, and finally, experimental results that verify the effectiveness of the approach.",
+    "doi": "10.1109/tro.2018.2861917"
   },
   {
     "year": 2018,
@@ -11132,7 +11142,8 @@
     "year": 2017,
     "title": "A Fast, Robust, and Incremental Model for Learning High-Level Concepts From Human Motions by Imitation",
     "authors": "Mina Alibeigi, Majid Nili Ahmadabadi, Babak Nadjar Araabi",
-    "abstract": null
+    "abstract": "Social robots are becoming a companion in everyday life. To be well accepted by humans, they should efficiently understand meanings of their partners’ motions and body language and respond accordingly. Learning concepts by imitation brings them this ability in a user-friendly way. This paper presents a fast and robust model for incremental learning of concepts by imitation (ILoCI). In ILoCI, observed multimodal spatiotemporal demonstrations are incrementally abstracted and generalized based on their perceptual and functional similarities during the imitation. Perceptually similar demonstrations are abstracted by a dynamic model of the mirror neuron system. The functional similarities of demonstrations are also learned through a limited number of interactions with the teacher. Incremental relearning of acquired concepts together through memory rehearsal enables the learner to gradually extract and utilize the common structural relations among demonstrations to expedite the learning process especially at the initial stages. Performance of ILoCI is assessed using a standard benchmark dataset and a human–robot interaction task in which a humanoid robot learns to abstract teacher's hand motions during imitation. Its performance is also evaluated on occluded observations that are probable in real environments. The results show efficiency of ILoCI in concept acquisition, recognition, prediction, and generation in addition to its robustness to occlusions and high variability in observations.",
+    "doi": "10.1109/tro.2016.2623817"
   },
   {
     "year": 2017,
@@ -12902,7 +12913,8 @@
     "year": 2015,
     "title": "Averaging Tail-Actuated Robotic Fish Dynamics Through Force and Moment Scaling",
     "authors": "Jianxun Wang 0001, Xiaobo Tan 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2015.2433539"
   },
   {
     "year": 2015,
@@ -13220,7 +13232,8 @@
     "year": 2014,
     "title": "Rotating Magnetic Miniature Swimming Robots With Multiple Flexible Flagella",
     "authors": "Zhou Ye, St&#233;phane R&#233;gnier, Metin Sitti",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2280058"
   },
   {
     "year": 2014,
@@ -13232,13 +13245,15 @@
     "year": 2014,
     "title": "Polymer-Based Wireless Resonant Magnetic Microrobots",
     "authors": "Hsi-Wen Tung, Massimo Maffioli, Dominic R. Frutiger, Kartik M. Sivaraman, Salvador Pan&#233;, Bradley J. Nelson",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2288514"
   },
   {
     "year": 2014,
     "title": "Self-Actuating Asymmetric Platinum Catalytic Mobile Nanorobot",
     "authors": "Jingjing Bao, Zhan Yang 0002, Masahiro Nakajima, Yajing Shen, Masaru Takeuchi, Qiang Huang 0002, Toshio Fukuda",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2291618"
   },
   {
     "year": 2014,
@@ -13268,7 +13283,8 @@
     "year": 2014,
     "title": "Guidelines for the Design of Magnetic Nanorobots to Cross the Blood-Brain Barrier",
     "authors": "Mustapha Hamdi, Antoine Ferreira",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2291616"
   },
   {
     "year": 2014,
@@ -13286,7 +13302,8 @@
     "year": 2014,
     "title": "Nanorobotic Testing to Assess the Stiffness Properties of Nanopaper",
     "authors": "Manuel Mikczinski, Gabriella Josefsson, Gary Chinga-Carrasco, E. Kristofer Gamstedt, Sergej Fatikow",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2283409"
   },
   {
     "year": 2014,
@@ -13310,13 +13327,15 @@
     "year": 2014,
     "title": "Active Constraints/Virtual Fixtures: A Survey",
     "authors": "Stuart A. Bowyer, Brian L. Davies, Ferdinando Rodriguez y Baena",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2283410"
   },
   {
     "year": 2014,
     "title": "Consistency Analysis and Improvement of Vision-aided Inertial Navigation",
     "authors": "Joel A. Hesch, Dimitrios G. Kottas, Sean L. Bowman, Stergios I. Roumeliotis",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2277549"
   },
   {
     "year": 2014,
@@ -13328,7 +13347,8 @@
     "year": 2014,
     "title": "Adaptive Coordinating Construction of Truss Structures Using Distributed Equal-Mass Partitioning",
     "authors": "Seung-kook Yun, Daniela Rus",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2279643"
   },
   {
     "year": 2014,
@@ -13340,7 +13360,8 @@
     "year": 2014,
     "title": "Liftoff of a Motor-Driven, Flapping-Wing Microaerial Vehicle Capable of Resonance",
     "authors": "Lindsey L. Hines, Domenico Campolo, Metin Sitti",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2280057"
   },
   {
     "year": 2014,
@@ -13352,7 +13373,8 @@
     "year": 2014,
     "title": "Dealing With Constraints in Sensor-Based Robot Control",
     "authors": "Olivier Kermorgant, Fran&#231;ois Chaumette",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2281560"
   },
   {
     "year": 2014,
@@ -13364,7 +13386,8 @@
     "year": 2014,
     "title": "Continuum Robot Dynamics Utilizing the Principle of Virtual Power",
     "authors": "William S. Rone, Pinhas Ben-Tzvi",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2281564"
   },
   {
     "year": 2014,
@@ -13376,7 +13399,8 @@
     "year": 2014,
     "title": "Topological Mapping and Scene Recognition With Lightweight Color Descriptors for an Omnidirectional Camera",
     "authors": "Ming Liu 0001, Roland Siegwart",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2272250"
   },
   {
     "year": 2014,
@@ -13430,13 +13454,15 @@
     "year": 2014,
     "title": "Vehicle Localization and Classification Using Off-Board Vision and 3-D Models",
     "authors": "Stefan Hoermann 0002, Paulo Vinicius Koerich Borges",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2291613"
   },
   {
     "year": 2014,
     "title": "Control-Configured Design of Spheroidal, Appendage-Free, Underwater Vehicles",
     "authors": "Anirban Mazumdar, H. Harry Asada",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2291617"
   },
   {
     "year": 2014,
@@ -13478,7 +13504,8 @@
     "year": 2014,
     "title": "BeAMS: A Beacon-Based Angle Measurement Sensor for Mobile Robot Positioning",
     "authors": "Vincent Pierlot, Marc Van Droogenbroeck",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2293834"
   },
   {
     "year": 2014,
@@ -13598,25 +13625,29 @@
     "year": 2014,
     "title": "Robotic Probing of Nanostructures inside Scanning Electron Microscopy",
     "authors": "Zheng Gong, Brandon K. Chen, Jun Liu 0007, Yu Sun 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2298551"
   },
   {
     "year": 2014,
     "title": "Natural Gaits for Multilink Mechanical Systems",
     "authors": "Md. Nurul Islam, Zhiyong Chen 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2298926"
   },
   {
     "year": 2014,
     "title": "Toward a Dancing Robot With Listening Capability: Keypose-Based Integration of Lower-, Middle-, and Upper-Body Motions for Varying Music Tempos",
     "authors": "Takahiro Okamoto, Takaaki Shiratori, Shunsuke Kudoh, Shinichiro Nakaoka, Katsushi Ikeuchi",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2300212"
   },
   {
     "year": 2014,
     "title": "High-Gain, High Transmissibility PZT Displacement Amplification Using a Rolling-Contact Buckling Mechanism and Preload Compensation Springs",
     "authors": "James Torres, H. Harry Asada",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2301535"
   },
   {
     "year": 2014,
@@ -13664,7 +13695,8 @@
     "year": 2014,
     "title": "Model-Less Feedback Control of Continuum Manipulators in Constrained Environments",
     "authors": "Michael C. Yip, David B. Camarillo",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2309194"
   },
   {
     "year": 2014,
@@ -13706,7 +13738,8 @@
     "year": 2014,
     "title": "Sophia-3: A Semiadaptive Cable-Driven Rehabilitation Device With a Tilting Working Plane",
     "authors": "Damiano Zanotto, Giulio Rosati, Simone Minto, Aldo Rossi",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2301532"
   },
   {
     "year": 2014,
@@ -14036,7 +14069,8 @@
     "year": 2013,
     "title": "A Grasping Force Optimization Algorithm for Multiarm Robots With Multifingered Hands",
     "authors": "Vincenzo Lippiello, Bruno Siciliano, Luigi Villani",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2212633"
   },
   {
     "year": 2013,
@@ -14048,19 +14082,22 @@
     "year": 2013,
     "title": "A Metric for Comparing the Anthropomorphic Motion Capability of Artificial Hands",
     "authors": "Thomas Feix, Javier Romero 0002, Carl Henrik Ek, Heinz-Bodo Schmiedmayer, Danica Kragic",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2217675"
   },
   {
     "year": 2013,
     "title": "Explaining Impossible High-Level Robot Behaviors",
     "authors": "Vasumathi Raman, Hadas Kress-Gazit",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2214558"
   },
   {
     "year": 2013,
     "title": "Path Planning Under Kinematic Constraints by Rapidly Exploring Manifolds",
     "authors": "Leonard Jaillet, Josep M. Porta",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2222272"
   },
   {
     "year": 2013,
@@ -14078,7 +14115,8 @@
     "year": 2013,
     "title": "Localization in Urban Environments Using a Panoramic Gist Descriptor",
     "authors": "Ana Cristina Murillo, Gautam Singh, Jana Koseck&#225;, Jos&#233; Jes&#250;s Guerrero",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2220211"
   },
   {
     "year": 2013,
@@ -14120,7 +14158,8 @@
     "year": 2013,
     "title": "A Compact and Compliant External Pipe-Crawling Robot",
     "authors": "Puneet Singh, G. K. Ananthasuresh",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2214560"
   },
   {
     "year": 2013,
@@ -14132,7 +14171,8 @@
     "year": 2013,
     "title": "Differentially Flat Design of a Closed-Chain Planar Underactuated $\\hbox{2}$ -DOF System",
     "authors": "Chengkun Zhang, Jaume Franch, Sunil Kumar Agrawal",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2215135"
   },
   {
     "year": 2013,
@@ -14156,7 +14196,8 @@
     "year": 2013,
     "title": "Salamandra Robotica II: An Amphibious Robot to Study Salamander-Like Swimming and Walking Gaits",
     "authors": "Alessandro Crespi, Konstantinos Karakasiliotis, Andr&#233; Guignard, Auke Jan Ijspeert",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2234311"
   },
   {
     "year": 2013,
@@ -14192,7 +14233,8 @@
     "year": 2013,
     "title": "Swarm Coordination Based on Smoothed Particle Hydrodynamics Technique",
     "authors": "Luciano C. A. Pimenta, Guilherme A. S. Pereira, Nathan Michael, Renato Cardoso Mesquita, Mateus M. Bosque, Luiz Chaimowicz, Vijay Kumar 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2234294"
   },
   {
     "year": 2013,
@@ -14210,19 +14252,22 @@
     "year": 2013,
     "title": "Asymptotically Near-Optimal Planning With Probabilistic Roadmap Spanners",
     "authors": "James D. Marble, Kostas E. Bekris",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2234312"
   },
   {
     "year": 2013,
     "title": "Risky Planning on Probabilistic Costmaps for Path Planning in Outdoor Environments",
     "authors": "Liz Murphy, Paul Newman 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2227216"
   },
   {
     "year": 2013,
     "title": "Determining 3-D Relative Transformations for Any Combination of Range and Bearing Measurements",
     "authors": "Xun S. Zhou, Stergios I. Roumeliotis",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2228132"
   },
   {
     "year": 2013,
@@ -14246,13 +14291,15 @@
     "year": 2013,
     "title": "The Impact of Human-Robot Interfaces on the Learning of Visual Objects",
     "authors": "Pierre Rouanet, Pierre-Yves Oudeyer, Fabien Danieau, David Filliat",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2228134"
   },
   {
     "year": 2013,
     "title": "Integrating Deflection Models and Image Feedback for Real-Time Flexible Needle Steering",
     "authors": "Momen Abayazid, Roy J. Roesthuis, Rob Reilink, Sarthak Misra",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2230991"
   },
   {
     "year": 2013,
@@ -14270,7 +14317,8 @@
     "year": 2013,
     "title": "Parallelizing RRT on Large-Scale Distributed-Memory Architectures",
     "authors": "Didier Devaurs, Thierry Sim&#233;on, Juan Cort&#233;s",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2239571"
   },
   {
     "year": 2013,
@@ -14312,7 +14360,8 @@
     "year": 2013,
     "title": "Adaptive Discrete-Time Sliding Mode Impedance Control of a Piezoelectric Microgripper",
     "authors": "Qingsong Xu 0002",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2239554"
   },
   {
     "year": 2013,
@@ -14330,7 +14379,8 @@
     "year": 2013,
     "title": "The Motion Grammar: Analysis of a Linguistic Method for Robot Control",
     "authors": "Neil Dantam, Mike Stilman",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2239553"
   },
   {
     "year": 2013,
@@ -14342,7 +14392,8 @@
     "year": 2013,
     "title": "Grasp Optimization Under Specific Contact Constraints",
     "authors": "Carlos J. Rosales, Josep M. Porta, Llu&#237;s Ros",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2244785"
   },
   {
     "year": 2013,
@@ -14354,7 +14405,8 @@
     "year": 2013,
     "title": "Circular Pulley Versus Variable Radius Pulley: Optimal Design Methodologies and Dynamic Characteristics Analysis",
     "authors": "Dongjun Shin, Xiyang Yeh, Oussama Khatib",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2242374"
   },
   {
     "year": 2013,
@@ -14390,13 +14442,15 @@
     "year": 2013,
     "title": "Learning UAV Stability and Control Derivatives Using Gaussian Processes",
     "authors": "Prasad Hemakumara, Salah Sukkarieh",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2258732"
   },
   {
     "year": 2013,
     "title": "Mapping Synergies From Human to Robotic Hands With Dissimilar Kinematics: An Approach in the Object Domain",
     "authors": "Guido Gioioso, Gionata Salvietti, Monica Malvezzi, Domenico Prattichizzo",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2252251"
   },
   {
     "year": 2013,
@@ -14414,7 +14468,8 @@
     "year": 2013,
     "title": "Large-Payload Climbing in Complex Vertical Environments Using Thermoplastic Adhesive Bonds",
     "authors": "Liyu Wang, Lina Graber, Fumiya Iida",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2256312"
   },
   {
     "year": 2013,
@@ -14432,19 +14487,22 @@
     "year": 2013,
     "title": "Reciprocal Collision Avoidance With Motion Continuity Constraints",
     "authors": "Martin Rufli, Javier Alonso-Mora, Roland Siegwart",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2258733"
   },
   {
     "year": 2013,
     "title": "Contingency Planning Over Probabilistic Obstacle Predictions for Autonomous Road Vehicles",
     "authors": "Jason Hardy, Mark E. Campbell",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2254033"
   },
   {
     "year": 2013,
     "title": "Constrained Interaction and Coordination in Proximity-Limited Multiagent Systems",
     "authors": "Ryan K. Williams, Gaurav S. Sukhatme",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2257578"
   },
   {
     "year": 2013,
@@ -14456,7 +14514,8 @@
     "year": 2013,
     "title": "Decentralized Extended Information Filter for Single-Beacon Cooperative Acoustic Navigation: Theory and Experiments",
     "authors": "Sarah E. Webster, Jeffrey M. Walls, Louis L. Whitcomb, Ryan M. Eustice",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2252857"
   },
   {
     "year": 2013,
@@ -14468,19 +14527,22 @@
     "year": 2013,
     "title": "Active Visual Object Search in Unknown Environments Using Uncertain Semantics",
     "authors": "Alper Aydemir, Andrzej Pronobis, Moritz G&#246;belbecker, Patric Jensfelt",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2256686"
   },
   {
     "year": 2013,
     "title": "Intensity-Based Ultrasound Visual Servoing: Modeling and Validation With 2-D and 3-D Probes",
     "authors": "Caroline Nadeau, Alexandre Krupa",
-    "abstract": null
+    "abstract": "In this paper, we present an ultrasound (US) visual servoing to control a robotic system equipped with a US probe. To avoid the difficult and time-consuming image segmentation process, we develop a new approach taking as visual input directly the intensity of the image pixels. The analytic form of the interaction matrix that relates the variation of the intensity features to the motion of the probe is established and used to control the six degrees of freedom (dof) of the robotic system. Our approach is applied with a 2-D and a 3-D US probe, and the results that are obtained with both sensors are compared in simulation. The 2-D probe shows good performances for tracking tasks and the 3-D one, which ensures a larger domain of convergence, is more particularly used for positioning tasks. The intensity-based approach is validated through experimental results performed with a realistic abdominal phantom and with animal soft tissue.",
+    "doi": "10.1109/tro.2013.2256690"
   },
   {
     "year": 2013,
     "title": "On 3-D Motion Estimation From Feature Tracks in 2-D FS Sonar Video",
     "authors": "Shahriar Negahdaripour",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2260952"
   },
   {
     "year": 2013,
@@ -14522,13 +14584,15 @@
     "year": 2013,
     "title": "Robots Driven by Compliant Actuators: Optimal Control Under Actuation Constraints",
     "authors": "David J. Braun, Florian Petit, Felix Huber, Sami Haddadin, Patrick van der Smagt, Alin Albu-Sch&#228;ffer, Sethu Vijayakumar",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2271099"
   },
   {
     "year": 2013,
     "title": "Generalized Modeling of Multilink Cable-Driven Manipulators With Arbitrary Routing Using the Cable-Routing Matrix",
     "authors": "Darwin Lau, Denny Oetomo, Saman K. Halgamuge",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2264866"
   },
   {
     "year": 2013,
@@ -14540,7 +14604,8 @@
     "year": 2013,
     "title": "Nested Piezoelectric Cellular Actuators for a Biologically Inspired Camera Positioning Mechanism",
     "authors": "Joshua A. Schultz, Jun Ueda",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2264863"
   },
   {
     "year": 2013,
@@ -14564,43 +14629,50 @@
     "year": 2013,
     "title": "Time-Optimal Motion Strategies for Capturing an Omnidirectional Evader Using a Differential Drive Robot",
     "authors": "Ubaldo Ruiz 0001, Rafael Murrieta-Cid, Jos&#233; L. Marroqu&#237;n",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2264868"
   },
   {
     "year": 2013,
     "title": "Randomized Kinodynamic Planning for Robust Visual Servoing",
     "authors": "Moslem Kazemi, Kamal K. Gupta, Mehran Mehrandezh",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2264865"
   },
   {
     "year": 2013,
     "title": "Epipolar Visual Servoing for Multirobot Distributed Consensus",
     "authors": "Eduardo Montijano, Johan Thunberg, Xiaoming Hu 0001, Carlos Sag&#252;&#233;s",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2271101"
   },
   {
     "year": 2013,
     "title": "A Quadratic-Complexity Observability-Constrained Unscented Kalman Filter for SLAM",
     "authors": "Guoquan P. Huang 0001, Anastasios I. Mourikis, Stergios I. Roumeliotis",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2267991"
   },
   {
     "year": 2013,
     "title": "Localization Confidence Domains via Set Inversion on Short-Term Trajectory",
     "authors": "Vincent Drevelle, Philippe Bonnifait",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2262776"
   },
   {
     "year": 2013,
     "title": "Safety Assessment and Control of Robotic Manipulators Using Danger Field",
     "authors": "Bakir Lacevic, Paolo Rocco, Andrea Maria Zanchettin",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2271097"
   },
   {
     "year": 2013,
     "title": "Wheel-Soil Interaction Model for Rover Simulation and Analysis Using Elastoplasticity Theory",
     "authors": "Ali Azimi, J&#243;zsef K&#246;vecses, Jorge Angeles",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2267972"
   },
   {
     "year": 2013,
@@ -14630,13 +14702,15 @@
     "year": 2013,
     "title": "Distributed Control of Multirobot Systems With Global Connectivity Maintenance",
     "authors": "Lorenzo Sabattini, Cristian Secchi, Nikhil Chopra, Andrea Gasparri",
-    "abstract": null
+    "abstract": "This study introduces a control algorithm that, exploiting a completely decentralized estimation strategy for the algebraic connectivity of the graph, ensures the connectivity maintenance property for multi robot systems, in the presence of a generic (bounded) additional control term. This result is obtained by driving the robots along the negative gradient of an appropriately defined function of the algebraic connectivity. The proposed strategy is then enhanced with the introduction of the concept of critical robots, that is robots for which the loss of a single communication link might cause the disconnection of the communication graph. Limiting the control action to critical robots will be shown to reduce the control effort that is introduced by the proposed connectivity maintenance control law and to mitigate its effect on the additional (desired) control term.",
+    "doi": "10.1109/tro.2013.2267971"
   },
   {
     "year": 2013,
     "title": "Robust Global Feature Based Data Association With a Sparse Bit Optimized Maximum Clique Algorithm",
     "authors": "Pablo San Segundo, Diego Rodr&#237;guez-Losada",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2264869"
   },
   {
     "year": 2013,
@@ -14654,7 +14728,8 @@
     "year": 2013,
     "title": "Visual Homing From Scale With an Uncalibrated Omnidirectional Camera",
     "authors": "Ming Liu 0001, C&#233;dric Pradalier, Roland Siegwart",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2272251"
   },
   {
     "year": 2013,
@@ -14684,7 +14759,8 @@
     "year": 2013,
     "title": "Physically Based Grasp Quality Evaluation Under Pose Uncertainty",
     "authors": "Junggon Kim, Kunihiro Iwamoto, James J. Kuffner, Yasuhiro Ota, Nancy S. Pollard",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2273846"
   },
   {
     "year": 2013,
@@ -14696,7 +14772,8 @@
     "year": 2013,
     "title": "Model-Free Visually Servoed Deformation Control of Elastic Objects by Robot Manipulators",
     "authors": "David Navarro-Alarcon, Yun-Hui Liu 0001, Jos&#233; Guadalupe Romero, Peng Li 0019",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2275651"
   },
   {
     "year": 2013,
@@ -14708,7 +14785,8 @@
     "year": 2013,
     "title": "Time-Optimal Path Following for Robots With Convex-Concave Constraints Using Sequential Convex Programming",
     "authors": "Frederik Debrouwere, Wannes Van Loock, Goele Pipeleers, Dinh Quoc Tran, Moritz Diehl, Joris De Schutter, Jan Swevers",
-    "abstract": null
+    "abstract": "Time-optimal path following considers the problem of moving along a predetermined geometric path in minimum time. In the case of a robotic manipulator with simplified constraints, a convex reformulation of this optimal control problem has been derived previously. However, many applications in robotics feature constraints such as velocity-dependent torque constraints or torque rate constraints that destroy the convexity. The present paper proposes an efficient sequential convex programming (SCP) approach to solve the corresponding nonconvex optimal control problems by writing the nonconvex constraints as a difference of convex (DC) functions, resulting in convex-concave constraints. We consider seven practical applications that fit into the proposed framework even when mutually combined, illustrating the flexibility and practicality of the proposed framework. Furthermore, numerical simulations for some typical applications illustrate the fast convergence of the proposed method in only a few SCP iterations, confirming the efficiency of the proposed framework.",
+    "doi": "10.1109/tro.2013.2277565"
   },
   {
     "year": 2013,
@@ -14768,25 +14846,29 @@
     "year": 2012,
     "title": "A Fully Autonomous Indoor Quadrotor",
     "authors": "Slawomir Grzonka, Giorgio Grisetti, Wolfram Burgard",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2162999"
   },
   {
     "year": 2012,
     "title": "Robot Motion Planning in Dynamic, Uncertain Environments",
     "authors": "Noel E. Du Toit, Joel W. Burdick",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2166435"
   },
   {
     "year": 2012,
     "title": "A Sampling-Based Tree Planner for Systems With Complex Dynamics",
     "authors": "Ioan Alexandru Sucan, Lydia E. Kavraki",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2160466"
   },
   {
     "year": 2012,
     "title": "Analysis of Search Decision Making Using Probabilistic Search Strategies",
     "authors": "Timothy H. Chung, Joel W. Burdick",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2170333"
   },
   {
     "year": 2012,
@@ -14804,7 +14886,8 @@
     "year": 2012,
     "title": "Control of Multiple Heterogeneous Magnetic Microrobots in Two Dimensions on Nonspecialized Surfaces",
     "authors": "Eric D. Diller, Steven Floyd, Chytra Pawashe, Metin Sitti",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2170330"
   },
   {
     "year": 2012,
@@ -14822,7 +14905,8 @@
     "year": 2012,
     "title": "Toward a Meso-Scale SMA-Actuated MRI-Compatible Neurosurgical Robot",
     "authors": "Mingyen Ho, Alan B. McMillan, J. Marc Simard, Rao P. Gullapalli, Jaydev P. Desai",
-    "abstract": null
+    "abstract": "Brain tumors are the most feared complications of cancer. Their treatment is challenging because of the lack of good imaging modality and the inability to remove the complete tumor. Facilitating tumor removal by accessing regions outside the “line of sight” will require a highly dexterous and magnetic resonance imaging (MRI)-compatible robot. We present our work toward the development of an MRI-compatible neurosurgical robot. We used two antagonistic shape memory alloy (SMA) wires as actuators for each joint. Because of the size limitation of the device, we rely on temperature feedback to control the joint motion of the robot. We have developed a theoretical model based on Tanaka's model to characterize the joint motion with the change in SMA wire temperature. The results demonstrated that the SMA wire temperature can be used reliably to predict the motion of the robot. We then used a pulse-width modulation (PWM) scheme and switching circuit to control the temperature of multiple SMA wires. Experimental results showed that we can actuate the robot reliably and observe joint motion in a gelatin medium. Magnetic resonance (MR) images also showed that the robot is fully MRI-compatible and creates no significant image distortion.",
+    "doi": "10.1109/tro.2011.2165371"
   },
   {
     "year": 2012,
@@ -14900,7 +14984,8 @@
     "year": 2012,
     "title": "Minimum-Time Optimal Control of Many Robots that Move in the Same Direction at Different Speeds",
     "authors": "Timothy Bretl",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2173235"
   },
   {
     "year": 2012,
@@ -14936,7 +15021,8 @@
     "year": 2012,
     "title": "Shadow Information Spaces: Combinatorial Filters for Tracking Targets",
     "authors": "Jingjin Yu, Steven M. LaValle",
-    "abstract": null
+    "abstract": "This paper introduces and solves a problem of maintaining the distribution of hidden targets that move outside the field of view while a sensor sweep is being performed, resulting in a generalization of the sensing aspect of visibility-based pursuit-evasion games. Our solution first applies information space concepts to significantly reduce the general complexity so that information is processed only when the shadow region (all points invisible to the sensors) changes combinatorially or targets pass in and out of the field of view. The cases of distinguishable, partially distinguishable, and completely indistinguishable targets are handled. Depending on whether the targets move nondeterministically or probabilistically, more specific classes of problems are formulated. For each case, efficient filtering algorithms are introduced, implemented, and demonstrated that provide critical information for tasks such as counting, herding, pursuit evasion, and situational awareness.",
+    "doi": "10.1109/tro.2011.2174494"
   },
   {
     "year": 2012,
@@ -14948,7 +15034,8 @@
     "year": 2012,
     "title": "Two-Dimensional Autonomous Microparticle Manipulation Strategies for Magnetic Microrobots in Fluidic Environments",
     "authors": "Chytra Pawashe, Steven Floyd, Eric D. Diller, Metin Sitti",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2173835"
   },
   {
     "year": 2012,
@@ -14960,7 +15047,8 @@
     "year": 2012,
     "title": "Model for a Sensor Inspired by Electric Fish",
     "authors": "Fr&#233;d&#233;ric Boyer, Pol Bernard Gossiaux, Brahim Jawad, Vincent Lebastard, Mathieu Porez",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2175764"
   },
   {
     "year": 2012,
@@ -14972,7 +15060,8 @@
     "year": 2012,
     "title": "A General User-Oriented Framework for Holonomic Redundancy Resolution in Robotic Manipulators Using Task Augmentation",
     "authors": "Andrea Maria Zanchettin, Paolo Rocco",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2173852"
   },
   {
     "year": 2012,
@@ -14996,7 +15085,8 @@
     "year": 2012,
     "title": "Modeling and Control of a Snake-Like Robot Using the Screw-Drive Mechanism",
     "authors": "Hiroaki Fukushima, Shogo Satomura, Toru Kawai, Motoyasu Tanaka, Tetsushi Kamegawa, Fumitoshi Matsuno",
-    "abstract": null
+    "abstract": "In this paper, we develop a new type of snake-like robot using screw-drive units that are connected by active joints. The screw-drive units enable the robot to generate propulsion on any side of the body in contact with environments. Another feature of this robot is the omnidirectional mobility by combinations of screws' angular velocities. We also derive a kinematic model and apply it to trajectory tracking control. Furthermore, we design a front-unit-following controller, which is suitable for manual operations. In this control system, operators are required to command only one unit in the front; then, commands for the rest of the units are automatically calculated to track the path of the preceding units. Asymptotic convergence of the tracking error of the front-unit-following controller is analyzed based on a Lyapunov approach for the case of constant curvature. The effectiveness of the control method is demonstrated by numerical examples and experiments.",
+    "doi": "10.1109/tro.2012.2183050"
   },
   {
     "year": 2012,
@@ -15038,7 +15128,8 @@
     "year": 2012,
     "title": "A Prediction and Motion-Planning Scheme for Visually Guided Robotic Capturing of Free-Floating Tumbling Objects With Uncertain Dynamics",
     "authors": "Farhad Aghili",
-    "abstract": null
+    "abstract": "The robustness and accuracy of a vision system for motion estimation of a tumbling target satellite are enhanced by an adaptive Kalman filter. This allows a vision-guided robot to complete the grasping of the target even if occlusion occurs during the operation. A complete dynamics model, including aspects of orbital mechanics, is incorporated for accurate estimation. Based on the model, an adaptive Kalman filter is developed that estimates not only the system states but also all the model parameters such as the inertia ratio, center-of-mass, and the rotation of the principal axes of the target satellite. An experiment is conducted by using a robotic arm to move a satellite mockup according to orbital mechanics while the satellite pose is measured by a laser camera system. The measurements are sent to the Kalman filter, which, in turn, drives another robotic arm to grasp the target. The results demonstrate successful grasping even if the vision system is blocked for several seconds.",
+    "doi": "10.1109/tro.2011.2179581"
   },
   {
     "year": 2012,
@@ -15062,7 +15153,8 @@
     "year": 2012,
     "title": "Connecting a Human Limb to an Exoskeleton",
     "authors": "Nathana&#235;l Jarrass&#233;, Guillaume Morel",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2178151"
   },
   {
     "year": 2012,
@@ -15086,7 +15178,8 @@
     "year": 2012,
     "title": "Robust Take-Off for a Quadrotor Vehicle",
     "authors": "David Cabecinhas, Roberto Naldi, Lorenzo Marconi 0001, Carlos Silvestre, Rita Cunha",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2187095"
   },
   {
     "year": 2012,
@@ -15104,7 +15197,8 @@
     "year": 2012,
     "title": "The Smooth Curvature Model: An Efficient Representation of Euler-Bernoulli Flexures as Robot Joints",
     "authors": "Lael Odhner, Aaron M. Dollar",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2193232"
   },
   {
     "year": 2012,
@@ -15146,13 +15240,15 @@
     "year": 2012,
     "title": "Estimation of Multivehicle Dynamics by Considering Contextual Information",
     "authors": "Gabriel Agamennoni, Juan I. Nieto 0001, Eduardo Mario Nebot",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2195829"
   },
   {
     "year": 2012,
     "title": "Robust Place Recognition With Stereo Sequences",
     "authors": "Cesar Dario Cadena Lerma, Dorian G&#225;lvez-L&#243;pez, Juan D. Tard&#243;s, Jos&#233; Neira",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2189497"
   },
   {
     "year": 2012,
@@ -15170,7 +15266,8 @@
     "year": 2012,
     "title": "A Crane-Based Robotic Device for Operating Inside Storage Cells",
     "authors": "Jordi Cornell&#224;, David Puig, V&#237;tor Sequeira",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2188609"
   },
   {
     "year": 2012,
@@ -15200,7 +15297,8 @@
     "year": 2012,
     "title": "A Novel Synthesis of Computational Approaches Enables Optimization of Grasp Quality of Tendon-Driven Hands",
     "authors": "Joshua M. Inouye, Jason J. Kutch, Francisco J. Valero Cuevas",
-    "abstract": null
+    "abstract": "We propose a complete methodology to find the full set of feasible grasp wrenches and the corresponding wrench-direction-independent grasp quality for a tendon-driven hand with arbitrary design parameters. Monte Carlo simulations on two representative designs combined with multiple linear regression identified the parameters with the greatest potential to increase this grasp metric. This synthesis of computational approaches now enables the systematic design, evaluation, and optimization of tendon-driven hands.",
+    "doi": "10.1109/tro.2012.2196189"
   },
   {
     "year": 2012,
@@ -15230,19 +15328,22 @@
     "year": 2012,
     "title": "A Complete Method for Workspace Boundary Determination on General Structure Manipulators",
     "authors": "Oriol Bohigas, Montserrat Manubens, Llu&#237;s Ros",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2196311"
   },
   {
     "year": 2012,
     "title": "Flea-Inspired Catapult Mechanism for Miniature Jumping Robots",
     "authors": "Minkyun Noh, Seung-Won Kim, Sungmin An, Je-Sung Koh, Kyu-Jin Cho",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2198510"
   },
   {
     "year": 2012,
     "title": "Bilateral Teleoperation of Groups of Mobile Robots With Time-Varying Topology",
     "authors": "Antonio Franchi, Cristian Secchi, Hyoung Il Son, Heinrich H. B&#252;lthoff, Paolo Robuffo Giordano",
-    "abstract": null
+    "abstract": "In this paper, a novel decentralized control strategy for bilaterally teleoperating heterogeneous groups of mobile robots from different domains (aerial, ground, marine, and underwater) is proposed. By using a decentralized control architecture, the group of robots, which is treated as the slave side, is made able to navigate in a cluttered environment while avoiding obstacles, interrobot collisions, and following the human motion commands. Simultaneously, the human operator acting on the master side is provided with a suitable force feedback informative of the group response and of the interaction with the surrounding environment. Using passivity-based techniques, we allow the behavior of the group to be as flexible as possible with arbitrary split and join events (e.g., due to interrobot visibility/packet losses or specific task requirements) while guaranteeing the stability of the system. We provide a rigorous analysis of the system stability and steady-state characteristics and validate performance through human/hardware-in-the-loop simulations by considering a heterogeneous fleet of unmanned aerial vehicles (UAVs) and unmanned ground vehicles as a case study. Finally, we also provide an experimental validation with four quadrotor UAVs.",
+    "doi": "10.1109/tro.2012.2196304"
   },
   {
     "year": 2012,
@@ -15260,7 +15361,8 @@
     "year": 2012,
     "title": "Modeling the Motion of Microrobots on Surfaces Using Nonsmooth Multibody Dynamics",
     "authors": "Zolt&#225;n Nagy 0002, Remco I. Leine, Dominic R. Frutiger, Christoph Glocker, Bradley J. Nelson",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2199010"
   },
   {
     "year": 2012,
@@ -15290,7 +15392,8 @@
     "year": 2012,
     "title": "Interpolation Volume Calibration: A Multisensor Calibration Technique for Electromagnetic Trackers",
     "authors": "Henry Himberg, Yuichi Motai, Arthur Bradley",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2198929"
   },
   {
     "year": 2012,
@@ -15314,7 +15417,8 @@
     "year": 2012,
     "title": "Three-DOF Microrobotic Platform Based on Capillary Actuation",
     "authors": "Cyrille Lenders, Micha&#235;l Gauthier, R&#233;mi Cojan, Pierre Lambert",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2199009"
   },
   {
     "year": 2012,
@@ -15332,7 +15436,8 @@
     "year": 2012,
     "title": "Path Connectivity of the Free Space",
     "authors": "Alberto Rodriguez 0003, Matthew T. Mason",
-    "abstract": null
+    "abstract": "This paper revisits the notion of free configuration space and reviews some of its path-connectivity-related properties. The literature on motion planning reveals at least three different definitions for the free configuration space of a robot in the presence of obstacles. This paper shows that, assuming regularity of both object and obstacles, those three definitions are equivalent. We show that the three definitions regularize the free space and therefore prevent the existence of “thin bits,” or low-dimensional strata. The paper concludes by discussing a series of properties regarding the existence and smoothability of contact-free paths between pairs of configurations.",
+    "doi": "10.1109/tro.2012.2201294"
   },
   {
     "year": 2012,
@@ -15380,7 +15485,8 @@
     "year": 2012,
     "title": "Intermediate Desired Value Approach for Task Transition of Robots in Kinematic Control",
     "authors": "Jaemin Lee, Nicolas Mansard, Jaeheung Park",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2210293"
   },
   {
     "year": 2012,
@@ -15404,7 +15510,8 @@
     "year": 2012,
     "title": "Locally Decoupled Micromanipulation Using an Even Number of Parallel Force Actuators",
     "authors": "Anthony A. Allais, John E. McInroy, John F. O'Brien",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2209229"
   },
   {
     "year": 2012,
@@ -15416,7 +15523,8 @@
     "year": 2012,
     "title": "Multiagent Navigation Functions Revisited",
     "authors": "Herbert G. Tanner, Adithya Boddu",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2210656"
   },
   {
     "year": 2012,
@@ -15715,7 +15823,7 @@
     "year": 2026,
     "title": "Mixture of Flow Matching and Particle Filter for Proprioception-Based Online Contact Estimation",
     "authors": "Seo Wook Han, Min Jun Kim",
-    "abstract": null,
+    "abstract": "In this article, we propose ContactFlowFilter, a novel approach for contact estimation that determines the number of active contacts, their locations, and the associated force vectors. We consider a robot manipulator equipped with joint torque sensors and a base force/torque sensor; such a proprioceptive-only setup presents a challenging inverse problem characterized by, first, multimodality from nonunique solutions, second, temporal dependencies in state evolution, and, third, discrete contact events involving contact addition/removal. Existing approaches, such as particle filters (PFs) and learning-based methods, often struggle to address these challenges simultaneously. To overcome this, ContactFlowFilter integrates a generative model into the PF framework. The recursive structure of the PF captures temporal dependencies, while the flow matching model serves as an auxiliary proposal distribution to track multimodal beliefs and detect contact events. Extensive validation in both simulation and real-world experiments confirms the effectiveness of the proposed method. In real-world settings, ContactFlowFilter achieves the lowest dissimilarity from the target distribution, with errors of only 0.36 cm and 0.88 cm for single- and dual-contact scenarios, respectively, while operating at 0.69 ms and 2.69 ms.",
     "doi": "10.1109/tro.2026.3723975"
   },
   {
@@ -15736,35 +15844,35 @@
     "year": 2026,
     "title": "Look as You Leap: Planning Simultaneous Motion and Perception for High-DOF Robots",
     "authors": "Qingxi Meng, Emiliano Flores, Carlos Quintero-Pena, Peizhu Qian, Zachary Kingston, Shannan K. Hamlin, Vaibhav Unhelkar, Lydia E. Kavraki",
-    "abstract": null,
+    "abstract": "Most common tasks for robots in dynamic spaces require that the environment is regularly and actively perceived. The perception task considered in this work can represent a broad range of robot perception objectives, including object detection, human activity recognition, and human face detection. For example, a service robot may need to continuously detect and localize a target object during manipulation, while an assistive robot in a healthcare setting may need to maintain reliable perception of a human face or activity for interaction and safety monitoring. These tasks impose perception constraints on the robot motion. However, solving motion and perception tasks simultaneously is challenging, as these objectives often impose conflicting requirements. Furthermore, while robots must react quickly to changes in the environment, directly evaluating the quality of perception (e.g., object detection confidence) is often expensive or infeasible at runtime. This problem is especially important in human-centered environments, such as homes and hospitals, where effective perception is essential for safe and reliable operation. In this work, we address the challenge of solving motion planning problems for high-degree-of-freedom (DoF) robots from a start to a goal configuration with continuous perception constraints under both static and dynamic environments. Our solution is a GPU-parallelized perception-score-guided probabilistic roadmap planner with a neural surrogate model. Unlike existing active perception-aware, visibility-aware, or learning-based planners, our work jointly considers perception tasks and constraints when searching for a solution to the motion planning problem. Our method uses a neural surrogate model to approximate perception scores, incorporates them into a roadmap-based solution, and leverages GPU parallelism to enable efficient online replanning in dynamic settings. We demonstrate that our planner, evaluated on high-DoF robots, outperforms reinforcement learning-based and trajectory-optimization-based baseline methods in both static and dynamic environments in both simulation and real-robot experiments.",
     "doi": "10.1109/tro.2026.3731487"
   },
   {
     "year": 2026,
     "title": "3D Scene Graphs in Robotics: A Unified Representation Bridging Geometry, Semantics, and Action",
     "authors": "Iacopo Catalano, Carlos Cueto Zumaya, Julio A. Placed, Javier Civera, Wallace Moreira Bessa, Jorge Pena-Queralta",
-    "abstract": null,
+    "abstract": "Three-dimensional (3-D) scene graphs (3DSGs) have become a leading representation for robotic perception and reasoning, capturing the geometric layout, semantic content, and relational structure of environments in a single queryable framework. By organizing objects, regions, and agents within structured graphs, 3DSGs provide a multiresolution abstraction layer that supports a wide range of robotic tasks, from navigation and task planning to semantic reasoning and interaction. In this survey, we present a comprehensive analysis of the 3DSG lifecycle through a three-phase decomposition (graph design, graph construction, and graph interaction) along with a historical perspective tracing the evolution from early cognitive-inspired spatial representations to modern foundation-model-driven architectures. We propose a unified formulation of the 3DSG problem and analyze the dominant paradigms: modular pipelines, end-to-end learning, and open-vocabulary methods. We further assess the maturity of current evaluation practices by identifying significant gaps in how graph correctness is defined and measured, and conclude by discussing open challenges including ontology standardization, semantic-aware optimization, and dynamic scene modeling.",
     "doi": "10.1109/tro.2026.3731534"
   },
   {
     "year": 2026,
     "title": "Nonlinear Model Predictive Control of Single-Actuator Monocopters Using Hybrid Rotational Dynamics and INDI",
     "authors": "Emmanuel Tang, Xinyu Cai, Shawndy Michael Lee, Shaohui Foong",
-    "abstract": null,
+    "abstract": "In this article, we present a trajectory tracking framework for samara seed-inspired single-actuator monocopters (SAM) by reformulating a nonlinear model predictive control (NMPC) architecture that leverages a hybrid rotational dynamic model and is integrated with incremental nonlinear dynamic inversion (INDI). Unlike conventional approaches for the SAM that decouple disk and body rotational dynamics, we formulate a hybrid representation that incorporates both disk and body angular rates for the NMPC scheme. Our architecture enables previously unachievable levels of linear velocity and robustness on the SAM, enabling it to execute aggressive maneuvers for dynamically infeasible trajectories. Finally, extensive flight trials on SAM variants (short, long, and ultralight-wing) were conducted on different trajectories under nominal and perturbed conditions, with NMPC+INDI outperforming a differential flatness-based controller with INDI in empirical benchmarking. The results showed NMPC+INDI reduced Euclidean positional root-mean-square-error (RMSE) by up to 39.5% on the long-wing and 37.2% on the short-wing, along with significant velocity RMSE reductions as high as 43.5% on the ultralight-wing. These significantly reduced error margins from our proposed NMPC+INDI method not only validate the hybrid model but also demonstrate the approach's effectiveness and scalability, as shown by experiments on SAMs of diverse form factors.",
     "doi": "10.1109/tro.2026.3731495"
   },
   {
     "year": 2026,
     "title": "From Local Odometry to Global Awareness: A Two-Stage Filter-Based Distributed Odometry for Multi-Robot Systems",
     "authors": "Cong Zhang, Qingchen Liu, Wen Zhong, Yuanzhou Liu, Junfeng Wu, Jiahu Qin",
-    "abstract": null,
+    "abstract": "This article investigates the cooperative localization problem for multirobot systems (MRSs) with dynamic communication topologies and proposes a fully distributed odometry framework. Unlike typical decentralized approaches, the framework maintains an estimate of the global-level joint state at every robot. Specifically, the framework is a two-stage filter-based distributed odometry (TSFDO) framework that integrates inertial measurement unit (IMU), LiDAR, and Ultra-wideband (UWB) measurements in a tightly-coupled invariant extended Kalman filter-based manner. The two stages comprise self state estimation and joint state estimation. In the first stage, each robot fuses its IMU and LiDAR inputs to obtain an estimate of its own state. The second stage, which forms the core of TSFDO, introduces a consensus-based distributed information fusion rule. This rule allows each robot to incorporate state information of nonneighboring robots obtained through local communications, thereby enabling estimation of the joint state consisting of all robots’ states in the MRS under certain standard system conditions. Following the consensus step, an update using UWB measurements further refines the joint-state estimate, enhancing both the ego-state and mutual state estimation accuracy. We theoretically establish the convergence and boundedness of the distributed estimation process under standard system assumptions, providing theoretical support for the reliable operation of the overall TSFDO. Moreover, the capability of TSFDO to achieve high-precision joint-state estimation is demonstrated through experiments on both a public dataset and custom evaluation data. Comparative experiments against state-of-the-art cooperative localization methods confirm the superior accuracy of TSFDO.",
     "doi": "10.1109/tro.2026.3731535"
   },
   {
     "year": 2026,
     "title": "Ergodic Trajectory Planning With Dynamic Sensor Footprints",
     "authors": "Ziyue Zheng, Yongce Liu, Hesheng Wang, Zhongqiang Ren",
-    "abstract": null,
+    "abstract": "This article addresses the problem of trajectory planning for information gathering with a dynamic and resolution-varying sensor footprint. Ergodic planning offers a principled framework that balances exploration (visiting all areas) and exploitation (focusing on high-information regions) by planning trajectories such that the time spent in a region is proportional to the amount of information in that region. Existing ergodic planning often oversimplifies the sensing model by assuming a point sensor or a footprint with constant shape and resolution. In practice, the sensor footprint can drastically change over time as the robot moves, such as aerial robots equipped with downward-facing cameras, whose field of view depends on the orientation and altitude. To overcome this limitation, we propose a new metric that accounts for dynamic sensor footprints, and propose efficient numerical trajectory optimization algorithms with computational reuse based on analytical derivation of sensor footprint models. Experimental results show that the proposed approach can simultaneously optimize both the trajectories and sensor footprints, with up to an order of magnitude better ergodicity than conventional methods. We deploy our approach on real robots for verification.",
     "doi": "10.1109/tro.2026.3731532"
   },
   {
@@ -15785,28 +15893,28 @@
     "year": 2026,
     "title": "Embodied Robot Manipulation in the Era of Foundation Models: Planning and Learning Perspectives",
     "authors": "Shuanghao Bai, Wenxuan Song, Jiayi Chen, Yuheng Ji, Zhide Zhong, Jin Yang, Han Zhao, Wanqi Zhou, Zhe Li, Pengxiang Ding, Cheng Chi, Chang Xu, Xiaolong Zheng, Donglin Wang, Haoang Li, Shanghang Zhang, Badong Chen",
-    "abstract": null,
+    "abstract": "Recent advances in vision, language, and multimodal learning have significantly accelerated progress in robotic foundation models, with robotic manipulation remaining one of the most challenging embodied tasks. Its difficulty lies in integrating perception, semantic understanding, task reasoning, physically grounded action generation, and reliable execution. This survey examines robotic manipulation from an algorithmic perspective and organizes recent learning-based approaches through a unified abstraction of high-level planning and low-level action modeling. At the high level, we extend the classical notion of task planning to include reasoning over language, code, affordances, geometric constraints, and 3-D representations. At the low level, we present a learning-paradigm-oriented taxonomy of learning-based action models, covering input modeling, latent learning, and policy learning. Within this abstraction, foundation models contribute either by generating structured planning artifacts that are instantiated as constraints or latent inputs for downstream action generation, or by directly modeling executable actions and trajectories. Finally, we summarize open challenges and future directions related to scalability, generalization, data efficiency, multimodal physical interaction, and safety. Together, this survey provides a structured view of the design space and emerging trends in foundation models for robotic manipulation. A curated paper list is available online.",
     "doi": "10.1109/tro.2026.3734032"
   },
   {
     "year": 2026,
     "title": "Real-Time Data-Driven Safety-Critical Control in Unknown Multi-Obstacle Environments",
     "authors": "Yu Zhang, Jiaqi Zhai, Liding Zhang, Jiachen Gong, Zhenshan Bing, Wei He, Fuchun Sun, Alois Knoll",
-    "abstract": null,
+    "abstract": "Real-time obstacle avoidance in unknown dynamic multiobstacle environments is critical for autonomous robotic systems, particularly when relying solely on onboard LiDAR sensors without prior environmental knowledge. Control barrier functions (CBFs) provide a theoretical foundation for ensuring safety in such scenarios. However, existing learning-based CBF approaches still face three key challenges: LiDAR-based methods suffer from prediction inconsistencies due to sensor noise between consecutive time steps; current learning methods require offline training or prior environmental information or exhibit poor real-time performance below 10 Hz in multiobstacle environments; and existing approaches cannot synthesize velocity-aware terms essential for dynamic CBFs (D-CBFs) to handle moving obstacles. To address these limitations, this article introduces a velocity-aware fast adaptive variational sparse Gaussian process (VA-FAVSGP) safety framework that constructs a class of buffer-robust D-CBFs utilizing only online LiDAR data. The framework makes three key contributions: First, to overcome prediction inconsistencies caused by sensor noise and improve real-time performance, we develop a VA-FAVSGP model with historical data integration and temporal weighting mechanisms for CBF learning that ensures smooth and consistent CBF predictions, achieving 70–90 Hz (slow mode) and 320–420 Hz (fast mode) incremental learning without offline training requirements. Second, to enable real-time dynamic obstacle handling, we exploit the translation invariance property of radial basis function kernel functions to construct velocity-aware terms for D-CBFs. Third, we further construct learning-based buffer-robust D-CBFs with selective activation strategies that maintain computational efficiency regardless of obstacle quantity. Theoretical analysis proves system safety and asymptotic stabilization. Extensive experiments demonstrate that the proposed framework achieves reactive frequencies of 25–40 Hz (slow mode) and 50–65 Hz (fast mode) even when integrated with multistep predictive control, efficiently handles static, sudden-appearance, and dynamic obstacles, and exhibits better performance compared to state-of-the-art methods in three-dimensional environments with 2-D LiDAR-based perception.",
     "doi": "10.1109/tro.2026.3734298"
   },
   {
     "year": 2026,
     "title": "GelSLAM: A Real-time, High-Fidelity, and Robust 3D Tactile SLAM System",
     "authors": "Hung-Jui Huang, Mohammad Amin Mirzaee, Michael Kaess, Wenzhen Yuan",
-    "abstract": null,
+    "abstract": "Accurately perceiving an object’s pose and shape is essential for precise grasping and manipulation. Compared to common vision-based methods, tactile sensing offers advantages in precision and immunity to occlusion when tracking and reconstructing objects in contact. This makes it particularly valuable for in-hand and other high-precision manipulation tasks. In this work, we present GelSLAM, a real-time 3-D SLAM system that relies solely on tactile sensing to estimate object pose over long periods and reconstruct object shapes with high fidelity. Unlike traditional point cloud–based approaches, GelSLAM uses tactile-derived surface normals and curvatures for robust tracking and loop closure. It can track object motion in real time with low error and minimal drift, and reconstruct shapes with submillimeter accuracy, even for low-texture objects such as wooden tools. GelSLAM extends tactile sensing beyond local contact to enable global, long-horizon spatial perception, and we believe it will serve as a foundation for many precise manipulation tasks involving interaction with objects in hand.",
     "doi": "10.1109/tro.2026.3734131"
   },
   {
     "year": 2026,
     "title": "LECTP: Lightweight and Efficient Cooperative Trajectory Planning for Multi-CAV At Unsignalized Intersections",
     "authors": "Qi Wang, Xuting Duan, Chen Shao, Jianshan Zhou, Kaige Qu, Chunmian Lin, Daxin Tian",
-    "abstract": null,
+    "abstract": "Cooperative trajectory planning for connected and automated vehicles (CAVs) at unsignalized intersections requires simultaneous consideration of conflict resolution, continuous trajectory feasibility, real-time computation, and communication efficiency. This article proposes a lightweight and efficient cooperative trajectory planning framework for multi-CAV coordination at structured unsignalized intersections. The proposed method integrates time-window-based conflict resolution and trajectory experience reuse into a conflict-based search (CBS)-style coordination framework, so that previously verified safe trajectory segments can be preserved and only conflict-related local trajectory segments are refined. Meanwhile, a differential-flatness-based parameterized trajectory representation is embedded into the low-level trajectory optimization module to support continuous-space trajectory optimization and compact trajectory communication. In the tested structured intersection scenarios, the proposed method empirically exhibits an approximately linear growth trend of the constraint tree. In a 200 m × 200 m bidirectional six-lane intersection, the proposed method reduces computation time by 60.41%–91.37% and decreases the average communication data volume by 94.76% compared with representative baselines, while maintaining a 100% planning success rate with up to 26 vehicles. Further continuous-flow simulations and indoor uncrewed aerial vehicle–uncrewed ground vehicle (UAV–UGV) experiments indicate stable rolling operation under persistent traffic flow and real-time executability on a physical platform. In addition, the planning-level degradation mechanism under short-term vehicle-to-everything (V2X) communication failures is discussed.",
     "doi": "10.1109/tro.2026.3734325"
   },
   {
@@ -15820,14 +15928,322 @@
     "year": 2026,
     "title": "A Lightweight Robotic Ultrasound System With Hybrid Force Control and Modular Force-Range Switching",
     "authors": "Zehao Wu, Weijian Zhang, Xianli Wang, I-Ming Chen, Qingsong Xu",
-    "abstract": null,
+    "abstract": "Ultrasound imaging provides valuable, radiation-free soft tissue visualization, with its portability enabling diagnostics in diverse settings. However, image quality is operator-dependent, where variations in probe contact force significantly compromise diagnostic consistency. To address this issue, we present a novel general-purpose robotic ultrasound system. The system features a lightweight end-effector, hybrid force control, and a modular mechanism for selectable force ranges. A tunable constant-torque mechanism, designed via stiffness matching, dampens sudden tremors. This torque is translated into a precise, constant contact-force through modular winding reels. A closed-loop control system with comprehensive compensation for gravity, hysteresis, and friction enables real-time deformation tracking. Experimental studies on silicone phantoms and human volunteers demonstrate the system’s ability to acquire high-quality scans with exceptional repeatability and operational ease. During abdominal ultrasound scanning with deep breathing, the proposed system successfully suppresses oscillations to a magnitude of 0.10 mm. The reported robotic ultrasound system offers an effective solution for consistent and comfortable ultrasound examinations.",
     "doi": "10.1109/tro.2026.3734315"
   },
   {
     "year": 2026,
     "title": "Joint Multi-Condition Representation Modeling Via Matrix Factorization for Visual Place Recognition",
     "authors": "Timur Ismagilov, Shakaiba Majeed, Michael Milford, Tan Viet Tuyen Nguyen, Sarvapali D. Ramchurn, Shoaib Ehsan",
-    "abstract": null,
+    "abstract": "We address multireference visual place recognition (VPR), where reference sets captured under varying conditions are used to improve localization performance. While deep learning with large-scale training improves robustness, increasing data diversity and model complexity incur extensive computational cost during training and deployment. Descriptor-level fusion via voting or aggregation avoids training, but often targets multisensor setups or relies on heuristics with limited gains under appearance and viewpoint change. We propose a training-free, descriptor-agnostic approach that jointly models places using multiple reference descriptors via matrix decomposition into basis representations, enabling projection-based residual matching. We also introduce SotonMV, a benchmark for multiviewpoint VPR captured over time. Our method improves Recall@1 by up to $\\approx$18% over conventional single-reference set matching on appearance-change datasets, and matches or outperforms existing multi-reference baselines across most appearance-change settings. For viewpoint-change datasets, our method supports matching when viewpoint is distributed among the references, with the benefit depending on reference set coverage of the query conditions. On unconstrained reference sets, we additionally observe gains of $\\approx$5%, demonstrating strong generalization while remaining computationally lightweight.",
     "doi": "10.1109/tro.2026.3734352"
+  },
+  {
+    "year": 2026,
+    "title": "From Ill-Posed to Well-Posed: A Decomposition Framework for Reliable Robot Learning with Foundation Models",
+    "authors": "Yuheng Ji, Cheng Chi, Huajie Tan, Yuting Zhao, Huaihai Lyu, Enshen Zhou, Pengwei Wang, Zhongyuan Wang, Xiaolong Zheng, Shanghang Zhang",
+    "abstract": "The integration of foundation models into robotics holds immense promise for creating generalist agents, yet a fundamental challenge remains in ensuring reliable and precise physical execution. The dominant end-to-end paradigm in modern foundation model robotics, which directly maps multimodal sensory inputs to motor commands, exhibits inherent instability in real-world deployments. This article presents a formal theoretical analysis positing that this fragility stems from the paradigm’s attempt to solve a mathematically ill-posed inverse problem. Specifically, the direct regression of a precise 3-D action from a 2-D information-lossy image leads to an ill-conditioned implicit visual-control Jacobian, fundamentally limiting spatial precision—a critical challenge for high-dexterity manipulation. To address this fundamental issue, we propose the well-posed robotic decomposition framework, which rigorously transforms the single ill-posed task into two sequential and well-posed subproblems: first, a well-posed learning task, where a foundation model generates structured 2-D spatial control signals, and second, a well-posed geometric inference task, where a geometric solver translates these signals into stable 3-D actions using explicit depth. We instantiate this framework with EmBrain, a new foundation model engineered for physically grounded perception. EmBrain integrates two key innovations: a depth-aware vision transformer (D-ViT) to inject geometric priors and ensure the physical plausibility of 2-D signals, and a domain-aware data mixing strategy to resolve interprimitive gradient conflicts and enable stable multitask generalization. Extensive experiments on multiple real-world robotic platforms confirm the superior stability and generalization of our framework, empirically verifying the fragility predicted by our theoretical analysis. This work contributes a theoretically grounded framework and an empirically validated foundation model architecture that directly addresses the core stability limitations of the end-to-end vision-language-action approach.",
+    "doi": "10.1109/tro.2026.3734126"
+  },
+  {
+    "year": 2026,
+    "title": "Guest Editorial: Special Collection on Event-Based Vision for Robotics",
+    "authors": "Friedrich Fraundorfer, Guillermo Gallego, Fabio Morbidi, Pascal Vasseur",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3723961"
+  },
+  {
+    "year": 2026,
+    "title": "Online Camera-Pose-Free Stereo Endoscopic Tissue Deformation Recovery With Tissue-Invariant Vision-Biomechanics Consistency",
+    "authors": "Jiahe Chen, Naoki Tomii, Ichiro Sakuma, Etsuko Kobayashi",
+    "abstract": "Tissue deformation recovery based on stereo endoscopic images is crucial for tool-tissue interaction analysis and benefits surgical navigation and autonomous soft tissue manipulation. Previous research suffers from the problems raised from camera motion, occlusion, large tissue deformation, lack of tissue-specific biomechanical priors, and reliance on offline processing. Unlike previous studies where the tissue geometry and deformation are represented by 3D points and displacements, the proposed method models tissue geometry as the 3D point and derivative map and tissue deformation as the 3D displacement and local deformation map. For a single surface point, 6 parameters are used to describe its rigid motion and 3 parameters for its local deformation. The method is formulated under the camera-centric setting, where all motions are regarded as the scene motion with respect to the camera. Inter-frame alignment is realized by optimizing the inter-frame deformation, making it unnecessary to estimate camera pose. The concept of the canonical map is introduced to optimize tissue geometry and deformation in an online approach. Quantitative and qualitative experiments were conducted using in vivo and ex vivo laparoscopic datasets. With the inputs of depth and optical flow, the method stably models tissue geometry and deformation even when the tissue is partially occluded or moving outside the field of view. Results show that the 3D reconstruction accuracy in the non-occluded and occluded areas reaches 0.37$\\pm$0.27 mm and 0.39$\\pm$0.21 mm in terms of surface distance, respectively. The method can also estimate surface strain distribution during various manipulations as an extra modality for mechanical-based analysis.",
+    "doi": "10.1109/tro.2026.3734035"
+  },
+  {
+    "year": 2026,
+    "title": "Distributed Secure Learning Control for Large-scale Multirobots under Stealthy Actuator Attacks",
+    "authors": "Xinglong Zhang, Qingwen Ma, Cong Li, Hui Yin, Changxin Zhang, Yueying Wang, Wei Pan, Xin Xu",
+    "abstract": "Distributed learning control for multirobot systems (MRS) offers significant flexibility in presence of uncertainties but lacks provable performance guarantees. A promising direction involves integrating reinforcement learning (RL) into distributed model predictive control (DMPC), leveraging the strengths of RL in nonlinear policy design and the receding-horizon replanning capabilities of DMPC. However, ensuring secure control within such a learning framework under malicious cyber attacks, particularly stealthy ones, remains a critical challenge, because the distributed policies generation depends on information exchange among neighbors, where compromised agents can rapidly influence the behavior of others through the communication network. This article proposes a distributed secure learning control (DSLC) framework for large-scale MRS under malicious, stealthy actuator attacks. Our framework offers two key features: (i) a unified approach that enables secure learning control across various coordination scenarios and (ii) a game-theoretic distributed learning-based predictive control strategy that learns how to balance the attacker and defender through a differential-game based DMPC framework. Specifically, DSLC employs a distributed attacker-actor-critic architecture to learn the optimal defense and attack policies online within each prediction interval. Unlike numerical optimization-based controllers that calculate open-loop control sequences, our method simultaneously generates adversarial attack policies and corresponding defense policies in analytical closed-loop form. The defense policies could be directly generalized to MRS with varying scales and diverse actuator attack probabilities. The effectiveness and scalability of DSLC are validated through comprehensive simulations and real-world experiments in multiple wheeled robots via various control tasks.",
+    "doi": "10.1109/tro.2026.3737565"
+  },
+  {
+    "year": 2026,
+    "title": "Ultrafast Sampling-based Kinodynamic Planning via Differential Flatness",
+    "authors": "Thai Duong, Clayton W. Ramsey, Zachary Kingston, Wil Thomason, Lydia E. Kavraki",
+    "abstract": "Motion planning under dynamics constraints, i.e., kinodynamic planning, enables safe robot operation by generating dynamically feasible trajectories that the robot can accurately track. For high-degree-of-freedom robots, such as manipulators, sampling-based motion planners are commonly used, especially for complex tasks in cluttered environments. However, enforcing constraints on robot dynamics in such planners requires solving either challenging two-point boundary value problems (BVPs) or propagating robot dynamics, both of which cause computational bottlenecks that drastically increase planning times. Meanwhile, recent efforts have shown that sampling-based motion planners can generate plans in microseconds using parallelization, but are limited to geometric paths. This article develops flatness-based accelerated sampling-based kinodynamic, a fast parallelized sampling-based kinodynamic motion planning framework for a broad class of differentially flat robot systems, including manipulators, ground and aerial vehicles, and more. Differential flatness allows us to transform the motion planning problem from the original state space to a flat output space, where an analytical time-parameterized solution of the BVP problem can be obtained. A trajectory in the flat output space is then converted back to a closed-form dynamically feasible trajectory in the original state space, enabling fast validation via “single instruction, multiple data” parallelism. Our framework is fast, exact, and compatible with any sampling-based motion planner, while offering theoretical guarantees on probabilistic exhaustivity and asymptotic optimality based on the closed-form BVP solutions. We extensively verify the effectiveness of our approach in both simulated benchmarks and real experiments with cluttered and dynamic environments, requiring mere microseconds to milliseconds of planning time.",
+    "doi": "10.1109/tro.2026.3737703"
+  },
+  {
+    "year": 2026,
+    "title": "Aerial GRIPPER: A Gradient-based Real-time Inverse-game Predictor and Planner",
+    "authors": "Zeshuai Chen, Meng Wang, Jindou Jia, Xiang Yu, Lei Guo",
+    "abstract": "Accurate capture of non-cooperative targets is critical. In an attempt to tackle this intractable challenge, an aerial gripper system integrated with a Gradient-based Real-time Inverse-game Predictor and PlannER (GRIPPER) framework is proposed. The interaction is formulated as a general-sum pursuit-evasion game under incomplete information. Specifically, underlying cost parameters of the target are inferred online, and the open-loop Nash equilibrium (OLNE) strategy is iteratively refined within a receding-horizon loop. To ensure high-frequency execution, a computationally friendly gradient-based inverse-game solver is developed. Without explicit computation of the Hessian inverse, the optimized solution is updated (>50 Hz) based on implicit differentiation and fast Hessian-vector products. Meanwhile, an anti-disturbance controller is developed to overcome disturbances of uncertain payload and gripper actuation, enabling precise tracking of the planned trajectory and accurate grasping of the target. Simulations and real-world experiments illustrate the superior computational efficiency and task performance of GRIPPER. The task of capturing and delivering a non-cooperative target is accomplished, highlighting the robustness, adaptability, and real-time performance of the framework in highly adversarial scenarios.",
+    "doi": "10.1109/tro.2026.3738312"
+  },
+  {
+    "year": 2026,
+    "title": "SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments",
+    "authors": "Kota Kondo, Jesus Tordesillas, Juan Rached, Lili Sun, Yixuan Jia, Jonathan P. How",
+    "abstract": "This article presents safe autonomous trajectory planning for dynamic unknown environments (SANDO), a safe trajectory planner for 3-D dynamic unknown environments. Existing soft-constraint planners are fast but do not guarantee collision-free paths, while hard-constraint methods typically ensure safety at the cost of longer computation. SANDO addresses this tradeoff through three contributions. First, a heat map-based A$^\\ast$ global planner steers the path away from high-risk regions, and a spatiotemporal safe flight corridor (STSFC) generator produces time-layered polytopes that inflate obstacles only by their worst-case reachable set at each time layer, rather than over the entire horizon. Second, trajectory optimization is formulated as a mixed-integer quadratic program with hard collision-avoidance constraints, and variable elimination reduces the number of decision variables. Third, a formal safety analysis establishes collision-free guarantees under explicit velocity-bound, size-bound, and estimation-error assumptions. Ablation studies confirm that variable elimination yields up to $7.4\\times$ faster optimization and that STSFCs are critical for feasibility in dense dynamic environments. In simulations against state-of-the-art methods, SANDO achieves a 100% success rate across all forest and dynamic benchmark difficulty levels with no constraint violations, and perception-only experiments demonstrate the full perception-to-planning pipeline. Hardware experiments with fully onboard planning, perception, and localization demonstrate six safe flights in static environments and 12 among dynamic obstacles.",
+    "doi": "10.1109/tro.2026.3738474"
+  },
+  {
+    "year": 2026,
+    "title": "LIO-MARS: Non-Uniform Continuous-Time Trajectories for Real-Time LiDAR-Inertial-Odometry",
+    "authors": "Jan Quenzel, Sven Behnke",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3738457"
+  },
+  {
+    "year": 2026,
+    "title": "Expanding the Workspace of Electromagnetic Navigation Systems Using Dynamic Feedback for Single- and Multi-Agent Control",
+    "authors": "Jasan Zughaibi, Denis von Arx, Maurus Derungs, Florian Heemeyer, Luca A. Antonelli, Quentin Boehler, Michael Muehlebach, Bradley J. Nelson",
+    "abstract": "Electromagnetic navigation systems (eMNS) enable a number of magnetically guided surgical procedures. A challenge in magnetically manipulating surgical tools is that the effective workspace of an eMNS is often severely constrained by power and thermal limits. We show that system-level control design significantly expands this workspace by reducing the currents needed to achieve a desired motion. We identified five key system approaches that enable this expansion: (i) motion-centric torque/force objectives, (ii) energy-optimal current allocation, (iii) real-time pose estimation, (iv) dynamic feedback, and (v) high-bandwidth eMNS components. As a result, we stabilize a 3D inverted pendulum on an eight-coil OctoMag eMNS with significantly lower currents (0.1-0.2 A vs. 8-14 A), by replacing a field-centric field-alignment strategy with a motion-centric torque/force-based approach. We generalize to multi-agent control by simultaneously stabilizing two inverted pendulums within a shared workspace, exploiting magnetic-field nonlinearity and coil redundancy for independent actuation. A structured analysis compares the electromagnetic workspaces of both paradigms and examines current-allocation strategies that map motion objectives to coil currents. Cross-platform evaluation of the clinically oriented Navion eMNS further demonstrates substantial workspace expansion by maintaining stable balancing at distances up to 50 cm from the coils. The results demonstrate that feedback is a practical path to scalable, efficient, and clinically relevant magnetic manipulation.",
+    "doi": "10.1109/tro.2026.3738468"
+  },
+  {
+    "year": 2026,
+    "title": "Human-in-the-Loop Multi-Robot Information Gathering with Inverse Submodular Maximization",
+    "authors": "Guangyao Shi, Shipeng Liu, Ellen Novoseller, Jiazhen Liu, Feifei Qian, Gaurav Sukhatme",
+    "abstract": "We consider a new type of inverse combinatorial optimization, Inverse Submodular Maximization (ISM), for its application in human-in-the-loop multi-robot information gathering. Forward combinatorial optimization - solving a combinatorial problem given the reward (cost)-related parameters - is widely used in multi-robot coordination. In the standard pipeline, domain experts design the reward (cost)-related parameters offline. These parameters are utilized for coordinating robots online. What if non-expert human supervisors desire to change these parameters during task execution to adapt to some new requirements? We are interested in the case where human supervisors can suggest what path primitives to take, and the robots need to change the internal decision-making parameters accordingly. We study such problems from the perspective of inverse combinatorial optimization, i.e., the process of finding parameters that give certain solutions to the problem. Specifically, we propose a new formulation for ISM for a family of multi-robot information gathering scenarios, in which we aim to find a new set of parameters that minimally deviates from the current parameters while causing a greedy algorithm to output path primitives that are the same as those desired by the human supervisors. We show that for the case with a single suggestion, such problems can be formulated as a Mixed Integer Quadratic Program (MIQP), which is intractable for existing solvers when the problem size is large. We propose a new Branch $\\&$ Bound algorithm to solve such problems. For the case with multiple suggestions from several human supervisors, the problem can be cast as a multi-objective optimization and can be solved using Pareto Monte Carlo Tree Search. In numerical simulations, we demonstrate how to use ISM in multi-robot scientific data collection and event detection-driven coverage control.",
+    "doi": "10.1109/tro.2026.3738463"
+  },
+  {
+    "year": 2026,
+    "title": "A Safety-Projected Primal-Dual Neural Network for RCM-Gated Robot-Assisted Surgery",
+    "authors": "Boyu Zheng, Jingyi Fu, Chunquan Li, Rongfa Yuan, Zhijun Zhang, Junzhi Yu, Peter X. Liu",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3737887"
+  },
+  {
+    "year": 2026,
+    "title": "DynaHMRC: Decentralized Heterogeneous Multi-Robot Collaboration for Dynamic Tasks with Large Language Models",
+    "authors": "Wenhao Yu, Yu'ang Xie, Yifan Duan, Jie Peng, Guanting Ye, Ka-Veng Yuen, Yanyong Zhang, Jianmin Ji",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3740789"
+  },
+  {
+    "year": 2026,
+    "title": "DST-Calib: A Dual-Path, Self-Supervised, Target-Free LiDAR-Camera Extrinsic Calibration Network",
+    "authors": "Zhiwei Huang, Yanwei Fu, Yi Zhou, Xieyuanli Chen, Qijun Chen, Rui Fan",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3741440"
+  },
+  {
+    "year": 2026,
+    "title": "Neural Fields and 3D Gaussian Splatting in Robotics: A Survey",
+    "authors": "Muhammad Zubair Irshad, Mauro Comi, Yen-Chen Lin, Nick Heppert, Abhinav Valada, Rares Ambrus, Zsolt Kira, Jonathan Tremblay",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3741519"
+  },
+  {
+    "year": 2026,
+    "title": "Nonlinear $\\mathcal {H}_{\\infty }$ Inverse-Optimal Impedance Control for Robotic Systems",
+    "authors": "Geonho Park, Jonghoon Park, Youngjin Choi",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3741518"
+  },
+  {
+    "year": 2026,
+    "title": "Inverse Dynamic Modeling of Soft Parallel Robots Actuated by Dielectric Elastomer Actuators",
+    "authors": "Jung-Che Chang, Xi Wang, Fengze Yang, Dragos Axinte, Xi Dong",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3741520"
+  },
+  {
+    "year": 2026,
+    "title": "Census-Based Population Autonomy For Distributed Robotic Teaming",
+    "authors": "Tyler M. Paine, Anastasia Bizyaeva, Michael R. Benjamin",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3742238"
+  },
+  {
+    "year": 2026,
+    "title": "Denoising Multirobot Trajectories",
+    "authors": "Yuhao Zhang, Keisuke Okumura, Ajay Shankar, Amanda Prorok",
+    "abstract": "Multirobot trajectory planning is a fundamental problem in multirobot coordination but remains computationally challenging due to its nonconvex, multimodal, and high-dimensional nature. This work builds upon D4orm, a dynamics-aware diffusion-denoising framework, and develops a family of planning architectures for diverse operational requirements. Unlike conventional numerical optimization methods, D4orm employs sampling-based optimization to generate solution trajectories through massively parallel sampling, leveraging modern computing architectures, such as GPUs. Its diffusion-denoising structure iteratively optimizes deformations to candidate control trajectories, providing an efficient and versatile paradigm for generating kinodynamically feasible and conflict-free trajectories. Using D4orm as the building block for advanced planners, we present a decoupled planner for improved scalability, an online receding-horizon planner with feedback control, and a distributed planner for resource-constrained settings. Evaluations with differential-drive and holonomic robots in 2-D and 3-D environments demonstrate that D4orm-based approaches find high-quality solutions faster and more reliably than other sampling-based optimization methods, such as model predictive path integral control, as well as a learned diffusion-model-based method. We further demonstrate zero-shot deployment on ten real quadrotors with obstacles, large-scale deconfliction with 100 simulated robots, and fully onboard distributed “lifelong” operation with six ground robots. Overall, these results establish diffusion denoising as a scalable and reliable framework for multirobot coordination.",
+    "doi": "10.1109/tro.2026.3742231"
+  },
+  {
+    "year": 2026,
+    "title": "Cooperative Geometry-Aware Collision Avoidance for Heterogeneous Robots Via Negotiation on Separating Hyperplanes",
+    "authors": "Zeming Wu, Chengcheng Fu, Yahui Hao, Lu Liu",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3742236"
+  },
+  {
+    "year": 2026,
+    "title": "CoinFT: A Coin-Sized, Capacitive 6-Axis Force Torque Sensor for Robotic Applications",
+    "authors": "Hojung Choi, Jun En Low, Tae Myung Huh, Seongheon Hong, Gabriela A. Uribe, Kenneth A. W. Hoffmann, Julia Di, Tony G. Chen, Andrew A. Stanley, Mark R. Cutkosky",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3742237"
+  },
+  {
+    "year": 2026,
+    "title": "Data-Augmented Adaptive Oscillators: A Framework for Robust Gait Phase Estimation in Exoskeleton Assistance",
+    "authors": "Yuanwen Zhang, Haolan Xian, Jinglin Zhou, Guangshan Wang, Yixuan Sheng, Yuquan Leng, Honghai Liu",
+    "abstract": "Accurate and robust gait phase estimation is crucial for exoskeleton control in assistive walking. Existing data-driven techniques, while powerful, lack the predictability and generalizability needed for real-world use. Model-based methods, like adaptive oscillators (AOs), offer inherent certainty but cannot adapt to varying terrains. This study introduces a data-augmented adaptive oscillator (DA-AO), a hybrid framework synergizing mathematical models with the adaptability of learning-based perception. By dynamically retrieving the optimal hyperparameters for each detected locomotion mode, the DA-AO ensures that the oscillator consistently operates in its optimal regime, thereby achieving rapid adaptation across diverse walking scenarios. The proposed estimator is validated using a hip exoskeleton, achieving highly accurate estimation with root mean square errors (RMSEs) of 0.025, 0.021, and 0.032 for level-ground walking, ramp ascent, and stair ascent, respectively, during active assistive walking trials that effectively reduced average metabolic costs by 15.3%, 10.6%, and 5.7% ($p< 0.05$). Furthermore, the DA-AO system demonstrated robust gait phase estimation with an RMSE of 0.025 during continuous outdoor terrain transitions and reduced the cost of transport by 12.3% ($p< 0.05$) during outdoor hill walking. This work establishes a practical integration of data-driven adaptation within a model-based framework, demonstrating the potential of hybrid strategies to resolve the accuracy-reliability tradeoff and foster user trust in assistive walking with exoskeletons.",
+    "doi": "10.1109/tro.2026.3742234"
+  },
+  {
+    "year": 2026,
+    "title": "Agile and Generalized Legged Locomotion via Attention-Based Neural Map Encoding",
+    "authors": "Chong Zhang, Victor Klemm, Fan Yang, Marco Hutter",
+    "abstract": "Achieving agile and generalized legged locomotion across terrains requires tight integration of perception and control, especially under occlusions and sparse footholds. Existing methods have demonstrated agility on parkour courses but often rely on end-to-end sensorimotor models with limited generalization and interpretability. By contrast, methods targeting generalized locomotion typically exhibit limited agility and struggle with visual occlusions. We introduce a unified reinforcement learning (RL) framework for agile and generalized locomotion that incorporates a novel attention-based map encoder in the control policy. This encoder extracts local and global mapping features and uses attention mechanisms to focus on salient regions, producing an interpretable and generalized embedding for RL-based control. We further propose a learning-based mapping pipeline that provides fast, uncertainty-aware terrain representations robust to noise and occlusions, serving as policy inputs. It uses neural networks to convert depth observations into local elevations with uncertainties, and fuses them with odometry. The pipeline also integrates with parallel simulation so that we can train controllers with online mapping, aiding sim-to-real transfer. We validate our framework with the proposed mapping pipeline on a quadruped and a biped robot, and the resulting controllers demonstrate strong agility and generalization to unseen terrains in simulation and in real-world experiments.",
+    "doi": "10.1109/tro.2026.3742243"
+  },
+  {
+    "year": 2026,
+    "title": "Unifying Deep Predicate Invention With Pre-Trained Foundation Models",
+    "authors": "Qianwei Wang, Bowen Li, Zhanpeng Luo, Yifan Xu, Vineet Kamat, Carol Menassa, Alexander Gray, Tom Silver, Sebastian Scherer, Katia Sycara, Yaqi Xie",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3742972"
+  },
+  {
+    "year": 2026,
+    "title": "Biomechanics-Aware Trajectory Optimization for Online Navigation During Robotic Physiotherapy",
+    "authors": "Italo Belli, Stijn Klevering, Florian van Melis, J. Micah Prendergast, Ajay Seth, Luka Peternel",
+    "abstract": "Robotic devices provide a great opportunity to assist in delivering physical therapy and rehabilitation movements, yet current robot-assisted methods struggle to incorporate biomechanical metrics essential for safe and effective therapy. We introduce BATON, a Biomechanics-Aware Trajectory Optimization approach to online robotic Navigation of human musculoskeletal loads for rotator cuff rehabilitation. BATON embeds a high-fidelity OpenSim model of the human shoulder into an optimal control framework, generating strain-minimizing trajectories for real-time control of therapeutic movements. \\addedText{Its core strength lies in the ability to adapt biomechanics-informed trajectories online to unpredictable volitional human actions or reflexive reactions during physical human-robot interaction based on robot-sensed motion and forces. BATON's adaptability is enabled by a real-time, model-based estimator that infers changes in muscle activity via a rapid redundancy solver driven by robot pose and force/torque sensor data. We validated BATON through physical human-robot interaction experiments, assessing response speed, motion smoothness, and interaction forces.",
+    "doi": "10.1109/tro.2026.3744512"
+  },
+  {
+    "year": 2026,
+    "title": "Corrections to “Optimal Energy Shaping and Force Amplification Framework for Task-Agnostic, Biomimetic Ankle Exoskeletons”",
+    "authors": "Katharine Walters, Gray C. Thomas, Robert D. Gregg",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3733800"
+  },
+  {
+    "year": 2026,
+    "title": "Hybrid System Planning Using a Mixed-Integer ADMM Heuristic and Hybrid Zonotopes",
+    "authors": "Joshua A. Robbins, Andrew F. Thompson, Jonah J. Glunt, Herschel C. Pangborn",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3744513"
+  },
+  {
+    "year": 2026,
+    "title": "Learning From a Steady Hand: A Weakly Supervised Agent for Robot Assistance under Microscopy",
+    "authors": "Huanyu Tian, Martin Huber, Lingyun Zeng, Zhe Han, Wayne Bennett, Giuseppe Silvestri, Gerardo Mendizabal-Ruiz, Tom Vercauteren, Alejandro Chavez-Badiola, Christos Bergeles",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3744514"
+  },
+  {
+    "year": 2026,
+    "title": "Tactile-Force Alignment in Vision-Language-Action Models for Force-aware Manipulation",
+    "authors": "Yuzhe Huang, Pei Lin, Wanlin Li, Daohan Li, Jiajun Li, Jiaming Jiang, Chenxi Xiao, Ziyuan Jiao",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3744515"
+  },
+  {
+    "year": 2026,
+    "title": "HD-SLAM: Hash-Grid Assisted Photometric-Geometric Decoupled Continuous Gaussian Splatting SLAM",
+    "authors": "Xuyang Tang, Keyu Chen, Henry K. Chu, Yuxiang Sun",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3744518"
+  },
+  {
+    "year": 2026,
+    "title": "NRGS-SLAM: Monocular Non-Rigid SLAM for Endoscopy via Deformation-Aware 3D Gaussian Splatting",
+    "authors": "Jiwei Shan, Zeyu Cai, Yirui Li, Yongbo Chen, Lijun Han, Yun-hui Liu, Hesheng Wang, Shing Shin Cheng",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3744764"
+  },
+  {
+    "year": 2026,
+    "title": "UniConFlow: A Unified Constrained Flow-Matching Framework for Certified Motion Planning",
+    "authors": "Zewen Yang, Xiaobing Dai, Dian Yu, Zhijun Li, Majid Khadiv, Sandra Hirche, Sami Haddadin",
+    "abstract": "Generative models have become increasingly powerful tools for robot motion generation, enabling flexible and multimodal trajectory generation across various tasks. Yet, most existing approaches remain limited in handling multiple types of constraints, such as collision avoidance, actuation limits, and dynamic consistency, which are typically addressed individually or heuristically. In this work, we propose UniConFlow, a unified constrained flow matching-based framework for trajectory generation that systematically incorporates both equality and inequality constraints. Moreover, UniConFlow introduces a novel prescribed-time zeroing function that shapes a time-varying guidance field during inference, allowing the generation process to adapt to varying system models and task requirements. Furthermore, to further address the computational challenges of long-horizon and high-dimensional trajectory generation, we propose two practical strategies for the terminal constraint enforcement and inference process: a violation-segment extraction protocol that precisely localizes and refines only the constraint-violating portions of trajectories, and a trajectory compression method that accelerates optimization in a reduced-dimensional space while preserving high-fidelity reconstruction after decoding. Empirical validation across three experiments, including a double inverted pendulum, a real-to-sim car racing task, and a sim-to-real manipulation task, demonstrates that UniConFlow outperforms state-of-the-art generative planners and conventional optimization baselines, achieving superior performance on certified motion planning metrics such as safety, kinodynamic consistency, and action feasibility. Project page is available at: https://uniconflow.github.io.",
+    "doi": "10.1109/tro.2026.3744509"
+  },
+  {
+    "year": 2026,
+    "title": "ALORE: Autonomous Large-Object Rearrangement with a Legged Manipulator",
+    "authors": "Zhihai Bi, Yushan Zhang, Kai Chen, Guoyang Zhao, Yulin Li, Jun Ma",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3747611"
+  },
+  {
+    "year": 2026,
+    "title": "PAFIMv2: Real-Time Multi-Source 3D Sound Source Tracking on a Drone Swarm",
+    "authors": "Benjamin Yen, Ryosuke Kojima, Yusuke Hioka, Takeshi Ashizawa, Kazuhiro Nakadai",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3747648"
+  },
+  {
+    "year": 2026,
+    "title": "Hierarchical Learning Framework for Task-Level Autonomous Intraoperative Image-Guided Robotic Catheterization with In-Vivo Validation",
+    "authors": "Tianliang Yao, Dong Liu, Tao Liu, Bo Lu, Yixuan Yuan, Lakmal Seneviratne, Kaspar Althoefer, Jian S. Dai, Peng Qi",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3747246"
+  },
+  {
+    "year": 2026,
+    "title": "VLingNav: Embodied Navigation with Adaptive Reasoning and Visual-Assisted Linguistic Memory",
+    "authors": "Shaoan Wang, Yuanfei Luo, Xingyu Chen, Aocheng Luo, Dongyue Li, Chang Liu, Sheng Chen, Yangang Zhang, Fanchen Meng, Junzhi Yu",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3747248"
+  },
+  {
+    "year": 2026,
+    "title": "A Novel Non-Watertight, Lightweight, Low-Voltage Piezoelectric Driven Bionic Thruster",
+    "authors": "Xinrong Chen, Wen Gu, Liang Wang, Jiamei Jin",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3747614"
+  },
+  {
+    "year": 2026,
+    "title": "PiezoBlimp: Design, Control, and Untethered Flight of a Palm-Scale Piezoelectric Flapping-Wing Microrobotic Blimp",
+    "authors": "Jie Chen, Xiang Lu, Zixin Deng, Yulie Wu, Yang Chen, Dingbang Xiao, Xuezhong Wu",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3748858"
+  },
+  {
+    "year": 2026,
+    "title": "SCOPE: Surround-view Collision Prediction via Panoramic Oriented TTC Estimation",
+    "authors": "Chunyu Feng, Yeqiang Qian, Changlin Li, Ming Yang",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3749199"
+  },
+  {
+    "year": 2026,
+    "title": "RPT*: Global Planning with Probabilistic Terminals for Target Search in Complex Environments",
+    "authors": "Yunpeng Lyu, Chao Cao, Ji Zhang, Howie Choset, Zhongqiang Ren",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3749200"
+  },
+  {
+    "year": 2026,
+    "title": "Occupancy Network-Guided Autonomous Robotic Partial Nephrectomy",
+    "authors": "Ethan Kilmer, Pit Henrich, Jiawei Ge, Paul M. Scheikl, Laura Connolly, Soum D. Lokeshwar, Joseph Chen, Justin D. Opfermann, Kaitlyn Kumar, Lauren Shepard, Ahmed Ghazi, Nirmish Singla, Richard J. Cha, Kevin Cleary, Franziska Mathis-Ullrich, Axel Krieger",
+    "abstract": "Autonomous soft-tissue cancer surgery has been limited to interventions on organ surfaces, because current systems cannot perceive and adapt to anatomy once it deforms or is cut. We introduce the first vision-guided autonomous system capable of performing complete tumor resections for partial nephrectomy. Our system integrates conditional occupancy networks, trained entirely in a physics-based simulation, that infer full 3-D anatomy (tumor, margin tissue, and kidney) from single-view partial point clouds. These occupancy networks maintain intraoperative tracking even as tissue is cut and deformed, enabling adaptive planning and execution. The surgical platform combines a depth camera for capturing surface point clouds, dual robotic arms for electrosurgical cutting and vacuum-based tissue manipulation, and an autonomous control strategy for tumor resection. In patient-derived hydrogel phantoms under an open partial nephrectomy setting, the robot performed eight consecutive autonomous tumor resections comprising 77 electrosurgical cuts, with all cuts achieving negative surgical margins and 1.61 $\\pm$ 0.48 mm mean absolute margin error. This work demonstrates, for the first time, a foundation for supervised autonomous closed-loop, imaging-driven, margin-negative tumor removal in phantoms.",
+    "doi": "10.1109/tro.2026.3749080"
+  },
+  {
+    "year": 2026,
+    "title": "Refining Almost-Safe Value Functions on the Fly",
+    "authors": "Sander Tonkens, Sosuke Kojima, Chenhao Liu, Judy Masri, Sylvia Herbert",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3749186"
+  },
+  {
+    "year": 2026,
+    "title": "Multicopter Reinforcement Learning Control with Safety Guarantees",
+    "authors": "Dafang Yu, Zhe Liu, Hesheng Wang",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3749178"
+  },
+  {
+    "year": 2026,
+    "title": "A Shared Control Framework for Mobile Robots with Planning-Level Intention Prediction",
+    "authors": "Jinyu Zhang, Lijun Han, Feng Jian, Lingxi Zhang, Hesheng Wang",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3749823"
+  },
+  {
+    "year": 2026,
+    "title": "DeFM: Learning Foundation Representations From Depth for Robotics",
+    "authors": "Manthan Patel, Jonas Frey, Mayank Mittal, Fan Yang, Alexander Hansson, Amir Bar, Cesar Cadena, Marco Hutter",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3749449"
   }
 ]
