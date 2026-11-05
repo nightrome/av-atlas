@@ -71584,7 +71584,7 @@
     "year": 2026,
     "title": "Contact-Aware Incremental Model Predictive Control for an Underactuated Aerial Manipulator",
     "authors": "Darwin Liu, Tamas Keviczky, Sihao Sun",
-    "abstract": null,
+    "abstract": "We present a robust contact-aware control framework for aerial writing on an underactuated platform. The framework combines nonlinear model predictive control (NMPC) for accurate end-effector position and normal-force tracking at small reference penetration depths, with consistent performance across controller tunings, with whole-body incremental nonlinear dynamic inversion (INDI) for robustness to frictional and aerodynamic disturbances during contact. The proposed controllers are validated on a quadrotor-based aerial manipulator with a rigid, single-link, one-degree-of-freedom (DoF) arm in simulation and real-world experiments. The aerial writing experiments span vertical and inclined surfaces, multiple reference forces, different friction conditions, and wind disturbances. The results demonstrate that robust simultaneous five-DoF end-effector pose and contact-force tracking is achievable on a standard underactuated quadrotor with a simple, rigid, single-link arm, without requiring a fully actuated platform, a complex arm, or dedicated force/torque sensing.",
     "doi": "10.1109/lra.2026.3748692"
   },
   {
@@ -71710,7 +71710,7 @@
     "year": 2026,
     "title": "RAIWAY: A Large-Wheeled Bipedal Robot with Contact-Informed Blind Locomotion",
     "authors": "Kyungmin Nam, Jiseong Lee, Donghyuk Choi, Jeongsoo Park, Woojin Kim, Jemin Hwangbo",
-    "abstract": null,
+    "abstract": "We present RAIWAY, an in-house wheeled bipedal robot with 20-inch wheels, together with a contact-informed control approach for rolling locomotion across irregular and discontinuous terrain. Such locomotion is fundamentally contact-dominated, governed by local wheel--terrain interaction that is impractical to instrument directly and depends on more than terrain geometry alone. The proposed framework exploits the contact information available in simulation, distilling multi-contact events into a latent representation. At deployment, the controller infers this representation online from proprioception, requiring no contact sensing. In real-world experiments, the proposed system traverses diverse environments including steep slopes, gravel beds, studded surfaces, and rocky terrain, and demonstrates continuous ascent on the tested outdoor staircases with riser heights up to 15~cm. On our platform, the proposed controller further outperforms baselines without the contact-informed mechanism across challenging indoor and outdoor settings. The video can be found at https://youtu.be/Ch0divLg64w.",
     "doi": "10.1109/lra.2026.3749518"
   },
   {
