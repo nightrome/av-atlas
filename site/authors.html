@@ -245,6 +245,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
     ],
     minPapers: { default: 50 },
     minCareerSpan: { default: 0 },
+    region: true,
     topN: { default: 10, storageKey: 'authors-topn', onChange: render },
   });
   render();
@@ -357,6 +358,16 @@ function render() {
   // exclusion and the minPapers/minCitedPapers floors above: a name search
   // must always be able to find a real match regardless of what the
   // adjustable filters currently require.
+  // Region: the region of the author's most recent affiliation, from
+  // stats.author_regions. Authors with no known affiliation have no region
+  // and drop out while one is chosen. Skipped while searching, like career
+  // span, so a name search still finds anyone.
+  if (!query && filters.region) {
+    const info = stats.author_regions || {};
+    const idx = (info.regions || []).indexOf(filters.region);
+    const by = info.by_author || {};
+    authors = authors.filter(a => by[a.name] === idx);
+  }
   if (!query && filters.minCareerSpan) {
     authors = authors.filter(a => a.lifetime != null && a.lifetime >= filters.minCareerSpan);
   }

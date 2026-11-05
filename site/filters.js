@@ -1074,6 +1074,35 @@
       filters.minCareerSpan = parseInt(current, 10);
     }
 
+    // Region -- like Min. career span, a property of the aggregated author
+    // (the region of their most recent affiliation, see scripts/regions.py),
+    // not of any one paper, so the calling page (authors.html) applies
+    // filters.region itself. The choices come from stats.author_regions.
+    if (opts.region) {
+      const regionInfo = stats.author_regions || {};
+      const names = regionInfo.regions || [];
+      if (names.length) {
+        const current = new URLSearchParams(location.search).get('region') || '';
+        const sel = document.createElement('select');
+        [['', 'All regions']].concat(names.map(n => [n, n])).forEach(([value, label]) => {
+          const opt = document.createElement('option');
+          opt.value = value;
+          opt.textContent = label;
+          if (value === current) opt.selected = true;
+          sel.appendChild(opt);
+        });
+        sel.addEventListener('change', () => {
+          location.href = withParam(page, 'region', sel.value || null);
+        });
+        sel.title = 'Only show authors whose most recent affiliation is in this world region (UN geoscheme). '
+          + 'Authors with no known affiliation are left out while a region is chosen.';
+        const regionField = field('Region', sel);
+        regionField.title = sel.title;
+        bar2.appendChild(regionField);
+        filters.region = names.includes(current) ? current : null;
+      }
+    }
+
     // "Show top N" for a page's adoption-over-time chart (or, on Network,
     // how many authors the graph itself draws) -- used to be its own
     // standalone control sitting above that chart/graph, disconnected from
