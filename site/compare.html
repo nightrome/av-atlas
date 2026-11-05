@@ -227,6 +227,7 @@ function metricsFor(papers, subjectName) {
     citations,
     // The site's one citations-per-paper definition (avgCitations in filters.js).
     avg: avgCitations(papers),
+    h: hIndexOf(papers),
     best: papers.reduce((b, p) => ((p.citations || 0) > (b ? b.citations || 0 : -1) ? p : b), null),
     firstYear: years.length ? Math.min(...years) : null,
     lastYear: years.length ? Math.max(...years) : null,
@@ -240,6 +241,7 @@ const METRIC_ROWS = [
   { label: 'Papers', get: m => fmt(m.papers) },
   { label: 'Citations', get: m => fmt(m.citations), term: 'citations_group' },
   { label: 'Citations / paper', get: m => fmt(m.avg), term: 'citations_per_paper' },
+  { label: 'h-index', get: m => fmt(m.h), term: 'h_index' },
   { label: PEOPLE_LABEL, get: m => fmt(m.people) },
   { label: 'Active years', get: m => (m.firstYear ? `${m.firstYear}–${m.lastYear}` : 'n/a') },
 ];

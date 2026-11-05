@@ -415,6 +415,11 @@ function renderBody(stats, papers) {
     avg == null ? 'n/a' : avg, 'AV citations / paper',
     nonAvAvg == null ? 'n/a' : nonAvAvg, 'Non-AV citations / paper'
   ));
+  // In-corpus h-index over this author's AV papers only: the non-AV side is
+  // a citation total without per-paper counts, so it has no h-index.
+  const hTile = stat(hIndexOf(papers), 'h-index (AV papers)');
+  hTile.title = (window.GLOSSARY.h_index || {}).short || '';
+  grid.appendChild(hTile);
   // Was its own floating icon above the grid, in the page's bare background
   // rather than inside any bordered box (user-reported: "the i logo must be
   // inside the white box"). Nesting it in the first tile, which is always

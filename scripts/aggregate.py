@@ -38,6 +38,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from atomic_write import write_json_atomic
+import regions as region_taxonomy
 from email_addresses import find_email_addresses, strip_email_addresses
 
 BASE = Path(__file__).resolve().parent.parent
@@ -3771,6 +3772,20 @@ def main():
             "identity_conflict": name in identity_conflicts,
         }
 
+    # World region per author for the Authors page's region filter: the
+    # region of the country of their most recent affiliation (see
+    # regions.py). Shipped inline as {names, by_author: name -> index}, the
+    # same way identity_conflicted_authors is, because the page filters the
+    # whole author list and author_detail is sharded by name. An author with
+    # no usable affiliation simply has no entry.
+    region_index = {r: i for i, r in enumerate(region_taxonomy.REGIONS)}
+    author_regions = {}
+    for name, detail in author_detail.items():
+        region = region_taxonomy.author_region(
+            detail.get("institutions"), detail.get("countries"), institution_countries)
+        if region:
+            author_regions[name] = region_index[region]
+
     # Per-author paper and citation totals over EVERY paper, from the plain
     # "authors" field -- not author_papers/author_citations above, which are
     # accumulated inside the authors_detail loop and therefore only count
@@ -4112,6 +4127,7 @@ def main():
         # and flatten all 64 shards just to build this one exclusion set.
         # Cheap enough to ship inline in stats.json rather than its own file.
         "identity_conflicted_authors": sorted(identity_conflicts),
+        "author_regions": {"regions": region_taxonomy.REGIONS, "by_author": dict(sorted(author_regions.items()))},
     }
     # The date the site shows as "Data last updated". Worked out before
     # OUT_FILE is overwritten below, since an unchanged hash keeps the

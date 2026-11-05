@@ -73,6 +73,24 @@
     }
     .filter-bar .search-field input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
     .filter-bar-secondary { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    /* Two labelled groups side by side: an indigo Filter group (wide) and an
+       amber Order group, each headed by a pill whose tooltip explains it. They
+       stack on a narrow screen. */
+    .captioned-rows { display: flex; flex-wrap: wrap; gap: 18px 0; align-items: stretch; }
+    /* No card of its own (theme-light gives every .filter-bar a shadow): the
+       two groups are just columns of one panel, split by a thin divider. */
+    .captioned-rows > .filter-bar { margin: 0; padding: 0; border: 0 !important; box-shadow: none !important; background: none; }
+    .captioned-rows > .filter-bar:first-child { flex: 1 1 520px; padding-right: 28px; }
+    .captioned-rows > .filter-bar-secondary { flex: 0 0 auto; align-content: flex-start; padding-left: 28px; border-left: 1px solid var(--border) !important; }
+    .filter-row-caption { flex: 0 0 100%; display: flex; align-items: baseline; gap: 8px; margin-bottom: -2px; }
+    @media (max-width: 900px) {
+      .captioned-rows > .filter-bar:first-child { padding-right: 0; }
+      .captioned-rows > .filter-bar-secondary { padding-left: 0; border-left: 0 !important; border-top: 1px solid var(--border) !important; padding-top: 14px; flex: 1 1 100%; }
+    }
+    .filter-row-caption .tag { cursor: help; font-size: 0.68em; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 2px 9px; border-radius: 999px; background: var(--accent); color: #fff; }
+    .filter-bar-secondary .filter-row-caption .tag { background: var(--accent2); color: #1f1300; }
+
     .pagination-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.85em; color: var(--muted); margin: 8px 0; }
     .pagination-row button {
       background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
@@ -107,7 +125,7 @@
       opacity: 0; visibility: hidden; transition: opacity 0.12s;
     }
     .info-tip:hover::after, .info-tip:focus::after { opacity: 1; visibility: visible; }
-    .controls-meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .controls-meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; width: 100%; box-sizing: border-box; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
     .controls-meta-row:empty { display: none; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
     .chip { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; border-radius: 14px; padding: 4px 6px 4px 12px; font-size: 0.82em; }
@@ -345,6 +363,14 @@
       short: 'Average in-corpus citations per paper: the group\'s citations divided by all its papers, '
         + 'uncited ones included, rounded to a whole number. A small group with one famous paper can score '
         + 'very highly here, so read it alongside the paper count.',
+    },
+    h_index: {
+      label: 'h-index',
+      short: 'The largest h such that h of the group\'s papers each have at least h in-corpus citations. '
+        + 'Counted only within this corpus, like the citation counts, so it is far lower than an h-index '
+        + 'from Google Scholar or Scopus and measures standing within AV research specifically. '
+        + 'It rewards a body of well-cited work over one famous paper, and it can only grow as reference '
+        + 'lists are parsed.',
     },
     early_citations: {
       label: 'Early citations',
@@ -703,11 +729,12 @@
 
   // Renders one consistent control panel per page, two rows (user-requested:
   // filters in the first row, sort/show in the second):
-  //   Row 1 (.filter-bar): SEARCH, Show (AV relevance), Category, Venue, Year
-  //     -- everything that narrows WHICH papers are in play.
-  //   Row 2 (.filter-bar-secondary): Sort by, Min. (papers threshold) --
-  //     everything that changes how the already-narrowed set is ranked or
-  //     thresholded, not which papers are in it.
+  //   Row 1 (.filter-bar): every filter -- SEARCH, Show (AV relevance),
+  //     Category, Venue, Year, which narrow WHICH papers are in play, and
+  //     Min. papers, Career span, Region, which narrow which authors,
+  //     institutions... are listed.
+  //   Row 2 (.filter-bar-secondary): Sort by, Show top -- only how the
+  //     already-filtered result is ordered and how much of it is shown.
   // Then a third row of removable chips for whichever of the 5 filter
   // dimensions is active -- country/institution/author arrive via links from
   // other pages, not a dropdown here, but are still shown and clearable like
@@ -1026,7 +1053,7 @@
       sel.title = 'Only show rows with at least this many papers in the current filtered set';
       const minField = field('Min.', sel);
       minField.title = sel.title;
-      bar2.appendChild(minField);
+      bar.appendChild(minField);
       filters.minPapers = parseInt(current, 10);
     }
 
@@ -1062,8 +1089,37 @@
       sel.title = 'Only show authors whose first-to-last AV paper span is at least this many years';
       const spanField = field('Career span', sel);
       spanField.title = sel.title;
-      bar2.appendChild(spanField);
+      bar.appendChild(spanField);
       filters.minCareerSpan = parseInt(current, 10);
+    }
+
+    // Region -- like Min. career span, a property of the aggregated author
+    // (the region of their most recent affiliation, see scripts/regions.py),
+    // not of any one paper, so the calling page (authors.html) applies
+    // filters.region itself. The choices come from stats.author_regions.
+    if (opts.region) {
+      const regionInfo = stats.author_regions || {};
+      const names = regionInfo.regions || [];
+      if (names.length) {
+        const current = new URLSearchParams(location.search).get('region') || '';
+        const sel = document.createElement('select');
+        [['', 'All regions']].concat(names.map(n => [n, n])).forEach(([value, label]) => {
+          const opt = document.createElement('option');
+          opt.value = value;
+          opt.textContent = label;
+          if (value === current) opt.selected = true;
+          sel.appendChild(opt);
+        });
+        sel.addEventListener('change', () => {
+          location.href = withParam(page, 'region', sel.value || null);
+        });
+        sel.title = 'Only show authors whose most recent affiliation is in this world region (UN geoscheme). '
+          + 'Authors with no known affiliation are left out while a region is chosen.';
+        const regionField = field('Region', sel);
+        regionField.title = sel.title;
+        bar.appendChild(regionField);
+        filters.region = names.includes(current) ? current : null;
+      }
     }
 
     // "Show top N" for a page's adoption-over-time chart (or, on Network,
@@ -1127,7 +1183,29 @@
     panel.appendChild(rows);
 
     rows.appendChild(bar);
-    if (bar2 !== bar && bar2.children.length) rows.appendChild(bar2);
+    if (bar2 !== bar && bar2.children.length) {
+      // Say what each row does. The top row is every filter: the ones that
+      // decide which papers the numbers are built from, and Min. papers,
+      // Career span and Region, which decide which authors (institutions...)
+      // are listed. The bottom row only orders and sizes the result.
+      const noun = opts.rowNoun || 'rows';
+      const caption = (tag, hint) => {
+        const el = document.createElement('div');
+        el.className = 'filter-row-caption';
+        const t = document.createElement('span');
+        t.className = 'tag';
+        t.textContent = tag;
+        t.title = hint;
+        el.appendChild(t);
+        return el;
+      };
+      rows.className += ' captioned-rows';
+      bar.className += ' captioned';
+      bar2.className += ' captioned';
+      bar.insertBefore(caption('Filter', `Narrow down the papers and which ${noun} are listed`), bar.firstChild);
+      bar2.insertBefore(caption('Order', `How the ${noun} are ranked and how many are shown`), bar2.firstChild);
+      rows.appendChild(bar2);
+    }
 
     const metaRow = document.createElement('div');
     metaRow.className = 'controls-meta-row';
@@ -1382,6 +1460,19 @@
     return paperCount ? Math.round(total / paperCount) : null;
   }
   window.citationsPerPaper = citationsPerPaper;
+  // The h-index on the same in-corpus citation counts as everything else:
+  // the largest h such that h papers have at least h citations each. A paper
+  // with no citation number (null) counts as 0, which cannot raise h.
+  function hIndex(counts) {
+    const sorted = (counts || []).map(c => c || 0).sort((a, b) => b - a);
+    let h = 0;
+    while (h < sorted.length && sorted[h] >= h + 1) h += 1;
+    return h;
+  }
+  window.hIndex = hIndex;
+  window.hIndexOf = function (papers) {
+    return hIndex((papers || []).map(p => p.citations));
+  };
   window.avgCitations = function (papers) {
     let total = 0, n = 0;
     (papers || []).forEach(p => {
@@ -1419,7 +1510,7 @@
     // The average divides by every paper with a citation number (a real 0
     // included), the same as avgCitations above. citedCounts, papers with at
     // least one citation, only drives the two reliability floors above.
-    const citations = {}, counts = {}, citedCounts = {}, withCountCounts = {};
+    const citations = {}, counts = {}, citedCounts = {}, withCountCounts = {}, citeLists = {};
     papers.forEach(p => {
       const vals = accessor(p) || [];
       new Set(vals).forEach(v => {
@@ -1429,6 +1520,7 @@
         if (p.citations) {
           citations[v] = (citations[v] || 0) + p.citations;
           citedCounts[v] = (citedCounts[v] || 0) + 1;
+          (citeLists[v] = citeLists[v] || []).push(p.citations);
         }
       });
     });
@@ -1445,6 +1537,8 @@
         // the site's own About page tells readers to judge a row by its
         // paper count, which is the wrong count for this column.
         cited_papers: citedCounts[k] || 0,
+        // Same definition as hIndexOf on a detail page's papers.
+        h_index: hIndex(citeLists[k]),
       }));
   };
 
