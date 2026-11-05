@@ -73,15 +73,20 @@
     }
     .filter-bar .search-field input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
     .filter-bar-secondary { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-    /* Two labelled groups: an indigo "Papers" strip over the top row, an amber
-       strip over the bottom row, each with a pill and a one-line hint. */
+    /* Two labelled groups side by side: an indigo Filter group (wide) and an
+       amber Order group, each headed by a pill whose tooltip explains it. They
+       stack on a narrow screen. */
+    .captioned-rows { display: flex; flex-wrap: wrap; gap: 12px 26px; align-items: flex-start; }
+    .captioned-rows > .filter-bar { margin: 0; padding-top: 0; border-top: 0; }
+    .captioned-rows > .filter-bar:first-child { flex: 1 1 520px; }
+    .captioned-rows > .filter-bar-secondary { flex: 0 0 auto; }
     .filter-bar.captioned { border-left: 3px solid var(--accent); padding-left: 12px; }
     .filter-bar.captioned.filter-bar-secondary { border-left-color: var(--accent2); }
     .filter-row-caption { flex: 0 0 100%; display: flex; align-items: baseline; gap: 8px; margin-bottom: -4px; }
-    .filter-row-caption .tag { font-size: 0.68em; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+    .filter-row-caption .tag { cursor: help; font-size: 0.68em; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
       padding: 2px 9px; border-radius: 999px; background: var(--accent); color: #fff; }
     .filter-bar-secondary .filter-row-caption .tag { background: var(--accent2); color: #1f1300; }
-    .filter-row-caption .hint { font-size: 0.78em; color: var(--muted); }
+
     .pagination-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.85em; color: var(--muted); margin: 8px 0; }
     .pagination-row button {
       background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
@@ -1186,17 +1191,15 @@
         const t = document.createElement('span');
         t.className = 'tag';
         t.textContent = tag;
-        const h = document.createElement('span');
-        h.className = 'hint';
-        h.textContent = hint;
+        t.title = hint;
         el.appendChild(t);
-        el.appendChild(h);
         return el;
       };
+      rows.className += ' captioned-rows';
       bar.className += ' captioned';
       bar2.className += ' captioned';
-      bar.insertBefore(caption('Filter', `narrow down the papers and which ${noun} are listed`), bar.firstChild);
-      bar2.insertBefore(caption('Order', `how the ${noun} are ranked and how many are shown`), bar2.firstChild);
+      bar.insertBefore(caption('Filter', `Narrow down the papers and which ${noun} are listed`), bar.firstChild);
+      bar2.insertBefore(caption('Order', `How the ${noun} are ranked and how many are shown`), bar2.firstChild);
       rows.appendChild(bar2);
     }
 
