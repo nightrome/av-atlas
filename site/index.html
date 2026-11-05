@@ -308,8 +308,8 @@ fetchStatsWithRelevance(relevance).then(stats => {
   // would) recreates the DOM node mid-typing and throws focus/cursor away.
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'index.html', {
     search: [
-      { label: 'Search', placeholder: 'Search paper titles…', param: 'q', onInput: v => { currentQuery = v; renderResults(); } },
-      { label: 'Institution', id: 'search-institution-input', placeholder: 'e.g. Google…', param: 'inst', onInput: v => { currentInstQuery = v; renderResults(); } },
+      { span: 3, label: 'Search', placeholder: 'Search paper titles…', param: 'q', onInput: v => { currentQuery = v; renderResults(); } },
+      { span: 3, label: 'Institution', id: 'search-institution-input', placeholder: 'e.g. Google…', param: 'inst', onInput: v => { currentInstQuery = v; renderResults(); } },
     ],
     relevance: true,
     minCitations: true,

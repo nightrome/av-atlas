@@ -759,6 +759,7 @@
     searchFields.forEach(searchOpts => {
       const wrap = document.createElement('div');
       wrap.className = 'field search-field';
+      if (searchOpts.span) wrap.style.gridColumn = 'span ' + searchOpts.span;
       const label = document.createElement('span');
       label.className = 'field-label';
       label.textContent = searchOpts.label || 'Search';
