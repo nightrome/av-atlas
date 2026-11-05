@@ -32677,7 +32677,8 @@
     "year": 2015,
     "title": "Modeling Non-Gaussian Time Series with Nonparametric Bayesian Model",
     "authors": "Zhiguang Xu, Steven MacEachern, Xinyi Xu",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2013.222"
   },
   {
     "year": 2015,
@@ -32702,7 +32703,8 @@
     "year": 2015,
     "title": "Scaling Multidimensional Inference for Structured Gaussian Processes",
     "authors": "Elad Gilboa, Yunus Saatci, John P. Cunningham",
-    "abstract": null
+    "abstract": "Exact Gaussian process (GP) regression has ${\\cal O}(N^{3})$ runtime for data size $N$, making it intractable for large $N$ . Many algorithms for improving GP scaling approximate the covariance with lower rank matrices. Other work has exploited structure inherent in particular covariance functions, including GPs with implied Markov structure, and inputs on a lattice (both enable ${\\cal O}(N)$ or ${\\cal O}(N\\; \\log\\; N)$ runtime). However, these GP advances have not been well extended to the multidimensional input setting, despite the preponderance of multidimensional applications. This paper introduces and tests three novel extensions of structured GPs to multidimensional inputs, for models with additive and multiplicative kernels. First we present a new method for inference in additive GPs, showing a novel connection between the classic backfitting method and the Bayesian framework. We extend this model using two advances: a variant of projection pursuit regression, and a Laplace approximation for non-Gaussian observations. Lastly, for multiplicative kernel structure, we present a novel method for GPs with inputs on a multidimensional grid. We illustrate the power of these three advances on several data sets, achieving performance equal to or very close to the naive GP at orders of magnitude less cost.",
+    "doi": "10.1109/tpami.2013.192"
   },
   {
     "year": 2015,
@@ -33981,13 +33983,15 @@
     "year": 2014,
     "title": "A Geometric Particle Filter for Template-Based Visual Tracking",
     "authors": "Junghyun Kwon, Hee Seok Lee, Frank C. Park 0001, Kyoung Mu Lee",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2013.170"
   },
   {
     "year": 2014,
     "title": "A Histogram Transform for ProbabilityDensity Function Estimation",
     "authors": "Ezequiel L&#243;pez-Rubio",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2013.246"
   },
   {
     "year": 2014,
@@ -34049,13 +34053,15 @@
     "year": 2014,
     "title": "The Applicability of Spatiotemporal Oriented Energy Features to Region Tracking",
     "authors": "Kevin J. Cannons, Richard P. Wildes",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2013.233"
   },
   {
     "year": 2014,
     "title": "Virtual and Real World Adaptationfor Pedestrian Detection",
     "authors": "David V&#225;zquez 0001, Antonio Manuel L&#243;pez Pe&#241;a, Javier Mar&#237;n, Daniel Ponsa, David Ger&#243;nimo G&#243;mez",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2013.163"
   },
   {
     "year": 2014,
@@ -34243,7 +34249,8 @@
     "year": 2014,
     "title": "Soft Biometrics; Human Identification Using Comparative Descriptions",
     "authors": "Daniel A. Reid, Mark S. Nixon, Sarah V. Stevenage",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2013.219"
   },
   {
     "year": 2014,
@@ -34304,7 +34311,8 @@
     "year": 2014,
     "title": "Iterative Discovery of Multiple AlternativeClustering Views",
     "authors": "Donglin Niu, Jennifer G. Dy, Michael I. Jordan",
-    "abstract": null
+    "abstract": "Complex data can be grouped and interpreted in many different ways. Most existing clustering algorithms, however, only find one clustering solution, and provide little guidance to data analysts who may not be satisfied with that single clustering and may wish to explore alternatives. We introduce a novel approach that provides several clustering solutions to the user for the purposes of exploratory data analysis. Our approach additionally captures the notion that alternative clusterings may reside in different subspaces (or views). We present an algorithm that simultaneously finds these subspaces and the corresponding clusterings. The algorithm is based on an optimization procedure that incorporates terms for cluster quality and novelty relative to previously discovered clustering solutions. We present a range of experiments that compare our approach to alternatives and explore the connections between simultaneous and iterative modes of discovery of multiple clusterings.",
+    "doi": "10.1109/tpami.2013.180"
   },
   {
     "year": 2014,
@@ -34316,7 +34324,8 @@
     "year": 2014,
     "title": "Relating Things and Stuff via ObjectProperty Interactions",
     "authors": "Min Sun 0001, Byung-soo Kim, Pushmeet Kohli, Silvio Savarese",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2013.193"
   },
   {
     "year": 2014,
@@ -34364,7 +34373,8 @@
     "year": 2014,
     "title": "A Two-Stage Framework for 3D FaceReconstruction from RGBD Images",
     "authors": "Kangkan Wang, Xianwang Wang, Zhigeng Pan, Kai Liu",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2013.235"
   },
   {
     "year": 2014,
@@ -34415,7 +34425,8 @@
     "year": 2014,
     "title": "Multiclass Data Segmentation Using Diffuse Interface Methods on Graphs",
     "authors": "Cristina Garcia-Cardona, Ekaterina Merkurjev, Andrea L. Bertozzi, Arjuna Flenner, Allon G. Percus",
-    "abstract": null
+    "abstract": "We present two graph-based algorithms for multiclass segmentation of high-dimensional data on graphs. The algorithms use a diffuse interface model based on the Ginzburg-Landau functional, related to total variation and graph cuts. A multiclass extension is introduced using the Gibbs simplex, with the functional's double-well potential modified to handle the multiclass case. The first algorithm minimizes the functional using a convex splitting numerical scheme. The second algorithm uses a graph adaptation of the classical numerical Merriman-Bence-Osher (MBO) scheme, which alternates between diffusion and thresholding. We demonstrate the performance of both algorithms experimentally on synthetic data, image labeling, and several benchmark data sets such as MNIST, COIL and WebKB. We also make use of fast numerical solvers for finding the eigenvectors and eigenvalues of the graph Laplacian, and take advantage of the sparsity of the matrix. Experiments indicate that the results are competitive with or better than the current state-of-the-art in multiclass graph-based segmentation algorithms for high-dimensional data.",
+    "doi": "10.1109/tpami.2014.2300478"
   },
   {
     "year": 2014,
@@ -34451,7 +34462,8 @@
     "year": 2014,
     "title": "Perceptual Annotation: Measuring Human Vision to Improve Computer Vision",
     "authors": "Walter J. Scheirer, Samuel E. Anthony, Ken Nakayama, David D. Cox",
-    "abstract": null
+    "abstract": "For many problems in computer vision, human learners are considerably better than machines. Humans possess highly accurate internal recognition and learning mechanisms that are not yet understood, and they frequently have access to more extensive training data through a lifetime of unbiased experience with the visual world. We propose to use visual psychophysics to directly leverage the abilities of human subjects to build better machine learning systems. First, we use an advanced online psychometric testing platform to make new kinds of annotation data available for learning. Second, we develop a technique for harnessing these new kinds of information-“perceptual annotations”-for support vector machines. A key intuition for this approach is that while it may remain infeasible to dramatically increase the amount of data and high-quality labels available for the training of a given system, measuring the exemplar-by-exemplar difficulty and pattern of errors of human annotators can provide important information for regularizing the solution of the system at hand. A case study for the problem face detection demonstrates that this approach yields state-of-the-art results on the challenging FDDB data set.",
+    "doi": "10.1109/tpami.2013.2297711"
   },
   {
     "year": 2014,
@@ -34482,7 +34494,8 @@
     "year": 2014,
     "title": "Dense 3D Reconstruction from High Frame-Rate Video Using a Static Grid Pattern",
     "authors": "Ryusuke Sagawa, Ryo Furukawa 0001, Hiroshi Kawasaki",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2014.2300490"
   },
   {
     "year": 2014,
@@ -34495,7 +34508,8 @@
     "year": 2014,
     "title": "Image Segmentation UsingHigher-Order Correlation Clustering",
     "authors": "Sungwoong Kim, Chang Dong Yoo, Sebastian Nowozin, Pushmeet Kohli",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2014.2303095"
   },
   {
     "year": 2014,
@@ -34508,7 +34522,8 @@
     "year": 2014,
     "title": "Knowledge Adaptation with PartiallyShared Features for Event DetectionUsing Few Exemplars",
     "authors": "Zhigang Ma, Yi Yang 0001, Nicu Sebe, Alexander G. Hauptmann",
-    "abstract": null
+    "abstract": "Multimedia event detection (MED) is an emerging area of research. Previous work mainly focuses on simple event detection in sports and news videos, or abnormality detection in surveillance videos. In contrast, we focus on detecting more complicated and generic events that gain more users' interest, and we explore an effective solution for MED. Moreover, our solution only uses few positive examples since precisely labeled multimedia content is scarce in the real world. As the information from these few positive examples is limited, we propose using knowledge adaptation to facilitate event detection. Different from the state of the art, our algorithm is able to adapt knowledge from another source for MED even if the features of the source and the target are partially different, but overlapping. Avoiding the requirement that the two domains are consistent in feature types is desirable as data collection platforms change or augment their capabilities and we should be able to respond to this with little or no effort. We perform extensive experiments on real-world multimedia archives consisting of several challenging events. The results show that our approach outperforms several other state-of-the-art detection algorithms.",
+    "doi": "10.1109/tpami.2014.2306419"
   },
   {
     "year": 2014,
@@ -34532,7 +34547,8 @@
     "year": 2014,
     "title": "Segmentation and Enhancement of Latent Fingerprints: A Coarse to Fine RidgeStructure Dictionary",
     "authors": "Kai Cao 0001, Eryun Liu, Anil K. Jain 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2014.2302450"
   },
   {
     "year": 2014,
@@ -34558,13 +34574,15 @@
     "year": 2014,
     "title": "Efficient Energy Minimization for Enforcing Label Statistics",
     "authors": "Yongsub Lim, Kyomin Jung, Pushmeet Kohli",
-    "abstract": null
+    "abstract": "Energy minimization algorithms, such as graph cuts, enable the computation of the MAP solution under certain probabilistic models such as Markov random fields. However, for many computer vision problems, the MAP solution under the model is not the ground truth solution. In many problem scenarios, the system has access to certain statistics of the ground truth. For instance, in image segmentation, the area and boundary length of the object may be known. In these cases, we want to estimate the most probable solution that is consistent with such statistics, i.e., satisfies certain equality or inequality constraints. The above constrained energy minimization problem is NP-hard in general, and is usually solved using Linear Programming formulations, which relax the integrality constraints. This paper proposes a novel method that directly finds the discrete approximate solution of such problems by maximizing the corresponding Lagrangian dual. This method can be applied to any constrained energy minimization problem whose unconstrained version is polynomial time solvable, and can handle multiple, equality or inequality, and linear or non-linear constraints. One important advantage of our method is the ability to handle second order constraints with both-side inequalities with a weak restriction, not trivial in the relaxation based methods, and show that the restriction does not affect the accuracy in our cases.We demonstrate the efficacy of our method on the foreground/background image segmentation problem, and show that it produces impressive segmentation results with less error, and runs more than 20 times faster than the state-of-the-art LP relaxation based approaches.",
+    "doi": "10.1109/tpami.2014.2306415"
   },
   {
     "year": 2014,
     "title": "Low-Level Hierarchical Multiscale Segmentation Statistics of Natural Images",
     "authors": "Emre Akbas, Narendra Ahuja",
-    "abstract": null
+    "abstract": "This paper is aimed at obtaining the statistics as a probabilistic model pertaining to the geometric, topological and photometric structure of natural images. The image structure is represented by its segmentation graph derived from the low-level hierarchical multiscale image segmentation. We first estimate the statistics of a number of segmentation graph properties from a large number of images. Our estimates confirm some findings reported in the past work, as well as provide some new ones. We then obtain a Markov random field based model of the segmentation graph which subsumes the observed statistics. To demonstrate the value of the model and the statistics, we show how its use as a prior impacts three applications: image classification, semantic image segmentation and object detection.",
+    "doi": "10.1109/tpami.2014.2299809"
   },
   {
     "year": 2014,
@@ -34584,7 +34602,8 @@
     "year": 2014,
     "title": "Active Learning by Querying Informative and Representative Examples",
     "authors": "Sheng-Jun Huang, Rong Jin 0001, Zhi-Hua Zhou",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2014.2307881"
   },
   {
     "year": 2014,
@@ -34608,7 +34627,8 @@
     "year": 2014,
     "title": "Classemes and Other Classifier-Based Features for Efficient Object Categorization",
     "authors": "Alessandro Bergamo, Lorenzo Torresani",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2014.2313111"
   },
   {
     "year": 2014,
@@ -34620,13 +34640,15 @@
     "year": 2014,
     "title": "High Dimensional Semiparametric Scale-Invariant Principal Component Analysis",
     "authors": "Fang Han, Han Liu 0001",
-    "abstract": null
+    "abstract": "We propose a new high dimensional semiparametric principal component analysis (PCA) method, named Copula Component Analysis (COCA). The semiparametric model assumes that, after unspecified marginally monotone transformations, the distributions are multivariate Gaussian. COCA improves upon PCA and sparse PCA in three aspects: (i) It is robust to modeling assumptions; (ii) It is robust to outliers and data contamination; (iii) It is scale-invariant and yields more interpretable results. We prove that the COCA estimators obtain fast estimation rates and are feature selection consistent when the dimension is nearly exponentially large relative to the sample size. Careful experiments confirm that COCA outperforms sparse PCA on both synthetic and real-world data sets.",
+    "doi": "10.1109/tpami.2014.2307886"
   },
   {
     "year": 2014,
     "title": "Adaptive Linear Regressionfor Appearance-Based Gaze Estimation",
     "authors": "Feng Lu 0005, Yusuke Sugano, Takahiro Okabe, Yoichi Sato 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tpami.2014.2313123"
   },
   {
     "year": 2014,
@@ -37702,7 +37724,7 @@
     "year": 2026,
     "title": "When ‘Yes’ Meets ‘But’: Can AI Comprehend Contradictory Humor in Comics?",
     "authors": "Tuo Liang, Zhe Hu, Jing Li, Hao Zhang, Yiren Lu, Yunlai Zhou, Yiran Qiao, Disheng Liu, Jierui Peng, Jing Ma, Yu Yin",
-    "abstract": null,
+    "abstract": "Understanding humor, especially when it involves complex and contradictory narratives requiring comparative reasoning ability, remains a significant challenge for large vision-language models (VLMs). This limitation hinders AI’s ability to engage in human-like reasoning and cultural expression. In this paper, we investigate this challenge through an in-depth analysis of comics that juxtapose panels to create humor through contradictions. We introduce the YesBut, a novel benchmark with 1,262 comic images from diverse multilingual and multicultural contexts, featuring comprehensive annotations that capture various aspects of narrative understanding. Using this benchmark, we systematically evaluate a wide range of VLMs through four complementary tasks spanning from surface content comprehension to deep narrative reasoning, with particular emphasis on comparative reasoning between contradictory elements. Our extensive experiments reveal that even the most advanced models significantly underperform compared to humans, with common failures in visual perception, key element identification, comparative analysis, and hallucinations. We further investigate text-based training strategies and social knowledge augmentation methods to enhance model performance. Our findings not only highlight critical weaknesses in VLMs’ understanding of cultural and creative expressions but also provide pathways toward developing context-aware models capable of deeper narrative understanding through comparative reasoning.",
     "doi": "10.1109/tpami.2026.3688191"
   },
   {
@@ -41363,21 +41385,21 @@
     "year": 2026,
     "title": "Task Relevance-Driven Prompt Expansion for Federated Continual Learning",
     "authors": "Jiahua Dong, Wenqi Liang, Yang Cong, Yichen Li, Hongyuan Yu, Henghui Ding, Yulun Zhang, Salman Khan, Fahad Shahbaz Khan",
-    "abstract": null,
+    "abstract": "Federated continual learning (FCL) has attracted considerable interest by enabling local clients to continually acquire knowledge from new tasks. However, most FCL methods assume that the global server has prior knowledge of the arrival times and number of categories for new tasks, which is unrealistic in the real world. Furthermore, they neglect the importance of positive inter-task semantic relationships when learning new tasks and are significantly affected by irrelevant relationships from old tasks, thereby exacerbating catastrophic forgetting. To resolve the above challenges, we develop a novel Task Relevance-driven Prompt Expansion (TRPE) model. Specifically, to eliminate the reliance on prior knowledge of new tasks, we propose an out-of-distribution detector to identify the arrival of new tasks within local clients, along with a radius-adaptive DBSCAN to infer the quantity of categories in new tasks on the proxy server. Moreover, to explore positive inter-task relationships, we calculate the affinity between the original gradient for learning new task and its gradient orthogonal to the feature space of old tasks to evaluate semantic relevance between old and new tasks from a global perspective. Then, we use this global task relevance to determine the key-prompt pair for new tasks and identify highly related old tasks. After concatenating their prompts for training, we can leverage such positive inter-task relations to improve the continual learning of newly arriving tasks. To balance the learning of new tasks and the forgetting of old ones, a soft orthogonality constraint is applied to the local key and prompt gradients. Experiments spanning diverse datasets and backbones confirm the efficacy of our TRPE model.",
     "doi": "10.1109/tpami.2026.3748054"
   },
   {
     "year": 2026,
     "title": "Towards Generalized Pedestrian Attribute Recognition Via Hierarchical Prompts and Visual-Semantic Interaction",
     "authors": "Junyi Wu, Yan Huang, Min Gao, Yuzhen Niu, Yuzhong Chen, Qiang Wu",
-    "abstract": null,
+    "abstract": "Pedestrian attribute recognition (PAR) aims to predict multiple semantic attributes of a person from images. Existing unimodal methods focus on learning robust visual features but fail to exploit linguistic semantics, while recent bimodal approaches rely on static prompt templates and shallow fusion, limiting their ability to model intra-class attribute variability and modality collaboration. To address these limitations, we propose a generalized PAR framework based on Hierarchical Prompt Learning and Visual-Semantic Interaction (HPLVSI). Specifically, we introduce an Image-Conditional Hierarchical-Prompt Initialization Module (IHIM) to generate context-sensitive prompts from visual inputs, and a Hierarchical Prompt Optimization (HPO) strategy to mitigate prompt overfitting and enhance attribute discrimination. To further strengthen cross-modal reasoning, a Prompt Enhancement and Regularization Module (PERM) refines linguistic representations, while a Bimodal Mutual Interaction Module (BMIM) enables effective bidirectional visual-textual collaboration. In addition, to better reflect real-world distribution shifts, we construct a new large-scale dataset, Celeb-PAR, based on long-term person re-identification data, and establish a new cross-domain PAR benchmark. Extensive experiments demonstrate that our method consistently outperforms state-of-the-art approaches (e.g., 88.97% mA on PA100K) under both standard and cross-domain settings, validating its strong generalization capability and real-world applicability.",
     "doi": "10.1109/tpami.2026.3748100"
   },
   {
     "year": 2026,
     "title": "TraceRouter++: Causal Semantic Routing Realignment via Optimal Transport",
     "authors": "Chuancheng Shi, Shangze Li, Wenhua Wu, Hengzhi Chen, Fei Shen, Li Zhuo, Zhiyong Wang, Tat-Seng Chua",
-    "abstract": null,
+    "abstract": "Despite their remarkable capabilities, large foundation models (LFMs) remain susceptible to adversarial manipulation. Current safety intervention methods primarily rely on the locality hypothesis, rigidly suppressing isolated neurons or features. However, harmful semantics manifest as distributed, cross-layer circuits, rendering localized ablations both brittle against complex jailbreaks and detrimental to general utility. To bridge this gap, we propose TraceRouter++, a routing-level safety intervention framework that explicitly traces safety-relevant causal routing pathways activated under harmful inputs and realigns their unsafe activation states. Our framework operates in a Discover-Trace-Realign paradigm: it first pinpoints a sensitive onset layer via attention divergence and disentangles dense activations into interpretable routing features using sparse autoencoders (SAEs). Subsequently, it maps these features to downstream causal circuits via feature influence scores (FIS). Crucially, departing from rigid suppression paradigms, TraceRouter++ introduces a constrained optimal transport (OT)-based soft routing realignment. By formulating safety intervention as a tractable coordinate- wise marginal optimal transport approximation, our method redirects unsafe activation marginals toward safe-reference marginals within causally identified routing subspaces while preserving non-selected coordinates at the intervention point. This mechanism safely redirects malicious semantic flows while leaving orthogonal computational routes intact. Extensive experiments across representative large language models (LLMs), multimodal large language models (MLLMs), and diffusion models (DMs) show that TraceRouter++ outperforms evaluated baselines, improving adversarial robustness while maintaining a favorable safety-utility trade-off.",
     "doi": "10.1109/tpami.2026.3747849"
   },
   {
@@ -41463,5 +41485,68 @@
     "authors": "Hao Gao, Shaoyu Chen, Yifan Zhu, Yuehao Song, Wenyu Liu, Qian Zhang, Xinggang Wang",
     "abstract": null,
     "doi": "10.1109/tpami.2026.3749808"
+  },
+  {
+    "year": 2026,
+    "title": "Advances in 4D Generation: Techniques, Challenges, and Future Directions",
+    "authors": "Qiaowei Miao, Kehan Li, Jinsheng Quan, Zhiyuan Min, Shaojie Ma, Yichao Xu, Yi Yang, Ping Liu, Yawei Luo",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750433"
+  },
+  {
+    "year": 2026,
+    "title": "MGDT: Multigrid Anisotropic Diffusion Transformer",
+    "authors": "Matthew Korban, Peter Youngs, Scott T. Acton",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750313"
+  },
+  {
+    "year": 2026,
+    "title": "LaverNet: Lightweight All-in-one Video Restoration via Selective Propagation",
+    "authors": "Haiyu Zhao, Yiwen Shan, Wangmeng Zuo, Yuanbiao Gou, Xi Peng",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750371"
+  },
+  {
+    "year": 2026,
+    "title": "Unlocking the Potential of Vision Foundation Models for Multi-Task Dense Prediction via Mixture of Task Adapters",
+    "authors": "Yunzhi Zhuge, Xinzhuo Yu, Sitong Gong, Lu Zhang, Pingping Zhang, Huchuan Lu",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750373"
+  },
+  {
+    "year": 2026,
+    "title": "EarthVL: A Progressive Earth Vision-Language Understanding and Generation Framework",
+    "authors": "Junjue Wang, Yanfei Zhong, Zihang Chen, Zhuo Zheng, Ailong Ma, Liangpei Zhang",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750637"
+  },
+  {
+    "year": 2026,
+    "title": "Text-to-Image Diffusion Sample Selector for Learning With Noisy Labels",
+    "authors": "Senyu Hou, Gaoxia Jiang, Xinyi Zheng, Yaqing Guo, Wenjian Wang",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750431"
+  },
+  {
+    "year": 2026,
+    "title": "MindExplore+: Towards Long-Horizon Vision-Language-Action System",
+    "authors": "Weiying Xie, Daixun Li, Qingchen Zeng, Jie Du, Yunke Wang, Yusi Zhang, Mingxiang Cao, Donglai Liu, Sibo He, Leyuan Fang, Chang Xu, Yunsong Li",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750361"
+  },
+  {
+    "year": 2026,
+    "title": "Semantic-guided Causal Representation Learning for Personalized Visual Multiple Clustering",
+    "authors": "Xuechun Jing, Fuyuan Cao, Kui Yu, Jing Liu, Jiye Liang",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750430"
+  },
+  {
+    "year": 2026,
+    "title": "Invariance, Stability, and Diversity: A Unified Framework for Multimodal Domain Generalization",
+    "authors": "Hongzhao Li, Shizhe Hu, Xianglong Shen, Hualei Wan, Mingyuan Jiu, Shupan Li, Muhammad Haris Khan, Mingliang Xu",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750284"
   }
 ]

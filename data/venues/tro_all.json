@@ -13239,7 +13239,8 @@
     "year": 2014,
     "title": "Improved Kinematic Models for Two-Link Helical Micro/Nanoswimmers",
     "authors": "Ahmet Fatih Tabak, Serhat Yesilyurt",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2281551"
   },
   {
     "year": 2014,
@@ -13271,7 +13272,8 @@
     "year": 2014,
     "title": "Fabrication of an On-Chip Nanorobot Integrating Functional Nanomaterials for Single-Cell Punctures",
     "authors": "Takeshi Hayakawa, Shota Fukada, Fumihito Arai",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2284402"
   },
   {
     "year": 2014,
@@ -13296,7 +13298,8 @@
     "year": 2014,
     "title": "Compressive Feedback-Based Motion Control for Nanomanipulation - Theory and Applications",
     "authors": "Bo Song, Jianguo Zhao, Ning Xi 0001, Hongzhi Chen, King Wai Chiu Lai, Ruiguo Yang, Liangliang Chen",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2291619"
   },
   {
     "year": 2014,
@@ -13309,13 +13312,15 @@
     "year": 2014,
     "title": "A Nanorobotic System for In Situ Stiffness Measurements on Membranes",
     "authors": "Jean-Ochin Abrahamians, Bruno Sauvet, Jerome Polesel-Maris, R&#233;my Braive, St&#233;phane R&#233;gnier",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2280831"
   },
   {
     "year": 2014,
     "title": "Locating End-Effector Tips in Robotic Micromanipulation",
     "authors": "Jun Liu 0007, Zheng Gong, Kathryn Tang, Zhe Lu, Changhai Ru, Jun Luo 0006, Shaorong Xie, Yu Sun 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2280060"
   },
   {
     "year": 2014,
@@ -13354,7 +13359,8 @@
     "year": 2014,
     "title": "Efficient Break-Away Friction Ratio and Slip Prediction Based on Haptic Surface Exploration",
     "authors": "Xiaojing Song, Hongbin Liu 0001, Kaspar Althoefer, D. P. Thrishantha Nanayakkara, Lakmal D. Seneviratne",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2279630"
   },
   {
     "year": 2014,
@@ -13380,7 +13386,8 @@
     "year": 2014,
     "title": "On Bilateral Teleoperation of Aerial Robots",
     "authors": "Abeje Yenehun Mersha, Stefano Stramigioli, Raffaella Carloni",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2281563"
   },
   {
     "year": 2014,
@@ -13393,7 +13400,8 @@
     "year": 2014,
     "title": "Data-Driven Grasp Synthesis - A Survey",
     "authors": "Jeannette Bohg, Antonio Morales, Tamim Asfour, Danica Kragic",
-    "abstract": null
+    "abstract": "We review the work on data-driven grasp synthesis and the methodologies for sampling and ranking candidate grasps. We divide the approaches into three groups based on whether they synthesize grasps for known, familiar, or unknown objects. This structure allows us to identify common object representations and perceptual processes that facilitate the employed data-driven grasp synthesis technique. In the case of known objects, we concentrate on the approaches that are based on object recognition and pose estimation. In the case of familiar objects, the techniques use some form of a similarity matching to a set of previously encountered objects. Finally, for the approaches dealing with unknown objects, the core part is the extraction of specific features that are indicative of good grasps. Our survey provides an overview of the different methodologies and discusses open problems in the area of robot grasping. We also draw a parallel to the classical approaches that rely on analytic formulations.",
+    "doi": "10.1109/tro.2013.2289018"
   },
   {
     "year": 2014,
@@ -13406,13 +13414,15 @@
     "year": 2014,
     "title": "Real-Time Optimization for Eye-in-Hand Visual Search",
     "authors": "Yinghua Zhang, Jinglin Shen, Nicholas R. Gans",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2282518"
   },
   {
     "year": 2014,
     "title": "A General Method for the Numerical Computation of Manipulator Singularity Sets",
     "authors": "Oriol Bohigas, Dimiter Zlatanov, Llu&#237;s Ros, Montserrat Manubens, Josep M. Porta",
-    "abstract": null
+    "abstract": "The analysis of singularities is central to the development and control of a manipulator. However, existing methods for singularity set computation still concentrate on specific classes of manipulators. The absence of general methods able to perform such computation on a large class of manipulators is problematic because it hinders the analysis of unconventional manipulators and the development of new robot topologies. The purpose of this paper is to provide such a method for nonredundant mechanisms with algebraic lower pairs and designated input and output speeds. We formulate systems of equations that describe the whole singularity set and each one of the singularity types independently, and show how to compute the configurations in each type using a numerical technique based on linear relaxations. The method can be used to analyze manipulators with arbitrary geometry, and it isolates the singularities with the desired accuracy. We illustrate the formulation of the conditions and their numerical solution with examples, and use 3-D projections to visualize the complex partitions of the configuration space induced by the singularities.",
+    "doi": "10.1109/tro.2013.2283416"
   },
   {
     "year": 2014,
@@ -13424,7 +13434,8 @@
     "year": 2014,
     "title": "Event-Based Stabilization of Periodic Orbits for Underactuated 3-D Bipedal Robots With Left-Right Symmetry",
     "authors": "Kaveh Akbari Hamed, Jessy W. Grizzle",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2287831"
   },
   {
     "year": 2014,
@@ -13436,7 +13447,8 @@
     "year": 2014,
     "title": "Analysis, Classification, and Design of Tendon-Driven Mechanisms",
     "authors": "Ryuta Ozawa, Hiroaki Kobayashi, Kazunori Hashirii",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2287976"
   },
   {
     "year": 2014,
@@ -13468,19 +13480,22 @@
     "year": 2014,
     "title": "Discrete and Continuous, Probabilistic Anticipation for Autonomous Robots in Urban Environments",
     "authors": "Frank Havlak, Mark E. Campbell",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2291620"
   },
   {
     "year": 2014,
     "title": "From Angular Manifolds to the Integer Lattice: Guaranteed Orientation Estimation With Application to Pose Graph Optimization",
     "authors": "Luca Carlone, Andrea Censi",
-    "abstract": null
+    "abstract": "Pose graph optimization from relative measurements is challenging because of the angular component of the poses: the variables live on a manifold product with nontrivial topology and the likelihood function is nonconvex and has many local minima. Because of these issues, iterative solvers are not robust to large amounts of noise. This paper describes a global estimation method, called multi-hypothesis orientation-from-lattice estimation in 2-D (MOIE2D), for the estimation of the nodes' orientation in a pose graph. We demonstrate that the original nonlinear optimization problem on the manifold product is equivalent to an unconstrained quadratic optimization problem on the integer lattice. Exploiting this insight, we show that, in general, the maximum likelihood estimate alone cannot be considered a reliable estimator. Therefore, MOIE2D returns a set of point estimates, for which we can derive precise probabilistic guarantees. Experiments show that the method is able to tolerate extreme amounts of noise, far above all noise levels of sensors used in applications. Using MOIE2D's output to bootstrap the initial guess of iterative pose graph optimization methods improves their robustness and makes them avoid local minima even for high levels of noise.",
+    "doi": "10.1109/tro.2013.2291626"
   },
   {
     "year": 2014,
     "title": "Task-Space Control of Robot Manipulators With Null-Space Compliance",
     "authors": "Hamid Sadeghian, Luigi Villani, Mehdi Keshmiri, Bruno Siciliano",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2291630"
   },
   {
     "year": 2014,
@@ -13492,7 +13507,8 @@
     "year": 2014,
     "title": "A Kinematic Analysis and Evaluation of Planar Robots Designed From Optimally Fault-Tolerant Jacobians",
     "authors": "Khaled M. Ben-Gharbia, Anthony A. Maciejewski, Rodney G. Roberts",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2291615"
   },
   {
     "year": 2014,
@@ -13517,37 +13533,43 @@
     "year": 2014,
     "title": "A New Three Object Triangulation Algorithm for Mobile Robot Positioning",
     "authors": "Vincent Pierlot, Marc Van Droogenbroeck",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2294061"
   },
   {
     "year": 2014,
     "title": "Reduced Locomotion Dynamics With Passive Internal DoFs: Application to Nonholonomic and Soft Robotics",
     "authors": "Fr&#233;d&#233;ric Boyer, Ayman Belkhiri",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2294733"
   },
   {
     "year": 2014,
     "title": "Robotic Tracking of Coherent Structures in Flows",
     "authors": "Matthew Michini, M. Ani Hsieh, Eric Forgoston, Ira B. Schwartz",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2295655"
   },
   {
     "year": 2014,
     "title": "Electric Sensor-Based Control of Underwater Robot Groups",
     "authors": "Christine Chevallereau, Mohammed-Redha Benachenhou, Vincent Lebastard, Fr&#233;d&#233;ric Boyer",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2295890"
   },
   {
     "year": 2014,
     "title": "Synthesis of Differentially Driven Planar Cable Parallel Manipulators",
     "authors": "Hamed Khakpour, Lionel Birglen, Souheil-Antoine Tahan",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2295891"
   },
   {
     "year": 2014,
     "title": "Analysis of Coupled Stability in Multilateral Dual-User Teleoperation Systems",
     "authors": "Kamran Razi, Keyvan Hashtrudi-Zaad",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2295889"
   },
   {
     "year": 2014,
@@ -13559,19 +13581,22 @@
     "year": 2014,
     "title": "Modeling and Control of Legged Locomotion via Switching Max-Plus Models",
     "authors": "Gabriel A. D. Lopes, Bart Kersbergen, Ton J. J. van den Boom, Bart De Schutter, Robert Babuska",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2296105"
   },
   {
     "year": 2014,
     "title": "A Strictly Convex Hull for Computing Proximity Distances With Continuous Gradients",
     "authors": "Adrien Escande, Sylvain Miossec, Mehdi Benallegue, Abderrahmane Kheddar",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2296332"
   },
   {
     "year": 2014,
     "title": "Associating Uncertainty With Three-Dimensional Poses for Use in Estimation Problems",
     "authors": "Timothy D. Barfoot, Paul Timothy Furgale",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2298059"
   },
   {
     "year": 2014,
@@ -13583,7 +13608,8 @@
     "year": 2014,
     "title": "Design and Open-Loop Control of the ParkourBot, a Dynamic Climbing Robot",
     "authors": "Amir Degani, Andrew W. Long, Siyuan Feng 0003, H. Benjamin Brown, Robert D. Gregg, Howie Choset, Matthew T. Mason, Kevin M. Lynch",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2300213"
   },
   {
     "year": 2014,
@@ -13613,13 +13639,15 @@
     "year": 2014,
     "title": "Stability Analysis of a Hierarchical Architecture for Discrete-Time Sensor-Based Control of Robotic Systems",
     "authors": "Magnus Bjerkeng, Pietro Falco, Ciro Natale, Kristin Ytterstad Pettersen",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2294882"
   },
   {
     "year": 2014,
     "title": "Torso Inclination Enables Faster Walking in a Planar Biped Robot With Passive Ankles",
     "authors": "Tao Geng",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2298058"
   },
   {
     "year": 2014,
@@ -13665,7 +13693,8 @@
     "year": 2014,
     "title": "Coupling Movement Primitives: Interaction With the Environment and Bimanual Tasks",
     "authors": "Andrej Gams, Bojan Nemec, Auke Jan Ijspeert, Ales Ude",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2304775"
   },
   {
     "year": 2014,
@@ -13677,13 +13706,15 @@
     "year": 2014,
     "title": "Nonlinear RISE-Based Control of an Autonomous Underwater Vehicle",
     "authors": "Nicholas R. Fischer, Devin Hughes, Patrick Walters, Eric M. Schwartz, Warren E. Dixon",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2305791"
   },
   {
     "year": 2014,
     "title": "Needle Steering in 3-D Via Rapid Replanning",
     "authors": "Sachin Patil, Jessica Burgner, Robert J. Webster III, Ron Alterovitz",
-    "abstract": null
+    "abstract": "Steerable needles have the potential to improve the effectiveness of needle-based clinical procedures such as biopsy and drug delivery by improving targeting accuracy and reaching previously inaccessible targets that are behind sensitive or impenetrable anatomical regions. We present a new needle steering system capable of automatically reaching targets in 3-D environments while avoiding obstacles and compensating for real-world uncertainties. Given a specification of anatomical obstacles and a clinical target (e.g., from preoperative medical images), our system plans and controls needle motion in a closed-loop fashion under sensory feedback to optimize a clinical metric. We unify planning and control using a new fast algorithm that continuously replans the needle motion. Our rapid replanning approach is enabled by an efficient sampling-based rapidly exploring random tree (RRT) planner that achieves orders-of-magnitude reduction in computation time compared with prior 3-D approaches by incorporating variable curvature kinematics and a novel distance metric for planning. Our system uses an electromagnetic tracking system to sense the state of the needle tip during the procedure. We experimentally evaluate our needle steering system using tissue phantoms and animal tissue ex vivo. We demonstrate that our rapid replanning strategy successfully guides the needle around obstacles to desired 3-D targets with an average error of less than 3 mm.",
+    "doi": "10.1109/tro.2014.2307633"
   },
   {
     "year": 2014,
@@ -13702,7 +13733,8 @@
     "year": 2014,
     "title": "Compliant Motion Control for Multisegment Continuum Robots With Actuation Force Sensing",
     "authors": "Roger E. Goldman, Andrea Bajo, Nabil Simaan",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2309835"
   },
   {
     "year": 2014,
@@ -13732,7 +13764,8 @@
     "year": 2014,
     "title": "Online Coverage by a Tethered Autonomous Mobile Robot in Planar Unknown Environments",
     "authors": "Iddo Shnaps, Elon Rimon",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2301534"
   },
   {
     "year": 2014,
@@ -13745,7 +13778,8 @@
     "year": 2014,
     "title": "Optimal Path Following for Differentially Flat Robotic Systems Through a Geometric Problem Formulation",
     "authors": "Wannes Van Loock, Goele Pipeleers, Moritz Diehl, Joris De Schutter, Jan Swevers",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2305493"
   },
   {
     "year": 2014,
@@ -13763,7 +13797,8 @@
     "year": 2014,
     "title": "A Selective Retraction-Based RRT Planner for Various Environments",
     "authors": "Junghwan Lee, OSung Kwon, Liangjun Zhang, Sung-Eui Yoon",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2014.2309836"
   },
   {
     "year": 2014,
@@ -14057,7 +14092,8 @@
     "year": 2013,
     "title": "Elastic Element Integration for Improved Flapping-Wing Micro Air Vehicle Performance",
     "authors": "Ranjana Sahai, Kevin C. Galloway, Robert J. Wood",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2218936"
   },
   {
     "year": 2013,
@@ -14122,7 +14158,8 @@
     "year": 2013,
     "title": "Broadband 3-D Sonar System Using a Sparse Array for Indoor Navigation",
     "authors": "Jan Steckel, Andre Boen, Herbert Peremans",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2221313"
   },
   {
     "year": 2013,
@@ -14152,7 +14189,8 @@
     "year": 2013,
     "title": "Self-Alignment Mechanisms for Assistive Wearable Robots: A Kinetostatic Compatibility Method",
     "authors": "Marco Cempini, Stefano Marco Maria De Rossi, Tommaso Lenzi, Nicola Vitiello, Maria Chiara Carrozza",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2226381"
   },
   {
     "year": 2013,
@@ -14165,7 +14203,8 @@
     "year": 2013,
     "title": "Heart Motion Prediction Based on Adaptive Estimation Algorithms for Robotic-Assisted Beating Heart Surgery",
     "authors": "Eser Erdem Tuna, Timothy J. Franke, &#214;zkan Bebek, Akira Shiose, Kiyotaka Fukamachi, Murat Cenk Cavusoglu",
-    "abstract": null
+    "abstract": "Robotic-assisted beating heart surgery aims to allow surgeons to operate on a beating heart without stabilizers as if the heart is stationary. The robot actively cancels heart motion by closely following a point of interest (POI) on the heart surface - a process called active relative motion canceling. Due to the high bandwidth of the POI motion, it is necessary to supply the controller with an estimate of the immediate future of the POI motion over a prediction horizon in order to achieve sufficient tracking accuracy. In this paper, two least-squares-based prediction algorithms, using an adaptive filter to generate future position estimates, are implemented and studied. The first method assumes a linear system relation between the consecutive samples in the prediction horizon. On the contrary, the second method performs this parametrization independently for each point over the whole the horizon. The effects of predictor parameters and variations in heart rate on tracking performance are studied with constant and varying heart rate data. The predictors are evaluated using a three-degree-of-freedom (DOF) test bed and prerecorded in vivo motion data. Then, the one-step prediction and tracking performances of the presented approaches are compared with an extended Kalman filter predictor. Finally, the essential features of the proposed prediction algorithms are summarized.",
+    "doi": "10.1109/tro.2012.2217676"
   },
   {
     "year": 2013,
@@ -14184,7 +14223,8 @@
     "year": 2013,
     "title": "Stability Analysis of Underconstrained Cable-Driven Parallel Robots",
     "authors": "Marco Carricato, Jean-Pierre Merlet",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2217795"
   },
   {
     "year": 2013,
@@ -14203,7 +14243,8 @@
     "year": 2013,
     "title": "Energy Efficiency of Legged Robot Locomotion With Elastically Suspended Loads",
     "authors": "Jeffrey Ackerman, Justin E. Seipel",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2235698"
   },
   {
     "year": 2013,
@@ -14240,7 +14281,8 @@
     "year": 2013,
     "title": "IQ-ASyMTRe: Forming Executable Coalitions for Tightly Coupled Multirobot Tasks",
     "authors": "Yu Zhang, Lynne E. Parker",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2228135"
   },
   {
     "year": 2013,
@@ -14273,19 +14315,22 @@
     "year": 2013,
     "title": "Simultaneous Calibration of Odometry and Sensor Parameters for Mobile Robots",
     "authors": "Andrea Censi, Antonio Franchi, Luca Marchionni, Giuseppe Oriolo",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2226380"
   },
   {
     "year": 2013,
     "title": "IMU Self-Calibration Using Factorization",
     "authors": "Myung Hwangbo, Jun-Sik Kim 0001, Takeo Kanade",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2230994"
   },
   {
     "year": 2013,
     "title": "A Robot that Approaches Pedestrians",
     "authors": "Satoru Satake, Takayuki Kanda 0001, Dylan F. Glas, Michita Imai, Hiroshi Ishiguro, Norihiro Hagita",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2226387"
   },
   {
     "year": 2013,
@@ -14305,7 +14350,8 @@
     "year": 2013,
     "title": "Distributed Constrained Minimum-Time Schedules in Networks of Arbitrary Topology",
     "authors": "Justin Jackson, Mariam Faied, Pierre T. Kabamba, Anouck R. Girard",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2224258"
   },
   {
     "year": 2013,
@@ -14330,25 +14376,29 @@
     "year": 2013,
     "title": "Stable Walking Gaits for a Three-Link Planar Biped Robot With One Actuator",
     "authors": "Pedro Xavier Miranda La Hera, Anton S. Shiriaev, Leonid B. Freidovich, Uwe Mettin, Sergei V. Gusev",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2239551"
   },
   {
     "year": 2013,
     "title": "Geometric Swimming at Low and High Reynolds Numbers",
     "authors": "Ross L. Hatton, Howie Choset",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2251211"
   },
   {
     "year": 2013,
     "title": "PDE Boundary Control for Flexible Articulated Wings on a Robotic Aircraft",
     "authors": "Aditya A. Paranjape, Jinyu Guan, Soon-Jo Chung, Miroslav Krstic",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2240711"
   },
   {
     "year": 2013,
     "title": "A Microfabricated Planar Digital Microrobot for Precise Positioning Based on Bistable Modules",
     "authors": "Vincent Chalvet, Yassine Haddab, Philippe Lutz",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2240174"
   },
   {
     "year": 2013,
@@ -14367,7 +14417,8 @@
     "year": 2013,
     "title": "A Framework for Unconditional Stability Analysis of Multimaster/Multislave Teleoperation Systems",
     "authors": "Behzad Khademian, Keyvan Hashtrudi-Zaad",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2242377"
   },
   {
     "year": 2013,
@@ -14386,7 +14437,8 @@
     "year": 2013,
     "title": "Real-Time Visual SLAM for Autonomous Underwater Hull Inspection Using Visual Saliency",
     "authors": "Ayoung Kim, Ryan M. Eustice",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2235699"
   },
   {
     "year": 2013,
@@ -14399,7 +14451,8 @@
     "year": 2013,
     "title": "The Univariate Closure Conditions of All Fully Parallel Planar Robots Derived From a Single Polynomial",
     "authors": "Nicol&#225;s Rojas 0002, Federico Thomas",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2242376"
   },
   {
     "year": 2013,
@@ -14412,13 +14465,15 @@
     "year": 2013,
     "title": "Transformation Control to an Inverted Pendulum for a Mobile Robot With Wheel-Arms Using Partial Linearization and Polytopic Model Set",
     "authors": "Hiroaki Fukushima, Masatoshi Kakue, Kazuyuki Kon, Fumitoshi Matsuno",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2239555"
   },
   {
     "year": 2013,
     "title": "Real-Time Estimate of Velocity and Acceleration of Quasi-Periodic Signals Using Adaptive Oscillators",
     "authors": "Renaud Ronsse, Stefano Marco Maria De Rossi, Nicola Vitiello, Tommaso Lenzi, Maria Chiara Carrozza, Auke Jan Ijspeert",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2240173"
   },
   {
     "year": 2013,
@@ -14456,13 +14511,15 @@
     "year": 2013,
     "title": "Rehabilitation Exoskeleton Design: Exploring the Effect of the Anterior Lunge Degree of Freedom",
     "authors": "Paul Stegall, Kyle N. Winfree, Damiano Zanotto, Sunil Kumar Agrawal",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2256309"
   },
   {
     "year": 2013,
     "title": "Transferring Human Impedance Behavior to Heterogeneous Variable Impedance Actuators",
     "authors": "Matthew Howard 0001, David J. Braun, Sethu Vijayakumar",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2256311"
   },
   {
     "year": 2013,
@@ -14475,13 +14532,15 @@
     "year": 2013,
     "title": "Slip-Turn for Biped Robots",
     "authors": "Kanako Miura, Fumio Kanehiro, Kenji Kaneko, Shuuji Kajita, Kazuhito Yokoi",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2257574"
   },
   {
     "year": 2013,
     "title": "Planning Singularity-Free Paths on Closed-Chain Manipulators",
     "authors": "Oriol Bohigas, Michael E. Henderson, Llu&#237;s Ros, Montserrat Manubens, Josep M. Porta",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2260679"
   },
   {
     "year": 2013,
@@ -14521,7 +14580,8 @@
     "year": 2013,
     "title": "Active Visual Planning for Mobile Robot Teams Using Hierarchical POMDPs",
     "authors": "Shiqi Zhang 0001, Mohan Sridharan, Christian Washington",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2252252"
   },
   {
     "year": 2013,
@@ -14560,7 +14620,8 @@
     "year": 2013,
     "title": "Planning Reliable Paths With Pose SLAM",
     "authors": "Rafael Valencia, Marti Morta, Juan Andrade-Cetto, Josep M. Porta",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2257577"
   },
   {
     "year": 2013,
@@ -14578,7 +14639,8 @@
     "year": 2013,
     "title": "Novel Dihedral-Based Control of Flapping-Wing Aircraft With Application to Perching",
     "authors": "Aditya A. Paranjape, Soon-Jo Chung, Joseph Kim",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2268947"
   },
   {
     "year": 2013,
@@ -14598,7 +14660,8 @@
     "year": 2013,
     "title": "The 3-D Spring-Mass Model Reveals a Time-Based Deadbeat Control for Highly Robust Running and Steering in Uncertain Environments",
     "authors": "Albert Wu, Hartmut Geyer",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2263718"
   },
   {
     "year": 2013,
@@ -14623,7 +14686,8 @@
     "year": 2013,
     "title": "Precision Control of Modular Robot Manipulators: The VDC Approach With Embedded FPGA",
     "authors": "Wen-Hong Zhu, Tom Lamarche, Erick Dupuis, David Jameux, Patrick Barnard, Guangjun Liu",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2265631"
   },
   {
     "year": 2013,
@@ -14678,25 +14742,29 @@
     "year": 2013,
     "title": "Sliding Mode Control of Steerable Needles",
     "authors": "D. Caleb Rucker, Jadav Das, Hunter B. Gilbert, Philip J. Swaney, Michael I. Miga, Nilanjan Sarkar, Robert J. Webster III",
-    "abstract": null
+    "abstract": "Steerable needles can potentially increase the accuracy of needle-based diagnosis and therapy delivery, provided they can be adequately controlled based on medical image information. We propose a novel sliding mode control law that can be used to deliver the tip of a flexible asymmetric-tipped needle to a desired point, or to track a desired trajectory within tissue. The proposed control strategy requires no a priori knowledge of model parameters, has bounded input speeds, and requires little computational resources. We show that if the standard nonholonomic model for tip-steered needles holds, then the control law will converge to desired targets in a reachable workspace, within a tolerance that can be defined by the control parameters. Experimental results validate the control law for target points and trajectory following in phantom tissue and ex vivo liver. Experiments with targets that move during insertion illustrate robustness to disturbances caused by tissue deformation.",
+    "doi": "10.1109/tro.2013.2271098"
   },
   {
     "year": 2013,
     "title": "Kinematic Design of Redundant Robotic Manipulators for Spatial Positioning that are Optimally Fault Tolerant",
     "authors": "Khaled M. Ben-Gharbia, Anthony A. Maciejewski, Rodney G. Roberts",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2266855"
   },
   {
     "year": 2013,
     "title": "Model Predictive Formation Control Using Branch-and-Bound Compatible With Collision Avoidance Problems",
     "authors": "Hiroaki Fukushima, Kazuyuki Kon, Fumitoshi Matsuno",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2262751"
   },
   {
     "year": 2013,
     "title": "Minimum-Jerk Velocity Planning for Mobile Robot Applications",
     "authors": "Corrado Guarino Lo Bianco",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2262744"
   },
   {
     "year": 2013,
@@ -14735,13 +14803,15 @@
     "year": 2013,
     "title": "Symmetric Rendezvous Search on the Line With an Unknown Initial Distance",
     "authors": "Deniz Ozsoyeller, Andrew Beveridge, Volkan Isler",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2272252"
   },
   {
     "year": 2013,
     "title": "Globally Asymptotically Stable Sensor-Based Simultaneous Localization and Mapping",
     "authors": "Bruno Joao Nogueira Guerreiro, Pedro Tiago Martins Batista, Carlos Silvestre, Paulo Jorge Ramalho Oliveira",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2273838"
   },
   {
     "year": 2013,
@@ -14766,7 +14836,8 @@
     "year": 2013,
     "title": "On Motion and Force Controllability of Precision Grasps with Hands Actuated by Soft Synergies",
     "authors": "Domenico Prattichizzo, Monica Malvezzi, Marco Gabiccini, Antonio Bicchi",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2273849"
   },
   {
     "year": 2013,
@@ -14779,7 +14850,8 @@
     "year": 2013,
     "title": "A Passivity-Based Model-Free Force-Motion Control of Underwater Vehicle-Manipulator Systems",
     "authors": "Ernesto Olgu&#237;n-D&#237;az, Gustavo Arechavaleta, Gerardo Jarqu&#237;n, Vicente Parra-Vega",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2277535"
   },
   {
     "year": 2013,
@@ -14792,13 +14864,15 @@
     "year": 2013,
     "title": "Simultaneous Optimal Estimation of Mode Transition Times and Parameters Applied to Simple Traction Models",
     "authors": "Lauren M. Miller, Todd D. Murphey",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2273848"
   },
   {
     "year": 2013,
     "title": "Consensus in Networks of Nonidentical Euler-Lagrange Systems Using P+d Controllers",
     "authors": "Emmanuel Nuno, Ioannis Sarras, Luis Basa&#241;ez",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2279572"
   },
   {
     "year": 2012,
@@ -14816,7 +14890,8 @@
     "year": 2012,
     "title": "On the Force-Closure Analysis of n-DOF Cable-Driven Open Chains Based on Reciprocal Screw Theory",
     "authors": "Mustafa Shabbir Kurbanhusen, Sunil Kumar Agrawal",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2168170"
   },
   {
     "year": 2012,
@@ -14834,13 +14909,15 @@
     "year": 2012,
     "title": "Visual-Inertial-Aided Navigation for High-Dynamic Motion in Built Environments Without Initial Conditions",
     "authors": "Todd Lupton, Salah Sukkarieh",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2170332"
   },
   {
     "year": 2012,
     "title": "Landing a VTOL Unmanned Aerial Vehicle on a Moving Platform Using Optical Flow",
     "authors": "Bruno H&#233;riss&#233;, Tarek Hamel, Robert E. Mahony, Fran&#231;ois-Xavier Russotto",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2163435"
   },
   {
     "year": 2012,
@@ -14874,13 +14951,15 @@
     "year": 2012,
     "title": "Joining Movement Sequences: Modified Dynamic Movement Primitives for Robotics Applications Exemplified on Handwriting",
     "authors": "Tomas Kulvicius, KeJun Ning, Minija Tamosiunaite, Florentin W&#246;rg&#246;tter",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2163863"
   },
   {
     "year": 2012,
     "title": "Formal Approach to the Deployment of Distributed Robotic Teams",
     "authors": "Yushan Chen, Xu Chu Ding, Alin Stefanescu, Calin Belta",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2163434"
   },
   {
     "year": 2012,
@@ -14893,7 +14972,8 @@
     "year": 2012,
     "title": "Design and Rolling Locomotion of a Magnetically Actuated Soft Capsule Endoscope",
     "authors": "Sehyuk Yim, Metin Sitti",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2163861"
   },
   {
     "year": 2012,
@@ -14912,19 +14992,22 @@
     "year": 2012,
     "title": "On Optimizing Autonomous Pipeline Inspection",
     "authors": "Xin Li 0003, Wuyi Yu, Xiao Lin, S. S. Iyengar 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2169619"
   },
   {
     "year": 2012,
     "title": "Activity-Based Estimation of Human Trajectories",
     "authors": "Slawomir Grzonka, Andreas Karwath, Frederic Dijoux, Wolfram Burgard",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2165372"
   },
   {
     "year": 2012,
     "title": "A Robotic Cadaveric Gait Simulator With Fuzzy Logic Vertical Ground Reaction Force Control",
     "authors": "Patrick M. Aubin, Eric C. Whittaker, William R. Ledoux",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2164958"
   },
   {
     "year": 2012,
@@ -14942,7 +15025,8 @@
     "year": 2012,
     "title": "Controlled Synchronization of Heterogeneous Robotic Manipulators in the Task Space",
     "authors": "Yen-Chen Liu, Nikhil Chopra",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2168690"
   },
   {
     "year": 2012,
@@ -14954,19 +15038,22 @@
     "year": 2012,
     "title": "Kinematics-Based Detection and Localization of Contacts Along Multisegment Continuum Robots",
     "authors": "Andrea Bajo, Nabil Simaan",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2175761"
   },
   {
     "year": 2012,
     "title": "Macrocontinuous Dynamics for Hyperredundant Robots: Application to Kinematic Locomotion Bioinspired by Elongated Body Animals",
     "authors": "Fr&#233;d&#233;ric Boyer, Shaukat Ali 0003, Mathieu Porez",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2171616"
   },
   {
     "year": 2012,
     "title": "Control of Yaw and Pitch Maneuvers of a Multilink Dolphin Robot",
     "authors": "Junzhi Yu 0001, Zongshuai Su, Ming Wang 0001, Min Tan 0001, Jianwei Zhang 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2171095"
   },
   {
     "year": 2012,
@@ -14991,31 +15078,36 @@
     "year": 2012,
     "title": "Discrete Partitioning and Coverage Control for Gossiping Robots",
     "authors": "Joseph W. Durham, Ruggero Carli, Paolo Frasca, Francesco Bullo",
-    "abstract": null
+    "abstract": "We propose distributed algorithms to automatically deploy a team of mobile robots to partition and provide coverage of a nonconvex environment. To handle arbitrary nonconvex environments, we represent them as graphs. Our partitioning and coverage algorithm requires only short-range, unreliable pairwise “gossip” communication. The algorithm has two components: 1) a motion protocol to ensure that neighboring robots communicate at least sporadically and 2) a pairwise partitioning rule to update territory ownership when two robots communicate. By studying an appropriate dynamical system on the space of partitions of the graph vertices, we prove that territory ownership converges to a pairwise-optimal partition in finite time. This new equilibrium set represents improved performance over common Lloyd-type algorithms. Additionally, our algorithm is an \"anytime algorithm'' that also scales well for large teams and can be run by on-board computers with limited resources. Finally, we report on large-scale simulations in complex environments and hardware experiments using the Player/Stage robot control system.",
+    "doi": "10.1109/tro.2011.2170753"
   },
   {
     "year": 2012,
     "title": "Hierarchical Motion Planning With Dynamical Feasibility Guarantees for Mobile Robotic Vehicles",
     "authors": "Raghvendra V. Cowlagi, Panagiotis Tsiotras",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2171613"
   },
   {
     "year": 2012,
     "title": "Temporal Logic Motion Planning and Control With Probabilistic Satisfaction Guarantees",
     "authors": "Morteza Lahijanian, Sean B. Andersson, Calin Belta",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2172150"
   },
   {
     "year": 2012,
     "title": "Persistent Robotic Tasks: Monitoring and Sweeping in Changing Environments",
     "authors": "Stephen L. Smith 0001, Mac Schwager, Daniela Rus",
-    "abstract": null
+    "abstract": "In this paper, we present controllers that enable mobile robots to persistently monitor or sweep a changing environment. The environment is modeled as a field that is defined over a finite set of locations. The field grows linearly at locations that are not within the range of a robot and decreases linearly at locations that are within range of a robot. We assume that the robots travel on given closed paths. The speed of each robot along its path is controlled to prevent the field from growing unbounded at any location. We consider the space of speed controllers that are parametrized by a finite set of basis functions. For a single robot, we develop a linear program that computes a speed controller in this space to keep the field bounded, if such a controller exists. Another linear program is derived to compute the speed controller that minimizes the maximum field value over the environment. We extend our linear program formulation to develop a multirobot controller that keeps the field bounded. We characterize, both theoretically and in simulation, the robustness of the controllers to modeling errors and to stochasticity in the environment.",
+    "doi": "10.1109/tro.2011.2174493"
   },
   {
     "year": 2012,
     "title": "Fast Humanoid Robot Collision-Free Footstep Planning Using Swept Volume Approximations",
     "authors": "Nicolas Perrin 0001, Olivier Stasse, Leo Baudouin, Florent Lamiraux, Eiichi Yoshida",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2172152"
   },
   {
     "year": 2012,
@@ -15028,7 +15120,8 @@
     "year": 2012,
     "title": "Automatic Design and Manufacture of Soft Robots",
     "authors": "Jonathan D. Hiller, Hod Lipson",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2172702"
   },
   {
     "year": 2012,
@@ -15135,7 +15228,8 @@
     "year": 2012,
     "title": "Vector Field SLAM - Localization by Learning the Spatial Variation of Continuous Signals",
     "authors": "Jens-Steffen Gutmann, Ethan Eade, Philip W. Fong, Mario E. Munich",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2011.2177691"
   },
   {
     "year": 2012,
@@ -15160,7 +15254,8 @@
     "year": 2012,
     "title": "Enhanced Targeting in Breast Tissue Using a Robotic Tissue Preloading-Based Needle Insertion System",
     "authors": "Yo Kobayashi, Makiko Suzuki, Atsushi Kato, Maya Hatano, Kozo Konishi, Makoto Hashizume, Masakatsu G. Fujie",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2183055"
   },
   {
     "year": 2012,
@@ -15185,13 +15280,15 @@
     "year": 2012,
     "title": "Control of Robotic Manipulators Under Input/Output Communication Delays: Theory and Experiments",
     "authors": "Yen-Chen Liu, Nikhil Chopra",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2183056"
   },
   {
     "year": 2012,
     "title": "sRD-SIFT: Keypoint Detection and Matching in Images With Radial Distortion",
     "authors": "Miguel Louren&#231;o, Jo&#227;o Pedro Barreto 0001, Francisco Vasconcelos 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2184952"
   },
   {
     "year": 2012,
@@ -15216,19 +15313,22 @@
     "year": 2012,
     "title": "Visually Servoing Magnetic Intraocular Microdevices",
     "authors": "Christos Bergeles, Bradley Kratochvil, Bradley J. Nelson",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2188165"
   },
   {
     "year": 2012,
     "title": "Robotic Router Formation in Realistic Communication Environments",
     "authors": "Yuan Yan, Yasamin Mostofi",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2188163"
   },
   {
     "year": 2012,
     "title": "Robust Cooperative Exploration With a Switching Strategy",
     "authors": "Wencen Wu, Fumin Zhang 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2190182"
   },
   {
     "year": 2012,
@@ -15254,7 +15354,8 @@
     "year": 2012,
     "title": "Automatic Visual Bag-of-Words for Online Robot Navigation and Mapping",
     "authors": "Tudor Nicosevici, Rafael Garc&#237;a",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2192013"
   },
   {
     "year": 2012,
@@ -15285,13 +15386,15 @@
     "year": 2012,
     "title": "GyroLock: Stabilizing the Heart With Control Moment Gyroscope (CMG) - From Concept to First In Vivo Assessments",
     "authors": "Julien Gagne, Olivier Piccin, Edouard Laroche, Michele Diana, Jacques Gangloff",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2188162"
   },
   {
     "year": 2012,
     "title": "Stiffness Matrix of Manipulators With Passive Joints: Computational Aspects",
     "authors": "Alexandr Klimchik, Anatol Pashkevich, St&#233;phane Caro, Damien Chablat",
-    "abstract": null
+    "abstract": "This paper focuses on stiffness matrix computation for manipulators with passive joints, compliant actuators, and flexible links. It proposes both explicit analytical expressions and an efficient recursive procedure that are applicable in the general case and allow us to obtain the desired matrix either in analytical or numerical form. Advantages of the developed technique and its ability to produce both singular and nonsingular stiffness matrices are illustrated by application examples that deal with stiffness modeling of two Stewart-Gough platforms.",
+    "doi": "10.1109/tro.2012.2187395"
   },
   {
     "year": 2012,
@@ -15310,13 +15413,15 @@
     "year": 2012,
     "title": "Direct Visual Servoing: Vision-Based Estimation and Control Using Only Nonmetric Information",
     "authors": "Geraldo F. Silveira, Ezio Malis",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2190875"
   },
   {
     "year": 2012,
     "title": "An Alternative to the Mahalanobis Distance for Determining Optimal Correspondences in Data Association",
     "authors": "Jos&#233;-Luis Blanco, Javier Gonz&#225;lez Jim&#233;nez 0001, Juan-Antonio Fern&#225;ndez-Madrigal",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2193706"
   },
   {
     "year": 2012,
@@ -15355,7 +15460,8 @@
     "year": 2012,
     "title": "A Human-Aware Manipulation Planner",
     "authors": "Emrah Akin Sisbot, Rachid Alami 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2196303"
   },
   {
     "year": 2012,
@@ -15368,7 +15474,8 @@
     "year": 2012,
     "title": "Moving Groups of Microparticles Into Array With a Robot-Tweezers Manipulation System",
     "authors": "Haoyao Chen, Dong Sun 0001",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2196309"
   },
   {
     "year": 2012,
@@ -15380,13 +15487,15 @@
     "year": 2012,
     "title": "Automated Multiprobe Microassembly Using Vision Feedback",
     "authors": "John D. Wason, John T. Wen, Jason Gorman, Nicholas G. Dagalakis",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2200991"
   },
   {
     "year": 2012,
     "title": "Zebedee: Design of a Spring-Mounted 3-D Range Sensor with Application to Mobile Mapping",
     "authors": "Michael Bosse, Robert Zlot, Paul Flick",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2200990"
   },
   {
     "year": 2012,
@@ -15399,7 +15508,8 @@
     "year": 2012,
     "title": "Toward Brain-Actuated Humanoid Robots: Asynchronous Direct Control Using an EEG-Based BCI",
     "authors": "Yongwook Chae, Jaeseung Jeong, Sungho Jo",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2201310"
   },
   {
     "year": 2012,
@@ -15411,7 +15521,8 @@
     "year": 2012,
     "title": "An Active Uprighting Mechanism for Flying Robots",
     "authors": "Adam Klaptocz, Ludovic Daler, Adrien Briod, Jean-Christophe Zufferey, Dario Floreano",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2201309"
   },
   {
     "year": 2012,
@@ -15443,13 +15554,15 @@
     "year": 2012,
     "title": "Cooperative Patrolling via Weighted Tours: Performance Analysis and Distributed Algorithms",
     "authors": "Fabio Pasqualetti, Joseph W. Durham, Francesco Bullo",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2201293"
   },
   {
     "year": 2012,
     "title": "Bags of Binary Words for Fast Place Recognition in Image Sequences",
     "authors": "Dorian G&#225;lvez-L&#243;pez, Juan D. Tard&#243;s",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2197158"
   },
   {
     "year": 2012,
@@ -15473,7 +15586,8 @@
     "year": 2012,
     "title": "Design and Analysis of a Blind Juggling Robot",
     "authors": "Philipp Reist, Raffaello D'Andrea",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2205493"
   },
   {
     "year": 2012,
@@ -15492,19 +15606,22 @@
     "year": 2012,
     "title": "Integration of Reactive, Torque-Based Self-Collision Avoidance Into a Task Hierarchy",
     "authors": "Alexander Dietrich, Thomas Wimb&#246;ck, Alin Albu-Sch&#228;ffer, Gerd Hirzinger",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2208667"
   },
   {
     "year": 2012,
     "title": "Stability Analysis for Bilateral Teleoperation: An IQC Formulation",
     "authors": "Ilhan Polat, Carsten W. Scherer",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2209230"
   },
   {
     "year": 2012,
     "title": "Interactive Virtual Humans: A Two-Level Prioritized Control Framework With Wrench Bounds",
     "authors": "Mingxing Liu, Alain Micaelli, Paul Evrard, Adrien Escande, Claude Andriot",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2208829"
   },
   {
     "year": 2012,
@@ -15530,13 +15647,15 @@
     "year": 2012,
     "title": "Reinforcement Learning With Sequences of Motion Primitives for Robust Manipulation",
     "authors": "Freek Stulp, Evangelos A. Theodorou, Stefan Schaal",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2210294"
   },
   {
     "year": 2012,
     "title": "A Quantum-Statistical Approach Toward Robot Learning by Demonstration",
     "authors": "Sotirios P. Chatzis, Dimitrios Korkinof, Yiannis Demiris",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2203055"
   },
   {
     "year": 2012,
@@ -15566,7 +15685,8 @@
     "year": 2012,
     "title": "Active Vision During Coordinated Head/Eye Movements in a Humanoid Robot",
     "authors": "Xutao Kuang, Mark Gibson, Bertram E. Shi, Michele Rucci",
-    "abstract": null
+    "abstract": null,
+    "doi": "10.1109/tro.2012.2204513"
   },
   {
     "year": 2012,
@@ -16245,5 +16365,40 @@
     "authors": "Manthan Patel, Jonas Frey, Mayank Mittal, Fan Yang, Alexander Hansson, Amir Bar, Cesar Cadena, Marco Hutter",
     "abstract": null,
     "doi": "10.1109/tro.2026.3749449"
+  },
+  {
+    "year": 2013,
+    "title": "Appearance-Based Loop Closure Detection for Online Large-Scale and Long-Term Operation",
+    "authors": "Mathieu Labbe, Francois Michaud",
+    "abstract": "In appearance-based localization and mapping, loop-closure detection is the process used to determinate if the current observation comes from a previously visited location or a new one. As the size of the internal map increases, so does the time required to compare new observations with all stored locations, eventually limiting online processing. This paper presents an online loop-closure detection approach for large-scale and long-term operation. The approach is based on a memory management method, which limits the number of locations used for loop-closure detection so that the computation time remains under real-time constraints. The idea consists of keeping the most recent and frequently observed locations in a working memory (WM) that is used for loop-closure detection, and transferring the others into a long-term memory (LTM). When a match is found between the current location and one stored in WM, associated locations that are stored in LTM can be updated and remembered for additional loop-closure detections. Results demonstrate the approach's adaptability and scalability using ten standard datasets from other appearance-based loop-closure approaches, one custom dataset using real images taken over a 2-km loop of our university campus, and one custom dataset (7 h) using virtual images from the racing video game “Need for Speed: Most Wanted”.",
+    "doi": "10.1109/tro.2013.2242375"
+  },
+  {
+    "year": 2013,
+    "title": "MSU Jumper: A Single-Motor-Actuated Miniature Steerable Jumping Robot",
+    "authors": "Jianguo Zhao, Jing Xu, Bingtuan Gao, Ning Xi, Fernando J. Cintron, Matt W. Mutka, Li Xiao",
+    "abstract": null,
+    "doi": "10.1109/tro.2013.2249371"
+  },
+  {
+    "year": 2026,
+    "title": "OPA-Pack: Object-Property-Aware Robotic Bin Packing",
+    "authors": "Jia-Hui Pan, Yeok Tatt Cheah, Zhengzhe Liu, Ka-Hei Hui, Xiaojie Gao, Pheng-Ann Heng, Yun-Hui Liu, Chi-Wing Fu",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3750786"
+  },
+  {
+    "year": 2026,
+    "title": "Normalizing Flow-Enhanced Message Passing for Multirobot Collaborative Localization",
+    "authors": "Han Shen, Guanghui Wen, Liangming Chen, Ming Cao",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3750685"
+  },
+  {
+    "year": 2026,
+    "title": "A Self-Interactive Assist-as-Needed Control for Upper Limb Rehabilitation",
+    "authors": "Guanyu Chen, Yipeng Huangfu, Mianzhi Zhou, Xiaochen Li, Jacob Rosen",
+    "abstract": null,
+    "doi": "10.1109/tro.2026.3750684"
   }
 ]
