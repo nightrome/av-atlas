@@ -51,7 +51,7 @@
          a run of several dropdowns has a real chance of sharing one row;
          the full text is still available in the open dropdown and via the
          title="" set below. */
-      max-width: 220px; overflow: hidden; text-overflow: ellipsis;
+      max-width: 190px; overflow: hidden; text-overflow: ellipsis;
     }
     .filter-bar .search-field {
       /* flex-grow: 0, not 1 -- the search box used to stretch to fill all
@@ -72,24 +72,9 @@
       border-radius: 6px; padding: 6px 10px; font-size: 0.9em; box-sizing: border-box; min-height: 32px;
     }
     .filter-bar .search-field input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
-    .filter-bar-secondary { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-    /* Two labelled groups side by side: an indigo Filter group (wide) and an
-       amber Order group, each headed by a pill whose tooltip explains it. They
-       stack on a narrow screen. */
-    .captioned-rows { display: flex; flex-wrap: wrap; gap: 18px 0; align-items: stretch; }
-    /* No card of its own (theme-light gives every .filter-bar a shadow): the
-       two groups are just columns of one panel, split by a thin divider. */
-    .captioned-rows > .filter-bar { margin: 0; padding: 0; border: 0 !important; box-shadow: none !important; background: none; }
-    .captioned-rows > .filter-bar:first-child { flex: 1 1 520px; padding-right: 28px; }
-    .captioned-rows > .filter-bar-secondary { flex: 0 0 auto; align-content: flex-start; padding-left: 28px; border-left: 1px solid var(--border) !important; }
-    .filter-row-caption { flex: 0 0 100%; display: flex; align-items: baseline; gap: 8px; margin-bottom: -2px; }
-    @media (max-width: 900px) {
-      .captioned-rows > .filter-bar:first-child { padding-right: 0; }
-      .captioned-rows > .filter-bar-secondary { padding-left: 0; border-left: 0 !important; border-top: 1px solid var(--border) !important; padding-top: 14px; flex: 1 1 100%; }
-    }
-    .filter-row-caption .tag { cursor: help; font-size: 0.68em; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
-      padding: 2px 9px; border-radius: 999px; background: var(--accent); color: #fff; }
-    .filter-bar-secondary .filter-row-caption .tag { background: var(--accent2); color: #1f1300; }
+    /* Sort by and Show top sit at the end of the same bar, pushed to the right
+       edge of whichever line they land on. */
+    .filter-bar .order-start { margin-left: auto; }
 
     .pagination-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.85em; color: var(--muted); margin: 8px 0; }
     .pagination-row button {
@@ -727,20 +712,16 @@
     return out;
   };
 
-  // Renders one consistent control panel per page, two rows (user-requested:
-  // filters in the first row, sort/show in the second):
-  //   Row 1 (.filter-bar): every filter -- SEARCH, Show (AV relevance),
-  //     Category, Venue, Year, which narrow WHICH papers are in play, and
-  //     Min. papers, Career span, Region, which narrow which authors,
-  //     institutions... are listed.
-  //   Row 2 (.filter-bar-secondary): Sort by, Show top -- only how the
-  //     already-filtered result is ordered and how much of it is shown.
-  // Then a third row of removable chips for whichever of the 5 filter
-  // dimensions is active -- country/institution/author arrive via links from
-  // other pages, not a dropdown here, but are still shown and clearable like
-  // the rest -- plus the result count. Every page builds this same panel
-  // from the same function so the controls always look and behave the same
-  // way, page to page.
+  // Renders one consistent control panel per page: a single flowing bar with
+  // every filter (SEARCH, Show (AV relevance), Category, Venue, Year, which
+  // narrow WHICH papers are in play, and Min. papers, Career span, Region,
+  // which narrow which authors, institutions... are listed), then Sort by and
+  // Show top at the right-hand end (.order-start). Under it, a row of
+  // removable chips for whichever of the 5 filter dimensions is active --
+  // country/institution/author arrive via links from other pages, not a
+  // dropdown here, but are still shown and clearable like the rest -- plus
+  // the result count. Every page builds this same panel from the same
+  // function so the controls always look and behave the same way.
   window.renderFilterBar = function (container, stats, page, opts) {
     opts = opts || {};
     const filters = getFilters();
@@ -749,10 +730,13 @@
     panel.className = 'controls-panel';
     const bar = document.createElement('div');
     bar.className = 'filter-bar';
-    // opts.singleRow: keep every control on one line (used on Categories,
-    // where there are only a few) instead of the default two-row split.
-    const bar2 = opts.singleRow ? bar : document.createElement('div');
-    if (!opts.singleRow) bar2.className = 'filter-bar filter-bar-secondary';
+    // Sort by and Show top join the filters in the same bar, at its end;
+    // the first one is pushed to the right edge.
+    const orderFields = [];
+    const orderField = el => {
+      el.className += orderFields.length ? ' order-field' : ' order-field order-start';
+      orderFields.push(el);
+    };
 
     function field(labelText, el) {
       const wrap = document.createElement('div');
@@ -1012,7 +996,7 @@
         sel.appendChild(o);
       });
       sel.addEventListener('change', () => { location.href = withParam(page, 'metric', sel.value); });
-      bar2.appendChild(field('Sort by', sel));
+      orderField(field('Sort by', sel));
     }
 
     // Min-papers threshold, in the second row (a ranking/thresholding
@@ -1167,9 +1151,7 @@
         filters.topN = n;
         if (tOpts.onChange) tOpts.onChange(n);
       });
-      // Row 1 (user-requested for Papers specifically -- opts.topN.row: 1),
-      // row 2 everywhere else, same default as before.
-      (tOpts.row === 1 ? bar : bar2).appendChild(field(tOpts.label || 'Show top', sel));
+      orderField(field(tOpts.label || 'Show top', sel));
       filters.topN = current;
     }
 
@@ -1182,30 +1164,8 @@
     rows.id = 'filter-bar-rows';
     panel.appendChild(rows);
 
+    orderFields.forEach(el => bar.appendChild(el));
     rows.appendChild(bar);
-    if (bar2 !== bar && bar2.children.length) {
-      // Say what each row does. The top row is every filter: the ones that
-      // decide which papers the numbers are built from, and Min. papers,
-      // Career span and Region, which decide which authors (institutions...)
-      // are listed. The bottom row only orders and sizes the result.
-      const noun = opts.rowNoun || 'rows';
-      const caption = (tag, hint) => {
-        const el = document.createElement('div');
-        el.className = 'filter-row-caption';
-        const t = document.createElement('span');
-        t.className = 'tag';
-        t.textContent = tag;
-        t.title = hint;
-        el.appendChild(t);
-        return el;
-      };
-      rows.className += ' captioned-rows';
-      bar.className += ' captioned';
-      bar2.className += ' captioned';
-      bar.insertBefore(caption('Filter', `Narrow down the papers and which ${noun} are listed`), bar.firstChild);
-      bar2.insertBefore(caption('Order', `How the ${noun} are ranked and how many are shown`), bar2.firstChild);
-      rows.appendChild(bar2);
-    }
 
     const metaRow = document.createElement('div');
     metaRow.className = 'controls-meta-row';
