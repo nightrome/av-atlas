@@ -146,9 +146,10 @@ jobs:
           args=(--work-dir "$RUNNER_TEMP/monthly-update")
           if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
           if [ "$FETCH_ONLY" = "true" ]; then args+=(--fetch-only); fi
-          # A source that is down only fails the run on the last slot of the
-          # month (the 10th, 15:17 UTC) or when someone started it by hand.
-          if [ "$GITHUB_EVENT_NAME" = "schedule" ] && ! { [ "$(date -u +%-d)" -ge 10 ] && [ "$(date -u +%-H)" -ge 14 ]; }; then
+          # A source that is down only fails the run from the last slot of the
+          # month on (the 10th, 15:17 UTC), however the run was started; before
+          # that the next slot picks it up and nobody is bothered.
+          if ! { [ "$(date -u +%-d)" -ge 10 ] && [ "$(date -u +%-H)" -ge 14 ]; }; then
             args+=(--retry-later)
           fi
           python scripts/monthly_update.py "${args[@]}" 2>&1 | tee "$RUNNER_TEMP/monthly-update.log"

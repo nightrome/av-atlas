@@ -243,8 +243,7 @@ run finishes every step; that run pushes a tag `monthly-done-YYYY-MM`, and a fir
 tag. The run turns red and opens or updates the "Monthly update failed" issue only
 when something needs you: a crash or other unexpected failure in any step, a failed
 restore, build or publish (these also fail at once, on every slot), a source still
-unavailable on the last slot (the 10th, 15:17 UTC), or any problem in a run you
-started by hand. Each retry resumes where the last stopped: the arXiv harvest checkpoint is kept in the Actions cache, the Semantic
+unavailable from the last slot on (the 10th, 15:17 UTC), whoever started the run. Each retry resumes where the last stopped: the arXiv harvest checkpoint is kept in the Actions cache, the Semantic
 Scholar crawlers keep their side files in the corpus backup, and every run
 republishes, so a source that comes back on day two still lands in the same month's
 site. Waiting on a source is not a failure by itself: Semantic Scholar rate limits
