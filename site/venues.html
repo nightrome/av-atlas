@@ -82,7 +82,7 @@
   </div>
   <p id="venues-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: 0 0 12px;"></p>
   <div id="pagination-container"></div>
-  <table><thead><tr><th>Venue</th><th>Years covered</th><th class="num">Papers</th><th class="num">AV papers</th><th class="num" data-term="av_paper_ratio">AV paper ratio</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th data-term="most_cited_paper">Most-cited paper</th></tr></thead>
+  <table><thead><tr><th>Venue</th><th>Years covered</th><th class="num">Papers</th><th class="num">AV papers</th><th class="num" data-term="av_paper_ratio">AV paper ratio</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th class="num" data-term="h_index">h-index</th><th data-term="most_cited_paper">Most-cited paper</th></tr></thead>
   <tbody id="venues-body"></tbody></table>
 </div>
 
@@ -285,11 +285,11 @@ function render() {
       nameCell.textContent = r.name;
       tbody.appendChild(row([
         nameCell, r.yearRange, r.total, r.papers, fmtRatio(r.avPapers, r.total), r.citations, fmtAvg(r.avg_citations),
-        bestPaperCell(r.best),
+        r.h_index, bestPaperCell(r.best),
       ], [4, 6]));
     });
     appendSumRow(tbody, data, [
-      null, null, r => r.total, r => r.papers, null, r => r.citations, null, null,
+      null, null, r => r.total, r => r.papers, null, r => r.citations, null, null, null,
     ]);
     // Re-applied on every re-render (sort, page change) because this
     // function rebuilds the whole tbody each time.
@@ -304,6 +304,7 @@ function render() {
     { accessor: r => r.total ? r.avPapers / r.total : -1, numeric: true },
     { accessor: r => r.citations, numeric: true },
     { accessor: r => r.avg_citations ?? -Infinity, numeric: true },
+    { accessor: r => r.h_index, numeric: true },
     { accessor: r => r.best ? r.best.title : '', numeric: false },
   ], renderBody);
 

@@ -357,6 +357,29 @@ test('listing and detail pages give the same citations per paper', () => {
   });
 });
 
+test('h-index: the largest h with h papers of at least h citations, in-corpus only', () => {
+  const { hIndex, hIndexOf, aggregateByDimension: agg } = loadFilters();
+  assert.strictEqual(hIndex([]), 0);
+  assert.strictEqual(hIndex([0, 0, 0]), 0);
+  assert.strictEqual(hIndex([100]), 1, 'one famous paper is still h = 1');
+  assert.strictEqual(hIndex([3, 0, 6, 1, 5]), 3, 'the textbook example');
+  assert.strictEqual(hIndex([4, 4, 4, 4]), 4);
+  assert.strictEqual(hIndex([10, 8, 5, 4, 3]), 4);
+  assert.strictEqual(hIndex([null, 2, undefined, 2]), 2, 'missing counts are 0');
+  assert.strictEqual(hIndexOf([{ citations: 5 }, { citations: 5 }, { citations: null }]), 2);
+  // The listing column and the detail pages' helper are the same number.
+  const papers = [
+    { authors: ['A', 'B'], citations: 10 }, { authors: ['A'], citations: 4 },
+    { authors: ['A'], citations: 3 }, { authors: ['A'], citations: 0 },
+    { authors: ['B'], citations: 1 },
+  ];
+  agg(papers, p => p.authors, { minPapers: 0 }).forEach(row => {
+    assert.strictEqual(row.h_index, hIndexOf(papers.filter(p => p.authors.includes(row.name))), row.name);
+  });
+  const a = agg(papers, p => p.authors, { minPapers: 0 }).find(r => r.name === 'A');
+  assert.strictEqual(a.h_index, 3);
+});
+
 test('detailCanonicalUrl keeps only the identity parameter, escaped like the sitemap', () => {
   const { detailCanonicalUrl } = loadFilters();
   const loc = (pathname, search) => ({ origin: 'https://nightrome.github.io', pathname, search });

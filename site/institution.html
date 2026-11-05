@@ -248,6 +248,9 @@ function render(stats) {
   grid.appendChild(stat(papers.length, 'AV papers in corpus'));
   grid.appendChild(stat(totalCitations, 'Citations'));
   grid.appendChild(stat(avg == null ? 'n/a' : avg, 'Citations / paper'));
+  const hTile = stat(hIndexOf(papers), 'h-index');
+  hTile.title = (window.GLOSSARY.h_index || {}).short || '';
+  grid.appendChild(hTile);
   grid.appendChild(stat(authorSet.size, 'Distinct authors credited'));
   // Nested inside the first tile rather than floating above the grid in
   // the page's bare background -- see author.html's identical fix for why

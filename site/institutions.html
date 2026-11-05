@@ -105,7 +105,7 @@
   </div>
   <p id="institutions-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
   <p id="institutions-thin-note" style="color: var(--muted); font-size: 0.8em; margin: -8px 0 12px;"></p>
-  <table><thead><tr><th>#</th><th>Institution</th><th class="num">Papers</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Institution</th><th class="num">Papers</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th class="num" data-term="h_index">h-index</th></tr></thead>
   <tbody id="institutions-body"></tbody></table>
 </div>
 
@@ -320,7 +320,7 @@ function render() {
       const nameLink = document.createElement('a');
       nameLink.href = `institution.html?name=${encodeURIComponent(x.name)}`;
       nameLink.textContent = x.name;
-      const tr = row([pagination.offset + i + 1, nameLink, x.papers, x.citations, fmtAvg(x.avg_citations)]);
+      const tr = row([pagination.offset + i + 1, nameLink, x.papers, x.citations, fmtAvg(x.avg_citations), x.h_index]);
       markThinAverage(tr.children[4], x.cited_papers, x.papers);
       tbody.appendChild(tr);
     });
@@ -329,7 +329,7 @@ function render() {
       thinNote.textContent = thinAverageNoteText(
         data.filter(x => x.cited_papers != null && x.cited_papers < THIN_AVERAGE_BELOW).length);
     }
-    appendSumRow(tbody, data, [null, null, x => x.papers, x => x.citations, null]);
+    appendSumRow(tbody, data, [null, null, x => x.papers, x => x.citations, null, null]);
     // Re-applied on every re-render (sort, page change) because this
     // function rebuilds the whole tbody each time.
     renderCompareSelection({ table: tbody.closest('table'), type: 'institution',
@@ -343,6 +343,7 @@ function render() {
     { accessor: x => x.papers, numeric: true },
     { accessor: x => x.citations, numeric: true },
     { accessor: x => x.avg_citations ?? -Infinity, numeric: true },
+    { accessor: x => x.h_index, numeric: true },
   ], renderBody);
 
   const exportContainer = document.getElementById('export-container');

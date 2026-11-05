@@ -166,6 +166,9 @@ function render(stats) {
   grid.appendChild(stat(papers.length, 'AV papers in corpus'));
   grid.appendChild(stat(totalCitations, 'Citations'));
   grid.appendChild(stat(avg == null ? 'n/a' : avg, 'Citations / paper'));
+  const hTile = stat(hIndexOf(papers), 'h-index');
+  hTile.title = (window.GLOSSARY.h_index || {}).short || '';
+  grid.appendChild(hTile);
   const years = papers.map(p => p.year).filter(Boolean);
   grid.appendChild(stat(years.length ? `${Math.min(...years)} to ${Math.max(...years)}` : 'n/a', 'Year range (AV papers)'));
 

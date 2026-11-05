@@ -100,7 +100,7 @@
   <p id="total-countries-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
   <p id="countries-thin-note" style="color: var(--muted); font-size: 0.8em; margin: -8px 0 12px;"></p>
   <div id="countries-pagination"></div>
-  <table><thead><tr><th>#</th><th>Country</th><th class="num">Papers</th><th class="num">Authors</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Country</th><th class="num">Papers</th><th class="num">Authors</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th class="num" data-term="h_index">h-index</th></tr></thead>
   <tbody id="countries-body"></tbody></table>
 </div>
 
@@ -310,7 +310,7 @@ function render() {
       nameLink.href = `country.html?name=${encodeURIComponent(c.name)}`;
       nameLink.textContent = c.name;
       nameLink.style.color = 'var(--text)';
-      const tr = row([pageOffset + i + 1, nameLink, c.papers, c.authors, c.citations, fmtAvg(c.avg_citations)]);
+      const tr = row([pageOffset + i + 1, nameLink, c.papers, c.authors, c.citations, fmtAvg(c.avg_citations), c.h_index]);
       markThinAverage(tr.children[5], c.cited_papers, c.papers);
       tbody.appendChild(tr);
     });
@@ -319,7 +319,7 @@ function render() {
       thinNote.textContent = thinAverageNoteText(
         data.filter(c => c.cited_papers != null && c.cited_papers < THIN_AVERAGE_BELOW).length);
     }
-    appendSumRow(tbody, data, [null, null, r => r.papers, r => r.authors, r => r.citations, null]);
+    appendSumRow(tbody, data, [null, null, r => r.papers, r => r.authors, r => r.citations, null, null]);
     // Re-applied on every re-render (sort, page change) because this
     // function rebuilds the whole tbody each time.
     renderCompareSelection({ table: tbody.closest('table'), type: 'country',
@@ -338,6 +338,7 @@ function render() {
       { accessor: c => c.authors, numeric: true },
       { accessor: c => c.citations, numeric: true },
       { accessor: c => c.avg_citations ?? -Infinity, numeric: true },
+      { accessor: c => c.h_index, numeric: true },
     ], renderBody);
   }
   renderCountriesPage();

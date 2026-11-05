@@ -346,6 +346,14 @@
         + 'uncited ones included, rounded to a whole number. A small group with one famous paper can score '
         + 'very highly here, so read it alongside the paper count.',
     },
+    h_index: {
+      label: 'h-index',
+      short: 'The largest h such that h of the group\'s papers each have at least h in-corpus citations. '
+        + 'Counted only within this corpus, like the citation counts, so it is far lower than an h-index '
+        + 'from Google Scholar or Scopus and measures standing within AV research specifically. '
+        + 'It rewards a body of well-cited work over one famous paper, and it can only grow as reference '
+        + 'lists are parsed.',
+    },
     early_citations: {
       label: 'Early citations',
       short: 'In-corpus citations received within 2 years of publication: a leading indicator of '
@@ -1382,6 +1390,19 @@
     return paperCount ? Math.round(total / paperCount) : null;
   }
   window.citationsPerPaper = citationsPerPaper;
+  // The h-index on the same in-corpus citation counts as everything else:
+  // the largest h such that h papers have at least h citations each. A paper
+  // with no citation number (null) counts as 0, which cannot raise h.
+  function hIndex(counts) {
+    const sorted = (counts || []).map(c => c || 0).sort((a, b) => b - a);
+    let h = 0;
+    while (h < sorted.length && sorted[h] >= h + 1) h += 1;
+    return h;
+  }
+  window.hIndex = hIndex;
+  window.hIndexOf = function (papers) {
+    return hIndex((papers || []).map(p => p.citations));
+  };
   window.avgCitations = function (papers) {
     let total = 0, n = 0;
     (papers || []).forEach(p => {
@@ -1419,7 +1440,7 @@
     // The average divides by every paper with a citation number (a real 0
     // included), the same as avgCitations above. citedCounts, papers with at
     // least one citation, only drives the two reliability floors above.
-    const citations = {}, counts = {}, citedCounts = {}, withCountCounts = {};
+    const citations = {}, counts = {}, citedCounts = {}, withCountCounts = {}, citeLists = {};
     papers.forEach(p => {
       const vals = accessor(p) || [];
       new Set(vals).forEach(v => {
@@ -1429,6 +1450,7 @@
         if (p.citations) {
           citations[v] = (citations[v] || 0) + p.citations;
           citedCounts[v] = (citedCounts[v] || 0) + 1;
+          (citeLists[v] = citeLists[v] || []).push(p.citations);
         }
       });
     });
@@ -1445,6 +1467,8 @@
         // the site's own About page tells readers to judge a row by its
         // paper count, which is the wrong count for this column.
         cited_papers: citedCounts[k] || 0,
+        // Same definition as hIndexOf on a detail page's papers.
+        h_index: hIndex(citeLists[k]),
       }));
   };
 

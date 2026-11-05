@@ -86,7 +86,7 @@
   <p id="authors-summary-stat" style="color: var(--muted); font-size: 0.85em; margin: -6px 0 12px;"></p>
   <p id="authors-thin-note" style="color: var(--muted); font-size: 0.8em; margin: -8px 0 12px;"></p>
   <div id="pagination-container"></div>
-  <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" data-term="career_span">Career span</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th class="num" data-term="self_citation_pct">Self-citation %</th><th class="num" data-term="non_av_papers">Non-AV papers</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Author</th><th class="num">Papers</th><th class="num" data-term="career_span">Career span</th><th class="num" data-term="citations_group">Citations</th><th class="num" data-term="citations_per_paper">Citations / paper</th><th class="num" data-term="h_index">h-index</th><th class="num" data-term="self_citation_pct">Self-citation %</th><th class="num" data-term="non_av_papers">Non-AV papers</th></tr></thead>
   <tbody id="researchers-body"></tbody></table>
 </div>
 
@@ -452,7 +452,7 @@ function render() {
       link.href = `author.html?name=${encodeURIComponent(a.name)}`;
       link.textContent = a.name;
       const tr = row([pagination.offset + i + 1, link, a.papers, fmtAvg(a.lifetime), a.citations,
-        fmtAvg(a.avg_citations), fmtPct(a.selfCitationPct), a.nonAvPapers]);
+        fmtAvg(a.avg_citations), a.h_index, fmtPct(a.selfCitationPct), a.nonAvPapers]);
       // Citations / paper is column 5 (0-based). Marked when the average
       // rests on only a couple of papers that have any citation data.
       markThinAverage(tr.children[5], a.cited_papers, a.papers);
@@ -463,7 +463,7 @@ function render() {
       thinNote.textContent = thinAverageNoteText(
         data.filter(a => a.cited_papers != null && a.cited_papers < THIN_AVERAGE_BELOW).length);
     }
-    appendSumRow(tbody, data, [null, null, a => a.papers, null, a => a.citations, null, null, a => a.nonAvPapers]);
+    appendSumRow(tbody, data, [null, null, a => a.papers, null, a => a.citations, null, null, null, a => a.nonAvPapers]);
     // Re-applied on every re-render (sort, page change) because this
     // function rebuilds the whole tbody each time.
     renderCompareSelection({ table: tbody.closest('table'), type: 'author',
@@ -478,6 +478,7 @@ function render() {
     { accessor: a => a.lifetime ?? -Infinity, numeric: true },
     { accessor: a => a.citations, numeric: true },
     { accessor: a => a.avg_citations ?? -Infinity, numeric: true },
+    { accessor: a => a.h_index, numeric: true },
     { accessor: a => a.selfCitationPct ?? -Infinity, numeric: true },
     { accessor: a => a.nonAvPapers, numeric: true },
   ], renderBody);
