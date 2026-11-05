@@ -170,6 +170,7 @@ fetchStatsWithRelevance(relevance).then(stats =>
 ).then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'countries.html', {
+    rowNoun: 'countries',
     search: { placeholder: 'Search country names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
     metrics: [
