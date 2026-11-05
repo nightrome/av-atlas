@@ -168,7 +168,8 @@ class TestHarvest(unittest.TestCase):
         with self.assertRaises(fam.TransientHarvestError):
             fam.harvest("cs", "2026-08-15", FakeOai(errors=errors), sleep_fn=lambda s: None)
         with self.assertRaises(fam.TransientHarvestError):
-            fam.harvest("cs", "2026-08-15", FakeOai(errors=[http_error(429)]), sleep_fn=lambda s: None)
+            fam.harvest("cs", "2026-08-15", FakeOai(errors=[http_error(429)] * (fam.MAX_FLOW_CONTROL_WAITS + 1)),
+                        sleep_fn=lambda s: None)
         with self.assertRaises(fam.HarvestError) as cm:
             fam.harvest("cs", "2026-08-15", FakeOai(errors=[http_error(403)]), sleep_fn=lambda s: None)
         self.assertNotIsInstance(cm.exception, fam.TransientHarvestError)
@@ -189,10 +190,15 @@ class TestHarvest(unittest.TestCase):
         self.assertEqual(len(fake.urls), 1)
         self.assertIn("resumptionToken=fixture-token-1", fake.urls[0])
 
-    def test_stops_on_403_and_429(self):
-        for code in (403, 429):
-            with self.assertRaises(fam.HarvestError):
-                fam.harvest("cs", "2026-08-15", FakeOai(errors=[http_error(code)]), sleep_fn=lambda s: None)
+    def test_stops_on_403(self):
+        with self.assertRaises(fam.HarvestError):
+            fam.harvest("cs", "2026-08-15", FakeOai(errors=[http_error(403)]), sleep_fn=lambda s: None)
+
+    def test_retries_throttling_with_backoff(self):
+        sleeps = []
+        fake = FakeOai(errors=[http_error(429), http_error(429)])
+        self.assertEqual(len(fam.harvest("cs", "2026-08-15", fake, sleep_fn=sleeps.append)), 7)
+        self.assertEqual(sleeps[:2], [10, 20])
 
 
 class TestRun(unittest.TestCase):
@@ -242,7 +248,7 @@ class TestRun(unittest.TestCase):
         fam.run(fetch_fn=FakeOai(), today="2026-09-24", dry_run=True, **self.kw)
         self.assertFalse(self.state.exists())
         with self.assertRaises(fam.HarvestError):
-            fam.run(fetch_fn=FakeOai(errors=[http_error(429)]), today="2026-09-24", **self.kw)
+            fam.run(fetch_fn=FakeOai(errors=[http_error(403)]), today="2026-09-24", **self.kw)
         self.assertFalse(self.state.exists())
         self.assertEqual([f.name for f in self.venues.iterdir()], ["cvpr2026.json"])
 

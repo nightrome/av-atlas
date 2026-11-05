@@ -177,20 +177,18 @@ def parse_list_records(xml_text):
 
 
 def _get(url, fetch_fn, sleep_fn):
-    """One polite GET. Retries flow control (503, honouring Retry-After) and
-    dropped or timed-out connections with exponential backoff; anything else,
-    403 and 429 included, ends the run."""
+    """One polite GET. Retries flow control (503 and 429, honouring Retry-After)
+    and dropped or timed-out connections with exponential backoff; anything
+    else, 403 included, ends the run."""
     last = None
     for attempt in range(MAX_FLOW_CONTROL_WAITS + 1):
         retry_after = 0
         try:
             return fetch_fn(url)
         except urllib.error.HTTPError as e:
-            if e.code == 429:
-                raise TransientHarvestError(f"HTTP 429 (throttled) from {url}") from e
-            if e.code != 503:
+            if e.code not in (429, 503):
                 raise HarvestError(f"HTTP {e.code} from {url}") from e
-            last = "503"
+            last = str(e.code)
             try:
                 retry_after = int(e.headers.get("Retry-After") or 0)
             except (TypeError, ValueError):
