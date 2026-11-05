@@ -39,7 +39,11 @@
     .coverage-note a { color: var(--accent); }
 
     .controls-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
-    .filter-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; }
+    /* One grid for every page: equal-width cells, controls fill them in order
+       (filters first, Sort by and Show top last), so all pages line up the same way. */
+    .filter-bar { display: grid; grid-template-columns: repeat(6, 1fr); align-items: end; gap: 14px 16px; }
+    @media (max-width: 1000px) { .filter-bar { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 700px) { .filter-bar { grid-template-columns: repeat(2, 1fr); } }
     .filter-bar .field { display: flex; flex-direction: column; gap: 4px; }
     .filter-bar .field-label { font-size: 0.74em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 600; }
     .filter-bar select {
@@ -51,7 +55,7 @@
          a run of several dropdowns has a real chance of sharing one row;
          the full text is still available in the open dropdown and via the
          title="" set below. */
-      max-width: 190px; overflow: hidden; text-overflow: ellipsis;
+      width: 100%; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis;
     }
     .filter-bar .search-field {
       /* flex-grow: 0, not 1 -- the search box used to stretch to fill all
@@ -60,7 +64,7 @@
          (Venue, Year, ...) having room to share that row instead of
          wrapping (user-reported: "the [Venue field] must be one row up").
          220-320px is already generous for a title/name search. */
-      flex: 0 1 320px; min-width: 180px;
+      grid-column: span 2;
     }
     .filter-bar .checkbox-field {
       flex-direction: row; align-items: center; gap: 6px; cursor: pointer;
@@ -72,10 +76,6 @@
       border-radius: 6px; padding: 6px 10px; font-size: 0.9em; box-sizing: border-box; min-height: 32px;
     }
     .filter-bar .search-field input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
-    /* Sort by and Show top sit at the end of the same bar, pushed to the right
-       edge of whichever line they land on. */
-    .filter-bar .order-start { margin-left: auto; }
-
     .pagination-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.85em; color: var(--muted); margin: 8px 0; }
     .pagination-row button {
       background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
@@ -181,7 +181,8 @@
        as cramped/misaligned rather than a clean stack -- force every field
        (including the search box) to its own full-width row instead. */
     @media (max-width: 480px) {
-      .filter-bar .field, .filter-bar .search-field { flex: 1 1 100%; }
+      .filter-bar { grid-template-columns: 1fr; }
+      .filter-bar .search-field { grid-column: auto; }
     }
 
     /* Collapsible filter panel -- see renderFilterBar's syncToggle. The
