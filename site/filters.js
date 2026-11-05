@@ -73,6 +73,15 @@
     }
     .filter-bar .search-field input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
     .filter-bar-secondary { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    /* Two labelled groups: an indigo "Papers" strip over the top row, an amber
+       strip over the bottom row, each with a pill and a one-line hint. */
+    .filter-bar.captioned { border-left: 3px solid var(--accent); padding-left: 12px; }
+    .filter-bar.captioned.filter-bar-secondary { border-left-color: var(--accent2); }
+    .filter-row-caption { flex: 0 0 100%; display: flex; align-items: baseline; gap: 8px; margin-bottom: -4px; }
+    .filter-row-caption .tag { font-size: 0.68em; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 2px 9px; border-radius: 999px; background: var(--accent); color: #fff; }
+    .filter-bar-secondary .filter-row-caption .tag { background: var(--accent2); color: #1f1300; }
+    .filter-row-caption .hint { font-size: 0.78em; color: var(--muted); }
     .pagination-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.85em; color: var(--muted); margin: 8px 0; }
     .pagination-row button {
       background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
@@ -711,11 +720,12 @@
 
   // Renders one consistent control panel per page, two rows (user-requested:
   // filters in the first row, sort/show in the second):
-  //   Row 1 (.filter-bar): SEARCH, Show (AV relevance), Category, Venue, Year
-  //     -- everything that narrows WHICH papers are in play.
-  //   Row 2 (.filter-bar-secondary): Sort by, Min. (papers threshold) --
-  //     everything that changes how the already-narrowed set is ranked or
-  //     thresholded, not which papers are in it.
+  //   Row 1 (.filter-bar): every filter -- SEARCH, Show (AV relevance),
+  //     Category, Venue, Year, which narrow WHICH papers are in play, and
+  //     Min. papers, Career span, Region, which narrow which authors,
+  //     institutions... are listed.
+  //   Row 2 (.filter-bar-secondary): Sort by, Show top -- only how the
+  //     already-filtered result is ordered and how much of it is shown.
   // Then a third row of removable chips for whichever of the 5 filter
   // dimensions is active -- country/institution/author arrive via links from
   // other pages, not a dropdown here, but are still shown and clearable like
@@ -1034,7 +1044,7 @@
       sel.title = 'Only show rows with at least this many papers in the current filtered set';
       const minField = field('Min.', sel);
       minField.title = sel.title;
-      bar2.appendChild(minField);
+      bar.appendChild(minField);
       filters.minPapers = parseInt(current, 10);
     }
 
@@ -1070,7 +1080,7 @@
       sel.title = 'Only show authors whose first-to-last AV paper span is at least this many years';
       const spanField = field('Career span', sel);
       spanField.title = sel.title;
-      bar2.appendChild(spanField);
+      bar.appendChild(spanField);
       filters.minCareerSpan = parseInt(current, 10);
     }
 
@@ -1098,7 +1108,7 @@
           + 'Authors with no known affiliation are left out while a region is chosen.';
         const regionField = field('Region', sel);
         regionField.title = sel.title;
-        bar2.appendChild(regionField);
+        bar.appendChild(regionField);
         filters.region = names.includes(current) ? current : null;
       }
     }
@@ -1165,20 +1175,28 @@
 
     rows.appendChild(bar);
     if (bar2 !== bar && bar2.children.length) {
-      // Say what each row does. The top row decides which papers the numbers
-      // are built from; the bottom row decides which rows are listed and in
-      // what order (Min. papers, Career span and Region apply to an author or
-      // institution as a whole, so they live here, not in the top row).
+      // Say what each row does. The top row is every filter: the ones that
+      // decide which papers the numbers are built from, and Min. papers,
+      // Career span and Region, which decide which authors (institutions...)
+      // are listed. The bottom row only orders and sizes the result.
       const noun = opts.rowNoun || 'rows';
-      const caption = (text) => {
+      const caption = (tag, hint) => {
         const el = document.createElement('div');
         el.className = 'filter-row-caption';
-        el.textContent = text;
-        el.style.cssText = 'flex:0 0 100%;font-size:12px;color:var(--muted);';
+        const t = document.createElement('span');
+        t.className = 'tag';
+        t.textContent = tag;
+        const h = document.createElement('span');
+        h.className = 'hint';
+        h.textContent = hint;
+        el.appendChild(t);
+        el.appendChild(h);
         return el;
       };
-      bar.insertBefore(caption('Papers: which papers are counted'), bar.firstChild);
-      bar2.insertBefore(caption(`${noun[0].toUpperCase()}${noun.slice(1)}: which are listed, and in what order`), bar2.firstChild);
+      bar.className += ' captioned';
+      bar2.className += ' captioned';
+      bar.insertBefore(caption('Filter', `narrow down the papers and which ${noun} are listed`), bar.firstChild);
+      bar2.insertBefore(caption('Order', `how the ${noun} are ranked and how many are shown`), bar2.firstChild);
       rows.appendChild(bar2);
     }
 
