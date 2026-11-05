@@ -76,13 +76,17 @@
     /* Two labelled groups side by side: an indigo Filter group (wide) and an
        amber Order group, each headed by a pill whose tooltip explains it. They
        stack on a narrow screen. */
-    .captioned-rows { display: flex; flex-wrap: wrap; gap: 12px 26px; align-items: flex-start; }
-    .captioned-rows > .filter-bar { margin: 0; padding-top: 0; border-top: 0; }
-    .captioned-rows > .filter-bar:first-child { flex: 1 1 520px; }
-    .captioned-rows > .filter-bar-secondary { flex: 0 0 auto; }
-    .filter-bar.captioned { border-left: 3px solid var(--accent); padding-left: 12px; }
-    .filter-bar.captioned.filter-bar-secondary { border-left-color: var(--accent2); }
-    .filter-row-caption { flex: 0 0 100%; display: flex; align-items: baseline; gap: 8px; margin-bottom: -4px; }
+    .captioned-rows { display: flex; flex-wrap: wrap; gap: 18px 0; align-items: stretch; }
+    /* No card of its own (theme-light gives every .filter-bar a shadow): the
+       two groups are just columns of one panel, split by a thin divider. */
+    .captioned-rows > .filter-bar { margin: 0; padding: 0; border: 0 !important; box-shadow: none !important; background: none; }
+    .captioned-rows > .filter-bar:first-child { flex: 1 1 520px; padding-right: 28px; }
+    .captioned-rows > .filter-bar-secondary { flex: 0 0 auto; align-content: flex-start; padding-left: 28px; border-left: 1px solid var(--border) !important; }
+    .filter-row-caption { flex: 0 0 100%; display: flex; align-items: baseline; gap: 8px; margin-bottom: -2px; }
+    @media (max-width: 900px) {
+      .captioned-rows > .filter-bar:first-child { padding-right: 0; }
+      .captioned-rows > .filter-bar-secondary { padding-left: 0; border-left: 0 !important; border-top: 1px solid var(--border) !important; padding-top: 14px; flex: 1 1 100%; }
+    }
     .filter-row-caption .tag { cursor: help; font-size: 0.68em; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
       padding: 2px 9px; border-radius: 999px; background: var(--accent); color: #fff; }
     .filter-bar-secondary .filter-row-caption .tag { background: var(--accent2); color: #1f1300; }
@@ -121,7 +125,7 @@
       opacity: 0; visibility: hidden; transition: opacity 0.12s;
     }
     .info-tip:hover::after, .info-tip:focus::after { opacity: 1; visibility: visible; }
-    .controls-meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .controls-meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; width: 100%; box-sizing: border-box; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
     .controls-meta-row:empty { display: none; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
     .chip { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; border-radius: 14px; padding: 4px 6px 4px 12px; font-size: 0.82em; }
