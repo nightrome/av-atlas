@@ -1164,7 +1164,23 @@
     panel.appendChild(rows);
 
     rows.appendChild(bar);
-    if (bar2 !== bar && bar2.children.length) rows.appendChild(bar2);
+    if (bar2 !== bar && bar2.children.length) {
+      // Say what each row does. The top row decides which papers the numbers
+      // are built from; the bottom row decides which rows are listed and in
+      // what order (Min. papers, Career span and Region apply to an author or
+      // institution as a whole, so they live here, not in the top row).
+      const noun = opts.rowNoun || 'rows';
+      const caption = (text) => {
+        const el = document.createElement('div');
+        el.className = 'filter-row-caption';
+        el.textContent = text;
+        el.style.cssText = 'flex:0 0 100%;font-size:12px;color:var(--muted);';
+        return el;
+      };
+      bar.insertBefore(caption('Papers: which papers are counted'), bar.firstChild);
+      bar2.insertBefore(caption(`${noun[0].toUpperCase()}${noun.slice(1)}: which are listed, and in what order`), bar2.firstChild);
+      rows.appendChild(bar2);
+    }
 
     const metaRow = document.createElement('div');
     metaRow.className = 'controls-meta-row';

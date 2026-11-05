@@ -95,6 +95,7 @@ const relevance = new URLSearchParams(location.search).get('relevance') || '';
 fetchStatsWithRelevance(relevance).then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'venues.html', {
+    rowNoun: 'venues',
     showVenue: false,
     search: { placeholder: 'Search venue names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,

@@ -236,6 +236,7 @@ const relevance = new URLSearchParams(location.search).get('relevance') || '';
 fetchStatsWithRelevance(relevance).then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'authors.html', {
+    rowNoun: 'authors',
     search: { placeholder: 'Search author names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
     metrics: [
