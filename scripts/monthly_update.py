@@ -144,7 +144,7 @@ def plan(work_dir):
         Step("restore", "hard", 30, cmds=(("restore_corpus.py",),)),
         Step("carry", "soft", 10, func="carry_forward", before_build=True),
         Step("prev_stats", "soft", 5, func="fetch_previous_stats", before_build=True),
-        Step("arxiv", "soft", 60, before_build=True, transient=True,
+        Step("arxiv", "soft", 120, before_build=True, transient=True,
              cmds=(("fetch_arxiv_monthly.py", "--summary-json", f"{w}/arxiv.json"),)),
         Step("editions", "soft", 120, before_build=True,
              cmds=(("check_new_editions.py", "--json", f"{w}/editions.json", "--markdown", f"{w}/editions.md",
@@ -502,11 +502,25 @@ class Orchestrator:
         self.git("push", "--force", "origin", f"refs/tags/{tag}")
         return "ok", f"tagged {tag}"
 
+    def push_bot_branch(self):
+        """Push the bot branch over what carry_forward saw there. If it has
+        moved since, someone else pushed and the push is refused, so their work
+        isn't overwritten. If it is gone, its PR was merged and the branch
+        deleted while this ran: nothing to lose, so push it fresh."""
+        ref = f"refs/heads/{BOT_BRANCH}"
+        r = self.git("push", "--quiet", f"--force-with-lease={ref}:{self.bot_remote_sha}",
+                     "origin", f"HEAD:{ref}", check=False)
+        if r.returncode == 0:
+            return
+        if self.bot_remote_sha and not self.git("ls-remote", "origin", ref):
+            self.git("push", "--quiet", f"--force-with-lease={ref}:", "origin", f"HEAD:{ref}")
+            return
+        raise RuntimeError(f"git push of {BOT_BRANCH} failed: {r.stderr.strip()}")
+
     def open_pr(self):
         if not self.committed:
             return "ok", "nothing to propose"
-        self.git("push", "--quiet", f"--force-with-lease=refs/heads/{BOT_BRANCH}:{self.bot_remote_sha}",
-                 "origin", f"HEAD:refs/heads/{BOT_BRANCH}")
+        self.push_bot_branch()
         self.work_dir.mkdir(parents=True, exist_ok=True)
         body = self.work_dir / "pr_body.md"
         body.write_text(self.pr_body(), encoding="utf-8")

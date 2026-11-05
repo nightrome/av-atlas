@@ -204,7 +204,8 @@ class TestRun(unittest.TestCase):
         (self.venues / "cvpr2026.json").write_text(json.dumps([{"title": "Some CVPR Paper"}]), encoding="utf-8")
         self.state = root / "arxiv_monthly_state.json"
         self.kw = dict(sleep_fn=lambda s: None, venues_dir=self.venues, state_file=self.state,
-                       papers_file=root / "missing.json", arxiv_ids_file=root / "missing2.json")
+                       papers_file=root / "missing.json", arxiv_ids_file=root / "missing2.json",
+                       checkpoint_file=root / "checkpoint.jsonl")
 
     def tearDown(self):
         self.tmp.cleanup()

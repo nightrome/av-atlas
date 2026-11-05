@@ -416,6 +416,18 @@ class BotBranchTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             o.open_pr()
 
+    def test_push_recreates_a_branch_deleted_after_its_pr_was_merged(self):
+        self.make_bot_branch()
+        repo = self.clone()
+        o = self.orch(repo)
+        o.carry_forward()
+        git("push", "--quiet", "origin", "--delete", mu.BOT_BRANCH, cwd=self.seed)
+        (repo / "data" / "venues" / "c.json").write_text("[]", encoding="utf-8")
+        o.commit_data()
+        o.gh = lambda *a: ""
+        o.open_pr()
+        self.assertTrue(git("ls-remote", "origin", f"refs/heads/{mu.BOT_BRANCH}", cwd=repo))
+
     def test_nothing_changed_means_no_commit_and_no_pr(self):
         repo = self.clone()
         o = self.orch(repo)
