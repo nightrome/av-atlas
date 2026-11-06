@@ -12380,7 +12380,8 @@
     "year": 2024,
     "title": "OoD-Control: Generalizing Control in Unseen Environments",
     "authors": "Nanyang Ye 0001, Zhaoyu Zeng, Jundong Zhou, Lin Zhu, Yuxiao Duan, Yifei Wu, Junqi Wu, Haoqi Zeng, Qinying Gu, Xinbing Wang, Chenghu Zhou",
-    "abstract": null
+    "abstract": "Generalizing out-of-distribution (OoD) is critical but challenging in real applications such as unmanned aerial vehicle (UAV) flight control. Previous machine learning-based control has shown promise in dealing with complex real-world environments but suffers huge performance degradation facing OoD scenarios, posing risks to the stability and safety of UAVs. In this paper, we found that the introduced random noises during training surprisingly yield theoretically guaranteed performances via a proposed functional optimization framework. More encouragingly, this framework does not involve common Lyapunov assumptions used in this field, making it more widely applicable. With this framework, the upperbound for control error is induced. We also proved that the induced random noises can lead to lower OoD control errors. Based on our theoretical analysis, we further propose OoD-Control to generalize control in unseen environments. Numerical experiments demonstrate the superiority of the proposed algorithm, surpassing previous state-of-the-art by 65% under challenging unseen environments. We further extend to outdoor real-world experiments and found that the control error is reduced by 50% approximately.",
+    "doi": "10.1109/tpami.2024.3395484"
   },
   {
     "year": 2024,
@@ -41469,7 +41470,7 @@
     "year": 2026,
     "title": "Measuring, Revealing and Mitigating Harmful Content Propagation in Recommender Systems",
     "authors": "Xiaokun Zhang, Youlin Wu, Junyu Lu, Jiamin Chen, Zhaochun Ren, Hongfei Lin, Fenglong Ma, Xue Liu, Chen Ma",
-    "abstract": null,
+    "abstract": "Recommender systems help users navigate vast amounts of information by filtering content according to their historical behaviors. As these systems increasingly shape everyday information access, they largely determine the content users are exposed to. However, current research typically prioritizes catering to user interest, while overlooking the existence and propagation of harmful content, such as violence, hate speech, and pornography. In this work, we take a systematic step toward investigating harmful content in recommender systems from three aspects: measuring, revealing, and mitigating. First, we construct datasets with harmfulness-related annotations and present new evaluation metrics to quantitatively measure the harmfulness of recommendation results. Second, our empirical analysis reveals that users tend to engage with harmful content and prevailing recommendation methods often contribute to the proliferation of such content. Third, to address this issue, we introduce a generic framework, MitiHarm, which integrates harmfulness-related signals into both item and user representation learning. Experiments show that MitiHarm can significantly mitigate the propagation of harmful content while preserving user satisfaction. This study highlights the potential risks of modern recommender systems and establishes a foundation for developing more responsible approaches1.",
     "doi": "10.1109/tpami.2026.3749985"
   },
   {
@@ -41548,5 +41549,26 @@
     "authors": "Hongzhao Li, Shizhe Hu, Xianglong Shen, Hualei Wan, Mingyuan Jiu, Shupan Li, Muhammad Haris Khan, Mingliang Xu",
     "abstract": null,
     "doi": "10.1109/tpami.2026.3750284"
+  },
+  {
+    "year": 2026,
+    "title": "Revisiting Overestimation Bias of Q-learning: Breaking Bias Propagation Chains Does Well",
+    "authors": "Hong Xie, Tao Tan, Defu Lian, Pu Li",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750927"
+  },
+  {
+    "year": 2026,
+    "title": "Hyper-Counter: Cross-Modal Hypergraph Fusion for RGB-T Crowd Counting",
+    "authors": "Mengqi Lei, Siqi Li, Xinhu Zheng, Nan Ma, Zongze Wu, Shaoyi Du, Yue Gao",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3751067"
+  },
+  {
+    "year": 2026,
+    "title": "DepthShield: Optical Depth Encoding for Image Tampering Detection",
+    "authors": "Jhon Lopez, Edwin Vargas, Junzhe Wang, Salman Khan, Henry Arguello, Ashok Veeraraghavan",
+    "abstract": null,
+    "doi": "10.1109/tpami.2026.3750903"
   }
 ]

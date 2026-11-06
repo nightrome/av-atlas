@@ -69540,7 +69540,7 @@
     "year": 2026,
     "title": "Adaptive Task Token Framework for Multi-Agent Logistics Operations",
     "authors": "Kushal Shah, Alankrit Gupta, Brandon Ho, Jinhoo Kim, Hong-in Won, Seung-Kyum Choi",
-    "abstract": null,
+    "abstract": "Multi-Agent Pickup and Delivery (MAPD) extends Multi-Agent Path Finding to long-horizon settings where pickup-and-delivery tasks arrive online and agents must be assigned and routed continuously, as in automated warehouses. Existing MAPD methods leave three gaps that limit real-world deployment. First, token-based methods such as Token Passing (TP) and TP with Task Swaps (TPTS) assign tasks sequentially, yielding greedy, globally suboptimal allocations and leaving idle agents parked where they obstruct active agents. Second, these methods assume disruption-free execution and provide no recovery from the delays and deadlocks common on real robots; k-TP adds delay tolerance but only conservatively and at high computational cost. Third, centralized optimal methods such as CENTRAL coordinate well but do not scale to real-time operation. To close these gaps, we propose the Adaptive Task Token Framework (ATTF), which (i) replaces sequential assignment with a global, proximity-based module that pairs all idle agents with all available tasks simultaneously by travel cost, and (ii) introduces a unified delay-and-deadlock-resilient mechanism that truncates and replans only affected paths and redirects idle agents to non-task endpoints to relieve congestion. Across diverse warehouse layouts, ATTF matches or improves on TP and TPTS in makespan and service time, and outperforms k-TP on all three metrics under delays – reducing service time by up to 49% and runtime by ${\\sim }82\\%$ – while sustaining sub-second per-timestep runtime for up to 500 agents, a scale at which k-TP fails to produce solutions.",
     "doi": "10.1109/lra.2026.3732893"
   },
   {
@@ -70107,7 +70107,7 @@
     "year": 2026,
     "title": "LDGC-VIS: A Lightweight Differentiable Geometric-Constraint Framework for Visual-Inertial Relative Pose Estimation on Micro-Nano Uncrewed Vehicles",
     "authors": "Fei Pan, YuXiang Dai, Wen Jiang, YiWen Pu, HuiYu Shi, YuSi Fan, Bo Ma, WenShuai Lu, Ziyang Meng, Fei Xing",
-    "abstract": null,
+    "abstract": "Visual-inertial relative pose estimation in Global Positioning System (GPS)-denied environments remains challenging for micro-nano uncrewed vehicles under strict size, weight, and power (SWaP) constraints. We propose LDGC-VIS, a lightweight differentiable geometric-constraint framework for monocular visual-inertial relative pose estimation on embedded platforms. LDGC-VIS combines an edge-oriented monocular depth module to provide dense geometric priors, a feature and confidence weights module to emphasize reliable image regions, a differentiable inverse compositional pose module with learnable residual-adaptive damping, and an optional inertial measurement unit (IMU)-assisted post-fusion module for residual pose refinement. Compared with Reloc3r-L, the proposed approach obtains lower end-point error (EPE) on unseen TUM KF4 in zero-shot evaluation, remains close on TUM KF8 and ScanNet1500, and uses only 12.1 M parameters. In offline evaluation on recorded indoor micro aerial vehicle (MAV) flight data, it maintains sub-meter accuracy with 0.74%–1.52% drift over trajectories up to 36.55 m across 224.84 s of recorded flight data. In a separate deployment benchmark, LDGC-VIS runs at 23 Hz on RK3588 s with mixed-precision quantization.",
     "doi": "10.1109/lra.2026.3739605"
   },
   {
@@ -70366,7 +70366,7 @@
     "year": 2026,
     "title": "Design and Validation of a Novel Leaf-Spring-Based Variable Stiffness Mechanism",
     "authors": "Ruzhen Pei, Shiwei Chen, Haiyu Gu, Cheng Wei, Xibin Cao, Carlo Canali, Darwin G Caldwell",
-    "abstract": null,
+    "abstract": "Leaf spring-based variable stiffness mechanisms (VSMs) are adjusted by changing the effective working length of the leaf spring. These mechanisms exhibit a simple structure and a wide stiffness adjustment range. However, in traditional leaf spring-based VSMs, stiffness is typically regulated by moving a slider or pulley along the leaf spring. This approach causes friction, energy loss, and wear on contact surfaces. Additionally, assembly errors and motion deviations may induce stiffness output fluctuations, which reduces stability and control precision. To address these issues, a novel Leaf-Spring-based Variable Stiffness Mechanism (LVSM) is developed. In this design, stiffness is modulated by rotating the leaf spring. A pulley is designed to roll along a sliding groove to maintain continuous contact. Direct sliding between the adjustment module and the leaf spring is avoided, thereby reducing friction and irregular movement. The proposed design reduces gaps and energy losses observed in traditional mechanisms. A theoretical stiffness model is derived and validated through simulations and experiments. Experimental results show that the LVSM achieves a stiffness variation ratio of 1:4. Simulation and experimental data show good agreement with the theoretical model. Compared to traditional slider-based VSMs, the LVSM exhibits an energy loss as low as average 7.41$\\%$.",
     "doi": "10.1109/lra.2026.3742205"
   },
   {
@@ -70429,7 +70429,7 @@
     "year": 2026,
     "title": "Ask to Land: Learning a Mask-Conditioned Open-Vocabulary Landing Policy via Differentiable Physics",
     "authors": "Fangyu Sun, Guanyan Wu, Yang Deng, Jiahao Cui, Fanxing Li, Yuxiang Huang, Wenxian Yu, Danping Zou",
-    "abstract": null,
+    "abstract": "Existing drone landing systems, whether model-based or learning-based, typically rely on predefined visual markers (e.g., ArUco tags) or are trained for specific platform categories, and often assume structured target motion. Recent open-vocabulary studies enable text-prompted target selection, but integrating this capability with learned closed-loop landing control remains underexplored. To this end, we present Ask to Land, a mask-conditioned framework that enables a quadrotor to land on various platforms described by a user in natural language, including randomly moving platforms. The core of our approach is the integration of a frozen state-of-the-art open-vocabulary perception frontend (YOLO-World with MobileSAM) and a control policy learned by differentiable physics. By providing real-time, task-agnostic semantic segmentation masks as policy inputs, our framework enables the drone to land on prompt-selected targets without target-specific fine-tuning while continuously tracking dynamic target motion during descent. The frozen frontend processes the prompt, while the policy receives the mask without text embeddings or category labels. To efficiently optimize the control policy, we leverage differentiable physics learning via Backpropagation-Through-Time (BPTT), and employ a carefully designed reward that enforces visual alignment with the landing target and altitude-adaptive descent speed, together with stable control. Real-world deployments validate that our approach achieves landings on diverse user-specified objects, including static and moving platforms.",
     "doi": "10.1109/lra.2026.3742269"
   },
   {
@@ -70583,7 +70583,7 @@
     "year": 2026,
     "title": "Development of a Series Foot Mechanism for Increased Jumping Performance in Humanoid Robots",
     "authors": "Takeshi Itsuno, Riku Takakuwa, Fumio Ito, Masahiro Doi, Hiroyuki Kondo, Taro Nakamura",
-    "abstract": null,
+    "abstract": "Improving jumping performance is one effective approach to increase locomotion speed and negotiate large obstacles in disaster-response and industrial environments. However, a single actuator rarely satisfies high output, high controllability, and low mass simultaneously. This letter presents a legged jumping robot that combines electric motors and pneumatic soft actuators. To add explosive output while preserving the controllability of the electric motors, a Series Foot Mechanism is proposed by connecting a Hyper-extension Pneumatic Actuator (HPA) in series at the robot toe. In a ground-fixed characterization, the maximum jumping height was obtained when the HPA reached its peak extension speed of 1.75 m/s before takeoff; this tendency was interpreted using a simplified takeoff-velocity model. In jumping experiments with the proposed mechanism, the robot achieved a mean jumping height of 0.82 m while maintaining the torso rotation angle at -4 deg when the HPA velocity peak was aligned with the takeoff instant. These results indicate that synchronizing the HPA velocity peak with takeoff is an effective design guideline for increasing jumping height while maintaining posture.",
     "doi": "10.1109/lra.2026.3744998"
   },
   {
@@ -70702,14 +70702,14 @@
     "year": 2026,
     "title": "MonoGDA: Monocular 3D Object Detection via Geometry-Aware Depth Alignment",
     "authors": "Hyungseok Kim, Taesoo Kim, Yongsik Jin, Yongseob Lim",
-    "abstract": null,
+    "abstract": "Inferring 3D information from a single image inherently involves depth ambiguity, as geometric information is compressed during the projection of a 3D scene onto the 2D image plane. To address this challenge, existing monocular 3D detectors leverage object-wise depth to acquire 3D geometric information. This strategy directly provides object-centric metric depth cues derived from 3D bounding boxes to the decoder, thereby reducing depth uncertainty and improving 3D localization performance. However, due to the inherent property of assigning a single depth value to each object region, such approaches cannot sufficiently capture high-level structural cues, which consequently leads to the accumulation of depth bias. In this work, we propose MonoGDA to overcome these limitations. MonoGDA exploits scene-level depth, which captures the global geometric structure of the image, together with object-wise depth, which provides object-level metric constraints, and introduces a unified depth representation that integrates the two depth cues. Furthermore, to effectively model relative depth relationships among objects, we propose a Depth-Aware Attention module that incorporates geometric priors into self-attention. Experimental results show that by leveraging external depth priors, the proposed method achieves state-of-the-art performance among monocular 3D detectors on the KITTI 3D object detection benchmark.",
     "doi": "10.1109/lra.2026.3746016"
   },
   {
     "year": 2026,
     "title": "An Electrostatic-Clutch-Integrated Electro-Hydraulic Gripper With High-Load Capability and Fast Response",
     "authors": "Shuhong Huang, Zean Yuan, Lei He, Xu Cai, Rui Chen",
-    "abstract": null,
+    "abstract": "Electro-hydraulic grippers have exhibited favorable compliance, fast response, and pump-free operation. However, they are fundamentally constrained by a weak payload capacity; although actuators array can marginally enhance the output force, it remains insufficient for substantial load retention. To tackle this issue, we propose an electrostatic-clutch-integrated electro-hydraulic (E&E) gripper adopting a functional decoupling design. In this design, three electro-hydraulic joints arranged at 120° realize rapid enveloping grasp, while embedded electrostatic clutches (ECs) provide reliable locking that substantially enhances payload capacity. Benefiting from consistent electromechanical characteristics, both modules are energized by a unified high-voltage circuit, resulting in a compact architecture with reduced energy system redundancy and low production cost. In practical gripping tests, the E&E gripper demonstrates a high-load capability of up to 9.77 N and a fast response time of less than 150 ms. Notably, the joint-clutch cooperative operation reduces the grasping-state power consumption by approximately 48% from 1.435 W (without clutches) to 0.748 W, thus empowering the E&E gripper with energy-efficient grasping retention. This work provides a feasible way to simultaneously push the boundaries of soft grippers in terms of high system integration, low energy consumption, and high payload operation.",
     "doi": "10.1109/lra.2026.3746134"
   },
   {
@@ -70758,7 +70758,7 @@
     "year": 2026,
     "title": "Standalone Robotics: A Network-Independent Perception-Decision-Action System for Multi-Robot Collaboration",
     "authors": "Semin Ahn, Hwancheol Kang, Stefan Kind, Hyeongwon Kim, Sung-Hoon Ahn",
-    "abstract": null,
+    "abstract": "Multi-robot collaboration in infrastructure-denied environments, such as disaster zones or shielded industrial facilities, is often hindered by the lack of external networks. We propose “Standalone Robotics”, a decentralized framework that enables heterogeneous robots to achieve multi-step collaborative tasks within an implemented skill library entirely on-device without any infrastructure dependence. The system integrates three core enablers for autonomous cooperation: 3-Dimensional Acoustic Ranging (3DAR) for robust environment perception via sound, an inaudible Multiple Frequency Shift Keying (MFSK)-based acoustic protocol for peer-to-peer communication, and a hierarchical on-device Multi-Modal Foundation Model (MMFM) with a Plan–Observe–Act (POA) loop. In one-way interactions under 86 dB noise, the framework achieved a 99.1% overall success rate across 115 trials of 23 multi-step tasks, with the POA loop improving accuracy by up to 20% while maintaining comparable framework latency. The system successfully scaled to hierarchical multi-agent collaboration across six representative scenarios, mean deliberative cycle times of 37–39 s. Finally, field readiness was validated through autonomous gas-leak inspection and a human search-rescue mission in a network-denied, real-world factory deployment. These results demonstrate the feasibility of infrastructure-independent heterogeneous robot collaboration for the evaluated acoustic- and vision-guided tasks.",
     "doi": "10.1109/lra.2026.3746104"
   },
   {
@@ -70800,7 +70800,7 @@
     "year": 2026,
     "title": "MIXL: Confidence-Aware Expert Fusion for Robust Multi-Sensor Localization",
     "authors": "Keer Wang, Juliang Cao, Ruihang Yu, Zhiming Xiong, Meiping Wu",
-    "abstract": null,
+    "abstract": "Robust multi-sensor localization under sensor degradation requires reliable fusion decisions, not only fusion-weight estimation. Existing adaptive methods typically use soft weighting or hard expert selection from observation features, risking erroneous switching and trajectory drift when heterogeneous localization sources disagree. We propose MIXL, a confidence-aware fusion framework for heterogeneous localization sources. MIXL combines sensor-degradation cues with post-estimation source-health diagnostics, and uses a dual-head gate to separate source scoring from decision-confidence estimation. The estimated confidence controls sequential Commit, Hedge, and Defer execution. In Defer mode, MIXL retains the previous trusted routing state while all sources continue estimating and the system outputs the current pose. This policy suppresses unreliable instantaneous switching while preserving adaptation to heterogeneous degradation. Experiments on M2DGR and M3DGR under visual, LiDAR, GNSS, IMU, and multi-sensor degradation show competitive localization accuracy, calibrated decision confidence, and substantially improved temporal stability. On unseen M3DGR scenarios, MIXL achieves an average ATE of 0.16 m and only 1.15 expert switches per minute, substantially fewer than frame-wise hard selection.",
     "doi": "10.1109/lra.2026.3746083"
   },
   {
@@ -70821,14 +70821,14 @@
     "year": 2026,
     "title": "Spatiotemporal Quantum–Classical Motion Optimization via Temporal Entanglement for High-DOF Robots",
     "authors": "T. Otani, Y. Shimada, Y. Nakazawa, N. Hara, Y. Takita, H. Sato, K. Kimura, A. Takanishi",
-    "abstract": null,
+    "abstract": "Robotic motion generation for multi-degree-of-freedom systems is fundamentally constrained by the high dimensionality and strong nonlinearity of optimization problems. While classical trajectory optimization methods have achieved remarkable performance, their dependence on initial trajectories and local gradient information can limit exploration of qualitatively different motions, especially for highly dynamic tasks. This paper presents an extension of quantum posture optimization toward time-series robotic motion generation using a quantum–classical hybrid framework. Building on a previous quantum inverse kinematics approach, we introduce a novel representation in which robot postures at multiple discrete time steps are encoded simultaneously in a quantum circuit, and temporal dependencies between successive time steps are embedded through quantum entanglement. The proposed method is evaluated through an obstacle-avoiding reaching task and a pitching motion generation task for multi-joint robotic systems. Across ten paired initializations, the entangled formulation achieved the lowest mean best cost in both tasks; in the pitching task, it generated a preparatory wind-up motion that was successfully executed on a real robot. These results indicate that the primary benefit of quantum entanglement in the current framework lies in restructuring the trajectory search space rather than accelerating computation.",
     "doi": "10.1109/lra.2026.3746014"
   },
   {
     "year": 2026,
     "title": "DA-Nav: Direction-Aware City-Scale Vision-Language Navigation",
     "authors": "Ye Yuan, Kehan Chen, Xinqiang Yu, Wentao Xu, Heng Wang, Libo Huang, Chuanguang Yang, Yan Huang, Jiawei He, Zhulin An",
-    "abstract": null,
+    "abstract": "City-scale outdoor navigation is currently hindered by the heavy reliance on dense maps or costly navigation supervision. In this work, we introduce a novel paradigm for leveraging directional instructions from commercial navigation tools (e.g., Google Maps). To bridge the gap between commercial instructions and executable navigation actions, while mitigating long-horizon error accumulation through robust trajectory recovery, we propose DA-Nav, a Direction-Aware vision-language Navigation framework that reformulates navigation as a discrete spatial grounding problem on the egocentric 2D image plane. To achieve trajectory recovery, DA-Nav employs a Chain-of-Thought (CoT) reasoning process encompassing deviation assessment, action prediction, and target grid selection. We further introduce ReDA, a dataset that provides direction-aware instructions and recovery trajectories to enhance spatial grounding and support CoT recovery reasoning. Extensive experiments in CARLA demonstrate that DA-Nav achieves a high success rate of 56.16% in unseen urban environments, outperforming existing State-of-The-Art (SoTA) methods while maintaining a substantially stronger recovery capability. Furthermore, without fine-tuning, DA-Nav seamlessly adapts to both quadruped and humanoid robots, enabling stable kilometer-scale closed-loop outdoor navigation in complex real-world environments.",
     "doi": "10.1109/lra.2026.3746066"
   },
   {
@@ -70842,7 +70842,7 @@
     "year": 2026,
     "title": "Predictive Spatio-Temporal Scene Graphs for Semi-Static Scenes",
     "authors": "Miguel Saavedra-Ruiz, Charlie Gauthier, Kumaraditya Gupta, Shima Shahfar, Kirsty Ellis, Steven Parkison, Liam Paull",
-    "abstract": null,
+    "abstract": "We have seen tremendous recent progress in our ability to build “spatio-semantic” representations that enable robots to perform complex reasoning across geometry and semantics. However, the vast majority of these methods lack any ability to perform reasoning across time. This is a desirable property in situations where a robot repeatedly observes an environment where instances may change in between observations, but in a structured way. Consider as an example a home environment where the location of a mug typically moves from the cupboard to a countertop to the sink and then back to the cupboard on a daily basis. We should be able to learn this cyclic behavior and use it to predict the state of the mug in the future. In this work, we propose a method that is able to perform this type of tempo-spatio-semantic reasoning. Underpinning the method is a filter, Perpetua$^{*}$, that performs Bayesian reasoning on the states of the environment that are observed over time. This filter is integrated within a 3D scene graph structure that we call PredictiveGraphs, where nodes represent objects and edges function as Perpetua$^{*}$ filters encoding spatio-semantic relationships. We validate the method in both simulation and real-world dynamic navigation tasks, where our real-world experiments consist of an environment that is undergoing semi-static changes at a bi-hourly frequency over a period of three weeks. In both settings, we demonstrate that our method outperforms baselines in predicting future environment states, even in the presence of distributional shifts.",
     "doi": "10.1109/lra.2026.3746135"
   },
   {
@@ -70877,7 +70877,7 @@
     "year": 2026,
     "title": "Symmetries Here and There, Combined Everywhere: Cross-Space Symmetry Compositions in Robotics",
     "authors": "Loizos Hadjiloizou, Rodrigo Pérez-Dattari, Noémie Jaquier",
-    "abstract": null,
+    "abstract": "Robots exhibit a rich variety of symmetries arising from their mechanical structure and the properties of their tasks. Although many robotics problems exhibit several symmetries simultaneously, existing approaches typically treat them in isolation, failing to exploit their combined potential. This letter introduces cross-space symmetry compositions, a framework for learning robot policies that are jointly equivariant to multiple symmetries across configuration and task spaces. Leveraging the differential-geometric structure of the forward kinematics map, we both descend symmetries from configuration to task space and lift symmetries from task to configuration space, enabling their composition within a unified representation space. We validate our framework on simulated and real-world experiments on a dual-arm robot, demonstrating that jointly leveraging multiple symmetries yields improved generalization.",
     "doi": "10.1109/lra.2026.3746098"
   },
   {
@@ -70912,14 +70912,14 @@
     "year": 2026,
     "title": "Toward Automating Transrectal Prostate Ultrasound Procedure: A Robotic Platform With Safe Probe Control Methods",
     "authors": "Seungmin Lee, Joanne Yoon, June Young Seo, Sung-Joon Ye, Young-bong Bang",
-    "abstract": null,
+    "abstract": "Transrectal ultrasound (TRUS) is a key screening method for the early diagnosis of prostate cancer. The procedure requires careful probe insertion and thorough scanning of the prostate while avoiding excessive pressure on the anus or rectal wall. As the demand for TRUS continues to grow, there is an increasing clinical need for an automated system that can efficiently provide safe and consistent ultrasound examinations. In this study, we proposed a robotic system that performs probe manipulation motions needed in TRUS procedures, and a compliance control method for safe operation. The system consists of a Stewart platform-based end-effector and a 7-DOF collaborative robot arm. Through its rapid, ready responsiveness and adjustable compliance parameters, this design overcomes the limitations of relying solely on a compliance-controlled robot arm or a passive compliance mechanism at the end effector. Direct-drive actuation is adopted through voice coil motors for the Stewart platform, further enhancing the system's backdrivability and ensuring safe operation during abrupt patient movements. Primary motions of the TRUS procedure—probe insertion and pivot motion for scanning—were performed on a phantom. The experiments demonstrated that the proposed compliant system enables safer probe manipulation with reduced resistance on surrounding tissue while acquiring consistent ultrasound images. An analysis of the favorable compliance center location for TRUS examinations was also conducted.",
     "doi": "10.1109/lra.2026.3746113"
   },
   {
     "year": 2026,
     "title": "AURA: Asymptotically Optimal Uncertainty-Robust Replanning Algorithm for Kinodynamic Systems",
     "authors": "Seyedali Golestaneh, Zhuoyun Zhong, Donghyung Lee, Constantinos Chamzas",
-    "abstract": null,
+    "abstract": "Sampling-based motion planners offer a practical and scalable approach to kinodynamic motion planning, notably for high-dimensional, underactuated, or non-holonomic systems. However, these planners are typically used offline, requiring execution to begin only after the trajectory has been computed. In addition, the planned trajectory may not be accurately tracked in the presence of motion uncertainty, leading to deviations from the nominal solution. In this work, these limitations were addressed within a unified framework, Aura, an asymptotically optimal meta-planning framework that improves both path quality and tracking performance during execution. In addition to the main execution thread, this framework comprises a replanning method that continuously explores the state space and refines the trajectory during execution, and an optimization process that refines future control inputs to reduce tracking error. Together, these components enable Aura to leverage asymptotically optimal planning online while improving execution accuracy under motion uncertainty. The proposed approach is evaluated in both simulation and real-world environments across multiple systems, demonstrating consistent improvements in trajectory quality, tracking accuracy, and overall performance compared with baselines.",
     "doi": "10.1109/lra.2026.3746096"
   },
   {
@@ -70968,7 +70968,7 @@
     "year": 2026,
     "title": "Decoupling Geometric Planning From Physical Interaction for Multi-Category Peg-in-Hole Assembly",
     "authors": "Yusi Fan, Haowen Xiong, Yuqiang Wu, Liheng Tuo, Yue Zhao, Zhuang Liu, Jianxing Liu",
-    "abstract": null,
+    "abstract": "Ensuring reliable contact execution across different peg-in-hole assembly tasks remains a key challenge in robotic assembly. This paper proposes a hierarchical learning framework for multi-category peg-in-hole assembly that functionally separates long-horizon geometric motion generation from contact-level physical adaptation. A task-conditioned multimodal diffusion policy learns a shared geometric prior from multi-task demonstrations and generates smooth, geometrically feasible motion trajectories. During physical interaction, a contact-triggered residual adapter trained via force-constrained reinforcement learning performs bounded local pose correction and stiffness modulation. This design preserves cross-task reuse of the geometric prior while localizing online contact adaptation to residual adapters trained separately for each task. Real-robot experiments across nine geometric and connector insertion tasks show that the proposed method improves assembly success and interaction robustness over learning-based and control-based baselines, while component ablations and sensitivity analyses further clarify its practical scope.",
     "doi": "10.1109/lra.2026.3746127"
   },
   {
@@ -71094,7 +71094,7 @@
     "year": 2026,
     "title": "A Novel Flexible Endoscopic Platform With FBG-Integrated Nitinol Tendon for Shape Sensing and Actuation in Endoscopy",
     "authors": "Feng Luo, Xingfeng Xu, Siyang Zuo",
-    "abstract": null,
+    "abstract": "Conventional flexible endoscopic platforms lack real-time shape-sensing capabilities, leading to a heavy dependence on the endoscopist's experience for pose estimation within the gastrointestinal (GI) tract. This reliance notably heightens the risk of inadvertent tissue collision during endoscopic procedures. Fiber optic sensors, such as fiber Bragg gratings (FBGs), have garnered considerable attention for their applications in shape-sensing. This work presents a novel flexible endoscopic platform with FBG-integrated Nitinol tendon mechanism. An integrated structure was designed to accommodate both shape sensing and actuation functionalities simultaneously. A self-differencing temperature compensation algorithm was developed to isolate thermal interference from fiber Bragg grating wavelength measurements. Moreover, a shape-vision multimodal feedback framework was implemented for the closed-loop control of the bending section of the endoscopic platform. The experimental results show that the designed endoscopic platform mean tip-tracking errors are 0.877 mm for a circle trajectory and 2.883 mm for a pentagram trajectory, indicating that the achieved shape-sensing capability fulfills the safety and precision standards necessary for flexible endoscopic intervention.",
     "doi": "10.1109/lra.2026.3746149"
   },
   {
@@ -71129,7 +71129,7 @@
     "year": 2026,
     "title": "Deployable Onboard Vision-Based Pick-and-Place Automation System for Unstructured Environments",
     "authors": "Tae-Wook Um, Sang-Won Kang, Ki-Hyeon Kim, Gyu-Heon Kim, Hyo-Sung Ahn, Woo Young Choi, Nam-Jin Park",
-    "abstract": null,
+    "abstract": "This paper presents a deployable onboard vision-based Pick-and-Place (PNP) automation system for unstructured agricultural environments such as Agricultural Produce Centers (APCs). The system integrates high-speed robot control and vision-based 3D localization on a commercial embedded board, enabling fully self-contained operation without external computing.A two-stage pipeline combining fine-tuned AdaBins and YOLOv8s models infers the 3D target positions $(x, y, z)$ from a single RGB image. The two models are selected from an onboard benchmark of nine depth models and five detectors fine-tuned under the same protocol, which resolves the latency-accuracy trade-off on the embedded board. Experiments on an APC-representative testbed achieved a per-target gripping success rate of 95.05% over 2,060 targets with a 3D localization latency of 413.7 ms per PNP cycle. A controlled comparison against an RGB-D baseline (Intel RealSense L515) within the same system shows no statistically significant difference in success rate (baseline 95.96%, Fisher $p=0.156$), and the 95% confidence interval bounds any RGB-D advantage at 2.2 pp, which supports monocular depth estimation as a practical alternative to a depth sensor for suction-based produce PNP.",
     "doi": "10.1109/lra.2026.3746015"
   },
   {
@@ -71150,14 +71150,14 @@
     "year": 2026,
     "title": "PISTO: Proximal Inference for Stochastic Trajectory Optimization",
     "authors": "Hongzhe Yu, Zinuo Chang, Yongxin Chen",
-    "abstract": null,
+    "abstract": "Stochastic trajectory optimization methods like STOMP enable planning with non-differentiable costs, offering substantial flexibility over gradient-based approaches. We show that STOMP implicitly minimizes the KL divergence from a Boltzmann trajectory distribution, revealing an elegant Variational Inference (VI) structure underlying its updates. Building on this insight, we propose the Proximal Inference for Stochastic Trajectory Optimization (PISTO) algorithm that stabilizes the updates by augmenting the objective with a KL regularization between successive Gaussian proposals. This proximal formulation admits a trust-region interpretation and yields closed-form mean updates computable as expectations under a surrogate distribution. We estimate these expectations via importance-weighted Monte Carlo sampling, producing a simple, derivative-free algorithm that inherits STOMP's ability to handle non-differentiable and discontinuous costs without modification. On robot arm motion planning benchmarks, PISTO achieves a 91% success rate—outperforming CHOMP (66%) and STOMP (67%)—while running at twice the speed of competing stochastic methods. We further validate PISTO on contact-rich MuJoCo locomotion and manipulation tasks, where it consistently outperforms both CEM and MPPI baselines in reward.",
     "doi": "10.1109/lra.2026.3746862"
   },
   {
     "year": 2026,
     "title": "YMSkater: Learning Skating Locomotion via Model-Guided Reinforcement Learning",
     "authors": "Zheng Pan, Peilin Li, Hao Sun, Tenghui Wang, Yan Ma, Liang Yu, Liang He",
-    "abstract": null,
+    "abstract": "Roller-skating locomotion offers a promising balance for achieving high-speed and energy-efficient mobility in wheeled-legged robots with relatively low costs for hardware modifications, yet its hybrid dynamics, nonholonomic constraints and insufficient state availability pose significant challenges for both model-based and data-driven methods. In this letter, we propose a model-guided reinforcement learning (MGRL) framework for learning a dynamic skating gait, termed stroke, on a humanoid robot with passive wheels. A simplified planar model is introduced to capture the essential mechanism of skating. The resulting gait priors are incorporated into a reinforcement learning framework through phase-guided observations and reward design. Simulation results demonstrate that the learned stroke gait achieves improved speed capability and competitive energy efficiency compared to both a symmetric skating gait and conventional running. Real-world experiments further validate stable sim-to-real transfer for both straight and turning motions, highlighting the effectiveness of the proposed method for learning complex locomotion behaviors.",
     "doi": "10.1109/lra.2026.3746864"
   },
   {
@@ -71178,7 +71178,7 @@
     "year": 2026,
     "title": "Physically-Grounded Learning and Control for Leg-Arm Reuse Robots by Scheduling Physical Primitives",
     "authors": "Xuechao Chen, Haozhou Liu, Tianyue Ou, Qingqing Li, Zhangguo Yu, Fei Meng",
-    "abstract": null,
+    "abstract": "Leg-Arm Reuse Robots (LARR) employ a single pair of limbs for both locomotion and manipulation, requiring dynamic switching between compliant and rigid physical regimes. Standard imitation learning (IL) outputs kinematic trajectories but lacks an explicit mechanism to schedule the mutually exclusive physical constraints, while purely control-based pipelines schedule constraints through rules fixed at design time. We propose the Physically-Grounded Learning and Control (PGLC) framework, which vertically integrates executable physical primitives across the entire pipeline. Rather than learning physical abstractions from scratch, PGLC jointly learns motion and constraint scheduling from perception. Specifically, the policy learns when each expert-designed primitive should be activated. These primitives are injected into demonstration data by an enhanced teleoperation interface, learned as scheduling flags by a high-level policy, and instantiated in real time by a dynamically configurable quadratic programming (QP) controller. On a physical LARR prototype, PGLC achieves a 0.925 success rate on speed bump terrain, compared with 0.55 for the strongest learning baseline, and a 0.875 overall success rate on the bimanual pick-pour-place task, where baselines without scheduling remain below 0.45. Ablation studies attribute these gains to the physically-grounded data and the dynamic scheduling mechanism.",
     "doi": "10.1109/lra.2026.3746861"
   },
   {
@@ -71206,7 +71206,7 @@
     "year": 2026,
     "title": "Safety Internalization in UAV Navigation via Training-Time CBF-Integrated RL",
     "authors": "Yunqi Hu, Liguo Qu, Mingxing Fang, Hao Yu",
-    "abstract": null,
+    "abstract": "Combining reinforcement learning with control barrier functions (CBFs) faces a fundamental conflict between policy optimization and safety constraints. This letter further shows that the loosely coupled “policy learning + post-hoc shield” architecture can give rise to a shield deployment paradox: owing to policy distribution shift, a post-hoc CBF shield raises rather than lowers the collision rate under high-density dynamic scenes. To address this, we propose a new method that directly aligns the policy update target with the CBF safety constraint, instantiated as the CBF-Targeted PPO (CBFT-PPO) framework. Its core mechanism uses the CBF-projected safe action simultaneously as the environment execution command and the policy optimization target: the policy gradient is thereby aligned to the safe action rather than the raw action, requiring no additional reward-shaping weight while fully preserving the directional information of the CBF projection. Theoretically, we provide a probabilistic analysis explaining safe-behavior internalization through action-distribution alignment. In Isaac Sim with 640 parallel environments, CBFT-PPO improves average success rate by 11.3 percentage points over the pure-PPO baseline and by 22.5 percentage points over post-hoc CBF shielding. Notably, after the CBF shield is fully removed, the policy retains nearly identical safety performance—safe behavior has been internalized. Gazebo simulation and real-world UAV flight experiments further validate the cross-platform generalization of the framework.",
     "doi": "10.1109/lra.2026.3746138"
   },
   {
@@ -71220,14 +71220,14 @@
     "year": 2026,
     "title": "ISOPoT: Imaging Sonar Odometry by Point Tracking",
     "authors": "Jaša Samec, Vid Rijavec, Marko Peljhan, Aleksander Grm, Andrej Androjna, Danijel Skočaj, Matej Dobrevski",
-    "abstract": null,
+    "abstract": "Reliable navigation in underwater environments remains a key challenge in marine robotics. In such scenarios, forward-looking sonars are a natural choice for long-range perception, offering wide coverage even in turbid, low-visibility conditions. However, sonar images are noisy, contain artifacts, and lack rich semantic structure, causing standard computer vision methods for keypoint detection and matching to perform poorly. We introduce ISOPoT, an imaging sonar odometry method built on modern point tracking. The proposed pipeline uses multi-frame point tracks as its primary correspondence representation, augmented with targeted optimizations to improve robustness. We evaluate it on the Aracati 2017 dataset and on an in-house dataset collected in real-world underwater environments. ISOPoT outperforms previous state-of-the-art methods in both sonar-only and auxiliary-sensor (dead reckoning and magnetometer) settings.",
     "doi": "10.1109/lra.2026.3746126"
   },
   {
     "year": 2026,
     "title": "SRPG: Semantic Risk Preference-Guided Reinforcement Learning for UAV Navigation",
     "authors": "Mengxian Li, Qi Wang, Yiqun Wu, Nan He, Tingting Li, Yongjun Xu",
-    "abstract": null,
+    "abstract": "Autonomous uncrewed aerial vehicles are increasingly deployed in cluttered environments, where safe local navigation depends not only on geometric clearance to surrounding objects but also on the semantic risk associated with those objects. Existing semantic risk methods commonly encode category-dependent risk as costmaps, risk maps, or other spatial cost fields, and then translate them into motion through a separate planning or optimization module. Meanwhile, learning-based UAV navigation policies mainly emphasize geometry-based collision avoidance, making it difficult to express category-dependent preferences when multiple collision-free directions have comparable clearance. To address this problem, we propose SRPG, a semantic risk preference-guided reinforcement learning framework for local UAV navigation. SRPG converts semantic observations into a compact LiDAR-aligned semantic risk observation with barrier-aware angular diffusion, allowing category-dependent risk to be used directly by the policy without maintaining a persistent semantic map or a grid-based local costmap for planning. The diffused semantic risk observation is used as policy input, and a semantic-action-risk reward directly evaluates the semantic risk associated with the motion direction selected by the current action, encouraging low-risk local motion choices under comparable geometric conditions. Simulation experiments show that SRPG improves the success rate over the strongest learning-based baseline by 8.0 and 9.6 percentage points in the static and dynamic basic navigation environments, respectively. In semantic risk preference tests, SRPG consistently selects the lower-risk side in different scenarios, indicating that the learned policy develops a consistent semantic risk preference. Real-world indoor flight experiments on a physical quadrotor further demonstrate that SRPG can be deployed without real-world fine-tuning and prefers the lower-risk side when navigating around risk-labeled objects.",
     "doi": "10.1109/lra.2026.3746907"
   },
   {
@@ -71255,14 +71255,14 @@
     "year": 2026,
     "title": "Risk-Aware Co-Optimization for Multi-Robot Control Under Execution Uncertainty",
     "authors": "Zhan Gao, Antonio Marino, Amanda Prorok",
-    "abstract": null,
+    "abstract": "While multi-robot motion control often treats the environment as a static constraint and assumes near-perfect execution, real-world uncertainty poses significant challenges. In poorly structured or densely populated spaces, these unpredictable variables frequently lead to collision risks and degraded performance. We address this issue by proposing a risk-aware framework that co-optimizes robot actions and environment configurations to mitigate execution uncertainty. To handle the complex relationships among the environment, robots, and uncertainty impact, we develop a bi-level approach using neural surrogate optimization, effectively bridging nonlinear programming with model-free learning for joint optimization. Supported by theoretical robustness guarantees, numerical simulations, and physical experiments, our co-optimization strategy creates “multi-robot-friendly” environments that mitigate the impact of execution uncertainty and facilitate superior multi-robot coordination.",
     "doi": "10.1109/lra.2026.3747574"
   },
   {
     "year": 2026,
     "title": "Deep Reinforcement Learning for Multi-Peg-in-Hole Assembly Via Multimodal Perception and Lightweight Mechanical Modeling",
     "authors": "Chang Liu, Xiaoyao Wang, Yicong Chen, Qiujie Lu, Zhongxue Gan",
-    "abstract": null,
+    "abstract": "With the rapid development of intelligent algorithms, multi-peg-in-hole(MPiH) assembly methods have advanced by integrating machine learning and multimodal perception. However, due to the strong coupling among multiple peg-hole pairs, the complexity of decision-making introduced by mechanism-based analysis and the limitations in acquiring and processing multimodal information has become a critical issue. This study focuses on MPiH assembly tasks and proposes a deep reinforcement learning (DRL) method via multimodal perception and lightweight mechanical modeling(LMM) to improve the efficiency and robustness of training and assembly. Firstly, a novel multimodal data processing strategy for visual and force information is designed to enable pose estimation without cooperative targets and staged compliant control, based on the LMM of assembly objects and processes. Secondly, the Markov decision process (MDP) modeling is further optimized, and a training framework is built based on the Proximal Policy Optimization (PPO) algorithm to improve training efficiency and assembly success rates. Finally, validation experiments are conducted in simulation environments using Gym and Pybullet, as well as in real-world scenarios. The results demonstrate the effectiveness of the proposed method, increasing the success rate of MPiH assembly tasks to over 80%.",
     "doi": "10.1109/lra.2026.3747617"
   },
   {
@@ -71276,7 +71276,7 @@
     "year": 2026,
     "title": "D-BDM: A Direct and Efficient Boundary-Based Occupancy Grid Mapping Framework for LiDARs",
     "authors": "Benxu Tang, Yixi Cai, Fanze Kong, Longji Yin, Fu Zhang",
-    "abstract": null,
+    "abstract": "Efficient and scalable 3D occupancy mapping is essential for autonomous robot applications in unknown environments. However, traditional occupancy grid representations suffer from two fundamental limitations. First, explicitly storing all voxels in three-dimensional space leads to prohibitive memory consumption. Second, exhaustive ray casting incurs high update latency. A recent representation alleviates memory demands by maintaining only the voxels on the two-dimensional boundary, yet they still rely on full ray casting updates. This work advances the boundary-based framework with a highly efficient update scheme. We introduce a truncated ray casting strategy that restricts voxel traversal to the exterior of the boundary, which dramatically reduces the number of traversed voxels. In addition, we propose a direct boundary update mechanism that eliminates the need for an auxiliary local 3D occupancy grid, further reducing memory usage and simplifies the map update pipeline. We name our framework D-BDM. Extensive evaluations on public datasets demonstrate that our approach achieves significantly lower update time and reduced memory consumption compared with the state-of-the-art methods.",
     "doi": "10.1109/lra.2026.3747575"
   },
   {
@@ -71297,14 +71297,14 @@
     "year": 2026,
     "title": "Dynamics Modeling and Swimming Optimization of Robotic Fish With Various Local Body Stiffness",
     "authors": "Jiayi Jin, Li-Ming Chao, Liang Li, Wei Wang",
-    "abstract": null,
+    "abstract": "Body flexibility plays a significant role in fish propulsion and has been increasingly incorporated into robotic fish design. However, the functional significance of spatially varying body stiffness observed in real fish remains insufficiently understood. This letter presents a reinforcement learning framework for optimizing the distributed passive stiffness of a motor-driven robotic fish. A multi-link dynamics model was developed to approximate continuously varying body stiffness, and its hydrodynamic parameters were identified and validated through swimming experiments. Based on the optimized stiffness distributions, we fabricated two robotic fish tails targeting fast swimming and energy-saving swimming, respectively. Experiments at the target operating condition show that the fast-swimming design increased swimming speed by 36.1% compared with the baseline, while the energy-saving design reduced the experimental cost of transport by 53.5%. Numerical fluid-structure simulations further reveal that the fast-swimming design strengthens wake vortices for increased thrust, whereas the energy-saving design promotes passive posterior deformation and an asymmetric wake associated with the lower cost of transport. These results demonstrate that distributed stiffness tuning provides an effective mechanism for improving robotic fish performance and offer design guidelines for bio-inspired flexible swimmers.",
     "doi": "10.1109/lra.2026.3746908"
   },
   {
     "year": 2026,
     "title": "A Fiber-Optic Strain Rosette-Based Robotic Finger Enabling 2D Stress Reconstruction and Non-Destructive Manipulation",
     "authors": "Baijin Mao, Xulong Shi, Yuyaocen Xiang, Fengqi Xiao, Shiji Song, Juntian Qu",
-    "abstract": null,
+    "abstract": "Traditional tactile sensing in robotic hands is mainly designed for external human–robot interaction, while the intrinsic structural safety of the manipulator is often overlooked. This work presents a fiber-optic strain rosette-based robotic finger (FOSRF) that enables unified internal structural stress monitoring and external tactile perception. Three 60$^{\\circ }$-oriented fiber Bragg grating (FBG) arrays capture multi-directional strain, while a micro-scale thermocouple synchronizes temperature measurement to suppress thermo-mechanical cross-sensitivity, reducing decoupling error by up to 98.64%. This enables accurate 2D stress reconstruction and picometer-level tactile sensing. The proposed system demonstrates a force sensing range of 0–150 N, a sensitivity of 37.3 pm/N, and a temperature sensitivity of 120 mV/$^{\\circ }$C. A real-time 2D stress reconstruction system is further developed for simultaneous internal structural-state monitoring during tactile-feedback-based nondestructive grasping of fragile objects. This work provides a highly integrated sensing strategy that unifies structural health monitoring and safe manipulation.",
     "doi": "10.1109/lra.2026.3747571"
   },
   {
@@ -71367,14 +71367,14 @@
     "year": 2026,
     "title": "Learning Spine-Assisted Bounding Locomotion for Gap Crossing in a Small-Scale Quadruped Robot",
     "authors": "Weitao Zhang, Ruochao Wang, Xishuo Wang, Zhiqiang Yu, Haibo Luo, Qing Shi",
-    "abstract": null,
+    "abstract": "Small-scale cursorial mammals use dynamic spinal flexion–extension to extend stride length during bounding locomotion, enabling the traversal of gaps insurmountable by standard gaits like trotting. However, replicating this capability in small-scale, actuation-constrained robotic systems remains a major challenge. Most current quadruped robots treat the spine as a rigid body, which fundamentally limits their kinematic workspace and dynamic potential during extreme maneuvers like gap crossing. To address this, we propose a reinforcement learning (RL) control framework based on Policy Modulating Trajectory Generators (PMTG), applied to a small-scale quadruped robot equipped with an actuated flexible spine. We employ deep reinforcement learning guided by a terrain-agnostic virtual metric mechanism to jointly optimize spinal actuation and limb motion. Hardware experiments show that the maximum gap-crossing distance increases from 0.36 body length (BL) without spine motion (WoS) to 0.91 BL with active spine motion (WS). The active spine optimizes take-off dynamics by coordinating hindlimb motion and propulsive force generation. These results highlight the critical role of spinal function in enhancing the mobility of legged robots in complex environments.",
     "doi": "10.1109/lra.2026.3746906"
   },
   {
     "year": 2026,
     "title": "Phase-Aware Adaptive Endoscopic Field-of-View Control for Robot-Assisted Laparoscopic Surgery",
     "authors": "Weirong Wang, Xueqing Wang, Guojun Niu, Gonghui Li, Yili Fu, Bo Pan",
-    "abstract": null,
+    "abstract": "Endoscopic view control is important for robot-assisted laparoscopic surgery, yet existing autonomous following methods usually rely on instrument geometry or fixed rules. These strategies are vulnerable to multi-instrument interference and phase transitions because they do not explicitly model how the clinical relevance of each instrument changes during the procedure. This paper presents a phase-aware adaptive endoscope control method that formulates view adjustment as surgical-phase-guided visual attention allocation. The proposed system detects multiple instruments in the live endoscopic stream, estimates the current surgical phase from a temporal frame window, and combines distance-based spatial weights with phase-dependent semantic weights to infer a task-relevant target field-of-view (FOV) center. The target center is then converted into a smooth, bounded endoscope velocity command for real-time execution. Experiments on robot-assisted radical prostatectomy (RARP) videos, including five held-out test cases and fifty representative camera-adjustment clips, show that the proposed method yields the lowest mean normalized FOV keeping error in all five test cases. The average software latency is 12.20 ms, supporting real-time operation at video frame rate. These results suggest that surgical phase semantics can improve the stability and task relevance of autonomous endoscopic view management in retrospective evaluation.",
     "doi": "10.1109/lra.2026.3747598"
   },
   {
@@ -71409,7 +71409,7 @@
     "year": 2026,
     "title": "SensorPerch: Sense Wherever and Whenever It Matters",
     "authors": "Zhanxin Wu, Ruofei Tong, Tapomayukh Bhattacharjee",
-    "abstract": null,
+    "abstract": "Existing robotic perception is constrained by sensors that are either robot-mounted or permanently fixed in the environment, locking perception to a limited set of viewpoints. Yet as robots perform increasingly diverse tasks, the most informative viewpoint shifts from one task to the next—often somewhere onboard sensor and static infrastructure cannot readily satisfy. To address this gap, we propose SensorPerch, a novel realization of active perception that decouples sensing from both the robot embodiment and the environment by treating sensors as independent physical entities that the robot can autonomously detach and reattach within the environment. SensorPerch presents one realization of this paradigm: a lightweight, wireless, reconfigurable sensor platform that can perch on diverse surfaces, paired with a viewpoint-selection framework that determines task-optimal sensor placements. Together, these enable robots to construct task-relevant viewpoints on demand, independent of the robot's current position and available fixed infrastructure. We demonstrate the paradigm on two task classes: (i) object-coupled perception, where SensorPerch enables persistent object-state detection beyond the robot's current position, achieving successful event detection even when the robot is not nearby; and (ii) policy-coupled perception, where SensorPerch allows robots to construct diverse, policy-specific viewpoints for various policies, achieving success rates comparable to those obtained using oracle viewpoints.",
     "doi": "10.1109/lra.2026.3747651"
   },
   {
@@ -71423,7 +71423,7 @@
     "year": 2026,
     "title": "Lightweight Data-Driven Admittance Control for Massage Robots via Offline Temporal Difference Learning",
     "authors": "Xuyang Li, Jun Zhong, Haomin Wu",
-    "abstract": null,
+    "abstract": "Safe and effective physical human-robot interaction (pHRI) is crucial for massage robots operating in unstructured environments. Traditional fixed-parameter admittance control struggles to adapt to heterogeneous human soft tissues, while online parameter identification methods can be affected by computational latency and sensor noise. To address these limitations, we propose a lightweight, data-driven, adaptive admittance control framework. This framework uses a quadratic action-value approximation and utilizes model-free Temporal Difference (TD) learning on offline interaction data. By doing so, it extracts a scalar state-feedback gain subject to parameter constraints. This scalar gain is then deployed in a 125 Hz low-level control loop as a fixed state-feedback law to modulate the normal contact force. Furthermore, incorporating low-level digital filtering and kinematic hard constraints, we derive numerical bounds on admittance velocity and virtual kinetic energy. Progressive experiments on a 6-DOF manipulator interacting with a silicone phantom and four human participants cover complete leave-one-subject-out validation and a 10/20/30 N by 10/30/60 kg force–mass grid. Across 1,152 human massage trials (288 per controller), the proposed framework achieved a mean absolute error of 4.94 N and an In-Zone Ratio of 56.34%, compared with 5.86 N and 47.80% for fixed-parameter admittance. These correspond to a 15.71% reduction in average error and an 8.54-percentage-point increase in tolerance occupancy. The improvements occurred in the participant-averaged results of all four held-out subjects. The framework connects offline interaction learning with lightweight online force regulation, requiring no online policy update.",
     "doi": "10.1109/lra.2026.3746912"
   },
   {
@@ -71437,14 +71437,14 @@
     "year": 2026,
     "title": "Cross-Vehicle Geometry Consistency for Self-Supervised Surround Depth Estimation on Articulated Vehicles",
     "authors": "Weimin Liu, Jiyuan Qiu, Bo Yuan, Wenjun Wang, Joshua H. Meng",
-    "abstract": null,
+    "abstract": "Surround depth estimation provides a cost-effective alternative to LiDAR for 3D perception in autonomous driving. While recent self-supervised methods explore multi-camera settings to improve scale awareness and scene coverage, they are primarily designed for passenger vehicles and rarely consider articulated vehicles or robotics platforms. The articulated structure introduces complex cross-segment geometry and motion coupling, making consistent depth reasoning across views more challenging. In this work, we propose ArticuSurDepth, a self-supervised framework for surround-view depth estimation on articulated vehicles that enhances depth learning through cross-view and cross-vehicle geometric consistency guided by structural priors from a vision foundation model. Specifically, we introduce a multi-view spatial context enrichment strategy and a cross-view surface normal constraint to improve structural coherence across spatial and temporal contexts. We further incorporate camera height regularization with ground plane-awareness to encourage metric depth estimation, together with cross-vehicle pose consistency that bridges motion estimation between articulated segments. To validate our proposed method, an articulated vehicle experiment platform was established with a dataset collected on it. Experiment results demonstrate the effectiveness of ArticuSurDepth on our self-collected dataset and competitive performance on DDAD and nuScenes.",
     "doi": "10.1109/lra.2026.3746917"
   },
   {
     "year": 2026,
     "title": "SCTNav: Scene-Constrained Monocular Navigation With Ternary Spatio-Temporal Waypoint Prediction",
     "authors": "Wendong Guo, Junyi Wang, Yanwei Zheng, Xiao Zhang, Xingyu Zhang, Dongxiao Yu",
-    "abstract": null,
+    "abstract": "Monocular image-goal navigation remains a fundamental yet challenging problem in embodied intelligence. Existing end-to-end methods primarily rely on temporally homogeneous representations, which obscure the distinct temporal roles of observations in navigation. Moreover, they typically yield opaque policies and lack explicit mechanisms for metric-consistent reasoning, kinematic feasibility, and safety-aware control. To this end, we propose SCTNav, a novel Scene-Constrained monocular navigation framework with Ternary spatio-temporal waypoint prediction. First, we introduce P3Net, a lightweight network for waypoint prediction that explicitly fuses Past, Present, and Prospective goal information, enabling long-horizon visual understanding. Second, we develop Scene-Constrained Model Predictive Control (SCMPC). This general optimization module reconstructs metric-consistent 3D scene geometry from monocular sequences and integrates robot kinematics with these scene constraints via nonlinear MPC to generate safe motion. We evaluate SCTNav in diverse simulated and real-world environments, and the results demonstrate that our method consistently outperforms state-of-the-art approaches on resource-constrained platforms.",
     "doi": "10.1109/lra.2026.3747589"
   },
   {
@@ -71500,7 +71500,7 @@
     "year": 2026,
     "title": "Material-Driven Stabilization of Tendon-Driven Compliant Actuators Through Cyclic Preconditioning",
     "authors": "Quanpi Zheng, Liang Lu, Zhipeng Wang, Bin He",
-    "abstract": null,
+    "abstract": "Compliant actuators are widely employed in human–robot interaction and unstructured environments due to their inherent compliance and safety. However, the non-stationary mechanical behavior of compliant materials under cyclic loading often induces output drift and degraded motion repeatability, particularly in tendon-driven systems. This work proposes a material-driven stabilization strategy for compliant actuators through cyclic preconditioning of elastomeric materials. Inspired by biological muscle–tendon adaptation, the proposed approach exploits the material-state evolution of natural rubber to achieve a stable mechanical response with improved consistency. Experimental results show that the stress–strain response progressively converges toward a repeatable state after approximately eight loading cycles. A dual-network constitutive model is further developed to characterize the evolution of the permanent and physical subnetworks during cyclic deformation. Based on this principle, a tendon-driven compliant actuator integrating preconditioned natural rubber is developed, achieving improved open-loop motion repeatability without additional sensing or complex compensation strategies. Experiments demonstrate progressive trajectory convergence in a single-joint platform and a 39.83% reduction in trajectory RMSE in a biomimetic robotic arm. The proposed method provides a material-state-regulation perspective for improving the intrinsic stability of compliant robotic systems.",
     "doi": "10.1109/lra.2026.3747593"
   },
   {
@@ -71528,7 +71528,7 @@
     "year": 2026,
     "title": "When Generative Control Meets Formal Logic: Schrödinger Bridges for STL-Constrained Robotics",
     "authors": "Shaochen Wang, Qilin Wu, Qing Huang, Yanjie Xia",
-    "abstract": null,
+    "abstract": "Generative robot learning excels at synthesizing high-dimensional behaviors, yet aligning these continuous processes with explicit, human-defined temporal rules remains a fundamental challenge. Existing paradigms typically enforce formal specifications, such as Signal Temporal Logic (STL), via post-hoc external guidance. However, treating rules as ad-hoc corrections frequently leads to optimization conflicts, compromised dynamic feasibility, and reduced trajectory diversity. To address this, we formulate STL-constrained trajectory generation as a Schrödinger Bridge (SB) optimal control problem. Rather than relying on external modifications, our formulation establishes an optimal transport pathway between two strictly defined distributions: a source distribution governed by STL rules and a target distribution of kinematically feasible behaviors, thereby directly conditioning the generative vector field on continuous embeddings extracted from the STL syntax tree. To materialize this theoretical bridge, we translate discrete STL syntax into Abstract Syntax Trees and extract continuous logical embeddings via a message-passing neural network. These representations directly condition a decoupled neural vector field. By employing a simulation-free training paradigm, our architecture gracefully mitigates the numerical boundary singularities inherent in exact SB formulations, ensuring stable and tractable optimization. Extensive evaluation across diverse tasks demonstrates that our framework achieves highly competitive results.",
     "doi": "10.1109/lra.2026.3746909"
   },
   {
@@ -71542,7 +71542,7 @@
     "year": 2026,
     "title": "A Modularized Programmable-RCM Robotic System With Large Intraocular Tilting Workspace for Vitreoretinal Surgery",
     "authors": "Chenyu Wang, Gowoon Jeong, Rongwan Chen, Yong-Sok Ji, Seong Young Ko",
-    "abstract": null,
+    "abstract": "Epiretinal membrane (ERM) peeling is a challenging vitreoretinal microsurgical task that requires trocar-constrained intraocular motion and high positional precision within a confined workspace. This paper presents a compact 6-DOF programmable remote center of motion (RCM) robotic system for robot-assisted vitreoretinal surgery. The proposed mechanism decomposes the spatial RCM constraint into two orthogonal planar motions, enabling programmable RCM positioning and a large intraocular tilting range. The system also preserves sufficient tool tilting capability when the RCM is relocated due to eyeball rotation, allowing it to adapt to eyeball rotation without repositioning the robot base. Experimental results demonstrated an average RCM error of 0.31 $ \\pm $ 0.08 mm, a maximum RCM error of 0.62 mm, and an end-effector (EE) positioning repeatability of 8.7 ± 2.6 μm. A simulated membrane peeling experiment using a chicken eggshell model further demonstrated the feasibility of the system for delicate intraocular manipulation. These results indicate that the proposed system provides a compact, accurate, and adaptable robotic platform for practical vitreoretinal surgical applications.",
     "doi": "10.1109/lra.2026.3747576"
   },
   {

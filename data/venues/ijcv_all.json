@@ -786,7 +786,7 @@
     "year": 2026,
     "title": "Self-Balancing Multimodal Models via Multi-Loss Gradient Modulation",
     "authors": "Konstantinos Kontras, Christos Chatzichristos, Matthew B. Blaschko, Maarten De Vos",
-    "abstract": null,
+    "abstract": "Learning from multiple modalities, such as audio and video, offers opportunities for leveraging complementary information, and improving contextual understanding and performance. However, combining such modalities presents challenges, especially when modalities differ in data structure, predictive contribution, and the complexity of their learning processes. It has been observed that one modality can potentially dominate the learning process, hindering the effective utilization of information from other modalities and leading to sub-optimal model performance. To address this issue, the vast majority of previous works suggest assessing the unimodal contributions and dynamically adjusting the training to equalize them. We improve upon previous work by introducing a multi-loss objective and further refining the balancing process, allowing it to dynamically adjust the learning pace of each modality in both directions, acceleration and deceleration, with the ability to phase out balancing effects upon convergence. We validate our approach across five benchmark datasets: CREMA-D for audio-video emotion recognition; AVE and UCF for audio-video action recognition; Something-Something for egocentric action recognition with video and optical flow; and CMU-MOSEI for emotion recognition with audio, video, and text. In addition, we explore alternative methods for quantifying unimodal contributions within multimodal models and analyze the effectiveness of our approach through an examination of modality-specific error distributions across different classes.",
     "doi": "10.1007/s11263-025-02696-w"
   },
   {
@@ -856,7 +856,7 @@
     "year": 2026,
     "title": "Not All Attention is Needed: Parameter and Computation Efficient Tuning for Multi-modal Large Language Models via Effective Attention Skipping",
     "authors": "Qiong Wu 0012, Yiyi Zhou, Weihao Ye, Xiaoshuai Sun, Rongrong Ji",
-    "abstract": null,
+    "abstract": "Recently, Multi-modal Large Language Models (MLLMs) have garnered an influx of interest from both academia and industry. Despite great progress, MLLMs still have a high demand of downstream task tuning for applications, which consumes excessive parameter and computation overhead. In this paper, we propose a novel parameter and computation efficient tuning method for MLLMs, termed Effective Attention Skipping (EAS). Concretely, we first reveal that multi-head attentions (MHAs) in MLLMs, the primary source of computation, are often redundant to downstream tasks. Based on this observation, EAS evaluates attention redundancy and skips the less important MHAs to speed up inference. Besides, we also propose a novel propagation-of-information adapter (PIA) to serve attention skipping while maintaining parameter efficiency. More importantly, PIA can be further re-parameterized into feed-forward networks (FFNs) for zero-extra latency. To validate EAS, we apply it to three common MLLMs, and conduct extensive experiments on six downstream tasks. The experimental results show that EAS can not only retain the high performance of MLLMs but also reduce the updated parameters scale greatly, while speeding up inference speed to a large extent. For instance, LLaVA-EAS can obtain 96.2% accuracy while accelerating the inference speed by about +20% on ScienceQA. Our code is publicly released at https://github.com/DoubtedSteam/EAS.",
     "doi": "10.1007/s11263-025-02702-1"
   },
   {
@@ -912,7 +912,7 @@
     "year": 2026,
     "title": "Pose without Guesses: Generalizable Object Pose Estimation From a Single Reference",
     "authors": "Chen Zhao 0025, Tong Zhang 0023, Zheng Dang, Mathieu Salzmann",
-    "abstract": null,
+    "abstract": "Determining the relative pose of a previously unseen object between two images is pivotal to the success of generalizable object pose estimation. Existing approaches typically predict 3D translation utilizing the ground-truth object bounding box and approximate 3D rotation with a large number of discrete hypotheses. This strategy makes unrealistic assumptions about the availability of ground truth and incurs a computationally expensive process of scoring each hypothesis at test time. By contrast, we rethink the problem of relative pose estimation for unseen objects by presenting an advanced Deep Voxel Matching Network (DVMNet++). Our method computes the relative object pose in a single pass, eliminating the need for ground-truth object bounding boxes and rotation hypotheses. We achieve open-set object detection by leveraging image feature embedding and natural language understanding as reference. The detection result is then employed to approximate the translation parameters and crop the object from the query image. For rotation estimation, we map the reference and cropped query to their respective voxelized 3D representations. The resulting voxels are passed through a rotation estimation module, which aligns the voxels and computes the rotation in an end-to-end fashion by solving a least-squares problem. To enhance robustness, we introduce a weighted closest voxel algorithm capable of mitigating the impact of noisy voxels. We conduct extensive experiments on the CO3D, Objaverse, LINEMOD, HomebrewedDB, and LINEMOD-O datasets, demonstrating that our approach delivers more accurate relative pose estimates for novel objects at a lower computational cost compared to state-of-the-art methods. Our code is released at https://github.com/sailor-z/DVMNet/ .",
     "doi": "10.1007/s11263-026-02781-8"
   },
   {
@@ -1323,7 +1323,7 @@
     "year": 2026,
     "title": "CoSurfGS: 3D Surface Gaussian Splatting with Collaborative Distributed Learning for Large-scale Scene Reconstruction",
     "authors": "Yuanyuan Gao, Yalun Dai, Hao Li 0075, Weicai Ye, Junyi Chen, Danpeng Chen, Dingwen Zhang, Tong He 0001, Guofeng Zhang 0001, Junwei Han 0001",
-    "abstract": null,
+    "abstract": "3D Gaussian Splatting (3DGS) has demonstrated impressive performance in scene reconstruction. However, most existing GS-based surface reconstruction methods focus on 3D objects or scenes with limited scale. Directly applying these methods to large-scale scene reconstruction will pose challenges such as high memory costs, excessive time consumption, and lack of geometric detail, which makes it difficult to implement in practical applications. 3D Gaussian Splatting (3DGS) has demonstrated impressive performance in scene reconstruction. However, most existing GS-based surface reconstruction methods are limited to single-machine settings and focus on individual objects or scenes with limited scale. When extended to large-scale scene reconstruction, these methods suffer from high memory consumption, prolonged training time, and insufficient geometric detail, which makes it difficult to implement in practical applications. To overcome these limitations, a natural solution is to distribute the learning workload across multiple collaborative devices. However, collaborative distributed learning presents unique challenges, including efficiently training models on resource-limited local devices and effectively integrating knowledge across devices to maintain global consistency and high-quality reconstruction. To address these challenges, we propose CoSurfGS, a novel collaborative-distributed framework that enables high-quality large-scale surface reconstruction while maintaining efficient training and GPU memory utilization. Specifically, we propose two modules: Local Model Compression (LMC), which eliminates redundant Gaussians to improve memory and training efficiency on each device; and Model Aggregation Schemes (MAS), which enhance global reconstruction quality by collaboratively distilling knowledge from multiple distributed devices. Extensive experiments on Urban3d, MegaNeRF, and BlendedMVS demonstrate that our proposed method can achieve fast and scalable high-fidelity surface reconstruction and photorealistic rendering.",
     "doi": "10.1007/s11263-025-02627-9"
   },
   {
@@ -1885,7 +1885,7 @@
     "year": 2026,
     "title": "&#916;-DiT: Accelerating Diffusion Transformers without Training via Denoising Property Alignment",
     "authors": "Pengtao Chen, Mingzhu Shen, Peng Ye 0006, Jianjian Cao, Chongjun Tu, Christos-Savvas Bouganis, Yiren Zhao, Tao Chen 0003",
-    "abstract": null,
+    "abstract": "Diffusion models have recently gained widespread adoption in visual generation. However, their iterative denoising process is computationally intensive, making real-time inference on embedded devices with limited power highly challenging. As a result, accelerating diffusion models has become a critical research focus. While existing acceleration techniques are primarily designed for UNet-based architectures, they are not directly applicable to Transformer-based diffusion models (DiT). A natural approach to speed up DiT is to skip certain blocks, but this often leads to significant degradation in generation quality. To address the unique challenges of DiT, we propose Δ\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$\\Delta $$\\end{document}-Cache, a novel caching method that captures and stores the incremental changes between different blocks, effectively reducing computational costs while maintaining fidelity to the original output. Furthermore, we conduct a quantitative analysis of the relationship between DiT block depth and image generation quality. Our findings reveal that shallow DiT blocks primarily define global structures such as composition and outlines, while deeper blocks focus on refining details, with middle blocks playing an intermediate role. Building on these insights, we introduce a denoising property alignment method that adaptively skips computations for different blocks at various timesteps while preserving performance. Comprehensive experiments on PIXART-α\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$\\alpha $$\\end{document}, SD3, and DiT-XL demonstrate that Δ\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$\\Delta $$\\end{document}-DiT achieves a 1.6×\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$\\times $$\\end{document} speedup while even enhancing generation quality. Additionally, on the NVIDIA Jetson AGX Orin, our method delivers a 2.03×\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$\\times $$\\end{document} real-world inference speedup without sacrificing performance, highlighting its effectiveness in resource-constrained scenarios.",
     "doi": "10.1007/s11263-026-02871-7"
   },
   {
@@ -2220,7 +2220,7 @@
     "year": 2026,
     "title": "Learning Pseudo 3D Representation for Ego-centric 2D Multiple Object Tracking",
     "authors": "Jiawei He 0002, Lue Fan, Zhaoxiang Zhang 0001",
-    "abstract": null,
+    "abstract": "Data association is a knotty problem for 2D Multiple Object Tracking due to the object occlusion. However, in 3D space, data association is not so hard. Only with a 3D Kalman Filter, the online object tracker can associate the detections from LiDAR. In this paper, we rethink the data association in 2D MOT and utilize the 3D object representation to separate each object in the feature space. Unlike the existing depth-based MOT methods, the 3D object representation can be jointly learned with the object association module. Besides, the object’s 3D representation is learned from the video and supervised by the 2D tracking labels without additional manual annotations from LiDAR or pretrained depth estimator. With 3D object representation learning from Pseudo 3D (P3D) object labels in monocular videos, we propose a new 2D MOT paradigm, called P3DTrack. Extensive experiments show the effectiveness of our method. We achieve state-of-the-art performance on the ego-centric datasets, KITTI and Waymo Open Dataset (WOD). Code will be released at https://github.com/jiaweihe1996/p3dtrack.",
     "doi": "10.1007/s11263-026-02887-z"
   },
   {
@@ -2325,7 +2325,7 @@
     "year": 2026,
     "title": "Rethinking Neuromorphic Object Detection with Hybrid Dynamic Interaction Transformers",
     "authors": "Dianze Li, Jianing Li 0001, Xu Liu 0006, Zhaokun Zhou, Xiaopeng Fan 0001, Yonghong Tian 0001",
-    "abstract": null,
+    "abstract": "Combining the complementary benefits of frames and events has become a widely adopted strategy for object detection in challenging scenarios, such as low-light conditions and high-speed motion blur. However, most multimodal object detection methods employ two independent Artificial Neural Network (ANN) branches to process frames and events, which limits cross-modality information interaction between the two visual streams and poses challenges in extracting temporal cues from event streams with low power consumption. To address these challenges, we propose HDI-Former, a Hybrid Dynamic Interaction ANN-SNN Transformer, marking the first trial to design a directly trained hybrid ANN-SNN architecture for high-accuracy and energy-efficient object detection using asynchronous frames and events. Technically, we first present a semantic-enhanced self-attention mechanism for the Transformer architecture that explicitly models the relative semantic relationships between image encoding tokens to strengthen the correlation between them. Then, we design a Spiking Neural Network (SNN) branch, namely Spiking Swin Transformer, to extract temporal cues from event streams with low power consumption. Finally, we propose a bio-inspired dynamic interaction mechanism between ANN and SNN sub-networks to align the asynchronous modalities and achieve cross-modality information interaction. The results show that our HDI-Former outperforms state-of-the-art methods and our baselines by a large margin. Our SNN branch achieves comparable performance to the ANN with the same architecture while consuming 10.57×\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$\\times $$\\end{document} and 11.46×\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$\\times $$\\end{document} less energy on the DSEC-Detection and PKU-DAVIS-SOD datasets, respectively. Our code is available at https://github.com/dianzl/hdiformer.",
     "doi": "10.1007/s11263-026-02927-8"
   },
   {
@@ -4805,7 +4805,7 @@
     "year": 2025,
     "title": "Beyond Image Prior: Embedding Noise Prior into Latent Space of Conditional Denoising Transformer",
     "authors": "Yuanfei Huang, Hua Huang 0001",
-    "abstract": null,
+    "abstract": "Existing learning-based denoising methods typically train models to generalize the image prior from large-scale datasets, suffering from the variability in noise distributions encountered in real-world scenarios. In this work, we propose a new perspective on the denoising challenge by highlighting the distinct separation between noise and image priors. This insight forms the basis for our development of conditional optimization framework, designed to overcome the constraints of traditional denoising framework. To this end, we introduce a Locally Noise Prior Estimation (LoNPE) algorithm, which accurately estimates the noise prior directly from a single raw noisy image. This estimation acts as an explicit prior representation of the camera sensor’s imaging environment, distinct from the image prior of scenes. Additionally, we design an auxiliary learnable LoNPE network tailored for practical application to sRGB noisy images. Leveraging the estimated noise prior, we present a novel Conditional Denoising Transformer (Condformer), by incorporating the noise prior into a conditional self-attention mechanism. This integration allows the Condformer to segment the optimization process into multiple explicit subspaces, significantly enhancing the model’s generalization and flexibility. Extensive experimental evaluations on both synthetic and real-world datasets, demonstrate that the proposed method achieves superior performance over current state-of-the-art methods. The source code is available at https://github.com/BNU-ERC-ITEA/Condformer.",
     "doi": "10.1007/s11263-025-02553-w"
   },
   {
@@ -4924,7 +4924,7 @@
     "year": 2025,
     "title": "VLPrompt-PSG: Vision-Language Prompting for Panoptic Scene Graph Generation",
     "authors": "Zijian Zhou 0002, Holger Caesar, Qijun Chen, Miaojing Shi",
-    "abstract": null,
+    "abstract": "Panoptic scene graph generation (PSG) aims at achieving a comprehensive image understanding by simultaneously segmenting objects and predicting relations among objects. However, the long-tail problem among relations leads to unsatisfactory results in real-world applications. Prior methods predominantly rely on vision information or utilize limited language information, such as object or relation names, thereby overlooking the utility of language information. Leveraging the recent progress in Large Language Models (LLMs), we propose to use language information to assist relation prediction, particularly for rare relations. To this end, we propose the Vision-Language Prompting (VLPrompt) model, which acquires vision information from images and language information from LLMs. Then, through a prompter network based on attention mechanism, it achieves precise relation prediction. Our extensive experiments show that VLPrompt significantly outperforms previous state-of-the-art methods on the PSG dataset, proving the effectiveness of incorporating language information and alleviating the long-tail problem of relations. Code is available at https://github.com/franciszzj/VLPrompt.",
     "doi": "10.1007/s11263-025-02564-7"
   },
   {
@@ -15815,7 +15815,7 @@
     "year": 2026,
     "title": "De-biasing Skeleton-Based Action Recognition with Convex Hull Adaptive Shift",
     "authors": "Mengyuan Liu, Yuhang Wen, Yi Zhang, Songtao Wu, Hong Liu, Junsong Yuan, Beichen Ding",
-    "abstract": null,
+    "abstract": "Skeleton sequences can represent both individual actions and multi-entity interactions, encompassing human bodies, hands, objects, and robots. Existing approaches to recognize skeleton-based actions and interactions usually adopt a late fusion strategy, which expects individuals are independent and identically distributed to train a robust weight-shared entity encoder. However, observed entity bias in various skeletal data violates this assumption, leading to suboptimal optimization of backbone models that might produce wrong recognition results. This bias arises from the world coordinate system’s initial configuration, where the choice of origin often creates bias in representation. To this end, we propose a Convex Hull Adaptive Shift based normalization method to reduce Entity bias (CHASE), improving performance across a variety of skeleton-based action and interaction recognition tasks. To adaptively apply plausible shifts to the input skeletons, we formulate a plug-and-play parameterized network that ensures the relocated world origin lies within the skeleton convex hull, which avoids non-convergence by limiting the search space. To further minimize entity bias, we incorporate an auxiliary objective that leverages pair-wise distribution distances to guide network optimization. To support both single- and multi-entity actions, we propose a sub-entity strategy that offers a consistent formulation for both scenarios. Moreover, CHASE demonstrates compatibility with various intra-skeleton modalities, such as bones and velocities, highlighting its adaptability. Essentially, our method works as a normalization approach to reduce entity bias, enabling subsequent classifiers to achieve improved recognition performance across diverse settings. Extensive experiments on seven datasets, including NTU RGB+D, NTU RGB+D 120, H2O, Assembly101, Collective Activity, Volleyball, and HARPER, consistently verify our approach by seamlessly integrating with various backbones and significantly boosting their performance. Our code is publicly available at https://github.com/Necolizer/CHASE.",
     "doi": "10.1007/s11263-026-03037-1"
   },
   {
@@ -15836,7 +15836,7 @@
     "year": 2026,
     "title": "BD-Diff: Generative Diffusion Model for Image Deblurring on Unknown Domains with Blur-Decoupled Learning",
     "authors": "Junhao Cheng, Wei-Ting Chen, Xi Lu, Ming-Hsuan Yang",
-    "abstract": null,
+    "abstract": "Generative diffusion models trained on large-scale datasets have achieved significant progress in image synthesis. In favor of their ability to supplement missing details and generate aesthetically pleasing content, recent works have applied them to image deblurring via training an adapter on blurry-sharp image pairs to provide structural conditions for restoration. However, acquiring substantial realistic paired data is challenging and costly in real-world scenarios. On the other hand, relying solely on synthetic data often results in overfitting, leading to unsatisfactory performance when confronted with unseen blur patterns. To tackle this issue, we propose BD-Diff, a generative-diffusion-based model designed to enhance deblurring performance on unknown domains by decoupling structural features and blur patterns through joint training on three specially designed tasks. We employ two Q-Formers as structural features and blur patterns extractors separately. The features extracted by them will be used for the supervised deblurring task on synthetic data and the unsupervised blur-transfer task by leveraging unpaired blurred images from the target domain simultaneously. We further introduce a reconstruction task to make the structural features and blur patterns complementary. This blur-decoupled learning process enhances the generalization capabilities of BD-Diff when encountering unknown blur patterns. Experiments on real-world datasets demonstrate that BD-Diff effectively removes blur while preserving critical structural details across various challenging scenarios.",
     "doi": "10.1007/s11263-026-03026-4"
   },
   {
@@ -15866,5 +15866,432 @@
     "authors": "Yuanfan Zheng, Jinlin Wu, Wuyang Li, Kailun Yang, Jun Yu, Zhen Chen",
     "abstract": "Universal Domain Adaptive Object Detection (UniDAOD) addresses domain shifts in open-world scenarios without assuming pre-defined shared categories between source and target domains. Despite progress in this field, existing methods rely heavily on thresholding techniques to filter private category samples, which introduces challenges in hyperparameter tuning and handling noisy data. To overcome these limitations, we propose Synergistic Optimization Alignment (SOA), a sampling-free framework that tackles two challenges inherent in UniDAOD: multi-scale discriminator discrepancy and task-dominant gradient conflict. To address the discrepancy among multi-scale discriminators, we propose Multi-Scale Discriminator Alignment (MDA) to adaptively aggregate under-aligned discriminators for shared classes, ensuring consistent feature alignment across scales. To address task-dominant gradient conflicts, we propose Gradient Coordinated Optimization (GCO), which suppresses conflicting domain-alignment gradients and coordinates their magnitudes to prevent domain over-alignment, thereby mitigating private-class interference while preserving beneficial domain-invariant supervision. Extensive experiments on open-set, partial-set, and closed-set domain adaptation benchmarks demonstrate that SOA outperforms state-of-the-art UniDAOD and DAOD methods. Code is available at https://github.com/zyfone/SOA .",
     "doi": "10.1007/s11263-026-03047-z"
+  },
+  {
+    "year": 2026,
+    "title": "Parameter-Efficient Fine-Tuning for Foundation Models",
+    "authors": "Dan Zhang, Tao Feng, Lilong Xue, Yuandong Wang, Yuxiao Dong, Jie Tang",
+    "abstract": "This survey delves into the realm of Parameter-Efficient Fine-Tuning (PEFT) within the context of Foundation Models (FMs). PEFT, a cost-effective fine-tuning technique, minimizes parameters and computational complexity while striving for optimal downstream task performance. FMs, such as GPT, SAM, and FLUX, specialize in language understanding, generative tasks, and multimodal tasks, trained on diverse datasets spanning text, images, and videos. The diversity of FMs guides various adaptation strategies for PEFT. Therefore, this survey aims to provide a comprehensive overview of PEFT techniques applied to diverse FMs and address critical gaps in understanding the techniques, trends, and applications. We start by providing a detailed development of FMs and PEFT. Subsequently, we systematically review the key categories and core mechanisms of PEFT across diverse FMs to offer a comprehensive understanding of trends. We also explore the most recent applications across various FMs to demons trate the versatility of PEFT, shedding light on the integration of systematic PEFT methods with a range of FMs. Furthermore, we identify potential research and development directions for improving PEFTs in the future. This survey provides a valuable resource for both newcomers and experts seeking to understand and use the power of PEFT across FMs. All reviewed papers are listed at Awesome-PEFT.",
+    "doi": "10.1007/s11263-026-03004-w"
+  },
+  {
+    "year": 2026,
+    "title": "High-Fidelity Implicit Text-to-Shape Generation with Voxelized Diffusion",
+    "authors": "Yueqi Duan, Fangfu Liu, Hanyang Wang, Muheng Li, Jiwen Lu, Jie Zhou",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03055-z"
+  },
+  {
+    "year": 2026,
+    "title": "G2S2-IR: Glocal Gaussian Splatting with Surface Awareness for Inverse Rendering",
+    "authors": "Junnan Li, Shengping Zhang, Ru Li, Shunyuan Zheng, Chenyang Wang, Henglu Wei, Xiangyang Ji",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03022-8"
+  },
+  {
+    "year": 2026,
+    "title": "EFC++: Elastic Feature Consolidation with Prototype Re-balancing for Cold Start Exemplar-free Incremental Learning",
+    "authors": "Simone Magistri, Tomaso Trinci, Albin Soutif-Cormerais, Joost van de Weijer, Andrew D. Bagdanov",
+    "abstract": "Exemplar-free Class Incremental Learning (EFCIL) aims to learn from a sequence of tasks without having access to previous task data. In this paper, we consider the challenging Cold Start scenario in which insufficient data is available in the first task to learn a high-quality backbone. This is especially challenging for EFCIL since it requires high plasticity, resulting in feature drift which is difficult to compensate for in the exemplar-free setting. To address this problem, we propose an effective approach to consolidate feature representations by regularizing drift in directions highly relevant to previous tasks while employing prototypes to reduce task-recency bias. Our approach, which we call Elastic Feature Consolidation++ (EFC++), exploits a tractable second-order approximation of feature drift based on a proposed Empirical Feature Matrix (EFM). The EFM induces a pseudo-metric in feature space which we use to regularize feature drift in important directions and to update Gaussian prototypes. In addition, we introduce a post-training prototype re-balancing phase that updates classifiers to compensate for feature drift. This strategy allows to improve over our previous EFC method by mitigating the misalignment between stored prototypes and the evolving feature space. Extensive experimental results on Tiny-ImageNet, ImageNet-Subset, ImageNet-1K, and DomainNet show that EFC++ achieves a strong stability–plasticity trade-off in Cold Start and outperforms recent exemplar-free baselines. Code is available at https://github.com/simomagi/elastic_feature_consolidation .",
+    "doi": "10.1007/s11263-026-03018-4"
+  },
+  {
+    "year": 2026,
+    "title": "Unveiling Representation Expansion: A New Lens on Out-of-Distribution Detection",
+    "authors": "Boxuan Zhang, Jianing Zhu, Zengmao Wang, Tongliang Liu, Bo Du, Bo Han",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03036-2"
+  },
+  {
+    "year": 2026,
+    "title": "UniColorFlow: A Unified Framework for Multimodal-Guided Video Colorization with Consistency Flow",
+    "authors": "Zheng Chang, Lihan Lin, Huan Ouyang, Shuchen Weng, Si Li, Boxin Shi",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03058-w"
+  },
+  {
+    "year": 2026,
+    "title": "DLCL: Deep Learning-Enabled Cooperative Localization for UAV-UGV Team with Adaptive Perception Recovery",
+    "authors": "Veera Venkata Ram Murali Krishna Ra Muvva, Yogesh Chawla, Kunjan Theodore Joseph, Ankita Kalra, Marilyn Wolf, Santosh Pitla",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03028-2"
+  },
+  {
+    "year": 2026,
+    "title": "Progressive Focused Transformer for Image Restoration",
+    "authors": "Wei Long, Jinhua Zhang, Xingyu Zhou, Leheng Zhang, Shuhang Gu",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03053-1"
+  },
+  {
+    "year": 2026,
+    "title": "DOME: A Decoupled Offline-Online Memory Externalization Framework for Interpretable Domain-Generalized Face Anti-spoofing",
+    "authors": "Yanting Wu, Ajian Liu, Siyu Xia, Yunlong Wang, Xinyang Song, Jie Gui, Zhenan Sun, Qi Li",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03010-y"
+  },
+  {
+    "year": 2026,
+    "title": "SEE: See Everything Every Time - Adaptive Brightness Adjustment for Broad Light Range Images via Events: A Large Scale Dataset and a Novel Lightweight Framework",
+    "authors": "Yunfan Lu, Xiaogang Xu, Hao Lu, Yanlin Qian, Pengteng Li, Huizai Yao, Bin Yang, Junyi Li, Qianyi Cai, Weiyu Guo, Hui Xiong",
+    "abstract": "Event cameras, with a high dynamic range exceeding 120 dB , significantly outperform traditional embedded cameras, robustly recording detailed changing information under various lighting conditions, including both low- and high-light situations. However, recent research on utilizing event data has primarily focused on low-light image enhancement, neglecting image enhancement and brightness adjustment across a broader range of lighting conditions, such as normal or high illumination. Based on this, we propose a novel research question: how to employ events to enhance and adaptively adjust the brightness of images captured under broad lighting conditions? To investigate this question, we first collected a new dataset, SEE-600K, consisting of 610,126 images and corresponding events across 202 scenarios, each featuring an average of four lighting conditions with over a 1000-fold variation in illumination. Subsequently, we propose a framework that effectively utilizes events to smoothly adjust image brightness through the indication of custom brightness via user-introduced prompts. Our framework captures color through sensor patterns, uses cross-attention to model events as a brightness dictionary, and adjusts the image’s dynamic range to form a broad light-range representation (BLR), which is then decoded at the pixel level based on the user-introduced brightness prompt. Experimental results demonstrate that our method not only performs well on the low-light enhancement dataset but also shows robust performance on broader light-range image enhancement using the SEE-600K dataset. Additionally, our approach enables pixel-level brightness adjustment, providing flexibility for post-processing and inspiring more imaging applications. The dataset and source code are publicly available at: https://github.com/yunfanLu/SEE.",
+    "doi": "10.1007/s11263-026-03033-5"
+  },
+  {
+    "year": 2026,
+    "title": "Fix Your Downsampling ASAP! Aliasing and Sinc Artifact Free Pooling in the Fourier Domain",
+    "authors": "Julia Grabinski, Steffen Jung, Janis Keuper, Margret Keuper",
+    "abstract": "Convolutional Neural Networks (CNNs) are successful in various computer vision tasks. From an image and signal processing point of view, this success is counter-intuitive, as the inherent spatial pyramid design of most CNNs is apparently violating basic signal processing laws, i.e. the Sampling Theorem in their downsampling operations. This issue has been broadly neglected until recent work in the context of adversarial attacks and distribution shifts showed that there is a strong correlation between the vulnerability of CNNs and aliasing artifacts induced by bandlimit-violating downsampling. As a remedy, we propose an alias-free downsampling operation in the frequency domain, denoted Frequency Low Cut Pooling (FLC Pooling) which we further extend to Aliasing and Sinc Artifact-free Pooling (ASAP) . ASAP is alias-free and removes further artifacts from sinc-interpolation. Our experimental evaluation on ImageNet-1k, ImageNet-C and CIFAR datasets on various CNN architectures demonstrates that networks using FLC Pooling and ASAP as downsampling methods learn more stable features as measured by their robustness against common corruptions and adversarial attacks, while maintaining a clean accuracy similar to the respective baseline models.",
+    "doi": "10.1007/s11263-026-03005-9"
+  },
+  {
+    "year": 2026,
+    "title": "Controllable Human-Object Interaction Synthesis via Progressive and Invertible Condition Injection",
+    "authors": "Xiaotong Lin, Tianming Liang, Heng Li, Jiangxin Sun, Jianguo Zhang, Jian-Fang Hu",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03052-2"
+  },
+  {
+    "year": 2026,
+    "title": "AdaEA++: Enhanced Adaptive Model Ensemble Adversarial Attack for Boosting Adversarial Transferability",
+    "authors": "Bin Chen, Jia-Li Yin, Bo-Hao Chen, Ximeng Liu, Yuanlong Yu",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03054-0"
+  },
+  {
+    "year": 2026,
+    "title": "DreamMix: Decoupling Object Attributes for Enhanced Editability in Customized Image Inpainting",
+    "authors": "Yicheng Yang, Pengxiang Li, Lu Zhang, Liqian Ma, Ping Hu, Siyu Du, Yunzhi Zhuge, Xu Jia, Huchuan Lu",
+    "abstract": "Subject-driven image inpainting has recently gained prominence in image editing with the rapid advancement of diffusion models. Beyond image guidance, recent studies have explored incorporating text guidance to achieve identity-preserved yet locally editable object inpainting. However, these methods still suffer from identity overfitting, where original attributes remain entangled with target textual instructions. To overcome this limitation, we propose DreamMix, a diffusion-based framework adept at inserting target objects into user-specified regions while concurrently enabling arbitrary text-driven attribute modifications. DreamMix introduces three key components: (i) an Attribute Decoupling Mechanism (ADM) that synthesizes diverse attribute-augmented image-text pairs to mitigate overfitting; (ii) a Textual Attribute Substitution (TAS) module that suppresses residual source attributes via orthogonal decomposition, and (iii) a Disentangled Inpainting Framework (DIF) that separates local generation from global harmonization. Extensive experiments across multiple inpainting backbones demonstrate that DreamMix achieves a superior balance between identity preservation and attribute editability across diverse applications, including object insertion, attribute editing, and small object inpainting.",
+    "doi": "10.1007/s11263-026-03066-w"
+  },
+  {
+    "year": 2026,
+    "title": "RDD: Improving Structure from Motion with a Robust Feature Detector and Descriptor",
+    "authors": "Gonglin Chen, Tianwen Fu, Haiwei Chen, Wenbin Teng, Hanyuan Xiao, Yajie Zhao",
+    "abstract": "Robust feature detection and description are core components of 3D vision pipelines, yet they remain challenging under large viewpoint, scale, and appearance changes. Recent methods have improved local feature learning, but many still rely on convolutional operators whose local receptive fields limit their ability to capture long-range geometric cues. We present Robust Deformable Detector (RDD), a robust keypoint detector and descriptor that uses deformable transformers to capture global context and geometric invariance. Deformable attention allows the descriptor branch to focus on a sparse set of informative locations, reducing the effective search space while preserving the ability to model long-range relationships. We also collect an Air-to-Ground dataset for training and evaluation, complementing the standard MegaDepth dataset. RDD outperforms state-of-the-art keypoint detection and description methods in sparse matching and also supports semi-dense matching. To support comprehensive evaluation, we introduce two challenging benchmarks: MegaDepth-View, which emphasizes large viewpoint and scale variations, and Air-to-Ground, which targets cross-altitude matching for 3D reconstruction. Project page: https://xtcpete.github.io/rdd/ .",
+    "doi": "10.1007/s11263-026-03061-1"
+  },
+  {
+    "year": 2026,
+    "title": "HR-INR: Continuous Space-Time Video Super-Resolution via Event Camera",
+    "authors": "Yunfan Lu, Yusheng Wang, Zipeng Wang, Pengteng Li, Bin Yang, Hui Xiong",
+    "abstract": "Continuous space-time video super-resolution (C-STVSR) aims to simultaneously enhance video resolution and frame rate at an arbitrary scale. Recently, implicit neural representation (INR) has been applied to video restoration, representing videos as implicit fields that can be decoded at an arbitrary scale. However, existing INR-based C-STVSR methods typically rely on only two frames as input, leading to insufficient inter-frame motion information. Consequently, they struggle to capture fast, complex motion and long-term dependencies (spanning more than three frames), hindering their performance in dynamic scenes. In this paper, we propose a novel C-STVSR framework, named HR-INR, which captures both h olistic dependencies and r egional motions based on INR. It is assisted by an event camera – a novel sensor renowned for its high temporal resolution and low latency. To fully utilize the rich temporal information from events, we design a feature extraction consisting of (1) a regional event feature extractor – taking events as inputs via the proposed event temporal pyramid representation to capture the regional nonlinear motion and (2) a holistic event-frame feature extractor for long-term dependence and continuity motion. We then propose a novel INR-based decoder with spatiotemporal embeddings to capture long-term dependencies with a larger temporal perception field. We validate the effectiveness and generalization of our method on four datasets (both simulated and real data), showing the superiority of our method. The project page is available at https://github.com/yunfanLu/HR-INR .",
+    "doi": "10.1007/s11263-026-03034-4"
+  },
+  {
+    "year": 2026,
+    "title": "Privacy Leakage on DNNs: A Survey of Model Inversion Attacks and Defenses",
+    "authors": "Hao Fang, Yixiang Qiu, Hongyao Yu, Wenbo Yu, Jiawei Kong, Baoli Chong, Bin Chen, Xuan Wang, Shu-Tao Xia, Ke Xu",
+    "abstract": "Deep Neural Networks (DNNs) have revolutionized various domains with their exceptional performance across numerous applications. However, Model Inversion (MI) attacks, which disclose private information about the training dataset by abusing access to the trained models, have emerged as a formidable privacy threat. Given a trained network, these attacks enable adversaries to reconstruct high-fidelity data that closely aligns with the private training samples, posing significant privacy concerns. Despite the rapid advances in the field, we lack a comprehensive and systematic overview of existing MI attacks and defenses. To fill this gap, this paper thoroughly investigates this realm and presents a holistic survey. Firstly, our work briefly reviews early MI studies on traditional machine learning scenarios. We then elaborately analyze and compare numerous recent attacks and defenses on Deep Neural Networks (DNNs) across multiple modalities and learning tasks. By meticulously analyzing their distinctive features, we summarize and classify these methods into different categories and provide a novel taxonomy. Finally, this paper discusses promising research directions and presents potential solutions to open issues. To facilitate further study on MI attacks and defenses, we have implemented an open-source model inversion toolbox on GitHub.",
+    "doi": "10.1007/s11263-026-03049-x"
+  },
+  {
+    "year": 2026,
+    "title": "Efficient Test-Time Prompt Tuning for Vision-Language Models",
+    "authors": "Yuhan Zhu, Guozhen Zhang, Chen Xu, Haocheng Shen, Xiaoxin Chen, Gangshan Wu, Limin Wang",
+    "abstract": "Vision-language models have showcased impressive zero-shot classification capabilities when equipped with suitable text prompts. Previous studies have shown the effectiveness of test-time prompt tuning; however, these methods often require per-image prompt adaptation during inference, which is computationally intensive and limits scalability and deployment. To address this issue, we introduce a novel framework: Self-supervised learning for efficient Test-time Prompt Tuning (Self-TPT). The key feature of Self-TPT is its shift to efficient predefined class adaptation through self-supervision, thereby avoiding the computation-heavy per-image adaptation at inference. Self-TPT starts by co-training the self-supervised and supervised tasks using source data, and then applies the self-supervision exclusively for new class understanding before making predictions. Specifically, we propose Contrastive Prompt Learning (CPT) as the core task for self-supervision. CPT is designed to minimize the intra-class distances while enhancing inter-class distinguishability via contrastive learning. Empirical evidence suggests that CPT can partially mimic supervised learning in terms of gradients, providing a plausible explanation for its effectiveness. Motivated by this finding, we introduce a gradient matching loss to explicitly enhance gradient similarity. We evaluated Self-TPT across three challenging zero-shot benchmarks. The results consistently show that Self-TPT not only significantly reduces inference costs but also achieves state-of-the-art performance, effectively balancing the efficiency-efficacy trade-off.",
+    "doi": "10.1007/s11263-026-03019-3"
+  },
+  {
+    "year": 2026,
+    "title": "Ultra-High-Definition Image Restoration via Prior-driven Patch Bilateral Compensation",
+    "authors": "Zeyu Xiao, Yang Zhao, Yu Liu, Zhao Zhang, Wei Jia",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03059-9"
+  },
+  {
+    "year": 2026,
+    "title": "CLIDD: Cross-Layer Independent Deformable Description for Efficient and Discriminative Local Feature Representation",
+    "authors": "Haodi Yao, Fenghua He, Ning Hao, Yao Su",
+    "abstract": "Robust local feature representations are essential for spatial intelligence tasks such as robot navigation and augmented reality. Establishing reliable correspondences requires descriptors that provide both high discriminative power and computational efficiency. To address this, we introduce Cross-Layer Independent Deformable Description (CLIDD), a method that achieves superior discriminability by sampling directly from independent feature hierarchies. This approach utilizes learnable offsets to capture fine-grained structural details across scales, without ever constructing a unified dense feature map, eliminating the memory and computation overhead of building a full-scale representation for a sparse sampling process. The per-keypoint per-layer offsets further break interpolation-induced correlation, preserving descriptor discriminability even at high keypoint densities. To ensure real-time performance, we implement a hardware-aware kernel fusion strategy that maximizes inference throughput. Furthermore, we develop a scalable framework that integrates lightweight architectures with a training protocol leveraging both metric learning and knowledge distillation. This scheme generates a wide spectrum of model variants optimized for diverse deployment constraints. Extensive evaluations demonstrate that our approach achieves superior matching accuracy and exceptional computational efficiency simultaneously. Specifically, the ultra-compact variant matches the precision of SuperPoint while utilizing only 0.004M parameters, achieving a 99.7% reduction in model size. Furthermore, our high-performance configuration outperforms a broad range of current state-of-the-art methods, including high-capacity DINOv2-based frameworks, while exceeding 200 FPS on edge devices. These results demonstrate that CLIDD delivers high-precision local feature matching with minimal computational overhead, providing a robust and scalable solution for real-time spatial intelligence tasks.",
+    "doi": "10.1007/s11263-026-03063-z"
+  },
+  {
+    "year": 2026,
+    "title": "MC-PanDA++: Simpler, Stronger, and More Robust Domain-Adaptive Panoptic Segmentation",
+    "authors": "Ivan Martinović, Josip Šarić, Yuki M. Asano, Siniša Šegvić",
+    "abstract": "Unsupervised domain adaptation (UDA) reduces the annotation burden in panoptic segmentation by leveraging a cost-effectively labeled source domain (e.g., synthetic) and an unlabeled target domain to bridge the distribution gap. Existing panoptic UDA methods rely on teacher-student consistency learning built upon suboptimal per-pixel segmentation architectures. In contrast, state-of-the-art mask transformers are rarely adopted due to their pronounced vulnerability to confirmation bias in consistency learning, where erroneous teacher predictions are reinforced during training. Our earlier approach, MC-PanDA (Martinović et al., 2024), mitigates this issue through fine-grained confidence estimation, which suppresses gradients from unreliable masks while sampling informative yet reliable locations for loss computation. However, this method entails a complex multi-stage training and requires careful hyperparameter tuning. This work presents MC-PanDA++, which addresses these limitations by introducing: (i) self-supervised vision encoders that provide a stronger and more robust initialization, further reducing the reliance on human annotations, (ii) per-class, self-adapting mask-wide loss scaling that stabilizes training and enables the use of a single set of hyperparameters across domains, and (iii) a single-stage training pipeline that significantly decreases overall conceptual complexity. Together, these improvements result in a conceptually simpler, better-performing, and more robust method for domain-adaptive panoptics. We will release the source code and checkpoints.",
+    "doi": "10.1007/s11263-026-03046-0"
+  },
+  {
+    "year": 2026,
+    "title": "Boundary-Aware Model with Deformable Feature Warping for Sparse-View Reconstruction",
+    "authors": "Liying Yang, Yongqiang Zhang, Chen Liu, Lincheng Li, Xin Yu, Yanyan Liang",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03060-2"
+  },
+  {
+    "year": 2026,
+    "title": "Blurring Modal Boundaries: A Unified Survey from Single- to Multi-modal Person Re-ldentification",
+    "authors": "Xiao Wang, Bing Wang, Bin Yang, Cuiqun Chen, Xin Xu, Mang Ye",
+    "abstract": "Person re-identification (ReID) serves as a critical component in intelligent surveillance systems, aiming to match identities across disjoint camera networks. While traditional methods primarily rely on single-modal RGB imagery, they are often constrained by environmental challenges such as low illumination and occlusion. To overcome these limitations, the field is rapidly evolving toward cross-modal and multi-modal paradigms. This survey presents a comprehensive overview of this transition, systematically reviewing key cross-modal tasks including visible-infrared (VI-ReID), text-image (TI-ReID), sketch-based (Sketch-ReID), and the emerging Non-Line-of-Sight (NLOS) ReID, which extends perception beyond direct visibility. Furthermore, we examine tri-spectral and multi-modal fusion ReID, discussing how complementary information from diverse sensors enhances robustness. Beyond summarizing datasets, challenges, and methodologies, we propose a Transformer-based baseline framework for visible-infrared ReID, designed to effectively capture modality-invariant features. Finally, based on the current landscape, we outline several promising directions for future research.",
+    "doi": "10.1007/s11263-026-03069-7"
+  },
+  {
+    "year": 2026,
+    "title": "Semantic Privacy Protection with Utility Preservation for 3D Point Clouds",
+    "authors": "Jinchang Zhang, Jiakai Lin, David Crandall, Guoyu Lu",
+    "abstract": "Point cloud data face serious semantic privacy risks during acquisition, transmission, and cross-institutional sharing. Existing methods mostly rely on geometric perturbation or destructive encryption, which can reduce the recognizability of the original class but often impair downstream usability. This paper proposes a class-transfer-based semantic encryption framework for point clouds, aiming to conceal original class information while preserving task utility and supporting authorized recovery. Specifically, we construct a unified latent space with a shared-backbone Normalizing Flow, and combine LoRA and FiLM to achieve parameter-efficient class-conditional adaptation. We further introduce diffusion-guided flow alignment to regularize the latent distribution, construct an energy-based category transition graph, and obtain an optimal class-transfer table through global matching. Then, a latent-space Neural ODE continuously evolves source-class latents into target-class latents, which are decoded into target-class point clouds through the inverse flow. We adopt attacker-oriented metrics, including New-Class Recognition Rate (NCRR), Original-Class Leakage Rate (OCLR), and Original Label Recovery Rate (OLRR), to evaluate privacy and utility. Experiments on classification and segmentation benchmarks show that the proposed method achieves controllable semantic transformation, effectively reduces original-class semantic leakage, preserves downstream learnability in the protected domain, and supports reliable authorized reconstruction.",
+    "doi": "10.1007/s11263-026-03021-9"
+  },
+  {
+    "year": 2026,
+    "title": "RS-vHeat+: An Efficient Remote Sensing Foundation Model Guided by Multi-Modal Fine-Grained Visual Semantics via Heat Conduction",
+    "authors": "Huiyang Hu, Peijin Wang, Hanbo Bi, Yingchao Feng, Wenhui Diao, Ziqi Zhang, Kun Fu, Xian Sun",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03070-0"
+  },
+  {
+    "year": 2026,
+    "title": "Socialality Anchors: Towards Group-Bounded Trajectory Prediction",
+    "authors": "Ziqian Zou, Conghao Wong, Qinmu Peng, Xinge You",
+    "abstract": "Trajectory prediction is a key component for understanding human behavior patterns in dynamic scenes. Researchers have devoted substantial efforts to modeling social interactions, especially group-wise interactions, since group membership often reflects shared intention, coordinated motion, and stable mutual adaptation, thus providing a persistent and semantically meaningful social prior for forecasting. However, existing group modeling methods may rely on a fixed threshold and infer groups mainly from agents’ relative positions within the observation window, overlooking the fact that grouping rules should be agent-specific, temporally coherent, and context-adaptive across diverse personalities, culturalities, and evolving interaction contexts. Inspired by human social perception that alternates between interpersonal distance in boundary-sensitive situations and relative speed consistency in dynamic interactions, we propose Socialality, a human-inspired trajectory prediction framework with interpretable socialality anchors and an extended grouping window for stable, context-aware grouping inference. Concretely, Socialality introduces a duo-scalar-controlled grouping kernel Socialality that jointly leverages historical observations and short-term future trajectory previews to learn agent-specific grouping rules, and employs a group-wise perception mechanism to model in-group and out-of-group interactions in an intuitive and explainable manner. Furthermore, we conduct extensive experiments on standard benchmarks to demonstrate the performance gains of Socialality, and provide qualitative analyses and statistical studies of anchor distributions to verify the interpretability and stability of the proposed socialality anchors. Code repo: https://github.com/LivepoolQ/Socialality",
+    "doi": "10.1007/s11263-026-03076-8"
+  },
+  {
+    "year": 2026,
+    "title": "SLCA++: Unleash the Power of Sequential Fine-Tuning for Continual Learning with Pre-training",
+    "authors": "Gengwei Zhang, Liyuan Wang, Guoliang Kang, Ling Chen, Yunchao Wei",
+    "abstract": "With the growing use of pre-trained models in modern vision systems, continual learning with pre-training (CLPT) has become a practically important paradigm for learning sequential downstream tasks while preserving and reusing pre-trained knowledge. While many recent CLPT methods rely on task-specific prompts or other auxiliary modules, we revisit a simpler and more fundamental baseline: sequential fine-tuning (Seq FT). We identify the key challenge for Seq FT in CLPT is progressive overfitting, where overly aggressive representation updates impair the transferability of pre-trained knowledge, while disjointly learned classifiers introduce additional bias across tasks. To address the challenge, we first present an optimization-oriented analysis based on Local Compatibility Property (LCP) for the learning of representation, which leads to Slow Learner for stabilizing representation updates over time. Specifically, Slow Learner improves optimization stability by controlling the learning rate of the representation layer, together with an additional symmetric cross-entropy objective to better balance gradient contributions from different training samples. We further show that Seq FT remains effective with substantially fewer updated parameters when backbone-native lightweight parameters are jointly optimized with pre-train-derived low-rank updates to attention and feed-forward weights. To resolve the remaining discrepancy between disjoint classifiers, a Classifier Alignment is introduced, which post-hoc calibrates the classifier using class-wise feature statistics. Extensive experiments across class-incremental and domain-incremental benchmarks, under both supervised and self-supervised pre-training, show that our method (SLCA++) consistently yields large gains over plain Seq FT baseline, while substantially narrowing the gap to joint training. These results suggest that carefully stabilized sequential fine-tuning can serve as a simple, strong, and informative baseline for continual learning with pre-training. Our code is available at: https://github.com/GengDavid/SLCA.",
+    "doi": "10.1007/s11263-026-03041-5"
+  },
+  {
+    "year": 2026,
+    "title": "CorrCLIPv2: Harnessing Unlabeled Images for Open-Vocabulary Semantic Segmentation",
+    "authors": "Dengke Zhang, Fagui Liu, Quan Tang, C. L. Philip Chen",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03027-3"
+  },
+  {
+    "year": 2026,
+    "title": "Efficient Time-Fractional Diffusion Network for Under-Display ToF Imaging and Beyond",
+    "authors": "Xin Qiao, Xing Wei, Matteo Poggi, Da-Yan Liu, He Kong, Chenyang Ge, Stefano Mattoccia, Nanning Zheng",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03074-w"
+  },
+  {
+    "year": 2026,
+    "title": "Benchmarking Large Language Models for Video Quality Assessment: Structured Perceptual Prompting and Refinement",
+    "authors": "Runze Hu, Mingxuan Li, Yutao Liu, Haoran Duan, Yan Zhang",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03068-8"
+  },
+  {
+    "year": 2026,
+    "title": "GoClick: Lightweight Element Grounding Model for Autonomous GUI Interaction",
+    "authors": "Hongxin Li, Yuntao Chen, Zhaoxiang Zhang",
+    "abstract": "Graphical User Interface (GUI) element grounding−precisely locating elements on screenshots based on natural language instructions−is fundamental for agents interacting with GUIs. Deploying this capability directly on resource-constrained devices like mobile phones is increasingly critical for GUI agents requiring low latency. However, this goal faces a significant challenge, as current visual grounding methods typically employ large vision-language model (VLM) (≥2.5\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$\\ge 2.5$$\\end{document}B parameters), making them impractical for on-device execution due to memory and computational constraints. To address this, this paper introduces GoClick, a lightweight GUI element grounding VLM with only 230 M parameters that achieves excellent visual grounding accuracy, even on par with significantly larger models. Simply downsizing existing decoder-only VLMs is a straightforward way to design a lightweight model, but our experiments reveal that this approach yields suboptimal results. Instead, we select an encoder-decoder architecture, which outperforms decoder-only alternatives at small parameter scales for GUI grounding tasks. Additionally, the limited capacity of small VLMs encourages us to develop a Progressive Data Refinement pipeline that utilizes task type filtering and data ratio adjustment to extract a high-quality 3.8M-sample core set from a 10.8M raw dataset. Training GoClick using this core set brings notable grounding accuracy gains. Our experiments show that GoClick excels on multiple GUI element grounding benchmarks while maintaining a small size and high inference speed. GoClick also enhances GUI agent performance when integrated into a device-cloud collaboration framework, where GoClick helps cloud-based task planners perform precise element localization and achieve higher success rates. We hope our method serves as a meaningful exploration within the GUI agent community.",
+    "doi": "10.1007/s11263-026-03031-7"
+  },
+  {
+    "year": 2026,
+    "title": "LLM-Powered Query Expansion for Enhancing Boundary Prediction in Language-Driven Action Localization",
+    "authors": "Zirui Shang, Xinxiao Wu, Shuo Yang",
+    "abstract": "Language-driven action localization in videos requires not only semantic alignment between language query and video segment, but also prediction of action boundaries. However, the language query primarily describes the main content of an action and usually lacks specific details of action start and end boundaries, which increases the subjectivity of manual boundary annotation and leads to boundary uncertainty in training data. In this paper, on one hand, we propose to expand the original query by generating textual descriptions of the action start and end boundaries through LLMs, which can provide more detailed boundary cues for localization and thus reduce the impact of boundary uncertainty. On the other hand, to enhance the tolerance to boundary uncertainty during training, we propose to model probability scores of action boundaries by calculating the semantic similarities between frames and the expanded query as well as the temporal distances between frames and the annotated boundary frames. They can provide more consistent boundary supervision, thus improving the stability of training. Our method is model-agnostic and can be seamlessly and easily integrated into any existing models of language-driven action localization in an off-the-shelf manner. Experimental results on several datasets demonstrate the effectiveness of our method.",
+    "doi": "10.1007/s11263-026-03083-9"
+  },
+  {
+    "year": 2026,
+    "title": "Event-Guided Decomposition from a Long-Exposure Nighttime Snapshot into Video Sequence",
+    "authors": "Jianbo Cao, Yuqi Han, Siming Zheng, Guilin Xu, Qiang Zhang, Jinli Suo",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03057-x"
+  },
+  {
+    "year": 2026,
+    "title": "Test-Time Computing for Referring Multimodal Large Language Models",
+    "authors": "Mingrui Wu, Hao Chen, Jiayi Ji, Xiaoshuai Sun, Zhiyuan Liu, Liujuan Cao, Ming-Ming Cheng, Rongrong Ji",
+    "abstract": "We propose ControlMLLM++, a novel test-time adaptation framework that injects learnable visual prompts into frozen multimodal large language models (MLLMs) to enable fine-grained region-based visual reasoning without any model retraining or fine-tuning. Leveraging the insight that cross-modal attention maps intrinsically encode semantic correspondences between textual tokens and visual regions, ControlMLLM++ optimizes a latent visual token modifier during inference via a task-specific energy function to steer model attention towards user-specified areas. To enhance optimization stability and mitigate language prompt biases, ControlMLLM++ incorporates an improved optimization strategy (Optim++) and a prompt debiasing mechanism (PromptDebias). Supporting diverse visual prompt types including bounding boxes, masks, scribbles, and points, our method demonstrates strong out-of-domain generalization and interpretability. The code is available at https://github.com/mrwu-mac/ControlMLLM.",
+    "doi": "10.1007/s11263-026-03100-x"
+  },
+  {
+    "year": 2026,
+    "title": "Multi-View Optimal Transport for Multi-View Crowd Localization and Tracking",
+    "authors": "Kaiyi Zhang, Qi Zhang, Jixuan Chen, Antoni B. Chan, Hui Huang",
+    "abstract": "Multi-view crowd localization and tracking aim to predict the ground-plane positions of all individuals in the scene and estimate their trajectories over time. Existing multi-view localization methods typically rely on Gaussian-smoothed density map supervision, whose inherent ambiguity in crowded regions may blur local peaks and degrade localization accuracy. In this work, we introduce a multi-view optimal transport framework that directly supervises point-level predictions on the ground plane, thereby avoiding the limitations of density map regression. Specifically, we propose a Mahalanobis distance-based multi-view optimal transport loss (M-MVOT), whose transport cost incorporates view ray direction and object-to-camera distance within a Mahalanobis formulation, with the direction guiding the ellipse orientation and the distance modulating the cost magnitude. For multi-view tracking, we first extend the proposed localization framework in a tracking-by-detection manner (MVOT-TBD). To further improve performance, we introduce a tracking-specific optimal transport loss (MVOT-Track) that explicitly supervises inter-frame association. Extensive experiments demonstrate that the proposed optimal transport-based framework consistently outperforms density map-based localization and tracking on multiple multi-view crowd datasets.",
+    "doi": "10.1007/s11263-026-03093-7"
+  },
+  {
+    "year": 2026,
+    "title": "Learning Complex Scene Segmentation from Noisy Label",
+    "authors": "Jin Zhang, Ruiheng Zhang, Zhe Cao, Lixin Xu, Nian Liu, Rao Muhammad Anwer",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03067-9"
+  },
+  {
+    "year": 2026,
+    "title": "LexSign: Learning Sign Language from Lexical Descriptions",
+    "authors": "Yuecong Min, Honggang Zou, Peiqi Jiao, Xilin Chen",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03075-9"
+  },
+  {
+    "year": 2026,
+    "title": "PASG-RoboKeyBench: A Closed-Loop Automated Framework and Benchmark for Operation Primitive Extraction and Semantic Anchoring in Robotic Manipulation",
+    "authors": "Yifan Zheng, Siyu Pan, Zhihao Zhu, Yibin Liu, Yiheng Ge, Yuhao Zhang, Zanxin Chen, Congsheng Xu, Xiaokang Yang, Yaohui Jin, Yao Mu",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03056-y"
+  },
+  {
+    "year": 2026,
+    "title": "Zero-Shot Domain Generalization via Domain Prompt Learning",
+    "authors": "Shiming Chen, Shuhuang Chen, Salman Khan, Fahad Shahbaz Khan",
+    "abstract": "Domain generalization (DG) aims to improve the generalization of the model to any unseen domains. Targeting this goal, existing DG methods mainly focus on learning domain-invariant features or prompts from the given source domains. However, these methods rely on source-domain data, and collecting and annotating large-scale single- or multi-source datasets is often infeasible, limiting the practical applicability of DG. To tackle this challenge, we propose Domain Prompt Learning (DoP), a method built on a large vision-language model (e.g., CLIP) for zero-shot domain generalization, which recognizes unseen classes in unseen target domains without access to source-domain data. DoP essentially learns the target domain knowledge via prompt both in text and visual modalities to overcome the domain shift in text-visual modalities under the test-time adaptation formulation. Specifically, DoP first takes text domain learning (TDL) to simulate various distribution shifts by learning diverse style tokens implicitly in the text space with inter-style diversity loss and intra-style consistency loss. Subsequently, DoP employs visual domain learning (VDL) to further refine the target-domain-relevant style token generated by TDL by making use of the test visual data with self-supervised learning. Extensive experiments on popular DG benchmark datasets (e.g., PACS, VLCS, OfficeHome, and DomainNet) and ImageNet show that our DoP consistently outperforms the state-of-the-art DG approaches. Codes are available at: https://github.com/shiming-chen/DoP.",
+    "doi": "10.1007/s11263-026-03088-4"
+  },
+  {
+    "year": 2026,
+    "title": "Cross3DReg: A Real-world Cross-source Point Cloud Registration Benchmark",
+    "authors": "Zongyi Xu, Zhongpeng Lang, Yilong Chen, Shanshan Zhao, Xiaoshui Huang, Sean Bin Yang, Yan Zhang, Qianni Zhang, Xinbo Gao",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03095-5"
+  },
+  {
+    "year": 2026,
+    "title": "BCP3D: Robust 3D Object Tracking Using Brain-Inspired Complementary-Pathway for Challenging Scenarios",
+    "authors": "Lijian Wang, Taoyi Wang, Xiangru Chen, Yuguo Chen, Yihan Lin, Yapeng Meng, Rong Zhao, Luping Shi",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03089-3"
+  },
+  {
+    "year": 2026,
+    "title": "Synergizing Disentangled Representation and Split Federated Learning to Break Centralized Bottlenecks in Gaze Estimation",
+    "authors": "Yunlong Wang, Zhengquan Luo, Kunbo Zhang, Zhenan Sun, Zhaofeng He, Dacheng Tao, Tieniu Tan",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03084-8"
+  },
+  {
+    "year": 2026,
+    "title": "Eyegent: Visual Attention Orchestration on Concepts",
+    "authors": "Alessandro D’Amelio, Sabrina Patania, Luca Annese, Giuseppe Boccignone",
+    "abstract": "Where a human looks is not random, nor is it merely a reflex to visual salience. It is a decision shaped by goals, constrained by language, and driven by the need to resolve uncertainty. We propose Eyegent , an active vision agent built on this premise: that visual search is best understood as sequential Bayesian inference over semantically grounded hypotheses, with fixations serving as epistemic actions. Given an image and a natural-language query, Eyegent constructs a discrete hypothesis space of candidate segmentation masks, maintains an explicit posterior belief distribution, and selects each fixation to maximise expected information gain—updating beliefs via vision–language model verification and terminating when uncertainty falls below a principled risk threshold. We formalise this process as Bayesian Active Semantic Grounding (BASG), a computational-level account that provides formal guarantees on belief concentration, entropy reduction, and bounded decision risk. The framework is neurobiologically grounded in the large-scale network organisation of the human brain, with the Salience Network identified as the dynamic orchestrator of semantic, inferential, and oculomotor processes. Critically, Eyegent requires no gaze supervision and no task-specific training: it is zero-shot, modular, and built entirely from off-the-shelf components. Evaluated on RefCOCO-Gaze and AiR-D, two benchmarks coupling language-driven visual tasks with human eye-tracking ground truth, Eyegent achieves competitive or state-of-the-art performance among zero-shot methods across semantic, spatial, and structural scanpath metrics, and approaches supervised baselines on several dimensions. The result is a system that does not merely predict where humans look, but generates scanpaths for the same reason humans generate them: to find out.",
+    "doi": "10.1007/s11263-026-03042-4"
+  },
+  {
+    "year": 2026,
+    "title": "$${\\text {VLScene}}^{++}$$: Enhancing 3D Semantic Scene Completion via VLM Discrepancy-Aware Semantic Distillation and Sparse–Dense Hybrid Awareness",
+    "authors": "Meng Wang, Yujie Xue, Jijiang Liu, Ruihui Li, Zhuo Tang, Kenli Li",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03050-4"
+  },
+  {
+    "year": 2026,
+    "title": "TokLIP: Marry Visual Tokens to CLIP for Multimodal Comprehension and Generation",
+    "authors": "Haokun Lin, Teng Wang, Yixiao Ge, Yuying Ge, Zhichao Lu, Ying Wei, Qingfu Zhang, Zhenan Sun, Ying Shan",
+    "abstract": "Pioneering token-based works such as Chameleon and Emu3 have established a foundation for multimodal unification but face challenges of high training computational overhead and limited comprehension performance due to a lack of high-level semantics. In this paper, we introduce TokLIP, a visual tokenizer that enhances comprehension by semanticizing vector-quantized (VQ) tokens and incorporating CLIP-level semantics while enabling end-to-end multimodal autoregressive training with standard VQ tokens. TokLIP integrates a low-level discrete VQ tokenizer with a ViT-based token encoder to capture high-level continuous semantics. Unlike previous approaches (e.g., VILA-U) that discretize high-level features, TokLIP disentangles training objectives for comprehension and generation, allowing the direct application of advanced VQ tokenizers without the need for tailored quantization operations. Our empirical results demonstrate that TokLIP achieves exceptional data efficiency, empowering visual tokens with high-level semantic understanding while enhancing low-level generative capacity, making it well-suited for autoregressive Transformers in both open-world comprehension and generation tasks. The code and models are available at https://github.com/TencentARC/TokLIP .",
+    "doi": "10.1007/s11263-026-03081-x"
+  },
+  {
+    "year": 2026,
+    "title": "Inst-Inpaint: Instructing to Remove Objects with Diffusion Models",
+    "authors": "Ahmet Burak Yildirim, Vedat Baday, Erkut Erdem, Aykut Erdem, Aysegul Dundar",
+    "abstract": "Image inpainting task refers to erasing unwanted pixels from images and filling them in a semantically consistent and realistic way. Traditionally, the pixels that are wished to be erased are defined with binary masks. From the application point of view, a user needs to generate the masks for the objects they would like to remove which can be time-consuming and prone to errors. In this work, we are interested in an image inpainting algorithm that estimates which object to be removed based on natural language input and removes it, simultaneously. For this purpose, first, we construct a dataset named GQA-Inpaint for this task. Second, we present an inpainting framework, Inst-Inpaint , that can remove objects from images based on the instructions given as text prompts. We set various GAN and diffusion-based baselines and run experiments on synthetic and real-world image datasets. We compare methods with different evaluation metrics that measure the quality and accuracy of the models and show significant quantitative and qualitative improvements. Please refer to the web page of the project for the released code and dataset: http://instinpaint.abyildirim.com/",
+    "doi": "10.1007/s11263-026-03110-9"
+  },
+  {
+    "year": 2026,
+    "title": "SuperSVG++: Semantic-Driven Layer-Wise Scalable Vector Graphics Synthesis with Semantic Layer Decomposition",
+    "authors": "Teng Hu, Ran Yi, Hongrui Huang, Lizhuang Ma, Paul L. Rosin, Yu-Kun Lai",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03099-1"
+  },
+  {
+    "year": 2026,
+    "title": "Manhattan Gaussian Splatting SLAM",
+    "authors": "Yingzhao Li, Yan Li, Yanjie Liu, Lijun Zhao, Gim Hee Lee",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03080-y"
+  },
+  {
+    "year": 2026,
+    "title": "Reconstruction and Restoration of 4D Light Fields via Super-resolved Inverse Image-Based Rendering",
+    "authors": "Hyunjun Jung, Hae-Gon Jeon",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03111-8"
+  },
+  {
+    "year": 2026,
+    "title": "Event-Based Facial Expression Recognition via Knowledge-Enhanced Hypergraph Computation",
+    "authors": "Siqi Li, Yongji Zhang, Xinhu Zheng, Shaoyi Du, Chuan Shi, Liping Liu, Zongze Wu, Yue Gao",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03103-8"
+  },
+  {
+    "year": 2026,
+    "title": "Reconstructing 4D Spatial Intelligence: A Survey",
+    "authors": "Yukang Cao, Jiahao Lu, Zhisheng Huang, Zhuowen Shen, Chengfeng Zhao, Fangzhou Hong, Zhaoxi Chen, Xin Li, Wenping Wang, Yuan Liu, Ziwei Liu",
+    "abstract": "Reconstructing 4D spatial intelligence from visual observations has long been a central yet challenging task in computer vision, with broad real-world applications. These range from entertainment domains like movies, where the focus is often on reconstructing fundamental visual elements, to embodied AI, which emphasizes interaction modeling and physical realism. Fueled by rapid advances in 3D representations and deep learning architectures, the field has evolved quickly, outpacing the scope of previous surveys. Additionally, existing surveys rarely offer a comprehensive analysis of the hierarchical structure of 4D scene reconstruction. To address this gap, we present a new perspective that organizes existing methods into five progressive levels of 4D spatial intelligence: (1) Level 1—reconstruction of low-level 3D cues (e.g., depth, pose, and point maps); (2) Level 2—reconstruction of 3D scene components (e.g., objects, humans, structures); (3) Level 3—reconstruction of 4D dynamic scenes; (4) Level 4—modeling of interactions among scene components; and (5) Level 5 – physically grounded 4D reconstruction. We conclude the survey by discussing the key challenges at each level and highlighting promising directions for advancing toward even richer levels of 4D spatial intelligence. To track ongoing developments, we maintain an up-to-date project page: https://github.com/yukangcao/Awesome-4D-Spatial-Intelligence.",
+    "doi": "10.1007/s11263-026-03072-y"
+  },
+  {
+    "year": 2026,
+    "title": "Performance Evaluation of Embedded AI Inference on Zynq Ultrascale+ and Versal SoCs for Onboard Space Applications",
+    "authors": "Arthur Precht, Edoardo Caroselli, Bharadwaj Chintalapati, Riccardo Gallon, Filippo Ales",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03087-5"
+  },
+  {
+    "year": 2026,
+    "title": "EdgePoint2: Compact Descriptors for Superior Efficiency and Accuracy",
+    "authors": "Haodi Yao, Fenghua He, Ning Hao, Chen Xie",
+    "abstract": "The field of keypoint extraction, which is essential for vision applications like Structure from Motion (SfM) and Simultaneous Localization and Mapping (SLAM), has evolved from relying on handcrafted methods to leveraging deep learning techniques. While deep learning approaches have significantly improved performance, they often incur substantial computational costs, limiting their deployment in real-time edge applications. Efforts to create lightweight neural networks have seen some success, yet they often result in a trade-off between efficiency and accuracy. Additionally, the high-dimensional descriptors generated by these networks pose challenges for distributed applications requiring efficient communication and coordination, highlighting the need for compact yet competitively accurate descriptors. In this paper, we present EdgePoint2, a series of lightweight keypoint detection and description neural networks specifically tailored for edge computing applications on embedded systems. The network architecture is optimized for efficiency without sacrificing accuracy. To train compact descriptors, we introduce a combination of Orthogonal Procrustes loss and similarity loss, which can serve as a general approach for hypersphere embedding distillation tasks. Additionally, we offer 14 sub-models to satisfy diverse application requirements. Our experiments demonstrate that EdgePoint2 consistently achieves state-of-the-art (SOTA) accuracy and efficiency across various challenging scenarios while employing lower-dimensional descriptors (32/48/64). Beyond its accuracy, EdgePoint2 offers significant advantages in flexibility, robustness, and versatility. Consequently, EdgePoint2 emerges as a highly competitive option for visual tasks, especially in contexts demanding adaptability to diverse computational and communication constraints.Demo and weights are available at https://github.com/HITCSC/EdgePoint2.",
+    "doi": "10.1007/s11263-026-03085-7"
+  },
+  {
+    "year": 2026,
+    "title": "DogMo: A Large-Scale Multi-View RGB-D Dataset for 4D Canine Motion Recovery",
+    "authors": "Zan Wang, Siyu Chen, Luya Mo, Xinfeng Gao, Yuxin Shen, Lebin Ding, Wei Liang",
+    "abstract": "We present DogMo, a large-scale multi-view RGB-D video dataset capturing diverse canine movements for real canine motion recovery. DogMo comprises 1.2k\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$1.2k$$\\end{document} motion sequences collected from 10\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$10$$\\end{document} unique dog instances, covering 11\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$11$$\\end{document} action types and over 220\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$220$$\\end{document} minutes of recordings. Each motion is captured by five synchronized RGB-D cameras, providing multi-view RGB-D observations, masks, keypoints, and action labels. Compared with existing dog datasets, DogMo offers rich variation in both motion and breed, provides synchronized multi-view RGB-D observations at a larger scale, and supports systematic evaluation for real canine motion recovery. Leveraging DogMo, we establish four motion recovery benchmark settings that support evaluation across monocular and multi-view, RGB and RGB-D inputs. We also provide a three-stage, instance-specific fitting pipeline, which produces observation-consistent SMAL-based canine motion annotations by progressively refining dog body shape and pose through coarse alignment, dense correspondence supervision, and temporal regularization. We hope DogMo can facilitate future research on animal motion recovery, multi-view reconstruction, and animal behavior modeling.",
+    "doi": "10.1007/s11263-026-03071-z"
+  },
+  {
+    "year": 2026,
+    "title": "Flexible Focus Sampling for Depth from Focus",
+    "authors": "Jiangfeng Zhang, Yuhua Qian, Tao Yan, Hongren Yan, Zikun Jin",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03104-7"
+  },
+  {
+    "year": 2026,
+    "title": "BBoxMaskPose v2: Expanding Mutual Conditioning to 3D",
+    "authors": "Miroslav Purkrabek, Constantin Kolomiiets, Jiri Matas",
+    "abstract": "Most 2D human pose estimation benchmarks are nearly saturated, with the exception of crowded scenes. We introduce PMPose, a top-down 2D pose estimator that incorporates the probabilistic formulation and the mask-conditioning. PMPose improves crowded pose estimation without sacrificing performance on standard scenes. Building on this, we present BBoxMaskPose v2 (BMPv2) integrating PMPose and an enhanced SAM-based mask refinement module. BMPv2 surpasses state-of-the-art by 1.5 average precision (AP) points on COCO and 6 AP points on OCHuman, becoming the first method to exceed 50 AP on OCHuman. We demonstrate that BMP’s 2D prompting of 3D model improves 3D pose estimation in crowded scenes and that advances in 2D pose quality directly benefit 3D estimation. Results on the new OCHuman-Pose dataset show that multi-person performance is more affected by pose prediction accuracy than by detection. The code, models, and data are available on the project website.",
+    "doi": "10.1007/s11263-026-03113-6"
+  },
+  {
+    "year": 2026,
+    "title": "Saving for the Future: Enhancing Generalization via Partial Logic Regularization",
+    "authors": "Zhaorui Tan, Yijie Hu, Xi Yang, Qiufeng Wang, Anh Nguyen, Kaizhu Huang",
+    "abstract": "Generalization remains a significant challenge in visual classification tasks, particularly in handling unknown classes in real-world applications. Existing research focuses on the class discovery paradigm, which tends to favor known classes, and the incremental learning paradigm, which suffers from catastrophic forgetting. Recent approaches, such as the L-Reg technique, employ logic-based regularization to enhance generalization but are bound by the necessity of fully defined logical formulas, limiting flexibility for unknown classes. This paper introduces PL-Reg, a novel partial-logic regularization term that allows models to reserve space for undefined logic formulas, improving adaptability to unknown classes. Specifically, it is demonstrated that tasks involving unknown classes can be effectively explained using partial logic. An idealized analysis is also presented, motivating why partial logic may help preserve generalization capacity for unknown classes. We evaluate PL-Reg through extensive experiments on Generalized Category Discovery, Multi-Domain Generalized Category Discovery, long-tailed Class Incremental Learning, and Continual Category Discovery, and observe improvements across the evaluated settings, with gains of varying magnitudes. Our results highlight the effectiveness of partial logic in tackling challenges related to unknown classes.",
+    "doi": "10.1007/s11263-026-03105-6"
+  },
+  {
+    "year": 2026,
+    "title": "Accurate and Efficient Object Pose Estimation via the Aggregation of Diffusion Features",
+    "authors": "Tianfu Wang, Guosheng Hu, Hongguang Wang",
+    "abstract": "Estimating the pose of objects from images is a crucial task of 3D scene understanding, and recent approaches have shown promising results on very large benchmarks. However, these methods experience a significant performance drop when dealing with unseen objects. We believe that it results from the limited generalizability of image features. To address this problem, we have an in-depth analysis on the features of diffusion models, e.g. Stable Diffusion, which hold substantial potential for modeling unseen objects. Based on this analysis, we then innovatively introduce these diffusion features for object pose estimation. To verify the efficacy of diffusion features for object pose estimation, we propose three distinct architectures (vanilla, nonlinear, and context-aware weight aggregations) that capture and aggregate diffusion features for comparative analysis. The results demonstrate strong generalization performance in object pose estimation. In real applications, generalizability to unseen data is important, on the other hand, the efficiency is also crucial. To achieve an efficient feature aggregation, we propose a confidence adaptive aggregation network that automatically selects the discriminative features rather than using all the features, achieving a better speed-and-accuracy trade-off. Our method achieves substantial improvements on LM, O-LM, and T-LESS, and also demonstrates measurable gains on the seven core datasets of the BOP Challenge. In particular, our confidence adaptive aggregation network achieves higher accuracy than previous state-of-the-art methods on unseen objects: 97.7% versus 93.5% on Unseen LM, 85.5% versus 76.3% on Unseen O-LM, showing the strong generalizability of our method. On the large-scale BOP benchmark, our method also provides measurable gains, with an average recall of 58.3 compared to 57.9 previously. In addition, CAA reduces computational cost by 1.3–1.5×\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$\\times $$\\end{document} compared to the CWA variant while maintaining comparable accuracy. Furthermore, CAA reaches real-time performance, achieving over 68 FPS and offering a substantially improved accuracy-efficiency trade-off.",
+    "doi": "10.1007/s11263-026-03107-4"
+  },
+  {
+    "year": 2026,
+    "title": "Image-to-Video Transfer Learning based on Image-Language Foundation Models: A Comprehensive Survey",
+    "authors": "Jinxuan Li, Chaolei Tan, Haoxuan Chen, Jianxin Ma, Jian-Fang Hu, Jianhuang Lai, Wei-Shi Zheng",
+    "abstract": "Image-Language Foundation Models (ILFMs) provide transferable multimodal representations that generalize well across diverse downstream image-based tasks. The advancement of video-text research has spurred growing interest in extending image-based models to the video domain. This paradigm, termed image-to-video transfer learning, effectively reduces the data and computational costs of training video-language models while achieving comparable or even superior performance to training from scratch. This survey provides the first comprehensive review of this emerging field. We begin by summarizing the widely used ILFMs and their capabilities. We then systematically classify existing image-to-video transfer learning techniques into two broad categories, namely frozen parameters and adapted parameters, according to whether the ILFM parameters are kept frozen or directly updated during transfer. In the frozen-parameter paradigm, the original ILFM parameters remain fixed, while task-specific modules, side networks, adapters, LoRA modules, prompts, or post-networks can be trained to bridge the image-to-video gap. In the adapted-parameter paradigm, part or all of the ILFM backbone is updated to produce video-adapted representations for downstream video tasks. Given the task- and benchmark-dependent requirements of image-to-video transfer, this survey systematically reviews these strategies and discusses their applications across a wide range of video-text tasks, from fine-grained tasks with localized spatio-temporal outputs, such as spatio-temporal video grounding, to coarse-grained tasks with global or textual outputs, such as video question answering. We further present a detailed experimental analysis to investigate the efficacy of different image-to-video transfer learning paradigms on a range of downstream video understanding tasks. Finally, we summarize the key challenges and discuss promising future directions. By providing a comprehensive and structured overview, this survey aims to serve as a roadmap for advancing video-text learning through the adaptation of image-language foundation models, while also supporting future research in this rapidly evolving field. Additional resources and the latest updates are available on our GitHub repository: https://github.com/YuriPreisdent/awesome-image-to-video-transfer.",
+    "doi": "10.1007/s11263-026-03098-2"
+  },
+  {
+    "year": 2026,
+    "title": "Hint-Guided Point-Supervised Camouflaged Object Detection with Edge-Aware Refinement",
+    "authors": "Huafeng Chen, Dian Shao, Dongsheng Yang, Yao Yang, Kai Zhang, Shan Gao",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03120-7"
+  },
+  {
+    "year": 2026,
+    "title": "3D CoCa v2: Contrastive Learners with Test-Time Search for Generalizable Spatial Intelligence",
+    "authors": "Hao Tang, Ting Huang, Zeyu Zhang",
+    "abstract": null,
+    "doi": "10.1007/s11263-026-03114-5"
   }
 ]
