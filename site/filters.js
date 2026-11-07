@@ -117,11 +117,11 @@
     .chip button { background: rgba(255,255,255,0.25); border: none; color: #fff; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-size: 0.85em; line-height: 1; }
     .chip button:hover { background: rgba(255,255,255,0.4); }
     .result-count { color: var(--muted); font-size: 0.85em; margin-left: auto; white-space: nowrap; }
-    .clear-all-btn, .copy-link-btn {
+    .clear-all-btn {
       background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px;
       padding: 4px 10px; font-size: 0.82em; cursor: pointer; white-space: nowrap;
     }
-    .clear-all-btn:hover, .copy-link-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .clear-all-btn:hover { border-color: var(--accent); color: var(--accent); }
     .legend-toggle-all { display: flex; gap: 10px; width: 100%; margin-bottom: 2px; }
     .legend-toggle-all button {
       background: none; border: none; color: var(--muted); font-size: 0.78em; cursor: pointer;
@@ -733,6 +733,10 @@
     bar.className = 'filter-bar';
     // Sort by and Show top join the filters in the same bar, at its end;
     // the first one is pushed to the right edge.
+    // Chips for every control that is set away from its default, beyond the
+    // URL-driven FILTER_KEYS (those are chipped further down): each is
+    // {label, text, clear}, where clear(chipEl) puts the control back.
+    const extraChips = [];
     const orderFields = [];
     const orderField = el => {
       el.className += orderFields.length ? ' order-field' : ' order-field order-start';
@@ -825,6 +829,10 @@
       sel.addEventListener('change', () => { location.href = withParam(page, 'relevance', sel.value); });
       bar.appendChild(field('Show', sel));
       filters.relevance = relValue;
+      if (relValue) {
+        extraChips.push({ label: 'Show', text: { 'non-AV': 'Non-AV papers', both: 'Both' }[relValue] || relValue,
+          clear: () => { location.href = withParam(page, 'relevance', null); } });
+      }
     }
 
     if (opts.showCategory !== false) {
@@ -928,6 +936,7 @@
       sel.addEventListener('change', () => { location.href = withParam(page, 'mincites', sel.value === '0' ? null : sel.value); });
       bar.appendChild(field('Min citations', sel));
       filters.minCitations = cur;
+      if (cur) extraChips.push({ label: 'Min citations', text: cur + '+', clear: () => { location.href = withParam(page, 'mincites', null); } });
     }
 
     // One optional boolean toggle in the bar (currently only Categories'
@@ -985,6 +994,16 @@
       });
       bar.appendChild(field(cbOpts.dropdownLabel || 'Include', sel));
       filters[key] = excluded;
+      if (excluded !== !!cbOpts.defaultExcluded) {
+        extraChips.push({
+          label: cbOpts.dropdownLabel || 'Include', text: excluded ? excludeLabel : includeLabel,
+          clear: chipEl => {
+            sel.value = cbOpts.defaultExcluded ? 'no' : 'yes';
+            sel.dispatchEvent(new Event('change'));
+            if (chipEl.remove) chipEl.remove();
+          },
+        });
+      }
     });
 
     if (opts.metrics && opts.metrics.length) {
@@ -1041,6 +1060,7 @@
       minField.title = sel.title;
       bar.appendChild(minField);
       filters.minPapers = parseInt(current, 10);
+      if (current !== defaultVal) extraChips.push({ label: 'Min. papers', text: current + '+', clear: () => { location.href = withParam(page, 'minPapers', null); } });
     }
 
     // Min. career span (years) -- a ranking/thresholding control like Min.
@@ -1077,6 +1097,7 @@
       spanField.title = sel.title;
       bar.appendChild(spanField);
       filters.minCareerSpan = parseInt(current, 10);
+      if (current !== defaultVal) extraChips.push({ label: 'Career span', text: current + '+ years', clear: () => { location.href = withParam(page, 'minSpan', null); } });
     }
 
     // Region -- like Min. career span, a property of the aggregated author
@@ -1105,6 +1126,7 @@
         regionField.title = sel.title;
         bar.appendChild(regionField);
         filters.region = names.includes(current) ? current : null;
+        if (filters.region) extraChips.push({ label: 'Region', text: filters.region, clear: () => { location.href = withParam(page, 'region', null); } });
       }
     }
 
@@ -1176,17 +1198,23 @@
     const chipRow = document.createElement('div');
     chipRow.className = 'chip-row';
     const active = FILTER_KEYS.filter(k => filters[k]).map(k => [k, filters[k]]);
-    active.forEach(([key, value]) => {
+    const addChip = (label, text, onClear) => {
       const chip = document.createElement('span');
       chip.className = 'chip';
-      chip.append(`${key}: ${key === 'category' ? categoryLabel(value) : value} `);
+      chip.append(`${label}: ${text} `);
       const clear = document.createElement('button');
       clear.textContent = '×';
-      clear.title = `Remove ${key} filter`;
-      clear.onclick = () => { location.href = withParam(page, key, null); };
+      clear.title = `Remove ${label} filter`;
+      clear.onclick = () => onClear(chip);
       chip.appendChild(clear);
       chipRow.appendChild(chip);
+    };
+    chipRow.id = 'chip-row';
+    window.addActiveChip = addChip;  // for filters a page adds to the bar itself
+    active.forEach(([key, value]) => {
+      addChip(key, key === 'category' ? categoryLabel(value) : value, () => { location.href = withParam(page, key, null); });
     });
+    extraChips.forEach(c => addChip(c.label, c.text, c.clear));
     metaRow.appendChild(chipRow);
 
     // "Clear all" -- previously a reader had to click each filter chip's own
@@ -1203,33 +1231,6 @@
       clearAll.addEventListener('click', () => { location.href = page; });
       metaRow.appendChild(clearAll);
     }
-
-    // "Copy link" -- the current URL already encodes every active
-    // filter/search/sort/page, but a reader still had to copy it out of the
-    // address bar by hand. One click, with a brief inline confirmation so
-    // it's clear the click actually did something (clipboard writes are
-    // otherwise silent).
-    const copyLinkBtn = document.createElement('button');
-    copyLinkBtn.type = 'button';
-    copyLinkBtn.className = 'copy-link-btn';
-    copyLinkBtn.textContent = 'Copy link';
-    copyLinkBtn.addEventListener('click', () => {
-      const original = copyLinkBtn.textContent;
-      const showCopied = () => {
-        copyLinkBtn.textContent = 'Copied!';
-        setTimeout(() => { copyLinkBtn.textContent = original; }, 1500);
-      };
-      const showFailed = () => {
-        copyLinkBtn.textContent = 'Copy failed';
-        setTimeout(() => { copyLinkBtn.textContent = original; }, 1500);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(location.href).then(showCopied, showFailed);
-      } else {
-        showFailed();
-      }
-    });
-    metaRow.appendChild(copyLinkBtn);
 
     const count = document.createElement('span');
     count.className = 'result-count';

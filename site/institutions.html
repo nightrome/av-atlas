@@ -236,6 +236,10 @@ function addInstitutionFilters(stats) {
       sel.appendChild(opt);
     });
     sel.addEventListener('change', () => { location.href = withParam('institutions.html', paramKey, sel.value); });
+    if (current && window.addActiveChip) {
+      const text = (options.find(([value]) => value === current) || [current, current])[1];
+      window.addActiveChip(labelText, text, () => { location.href = withParam('institutions.html', paramKey, null); });
+    }
     wrap.appendChild(label);
     wrap.appendChild(sel);
     bar.insertBefore(wrap, orderStart);
