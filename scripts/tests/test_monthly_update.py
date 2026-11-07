@@ -428,6 +428,22 @@ class BotBranchTests(unittest.TestCase):
         o.open_pr()
         self.assertTrue(git("ls-remote", "origin", f"refs/heads/{mu.BOT_BRANCH}", cwd=repo))
 
+    def test_push_moves_the_commit_onto_a_main_that_moved_during_the_run(self):
+        repo = self.clone()
+        o = self.orch(repo)
+        (repo / "data" / "venues" / "c.json").write_text("[]", encoding="utf-8")
+        o.commit_data()
+        # While the run was going, main changed a workflow file.
+        (self.seed / ".github" / "workflows").mkdir(parents=True)
+        (self.seed / ".github" / "workflows" / "w.yml").write_text("on: push\n", encoding="utf-8")
+        commit_all(self.seed, "main 2")
+        git("push", "--quiet", "origin", "main", cwd=self.seed)
+        o.gh = lambda *a: ""
+        o.open_pr()
+        pushed = git("rev-parse", f"refs/heads/{mu.BOT_BRANCH}", cwd=self.remote)
+        self.assertEqual(git("rev-parse", f"{pushed}~1", cwd=self.remote), git("rev-parse", "main", cwd=self.remote))
+        self.assertEqual(git("show", f"{pushed}:data/venues/c.json", cwd=self.remote), "[]")
+
     def test_nothing_changed_means_no_commit_and_no_pr(self):
         repo = self.clone()
         o = self.orch(repo)

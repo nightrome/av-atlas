@@ -502,11 +502,25 @@ class Orchestrator:
         self.git("push", "--force", "origin", f"refs/tags/{tag}")
         return "ok", f"tagged {tag}"
 
+    def move_onto_main(self):
+        """Put this run's commits on top of the main that exists now. A run lasts
+        hours; if main moved meanwhile (a merged PR that touches a workflow file,
+        say), a branch built on the old main differs from main in that file and
+        GitHub refuses a token without the workflow scope to push it."""
+        self.git("fetch", "--quiet", "origin", BASE_BRANCH)
+        if self.git("merge-base", "--is-ancestor", "FETCH_HEAD", "HEAD", check=False).returncode == 0:
+            return
+        r = self.git("-c", f"user.name={BOT_NAME}", "-c", f"user.email={BOT_EMAIL}",
+                     "rebase", "--quiet", "-X", "theirs", "--onto", "FETCH_HEAD", self.start_sha, check=False)
+        if r.returncode != 0:
+            self.git("rebase", "--abort", check=False)
+
     def push_bot_branch(self):
         """Push the bot branch over what carry_forward saw there. If it has
         moved since, someone else pushed and the push is refused, so their work
         isn't overwritten. If it is gone, its PR was merged and the branch
         deleted while this ran: nothing to lose, so push it fresh."""
+        self.move_onto_main()
         ref = f"refs/heads/{BOT_BRANCH}"
         r = self.git("push", "--quiet", f"--force-with-lease={ref}:{self.bot_remote_sha}",
                      "origin", f"HEAD:{ref}", check=False)
