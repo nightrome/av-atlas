@@ -510,7 +510,8 @@ class Orchestrator:
         self.git("fetch", "--quiet", "origin", BASE_BRANCH)
         if self.git("merge-base", "--is-ancestor", "FETCH_HEAD", "HEAD", check=False).returncode == 0:
             return
-        r = self.git("rebase", "--quiet", "-X", "theirs", "--onto", "FETCH_HEAD", self.start_sha, check=False)
+        r = self.git("-c", f"user.name={BOT_NAME}", "-c", f"user.email={BOT_EMAIL}",
+                     "rebase", "--quiet", "-X", "theirs", "--onto", "FETCH_HEAD", self.start_sha, check=False)
         if r.returncode != 0:
             self.git("rebase", "--abort", check=False)
 
