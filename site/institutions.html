@@ -215,9 +215,10 @@ fetchStatsWithRelevance(relevance).then(stats => {
 // they don't collide with the paper-level `country` chip param used
 // elsewhere on the site (arriving via links from other pages).
 function addInstitutionFilters(stats) {
-  const bar2 = document.querySelector('#filter-bar-rows .filter-bar-secondary')
-    || document.querySelector('#filter-bar-rows .filter-bar');
-  if (!bar2) return;
+  const bar = document.querySelector('#filter-bar-rows .filter-bar');
+  if (!bar) return;
+  // Before Sort by / Show top, which close the bar.
+  const orderStart = bar.querySelector('.order-start');
   function addField(labelText, selectId, options, paramKey) {
     const current = new URLSearchParams(location.search).get(paramKey) || '';
     const wrap = document.createElement('div');
@@ -237,7 +238,7 @@ function addInstitutionFilters(stats) {
     sel.addEventListener('change', () => { location.href = withParam('institutions.html', paramKey, sel.value); });
     wrap.appendChild(label);
     wrap.appendChild(sel);
-    bar2.appendChild(wrap);
+    bar.insertBefore(wrap, orderStart);
   }
   const countries = [...new Set(Object.values(stats.institution_countries || {}))].sort();
   addField('Country', 'inst-country-filter',

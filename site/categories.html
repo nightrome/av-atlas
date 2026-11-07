@@ -115,7 +115,6 @@ fetchStatsWithRelevance('').then(stats => {
   currentStats = stats;
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'categories.html', {
     showCategory: false,
-    singleRow: true,
     checkbox: {
       id: 'exclude-datasets', dropdownLabel: 'DATASETS',
       storageKey: 'categories-exclude-datasets', onChange: () => render(),
