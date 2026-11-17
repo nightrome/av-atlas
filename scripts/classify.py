@@ -540,21 +540,23 @@ def classify_relevance(title, abstract, llm_says_av=False):
     return "non-AV"
 
 
-# Abstracts filled in by the backfill (fetch_abstracts_*.py) reach every venue,
-# including generic ML ones, where one passing "autonomous driving" in the
-# abstract is usually just the motivating application. Hand-checked by a
-# second model on 300 such papers: one abstract mention and nothing else was
-# right 55% of the time, two or more 89-97%, and in IV/ITSC (venues about this
-# topic) a single mention was right about 85% of the time. So for backfilled
-# abstracts outside those venues, a lone abstract mention does not make a
-# paper AV. The keyword floor itself is unchanged for everything else.
-BACKFILL_ABSTRACT_SOURCES = frozenset({"openalex", "arxiv", "s2", "semanticscholar"})
+# One passing "autonomous driving" in an abstract is usually just the
+# motivating application of a generic method. Hand-checked by a second model
+# (Haiku) on 300 papers the corpus calls AV only because of one abstract mention
+# and nothing else, in venues not about this topic: 39% were really about
+# driving. Papers with two mentions were right 89% of the time, three or more
+# 97%, and in IV/ITSC (venues about this topic) a lone mention was right about
+# 85%. So outside those venues a lone abstract mention does not make a paper
+# AV; a phrase in the title, a second mention, or a maintainer or LLM label
+# still does. Applied after classify_relevance, by whoever knows the venue
+# (merge_corpus.py).
 AV_FOCUSED_VENUES = frozenset({"IV", "ITSC", "T-IV"})
 
 
 def rests_on_one_abstract_mention(title, abstract, llm_says_av=False):
     """True when the keyword floor called this AV on a single mention in the
-    abstract alone: no AV cue in the title, no maintainer or LLM label."""
+    abstract alone: no AV cue in the title, no maintainer or LLM label.
+    Callers demote such a paper unless its venue is in AV_FOCUSED_VENUES."""
     if llm_says_av or normalize_title(title) in HARD_AV_TITLES:
         return False
     title_l = (title or "").lower()

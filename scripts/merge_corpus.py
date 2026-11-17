@@ -629,8 +629,7 @@ def main(argv=None):
         category, relevance = cl.classify_paper(
             p.get("title", ""), p.get("abstract"), taxonomy, llm_av_titles, known_dataset_titles,
             llm_category_labels)
-        if (relevance == "AV" and p.get("abstract_source") in cl.BACKFILL_ABSTRACT_SOURCES
-                and p.get("venue") not in cl.AV_FOCUSED_VENUES
+        if (relevance == "AV" and p.get("venue") not in cl.AV_FOCUSED_VENUES
                 and cl.rests_on_one_abstract_mention(
                     p.get("title", ""), p.get("abstract"),
                     cl.normalize_title(p.get("title", "")) in llm_av_titles)):
