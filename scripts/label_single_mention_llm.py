@@ -13,9 +13,15 @@ already in the file are skipped. Rate limits and overloads (429, 5xx) wait for
 Retry-After or back off 20 s doubling to 10 min; a run stops after 8 failures
 in a row so a dead key does not burn time.
 
+Without an API key, use a machine where Claude Code is logged in: --export the
+pending papers, run run_claude_cli_labels.py there (it calls `claude -p`), then
+--import its results here.
+
 Usage:
   python label_single_mention_llm.py             # label everything pending
   python label_single_mention_llm.py --limit 50  # try it on 50 papers
+  python label_single_mention_llm.py --export pending.json
+  python label_single_mention_llm.py --import results.json
 """
 import argparse
 import json
@@ -96,9 +102,11 @@ def pending(papers, done):
     seen, out = set(), []
     for p in papers:
         key = cl.normalize_title(p.get("title"))
-        if (p.get("av_relevance") == "AV" and p.get("venue") not in cl.AV_FOCUSED_VENUES
-                and key not in done and key not in seen and (p.get("abstract") or "").strip()
-                and cl.rests_on_one_abstract_mention(p["title"], p["abstract"])):
+        # The stored av_relevance is not used: once demoted, these papers read non-AV.
+        if (p.get("venue") not in cl.AV_FOCUSED_VENUES and key not in done and key not in seen
+                and (p.get("abstract") or "").strip()
+                and cl.rests_on_one_abstract_mention(p["title"], p["abstract"])
+                and cl.classify_relevance(p["title"], p["abstract"]) == "AV"):
             seen.add(key)
             out.append(p)
     return out
@@ -107,7 +115,32 @@ def pending(papers, done):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--export", metavar="FILE", help="write the pending papers to FILE and stop")
+    ap.add_argument("--import", dest="import_file", metavar="FILE",
+                    help="merge verdicts ({normalizedTitle: 'AV'|'non-AV'}) from FILE and stop")
     args = ap.parse_args(argv)
+    if args.export or args.import_file:
+        labels = json.loads(OUT_FILE.read_text(encoding="utf-8")) if OUT_FILE.exists() else {}
+        papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
+        if args.export:
+            todo = pending(papers, set(labels))[:args.limit]
+            write_json_atomic(args.export, [{"key": cl.normalize_title(p["title"]), "title": p["title"],
+                                             "abstract": (p.get("abstract") or "")[:1500],
+                                             "venue": p.get("venue")} for p in todo])
+            print(f"Exported {len(todo)} papers to {args.export}")
+            return 0
+        titles = {cl.normalize_title(p.get("title")): p for p in papers}
+        verdicts = json.loads(open(args.import_file, encoding="utf-8").read())
+        n = 0
+        for k, v in verdicts.items():
+            if v in ("AV", "non-AV") and k in titles:
+                labels[k] = {"title": titles[k]["title"], "pool": "single_abstract_mention", "label": v,
+                             "venue": titles[k].get("venue"), "model": "claude-haiku via claude -p",
+                             "labeled_at": datetime.now(timezone.utc).isoformat()}
+                n += 1
+        write_json_atomic(OUT_FILE, labels, indent=1)
+        print(f"Imported {n} verdicts; {sum(1 for v in labels.values() if v['label'] == 'AV')} AV in total.")
+        return 0
     key = api_key()
     if not key:
         raise SystemExit("No ANTHROPIC_API_KEY in the environment or av-atlas/.env.")
