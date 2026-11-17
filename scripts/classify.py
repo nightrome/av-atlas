@@ -47,6 +47,7 @@ BASE = Path(__file__).resolve().parent.parent
 CATEGORIES_FILE = BASE / "data" / "categories.json"
 LLM_LABELS_FILE = BASE / "data" / "relevance_labels_llm.json"
 LLM_LABELS_V2_FILE = BASE / "data" / "relevance_labels_llm_v2.json"
+LLM_LABELS_V3_FILE = BASE / "data" / "relevance_labels_llm_v3.json"
 CATEGORY_LABELS_LLM_FILE = BASE / "data" / "category_labels_llm.json"
 RELEVANCE_MODEL_FILE = BASE / "data" / "relevance_model.json"
 RELEVANCE_LABELS_FILE = BASE / "data" / "relevance_labels.json"
@@ -105,7 +106,7 @@ def load_llm_av_titles():
     ..._v2.py) graded 'AV'. Read-only second opinion, folded in as a
     promotion signal -- see classify_relevance."""
     titles = set()
-    for f in (LLM_LABELS_FILE, LLM_LABELS_V2_FILE):
+    for f in (LLM_LABELS_FILE, LLM_LABELS_V2_FILE, LLM_LABELS_V3_FILE):
         if f.exists():
             labels = json.loads(f.read_text(encoding="utf-8"))
             for key, v in labels.items():
