@@ -488,7 +488,7 @@ def main(argv=None):
     # which source a given paper's data came from after the fact -- fixing
     # the carry-over only stops new data from losing it going forward.
     CARRY_OVER_FIELDS = ("authors_detail", "authors_detail_source", "citations_by_source",
-                         "arxiv_url", "abstract", "abstract_search_exhausted", "has_code_link")
+                         "arxiv_url", "abstract", "abstract_source", "abstract_search_exhausted", "has_code_link")
     prior_by_field = {field: {} for field in CARRY_OVER_FIELDS}
     n_prior_s2 = 0
     prior_first_seen = None
@@ -629,6 +629,12 @@ def main(argv=None):
         category, relevance = cl.classify_paper(
             p.get("title", ""), p.get("abstract"), taxonomy, llm_av_titles, known_dataset_titles,
             llm_category_labels)
+        if (relevance == "AV" and p.get("abstract_source") in cl.BACKFILL_ABSTRACT_SOURCES
+                and p.get("venue") not in cl.AV_FOCUSED_VENUES
+                and cl.rests_on_one_abstract_mention(
+                    p.get("title", ""), p.get("abstract"),
+                    cl.normalize_title(p.get("title", "")) in llm_av_titles)):
+            relevance = "non-AV"
         p["category"] = category
         p["av_relevance"] = relevance
 

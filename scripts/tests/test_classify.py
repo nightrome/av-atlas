@@ -82,6 +82,14 @@ class TestClassifyRelevance(unittest.TestCase):
         ):
             self.assertEqual(cl.classify_relevance(title, None), "non-AV", title)
 
+    def test_one_abstract_mention_alone_is_flagged_for_backfilled_abstracts(self):
+        one = "Applications include autonomous driving and many other things we do not study here at all."
+        two = one + " Self-driving cars are a second motivating example for the same method."
+        self.assertTrue(cl.rests_on_one_abstract_mention("Latent Time Neural ODEs", one))
+        self.assertFalse(cl.rests_on_one_abstract_mention("Latent Time Neural ODEs", two))
+        self.assertFalse(cl.rests_on_one_abstract_mention("Planning for Autonomous Driving", one))
+        self.assertFalse(cl.rests_on_one_abstract_mention("Latent Time Neural ODEs", one, llm_says_av=True))
+
     def test_missing_abstract_does_not_crash(self):
         self.assertEqual(cl.classify_relevance("Some Paper", None), "non-AV")
 

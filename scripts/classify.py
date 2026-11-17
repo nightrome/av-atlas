@@ -540,6 +540,33 @@ def classify_relevance(title, abstract, llm_says_av=False):
     return "non-AV"
 
 
+# Abstracts filled in by the backfill (fetch_abstracts_*.py) reach every venue,
+# including generic ML ones, where one passing "autonomous driving" in the
+# abstract is usually just the motivating application. Hand-checked by a
+# second model on 300 such papers: one abstract mention and nothing else was
+# right 55% of the time, two or more 89-97%, and in IV/ITSC (venues about this
+# topic) a single mention was right about 85% of the time. So for backfilled
+# abstracts outside those venues, a lone abstract mention does not make a
+# paper AV. The keyword floor itself is unchanged for everything else.
+BACKFILL_ABSTRACT_SOURCES = frozenset({"openalex", "arxiv", "s2", "semanticscholar"})
+AV_FOCUSED_VENUES = frozenset({"IV", "ITSC", "T-IV"})
+
+
+def rests_on_one_abstract_mention(title, abstract, llm_says_av=False):
+    """True when the keyword floor called this AV on a single mention in the
+    abstract alone: no AV cue in the title, no maintainer or LLM label."""
+    if llm_says_av or normalize_title(title) in HARD_AV_TITLES:
+        return False
+    title_l = (title or "").lower()
+    if AV_RELEVANCE_COMBINED.search(title_l) or AV_TITLE_ONLY_COMBINED.search(title_l):
+        return False
+    if TITLE_STRONG_COMBINED.search(title_without_other_drive_senses(title_l)):
+        return False
+    if not AV_TITLE_REGEX_EXCLUSIONS.search(title_l) and any(r.search(title_l) for r in AV_TITLE_REGEXES):
+        return False
+    return len(AV_RELEVANCE_COMBINED.findall((abstract or "").lower())) == 1
+
+
 # Does this title say the paper PRESENTS a dataset/benchmark, as opposed to
 # merely using or reviewing one?
 #
