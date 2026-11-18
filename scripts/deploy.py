@@ -309,7 +309,53 @@ def publish(name, remote, transform, label, commit_msg):
                       "commit-tree", tree, "-m", commit_msg], clone)
     run(["git", "push", "--force", "origin", f"{commit}:refs/heads/gh-pages"], cwd=clone)
     print(f"{label}: pushed (single commit {commit[:8]}).")
+    wait_for_pages(remote, label)
     return content_hash
+
+
+def _gh_exe():
+    found = shutil.which("gh")
+    if found:
+        return found
+    default = Path("C:/Program Files/GitHub CLI/gh.exe")
+    return str(default) if default.exists() else None
+
+
+def wait_for_pages(remote, label, attempts=3, patience=420, sleep=time.sleep, clock=time.monotonic):
+    """GitHub Pages sometimes errors on a build that is fine (it timed out syncing
+    files); a new build request usually works. Wait for the build of the push we
+    just made, re-request it when it errors, and fail loudly if it keeps failing.
+    Skipped quietly when gh is missing or cannot reach the API."""
+    gh = _gh_exe()
+    m = re.search(r"github\.com[:/]([^/]+/[^/.]+?)(?:\.git)?$", remote)
+    if not gh or not m:
+        return
+    repo = m.group(1)
+
+    def api(*args):
+        r = subprocess.run([gh, "api", *args], capture_output=True, text=True, check=False)
+        return r.stdout if r.returncode == 0 else None
+
+    for attempt in range(1, attempts + 1):
+        deadline = clock() + patience
+        status = None
+        sleep(15)  # let GitHub notice the push
+        while clock() < deadline:
+            out = api(f"repos/{repo}/pages/builds/latest", "--jq", ".status")
+            if out is None:
+                print(f"{label}: could not read the Pages build status; not waiting.")
+                return
+            status = out.strip()
+            if status in ("built", "errored"):
+                break
+            sleep(15)
+        if status == "built":
+            print(f"{label}: GitHub Pages build finished.")
+            return
+        print(f"{label}: Pages build {status or 'timed out'} (attempt {attempt}/{attempts}); requesting a new one.")
+        api("-X", "POST", f"repos/{repo}/pages/builds")
+    raise SystemExit(f"\nPAGES BUILD FAILED for {label} after {attempts} attempts: the branch is pushed "
+                     f"but GitHub Pages is not serving it. See https://github.com/{repo}/actions")
 
 
 def deploy_production():
