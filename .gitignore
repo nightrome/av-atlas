@@ -161,3 +161,4 @@ data/arxiv_harvest_checkpoint.jsonl
 # Abstract backfill side files and logs (scripts/fetch_abstracts_*.py)
 data/abstracts_web_*.json
 data/logs/
+data/affiliations_openalex.json

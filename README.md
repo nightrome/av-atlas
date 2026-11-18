@@ -167,7 +167,8 @@ Five stages, run roughly in this order. The About page has a diagram.
 2. **Merge and classify.** `merge_corpus.py` removes duplicates across sources and
    `classify.py` gives each paper a category and an AV-relevance label.
 3. **Enrich.** For AV-relevant papers only: author affiliations
-   (`fetch_cvf_affiliations.py`, `fetch_affiliations_arxiv.py`), ORCIDs
+   (`fetch_cvf_affiliations.py`, `fetch_affiliations_arxiv.py`, and in bulk from
+   OpenAlex by venue and DOI with `fetch_affiliations_openalex.py`), ORCIDs
    (`fetch_orcids.py`) and Semantic Scholar author IDs (`fetch_s2_author_ids.py`).
 4. **Citation graph.** `build_citation_graph.py` parses reference lists, and
    `fetch_semanticscholar_citing.py` finds papers that cite the corpus. That can
