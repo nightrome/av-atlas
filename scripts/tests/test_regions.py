@@ -35,6 +35,10 @@ class TestTaxonomy(unittest.TestCase):
             self.assertEqual(r.region_of_country(country), region, country)
         self.assertIsNone(r.region_of_country("Atlantis"))
 
+    def test_every_named_country_has_a_region(self):
+        import aggregate
+        self.assertEqual(sorted(n for n in set(aggregate.COUNTRY_NAMES.values()) if not r.region_of_country(n)), [])
+
     def test_every_country_in_the_corpus_is_mapped(self):
         if not STATS.exists():
             self.skipTest("data/stats.json not built")
