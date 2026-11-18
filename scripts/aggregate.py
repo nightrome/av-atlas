@@ -221,6 +221,12 @@ COUNTRY_NAMES = {
     "SK": "Slovakia", "BG": "Bulgaria", "RS": "Serbia", "CY": "Cyprus", "MT": "Malta",
     "EE": "Estonia", "LT": "Lithuania", "LV": "Latvia", "DO": "Dominican Republic",
     "PR": "Puerto Rico",
+    # Added with the bulk OpenAlex affiliations, which brought in these countries.
+    "LK": "Sri Lanka", "MA": "Morocco", "TN": "Tunisia", "DZ": "Algeria", "KY": "Cayman Islands",
+    "KZ": "Kazakhstan", "JO": "Jordan", "VE": "Venezuela", "AM": "Armenia", "MK": "North Macedonia",
+    "BN": "Brunei", "LY": "Libya", "CM": "Cameroon", "AL": "Albania", "ET": "Ethiopia",
+    "UZ": "Uzbekistan", "PS": "Palestine", "AZ": "Azerbaijan", "BH": "Bahrain", "BI": "Burundi",
+    "LI": "Liechtenstein",
 }
 
 
