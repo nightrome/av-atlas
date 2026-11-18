@@ -65,6 +65,31 @@ class TestClassifyRelevance(unittest.TestCase):
             "non-AV",
         )
 
+    def test_driving_perception_titles_without_an_abstract_are_core(self):
+        for title in (
+            "Delving Into the Devils of Bird's-Eye-View Perception: A Review, Evaluation and Recipe",
+            "BEVRefiner: Improving 3D Object Detection in Bird's-Eye-View via Dual Refinement",
+            "Lane Information Extraction for High Definition Maps Using Crowdsourced Data",
+            "RenderOcc: Vision-Centric 3D Occupancy Prediction with 2D Rendering Supervision",
+        ):
+            self.assertEqual(cl.classify_relevance(title, None), "AV", title)
+
+    def test_bev_in_indoor_or_navigation_titles_stays_adjacent(self):
+        for title in (
+            "Bird's-Eye-View Scene Graph for Vision-Language Navigation",
+            "Leveraging BEV Representation for 360-degree Visual Place Recognition",
+            "Semantics-Aware Dynamic Graph Transformer for On-Street Parking Occupancy Prediction",
+        ):
+            self.assertEqual(cl.classify_relevance(title, None), "non-AV", title)
+
+    def test_one_abstract_mention_alone_is_flagged_for_backfilled_abstracts(self):
+        one = "Applications include autonomous driving and many other things we do not study here at all."
+        two = one + " Self-driving cars are a second motivating example for the same method."
+        self.assertTrue(cl.rests_on_one_abstract_mention("Latent Time Neural ODEs", one))
+        self.assertFalse(cl.rests_on_one_abstract_mention("Latent Time Neural ODEs", two))
+        self.assertFalse(cl.rests_on_one_abstract_mention("Planning for Autonomous Driving", one))
+        self.assertFalse(cl.rests_on_one_abstract_mention("Latent Time Neural ODEs", one, llm_says_av=True))
+
     def test_missing_abstract_does_not_crash(self):
         self.assertEqual(cl.classify_relevance("Some Paper", None), "non-AV")
 

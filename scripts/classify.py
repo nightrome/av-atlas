@@ -47,6 +47,7 @@ BASE = Path(__file__).resolve().parent.parent
 CATEGORIES_FILE = BASE / "data" / "categories.json"
 LLM_LABELS_FILE = BASE / "data" / "relevance_labels_llm.json"
 LLM_LABELS_V2_FILE = BASE / "data" / "relevance_labels_llm_v2.json"
+LLM_LABELS_V3_FILE = BASE / "data" / "relevance_labels_llm_v3.json"
 CATEGORY_LABELS_LLM_FILE = BASE / "data" / "category_labels_llm.json"
 RELEVANCE_MODEL_FILE = BASE / "data" / "relevance_model.json"
 RELEVANCE_LABELS_FILE = BASE / "data" / "relevance_labels.json"
@@ -105,7 +106,7 @@ def load_llm_av_titles():
     ..._v2.py) graded 'AV'. Read-only second opinion, folded in as a
     promotion signal -- see classify_relevance."""
     titles = set()
-    for f in (LLM_LABELS_FILE, LLM_LABELS_V2_FILE):
+    for f in (LLM_LABELS_FILE, LLM_LABELS_V2_FILE, LLM_LABELS_V3_FILE):
         if f.exists():
             labels = json.loads(f.read_text(encoding="utf-8"))
             for key, v in labels.items():
@@ -259,6 +260,26 @@ OFF_SCOPE_TITLE_TERMS = [
 # caught once this shipped). Harmless no-op for terms with no natural plural
 # (acronyms, hyphenated compounds, proper nouns like "nuscenes") since \b
 # still requires a non-word character right after the optional "s".
+# Title-only shapes that are about driving perception and mapping even though
+# the title never says "autonomous" or "driving": bird's-eye-view (BEV)
+# perception, HD maps, 3D semantic occupancy. Roughly half of the corpus has no
+# abstract, so for those papers the title is all there is to go on, and a title
+# like "Delving Into the Devils of Bird's-Eye-View Perception" was filed as
+# non-AV. BEV is also used indoors, for navigation and place recognition, hence
+# the exclusion list; both are title-only and checked after the off-scope guard.
+_BEV = r"(?:\bbev\b|bird'?s?[- ]?eye[- ]?view|\bbirds?[- ]eye)"
+_PERCEPTION_NOUN = (r"(?:\bdetection|\bsegmentation|\bperception|\bfusion|\bmapping|\bmap construction|\btracking|"
+                    r"\bprediction|\boccupancy|\btransformer|\b3d\b|\blidar|\bcamera|\bmulti-view|\bmulti-camera)")
+AV_TITLE_REGEXES = [
+    re.compile(_BEV + r".*" + _PERCEPTION_NOUN + r"|" + _PERCEPTION_NOUN + r".*" + _BEV),
+    re.compile(r"\bhd[- ]?maps?\b|\bhigh[- ]definition maps?\b"),
+    re.compile(r"\b(?:3d |4d |semantic |vision-centric |camera-only |surround-?view )+occupancy "
+               r"(?:prediction|forecasting|estimation|perception)\b"),
+]
+AV_TITLE_REGEX_EXCLUSIONS = re.compile(
+    r"navigation|indoor|place recognition|\bslam\b|vision-language|robot|humanoid|manipulation|"
+    r"pedestrian occupancy|parking|human motion|human-")
+
 AV_RELEVANCE_PATTERNS = [re.compile(r"\b" + re.escape(term) + r"s?\b") for term in AV_RELEVANCE_TERMS]
 
 # A paper's own title choosing to foreground driving (e.g. "DriveLM",
@@ -506,6 +527,8 @@ def classify_relevance(title, abstract, llm_says_av=False):
         return "AV"
     if AV_TITLE_ONLY_COMBINED.search(title_l):
         return "AV"
+    if not AV_TITLE_REGEX_EXCLUSIONS.search(title_l) and any(r.search(title_l) for r in AV_TITLE_REGEXES):
+        return "AV"
 
     # 3. trained scorer, for keyword-floor-negative papers only
     if RELEVANCE_MODEL is not None and \
@@ -516,6 +539,35 @@ def classify_relevance(title, abstract, llm_says_av=False):
     if llm_says_av:
         return "AV"
     return "non-AV"
+
+
+# One passing "autonomous driving" in an abstract is usually just the
+# motivating application of a generic method. Hand-checked by a second model
+# (Haiku) on 300 papers the corpus calls AV only because of one abstract mention
+# and nothing else, in venues not about this topic: 39% were really about
+# driving. Papers with two mentions were right 89% of the time, three or more
+# 97%, and in IV/ITSC (venues about this topic) a lone mention was right about
+# 85%. So outside those venues a lone abstract mention does not make a paper
+# AV; a phrase in the title, a second mention, or a maintainer or LLM label
+# still does. Applied after classify_relevance, by whoever knows the venue
+# (merge_corpus.py).
+AV_FOCUSED_VENUES = frozenset({"IV", "ITSC", "T-IV"})
+
+
+def rests_on_one_abstract_mention(title, abstract, llm_says_av=False):
+    """True when the keyword floor called this AV on a single mention in the
+    abstract alone: no AV cue in the title, no maintainer or LLM label.
+    Callers demote such a paper unless its venue is in AV_FOCUSED_VENUES."""
+    if llm_says_av or normalize_title(title) in HARD_AV_TITLES:
+        return False
+    title_l = (title or "").lower()
+    if AV_RELEVANCE_COMBINED.search(title_l) or AV_TITLE_ONLY_COMBINED.search(title_l):
+        return False
+    if TITLE_STRONG_COMBINED.search(title_without_other_drive_senses(title_l)):
+        return False
+    if not AV_TITLE_REGEX_EXCLUSIONS.search(title_l) and any(r.search(title_l) for r in AV_TITLE_REGEXES):
+        return False
+    return len(AV_RELEVANCE_COMBINED.findall((abstract or "").lower())) == 1
 
 
 # Does this title say the paper PRESENTS a dataset/benchmark, as opposed to

@@ -157,3 +157,7 @@ data/papercept_*/
 
 # fetch_arxiv_monthly.py resume file for an interrupted harvest; deleted on success
 data/arxiv_harvest_checkpoint.jsonl
+
+# Abstract backfill side files and logs (scripts/fetch_abstracts_*.py)
+data/abstracts_web_*.json
+data/logs/
