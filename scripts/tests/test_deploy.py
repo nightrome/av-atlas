@@ -289,5 +289,39 @@ class PublishEndToEndTests(unittest.TestCase):
             self.assertEqual(git("log", "-1", "--format=%s", "gh-pages", cwd=remote), "Publish AV Atlas v0.1.2")
 
 
+class WaitForPagesTests(unittest.TestCase):
+    REMOTE = "https://github.com/nightrome/av-atlas-staging.git"
+
+    def run_wait(self, statuses):
+        """statuses: what the builds/latest endpoint returns, in order."""
+        calls = []
+        queue = list(statuses)
+
+        def fake_run(cmd, **kw):
+            calls.append(cmd)
+            if "-X" in cmd:
+                return subprocess.CompletedProcess(cmd, 0, "", "")
+            return subprocess.CompletedProcess(cmd, 0, queue.pop(0) + "\n", "")
+
+        with mock.patch.object(deploy, "_gh_exe", return_value="gh"), \
+                mock.patch.object(deploy.subprocess, "run", fake_run):
+            deploy.wait_for_pages(self.REMOTE, "staging", sleep=lambda s: None)
+        return calls
+
+    def test_built_straight_away_requests_nothing(self):
+        calls = self.run_wait(["building", "built"])
+        self.assertFalse(any("-X" in c for c in calls))
+
+    def test_errored_build_is_requested_again(self):
+        calls = self.run_wait(["errored", "built"])
+        posts = [c for c in calls if "-X" in c]
+        self.assertEqual(len(posts), 1)
+        self.assertIn("repos/nightrome/av-atlas-staging/pages/builds", posts[0])
+
+    def test_gives_up_loudly_after_three_errors(self):
+        with self.assertRaises(SystemExit):
+            self.run_wait(["errored", "errored", "errored"])
+
+
 if __name__ == "__main__":
     unittest.main()
