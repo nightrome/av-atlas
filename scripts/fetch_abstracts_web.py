@@ -35,6 +35,7 @@ that still have no abstract). Safe to stop and restart at any time.
 
 Usage:
   python fetch_abstracts_web.py --sources arxiv    # run until done
+  python fetch_abstracts_web.py --sources arxiv --batch 8   # several titles per request, much faster
   python fetch_abstracts_web.py --sources s2 --max-hours 8
   python fetch_abstracts_web.py --apply            # fold every abstracts_web_*.json in
   python fetch_abstracts_web.py --sources arxiv --limit 50   # try it out
@@ -160,6 +161,35 @@ def lookup_arxiv(title):
     return None
 
 
+ARXIV_BATCH_MAX_QUERY = 1800  # characters of query text; arXiv rejects very long URLs
+
+
+def lookup_arxiv_many(titles):
+    """One arXiv request for several titles: {title: abstract or None}.
+
+    The titles are OR-ed as exact-phrase searches. If the answer is as long as
+    we allowed (so some matches may have been cut off), titles without a match
+    raise Unavailable instead of counting as misses, and get asked again alone.
+    """
+    q = " OR ".join('ti:"' + words(t) + '"' for t in titles)
+    limit = min(len(titles) * 12, 200)
+    raw = http_get("https://export.arxiv.org/api/query?search_query=" + urllib.parse.quote(q)
+                   + f"&max_results={limit}")
+    if raw is None:
+        raise Unavailable("no answer")
+    ns = {"a": "http://www.w3.org/2005/Atom"}
+    entries = ET.fromstring(raw).findall("a:entry", ns)
+    by_title = {}
+    for entry in entries:
+        by_title.setdefault(norm(entry.findtext("a:title", default="", namespaces=ns)),
+                            clean_abstract(entry.findtext("a:summary", default="", namespaces=ns)))
+    out = {t: by_title.get(norm(t)) for t in titles}
+    if len(entries) >= limit:
+        # Some matches may have been cut off: a title without a match is not a miss yet.
+        out = {t: (v or False) for t, v in out.items()}
+    return out
+
+
 def make_lookup_s2():
     key = read_s2_key(BASE / ".env")
 
@@ -191,13 +221,14 @@ class Source:
     def ready(self):
         return self.clock() >= self.blocked_until
 
-    def ask(self, title):
-        """('hit', text) | ('miss', None) | ('later', None)."""
+    def _guarded(self, call):
+        """('ok', value) | ('miss', None) | ('later', None), with the waiting and
+        cooling-down rules above applied to the request `call` makes."""
         wait = self.next_request - self.clock()
         if wait > 0:
             self.sleep(wait)
         try:
-            text = self.lookup(title)
+            value = call()
         except Unavailable as e:
             self.next_request = self.clock() + self.gap
             self.fails += 1
@@ -221,7 +252,18 @@ class Source:
         self.backoff = BACKOFF_START
         self.cooldown = COOLDOWN_START
         self.next_request = self.clock() + self.gap
-        return ("hit", text) if text else ("miss", None)
+        return "ok", value
+
+    def ask(self, title):
+        """('hit', text) | ('miss', None) | ('later', None)."""
+        outcome, text = self._guarded(lambda: self.lookup(title))
+        if outcome == "ok":
+            return ("hit", text) if text else ("miss", None)
+        return outcome, None
+
+    def ask_many(self, titles):
+        """('ok', {title: text or None}) | ('miss', None) | ('later', None); one request."""
+        return self._guarded(lambda: self.lookup_many(titles))
 
 
 # -------------------------------------------------------------------- driver
@@ -325,6 +367,77 @@ def run(papers, state, sources, max_seconds=None, limit=None, save=None, clock=t
     return stats
 
 
+def run_batched(papers, state, src, batch, max_seconds=None, limit=None, save=None, clock=time.monotonic,
+                sleep=time.sleep, preknown=None, peers=None):
+    """Like run() for a single source that can answer several titles per request
+    (src.lookup_many). A title it has not been asked yet goes into the next batch;
+    a failed request leaves its titles unmarked, so they come around again."""
+    preknown = preknown or {}
+    peers = peers or (lambda: set())
+    code = CODES[src.name]
+    started = clock()
+    stats = {"hit": 0, "asked": 0}
+    todo = [(nt, t) for nt, t in pending_papers(papers, state, peers())
+            if code not in set(state["tried"].get(nt, "")) | set(preknown.get(nt, ""))]
+    if limit:
+        todo = todo[:limit]
+    since_save = 0
+    alone = set()  # titles a batch left undecided: asked one by one
+    while todo:
+        chunk, size = [], 0
+        for nt, title in todo:
+            if nt in alone:
+                if not chunk:
+                    chunk.append((nt, title))
+                    alone.discard(nt)
+                    break
+                continue
+            if chunk and (len(chunk) >= batch or size + len(title) > ARXIV_BATCH_MAX_QUERY):
+                break
+            chunk.append((nt, title))
+            size += len(title) + 10
+        if max_seconds and clock() - started > max_seconds:
+            return stats
+        if not src.ready():
+            nap = max(5, src.blocked_until - clock())
+            print(f"  {src.name} is cooling down; sleeping {nap / 60:.0f} min ({len(todo)} papers waiting)", flush=True)
+            if max_seconds and clock() - started + nap > max_seconds:
+                return stats
+            sleep(nap)
+            continue
+        outcome, answers = src.ask_many([t for _, t in chunk])
+        stats["asked"] += 1
+        if outcome == "later" or (outcome == "miss" and len(chunk) > 1):
+            if outcome == "miss":
+                batch = max(1, len(chunk) // 2)  # an unreadable answer: try smaller batches
+            continue
+        undecided = set()
+        for nt, title in chunk:
+            text = (answers or {}).get(title)
+            if text is False and len(chunk) > 1:
+                undecided.add(nt)
+                continue
+            if text:
+                state["abstracts"][nt] = {"text": text, "source": src.name}
+                state["tried"].pop(nt, None)
+                stats["hit"] += 1
+            else:
+                state["tried"][nt] = "".join(sorted(set(state["tried"].get(nt, "")) | {code}))
+        done = {nt for nt, _ in chunk} - undecided
+        alone |= undecided
+        todo = [(nt, t) for nt, t in todo if nt not in done]
+        since_save += len(chunk)
+        if save and since_save >= SAVE_EVERY:
+            save()
+            since_save = 0
+            known = peers()
+            todo = [(nt, t) for nt, t in todo if nt not in known]
+            print(f"  {stats['hit']} abstracts found, {len(todo)} left in this pass", flush=True)
+    if save:
+        save()
+    return stats
+
+
 def apply(papers_path=PAPERS_FILE, data_dir=DATA_DIR):
     from apply_abstracts_semanticscholar import fill_missing_abstract
     found = {}
@@ -349,6 +462,8 @@ def main(argv=None):
     ap.add_argument("--max-hours", type=float, default=None)
     ap.add_argument("--limit", type=int, default=None, help="only the first N pending papers")
     ap.add_argument("--sources", default="arxiv", help="one of: " + ",".join(ORDER))
+    ap.add_argument("--batch", type=int, default=1,
+                    help="titles per request (arxiv only; 8 is a good value; default 1)")
     args = ap.parse_args(argv)
     if args.apply:
         apply()
@@ -373,8 +488,14 @@ def main(argv=None):
 
     pend = len(pending_papers(papers, state, peer_abstracts(out_file)))
     print(f"{pend} papers without an abstract; sources: {', '.join(names)}", flush=True)
-    stats = run(papers, state, sources, max_seconds=args.max_hours * 3600 if args.max_hours else None,
-                limit=args.limit, save=save, preknown=preknown, peers=lambda: peer_abstracts(out_file))
+    budget = args.max_hours * 3600 if args.max_hours else None
+    if args.batch > 1 and names == ["arxiv"]:
+        sources[0].lookup_many = lookup_arxiv_many
+        stats = run_batched(papers, state, sources[0], args.batch, max_seconds=budget, limit=args.limit,
+                            save=save, preknown=preknown, peers=lambda: peer_abstracts(out_file))
+    else:
+        stats = run(papers, state, sources, max_seconds=budget, limit=args.limit, save=save,
+                    preknown=preknown, peers=lambda: peer_abstracts(out_file))
     save()
     print(f"Done for now: {stats['hit']} abstracts found in {stats['asked']} requests.", flush=True)
     return 0
