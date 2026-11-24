@@ -28,6 +28,7 @@ import urllib.parse
 from collections import Counter, defaultdict
 from html import unescape
 
+import checked_titles
 from atomic_write import write_json_atomic
 from fetch_abstracts_web import (BACKOFF_CAP, BACKOFF_START, CONTACT, DATA_DIR, PAPERS_FILE, Unavailable,
                                  clean_abstract, http_get, load_json, norm)
@@ -135,14 +136,15 @@ def run(missing, state, venues, years=None, max_seconds=None, save=None, clock=t
             if years is not None and year not in years:
                 continue
             key = f"{issn}:{year}"
-            if key in state["done"]:
+            wanted = checked_titles.left(state, key, {t for t in missing[venue][year] if t not in state["abstracts"]},
+                                         state["done"])
+            if not wanted:
                 continue
             if max_seconds and clock() - started > max_seconds:
                 save(state)
                 return False
-            wanted = {t for t in missing[venue][year] if t not in state["abstracts"]}
             pages, seen, kept = harvest_year(issn, year, wanted, state["abstracts"], fetch_json)
-            state["done"].append(key)
+            checked_titles.mark(state, key, wanted)
             save(state)
             print(f"{venue} {year}: {seen} works with abstract in {pages} pages, "
                   f"{kept} of {len(missing[venue][year])} missing abstracts found", flush=True)

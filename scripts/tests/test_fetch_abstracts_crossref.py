@@ -64,7 +64,7 @@ class HarvestTests(unittest.TestCase):
         self.assertTrue(fc.run(missing, state, ["IJCV"], fetch_json=fetch))
         self.assertEqual(len(calls), 1)
         self.assertIn("from-pub-date:2020", calls[0])
-        self.assertIn(f"{fc.ISSNS['IJCV']}:2020", state["done"])
+        self.assertEqual(state["checked"][f"{fc.ISSNS['IJCV']}:2020"], ["a"])
 
         # a failure propagates and marks nothing done
         state2 = {"abstracts": {}, "done": []}
@@ -73,7 +73,7 @@ class HarvestTests(unittest.TestCase):
             raise Unavailable("HTTP 500")
         with self.assertRaises(Unavailable):
             fc.run(missing, state2, ["IJCV"], fetch_json=boom)
-        self.assertEqual(state2["done"], [])
+        self.assertEqual(state2.get("checked", {}), {})
 
     def test_get_json_backs_off_and_honours_retry_after(self):
         seq = [Unavailable("HTTP 429", 120), Unavailable("HTTP 503", 0), b'{"ok": 1}']

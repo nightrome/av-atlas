@@ -40,6 +40,7 @@ import urllib.parse
 from collections import Counter, defaultdict
 
 from atomic_write import write_json_atomic
+from checked_titles import left, mark
 from fetch_abstracts_openalex import OUT_FILE as ABSTRACT_STATE_FILE
 from fetch_abstracts_openalex import get_json
 from fetch_abstracts_web import DATA_DIR, PAPERS_FILE, load_json, norm
@@ -106,11 +107,12 @@ def pass_venues(papers, state, max_deadline):
         for src in sources[venue]:
             for year in sorted(missing[venue], reverse=True):
                 key = f"{src['id']}:{year}"
-                if key in state["done_venue_years"]:
+                wanted = left(state, key, missing[venue][year], state["done_venue_years"])
+                if not wanted:
                     continue
                 if time.monotonic() > max_deadline:
                     return False
-                wanted, cursor, seen, got = missing[venue][year], "*", 0, 0
+                cursor, seen, got = "*", 0, 0
                 while cursor:
                     data = get_json(f"/works?filter=primary_location.source.id:{src['id']},publication_year:{year}"
                                     f"&per-page=200&select={SELECT}&cursor={urllib.parse.quote(cursor)}")
@@ -123,7 +125,7 @@ def pass_venues(papers, state, max_deadline):
                                 state["details"]["t:" + nt] = d
                                 got += 1
                     cursor = (data.get("meta") or {}).get("next_cursor") if data.get("results") else None
-                state["done_venue_years"].append(key)
+                mark(state, key, wanted)
                 write_json_atomic(OUT_FILE, state)
                 print(f"{venue} {year}: {seen} works, affiliations for {got} of {len(wanted)}", flush=True)
     return True

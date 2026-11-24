@@ -31,6 +31,7 @@ import time
 import urllib.parse
 from collections import Counter, defaultdict
 
+import checked_titles
 from atomic_write import write_json_atomic
 from fetch_abstracts_web import (BACKOFF_CAP, BACKOFF_START, CONTACT, DATA_DIR, PAPERS_FILE, Unavailable,
                                  clean_abstract, http_get, load_json, norm)
@@ -167,15 +168,17 @@ def main(argv=None):
         for src in state["sources"][venue]:
             for year in sorted(missing[venue], reverse=True):
                 key = f"{src['id']}:{year}"
-                if key in state["done"]:
+                wanted = checked_titles.left(state, key, {t for t in missing[venue][year] if t not in state["abstracts"]},
+                                             state["done"])
+                if not wanted:
                     continue
                 if args.max_hours and time.monotonic() - started > args.max_hours * 3600:
                     print("Time budget used up; stopping.", flush=True)
                     write_json_atomic(OUT_FILE, state)
                     return 0
                 before = len(state["abstracts"])
-                pages, seen = harvest_year(src["id"], year, missing[venue][year], state["abstracts"])
-                state["done"].append(key)
+                pages, seen = harvest_year(src["id"], year, wanted, state["abstracts"])
+                checked_titles.mark(state, key, wanted)
                 write_json_atomic(OUT_FILE, state)
                 print(f"{venue} {year}: {seen} works in {pages} pages, "
                       f"{len(state['abstracts']) - before} of {len(missing[venue][year])} missing abstracts found",
