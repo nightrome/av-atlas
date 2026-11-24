@@ -17,6 +17,8 @@ run-name: monthly-update${{ inputs.dry_run && ' (dry run)' || '' }}${{ inputs.fe
 #                             push made with GITHUB_TOKEN doesn't start a Pages
 #                             build, and a PR it opens doesn't run tests.yml.
 #   SEMANTIC_SCHOLAR_API_KEY  the Semantic Scholar API key.
+#   OPENALEX_API_KEY          optional: the OpenAlex key. Without it the OpenAlex
+#                             steps still run, at the lower anonymous rate limit.
 #
 # Retries: when a source is down (arXiv unavailable, say) the run still
 # publishes what it has, ends green and says nothing; it is tried again at
@@ -161,6 +163,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
           GH_TOKEN: ${{ secrets.AV_ATLAS_BOT_TOKEN }}
           SEMANTIC_SCHOLAR_API_KEY: ${{ secrets.SEMANTIC_SCHOLAR_API_KEY }}
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
 
       - name: Save the arXiv harvest checkpoint
         if: always()
