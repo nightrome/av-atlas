@@ -113,6 +113,8 @@ class StepOrderTests(unittest.TestCase):
             "restore_corpus.py", "carry_forward()", "fetch_previous_stats()", "fetch_arxiv_monthly.py", "check_new_editions.py",
             "fetch_crossref.py", "fix_suspect_venues.py", "merge_corpus.py",
             "fetch_abstracts_semanticscholar.py", "apply_abstracts_semanticscholar.py",
+            "fetch_abstracts_web.py", "fetch_abstracts_pmlr.py", "fetch_abstracts_crossref.py",
+            "fetch_abstracts_web.py", "fetch_affiliations_openalex.py", "fetch_affiliations_openalex.py",
             "fetch_s2_references.py", "build_public_site.py", "commit_data()", "deploy.py",
             "backup_corpus.py", "open_pr()", "mark_done()"])
         summary = (self.work / "summary.md").read_text(encoding="utf-8")
@@ -238,8 +240,9 @@ class BudgetTests(unittest.TestCase):
             "check_new_editions.py": (0, False, 120), "fetch_crossref.py": (0, False, 45),
             "fetch_s2_references.py": (-2, True, 999)})
         self.assertEqual(orch.run(), 0)
-        # 1 + 1 + 120 + 45 + 1 + 1 + 1 + 1 = 171 minutes used, 320 - 100 - 171 left
-        self.assertAlmostEqual(orch.budgets["fetch_s2_references.py"], 49)
+        # 1 + 1 + 120 + 45 + 1 + 1 + 1 + 1 + 6 (web abstracts, apply, affiliations, apply) = 177 minutes
+        # used, 320 - 100 - 177 left
+        self.assertAlmostEqual(orch.budgets["fetch_s2_references.py"], 43)
         self.assertGreaterEqual(orch.budgets["build_public_site.py"], 100)
 
 

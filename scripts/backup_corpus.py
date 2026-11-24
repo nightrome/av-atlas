@@ -85,6 +85,12 @@ BACKUP_FILES = (
     ("reference_lists_s2.json", False),
     # Resume files for the per-paper enrichment crawlers
     ("abstracts_semanticscholar.json", False),
+    ("abstracts_web_arxiv.json", False),
+    ("abstracts_web_s2.json", False),
+    ("abstracts_web_openalex_bulk.json", False),
+    ("abstracts_web_pmlr.json", False),
+    ("abstracts_web_crossref.json", False),
+    ("affiliations_openalex.json", False),
     ("affiliations_arxiv.json", False),
     ("affiliations_cvf.json", False),
     ("arxiv_ids.json", False),

@@ -217,7 +217,10 @@ ends green (see "Retries" below). It runs `scripts/monthly_update.py`, which:
 2. fetches what's new: arXiv preprints (`fetch_arxiv_monthly.py`), new conference
    editions (`check_new_editions.py`, which runs the right fetcher itself), journal
    papers from Crossref (`fetch_crossref.py journals`), and Semantic Scholar
-   abstracts and reference lists for papers that don't have them yet;
+   abstracts and reference lists for papers that don't have them yet. It also runs the
+   extra abstract sources (batched arXiv, PMLR, Crossref) and the OpenAlex backfill of
+   author institutions, each with a time cap, and folds their side files in. They pick
+   up where they stopped the next month;
 3. builds the site with `build_public_site.py`, including the tests and the check
    that the corpus didn't shrink;
 4. publishes to production with `deploy.py --skip-build --no-main-commit` (it never

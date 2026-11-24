@@ -20,6 +20,12 @@ Steps, in order:
                 papers_full.json before the Semantic Scholar steps look for them
   s2_abstracts  fetch_abstracts_semanticscholar.py -- papers still without one
   s2_apply      apply_abstracts_semanticscholar.py
+  web_abstracts fetch_abstracts_web.py (arXiv, batched), fetch_abstracts_pmlr.py and
+                fetch_abstracts_crossref.py -- more abstracts, each capped well under the
+                step's time so the apply step still runs
+  web_apply     fetch_abstracts_web.py --apply -- folds every abstracts_web_*.json in
+  affiliations  fetch_affiliations_openalex.py -- institutions for AV papers that have none
+  aff_apply     fetch_affiliations_openalex.py --apply
   s2_refs       fetch_s2_references.py -- ids and reference lists; it skips what
                 it already has, so after the first full crawl that means new papers
   build         build_public_site.py -- merge, repairs, citation match, aggregate,
@@ -156,6 +162,16 @@ def plan(work_dir):
              cmds=(("fetch_abstracts_semanticscholar.py",),)),
         Step("s2_apply", "soft", 15, before_build=True, needs=("premerge",),
              cmds=(("apply_abstracts_semanticscholar.py",),)),
+        Step("web_abstracts", "soft", 60, before_build=True, needs=("premerge",), timeout_ok=True,
+             cmds=(("fetch_abstracts_web.py", "--sources", "arxiv", "--batch", "8", "--max-hours", "0.4"),
+                   ("fetch_abstracts_pmlr.py", "--max-hours", "0.1"),
+                   ("fetch_abstracts_crossref.py", "--max-hours", "0.15"))),
+        Step("web_apply", "soft", 15, before_build=True, needs=("premerge",),
+             cmds=(("fetch_abstracts_web.py", "--apply"),)),
+        Step("affiliations", "soft", 60, before_build=True, needs=("premerge",), timeout_ok=True,
+             cmds=(("fetch_affiliations_openalex.py", "--max-hours", "0.75"),)),
+        Step("aff_apply", "soft", 15, before_build=True, needs=("premerge",),
+             cmds=(("fetch_affiliations_openalex.py", "--apply"),)),
         Step("s2_refs", "soft", 180, before_build=True, needs=("premerge",), timeout_ok=True,
              partial_codes=(EXIT_TRANSIENT,),
              cmds=(("fetch_s2_references.py",),)),
