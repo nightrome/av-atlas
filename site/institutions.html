@@ -76,7 +76,6 @@
 <nav id="topnav"></nav>
 <div id="filter-bar-container"></div>
 
-<div id="coverage-note-container"></div>
 
 <div class="panel" id="timeline-panel">
   <div class="panel-title-row">
@@ -254,10 +253,6 @@ function addInstitutionFilters(stats) {
 function render() {
   const stats = currentStats, filters = currentFilters;
   const papers = filterPapers(stats.all_papers || [], filters);
-  // Stated up front, not buried in About: every institution figure below is
-  // computed only over papers whose author affiliations have been resolved.
-  renderCoverageBanner(document.getElementById('coverage-note-container'), stats.all_papers || [],
-    { accessor: p => p.institutions, what: 'Author affiliations', between: 'institutions' });
   const minPapersThreshold = filters.minPapers;
   // Both thresholds dropped to 0 while searching -- same fix as
   // authors.html, for the same reason: an institution with fewer papers

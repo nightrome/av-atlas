@@ -72,7 +72,6 @@
   <div class="legend" id="legend"></div>
 </div>
 
-<div id="coverage-note-container"></div>
 
 <div class="panel" id="timeline-panel">
   <div class="panel-title-row">
@@ -214,10 +213,6 @@ function row(cells) {
 function render() {
   const stats = currentStats, filters = currentFilters;
   const papers = filterPapers(stats.all_papers || [], filters);
-  // See institutions.html -- a country is only known when at least one
-  // author's affiliation was resolved, so the same caveat applies here.
-  renderCoverageBanner(document.getElementById('coverage-note-container'), stats.all_papers || [],
-    { accessor: p => p.countries, what: 'Author affiliations (and therefore countries)', between: 'countries' });
   const countries = aggregateByDimension(papers, p => p.countries, { minPapers: (filters.minPapers || 1) - 1, minCitedForAvg: 3 });
   // Attributed via each author's OWN country (stats.author_detail), not
   // every country the paper as a whole touches -- a paper with authors

@@ -60,6 +60,57 @@ ORG_PROMPT = (
     '[{"i": 7, "same_as": "..."}, ...] listing only the lines that should be merged.\n\n')
 
 
+UNIT_PROMPT = (
+    "Each group below starts with a university (its first line, the one all others are compared with), followed by "
+    "other institution names that mention its name or its abbreviation. Find the names that are a department, "
+    "school, faculty, lab, institute or center that is part of THAT university, or just another spelling of it "
+    "(for example 'MIT CSAIL' and 'MIT Media Lab' belong to MIT; 'Rutgers Robotics Lab' belongs to Rutgers). Do NOT "
+    "merge a different university or a campus with its own name ('University of Michigan-Dearborn'), a company, a "
+    "hospital, a government research institute, a joint venture between organizations, or an unrelated "
+    "organization that only shares a word. Use the first line of the group, copied exactly, as the answer. Answer "
+    'with JSON only: [{"i": 7, "same_as": "..."}, ...] listing only the lines that should be merged.\n\n')
+
+_UNIT_GENERIC = set("""university universidad universite universita universitat universidade of the and de di
+college institute technology polytechnic school state national royal new north south east west central""".split())
+
+
+def prepare_units(out):
+    import collections
+    import re
+    import unicodedata
+    from aggregate import ACADEMIC_KEYWORD_RE, normalize_institution as normalize
+    from fetch_abstracts_web import PAPERS_FILE
+    papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
+    count = collections.Counter(normalize(x) for p in papers for a in p.get("authors_detail") or []
+                                for x in a.get("affiliations") or [])
+
+    def fold(s):
+        return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+    uni = re.compile(r"universit|universid|college|polytechn|institute of technology|hochschule|"
+                     r"ETH|EPFL", re.I)
+    unis = [n for n, k in count.items() if k >= 5 and uni.search(fold(n)) and len(n.split()) <= 7]
+    folded = {n: fold(n) for n in count}
+    groups = {}
+    for u in unis:
+        words = [w for w in re.findall(r"[A-Za-z0-9]+", fold(u)) if w.lower() not in _UNIT_GENERIC]
+        keys = [" ".join(words)] if words else []
+        initials = "".join(w[0] for w in re.findall(r"[A-Za-z]+", fold(u)) if w.lower() not in
+                           {"of", "the", "and", "de", "di", "for"}).upper()
+        pats = [re.compile(r"(?<![A-Za-z0-9])" + re.escape(k) + r"(?![A-Za-z0-9])", re.I) for k in keys
+                if len(k) >= 4]
+        if len(initials) >= 3:
+            pats.append(re.compile(r"(?<![A-Za-z0-9])" + initials + r"(?![A-Za-z0-9])"))
+        if not pats:
+            continue
+        cands = [n for n in count if n != u and folded[n] and not uni.search(folded[n]) and ACADEMIC_KEYWORD_RE.search(n) is None
+                 and any(p.search(folded[n]) for p in pats)]
+        if cands:
+            cands.sort(key=lambda n: -count[n])
+            groups[u] = {"new": [u] + cands[:40], "known": [], "counts": {n: count[n] for n in [u] + cands[:40]}}
+    save(out, {"groups": groups})
+    print(f"{len(groups)} universities, {sum(len(g['new']) - 1 for g in groups.values())} candidates -> {out}")
+
+
 def accepted_org(lines, answer):
     """lines: [(group, name)] numbered from 1. Target must be in the same group or a leading part of the name."""
     members = {}
@@ -76,7 +127,7 @@ def accepted_org(lines, answer):
     return out
 
 
-def run_orgs(state, out, ask_llm=None):
+def run_orgs(state, out, ask_llm=None, prompt=ORG_PROMPT):
     ask_llm = ask_llm or ask
     state.setdefault("done", {})
     lines = [(g, n) for g, grp in sorted(state["groups"].items()) for n in grp["new"] if n not in state["done"]]
@@ -95,7 +146,7 @@ def run_orgs(state, out, ask_llm=None):
                 prev = g
             text.append(f"{n}. {name} ({state['groups'][g]['counts'].get(name, 0)} papers)")
         try:
-            got = accepted_org(batch, parse_json_list(ask_llm(ORG_PROMPT + "\n".join(text))))
+            got = accepted_org(batch, parse_json_list(ask_llm(prompt + "\n".join(text))))
         except Exception as e:  # noqa: BLE001 -- nothing is recorded, the names come up again
             print(f"  {batch[0][0]}: {str(e)[:100]}", flush=True)
             i = j
@@ -275,12 +326,20 @@ def main(argv=None):
     ap.add_argument("--apply")
     ap.add_argument("--prepare-orgs", action="store_true")
     ap.add_argument("--run-orgs")
+    ap.add_argument("--prepare-units", action="store_true")
+    ap.add_argument("--run-units")
     ap.add_argument("--out", default="synonyms.json")
     args = ap.parse_args(argv)
     if args.prepare:
         prepare(args.prepare, args.out)
     elif args.prepare_orgs:
         prepare_orgs(args.out)
+    elif args.prepare_units:
+        prepare_units(args.out)
+    elif args.run_units:
+        state = json.load(open(args.out, encoding="utf-8")) if os.path.exists(args.out) else json.load(
+            open(args.run_units, encoding="utf-8"))
+        run_orgs(state, args.out, prompt=UNIT_PROMPT)
     elif args.run_orgs:
         state = json.load(open(args.out, encoding="utf-8")) if os.path.exists(args.out) else json.load(
             open(args.run_orgs, encoding="utf-8"))
