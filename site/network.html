@@ -150,9 +150,18 @@ function hashString(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 
 // similar-hue collisions a hash function occasionally produces.
 const CLUSTER_PALETTE = [
   '#e6614f', '#3987e5', '#3fae6a', '#e6a53f', '#9366d9', '#3fb8bd',
-  '#d9527a', '#7a9e3f', '#c98e3f', '#5f7de6', '#4fa88a', '#c95fd0',
+  '#d9527a', '#7a9e3f', '#8c564b', '#5f7de6', '#c95fd0', '#2a9d8f',
+  '#f4d03f', '#16508f', '#b5179e', '#a0522d', '#00b4d8', '#6a994e',
+  '#ff7f50', '#7b2cbf', '#a3a380', '#d00000', '#5e60ce', '#e07be0',
 ];
-function clusterColor(i) { return CLUSTER_PALETTE[i % CLUSTER_PALETTE.length]; }
+// The first 24 clusters get hand-picked colors that sit far apart in hue and
+// lightness. Any further cluster steps round the hue wheel by the golden angle
+// and alternates lightness, so neighbours in the list never look alike.
+function clusterColor(i) {
+  if (i < CLUSTER_PALETTE.length) return CLUSTER_PALETTE[i];
+  const k = i - CLUSTER_PALETTE.length;
+  return `hsl(${Math.round((k * 137.508 + 20) % 360)}, ${k % 2 ? 62 : 74}%, ${k % 3 === 0 ? 38 : k % 3 === 1 ? 50 : 62}%)`;
+}
 
 let currentStats = null, currentFilters = null;
 let currentQuery = new URLSearchParams(location.search).get('q') || '';
