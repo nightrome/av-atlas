@@ -226,7 +226,7 @@ COUNTRY_NAMES = {
     "KZ": "Kazakhstan", "JO": "Jordan", "VE": "Venezuela", "AM": "Armenia", "MK": "North Macedonia",
     "BN": "Brunei", "LY": "Libya", "CM": "Cameroon", "AL": "Albania", "ET": "Ethiopia",
     "UZ": "Uzbekistan", "PS": "Palestine", "AZ": "Azerbaijan", "BH": "Bahrain", "BI": "Burundi",
-    "LI": "Liechtenstein",
+    "LI": "Liechtenstein", "BA": "Bosnia and Herzegovina", "KW": "Kuwait",
 }
 
 
