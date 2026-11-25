@@ -12,6 +12,11 @@ already has in that country, or of another new name in the same group.
                       existing institutions of that country -> --out file
   --run FILE          (where the claude CLI is) ask haiku, 40 new names per call,
                       resumable: names already answered are never asked again
+  --prepare-orgs      (local) group every institution of the corpus by its first word
+                      (universities left out) -> --out file; then --run-orgs FILE asks
+                      which of the names in a group are units of one company or
+                      organization and should be one name, the way every Honda unit
+                      is just "Honda"
   --apply FILE        (local) write the accepted synonyms into
                       data/institution_aliases_llm.json as {variant: canonical},
                       which aggregate.py applies when it builds the site
@@ -40,6 +45,98 @@ PROMPT = (
     "synonyms, and a company and its unrelated competitor are NOT synonyms. Copy the matching name exactly as "
     "written in the lists. Use '' when there is no match. Answer with JSON only: "
     '[{"i": 1, "same_as": "..."}, ...] with one entry per NEW name.\n\n')
+
+
+ORG_BATCH = 70
+ORG_PROMPT = (
+    "Below are groups of institution names from author affiliations; a group shares its first word. Within each "
+    "group, find names that are units, labs, subsidiaries, regional branches or alternate names of the SAME company "
+    "or organization (like 'Honda R&D', 'Honda Research Institute USA' and 'Honda Motor', which are all just "
+    "'Honda'). For each such name give the single plain name of the organization it belongs to: the bare company or "
+    "organization name, copied from the group if it is there, otherwise the shared company name. Use '' for a name "
+    "that is already the plain organization name, or that is a different organization: two unrelated organizations "
+    "with the same first word, a separate joint venture ('Sony Honda Mobility'), a university, or a government "
+    "agency of another country are NOT the same. Answer with JSON only: "
+    '[{"i": 7, "same_as": "..."}, ...] listing only the lines that should be merged.\n\n')
+
+
+def accepted_org(lines, answer):
+    """lines: [(group, name)] numbered from 1. Target must be in the same group or a leading part of the name."""
+    members = {}
+    for g, n in lines:
+        members.setdefault(g, set()).add(n)
+    out = {}
+    for d in answer:
+        if not isinstance(d, dict) or not isinstance(d.get("i"), int) or not 1 <= d["i"] <= len(lines):
+            continue
+        g, name = lines[d["i"] - 1]
+        t = d.get("same_as")
+        if isinstance(t, str) and t and t != name and (t in members[g] or name.startswith(t + " ")):
+            out[name] = t
+    return out
+
+
+def run_orgs(state, out, ask_llm=None):
+    ask_llm = ask_llm or ask
+    state.setdefault("done", {})
+    lines = [(g, n) for g, grp in sorted(state["groups"].items()) for n in grp["new"] if n not in state["done"]]
+    i = 0
+    while i < len(lines):
+        # whole groups per call
+        j, last = i, None
+        while j < len(lines) and (j - i < ORG_BATCH or lines[j][0] == last):
+            last = lines[j][0]
+            j += 1
+        batch = lines[i:j]
+        text, prev = [], None
+        for n, (g, name) in enumerate(batch, 1):
+            if g != prev:
+                text.append(f"--- group: {g}")
+                prev = g
+            text.append(f"{n}. {name} ({state['groups'][g]['counts'].get(name, 0)} papers)")
+        try:
+            got = accepted_org(batch, parse_json_list(ask_llm(ORG_PROMPT + "\n".join(text))))
+        except Exception as e:  # noqa: BLE001 -- nothing is recorded, the names come up again
+            print(f"  {batch[0][0]}: {str(e)[:100]}", flush=True)
+            i = j
+            continue
+        for g, name in batch:
+            state["done"][name] = got.get(name, "")
+        save(out, state)
+        print(f"{batch[0][0]}..{batch[-1][0]}: {len(batch)} names, {len(got)} merges", flush=True)
+        i = j
+    save(out, state)
+
+
+_ORG_STOP = set("""the of and authors author university universidad universite universita universitat universidade
+universiteit national institute institut school department dept college center centre academy state technical
+technology royal federal chinese swiss german new san north south east west central research laboratory laboratoire lab
+key ministry faculty hospital city polytechnic computer intelligent china usa germany korea japan france italy spain
+india canada australia europe european international advanced applied systems engineering science sciences electrical
+electronic electronics information robotics automation vehicle vehicles transport transportation""".split())
+
+
+def prepare_orgs(out):
+    import collections
+    import re
+    import unicodedata
+    from aggregate import ACADEMIC_KEYWORD_RE, normalize_institution as normalize
+    from fetch_abstracts_web import PAPERS_FILE
+    papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
+    count = collections.Counter(normalize(x) for p in papers for a in p.get("authors_detail") or []
+                                for x in a.get("affiliations") or [])
+    groups = collections.defaultdict(list)
+    for name, k in count.items():
+        if k < 2 or not name or ACADEMIC_KEYWORD_RE.search(name):
+            continue
+        tok = re.sub(r"[^a-z0-9]", "", unicodedata.normalize("NFKD", name.split()[0]).encode("ascii", "ignore")
+                     .decode().lower())
+        if len(tok) >= 3 and tok not in _ORG_STOP:
+            groups[tok].append(name)
+    groups = {t: v for t, v in groups.items() if len(v) >= 2}
+    save(out, {"groups": {t: {"new": sorted(v, key=lambda n: -count[n])[:60], "known": [],
+                              "counts": {n: count[n] for n in v}} for t, v in groups.items()}})
+    print(f"{len(groups)} groups, {sum(len(v) for v in groups.values())} names -> {out}")
 
 
 def parse_json_list(text):
@@ -176,10 +273,18 @@ def main(argv=None):
     ap.add_argument("--prepare")
     ap.add_argument("--run")
     ap.add_argument("--apply")
+    ap.add_argument("--prepare-orgs", action="store_true")
+    ap.add_argument("--run-orgs")
     ap.add_argument("--out", default="synonyms.json")
     args = ap.parse_args(argv)
     if args.prepare:
         prepare(args.prepare, args.out)
+    elif args.prepare_orgs:
+        prepare_orgs(args.out)
+    elif args.run_orgs:
+        state = json.load(open(args.out, encoding="utf-8")) if os.path.exists(args.out) else json.load(
+            open(args.run_orgs, encoding="utf-8"))
+        run_orgs(state, args.out)
     elif args.run:
         state = json.load(open(args.out, encoding="utf-8")) if os.path.exists(args.out) else json.load(
             open(args.run, encoding="utf-8"))

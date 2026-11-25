@@ -1682,15 +1682,18 @@ FUNDING_CREDIT_RE = re.compile(r"\b(is |was )?supported by\b|\bfunded by\b|\bgra
 PERSON_INITIAL_NAME_RE = re.compile(r"^[A-Z]\.\s?[A-Z][a-z'\-]+$")
 
 
-# A legal-entity suffix (LLC, Inc, GmbH) trailing an otherwise-real company
-# name -- user-flagged, and the branding a company actually goes by never
-# includes it (nobody writes "I work at Waymo LLC" in conversation), so it
-# just fragments the same real institution into "Foo" and "Foo LLC" as two
-# separate leaderboard rows. Deliberately narrow (just these three, not
-# Ltd/Co/Corp/AG) -- "Ltd"/"Co." are left alone on purpose elsewhere (see
-# the bare-"Ltd" comment above): a name legitimately ending in "Co. Ltd" is
-# real Chinese-company branding, not a fragment to strip.
-TRAILING_LEGAL_SUFFIX_RE = re.compile(r",?\s+(LLC|Inc\.?|GmbH)$", re.I)
+# A legal-form suffix (LLC, Inc, Corp, Co., Ltd, GmbH, AG, SE, S.A., B.V. ...)
+# trailing an otherwise-real company name -- user-flagged, twice: the branding
+# a company actually goes by never includes it, so it only fragments one real
+# institution into "Foo" and "Foo Ltd" rows. Several in a row go together
+# ("Foo Co., Ltd."). Short ones are matched case-sensitively so a real word
+# ("se", "ab") is never taken for one. "Company"/"Corporation" count only at the
+# very end, so "Bank of the Company" style names inside a longer name stay.
+_LEGAL_WORDS = (
+    r"(?i:L\.?L\.?C\.?|Inc\.?|Incorporated|Corp\.?|Corporation|Co\.?|Company|Ltd\.?|Limited|GmbH|mbH|PLC|"
+    r"Pty|Ltda|S\.?r\.?l\.?|LLP|KGaA)|AG|SE|S\.A\.?|SA|S\.p\.A\.?|SpA|B\.V\.?|BV|N\.V\.?|NV|AB|A/S|Oy|KG|LP"
+)
+TRAILING_LEGAL_SUFFIX_RE = re.compile(r"(?:[,\s]+(?:" + _LEGAL_WORDS + r")\.?)+$")
 
 # A trailing postal/zip code -- "Beijing 100084" (plain digits) or "Kanagawa
 # 243-0198"/"Tokyo 169-8555" (Japan's NNN-NNNN postal format). "10129
