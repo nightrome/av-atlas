@@ -25,6 +25,22 @@ class AcceptedTests(unittest.TestCase):
         self.assertEqual(s.parse_json_list("no idea"), [])
 
 
+class UnitTests(unittest.TestCase):
+    def test_units_merge_into_their_university_and_nothing_else(self):
+        lines = [("MIT", "Massachusetts Institute of Technology"), ("MIT", "MIT CSAIL"), ("MIT", "MIT Sloan")]
+        answer = [{"i": 2, "same_as": "Massachusetts Institute of Technology"}, {"i": 3, "same_as": "Harvard"}]
+        self.assertEqual(s.accepted_org(lines, answer),
+                         {"MIT CSAIL": "Massachusetts Institute of Technology"})
+
+    def test_run_uses_the_prompt_it_is_given(self):
+        state = {"groups": {"U": {"new": ["Uni", "Uni Lab"], "known": [], "counts": {}}}}
+        seen = []
+        s.run_orgs(state, str(Path(tempfile.mkdtemp()) / "o.json"),
+                   ask_llm=lambda p: seen.append(p) or '[{"i": 2, "same_as": "Uni"}]', prompt="UNITS: ")
+        self.assertTrue(seen[0].startswith("UNITS"))
+        self.assertEqual(state["done"], {"Uni": "", "Uni Lab": "Uni"})
+
+
 class RunTests(unittest.TestCase):
     def test_answered_names_are_not_asked_again(self):
         state = {"groups": {"NL": {"new": ["A", "B"], "known": ["K"]}}, "done": {"A": ""}}

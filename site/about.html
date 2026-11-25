@@ -347,6 +347,11 @@
   <tbody id="crawler-status-body"></tbody>
 </table>
 <ul>
+  <li id="affiliation-coverage"><strong>Author affiliations are not resolved for every paper.</strong>
+      <span id="affiliation-coverage-text"></span> Every figure on the Institutions and Countries
+      pages describes that share only, and recent papers and papers with a preprint are resolved
+      more often, so read comparisons between institutions or countries, and trends over time,
+      as directional.</li>
   <li><strong>Some venues have no abstracts at all</strong> (see the Abstracts column under Data
       coverage). AV-relevance and category for those rest on title text alone, a weaker signal
       than the rest of the corpus.</li>
@@ -390,7 +395,7 @@
 </p>
 <p class="section-intro">
   Read the README before using them. Citation counts are internal to this corpus and
-  incomplete; affiliations are resolved for a minority of papers; author names are not
+  incomplete; affiliations are not resolved for every paper; author names are not
   disambiguated. The data is published under
   <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>
   and stays subject to its original sources' terms — see the licence section below.
@@ -535,6 +540,13 @@ fetch('about.json').then(r => r.json()).then(stats => {
   if (versionLine) {
     document.getElementById('coverage-updated').textContent =
       `${versionLine}. The version goes up with every published build. The date is the last time a paper, author list, citation count or corpus total changed, so a rebuild that changes none of them keeps it.`;
+  }
+
+  {
+    const ac = (stats.corpus_stats || {}).affiliation_coverage || {};
+    const withAff = ac.with_institution || 0, total = ac.total || 0;
+    const el = document.getElementById('affiliation-coverage-text');
+    if (el && total) el.textContent = `An institution is known for ${withAff.toLocaleString()} of ${total.toLocaleString()} AV papers (${Math.round(withAff / total * 100)}%).`;
   }
 
   const cs = stats.corpus_stats || {};

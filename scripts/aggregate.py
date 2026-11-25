@@ -4037,6 +4037,9 @@ def main():
             "total_institutions": total_institutions_all,
             "total_countries": len(country_papers),
             "citation_graph_coverage": citation_graph_coverage,
+            # AV papers with at least one resolved institution; About states the share.
+            "affiliation_coverage": {"with_institution": sum(1 for p in papers if p.get("institutions")),
+                                     "total": len(papers)},
             # How many AV papers came from each discovery path -- see the
             # "source" field on each paper for what these mean. Surfaced so
             # each path's contribution is auditable without having to dig

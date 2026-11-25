@@ -25,19 +25,6 @@
        + result count, and a bottom row for "Show N" -- same structure and
        same visual language (panel/border/radius) on every page, so a reader
        who's learned one page's controls already knows every other page's. */
-    /* Coverage caveat (renderCoverageBanner). Deliberately part of the page
-       flow above the data it qualifies, not a dismissible toast and not a
-       tooltip -- a caveat a reader can close, or has to hover to find, is a
-       caveat most readers never see. */
-    .coverage-note {
-      background: var(--panel); border: 1px solid var(--border);
-      border-left: 3px solid var(--accent2); border-radius: 8px;
-      padding: 10px 14px; margin-bottom: 16px;
-      font-size: 0.85em; line-height: 1.5; color: var(--muted);
-    }
-    .coverage-note strong { color: var(--text); }
-    .coverage-note a { color: var(--accent); }
-
     .controls-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
     /* One grid for every page: equal-width cells, controls fill them in order
        (filters first, Sort by and Show top last), so all pages line up the same way. */
@@ -2497,46 +2484,6 @@
       wrap.appendChild(btn);
     }
     container.appendChild(wrap);
-  };
-
-  // A persistent, always-visible coverage caveat for the pages whose whole
-  // ranking rests on a partially-resolved field.
-  //
-  // Author affiliations are read from paper PDFs and preprint HTML, which
-  // works for well under half the corpus. Until now that was disclosed in
-  // exactly one place: a collapsed <details> at the bottom of the About
-  // page. The Institutions and Countries pages -- the two whose every number
-  // is computed *only* over papers with a resolved affiliation -- said
-  // nothing at all, so a reader had no way to know that "Papers: 335" for an
-  // institution means "335 of the papers we could attribute", not "335 of
-  // this institution's papers". The percentage is computed here from the
-  // rendered data rather than written into the page, so it tracks the crawl
-  // instead of going stale the first time coverage improves.
-  window.renderCoverageBanner = function (container, papers, opts) {
-    if (!container) return null;
-    const o = opts || {};
-    const total = (papers || []).length;
-    const withValue = (papers || []).filter(p => ((o.accessor ? o.accessor(p) : p.institutions) || []).length).length;
-    if (!total) return null;
-    const pct = Math.round((withValue / total) * 100);
-    const note = document.createElement('div');
-    note.className = 'coverage-note';
-    note.setAttribute('role', 'note');
-    const strong = document.createElement('strong');
-    strong.textContent = `Based on ${withValue.toLocaleString()} of ${total.toLocaleString()} AV papers (${pct}%).`;
-    note.appendChild(strong);
-    note.appendChild(document.createTextNode(
-      ` ${o.what || 'Author affiliations'} could be resolved for that share of the corpus so far, so every `
-      + `figure on this page describes that subset, not the whole field. Coverage is not uniform -- recent `
-      + `papers and papers with a preprint are resolved more often -- so treat comparisons between `
-      + `${o.between || 'institutions'}, and trends over time, as directional. `));
-    const a = document.createElement('a');
-    a.href = 'about.html#coverage';
-    a.textContent = 'How coverage is measured';
-    note.appendChild(a);
-    container.innerHTML = '';
-    container.appendChild(note);
-    return note;
   };
 
   // Rounds a chart's data maximum up to a "nice" axis top so the 4 evenly

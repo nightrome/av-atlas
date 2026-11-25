@@ -73,7 +73,6 @@
 <h1 class="page-title" id="page-title">Compare</h1>
 <p class="section-intro" id="page-intro"></p>
 <div class="subject-chips" id="subject-chips"></div>
-<div id="coverage-note-container"></div>
 
 <div class="panel" id="metrics-panel">
   <h2>Side by side</h2>
@@ -134,11 +133,9 @@ const DIMENSIONS = {
   },
   institution: {
     label: 'institutions', accessor: p => p.institutions || [], page: 'institution.html', param: 'name',
-    coverage: true,
   },
   country: {
     label: 'countries', accessor: p => p.countries || [], page: null, param: null,
-    coverage: true,
   },
   venue: {
     label: 'venues', accessor: p => (p.venue ? [p.venue] : []), page: 'venue.html', param: 'name',
@@ -437,13 +434,6 @@ fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => 
     `Every figure below is computed over AV papers only, with the same definitions the rest of the `
     + `site uses. Citations count other papers in this corpus, not an external database.`;
 
-  if (dim.coverage) {
-    renderCoverageBanner(document.getElementById('coverage-note-container'), allPapers, {
-      accessor: dim.accessor,
-      what: 'Author affiliations',
-      between: dim.label,
-    });
-  }
 
   renderChips();
   renderMetrics(byName);
