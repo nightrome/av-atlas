@@ -226,7 +226,7 @@ COUNTRY_NAMES = {
     "KZ": "Kazakhstan", "JO": "Jordan", "VE": "Venezuela", "AM": "Armenia", "MK": "North Macedonia",
     "BN": "Brunei", "LY": "Libya", "CM": "Cameroon", "AL": "Albania", "ET": "Ethiopia",
     "UZ": "Uzbekistan", "PS": "Palestine", "AZ": "Azerbaijan", "BH": "Bahrain", "BI": "Burundi",
-    "LI": "Liechtenstein",
+    "LI": "Liechtenstein", "BA": "Bosnia and Herzegovina", "KW": "Kuwait",
 }
 
 
@@ -1402,6 +1402,16 @@ INSTITUTION_ALIASES = {
     "Alibaba Group Holding Limited": "Alibaba",
     "Google LLC": "Google",
     "Google Research": "Google",
+    # Every Honda unit is one organization, same as Google above (user-requested).
+    # "Sony Honda Mobility" is a separate joint venture and stays apart.
+    "Honda Motor": "Honda", "Honda R&D": "Honda", "Honda R&D Co": "Honda", "Honda R&D Co.": "Honda",
+    "Honda R&D Co., Ltd": "Honda", "Honda R&D Co., Ltd.": "Honda", "Honda R&D Americas": "Honda",
+    "Honda Research Institute": "Honda", "Honda Research Institute (HRI)": "Honda",
+    "Honda Research Institute USA": "Honda", "Honda Research Institute, USA": "Honda",
+    "Honda Research Institute US": "Honda", "Honda Research Institute-US (HRI-US)": "Honda",
+    "Honda Research Institute Europe": "Honda", "Honda Research Institute Europe GmbH": "Honda",
+    "Honda Research Institute Japan": "Honda", "Honda Research and Development America": "Honda",
+    "Honda Development and Manufacturing of America": "Honda",
     "Uber Advanced Technologies Group": "Uber ATG",
     "Advanced Technologies Group": "Uber ATG",  # bare form seen with the "Uber" prefix dropped (e.g. affiliation just says "Advanced Technologies Group (United States)")
     # nuTonomy was acquired by Aptiv in 2017; Aptiv's automated-driving unit
@@ -1672,15 +1682,18 @@ FUNDING_CREDIT_RE = re.compile(r"\b(is |was )?supported by\b|\bfunded by\b|\bgra
 PERSON_INITIAL_NAME_RE = re.compile(r"^[A-Z]\.\s?[A-Z][a-z'\-]+$")
 
 
-# A legal-entity suffix (LLC, Inc, GmbH) trailing an otherwise-real company
-# name -- user-flagged, and the branding a company actually goes by never
-# includes it (nobody writes "I work at Waymo LLC" in conversation), so it
-# just fragments the same real institution into "Foo" and "Foo LLC" as two
-# separate leaderboard rows. Deliberately narrow (just these three, not
-# Ltd/Co/Corp/AG) -- "Ltd"/"Co." are left alone on purpose elsewhere (see
-# the bare-"Ltd" comment above): a name legitimately ending in "Co. Ltd" is
-# real Chinese-company branding, not a fragment to strip.
-TRAILING_LEGAL_SUFFIX_RE = re.compile(r",?\s+(LLC|Inc\.?|GmbH)$", re.I)
+# A legal-form suffix (LLC, Inc, Corp, Co., Ltd, GmbH, AG, SE, S.A., B.V. ...)
+# trailing an otherwise-real company name -- user-flagged, twice: the branding
+# a company actually goes by never includes it, so it only fragments one real
+# institution into "Foo" and "Foo Ltd" rows. Several in a row go together
+# ("Foo Co., Ltd."). Short ones are matched case-sensitively so a real word
+# ("se", "ab") is never taken for one. "Company"/"Corporation" count only at the
+# very end, so "Bank of the Company" style names inside a longer name stay.
+_LEGAL_WORDS = (
+    r"(?i:L\.?L\.?C\.?|Inc\.?|Incorporated|Corp\.?|Corporation|Co\.?|Company|Ltd\.?|Limited|GmbH|mbH|PLC|"
+    r"Pty|Ltda|S\.?r\.?l\.?|LLP|KGaA)|AG|SE|S\.A\.?|SA|S\.p\.A\.?|SpA|B\.V\.?|BV|N\.V\.?|NV|AB|A/S|Oy|KG|LP"
+)
+TRAILING_LEGAL_SUFFIX_RE = re.compile(r"(?:[,\s]+(?:" + _LEGAL_WORDS + r")\.?)+$")
 
 # A trailing postal/zip code -- "Beijing 100084" (plain digits) or "Kanagawa
 # 243-0198"/"Tokyo 169-8555" (Japan's NNN-NNNN postal format). "10129

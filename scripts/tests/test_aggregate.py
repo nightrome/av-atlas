@@ -393,10 +393,13 @@ class TestNormalizeInstitution(unittest.TestCase):
         # Still exercises the GmbH-stripping regex under test.
         self.assertEqual(ag.normalize_institution("Aptiv Services Deutschland GmbH"), "Motional")
         self.assertEqual(ag.normalize_institution("Zoox Inc"), "Zoox")
-        # "Ltd"/"Co." are deliberately left alone (see the bare-"Ltd" comment
-        # in INVALID_INSTITUTIONS) -- only LLC/Inc/GmbH are stripped.
+        # User-requested later: every legal form goes, several in a row too.
         self.assertEqual(ag.normalize_institution("Shenzhen Forward Innovation Digital Technology Co. Ltd"),
-                          "Shenzhen Forward Innovation Digital Technology Co. Ltd")
+                          "Shenzhen Forward Innovation Digital Technology")
+        self.assertEqual(ag.normalize_institution("Samsung Electronics Co., Ltd."), "Samsung Electronics")
+        self.assertEqual(ag.normalize_institution("Valeo S.A."), "Valeo")
+        self.assertEqual(ag.normalize_institution("Daimler Truck AG"), "Daimler Truck")
+        self.assertEqual(ag.normalize_institution("SE"), "SE")  # never the whole name
 
     def test_replaces_underscores_with_spaces(self):
         self.assertEqual(ag.normalize_institution("HKISI_CAS"), "Hong Kong Institute of Science & Innovation, CAS")
