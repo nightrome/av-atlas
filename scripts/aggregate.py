@@ -1402,6 +1402,16 @@ INSTITUTION_ALIASES = {
     "Alibaba Group Holding Limited": "Alibaba",
     "Google LLC": "Google",
     "Google Research": "Google",
+    # Every Honda unit is one organization, same as Google above (user-requested).
+    # "Sony Honda Mobility" is a separate joint venture and stays apart.
+    "Honda Motor": "Honda", "Honda R&D": "Honda", "Honda R&D Co": "Honda", "Honda R&D Co.": "Honda",
+    "Honda R&D Co., Ltd": "Honda", "Honda R&D Co., Ltd.": "Honda", "Honda R&D Americas": "Honda",
+    "Honda Research Institute": "Honda", "Honda Research Institute (HRI)": "Honda",
+    "Honda Research Institute USA": "Honda", "Honda Research Institute, USA": "Honda",
+    "Honda Research Institute US": "Honda", "Honda Research Institute-US (HRI-US)": "Honda",
+    "Honda Research Institute Europe": "Honda", "Honda Research Institute Europe GmbH": "Honda",
+    "Honda Research Institute Japan": "Honda", "Honda Research and Development America": "Honda",
+    "Honda Development and Manufacturing of America": "Honda",
     "Uber Advanced Technologies Group": "Uber ATG",
     "Advanced Technologies Group": "Uber ATG",  # bare form seen with the "Uber" prefix dropped (e.g. affiliation just says "Advanced Technologies Group (United States)")
     # nuTonomy was acquired by Aptiv in 2017; Aptiv's automated-driving unit
