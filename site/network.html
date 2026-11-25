@@ -50,7 +50,14 @@
      slivers instead of the table just scrolling horizontally (the
      .table-scroll wrapper on this table is what makes that scroll work). */
   #metrics-table { min-width: 820px; }
-  #clusters-table { min-width: 640px; }
+  #clusters-table { min-width: 720px; }
+  #clusters-table th:nth-child(1) { width: 28px; }
+  #clusters-table th:nth-child(2) { width: 72px; }
+  #clusters-table th:nth-child(3) { width: 34%; }
+  .more-members { color: var(--muted); border-bottom: 1px dotted var(--muted); cursor: help; }
+  .more-members:hover, .more-members:focus { color: var(--accent); outline: none; }
+  .cluster-top { display: block; line-height: 1.4; }
+  .cluster-top .n { color: var(--muted); font-size: 0.85em; }
   .cluster-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: middle; }
   th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); overflow-wrap: break-word; }
   th { color: var(--muted); font-weight: 600; vertical-align: bottom; }
@@ -93,15 +100,15 @@
 <div class="panel">
   <div class="panel-title-row">
     <h2 style="margin-top:0;">Clusters</h2>
-  <span class="info-tip" tabindex="0" role="img" aria-label="Each cluster is a group of authors the graph above found to be closely connected, largest first. Primary institution/country is whichever appears most often across the cluster's own papers -- a cluster can genuinely span several, this is just the most common one, not the only one." data-tip="Each cluster is a group of authors the graph above found to be closely connected, largest first. Primary institution/country is whichever appears most often across the cluster's own papers -- a cluster can genuinely span several, this is just the most common one, not the only one.">i</span></div>
+  <span class="info-tip" tabindex="0" role="img" aria-label="Each cluster is a group of authors the graph above found to be closely connected, largest first. Top institutions and countries are the ones that appear on the most of the cluster's own papers; the number is how many papers. Only the authors shown in the graph above are grouped." data-tip="Each cluster is a group of authors the graph above found to be closely connected, largest first. Top institutions and countries are the ones that appear on the most of the cluster's own papers; the number is how many papers. Only the authors shown in the graph above are grouped.">i</span></div>
   <div class="table-scroll">
   <table id="clusters-table">
     <thead><tr>
       <th></th>
       <th class="num">Authors</th>
       <th>Top members</th>
-      <th>Primary institution</th>
-      <th>Primary country</th>
+      <th>Top institutions</th>
+      <th>Top countries</th>
     </tr></thead>
     <tbody id="clusters-body"></tbody>
   </table>
@@ -193,45 +200,63 @@ fetchStatsWithRelevance(relevance).then(stats => {
   document.getElementById('graph').outerHTML = 'Could not load stats.json: ' + err;
 });
 
-// Label propagation: the standard dependency-free community-detection
-// algorithm -- every node starts as its own label, then repeatedly adopts
-// whichever label is most common (by total edge weight) among its
-// neighbors, ties broken toward keeping the current label so the process
-// actually converges instead of oscillating. A handful of passes is enough
-// at this graph's size; order is shuffled each pass so the result doesn't
-// depend on node insertion order.
+// Louvain community detection (modularity maximisation), no dependencies and no
+// randomness, so the same graph always gives the same clusters. It replaced
+// label propagation, which fell apart into many small groups on this sparse
+// graph: an author's co-authors were then spread over several tiny clusters
+// instead of sitting in one. Each level moves nodes to the neighbouring
+// community that raises modularity most, then merges communities into single
+// nodes and repeats until nothing moves.
 function detectClusters(nodes, edges) {
-  const label = new Map(nodes.map(n => [n.id, n.id]));
-  const neighborWeights = new Map(nodes.map(n => [n.id, []]));
+  const idx = new Map(nodes.map((n, i) => [n.id, i]));
+  let adj = nodes.map(() => new Map());
   edges.forEach(e => {
-    neighborWeights.get(e.source).push([e.target, e.weight]);
-    neighborWeights.get(e.target).push([e.source, e.weight]);
+    const a = idx.get(e.source), b = idx.get(e.target);
+    if (a === undefined || b === undefined || a === b) return;
+    adj[a].set(b, (adj[a].get(b) || 0) + e.weight);
+    adj[b].set(a, (adj[b].get(a) || 0) + e.weight);
   });
-  const order = nodes.map(n => n.id);
-  for (let pass = 0; pass < 12; pass++) {
-    for (let i = order.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [order[i], order[j]] = [order[j], order[i]];
+  const degree = nodeAdj => nodeAdj.map(m => { let s = 0; m.forEach(w => { s += w; }); return s; });
+  let m2 = degree(adj).reduce((s, d) => s + d, 0);
+  let community = nodes.map((_, i) => i);   // original node -> node of the current level
+  while (m2 > 0) {
+    const n = adj.length, k = degree(adj);
+    const c = adj.map((_, i) => i), tot = k.slice();
+    let movedAny = false;
+    for (let pass = 0; pass < 30; pass++) {
+      let moved = false;
+      for (let i = 0; i < n; i++) {
+        tot[c[i]] -= k[i];
+        const toComm = new Map();
+        adj[i].forEach((w, j) => { if (j !== i) toComm.set(c[j], (toComm.get(c[j]) || 0) + w); });
+        let best = c[i], bestGain = (toComm.get(c[i]) || 0) - tot[c[i]] * k[i] / m2;
+        toComm.forEach((w, cm) => {
+          const gain = w - tot[cm] * k[i] / m2;
+          if (gain > bestGain + 1e-12) { best = cm; bestGain = gain; }
+        });
+        tot[best] += k[i];
+        if (best !== c[i]) { c[i] = best; moved = true; movedAny = true; }
+      }
+      if (!moved) break;
     }
-    let changed = false;
-    order.forEach(id => {
-      const tally = new Map();
-      neighborWeights.get(id).forEach(([nb, w]) => tally.set(label.get(nb), (tally.get(label.get(nb)) || 0) + w));
-      if (!tally.size) return;
-      let best = label.get(id), bestScore = tally.get(best) || 0;
-      tally.forEach((score, lbl) => { if (score > bestScore) { best = lbl; bestScore = score; } });
-      if (best !== label.get(id)) { label.set(id, best); changed = true; }
-    });
-    if (!changed) break;
+    if (!movedAny) break;
+    const dense = new Map();
+    c.forEach(cm => { if (!dense.has(cm)) dense.set(cm, dense.size); });
+    community = community.map(l => dense.get(c[l]));
+    const next = Array.from({ length: dense.size }, () => new Map());
+    adj.forEach((m, i) => m.forEach((w, j) => {
+      const a = dense.get(c[i]), b = dense.get(c[j]);
+      next[a].set(b, (next[a].get(b) || 0) + w);
+    }));
+    adj = next;
   }
-  // Collapse to dense 0..k-1 cluster indices, ordered by cluster size
-  // (largest first) so the palette's first, most-distinct colors go to the
-  // clusters a reader will actually notice.
+  // Dense 0..k-1 cluster indices, largest first, so the palette's first, most
+  // distinct colors go to the clusters a reader will actually notice.
   const groups = new Map();
-  label.forEach((lbl, id) => { (groups.get(lbl) || groups.set(lbl, []).get(lbl)).push(id); });
+  nodes.forEach((n, i) => { (groups.get(community[i]) || groups.set(community[i], []).get(community[i])).push(n.id); });
   const ordered = [...groups.values()].sort((a, b) => b.length - a.length);
   const clusterOf = new Map();
-  ordered.forEach((members, idx) => members.forEach(id => clusterOf.set(id, idx)));
+  ordered.forEach((members, i) => members.forEach(id => clusterOf.set(id, i)));
   return { clusterOf, clusterSizes: ordered.map(m => m.length) };
 }
 
@@ -621,20 +646,17 @@ function renderClustersTable(nodes, clusterOf, clusterSizes, papers) {
       (p.countries || []).forEach(country => bump(countryTally, c, country));
     });
   });
-  const modeOf = tally => {
-    if (!tally || !tally.size) return null;
-    let best = null, bestCount = 0;
-    tally.forEach((count, key) => { if (count > bestCount) { best = key; bestCount = count; } });
-    return best;
-  };
+  const TOP_SHOWN = 3;
+  const topOf = tally => [...(tally || new Map()).entries()]
+    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, TOP_SHOWN);
 
   const rows = [...membersOf.entries()]
     .filter(([, members]) => members.length > 1)
     .sort((a, b) => b[1].length - a[1].length)
     .map(([cluster, members]) => ({
       cluster, members,
-      institution: modeOf(instTally.get(cluster)),
-      country: modeOf(countryTally.get(cluster)),
+      institutions: topOf(instTally.get(cluster)),
+      countries: topOf(countryTally.get(cluster)),
     }));
 
   const tbody = document.getElementById('clusters-body');
@@ -654,25 +676,48 @@ function renderClustersTable(nodes, clusterOf, clusterSizes, papers) {
       membersCell.appendChild(a);
     });
     if (r.members.length > TOP_MEMBERS_SHOWN) {
-      membersCell.append(` +${r.members.length - TOP_MEMBERS_SHOWN} more`);
+      const rest = r.members.slice(TOP_MEMBERS_SHOWN);
+      const more = document.createElement('span');
+      more.className = 'more-members';
+      more.tabIndex = 0;
+      more.textContent = `+${rest.length} more`;
+      more.title = rest.join(', ');
+      membersCell.append(' ');
+      membersCell.appendChild(more);
     }
 
-    const instCell = document.createElement('span');
-    if (r.institution) {
-      const a = document.createElement('a');
-      a.href = `institution.html?name=${encodeURIComponent(r.institution)}`;
-      a.textContent = r.institution;
-      instCell.appendChild(a);
-    } else {
-      instCell.textContent = 'n/a';
-      instCell.style.color = 'var(--muted)';
-    }
+    const topCell = (list, link) => {
+      const cell = document.createElement('span');
+      if (!list.length) {
+        cell.textContent = 'n/a';
+        cell.style.color = 'var(--muted)';
+        return cell;
+      }
+      list.forEach(([name, count]) => {
+        const line = document.createElement('span');
+        line.className = 'cluster-top';
+        if (link) {
+          const a = document.createElement('a');
+          a.href = `${link}?name=${encodeURIComponent(name)}`;
+          a.textContent = name;
+          line.appendChild(a);
+        } else {
+          line.append(name);
+        }
+        const n = document.createElement('span');
+        n.className = 'n';
+        n.textContent = ` ${count}`;
+        n.title = `${count} paper${count === 1 ? '' : 's'}`;
+        line.appendChild(n);
+        cell.appendChild(line);
+      });
+      return cell;
+    };
 
     const tr = document.createElement('tr');
-    [swatch, r.members.length, membersCell, instCell, r.country || 'n/a'].forEach((c, i) => {
+    [swatch, r.members.length, membersCell, topCell(r.institutions, 'institution.html'), topCell(r.countries, null)].forEach((c, i) => {
       const td = document.createElement('td');
       if (i === 1) td.className = 'num';
-      if (i === 4 && !r.country) td.style.color = 'var(--muted)';
       if (c instanceof Node) td.appendChild(c); else td.textContent = c;
       tr.appendChild(td);
     });
