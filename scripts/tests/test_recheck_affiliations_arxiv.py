@@ -45,6 +45,7 @@ class RunTests(unittest.TestCase):
         return [{"title": "t", "arxiv_url": "https://arxiv.org/abs/2401.00001", "authors_detail_source": "arxiv-html",
                  "authors_detail": [{"name": "A B", "affiliations": ["MIT"]}]}]
 
+    @unittest.skipUnless(__import__("importlib").util.find_spec("bs4"), "needs beautifulsoup4")
     def test_a_page_is_fetched_once(self):
         out = Path(tempfile.mkdtemp()) / "o.json"
         calls = []
