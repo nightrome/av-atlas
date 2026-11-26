@@ -163,3 +163,6 @@ data/abstracts_web_*.json
 data/logs/
 data/affiliations_openalex.json
 data/affiliations_llm*.json
+
+# Zenodo deposit prepared by scripts/prepare_zenodo.py
+dist/
