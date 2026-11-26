@@ -873,12 +873,25 @@ YUE_WANG_VERIFIED_TITLES = {
 }
 
 
+# Papers matched one by one against the Google Scholar profiles of the people
+# called Yue Wang (data/yue_wang_identities.json: title -> the person's name,
+# or "main" for the USC researcher above). A paper in neither this map nor the
+# verified set above stays in the unidentified bucket.
+try:
+    YUE_WANG_IDENTITIES = json.loads((BASE / "data" / "yue_wang_identities.json").read_text(encoding="utf-8"))
+except OSError:
+    YUE_WANG_IDENTITIES = {}
+
+
 def resolve_ambiguous_author_identity(name, title):
     """Applied per-paper (not inside clean_author_name, which has no title
     context) at every site that resolves a specific paper's author list --
     see YUE_WANG_VERIFIED_TITLES above."""
     if name == "Yue Wang" and title not in YUE_WANG_VERIFIED_TITLES:
-        return "Yue Wang (unidentified)"
+        who = YUE_WANG_IDENTITIES.get(title)
+        if who == "main":
+            return name
+        return who or "Yue Wang (unidentified)"
     return name
 
 
@@ -1422,6 +1435,10 @@ INSTITUTION_ALIASES = {
     "nuTonomy: an APTIV company": "Motional",
     "nuTonomy: an Aptiv Company": "Motional",
     "Aptiv": "Motional",
+    # The same byline cut off before "company".
+    "nuTonomy: an APTIV": "Motional",
+    "nuTonomy: an Aptiv": "Motional",
+    "nuTonomy": "Motional",
     "Aptiv (Ireland)": "Motional",
     # User-flagged: OpenAlex mis-linked "nuTonomy" to an unrelated Canadian
     # nutraceutical-research company of a similar-sounding name on at least
