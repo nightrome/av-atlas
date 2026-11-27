@@ -2261,5 +2261,19 @@ class TestComputeInsights(unittest.TestCase):
         self.assertNotIn(2023, years)
 
 
+class TestAuthorIdentities(unittest.TestCase):
+    def test_unconfirmed_papers_go_to_the_catch_all(self):
+        saved = dict(ag.AUTHOR_IDENTITIES)
+        try:
+            ag.AUTHOR_IDENTITIES["Ann Lee"] = {"Paper A": "main", "Paper B": "Ann Lee (Elsewhere University)"}
+            self.assertEqual(ag.resolve_ambiguous_author_identity("Ann Lee", "Paper A"), "Ann Lee")
+            self.assertEqual(ag.resolve_ambiguous_author_identity("Ann Lee", "Paper B"), "Ann Lee (Elsewhere University)")
+            self.assertEqual(ag.resolve_ambiguous_author_identity("Ann Lee", "Paper C"), "Ann Lee (unidentified)")
+            self.assertEqual(ag.resolve_ambiguous_author_identity("Bo Kim", "Paper C"), "Bo Kim")
+        finally:
+            ag.AUTHOR_IDENTITIES.clear()
+            ag.AUTHOR_IDENTITIES.update(saved)
+
+
 if __name__ == "__main__":
     unittest.main()

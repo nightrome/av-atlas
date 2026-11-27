@@ -34,22 +34,23 @@ Usage: python fetch_s2_author_ids.py
 """
 import json
 import re
+import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from functools import lru_cache
 
-from fetch_common import BASE, HEADERS, by_citations, normalize_s2_key
+from fetch_common import BASE, HEADERS, by_citations, clean_doi, looks_like_s2_id, normalize_s2_key, s2_request
 
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 IDS_FILE = BASE / "data" / "s2_author_ids.json"
 CHECKED_FILE = BASE / "data" / "s2_author_ids_checked_papers.json"
 ENV_FILE = BASE / ".env"
 API_BASE = "https://api.semanticscholar.org/graph/v1"
-REQUEST_DELAY = 1.1
 BATCH_SIZE = 20
 MAX_CONSECUTIVE_FAILURES = 20
+PAPER_BATCH = 400   # S2 takes up to 500 ids per /paper/batch call
 
 
 @lru_cache(maxsize=None)
@@ -77,22 +78,76 @@ def normalize_name(n):
     return re.sub(r"[^a-z]", "", (n or "").lower())
 
 
+def author_list(p):
+    """papers_full.json keeps authors as one comma-separated string."""
+    a = p.get("authors") or []
+    return [x.strip() for x in a.split(",") if x.strip()] if isinstance(a, str) else list(a)
+
+
+def same_person_name(ours, theirs):
+    """Same surname and same first initial: S2 often shortens given names ("A. Lang" for "Alex H. Lang")."""
+    a = re.sub(r"[^a-z ]", "", (ours or "").lower().replace("-", " ")).split()
+    b = re.sub(r"[^a-z ]", "", (theirs or "").lower().replace("-", " ")).split()
+    return bool(a and b) and a[-1] == b[-1] and a[0][0] == b[0][0]
+
+
 def s2_get(path, params):
     url = f"{API_BASE}{path}?{urllib.parse.urlencode(params)}"
     req = urllib.request.Request(url, headers={**HEADERS, "x-api-key": load_api_key()})
-    delay = REQUEST_DELAY
-    for attempt in range(4):
+    return s2_request(req, timeout=20)
+
+
+def s2_post_batch(ids):
+    url = f"{API_BASE}/paper/batch?{urllib.parse.urlencode({'fields': 'title,authors.authorId,authors.name'})}"
+    req = urllib.request.Request(
+        url, data=json.dumps({"ids": ids}).encode("utf-8"),
+        headers={**HEADERS, "x-api-key": load_api_key(), "Content-Type": "application/json"}, method="POST")
+    return s2_request(req, timeout=60)
+
+
+def external_id(p):
+    """ARXIV:/DOI: id S2 understands for this paper, or None."""
+    url = (p.get("arxiv_url") or "").rstrip("/")
+    if "/abs/" in url:
+        cand = "ARXIV:" + re.sub(r"v\d+$", "", url.split("/abs/", 1)[1])
+        if looks_like_s2_id(cand):
+            return cand
+    if p.get("doi"):
+        cand = "DOI:" + clean_doi(p["doi"])
+        if looks_like_s2_id(cand):
+            return cand
+    return None
+
+
+def match_authors(authors, api_authors):
+    """{normalized name: authorId} when S2's author list lines up 1:1 with ours, else {}."""
+    api_authors = api_authors or []
+    if len(api_authors) != len(authors):
+        return {}
+    return {normalize_name(a): b["authorId"] for a, b in zip(authors, api_authors)
+            if b and b.get("authorId") and same_person_name(a, b.get("name"))}
+
+
+def resolve_by_id(papers, ids, checked, save, post=s2_post_batch):
+    """One request per PAPER_BATCH papers that carry an arXiv ID or DOI. Papers S2 does not know come back
+    as null and count as checked. Returns the papers without any such id (for the title fallback)."""
+    with_id = [(external_id(p), p) for p in papers]
+    rest = [p for e, p in with_id if not e]
+    todo = [(e, p) for e, p in with_id if e]
+    for i in range(0, len(todo), PAPER_BATCH):
+        chunk = todo[i:i + PAPER_BATCH]
         try:
-            with urllib.request.urlopen(req, timeout=20) as resp:
-                return json.loads(resp.read().decode("utf-8"))
-        except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < 3:
-                time.sleep(delay)
-                delay *= 2
-                continue
-            raise
-        finally:
-            time.sleep(REQUEST_DELAY)
+            answer = post([e for e, _ in chunk])
+        except Exception as e:  # noqa: BLE001 -- left unchecked, tried again next run
+            print(f"  batch {i // PAPER_BATCH} failed: {e}", flush=True)
+            continue
+        for (_, p), got in zip(chunk, answer):
+            if got:
+                ids.update(match_authors(author_list(p), got.get("authors")))
+            checked.add(normalize_title(p["title"]))
+        save()
+        print(f"  [{min(i + PAPER_BATCH, len(todo))}/{len(todo)}] by id, {len(ids)} authors resolved so far", flush=True)
+    return rest
 
 
 def load_json(path, default):
@@ -139,12 +194,13 @@ def resolve_author_ids(title, authors):
         return {}
     resolved = {}
     for our_name, api_author in zip(authors, api_authors):
-        if normalize_name(our_name) == normalize_name(api_author.get("name")) and api_author.get("authorId"):
+        if same_person_name(our_name, api_author.get("name")) and api_author.get("authorId"):
             resolved[normalize_name(our_name)] = api_author["authorId"]
     return resolved
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # titles hold non-ASCII; the Windows console cannot print them
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     av = [p for p in papers if p.get("av_relevance") == "AV" and p.get("authors")]
     # Most-cited-first (user-requested, applied to every crawler in this
@@ -161,12 +217,22 @@ def main():
     checked = set(load_json(CHECKED_FILE, []))
 
     def unresolved_authors(p):
-        return [a for a in p["authors"] if normalize_name(a) not in ids]
+        return [a for a in author_list(p) if normalize_name(a) not in ids]
 
     pending = [p for p in av if normalize_title(p["title"]) not in checked and unresolved_authors(p)]
     print(f"{len(pending)} AV papers left to check (of {len(av)} AV papers with an author list, "
           f"{len(ids)} authors already resolved)", flush=True)
 
+    def save():
+        save_json(IDS_FILE, ids)
+        save_json(CHECKED_FILE, sorted(checked))
+
+    pending = resolve_by_id(pending, ids, checked, save)
+    save()
+    if "--title-fallback" not in sys.argv:
+        print(f"{len(pending)} papers have no arXiv ID or DOI; rerun with --title-fallback to look them up by "
+              f"title (slow).", flush=True)
+        return
     processed = 0
     consecutive_failures = 0
 
@@ -176,7 +242,7 @@ def main():
             checked.add(title_key)
             continue
         try:
-            ids.update(resolve_author_ids(p["title"], p["authors"]))
+            ids.update(resolve_author_ids(p["title"], author_list(p)))
             checked.add(title_key)
             consecutive_failures = 0
         except Exception as e:

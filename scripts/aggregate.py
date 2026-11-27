@@ -883,10 +883,23 @@ except OSError:
     YUE_WANG_IDENTITIES = {}
 
 
+# Other common names handled the same way: data/author_identities.json lists,
+# per name, each paper confirmed against a Google Scholar profile: "main" is
+# the highly cited person, another value names a second person. Every other paper with that name goes to a catch-all
+# "<name> (unidentified)" entry instead of inflating that person's record.
+try:
+    AUTHOR_IDENTITIES = json.loads((BASE / "data" / "author_identities.json").read_text(encoding="utf-8"))
+except OSError:
+    AUTHOR_IDENTITIES = {}
+
+
 def resolve_ambiguous_author_identity(name, title):
     """Applied per-paper (not inside clean_author_name, which has no title
     context) at every site that resolves a specific paper's author list --
     see YUE_WANG_VERIFIED_TITLES above."""
+    if name in AUTHOR_IDENTITIES:
+        who = AUTHOR_IDENTITIES[name].get(title)
+        return name if who == "main" else who or f"{name} (unidentified)"
     if name == "Yue Wang" and title not in YUE_WANG_VERIFIED_TITLES:
         who = YUE_WANG_IDENTITIES.get(title)
         if who == "main":
@@ -3777,7 +3790,10 @@ def main():
             cname for cname, rec in sorted(author_countries[name].items(),
                                             key=lambda kv: (kv[1]["first_year"] is None, kv[1]["first_year"]))
         ]
-        orcid = orcids.get(normalize_name_letters(name))
+        # ORCIDs are looked up by name, so a name shared by several people could carry the wrong person's
+        # iD: none is shown for names known to be shared.
+        shared_name = profile.get("ambiguous") or name in AUTHOR_IDENTITIES or name == "Yue Wang"
+        orcid = None if shared_name else orcids.get(normalize_name_letters(name))
         if not institutions and not countries and not profile and not orcid:
             continue
         author_detail[name] = {

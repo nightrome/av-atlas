@@ -339,3 +339,33 @@ class S2Auth:
                  f"(one every {S2_ANONYMOUS_DELAY:g} s). Check the {S2_KEY_NAME} value: "
                  "it should be the bare key, no quotes or spaces.")
         return True
+
+
+# Semantic Scholar allows one request per second across all endpoints with an API key.
+S2_MIN_INTERVAL = 1.5
+_s2_last_request = 0.0
+
+
+def s2_request(req, timeout=30, max_attempts=8, sleep=time.sleep, clock=time.monotonic):
+    """Send a Semantic Scholar request at most once per S2_MIN_INTERVAL seconds, counted from the previous
+    request's start. On 429 wait (Retry-After if given, else growing from 5 s) and try again."""
+    import json
+    global _s2_last_request
+    wait = 2.0
+    for attempt in range(max_attempts):
+        gap = S2_MIN_INTERVAL - (clock() - _s2_last_request)
+        if gap > 0:
+            sleep(gap)
+        _s2_last_request = clock()
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or attempt == max_attempts - 1:
+                raise
+            try:
+                pause = float(e.headers.get("Retry-After") or wait)
+            except (TypeError, ValueError):
+                pause = wait
+            sleep(pause)
+            wait = min(wait * 1.5, 30)

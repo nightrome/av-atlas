@@ -19,18 +19,18 @@ not folded into papers_full.json first.
 Usage: python fetch_orcids.py
 """
 import json
+import sys
 import time
 import urllib.error
 import urllib.request
 from functools import lru_cache
 
-from fetch_common import BASE, HEADERS, normalize_s2_key
+from fetch_common import BASE, HEADERS, normalize_s2_key, s2_request
 
 IDS_FILE = BASE / "data" / "s2_author_ids.json"
 OUT_FILE = BASE / "data" / "orcids.json"
 ENV_FILE = BASE / ".env"
 API_BASE = "https://api.semanticscholar.org/graph/v1"
-REQUEST_DELAY = 1.1
 CHUNK_SIZE = 1000  # /author/batch's own documented max
 
 
@@ -54,22 +54,11 @@ def s2_post(path, params, body):
         url, data=json.dumps(body).encode("utf-8"),
         headers={**HEADERS, "x-api-key": load_api_key(), "Content-Type": "application/json"}, method="POST",
     )
-    delay = REQUEST_DELAY
-    for attempt in range(4):
-        try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                return json.loads(resp.read().decode("utf-8"))
-        except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < 3:
-                time.sleep(delay)
-                delay *= 2
-                continue
-            raise
-        finally:
-            time.sleep(REQUEST_DELAY)
+    return s2_request(req, timeout=30)
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # titles hold non-ASCII; the Windows console cannot print them
     author_ids = json.loads(IDS_FILE.read_text(encoding="utf-8")) if IDS_FILE.exists() else {}
     name_by_id = {}
     for name, aid in author_ids.items():

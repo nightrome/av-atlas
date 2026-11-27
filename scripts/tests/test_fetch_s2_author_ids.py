@@ -60,3 +60,32 @@ class TestResolveAuthorIds(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BatchTests(unittest.TestCase):
+    def test_external_id_prefers_arxiv_then_doi(self):
+        self.assertEqual(fsi.external_id({"arxiv_url": "https://arxiv.org/abs/2401.00001v2"}), "ARXIV:2401.00001")
+        self.assertEqual(fsi.external_id({"doi": "https://doi.org/10.1109/X.1"}), "DOI:10.1109/X.1")
+        self.assertIsNone(fsi.external_id({"title": "t"}))
+
+    def test_batch_resolves_matching_authors_and_marks_unknown_papers_checked(self):
+        papers = [{"title": "A", "authors": ["Ann Lee", "Bo Chen"], "arxiv_url": "https://arxiv.org/abs/2401.00001"},
+                  {"title": "B", "authors": ["Cy Dun"], "arxiv_url": "https://arxiv.org/abs/2401.00002"},
+                  {"title": "C", "authors": ["Di Eve"]}]
+        answer = [{"authors": [{"name": "Ann Lee", "authorId": "1"}, {"name": "Bo Chen", "authorId": "2"}]}, None]
+        ids, checked = {}, set()
+        rest = fsi.resolve_by_id(papers, ids, checked, lambda: None, post=lambda e: answer)
+        self.assertEqual(ids, {"annlee": "1", "bochen": "2"})
+        self.assertEqual(checked, {"a", "b"})
+        self.assertEqual([p["title"] for p in rest], ["C"])
+
+
+class StringAuthorsTests(unittest.TestCase):
+    def test_authors_come_as_one_comma_separated_string(self):
+        self.assertEqual(fsi.author_list({"authors": "Ann Lee, Bo Chen"}), ["Ann Lee", "Bo Chen"])
+        papers = [{"title": "A", "authors": "Alex H. Lang, Yu Pan", "arxiv_url": "https://arxiv.org/abs/2401.00001"}]
+        answer = [{"authors": [{"name": "A. Lang", "authorId": "1"}, {"name": "Yu-Xin Pan", "authorId": "2"}]}]
+        ids = {}
+        fsi.resolve_by_id(papers, ids, set(), lambda: None, post=lambda e: answer)
+        self.assertEqual(ids, {"alexhlang": "1", "yupan": "2"})
+        self.assertFalse(fsi.same_person_name("Wei Zhang", "Wei Li"))
