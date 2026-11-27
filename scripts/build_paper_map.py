@@ -1,4 +1,4 @@
-"""2D map of all embedded papers for map.html.
+"""2D map of all embedded papers for the paper map section of index.html.
 
 Layout: t-SNE on the stored embedding vectors. t-SNE takes a few minutes, and a new
 layout moves every dot, so the coordinates are cached in data/embeddings/map_xy.npy

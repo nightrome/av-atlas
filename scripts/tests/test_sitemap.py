@@ -48,6 +48,10 @@ class WriteSitemapTests(unittest.TestCase):
         self.assertIn(f"{bps.SITE_URL}/author.html?name=Jane%20Doe", urls)
         self.assertIn(f"{bps.SITE_URL}/country.html?name=Netherlands", urls)
 
+    def test_redirect_pages_are_left_out(self):
+        urls, _ = self._sitemap(STATS)
+        self.assertNotIn(f"{bps.SITE_URL}/map.html", urls)
+
     def test_paper_url_matches_the_pages_own_canonical_escaping(self):
         # filters.js's detailCanonicalUrl escapes the same way (see
         # quoteParam there), so the sitemap entry and the canonical agree.
