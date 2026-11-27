@@ -10,34 +10,30 @@ import recheck_affiliations_arxiv as r
 
 
 class ReconcileTests(unittest.TestCase):
-    def test_wrong_affiliation_is_dropped_and_a_missing_one_copied_from_a_coauthor(self):
-        stored = [{"name": "Chun-Peng Chang", "affiliations": ["DFKI Augmented Vision", "TU Delft"]},
-                  {"name": "Chen-Yu Wang", "affiliations": []},
-                  {"name": "Holger Caesar", "affiliations": ["DFKI Augmented Vision", "TU Delft"]}]
-        page = {"Chun-Peng Chang": "Affiliation: DFKI Augmented Vision Affiliation: TU Delft",
-                "Chen-Yu Wang": "Affiliation: DFKI Augmented Vision",
-                "Holger Caesar": "Affiliation: TU Delft"}
-        got, removed, added = r.reconcile(stored, page, {r.norm("DFKI Augmented Vision"), r.norm("TU Delft")})
-        self.assertEqual(got, {"Chun-Peng Chang": ["DFKI Augmented Vision", "TU Delft"],
-                               "Chen-Yu Wang": ["DFKI Augmented Vision"],
-                               "Holger Caesar": ["TU Delft"]})
-        self.assertEqual((removed, added), (1, 1))
-
-    def test_a_coauthors_name_is_never_an_affiliation(self):
-        stored = [{"name": "Yuxiao Chen", "affiliations": ["Sushant Veer", "NVIDIA"]},
+    def test_a_coauthors_name_or_an_email_is_never_an_affiliation(self):
+        stored = [{"name": "Yuxiao Chen", "affiliations": ["Sushant Veer", "NVIDIA", "a@b.com"]},
                   {"name": "Sushant Veer", "affiliations": ["NVIDIA"]}]
-        page = {"Yuxiao Chen": "NVIDIA Sushant Veer", "Sushant Veer": "NVIDIA"}
-        got, _, _ = r.reconcile(stored, page)
+        got, removed, _ = r.reconcile(stored, {"Yuxiao Chen": "NVIDIA", "Sushant Veer": "NVIDIA"})
         self.assertEqual(got["Yuxiao Chen"], ["NVIDIA"])
+        self.assertEqual(removed, 2)
 
-    def test_authors_the_page_does_not_list_are_left_alone(self):
-        stored = [{"name": "A B", "affiliations": ["MIT"]}]
-        self.assertEqual(r.reconcile(stored, {"C D": "Stanford"})[0], {"A B": ["MIT"]})
+    def test_an_author_with_one_is_never_given_more(self):
+        stored = [{"name": "A B", "affiliations": ["Virtual Vehicle Research GmbH"]},
+                  {"name": "C D", "affiliations": ["Graz University of Technology"]}]
+        page = {"A B": "Virtual Vehicle Research GmbH, Graz University of Technology", "C D": "x"}
+        self.assertEqual(r.reconcile(stored, page)[0]["A B"], ["Virtual Vehicle Research GmbH"])
 
-    def test_nothing_is_added_when_no_coauthor_value_matches(self):
-        stored = [{"name": "A B", "affiliations": []}, {"name": "C D", "affiliations": ["MIT"]}]
-        got, _, added = r.reconcile(stored, {"A B": "Stanford University", "C D": "MIT"})
-        self.assertEqual((got["A B"], added), ([], 0))
+    def test_an_author_with_none_gets_the_institution_their_block_names(self):
+        stored = [{"name": "A B", "affiliations": []}, {"name": "C D", "affiliations": ["University of Leeds"]},
+                  {"name": "E F", "affiliations": []}]
+        page = {"A B": "Institute for Transport Studies, University of Leeds, UK", "E F": "Somewhere Else"}
+        got, _, added = r.reconcile(stored, page)
+        self.assertEqual((got["A B"], got["E F"], added), (["University of Leeds"], [], 1))
+
+    def test_a_country_is_never_added(self):
+        stored = [{"name": "A B", "affiliations": []}, {"name": "C D", "affiliations": ["Germany."]}]
+        got, _, _ = r.reconcile(stored, {"A B": "University of Freiburg, Germany."}, countries={"germany"})
+        self.assertEqual(got["A B"], [])
 
 
 class RunTests(unittest.TestCase):

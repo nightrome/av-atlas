@@ -1,0 +1,3368 @@
+{
+ "bge-base": {
+  "954": {
+   "title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+   "year": 2020,
+   "neighbours": [
+    {
+     "title": "nuScenes Revisited: Progress and Challenges in Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9186
+    },
+    {
+     "title": "Panoptic Nuscenes: A Large-Scale Benchmark for LiDAR Panoptic Segmentation and Tracking",
+     "year": 2022,
+     "cos": 0.8902
+    },
+    {
+     "title": "Occluded nuScenes: A Multi-Sensor Dataset for Evaluating Perception Robustness in Automated Driving",
+     "year": 2025,
+     "cos": 0.8831
+    },
+    {
+     "title": "OmniHD-Scenes: A Next-Generation Multimodal Dataset for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8794
+    },
+    {
+     "title": "PandaSet: Advanced Sensor Suite Dataset for Autonomous Driving",
+     "year": 2021,
+     "cos": 0.8739
+    },
+    {
+     "title": "One Million Scenes for Autonomous Driving: ONCE Dataset",
+     "year": 2021,
+     "cos": 0.8696
+    },
+    {
+     "title": "A*3D Dataset: Towards Autonomous Driving in Challenging Environments",
+     "year": 2020,
+     "cos": 0.8689
+    },
+    {
+     "title": "TIAND: A Multimodal Dataset for Autonomy on Indian Roads",
+     "year": 2024,
+     "cos": 0.8636
+    },
+    {
+     "title": "The NEOLIX Open Dataset for AutonomousDriving",
+     "year": 2020,
+     "cos": 0.8635
+    },
+    {
+     "title": "A Survey on Autonomous Driving Datasets: Statistics, Annotation Quality, and a Future Outlook",
+     "year": 2024,
+     "cos": 0.8623
+    }
+   ]
+  },
+  "884": {
+   "title": "PointPillars: Fast Encoders for Object Detection From Point Clouds",
+   "year": 2019,
+   "neighbours": [
+    {
+     "title": "3DPillars: Pillar-based two-stage 3D object detection",
+     "year": 2025,
+     "cos": 0.8978
+    },
+    {
+     "title": "FastPillars: A Deployment-Friendly Pillar-Based 3D Detector",
+     "year": 2023,
+     "cos": 0.8877
+    },
+    {
+     "title": "Voxel or Pillar: Exploring Efficient Point Cloud Representation for 3D Object Detection",
+     "year": 2024,
+     "cos": 0.8872
+    },
+    {
+     "title": "SwiftPillars: High-Efficiency Pillar Encoder for Lidar-Based 3D Detection",
+     "year": 2024,
+     "cos": 0.8835
+    },
+    {
+     "title": "PillarNeXt: Rethinking Network Designs for 3D Object Detection in LiDAR Point Clouds",
+     "year": 2023,
+     "cos": 0.8829
+    },
+    {
+     "title": "StarNet: Targeted Computation for Object Detection in Point Clouds",
+     "year": 2019,
+     "cos": 0.8755
+    },
+    {
+     "title": "TimePillars: Temporally-Recurrent 3D LiDAR Object Detection",
+     "year": 2023,
+     "cos": 0.8736
+    },
+    {
+     "title": "SPADE: Sparse Pillar-based 3D Object Detection Accelerator for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.8709
+    },
+    {
+     "title": "Analyzing Deep Learning Representations of Point Clouds for Real-Time In-Vehicle LiDAR Perception",
+     "year": 2022,
+     "cos": 0.8695
+    },
+    {
+     "title": "Improved Pillar with Fine-grained Feature for 3D Object Detection",
+     "year": 2021,
+     "cos": 0.8681
+    }
+   ]
+  },
+  "20429": {
+   "title": "nuPlan: A closed-loop ML-based planning benchmark for autonomous vehicles",
+   "year": 2021,
+   "neighbours": [
+    {
+     "title": "Towards Learning-Based Planning: The nuPlan Benchmark for Real-World Autonomous Driving",
+     "year": 2024,
+     "cos": 0.9461
+    },
+    {
+     "title": "nuPlan-R: A Closed-Loop Planning Benchmark for Autonomous Driving via Reactive Multi-Agent Simulation",
+     "year": 2026,
+     "cos": 0.92
+    },
+    {
+     "title": "Can Vehicle Motion Planning Generalize to Realistic Long-tail Scenarios?",
+     "year": 2024,
+     "cos": 0.9124
+    },
+    {
+     "title": "Parting with Misconceptions about Learning-based Vehicle Motion Planning",
+     "year": 2023,
+     "cos": 0.9089
+    },
+    {
+     "title": "Self-driving cars: Are we there yet?",
+     "year": 2025,
+     "cos": 0.9009
+    },
+    {
+     "title": "Rethinking Imitation-based Planner for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.8972
+    },
+    {
+     "title": "Rethinking Imitation-Based Planners for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.8969
+    },
+    {
+     "title": "Closing the Loop: Motion Prediction Models Beyond Open-Loop Benchmarks",
+     "year": 2025,
+     "cos": 0.8943
+    },
+    {
+     "title": "Planning with Adaptive World Models for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.893
+    },
+    {
+     "title": "CRITERIA: A New Benchmarking Paradigm for Evaluating Trajectory Prediction Models for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.8851
+    }
+   ]
+  },
+  "19216": {
+   "title": "nuScenes Revisited: Progress and Challenges in Autonomous Driving",
+   "year": 2025,
+   "neighbours": [
+    {
+     "title": "A Survey on Autonomous Driving Datasets: Statistics, Annotation Quality, and a Future Outlook",
+     "year": 2024,
+     "cos": 0.9204
+    },
+    {
+     "title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+     "year": 2020,
+     "cos": 0.9186
+    },
+    {
+     "title": "Occluded nuScenes: A Multi-Sensor Dataset for Evaluating Perception Robustness in Automated Driving",
+     "year": 2025,
+     "cos": 0.9067
+    },
+    {
+     "title": "Radars for Autonomous Driving: A Review of Deep Learning Methods and Challenges",
+     "year": 2023,
+     "cos": 0.8915
+    },
+    {
+     "title": "Synthetic Datasets for Autonomous Driving: A Survey",
+     "year": 2023,
+     "cos": 0.8908
+    },
+    {
+     "title": "The NEOLIX Open Dataset for AutonomousDriving",
+     "year": 2020,
+     "cos": 0.8895
+    },
+    {
+     "title": "URScenes: A Multi-scenario Dataset for Unstructured Road Environments",
+     "year": 2026,
+     "cos": 0.8878
+    },
+    {
+     "title": "Computer Vision for Autonomous Vehicles: Problems, Datasets and State-of-the-Art",
+     "year": 2017,
+     "cos": 0.8875
+    },
+    {
+     "title": "One Million Scenes for Autonomous Driving: ONCE Dataset",
+     "year": 2021,
+     "cos": 0.885
+    },
+    {
+     "title": "Dataset and Benchmark: Novel Sensors for Autonomous Vehicle Perception",
+     "year": 2025,
+     "cos": 0.8843
+    }
+   ]
+  },
+  "3609": {
+   "title": "Towards Learning-Based Planning: The nuPlan Benchmark for Real-World Autonomous Driving",
+   "year": 2024,
+   "neighbours": [
+    {
+     "title": "nuPlan: A closed-loop ML-based planning benchmark for autonomous vehicles",
+     "year": 2021,
+     "cos": 0.9461
+    },
+    {
+     "title": "Parting with Misconceptions about Learning-based Vehicle Motion Planning",
+     "year": 2023,
+     "cos": 0.9255
+    },
+    {
+     "title": "Can Vehicle Motion Planning Generalize to Realistic Long-tail Scenarios?",
+     "year": 2024,
+     "cos": 0.9172
+    },
+    {
+     "title": "Rethinking Imitation-Based Planners for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.9111
+    },
+    {
+     "title": "Rethinking Imitation-based Planner for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.9098
+    },
+    {
+     "title": "nuPlan-R: A Closed-Loop Planning Benchmark for Autonomous Driving via Reactive Multi-Agent Simulation",
+     "year": 2026,
+     "cos": 0.9045
+    },
+    {
+     "title": "The efficacy of Neural Planning Metrics: A meta-analysis of PKL on nuScenes",
+     "year": 2020,
+     "cos": 0.8977
+    },
+    {
+     "title": "Planning with Adaptive World Models for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.8957
+    },
+    {
+     "title": "Self-driving cars: Are we there yet?",
+     "year": 2025,
+     "cos": 0.8927
+    },
+    {
+     "title": "When Planners Meet Reality: How Learned, Reactive Traffic Agents Shift nuPlan Benchmarks",
+     "year": 2026,
+     "cos": 0.8879
+    }
+   ]
+  },
+  "13472": {
+   "title": "Panoptic Nuscenes: A Large-Scale Benchmark for LiDAR Panoptic Segmentation and Tracking",
+   "year": 2022,
+   "neighbours": [
+    {
+     "title": "Panoster: End-to-End Panoptic Segmentation of LiDAR Point Clouds",
+     "year": 2021,
+     "cos": 0.8985
+    },
+    {
+     "title": "Towards accurate instance segmentation in large-scale LiDAR point clouds",
+     "year": 2023,
+     "cos": 0.8941
+    },
+    {
+     "title": "A Benchmark for LiDAR-Based Panoptic Segmentation Based on KITTI",
+     "year": 2021,
+     "cos": 0.8934
+    },
+    {
+     "title": "LiDAR-Based Panoptic Segmentation via Dynamic Shifting Network",
+     "year": 2021,
+     "cos": 0.8909
+    },
+    {
+     "title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+     "year": 2020,
+     "cos": 0.8902
+    },
+    {
+     "title": "Is Clustering Enough for LiDAR Instance Segmentation? A State-of-the-Art Training-Free Baseline",
+     "year": 2025,
+     "cos": 0.8896
+    },
+    {
+     "title": "Panoptic-PHNet: Towards Real-Time and High-Precision LiDAR Panoptic Segmentation via Clustering Pseudo Heatmap",
+     "year": 2022,
+     "cos": 0.8883
+    },
+    {
+     "title": "LiDAR-based 4D Panoptic Segmentation via Dynamic Shifting Network",
+     "year": 2022,
+     "cos": 0.8883
+    },
+    {
+     "title": "NextStop: An Improved Tracker For Panoptic LIDAR Segmentation Data",
+     "year": 2025,
+     "cos": 0.8863
+    },
+    {
+     "title": "WayPOP: A Panoramic Open-Set Panoptic Tracking Benchmark",
+     "year": 2026,
+     "cos": 0.885
+    }
+   ]
+  },
+  "764": {
+   "title": "Are we ready for autonomous driving? The KITTI vision benchmark suite",
+   "year": 2012,
+   "neighbours": [
+    {
+     "title": "Vision meets robotics: The KITTI dataset",
+     "year": 2013,
+     "cos": 0.9105
+    },
+    {
+     "title": "KITTI-360: A Novel Dataset and Benchmarks for Urban Scene Understanding in 2D and 3D",
+     "year": 2023,
+     "cos": 0.8894
+    },
+    {
+     "title": "Computer Vision for Autonomous Vehicles: Problems, Datasets and State-of-the-Art",
+     "year": 2017,
+     "cos": 0.8839
+    },
+    {
+     "title": "A dataset for benchmarking vision-based localization at intersections",
+     "year": 2018,
+     "cos": 0.882
+    },
+    {
+     "title": "Robust stereo visual odometry from monocular techniques",
+     "year": 2015,
+     "cos": 0.8805
+    },
+    {
+     "title": "Realtime 3D Object Detection for Automated Driving Using Stereo Vision and Semantic Information",
+     "year": 2019,
+     "cos": 0.8784
+    },
+    {
+     "title": "4Seasons: Benchmarking Visual SLAM and Long-Term Localization for Autonomous Driving in Challenging Conditions",
+     "year": 2025,
+     "cos": 0.878
+    },
+    {
+     "title": "Speed estimation evaluation on the KITTI benchmark based on motion and monocular depth information",
+     "year": 2019,
+     "cos": 0.8772
+    },
+    {
+     "title": "Virtual KITTI 2",
+     "year": 2020,
+     "cos": 0.8742
+    },
+    {
+     "title": "A Unified Benchmark for Aerial-Enhanced Autonomous Driving: The KITScenes Aerial Dataset",
+     "year": 2026,
+     "cos": 0.8712
+    }
+   ]
+  },
+  "17651": {
+   "title": "End-to-End Autonomous Driving: Challenges and Frontiers",
+   "year": 2024,
+   "neighbours": [
+    {
+     "title": "A Survey of End-to-End Driving: Architectures and Training Methods",
+     "year": 2020,
+     "cos": 0.9341
+    },
+    {
+     "title": "Recent Advancements in End-to-End Autonomous Driving Using Deep Learning: A Survey",
+     "year": 2023,
+     "cos": 0.9248
+    },
+    {
+     "title": "End-to-end Autonomous Driving using Deep Learning: A Systematic Review",
+     "year": 2023,
+     "cos": 0.9169
+    },
+    {
+     "title": "Autonomous Vehicle Control: End-to-end Learning in Simulated Urban Environments",
+     "year": 2019,
+     "cos": 0.9002
+    },
+    {
+     "title": "Planning-Oriented End-to-End Autonomous Driving: Architectures, Evaluation, and Emerging Paradigms",
+     "year": 2026,
+     "cos": 0.8963
+    },
+    {
+     "title": "Future-Aware End-to-End Driving: Bidirectional Modeling of Trajectory Planning and Scene Evolution",
+     "year": 2025,
+     "cos": 0.8904
+    },
+    {
+     "title": "A Survey on End-to-End Autonomous Driving Training From the Perspectives of Data, Strategy, and Platform",
+     "year": 2026,
+     "cos": 0.8879
+    },
+    {
+     "title": "Deployment-Oriented End-to-End Autonomous Driving: Enhancing Closed-Loop Stability with a Lightweight Framework",
+     "year": 2026,
+     "cos": 0.8851
+    },
+    {
+     "title": "End-to-End Autonomous Driving Perception with Sequential Latent Representation Learning",
+     "year": 2020,
+     "cos": 0.8848
+    },
+    {
+     "title": "MAP: End-to-End Autonomous Driving with Map-Assisted Planning",
+     "year": 2025,
+     "cos": 0.8841
+    }
+   ]
+  },
+  "1228": {
+   "title": "Planning-Oriented Autonomous Driving",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "A Planning-Oriented Autonomous Driving Framework: From Image to Trajectory With Intent-Aware Prediction",
+     "year": 2026,
+     "cos": 0.8868
+    },
+    {
+     "title": "The Integration of Prediction and Planning in Deep Learning Automated Driving Systems: A Review",
+     "year": 2023,
+     "cos": 0.8807
+    },
+    {
+     "title": "SAFe-Copilot: Unified Shared Autonomy Framework",
+     "year": 2025,
+     "cos": 0.8794
+    },
+    {
+     "title": "Perception in Plan: Coupled Perception and Planning for End-to-End Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8777
+    },
+    {
+     "title": "Towards Learning-Based Planning: The nuPlan Benchmark for Real-World Autonomous Driving",
+     "year": 2024,
+     "cos": 0.8768
+    },
+    {
+     "title": "Perfect Prediction or Plenty of Proposals? What Matters Most in Planning for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8766
+    },
+    {
+     "title": "Planning-Oriented End-to-End Autonomous Driving: Architectures, Evaluation, and Emerging Paradigms",
+     "year": 2026,
+     "cos": 0.8755
+    },
+    {
+     "title": "Analysis of a Modular Autonomous Driving Architecture: The Top Submission to CARLA Leaderboard 2.0 Challenge",
+     "year": 2024,
+     "cos": 0.8754
+    },
+    {
+     "title": "To New Beginnings: A Survey of Unified Perception in Autonomous Vehicle Software",
+     "year": 2025,
+     "cos": 0.8744
+    },
+    {
+     "title": "UniMotion: A Unified Motion Framework for Simulation, Prediction and Planning",
+     "year": 2025,
+     "cos": 0.8742
+    }
+   ]
+  },
+  "1844": {
+   "title": "BEVFormer: Learning Bird’s-Eye-View Representation from Multi-Camera Images via Spatiotemporal Transformers",
+   "year": 2022,
+   "neighbours": [
+    {
+     "title": "BEVFormer: Learning Bird's-Eye-View Representation From LiDAR-Camera via Spatiotemporal Transformers",
+     "year": 2025,
+     "cos": 0.9707
+    },
+    {
+     "title": "WidthFormer: Toward Efficient Transformer-based BEV View Transformation",
+     "year": 2024,
+     "cos": 0.9044
+    },
+    {
+     "title": "Real-Time BEVFormer: Fast Transformer-Based BEV Perception Network on Edge Device",
+     "year": 2026,
+     "cos": 0.9028
+    },
+    {
+     "title": "Variational Inference for Bird's Eye View Segmentation in Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8951
+    },
+    {
+     "title": "BEVPredFormer: Spatio-temporal Attention for BEV Instance Prediction in Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8947
+    },
+    {
+     "title": "VoxelFormer: Bird's-Eye-View Feature Generation based on Dual-view Attention for Multi-view 3D Object Detection",
+     "year": 2023,
+     "cos": 0.8943
+    },
+    {
+     "title": "TempBEV: Improving Learned BEV Encoders with Combined Image and BEV Space Temporal Aggregation",
+     "year": 2024,
+     "cos": 0.8911
+    },
+    {
+     "title": "BEVSegFormer: Bird's Eye View Semantic Segmentation From Arbitrary Camera Rigs",
+     "year": 2023,
+     "cos": 0.8901
+    },
+    {
+     "title": "BEVerse: Unified Perception and Prediction in Birds-Eye-View for Vision-Centric Autonomous Driving",
+     "year": 2022,
+     "cos": 0.8879
+    },
+    {
+     "title": "BEVMamba: Time Sequence Dense Bird's-Eye-View Perception Modeling With State Space Model",
+     "year": 2025,
+     "cos": 0.8819
+    }
+   ]
+  },
+  "1787": {
+   "title": "Lift, Splat, Shoot: Encoding Images from Arbitrary Camera Rigs by Implicitly Unprojecting to 3D",
+   "year": 2020,
+   "neighbours": [
+    {
+     "title": "Camera-Only Bird's Eye View Perception: A Neural Approach to LiDAR-Free Environmental Mapping for Autonomous Vehicles",
+     "year": 2025,
+     "cos": 0.8611
+    },
+    {
+     "title": "Lift-Attend-Splat: Bird’s-eye-view camera-lidar fusion using transformers",
+     "year": 2023,
+     "cos": 0.8488
+    },
+    {
+     "title": "Reconstruction Matters: Learning Geometry-Aligned BEV Representation through 3D Gaussian Splatting",
+     "year": 2026,
+     "cos": 0.8372
+    },
+    {
+     "title": "LSSInst: Improving Geometric Modeling in LSS-Based BEV Perception with Instance Representation",
+     "year": 2024,
+     "cos": 0.8372
+    },
+    {
+     "title": "IDSplat: Instance-Decomposed 3D Gaussian Splatting for Driving Scenes",
+     "year": 2025,
+     "cos": 0.8294
+    },
+    {
+     "title": "XYZCylinder: Towards Compatible Feed-Forward 3D Gaussian Splatting for Driving Scenes via Unified Cylinder Lifting Method",
+     "year": 2025,
+     "cos": 0.8218
+    },
+    {
+     "title": "Beyond Visual Reconstruction Quality: Object Perception-aware 3D Gaussian Splatting for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8166
+    },
+    {
+     "title": "Towards Viewpoint Robustness in Bird's Eye View Segmentation",
+     "year": 2023,
+     "cos": 0.8154
+    },
+    {
+     "title": "Unigaussian: Driving Scene Reconstruction From Multiple Camera Models Via Unified Gaussian Representations",
+     "year": 2024,
+     "cos": 0.8149
+    },
+    {
+     "title": "DrivingForward: Feed-forward 3D Gaussian Splatting for Driving Scene Reconstruction from Flexible Surround-view Input",
+     "year": 2025,
+     "cos": 0.8141
+    }
+   ]
+  },
+  "892": {
+   "title": "Scalability in Perception for Autonomous Driving: Waymo Open Dataset",
+   "year": 2020,
+   "neighbours": [
+    {
+     "title": "One Million Scenes for Autonomous Driving: ONCE Dataset",
+     "year": 2021,
+     "cos": 0.9231
+    },
+    {
+     "title": "The Road Ahead in Autonomous Driving: The KITScenes Multimodal Dataset",
+     "year": 2026,
+     "cos": 0.9011
+    },
+    {
+     "title": "Argoverse 2: Next Generation Datasets for Self-Driving Perception and Forecasting",
+     "year": 2023,
+     "cos": 0.8974
+    },
+    {
+     "title": "ROAD-Waymo: A Large-Scale Action Awareness Dataset for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.8959
+    },
+    {
+     "title": "A*3D Dataset: Towards Autonomous Driving in Challenging Environments",
+     "year": 2020,
+     "cos": 0.8944
+    },
+    {
+     "title": "A Survey on Autonomous Driving Datasets: Statistics, Annotation Quality, and a Future Outlook",
+     "year": 2024,
+     "cos": 0.894
+    },
+    {
+     "title": "Waymo Open Dataset: Panoramic Video Panoptic Segmentation",
+     "year": 2022,
+     "cos": 0.8934
+    },
+    {
+     "title": "UrbanTwin: Synthetic Roadside LiDAR Datasets",
+     "year": 2025,
+     "cos": 0.8913
+    },
+    {
+     "title": "DrivIng: A Large-Scale Multimodal Driving Dataset with Full Digital Twin Integration",
+     "year": 2026,
+     "cos": 0.8913
+    },
+    {
+     "title": "aiMotive Dataset: A Multimodal Dataset for Robust Autonomous Driving with Long-Range Perception",
+     "year": 2022,
+     "cos": 0.8906
+    }
+   ]
+  },
+  "2438": {
+   "title": "VAD: Vectorized Scene Representation for Efficient Autonomous Driving",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "VADv2: End-to-End Vectorized Autonomous Driving via Probabilistic Planning",
+     "year": 2026,
+     "cos": 0.8929
+    },
+    {
+     "title": "Online Map Vectorization for Autonomous Driving: A Rasterization Perspective",
+     "year": 2023,
+     "cos": 0.8708
+    },
+    {
+     "title": "Vectorized HD Map Learning for Autonomous Driving: A Survey of Representations, Architectures, and Future Directions",
+     "year": 2026,
+     "cos": 0.8606
+    },
+    {
+     "title": "InVDriver: Intra-Instance Aware Vectorized Query-Based Autonomous Driving Transformer",
+     "year": 2025,
+     "cos": 0.8572
+    },
+    {
+     "title": "A Benchmark for Vision-Centric HD Mapping by V2I Systems",
+     "year": 2025,
+     "cos": 0.8563
+    },
+    {
+     "title": "ViLaD: A Large Vision Language Diffusion Framework for End-to-End Autonomous Driving",
+     "year": 2025,
+     "cos": 0.8525
+    },
+    {
+     "title": "VMA: Divide-and-Conquer Vectorized Map Annotation System for Large-Scale Driving Scene",
+     "year": 2023,
+     "cos": 0.852
+    },
+    {
+     "title": "VLP: Vision Language Planning for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.851
+    },
+    {
+     "title": "VectorNet: Encoding HD Maps and Agent Dynamics From Vectorized Representation",
+     "year": 2020,
+     "cos": 0.8487
+    },
+    {
+     "title": "Bridging Scene Generation and Planning: Driving with World Model via Unifying Vision and Motion Representation",
+     "year": 2026,
+     "cos": 0.8472
+    }
+   ]
+  },
+  "600": {
+   "title": "CARLA: An Open Urban Driving Simulator",
+   "year": 2017,
+   "neighbours": [
+    {
+     "title": "CARLA Real Traffic Scenarios - novel training ground and benchmark for autonomous driving",
+     "year": 2020,
+     "cos": 0.9131
+    },
+    {
+     "title": "Imitation Learning for Autonomous Driving in CARLA",
+     "year": 2026,
+     "cos": 0.9044
+    },
+    {
+     "title": "$\\mathcal{R}-\\mathbf{CARLA}$: High-Fidelity Sensor Simulations with Interchangeable Dynamics for Autonomous Racing",
+     "year": 2025,
+     "cos": 0.8863
+    },
+    {
+     "title": "Think2Drive: Efficient Reinforcement Learning by Thinking in Latent World Model for Quasi-Realistic Autonomous Driving (in CARLA-v2)",
+     "year": 2024,
+     "cos": 0.8823
+    },
+    {
+     "title": "CARLA-GS: Decoupling Representation, Reasoning, and Physics Simulation for Autonomous Driving Corner-Case Synthesis",
+     "year": 2026,
+     "cos": 0.8809
+    },
+    {
+     "title": "Insertion of real agents behaviors in CARLA autonomous driving simulator",
+     "year": 2022,
+     "cos": 0.8807
+    },
+    {
+     "title": "Analysis of a Modular Autonomous Driving Architecture: The Top Submission to CARLA Leaderboard 2.0 Challenge",
+     "year": 2024,
+     "cos": 0.8783
+    },
+    {
+     "title": "3CSim: CARLA Corner Case Simulation for Control Assessment in Autonomous Driving",
+     "year": 2024,
+     "cos": 0.8759
+    },
+    {
+     "title": "Attacking Autonomous Driving Agents with Adversarial Machine Learning: A Holistic Evaluation with the CARLA Leaderboard",
+     "year": 2025,
+     "cos": 0.8742
+    },
+    {
+     "title": "Safe Navigation: Training Autonomous Vehicles using Deep Reinforcement Learning in CARLA",
+     "year": 2023,
+     "cos": 0.8727
+    }
+   ]
+  },
+  "20353": {
+   "title": "Argoverse 2: Next Generation Datasets for Self-Driving Perception and Forecasting",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "Argoverse: 3D Tracking and Forecasting With Rich Maps",
+     "year": 2019,
+     "cos": 0.9485
+    },
+    {
+     "title": "Scalability in Perception for Autonomous Driving: Waymo Open Dataset",
+     "year": 2020,
+     "cos": 0.8974
+    },
+    {
+     "title": "UnO: Unsupervised Occupancy Fields for Perception and Forecasting",
+     "year": 2024,
+     "cos": 0.8886
+    },
+    {
+     "title": "Technical Report for Argoverse Challenges on Unified Sensor-based Detection, Tracking, and Forecasting",
+     "year": 2023,
+     "cos": 0.8854
+    },
+    {
+     "title": "One Million Scenes for Autonomous Driving: ONCE Dataset",
+     "year": 2021,
+     "cos": 0.885
+    },
+    {
+     "title": "Forecasting From LiDAR via Future Object Detection",
+     "year": 2022,
+     "cos": 0.8823
+    },
+    {
+     "title": "LiDAR-based 4D Occupancy Completion and Forecasting",
+     "year": 2024,
+     "cos": 0.8822
+    },
+    {
+     "title": "Large Scale Interactive Motion Forecasting for Autonomous Driving: The Waymo Open Motion Dataset",
+     "year": 2021,
+     "cos": 0.8809
+    },
+    {
+     "title": "Technical Report for Argoverse Challenges on 4D Occupancy Forecasting",
+     "year": 2023,
+     "cos": 0.8782
+    },
+    {
+     "title": "WOMD-LiDAR: Raw Sensor Dataset Benchmark for Motion Forecasting",
+     "year": 2024,
+     "cos": 0.8779
+    }
+   ]
+  },
+  "8892": {
+   "title": "Smooth-Trajectron++: Augmenting the Trajectron++ Behaviour Prediction Model with Smooth Attention",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "Leveraging Smooth Attention Prior for Multi-Agent Trajectory Prediction",
+     "year": 2022,
+     "cos": 0.8976
+    },
+    {
+     "title": "HPNet: Dynamic Trajectory Forecasting with Historical Prediction Attention",
+     "year": 2024,
+     "cos": 0.8661
+    },
+    {
+     "title": "Lane-Attention: Predicting Vehicles' Moving Trajectories by Learning Their Attention Over Lanes",
+     "year": 2020,
+     "cos": 0.8641
+    },
+    {
+     "title": "Predicting Time-Series Trajectories of Human Driven Vehicles, using an Unsupervised Attention-Based Recurrent Neural Network",
+     "year": 2019,
+     "cos": 0.8615
+    },
+    {
+     "title": "Prediction-Driven Motion Planning: Route Integration Strategies in Attention-Based Prediction Models",
+     "year": 2025,
+     "cos": 0.8605
+    },
+    {
+     "title": "SCOUT: Socially-COnsistent and UndersTandable Graph Attention Network for Trajectory Prediction of Vehicles and VRUs",
+     "year": 2021,
+     "cos": 0.856
+    },
+    {
+     "title": "Hierarchical Attention Network for Planning-Informed Multi-Agent Trajectory Prediction",
+     "year": 2023,
+     "cos": 0.8557
+    },
+    {
+     "title": "Quantifying and Modeling Driving Style in Trajectory Forecasting",
+     "year": 2025,
+     "cos": 0.8547
+    },
+    {
+     "title": "Multi-modal Trajectory Prediction for Autonomous Driving with Semantic Map and Dynamic Graph Attention Network",
+     "year": 2021,
+     "cos": 0.8515
+    },
+    {
+     "title": "Human Observation-Inspired Trajectory Prediction for Autonomous Driving in Mixed-Autonomy Traffic Environments",
+     "year": 2024,
+     "cos": 0.8497
+    }
+   ]
+  },
+  "2413": {
+   "title": "MotionLM: Multi-Agent Motion Forecasting as Language Modeling",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "SceneMotion: From Agent-Centric Embeddings to Scene-Wide Forecasts",
+     "year": 2024,
+     "cos": 0.8866
+    },
+    {
+     "title": "Enhanced Motion Forecasting with Plug-And-Play Multimodal Large Language Models",
+     "year": 2025,
+     "cos": 0.8843
+    },
+    {
+     "title": "Scene Transformer: A unified architecture for predicting multiple agent trajectories",
+     "year": 2021,
+     "cos": 0.8815
+    },
+    {
+     "title": "RetroMotion: Retrocausal Motion Forecasting Models are Instructable",
+     "year": 2025,
+     "cos": 0.8763
+    },
+    {
+     "title": "Diverse and Admissible Trajectory Forecasting through Multimodal Context Understanding",
+     "year": 2020,
+     "cos": 0.8762
+    },
+    {
+     "title": "HalentNet: Multimodal Trajectory Forecasting with Hallucinative Intents",
+     "year": 2021,
+     "cos": 0.8739
+    },
+    {
+     "title": "Motion Forecasting in Continuous Driving",
+     "year": 2024,
+     "cos": 0.8722
+    },
+    {
+     "title": "M2I: From Factored Marginal Trajectory Prediction to Interactive Prediction",
+     "year": 2022,
+     "cos": 0.8692
+    },
+    {
+     "title": "JFP: Joint Future Prediction with Interactive Multi-Agent Modeling for Autonomous Driving",
+     "year": 2022,
+     "cos": 0.8689
+    },
+    {
+     "title": "SSL-Interactions: Pretext Tasks for Interactive Trajectory Prediction",
+     "year": 2024,
+     "cos": 0.8668
+    }
+   ]
+  },
+  "1129": {
+   "title": "Tri-Perspective View for Vision-Based 3D Semantic Occupancy Prediction",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "A Spatiotemporal Approach to Tri-Perspective Representation for 3D Semantic Occupancy Prediction",
+     "year": 2024,
+     "cos": 0.9094
+    },
+    {
+     "title": "COTR: Compact Occupancy TRansformer for Vision-based 3D Occupancy Prediction",
+     "year": 2024,
+     "cos": 0.8854
+    },
+    {
+     "title": "PointOcc: Cylindrical Tri-Perspective View for Point-based 3D Semantic Occupancy Prediction",
+     "year": 2023,
+     "cos": 0.8822
+    },
+    {
+     "title": "Temporal Range-Point-Voxel Fusion for Unified BEV Scene Perception and Motion Prediction",
+     "year": 2026,
+     "cos": 0.8795
+    },
+    {
+     "title": "BePo: Dual Representation for 3D Occupancy Prediction",
+     "year": 2025,
+     "cos": 0.8758
+    },
+    {
+     "title": "FMOcc: TPV-Driven Flow Matching for 3D Occupancy Prediction with Selective State Space Model",
+     "year": 2025,
+     "cos": 0.8758
+    },
+    {
+     "title": "Improving 3D Occupancy Prediction through Class-Balancing Loss and Multi-Scale Representation",
+     "year": 2024,
+     "cos": 0.8698
+    },
+    {
+     "title": "BEVMap: Map-Aware BEV Modeling for 3D Perception",
+     "year": 2024,
+     "cos": 0.8667
+    },
+    {
+     "title": "Parametric Depth Based Feature Representation Learning for Object Detection and Segmentation in Bird's-Eye View",
+     "year": 2023,
+     "cos": 0.8653
+    },
+    {
+     "title": "OccFormer: Dual-path Transformer for Vision-based 3D Semantic Occupancy Prediction",
+     "year": 2023,
+     "cos": 0.8638
+    }
+   ]
+  },
+  "23030": {
+   "title": "UniAda: Universal Adaptive Multi-objective Adversarial Attack for End-to-End Autonomous Driving Systems",
+   "year": 2026,
+   "neighbours": [
+    {
+     "title": "Adversarial Driving: Attacking End-to-End Autonomous Driving",
+     "year": 2023,
+     "cos": 0.8543
+    },
+    {
+     "title": "AD2: Analysis and Detection of Adversarial Threats in Visual Perception for End-to-End Autonomous Driving Systems",
+     "year": 2026,
+     "cos": 0.8489
+    },
+    {
+     "title": "A Systematic Review of Adversarial Attacks and Defenses for Deep Reinforcement Learning in Autonomous Vehicle Applications",
+     "year": 2026,
+     "cos": 0.8383
+    },
+    {
+     "title": "Module-wise Adaptive Adversarial Training for End-to-end Autonomous Driving",
+     "year": 2024,
+     "cos": 0.835
+    },
+    {
+     "title": "Attacking Autonomous Driving Agents with Adversarial Machine Learning: A Holistic Evaluation with the CARLA Leaderboard",
+     "year": 2025,
+     "cos": 0.8335
+    },
+    {
+     "title": "Robust Driving Control for Autonomous Vehicles: An Intelligent General-sum Constrained Adversarial Reinforcement Learning Approach",
+     "year": 2025,
+     "cos": 0.8333
+    },
+    {
+     "title": "Deep Learning-Based Autonomous Driving Systems: A Survey of Attacks and Defenses",
+     "year": 2021,
+     "cos": 0.8333
+    },
+    {
+     "title": "Attacking Motion Planners Using Adversarial Perception Errors",
+     "year": 2023,
+     "cos": 0.8328
+    },
+    {
+     "title": "SABER: Spatially Consistent 3D Universal Adversarial Objects for BEV Detectors",
+     "year": 2026,
+     "cos": 0.8326
+    },
+    {
+     "title": "Dynamic Adversarial Attacks on Autonomous Driving Systems",
+     "year": 2024,
+     "cos": 0.8323
+    }
+   ]
+  },
+  "25111": {
+   "title": "SS-DC: Spatial-Spectral Decoupling and Coupling Across Visible-Infrared Gap for Domain Adaptive Object Detection",
+   "year": 2025,
+   "neighbours": [
+    {
+     "title": "FreqKD: Frequency-Decoupled Cross-Modal Knowledge Distillation for Infrared Object Detection",
+     "year": 2026,
+     "cos": 0.8322
+    },
+    {
+     "title": "An Unsupervised Domain Adaptive Approach for Multimodal 2D Object Detection in Adverse Weather Conditions",
+     "year": 2022,
+     "cos": 0.8283
+    },
+    {
+     "title": "Cooperative Students: Navigating Unsupervised Domain Adaptation in Nighttime Object Detection",
+     "year": 2024,
+     "cos": 0.8258
+    },
+    {
+     "title": "Cross-Domain Correlation Distillation for Unsupervised Domain Adaptation in Nighttime Semantic Segmentation",
+     "year": 2022,
+     "cos": 0.8233
+    },
+    {
+     "title": "Boosting Cross-Spectral Unsupervised Domain Adaptation for Thermal Semantic Segmentation",
+     "year": 2025,
+     "cos": 0.8147
+    },
+    {
+     "title": "Stepwise Domain Adaptation (SDA) for Object Detection in Autonomous Vehicles Using an Adaptive CenterNet",
+     "year": 2022,
+     "cos": 0.813
+    },
+    {
+     "title": "Multi-Target Domain Adaptation via Unsupervised Domain Classification for Weather Invariant Object Detection",
+     "year": 2021,
+     "cos": 0.8128
+    },
+    {
+     "title": "Task-conditioned Domain Adaptation for Pedestrian Detection in Thermal Imagery",
+     "year": 2020,
+     "cos": 0.8074
+    },
+    {
+     "title": "Dual Prototype-driven Objectness Decoupling for Cross-Domain Object Detection in Urban Scene",
+     "year": 2024,
+     "cos": 0.8072
+    },
+    {
+     "title": "UniDA3D: A Unified Domain-Adaptive Framework for Multi-View 3D Object Detection",
+     "year": 2026,
+     "cos": 0.8042
+    }
+   ]
+  }
+ },
+ "specter2": {
+  "954": {
+   "title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+   "year": 2020,
+   "neighbours": [
+    {
+     "title": "A*3D Dataset: Towards Autonomous Driving in Challenging Environments",
+     "year": 2020,
+     "cos": 0.9682
+    },
+    {
+     "title": "aiMotive Dataset: A Multimodal Dataset for Robust Autonomous Driving with Long-Range Perception",
+     "year": 2022,
+     "cos": 0.9663
+    },
+    {
+     "title": "PandaSet: Advanced Sensor Suite Dataset for Autonomous Driving",
+     "year": 2021,
+     "cos": 0.9639
+    },
+    {
+     "title": "MAN TruckScenes: A multimodal dataset for autonomous trucking in diverse conditions",
+     "year": 2024,
+     "cos": 0.9636
+    },
+    {
+     "title": "Cityscapes 3D: Dataset and Benchmark for 9 DoF Vehicle Detection",
+     "year": 2020,
+     "cos": 0.9629
+    },
+    {
+     "title": "The NEOLIX Open Dataset for AutonomousDriving",
+     "year": 2020,
+     "cos": 0.9603
+    },
+    {
+     "title": "nuScenes Revisited: Progress and Challenges in Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9596
+    },
+    {
+     "title": "Zenseact Open Dataset: A Large-Scale and Diverse Multimodal Dataset for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.9594
+    },
+    {
+     "title": "Scalability in Perception for Autonomous Driving: Waymo Open Dataset",
+     "year": 2020,
+     "cos": 0.9593
+    },
+    {
+     "title": "A2RL V\\textsubscript{max}: The A2RL autonomous racing dataset for long-range, high-speed perception and multi-vehicle interaction",
+     "year": 2026,
+     "cos": 0.9573
+    }
+   ]
+  },
+  "884": {
+   "title": "PointPillars: Fast Encoders for Object Detection From Point Clouds",
+   "year": 2019,
+   "neighbours": [
+    {
+     "title": "PillarDETR: YOLO-Backbone and RT-DETR Head for Real-Time 3D Object Detection",
+     "year": 2026,
+     "cos": 0.9734
+    },
+    {
+     "title": "StarNet: Targeted Computation for Object Detection in Point Clouds",
+     "year": 2019,
+     "cos": 0.9704
+    },
+    {
+     "title": "RUHSNet: 3D Object Detection Using Lidar Data in Real Time",
+     "year": 2020,
+     "cos": 0.9703
+    },
+    {
+     "title": "PIXOR: Real-Time 3D Object Detection From Point Clouds",
+     "year": 2018,
+     "cos": 0.9701
+    },
+    {
+     "title": "Structure Aware Single-Stage 3D Object Detection From Point Cloud",
+     "year": 2020,
+     "cos": 0.9699
+    },
+    {
+     "title": "3D fully convolutional network for vehicle detection in point cloud",
+     "year": 2016,
+     "cos": 0.9683
+    },
+    {
+     "title": "End-to-End Pseudo-LiDAR for Image-Based 3D Object Detection",
+     "year": 2020,
+     "cos": 0.9673
+    },
+    {
+     "title": "Range-Aware Attention Network for LiDAR-Based 3D Object Detection With Auxiliary Point Density Level Estimation",
+     "year": 2021,
+     "cos": 0.9669
+    },
+    {
+     "title": "PointFusion: Deep Sensor Fusion for 3D Bounding Box Estimation",
+     "year": 2018,
+     "cos": 0.9669
+    },
+    {
+     "title": "HEDNet: A Hierarchical Encoder-Decoder Network for 3D Object Detection in Point Clouds",
+     "year": 2023,
+     "cos": 0.9668
+    }
+   ]
+  },
+  "20429": {
+   "title": "nuPlan: A closed-loop ML-based planning benchmark for autonomous vehicles",
+   "year": 2021,
+   "neighbours": [
+    {
+     "title": "nuPlan-R: A Closed-Loop Planning Benchmark for Autonomous Driving via Reactive Multi-Agent Simulation",
+     "year": 2026,
+     "cos": 0.9685
+    },
+    {
+     "title": "Towards Learning-Based Planning: The nuPlan Benchmark for Real-World Autonomous Driving",
+     "year": 2024,
+     "cos": 0.965
+    },
+    {
+     "title": "Self-driving cars: Are we there yet?",
+     "year": 2025,
+     "cos": 0.9593
+    },
+    {
+     "title": "MIMP: Modular and Interpretable Motion Planning Framework for Safe Autonomous Driving in Complex Real-world Scenarios",
+     "year": 2024,
+     "cos": 0.9582
+    },
+    {
+     "title": "Planning with Adaptive World Models for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9566
+    },
+    {
+     "title": "Align2Act: Instruction-Tuned Models for Human-Aligned Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9556
+    },
+    {
+     "title": "Beyond Self-Play and Scale: A Behavior Benchmark for Generalization in Autonomous Driving",
+     "year": 2026,
+     "cos": 0.9551
+    },
+    {
+     "title": "Waymax: An Accelerated, Data-Driven Simulator for Large-Scale Autonomous Driving Research",
+     "year": 2023,
+     "cos": 0.9545
+    },
+    {
+     "title": "Analysis of a Modular Autonomous Driving Architecture: The Top Submission to CARLA Leaderboard 2.0 Challenge",
+     "year": 2024,
+     "cos": 0.9541
+    },
+    {
+     "title": "Getting SMARTER for Motion Planning in Autonomous Driving Systems",
+     "year": 2025,
+     "cos": 0.9538
+    }
+   ]
+  },
+  "19216": {
+   "title": "nuScenes Revisited: Progress and Challenges in Autonomous Driving",
+   "year": 2025,
+   "neighbours": [
+    {
+     "title": "Bosch Street Dataset: A Multi-Modal Dataset with Imaging Radar for Automated Driving",
+     "year": 2024,
+     "cos": 0.9642
+    },
+    {
+     "title": "Deep Multi-Modal Object Detection and Semantic Segmentation for Autonomous Driving: Datasets, Methods, and Challenges",
+     "year": 2021,
+     "cos": 0.9642
+    },
+    {
+     "title": "A Survey on Autonomous Driving Datasets: Statistics, Annotation Quality, and a Future Outlook",
+     "year": 2024,
+     "cos": 0.9637
+    },
+    {
+     "title": "DrivIng: A Large-Scale Multimodal Driving Dataset with Full Digital Twin Integration",
+     "year": 2026,
+     "cos": 0.9635
+    },
+    {
+     "title": "InfraParis: A Multi-Modal and Multi-Task Autonomous Driving Dataset",
+     "year": 2024,
+     "cos": 0.9624
+    },
+    {
+     "title": "aiMotive Dataset: A Multimodal Dataset for Robust Autonomous Driving with Long-Range Perception",
+     "year": 2022,
+     "cos": 0.9615
+    },
+    {
+     "title": "SCaRL- A Synthetic Multi-Modal Dataset for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.9614
+    },
+    {
+     "title": "Cross-Modal Supervision Based Road Segmentation and Trajectory Prediction With Automotive Radar",
+     "year": 2024,
+     "cos": 0.9606
+    },
+    {
+     "title": "The NEOLIX Open Dataset for AutonomousDriving",
+     "year": 2020,
+     "cos": 0.9597
+    },
+    {
+     "title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+     "year": 2020,
+     "cos": 0.9596
+    }
+   ]
+  },
+  "3609": {
+   "title": "Towards Learning-Based Planning: The nuPlan Benchmark for Real-World Autonomous Driving",
+   "year": 2024,
+   "neighbours": [
+    {
+     "title": "LiloDriver: A Lifelong Learning Framework for Closed-loop Motion Planning in Long-tail Autonomous Driving Scenarios",
+     "year": 2025,
+     "cos": 0.9667
+    },
+    {
+     "title": "nuPlan: A closed-loop ML-based planning benchmark for autonomous vehicles",
+     "year": 2021,
+     "cos": 0.965
+    },
+    {
+     "title": "Mosaic: An Extensible Framework for Composing Rule-Based and Learned Motion Planners",
+     "year": 2026,
+     "cos": 0.9633
+    },
+    {
+     "title": "CarPlanner: Consistent Auto-regressive Trajectory Planning for Large-Scale Reinforcement Learning in Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9631
+    },
+    {
+     "title": "Can Vehicle Motion Planning Generalize to Realistic Long-tail Scenarios?",
+     "year": 2024,
+     "cos": 0.9623
+    },
+    {
+     "title": "Self-driving cars: Are we there yet?",
+     "year": 2025,
+     "cos": 0.9622
+    },
+    {
+     "title": "Learning-Based Behavior Planning for Automated Driving: Real-World Integration and Deployment",
+     "year": 2026,
+     "cos": 0.9619
+    },
+    {
+     "title": "Learning from Mistakes: Rollout-Retrieval Lifelong Policy Learning for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.9619
+    },
+    {
+     "title": "MIMP: Modular and Interpretable Motion Planning Framework for Safe Autonomous Driving in Complex Real-world Scenarios",
+     "year": 2024,
+     "cos": 0.9612
+    },
+    {
+     "title": "Rethinking Imitation-Based Planners for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.961
+    }
+   ]
+  },
+  "13472": {
+   "title": "Panoptic Nuscenes: A Large-Scale Benchmark for LiDAR Panoptic Segmentation and Tracking",
+   "year": 2022,
+   "neighbours": [
+    {
+     "title": "WayPOP: A Panoramic Open-Set Panoptic Tracking Benchmark",
+     "year": 2026,
+     "cos": 0.9654
+    },
+    {
+     "title": "Mask4Former: Mask Transformer for 4D Panoptic Segmentation",
+     "year": 2024,
+     "cos": 0.9579
+    },
+    {
+     "title": "EfficientLPS: Efficient LiDAR Panoptic Segmentation",
+     "year": 2022,
+     "cos": 0.9558
+    },
+    {
+     "title": "4D-Former: Multimodal 4D Panoptic Segmentation",
+     "year": 2023,
+     "cos": 0.9516
+    },
+    {
+     "title": "NextStop: An Improved Tracker For Panoptic LIDAR Segmentation Data",
+     "year": 2025,
+     "cos": 0.9512
+    },
+    {
+     "title": "4D Panoptic LiDAR Segmentation",
+     "year": 2021,
+     "cos": 0.9502
+    },
+    {
+     "title": "Panoster: End-to-End Panoptic Segmentation of LiDAR Point Clouds",
+     "year": 2021,
+     "cos": 0.9498
+    },
+    {
+     "title": "A Benchmark for LiDAR-Based Panoptic Segmentation Based on KITTI",
+     "year": 2021,
+     "cos": 0.9496
+    },
+    {
+     "title": "CORP: A Multi-Modal Dataset for Campus-Oriented Roadside Perception Tasks",
+     "year": 2024,
+     "cos": 0.9484
+    },
+    {
+     "title": "Panoptic-CUDAL: Rural Australia Point Cloud Dataset in Rainy Conditions",
+     "year": 2025,
+     "cos": 0.948
+    }
+   ]
+  },
+  "764": {
+   "title": "Are we ready for autonomous driving? The KITTI vision benchmark suite",
+   "year": 2012,
+   "neighbours": [
+    {
+     "title": "Vision meets robotics: The KITTI dataset",
+     "year": 2013,
+     "cos": 0.9653
+    },
+    {
+     "title": "A*3D Dataset: Towards Autonomous Driving in Challenging Environments",
+     "year": 2020,
+     "cos": 0.9609
+    },
+    {
+     "title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+     "year": 2020,
+     "cos": 0.9564
+    },
+    {
+     "title": "Virtual KITTI 2",
+     "year": 2020,
+     "cos": 0.9552
+    },
+    {
+     "title": "Scalability in Perception for Autonomous Driving: Waymo Open Dataset",
+     "year": 2020,
+     "cos": 0.9536
+    },
+    {
+     "title": "Computer Vision for Autonomous Vehicles: Problems, Datasets and State-of-the-Art",
+     "year": 2017,
+     "cos": 0.953
+    },
+    {
+     "title": "Cityscapes 3D: Dataset and Benchmark for 9 DoF Vehicle Detection",
+     "year": 2020,
+     "cos": 0.9525
+    },
+    {
+     "title": "KITTI-360: A Novel Dataset and Benchmarks for Urban Scene Understanding in 2D and 3D",
+     "year": 2023,
+     "cos": 0.9513
+    },
+    {
+     "title": "Precise Synthetic Image and LiDAR (PreSIL) Dataset for Autonomous Vehicle Perception",
+     "year": 2019,
+     "cos": 0.9501
+    },
+    {
+     "title": "One Million Scenes for Autonomous Driving: ONCE Dataset",
+     "year": 2021,
+     "cos": 0.9489
+    }
+   ]
+  },
+  "17651": {
+   "title": "End-to-End Autonomous Driving: Challenges and Frontiers",
+   "year": 2024,
+   "neighbours": [
+    {
+     "title": "SparseDrive: End-To-End Autonomous Driving Via Sparse Scene Representation",
+     "year": 2025,
+     "cos": 0.9699
+    },
+    {
+     "title": "SparseAD: Sparse Query-Centric Paradigm for Efficient End-to-End Autonomous Driving",
+     "year": 2024,
+     "cos": 0.969
+    },
+    {
+     "title": "MOJITO: Modal Joint Learning for Unified End-to-End Autonomous Driving",
+     "year": 2026,
+     "cos": 0.9674
+    },
+    {
+     "title": "Joint Perception and Prediction for Autonomous Driving: A Survey",
+     "year": 2025,
+     "cos": 0.9661
+    },
+    {
+     "title": "Low-Cost Monocular End-to-End Autonomous Driving With Enhanced Interpretability",
+     "year": 2026,
+     "cos": 0.9657
+    },
+    {
+     "title": "Scaling Vision-Based End-To-End Autonomous Driving with Multi-View Attention Learning",
+     "year": 2023,
+     "cos": 0.9647
+    },
+    {
+     "title": "Interpretable Decision-Making for End-to-End Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9642
+    },
+    {
+     "title": "PRIX: Learning to Plan From Raw Pixels for End-to-End Autonomous Driving",
+     "year": 2026,
+     "cos": 0.9628
+    },
+    {
+     "title": "End-to-end Autonomous Driving using Deep Learning: A Systematic Review",
+     "year": 2023,
+     "cos": 0.9628
+    },
+    {
+     "title": "Learning Interpretable End-To-End Vision-Based Motion Planning for Autonomous Driving with Optical Flow Distillation",
+     "year": 2021,
+     "cos": 0.9628
+    }
+   ]
+  },
+  "1228": {
+   "title": "Planning-Oriented Autonomous Driving",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "A Language Agent for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.9596
+    },
+    {
+     "title": "Intention-Oriented Fast Joint Prediction and Planning for Safe Driving",
+     "year": 2024,
+     "cos": 0.9564
+    },
+    {
+     "title": "Towards Learning-Based Planning: The nuPlan Benchmark for Real-World Autonomous Driving",
+     "year": 2024,
+     "cos": 0.9558
+    },
+    {
+     "title": "DriveTransformer: Unified Transformer for Scalable End-to-End Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9557
+    },
+    {
+     "title": "C2F-Planner: Interaction-Aware Coarse-to-Fine Planning for Autonomous Vehicles",
+     "year": 2025,
+     "cos": 0.9534
+    },
+    {
+     "title": "CogAD: Cognitive-Hierarchy Guided End-to-End Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9533
+    },
+    {
+     "title": "PrismAD: Decoupled Planning via Semantic Mixture-of-Planners for End-to-End Autonomous Driving",
+     "year": 2026,
+     "cos": 0.9525
+    },
+    {
+     "title": "PARA-Drive: Parallelized Architecture for Real-time Autonomous Driving",
+     "year": 2024,
+     "cos": 0.952
+    },
+    {
+     "title": "The Era of End-to-End Autonomy: Transitioning from Rule-Based Driving to Large Driving Models",
+     "year": 2026,
+     "cos": 0.9517
+    },
+    {
+     "title": "LoDriver: A Region-Localized Autonomous Driver Using Large Language Models",
+     "year": 2025,
+     "cos": 0.9514
+    }
+   ]
+  },
+  "1844": {
+   "title": "BEVFormer: Learning Bird’s-Eye-View Representation from Multi-Camera Images via Spatiotemporal Transformers",
+   "year": 2022,
+   "neighbours": [
+    {
+     "title": "BEVFormer: Learning Bird's-Eye-View Representation From LiDAR-Camera via Spatiotemporal Transformers",
+     "year": 2025,
+     "cos": 0.9841
+    },
+    {
+     "title": "IAE-BEV: Instance-Adaptive Enhancement for BEV-Based Multi-View 3D Object Detection",
+     "year": 2025,
+     "cos": 0.9718
+    },
+    {
+     "title": "HV-BEV: Decoupling Horizontal and Vertical Feature Sampling for Multi-View 3D Object Detection",
+     "year": 2025,
+     "cos": 0.9712
+    },
+    {
+     "title": "BEVerse: Unified Perception and Prediction in Birds-Eye-View for Vision-Centric Autonomous Driving",
+     "year": 2022,
+     "cos": 0.9701
+    },
+    {
+     "title": "DySS: Dynamic Queries and State-Space Learning for Efficient 3D Object Detection from Multi-Camera Videos",
+     "year": 2025,
+     "cos": 0.9696
+    },
+    {
+     "title": "PETRv2: A Unified Framework for 3D Perception from Multi-Camera Images",
+     "year": 2023,
+     "cos": 0.9696
+    },
+    {
+     "title": "DETR4D: Direct Multi-View 3D Object Detection with Sparse Attention",
+     "year": 2022,
+     "cos": 0.9695
+    },
+    {
+     "title": "Seq-BEV: Semantic Bird-Eye-View Map Generation in Full View Using Sequential Images for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9688
+    },
+    {
+     "title": "BEVFusion4D: Learning LiDAR-Camera Fusion Under Bird's-Eye-View via Cross-Modality Guidance and Temporal Aggregation",
+     "year": 2023,
+     "cos": 0.9683
+    },
+    {
+     "title": "Efficient and Robust 2D-to-BEV Representation Learning via Geometry-guided Kernel Transformer",
+     "year": 2022,
+     "cos": 0.9682
+    }
+   ]
+  },
+  "1787": {
+   "title": "Lift, Splat, Shoot: Encoding Images from Arbitrary Camera Rigs by Implicitly Unprojecting to 3D",
+   "year": 2020,
+   "neighbours": [
+    {
+     "title": "S3CNet: A Sparse Semantic Scene Completion Network for LiDAR Point Clouds",
+     "year": 2020,
+     "cos": 0.9539
+    },
+    {
+     "title": "PRED: Pre-training via Semantic Rendering on LiDAR Point Clouds",
+     "year": 2023,
+     "cos": 0.9523
+    },
+    {
+     "title": "Unleashing Semantic and Geometric Priors for 3D Scene Completion",
+     "year": 2026,
+     "cos": 0.9521
+    },
+    {
+     "title": "Learning Ego 3D Representation As Ray Tracing",
+     "year": 2022,
+     "cos": 0.9521
+    },
+    {
+     "title": "DeGuNet: Depth-Guided Ultra-Compact Backbones for Efficient LiDAR-Camera 3D Detection",
+     "year": 2026,
+     "cos": 0.9521
+    },
+    {
+     "title": "Segment Any Point Cloud Sequences by Distilling Vision Foundation Models",
+     "year": 2023,
+     "cos": 0.9521
+    },
+    {
+     "title": "VIP-DeepLab: Learning Visual Perception With Depth-Aware Video Panoptic Segmentation",
+     "year": 2021,
+     "cos": 0.9521
+    },
+    {
+     "title": "Geometry-Grounded Unified 3D Perception for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.9519
+    },
+    {
+     "title": "SN-LiDAR: Semantic Neural Fields for Novel Space-Time View LiDAR Synthesis",
+     "year": 2025,
+     "cos": 0.9514
+    },
+    {
+     "title": "ET-Former: Efficient Triplane Deformable Attention for 3D Semantic Scene Completion from Monocular Camera",
+     "year": 2025,
+     "cos": 0.9513
+    }
+   ]
+  },
+  "892": {
+   "title": "Scalability in Perception for Autonomous Driving: Waymo Open Dataset",
+   "year": 2020,
+   "neighbours": [
+    {
+     "title": "One Million Scenes for Autonomous Driving: ONCE Dataset",
+     "year": 2021,
+     "cos": 0.968
+    },
+    {
+     "title": "DrivIng: A Large-Scale Multimodal Driving Dataset with Full Digital Twin Integration",
+     "year": 2026,
+     "cos": 0.9677
+    },
+    {
+     "title": "MSDAD: A Multi-Sensor Dataset for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.9656
+    },
+    {
+     "title": "A*3D Dataset: Towards Autonomous Driving in Challenging Environments",
+     "year": 2020,
+     "cos": 0.9652
+    },
+    {
+     "title": "Boreas: A multi-season autonomous driving dataset",
+     "year": 2023,
+     "cos": 0.9644
+    },
+    {
+     "title": "Ithaca365: Dataset and Driving Perception Under Repeated and Challenging Weather Conditions",
+     "year": 2022,
+     "cos": 0.9643
+    },
+    {
+     "title": "MONA: The Munich Motion Dataset of Natural Driving",
+     "year": 2022,
+     "cos": 0.9634
+    },
+    {
+     "title": "When to use what data set for your self-driving car algorithm: An overview of publicly available driving datasets",
+     "year": 2017,
+     "cos": 0.9628
+    },
+    {
+     "title": "URScenes: A Multi-scenario Dataset for Unstructured Road Environments",
+     "year": 2026,
+     "cos": 0.9624
+    },
+    {
+     "title": "Argoverse 2: Next Generation Datasets for Self-Driving Perception and Forecasting",
+     "year": 2023,
+     "cos": 0.9623
+    }
+   ]
+  },
+  "2438": {
+   "title": "VAD: Vectorized Scene Representation for Efficient Autonomous Driving",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "InVDriver: Intra-Instance Aware Vectorized Query-Based Autonomous Driving Transformer",
+     "year": 2025,
+     "cos": 0.9661
+    },
+    {
+     "title": "SparseWorld: Enhancing End-to-End Autonomous Driving via World Models with Sparse Scene Representation",
+     "year": 2026,
+     "cos": 0.9646
+    },
+    {
+     "title": "Intention-Oriented Fast Joint Prediction and Planning for Safe Driving",
+     "year": 2024,
+     "cos": 0.9645
+    },
+    {
+     "title": "GeoWorldAD: Geometry World Action Model for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.961
+    },
+    {
+     "title": "VADv2: End-to-End Vectorized Autonomous Driving via Probabilistic Planning",
+     "year": 2026,
+     "cos": 0.9604
+    },
+    {
+     "title": "World4Drive: End-to-End Autonomous Driving via Intention-aware Physical Latent World Model",
+     "year": 2025,
+     "cos": 0.9602
+    },
+    {
+     "title": "Navigation-Guided Sparse Scene Representation for End-to-End Autonomous Driving",
+     "year": 2025,
+     "cos": 0.9596
+    },
+    {
+     "title": "BEV-VLM: Trajectory Planning via Unified BEV Abstraction",
+     "year": 2025,
+     "cos": 0.9595
+    },
+    {
+     "title": "EponaV2: Driving World Model with Comprehensive Future Reasoning",
+     "year": 2026,
+     "cos": 0.9595
+    },
+    {
+     "title": "WorldRFT: Latent World Model Planning with Reinforcement Fine-Tuning for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.9593
+    }
+   ]
+  },
+  "600": {
+   "title": "CARLA: An Open Urban Driving Simulator",
+   "year": 2017,
+   "neighbours": [
+    {
+     "title": "LGSVL Simulator: A High Fidelity Simulator for Autonomous Driving",
+     "year": 2020,
+     "cos": 0.9618
+    },
+    {
+     "title": "Dynamic Conditional Imitation Learning for Autonomous Driving",
+     "year": 2022,
+     "cos": 0.9613
+    },
+    {
+     "title": "Choose Your Simulator Wisely: A Review on Open-Source Simulators for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.9599
+    },
+    {
+     "title": "GarchingSim: An Autonomous Driving Simulator with Photorealistic Scenes and Minimalist Workflow",
+     "year": 2023,
+     "cos": 0.959
+    },
+    {
+     "title": "Efficient Occupancy Grid Mapping and Camera-LiDAR Fusion for Conditional Imitation Learning Driving",
+     "year": 2020,
+     "cos": 0.9586
+    },
+    {
+     "title": "Imitation Learning for Autonomous Driving in CARLA",
+     "year": 2026,
+     "cos": 0.9584
+    },
+    {
+     "title": "Recent Advancements in End-to-End Autonomous Driving Using Deep Learning: A Survey",
+     "year": 2023,
+     "cos": 0.9577
+    },
+    {
+     "title": "Data-Driven Traffic Simulation: A Comprehensive Review",
+     "year": 2023,
+     "cos": 0.9574
+    },
+    {
+     "title": "Driving Policy Transfer via Modularity and Abstraction",
+     "year": 2018,
+     "cos": 0.9571
+    },
+    {
+     "title": "DriveE2E: Closed-Loop Benchmark for End-to-End Autonomous Driving through Real-to-Simulation",
+     "year": 2025,
+     "cos": 0.9568
+    }
+   ]
+  },
+  "20353": {
+   "title": "Argoverse 2: Next Generation Datasets for Self-Driving Perception and Forecasting",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "One Thousand and One Hours: Self-driving Motion Prediction Dataset",
+     "year": 2020,
+     "cos": 0.9633
+    },
+    {
+     "title": "Scalability in Perception for Autonomous Driving: Waymo Open Dataset",
+     "year": 2020,
+     "cos": 0.9623
+    },
+    {
+     "title": "V2X-Seq: A Large-Scale Sequential Dataset for Vehicle-Infrastructure Cooperative Perception and Forecasting",
+     "year": 2023,
+     "cos": 0.9585
+    },
+    {
+     "title": "Multiagent Multitraversal Multimodal Self-Driving: Open MARS Dataset",
+     "year": 2024,
+     "cos": 0.9581
+    },
+    {
+     "title": "The ApolloScape Open Dataset for Autonomous Driving and Its Application",
+     "year": 2020,
+     "cos": 0.9577
+    },
+    {
+     "title": "RS2AD: End-to-End Autonomous Driving Data Generation from Roadside Sensor Observations",
+     "year": 2025,
+     "cos": 0.9577
+    },
+    {
+     "title": "EagleVision: A Multi-Task Benchmark for Cross-Domain Perception in High-Speed Autonomous Racing",
+     "year": 2026,
+     "cos": 0.9576
+    },
+    {
+     "title": "Argoverse: 3D Tracking and Forecasting With Rich Maps",
+     "year": 2019,
+     "cos": 0.9574
+    },
+    {
+     "title": "A2RL V\\textsubscript{max}: The A2RL autonomous racing dataset for long-range, high-speed perception and multi-vehicle interaction",
+     "year": 2026,
+     "cos": 0.9572
+    },
+    {
+     "title": "MSDAD: A Multi-Sensor Dataset for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.9561
+    }
+   ]
+  },
+  "8892": {
+   "title": "Smooth-Trajectron++: Augmenting the Trajectron++ Behaviour Prediction Model with Smooth Attention",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "Human Observation-Inspired Trajectory Prediction for Autonomous Driving in Mixed-Autonomy Traffic Environments",
+     "year": 2024,
+     "cos": 0.9642
+    },
+    {
+     "title": "BAT: Behavior-Aware Human-Like Trajectory Prediction for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.9592
+    },
+    {
+     "title": "A Cognitive-Based Trajectory Prediction Approach for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.9559
+    },
+    {
+     "title": "INTENT: Trajectory Prediction Framework With Intention-Guided Contrastive Clustering",
+     "year": 2025,
+     "cos": 0.9553
+    },
+    {
+     "title": "Leveraging Smooth Attention Prior for Multi-Agent Trajectory Prediction",
+     "year": 2022,
+     "cos": 0.9553
+    },
+    {
+     "title": "A Cognitive-Driven Trajectory Prediction Model for Autonomous Driving in Mixed Autonomy Environment",
+     "year": 2024,
+     "cos": 0.9547
+    },
+    {
+     "title": "Social-Interaction-Aware Trajectory Prediction with Attention of Heterogeneous Traffic Participants",
+     "year": 2025,
+     "cos": 0.9546
+    },
+    {
+     "title": "Transferable and Adaptable Driving Behavior Prediction",
+     "year": 2022,
+     "cos": 0.9534
+    },
+    {
+     "title": "Great GATsBi: Hybrid, Multimodal, Trajectory Forecasting for Bicycles using Anticipation Mechanism",
+     "year": 2025,
+     "cos": 0.953
+    },
+    {
+     "title": "Machine Learning for Autonomous Vehicle's Trajectory Prediction: A comprehensive survey, Challenges, and Future Research Directions",
+     "year": 2023,
+     "cos": 0.9517
+    }
+   ]
+  },
+  "2413": {
+   "title": "MotionLM: Multi-Agent Motion Forecasting as Language Modeling",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "DONUT: A Decoder-Only Model for Trajectory Prediction",
+     "year": 2025,
+     "cos": 0.967
+    },
+    {
+     "title": "JFP: Joint Future Prediction with Interactive Multi-Agent Modeling for Autonomous Driving",
+     "year": 2022,
+     "cos": 0.9654
+    },
+    {
+     "title": "Multiple Futures Prediction",
+     "year": 2019,
+     "cos": 0.9631
+    },
+    {
+     "title": "RetroMotion: Retrocausal Motion Forecasting Models are Instructable",
+     "year": 2025,
+     "cos": 0.9624
+    },
+    {
+     "title": "Scene Transformer: A unified architecture for predicting multiple agent trajectories",
+     "year": 2021,
+     "cos": 0.9589
+    },
+    {
+     "title": "Foresight in Motion: Reinforcing Trajectory Prediction with Reward Heuristics",
+     "year": 2025,
+     "cos": 0.9583
+    },
+    {
+     "title": "TNT: Target-driven Trajectory Prediction",
+     "year": 2020,
+     "cos": 0.9576
+    },
+    {
+     "title": "AgentFormer: Agent-Aware Transformers for Socio-Temporal Multi-Agent Forecasting",
+     "year": 2021,
+     "cos": 0.9571
+    },
+    {
+     "title": "Trajectory Prediction with Linguistic Representations",
+     "year": 2022,
+     "cos": 0.9571
+    },
+    {
+     "title": "Diverse and Admissible Trajectory Forecasting through Multimodal Context Understanding",
+     "year": 2020,
+     "cos": 0.9566
+    }
+   ]
+  },
+  "1129": {
+   "title": "Tri-Perspective View for Vision-Based 3D Semantic Occupancy Prediction",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "A Spatiotemporal Approach to Tri-Perspective Representation for 3D Semantic Occupancy Prediction",
+     "year": 2024,
+     "cos": 0.9785
+    },
+    {
+     "title": "PointOcc: Cylindrical Tri-Perspective View for Point-based 3D Semantic Occupancy Prediction",
+     "year": 2023,
+     "cos": 0.9751
+    },
+    {
+     "title": "COTR: Compact Occupancy TRansformer for Vision-based 3D Occupancy Prediction",
+     "year": 2024,
+     "cos": 0.9712
+    },
+    {
+     "title": "Semantic Occupancy Prediction with Dual Range-Voxel Representation",
+     "year": 2026,
+     "cos": 0.9704
+    },
+    {
+     "title": "UniVision: A Unified Framework for Vision-Centric 3D Perception",
+     "year": 2024,
+     "cos": 0.9676
+    },
+    {
+     "title": "BePo: Dual Representation for 3D Occupancy Prediction",
+     "year": 2025,
+     "cos": 0.9675
+    },
+    {
+     "title": "PanoOcc: Unified Occupancy Representation for Camera-based 3D Panoptic Segmentation",
+     "year": 2024,
+     "cos": 0.9674
+    },
+    {
+     "title": "Dr.Occ: Depth- and Region-Guided 3D Occupancy from Surround-View Cameras for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.9668
+    },
+    {
+     "title": "MR-Occ: Efficient Camera-LiDAR 3D Semantic Occupancy Prediction Using Hierarchical Multi-Resolution Voxel Representation",
+     "year": 2024,
+     "cos": 0.9666
+    },
+    {
+     "title": "OccFormer: Dual-path Transformer for Vision-based 3D Semantic Occupancy Prediction",
+     "year": 2023,
+     "cos": 0.9659
+    }
+   ]
+  },
+  "23030": {
+   "title": "UniAda: Universal Adaptive Multi-objective Adversarial Attack for End-to-End Autonomous Driving Systems",
+   "year": 2026,
+   "neighbours": [
+    {
+     "title": "Adversarial Driving: Attacking End-to-End Autonomous Driving",
+     "year": 2023,
+     "cos": 0.9718
+    },
+    {
+     "title": "Overriding Autonomous Driving Systems Using Adaptive Adversarial Billboards",
+     "year": 2022,
+     "cos": 0.9617
+    },
+    {
+     "title": "Robust Driving Control for Autonomous Vehicles: An Intelligent General-sum Constrained Adversarial Reinforcement Learning Approach",
+     "year": 2025,
+     "cos": 0.961
+    },
+    {
+     "title": "Module-wise Adaptive Adversarial Training for End-to-end Autonomous Driving",
+     "year": 2024,
+     "cos": 0.961
+    },
+    {
+     "title": "A Systematic Review of Adversarial Attacks and Defenses for Deep Reinforcement Learning in Autonomous Vehicle Applications",
+     "year": 2026,
+     "cos": 0.9607
+    },
+    {
+     "title": "Deep Learning-Based Autonomous Driving Systems: A Survey of Attacks and Defenses",
+     "year": 2021,
+     "cos": 0.9598
+    },
+    {
+     "title": "Revisiting Adversarial Perception Attacks and Defense Methods on Autonomous Driving Systems",
+     "year": 2025,
+     "cos": 0.9595
+    },
+    {
+     "title": "Adversarial Deep Reinforcement Learning for Improving the Robustness of Multi-agent Autonomous Driving Policies",
+     "year": 2021,
+     "cos": 0.9594
+    },
+    {
+     "title": "Dynamic Adversarial Attacks on Autonomous Driving Systems",
+     "year": 2024,
+     "cos": 0.959
+    },
+    {
+     "title": "ARC: Adversarially Robust Control Policies for Autonomous Vehicles",
+     "year": 2021,
+     "cos": 0.9588
+    }
+   ]
+  },
+  "25111": {
+   "title": "SS-DC: Spatial-Spectral Decoupling and Coupling Across Visible-Infrared Gap for Domain Adaptive Object Detection",
+   "year": 2025,
+   "neighbours": [
+    {
+     "title": "SSTN: Self-Supervised Domain Adaptation Thermal Object Detection for Autonomous Driving",
+     "year": 2021,
+     "cos": 0.9335
+    },
+    {
+     "title": "FreqKD: Frequency-Decoupled Cross-Modal Knowledge Distillation for Infrared Object Detection",
+     "year": 2026,
+     "cos": 0.933
+    },
+    {
+     "title": "Task-conditioned Domain Adaptation for Pedestrian Detection in Thermal Imagery",
+     "year": 2020,
+     "cos": 0.9319
+    },
+    {
+     "title": "Cooperative Students: Navigating Unsupervised Domain Adaptation in Nighttime Object Detection",
+     "year": 2024,
+     "cos": 0.9287
+    },
+    {
+     "title": "CGSA: Class-Guided Slot-Aware Adaptation for Source-Free Object Detection",
+     "year": 2026,
+     "cos": 0.9278
+    },
+    {
+     "title": "Cross-Domain Autonomous Driving Perception Using Contrastive Appearance Adaptation",
+     "year": 2023,
+     "cos": 0.9249
+    },
+    {
+     "title": "Integrated Multiscale Domain Adaptive YOLO",
+     "year": 2022,
+     "cos": 0.9247
+    },
+    {
+     "title": "An Unsupervised Domain Adaptive Approach for Multimodal 2D Object Detection in Adverse Weather Conditions",
+     "year": 2022,
+     "cos": 0.9238
+    },
+    {
+     "title": "Multi-Target Domain Adaptation via Unsupervised Domain Classification for Weather Invariant Object Detection",
+     "year": 2021,
+     "cos": 0.9236
+    },
+    {
+     "title": "The Cross-Modality Disparity Problem in Multispectral Pedestrian Detection",
+     "year": 2019,
+     "cos": 0.9233
+    }
+   ]
+  }
+ },
+ "minilm": {
+  "954": {
+   "title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+   "year": 2020,
+   "neighbours": [
+    {
+     "title": "aiMotive Dataset: A Multimodal Dataset for Robust Autonomous Driving with Long-Range Perception",
+     "year": 2022,
+     "cos": 0.8064
+    },
+    {
+     "title": "Probabilistic 3D Multi-Modal, Multi-Object Tracking for Autonomous Driving",
+     "year": 2021,
+     "cos": 0.8058
+    },
+    {
+     "title": "MAN TruckScenes: A multimodal dataset for autonomous trucking in diverse conditions",
+     "year": 2024,
+     "cos": 0.7894
+    },
+    {
+     "title": "Scalability in Perception for Autonomous Driving: Waymo Open Dataset",
+     "year": 2020,
+     "cos": 0.7778
+    },
+    {
+     "title": "A*3D Dataset: Towards Autonomous Driving in Challenging Environments",
+     "year": 2020,
+     "cos": 0.7721
+    },
+    {
+     "title": "TruckDrive: Long-Range Autonomous Highway Driving Dataset",
+     "year": 2026,
+     "cos": 0.7707
+    },
+    {
+     "title": "IDD-3D: Indian Driving Dataset for 3D Unstructured Road Scenes",
+     "year": 2023,
+     "cos": 0.767
+    },
+    {
+     "title": "Cityscapes 3D: Dataset and Benchmark for 9 DoF Vehicle Detection",
+     "year": 2020,
+     "cos": 0.7625
+    },
+    {
+     "title": "Generalized Few-Shot 3D Object Detection of LiDAR Point Cloud for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.7605
+    },
+    {
+     "title": "WorkZone3D: A Multimodal Dataset for 3D Work Zone Perception in Autonomous Driving",
+     "year": 2026,
+     "cos": 0.7598
+    }
+   ]
+  },
+  "884": {
+   "title": "PointPillars: Fast Encoders for Object Detection From Point Clouds",
+   "year": 2019,
+   "neighbours": [
+    {
+     "title": "Voxel-FPN: multi-scale voxel feature aggregation in 3D object detection from point clouds",
+     "year": 2019,
+     "cos": 0.7983
+    },
+    {
+     "title": "HEDNet: A Hierarchical Encoder-Decoder Network for 3D Object Detection in Point Clouds",
+     "year": 2023,
+     "cos": 0.7962
+    },
+    {
+     "title": "VoxelNet: End-to-End Learning for Point Cloud Based 3D Object Detection",
+     "year": 2018,
+     "cos": 0.7922
+    },
+    {
+     "title": "SEFormer: Structure Embedding Transformer for 3D Object Detection",
+     "year": 2023,
+     "cos": 0.7921
+    },
+    {
+     "title": "DV-Det: Efficient 3D Point Cloud Object Detection with Dynamic Voxelization",
+     "year": 2021,
+     "cos": 0.7918
+    },
+    {
+     "title": "StarNet: Targeted Computation for Object Detection in Point Clouds",
+     "year": 2019,
+     "cos": 0.7843
+    },
+    {
+     "title": "Not All Points Are Equal: Learning Highly Efficient Point-Based Detectors for 3D LiDAR Point Clouds",
+     "year": 2022,
+     "cos": 0.7826
+    },
+    {
+     "title": "RUHSNet: 3D Object Detection Using Lidar Data in Real Time",
+     "year": 2020,
+     "cos": 0.7818
+    },
+    {
+     "title": "PIXOR: Real-Time 3D Object Detection From Point Clouds",
+     "year": 2018,
+     "cos": 0.7816
+    },
+    {
+     "title": "VelocityNet: Motion-Driven Feature Aggregation for 3D Object Detection in Point Cloud Sequences",
+     "year": 2021,
+     "cos": 0.7789
+    }
+   ]
+  },
+  "20429": {
+   "title": "nuPlan: A closed-loop ML-based planning benchmark for autonomous vehicles",
+   "year": 2021,
+   "neighbours": [
+    {
+     "title": "Can Vehicle Motion Planning Generalize to Realistic Long-tail Scenarios?",
+     "year": 2024,
+     "cos": 0.8363
+    },
+    {
+     "title": "Towards Learning-Based Planning: The nuPlan Benchmark for Real-World Autonomous Driving",
+     "year": 2024,
+     "cos": 0.8161
+    },
+    {
+     "title": "Planning with Adaptive World Models for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.7865
+    },
+    {
+     "title": "nuPlan-R: A Closed-Loop Planning Benchmark for Autonomous Driving via Reactive Multi-Agent Simulation",
+     "year": 2026,
+     "cos": 0.7851
+    },
+    {
+     "title": "Closing the Loop: Motion Prediction Models Beyond Open-Loop Benchmarks",
+     "year": 2025,
+     "cos": 0.784
+    },
+    {
+     "title": "Hydra-NeXt: Robust Closed-Loop Driving with Open-Loop Training",
+     "year": 2025,
+     "cos": 0.7778
+    },
+    {
+     "title": "DenseTNT: End-to-End Trajectory Prediction From Dense Goal Sets",
+     "year": 2021,
+     "cos": 0.7737
+    },
+    {
+     "title": "Learning to Predict Vehicle Trajectories with Model-based Planning",
+     "year": 2021,
+     "cos": 0.7731
+    },
+    {
+     "title": "Towards Metric-Agnostic Trajectory Forecasting",
+     "year": 2026,
+     "cos": 0.7685
+    },
+    {
+     "title": "Differentiable Integrated Motion Prediction and Planning With Learnable Cost Function for Autonomous Driving",
+     "year": 2022,
+     "cos": 0.7655
+    }
+   ]
+  },
+  "19216": {
+   "title": "nuScenes Revisited: Progress and Challenges in Autonomous Driving",
+   "year": 2025,
+   "neighbours": [
+    {
+     "title": "TAD-E2E: A Large-scale End-to-end Autonomous Driving Dataset",
+     "year": 2025,
+     "cos": 0.7809
+    },
+    {
+     "title": "FusionAD: Multi-modality Fusion for Prediction and Planning Tasks of Autonomous Driving",
+     "year": 2023,
+     "cos": 0.7681
+    },
+    {
+     "title": "Autonomous Driving with Deep Learning: A Survey of State-of-Art Technologies",
+     "year": 2020,
+     "cos": 0.7604
+    },
+    {
+     "title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+     "year": 2020,
+     "cos": 0.7555
+    },
+    {
+     "title": "A2RL V\\textsubscript{max}: The A2RL autonomous racing dataset for long-range, high-speed perception and multi-vehicle interaction",
+     "year": 2026,
+     "cos": 0.7549
+    },
+    {
+     "title": "A Survey on Autonomous Driving Datasets: Statistics, Annotation Quality, and a Future Outlook",
+     "year": 2024,
+     "cos": 0.7525
+    },
+    {
+     "title": "High Dimensional Frustum PointNet for 3D Object Detection from Camera, LiDAR, and Radar",
+     "year": 2020,
+     "cos": 0.7451
+    },
+    {
+     "title": "VTrackIt: A Synthetic Self-Driving Dataset with Infrastructure and Pooled Vehicle Information",
+     "year": 2022,
+     "cos": 0.7444
+    },
+    {
+     "title": "Occluded nuScenes: A Multi-Sensor Dataset for Evaluating Perception Robustness in Automated Driving",
+     "year": 2025,
+     "cos": 0.7442
+    },
+    {
+     "title": "Open-sourced Data Ecosystem in Autonomous Driving: the Present and Future",
+     "year": 2023,
+     "cos": 0.7408
+    }
+   ]
+  },
+  "3609": {
+   "title": "Towards Learning-Based Planning: The nuPlan Benchmark for Real-World Autonomous Driving",
+   "year": 2024,
+   "neighbours": [
+    {
+     "title": "Can Vehicle Motion Planning Generalize to Realistic Long-tail Scenarios?",
+     "year": 2024,
+     "cos": 0.826
+    },
+    {
+     "title": "nuPlan: A closed-loop ML-based planning benchmark for autonomous vehicles",
+     "year": 2021,
+     "cos": 0.8161
+    },
+    {
+     "title": "End-To-End Interpretable Neural Motion Planner",
+     "year": 2019,
+     "cos": 0.8078
+    },
+    {
+     "title": "Perfect Prediction or Plenty of Proposals? What Matters Most in Planning for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8066
+    },
+    {
+     "title": "Diverse Complexity Measures for Dataset Curation in Self-Driving",
+     "year": 2021,
+     "cos": 0.8058
+    },
+    {
+     "title": "Learning-Based Behavior Planning for Automated Driving: Real-World Integration and Deployment",
+     "year": 2026,
+     "cos": 0.8055
+    },
+    {
+     "title": "Planning by Simulation: Motion Planning with Learning-based Parallel Scenario Prediction for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.797
+    },
+    {
+     "title": "PaaS: Planning as a Service for reactive driving in CARLA Leaderboard",
+     "year": 2023,
+     "cos": 0.7962
+    },
+    {
+     "title": "MPNP: Multi-Policy Neural Planner for Urban Driving",
+     "year": 2022,
+     "cos": 0.7866
+    },
+    {
+     "title": "Transferable and Adaptable Driving Behavior Prediction",
+     "year": 2022,
+     "cos": 0.7855
+    }
+   ]
+  },
+  "13472": {
+   "title": "Panoptic Nuscenes: A Large-Scale Benchmark for LiDAR Panoptic Segmentation and Tracking",
+   "year": 2022,
+   "neighbours": [
+    {
+     "title": "EfficientLPS: Efficient LiDAR Panoptic Segmentation",
+     "year": 2022,
+     "cos": 0.8585
+    },
+    {
+     "title": "4D Panoptic LiDAR Segmentation",
+     "year": 2021,
+     "cos": 0.8352
+    },
+    {
+     "title": "LiDAR-Based Panoptic Segmentation via Dynamic Shifting Network",
+     "year": 2021,
+     "cos": 0.8177
+    },
+    {
+     "title": "A Benchmark for LiDAR-Based Panoptic Segmentation Based on KITTI",
+     "year": 2021,
+     "cos": 0.8128
+    },
+    {
+     "title": "LiDAR-based 4D Panoptic Segmentation via Dynamic Shifting Network",
+     "year": 2022,
+     "cos": 0.8068
+    },
+    {
+     "title": "4D-Former: Multimodal 4D Panoptic Segmentation",
+     "year": 2023,
+     "cos": 0.7939
+    },
+    {
+     "title": "Unified 3D and 4D Panoptic Segmentation via Dynamic Shifting Networks",
+     "year": 2024,
+     "cos": 0.7809
+    },
+    {
+     "title": "Panoster: End-to-End Panoptic Segmentation of LiDAR Point Clouds",
+     "year": 2021,
+     "cos": 0.7773
+    },
+    {
+     "title": "SemanticKITTI: A Dataset for Semantic Scene Understanding of LiDAR Sequences",
+     "year": 2019,
+     "cos": 0.7716
+    },
+    {
+     "title": "Mask4Former: Mask Transformer for 4D Panoptic Segmentation",
+     "year": 2024,
+     "cos": 0.7709
+    }
+   ]
+  },
+  "764": {
+   "title": "Are we ready for autonomous driving? The KITTI vision benchmark suite",
+   "year": 2012,
+   "neighbours": [
+    {
+     "title": "Robust Dense Mapping for Large-Scale Dynamic Environments",
+     "year": 2018,
+     "cos": 0.801
+    },
+    {
+     "title": "4Seasons: Benchmarking Visual SLAM and Long-Term Localization for Autonomous Driving in Challenging Conditions",
+     "year": 2025,
+     "cos": 0.7891
+    },
+    {
+     "title": "Robust stereo visual odometry from monocular techniques",
+     "year": 2015,
+     "cos": 0.7816
+    },
+    {
+     "title": "Vision meets robotics: The KITTI dataset",
+     "year": 2013,
+     "cos": 0.7802
+    },
+    {
+     "title": "Vision-based Lifting of 2D Object Detections for Automated Driving",
+     "year": 2020,
+     "cos": 0.7621
+    },
+    {
+     "title": "Monocular Camera Localization for Automated Vehicles Using Image Retrieval",
+     "year": 2021,
+     "cos": 0.7618
+    },
+    {
+     "title": "StereoVoxelNet: Real-Time Obstacle Detection Based on Occupancy Voxels from a Stereo Camera Using Deep Neural Networks",
+     "year": 2023,
+     "cos": 0.7574
+    },
+    {
+     "title": "Real-Time Dense Mapping for Self-Driving Vehicles Using Fisheye Cameras",
+     "year": 2019,
+     "cos": 0.7547
+    },
+    {
+     "title": "BEVStereo: Enhancing Depth Estimation in Multi-view 3D Object Detection with Dynamic Temporal Stereo",
+     "year": 2022,
+     "cos": 0.7537
+    },
+    {
+     "title": "OCC-VO: Dense Mapping Via 3D Occupancy-Based Visual Odometry for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.753
+    }
+   ]
+  },
+  "17651": {
+   "title": "End-to-End Autonomous Driving: Challenges and Frontiers",
+   "year": 2024,
+   "neighbours": [
+    {
+     "title": "TaCarla: A comprehensive benchmarking dataset for end-to-end autonomous driving",
+     "year": 2026,
+     "cos": 0.7929
+    },
+    {
+     "title": "OpenEMMA: Open-Source Multimodal Model for End-to-End Autonomous Driving",
+     "year": 2024,
+     "cos": 0.7893
+    },
+    {
+     "title": "HEAT: Heterogeneous End-to-End Autonomous Driving via Trajectory-Guided World Models",
+     "year": 2026,
+     "cos": 0.7883
+    },
+    {
+     "title": "EMMA: End-to-End Multimodal Model for Autonomous Driving",
+     "year": 2024,
+     "cos": 0.7872
+    },
+    {
+     "title": "SOLVE: Synergy of Language-Vision and End-to-End Networks for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.7842
+    },
+    {
+     "title": "What Matters for Scalable and Robust Learning in End-to-End Driving Planners?",
+     "year": 2026,
+     "cos": 0.7835
+    },
+    {
+     "title": "Learning Interpretable End-To-End Vision-Based Motion Planning for Autonomous Driving with Optical Flow Distillation",
+     "year": 2021,
+     "cos": 0.7818
+    },
+    {
+     "title": "MOJITO: Modal Joint Learning for Unified End-to-End Autonomous Driving",
+     "year": 2026,
+     "cos": 0.7784
+    },
+    {
+     "title": "Planning-Oriented End-to-End Autonomous Driving: Architectures, Evaluation, and Emerging Paradigms",
+     "year": 2026,
+     "cos": 0.7747
+    },
+    {
+     "title": "Exploring Contextual Representation and Multi-modality for End-to-end Autonomous Driving",
+     "year": 2022,
+     "cos": 0.7732
+    }
+   ]
+  },
+  "1228": {
+   "title": "Planning-Oriented Autonomous Driving",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "A Language Agent for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.7763
+    },
+    {
+     "title": "DriveRX: A Vision-Language Reasoning Model for Cross-Task Autonomous Driving",
+     "year": 2025,
+     "cos": 0.7683
+    },
+    {
+     "title": "DriveTransformer: Unified Transformer for Scalable End-to-End Autonomous Driving",
+     "year": 2025,
+     "cos": 0.7671
+    },
+    {
+     "title": "LightEMMA: Lightweight End-to-End Multimodal Model for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.765
+    },
+    {
+     "title": "Perception in Plan: Coupled Perception and Planning for End-to-End Autonomous Driving",
+     "year": 2026,
+     "cos": 0.7625
+    },
+    {
+     "title": "UniMM-V2X: MoE-Enhanced Multi-Level Fusion for End-to-End Cooperative Autonomous Driving",
+     "year": 2026,
+     "cos": 0.7597
+    },
+    {
+     "title": "GDP: Enhancing End-To-End Autonomous Driving with Goal-Driven Planner",
+     "year": 2026,
+     "cos": 0.7589
+    },
+    {
+     "title": "VLAD: A VLM-Augmented Autonomous Driving Framework with Hierarchical Planning and Interpretable Decision Process",
+     "year": 2025,
+     "cos": 0.7581
+    },
+    {
+     "title": "SOLVE: Synergy of Language-Vision and End-to-End Networks for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.7555
+    },
+    {
+     "title": "UniDriveVLA: Unifying Understanding, Perception, and Action Planning for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.7549
+    }
+   ]
+  },
+  "1844": {
+   "title": "BEVFormer: Learning Bird’s-Eye-View Representation from Multi-Camera Images via Spatiotemporal Transformers",
+   "year": 2022,
+   "neighbours": [
+    {
+     "title": "BEVFormer: Learning Bird's-Eye-View Representation From LiDAR-Camera via Spatiotemporal Transformers",
+     "year": 2025,
+     "cos": 0.9282
+    },
+    {
+     "title": "BEVPredFormer: Spatio-temporal Attention for BEV Instance Prediction in Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8365
+    },
+    {
+     "title": "OCBEV: Object-Centric BEV Transformer for Multi-View 3D Object Detection",
+     "year": 2023,
+     "cos": 0.8359
+    },
+    {
+     "title": "BEVerse: Unified Perception and Prediction in Birds-Eye-View for Vision-Centric Autonomous Driving",
+     "year": 2022,
+     "cos": 0.834
+    },
+    {
+     "title": "BEVFusion4D: Learning LiDAR-Camera Fusion Under Bird's-Eye-View via Cross-Modality Guidance and Temporal Aggregation",
+     "year": 2023,
+     "cos": 0.8152
+    },
+    {
+     "title": "LaRa: Latents and Rays for Multi-Camera Bird’s-Eye-View Semantic Segmentation",
+     "year": 2022,
+     "cos": 0.8147
+    },
+    {
+     "title": "PointBeV: A Sparse Approach to BeV Predictions",
+     "year": 2023,
+     "cos": 0.8066
+    },
+    {
+     "title": "BEVMOT: A Multi-Object Detection and Tracking Method in Bird's-Eye-View via Spatiotemporal Transformers",
+     "year": 2023,
+     "cos": 0.8042
+    },
+    {
+     "title": "TempBEV: Improving Learned BEV Encoders with Combined Image and BEV Space Temporal Aggregation",
+     "year": 2024,
+     "cos": 0.8033
+    },
+    {
+     "title": "BEV-Guided Multi-Modality Fusion for Driving Perception",
+     "year": 2023,
+     "cos": 0.8019
+    }
+   ]
+  },
+  "1787": {
+   "title": "Lift, Splat, Shoot: Encoding Images from Arbitrary Camera Rigs by Implicitly Unprojecting to 3D",
+   "year": 2020,
+   "neighbours": [
+    {
+     "title": "Towards Efficient and Effective Multi-Camera Encoding for End-to-End Driving",
+     "year": 2025,
+     "cos": 0.8051
+    },
+    {
+     "title": "BEVerse: Unified Perception and Prediction in Birds-Eye-View for Vision-Centric Autonomous Driving",
+     "year": 2022,
+     "cos": 0.8036
+    },
+    {
+     "title": "Visual Implicit Geometry Transformer for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.7953
+    },
+    {
+     "title": "Estimation of Appearance and Occupancy Information in Birds Eye View from Surround Monocular Images",
+     "year": 2022,
+     "cos": 0.7895
+    },
+    {
+     "title": "HENet: Hybrid Encoding for End-to-end Multi-task 3D Perception from Multi-view Cameras",
+     "year": 2024,
+     "cos": 0.7859
+    },
+    {
+     "title": "TLCFuse: Temporal Multi-Modality Fusion Towards Occlusion-Aware Semantic Segmentation",
+     "year": 2024,
+     "cos": 0.7856
+    },
+    {
+     "title": "Towards Viewpoint Robustness in Bird's Eye View Segmentation",
+     "year": 2023,
+     "cos": 0.7796
+    },
+    {
+     "title": "Multi-camera Bird's Eye View Perception for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.7762
+    },
+    {
+     "title": "Tri-Perspective View for Vision-Based 3D Semantic Occupancy Prediction",
+     "year": 2023,
+     "cos": 0.7731
+    },
+    {
+     "title": "MOGS: Monocular Object-Guided Gaussian Splatting in Large Scenes",
+     "year": 2026,
+     "cos": 0.7698
+    }
+   ]
+  },
+  "892": {
+   "title": "Scalability in Perception for Autonomous Driving: Waymo Open Dataset",
+   "year": 2020,
+   "neighbours": [
+    {
+     "title": "One Million Scenes for Autonomous Driving: ONCE Dataset",
+     "year": 2021,
+     "cos": 0.847
+    },
+    {
+     "title": "Cityscapes 3D: Dataset and Benchmark for 9 DoF Vehicle Detection",
+     "year": 2020,
+     "cos": 0.824
+    },
+    {
+     "title": "A*3D Dataset: Towards Autonomous Driving in Challenging Environments",
+     "year": 2020,
+     "cos": 0.823
+    },
+    {
+     "title": "aiMotive Dataset: A Multimodal Dataset for Robust Autonomous Driving with Long-Range Perception",
+     "year": 2022,
+     "cos": 0.8002
+    },
+    {
+     "title": "IDD-3D: Indian Driving Dataset for 3D Unstructured Road Scenes",
+     "year": 2023,
+     "cos": 0.7849
+    },
+    {
+     "title": "WorkZone3D: A Multimodal Dataset for 3D Work Zone Perception in Autonomous Driving",
+     "year": 2026,
+     "cos": 0.7842
+    },
+    {
+     "title": "View-to-Label: Multi-View Consistency for Self-Supervised 3D Object Detection",
+     "year": 2023,
+     "cos": 0.7839
+    },
+    {
+     "title": "CARD: A Multi-Modal Automotive Dataset for Dense 3D Reconstruction in Challenging Road Topography",
+     "year": 2026,
+     "cos": 0.7834
+    },
+    {
+     "title": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+     "year": 2020,
+     "cos": 0.7778
+    },
+    {
+     "title": "123D: Unifying Multi-Modal Autonomous Driving Data at Scale",
+     "year": 2026,
+     "cos": 0.7763
+    }
+   ]
+  },
+  "2438": {
+   "title": "VAD: Vectorized Scene Representation for Efficient Autonomous Driving",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "VLAD: A VLM-Augmented Autonomous Driving Framework with Hierarchical Planning and Interpretable Decision Process",
+     "year": 2025,
+     "cos": 0.7675
+    },
+    {
+     "title": "DrivePI: Spatial-aware 4D MLLM for Unified Autonomous Driving Understanding, Perception, Prediction and Planning",
+     "year": 2026,
+     "cos": 0.7658
+    },
+    {
+     "title": "VADv2: End-to-End Vectorized Autonomous Driving via Probabilistic Planning",
+     "year": 2026,
+     "cos": 0.7622
+    },
+    {
+     "title": "Distilling Multi-modal Large Language Models for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.7505
+    },
+    {
+     "title": "DiffSemanticFusion: Semantic Raster BEV Fusion for Autonomous Driving via Online HD Map Diffusion",
+     "year": 2025,
+     "cos": 0.7472
+    },
+    {
+     "title": "End-to-End Autonomous Driving Without Costly Modularization and 3D Manual Annotation",
+     "year": 2026,
+     "cos": 0.7447
+    },
+    {
+     "title": "nuCraft: Crafting High Resolution 3D Semantic Occupancy for Unified 3D Scene Understanding",
+     "year": 2024,
+     "cos": 0.7444
+    },
+    {
+     "title": "LAP: Fast LAtent Diffusion Planner for Autonomous Driving",
+     "year": 2025,
+     "cos": 0.7431
+    },
+    {
+     "title": "iPad: Iterative Proposal-Centric End-to-End Autonomous Driving",
+     "year": 2026,
+     "cos": 0.7393
+    },
+    {
+     "title": "AUGUstus: Autonomous Driving VLA Model with Unified Generation and Understanding",
+     "year": 2026,
+     "cos": 0.7392
+    }
+   ]
+  },
+  "600": {
+   "title": "CARLA: An Open Urban Driving Simulator",
+   "year": 2017,
+   "neighbours": [
+    {
+     "title": "HMSim: A Hierarchical Multi-Agent Simulator for Autonomous Vehicles",
+     "year": 2026,
+     "cos": 0.8085
+    },
+    {
+     "title": "Hierarchical Program-Triggered Reinforcement Learning Agents for Automated Driving",
+     "year": 2022,
+     "cos": 0.8072
+    },
+    {
+     "title": "Guided Policy Search Model-based Reinforcement Learning for Urban Autonomous Driving",
+     "year": 2020,
+     "cos": 0.8009
+    },
+    {
+     "title": "Decision Making for Autonomous Driving Stack: Shortening the Gap from Simulation to Real-World Implementations",
+     "year": 2024,
+     "cos": 0.7976
+    },
+    {
+     "title": "Learning Robust Control Policies for End-to-End Autonomous Driving From Data-Driven Simulation",
+     "year": 2020,
+     "cos": 0.7919
+    },
+    {
+     "title": "CARLA Real Traffic Scenarios - novel training ground and benchmark for autonomous driving",
+     "year": 2020,
+     "cos": 0.7915
+    },
+    {
+     "title": "Driving Policy Transfer via Modularity and Abstraction",
+     "year": 2018,
+     "cos": 0.7853
+    },
+    {
+     "title": "Interpretable Motion Planner for Urban Driving Via Hierarchical Imitation Learning",
+     "year": 2023,
+     "cos": 0.7806
+    },
+    {
+     "title": "Urban Driver: Learning to Drive from Real-world Demonstrations Using Policy Gradients",
+     "year": 2021,
+     "cos": 0.7796
+    },
+    {
+     "title": "Hierarchical Model-Based Imitation Learning for Planning in Autonomous Driving",
+     "year": 2022,
+     "cos": 0.7772
+    }
+   ]
+  },
+  "20353": {
+   "title": "Argoverse 2: Next Generation Datasets for Self-Driving Perception and Forecasting",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "Argoverse: 3D Tracking and Forecasting With Rich Maps",
+     "year": 2019,
+     "cos": 0.8375
+    },
+    {
+     "title": "WOMD-LiDAR: Raw Sensor Dataset Benchmark for Motion Forecasting",
+     "year": 2024,
+     "cos": 0.831
+    },
+    {
+     "title": "Point Cloud Forecasting as a Proxy for 4D Occupancy Forecasting",
+     "year": 2023,
+     "cos": 0.8118
+    },
+    {
+     "title": "UnO: Unsupervised Occupancy Fields for Perception and Forecasting",
+     "year": 2024,
+     "cos": 0.8027
+    },
+    {
+     "title": "Unsupervised Sequence Forecasting of 100,000 Points for Unsupervised Trajectory Forecasting",
+     "year": 2020,
+     "cos": 0.7798
+    },
+    {
+     "title": "One Million Scenes for Autonomous Driving: ONCE Dataset",
+     "year": 2021,
+     "cos": 0.7769
+    },
+    {
+     "title": "A9 Intersection Dataset: All You Need for Urban 3D Camera-LiDAR Roadside Perception",
+     "year": 2023,
+     "cos": 0.7756
+    },
+    {
+     "title": "Forecasting From LiDAR via Future Object Detection",
+     "year": 2022,
+     "cos": 0.7748
+    },
+    {
+     "title": "UniFlow: Zero-Shot LiDAR Scene Flow for Autonomous Vehicles",
+     "year": 2025,
+     "cos": 0.7733
+    },
+    {
+     "title": "LiDAR-CS Dataset: LiDAR Point Cloud Dataset with Cross-Sensors for 3D Object Detection",
+     "year": 2024,
+     "cos": 0.7729
+    }
+   ]
+  },
+  "8892": {
+   "title": "Smooth-Trajectron++: Augmenting the Trajectron++ Behaviour Prediction Model with Smooth Attention",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "Leveraging Smooth Attention Prior for Multi-Agent Trajectory Prediction",
+     "year": 2022,
+     "cos": 0.8269
+    },
+    {
+     "title": "Hierarchical Attention Network for Planning-Informed Multi-Agent Trajectory Prediction",
+     "year": 2023,
+     "cos": 0.8036
+    },
+    {
+     "title": "Lane Change Trajectory Prediction based on Spatiotemporal Attention Mechanism",
+     "year": 2022,
+     "cos": 0.7599
+    },
+    {
+     "title": "Importance is in your attention: agent importance prediction for autonomous driving",
+     "year": 2022,
+     "cos": 0.7568
+    },
+    {
+     "title": "TransFollower: Long-Sequence Car-Following Trajectory Prediction through Transformer",
+     "year": 2022,
+     "cos": 0.7554
+    },
+    {
+     "title": "Human Observation-Inspired Trajectory Prediction for Autonomous Driving in Mixed-Autonomy Traffic Environments",
+     "year": 2024,
+     "cos": 0.7501
+    },
+    {
+     "title": "SCOUT: Socially-COnsistent and UndersTandable Graph Attention Network for Trajectory Prediction of Vehicles and VRUs",
+     "year": 2021,
+     "cos": 0.7487
+    },
+    {
+     "title": "Data-Driven Online Estimation of Driver Model Parameters for Vehicle Trajectory Prediction",
+     "year": 2024,
+     "cos": 0.7471
+    },
+    {
+     "title": "Top-Down Attention-Based Mechanisms for Interpretable Autonomous Driving",
+     "year": 2025,
+     "cos": 0.7456
+    },
+    {
+     "title": "HPNet: Dynamic Trajectory Forecasting with Historical Prediction Attention",
+     "year": 2024,
+     "cos": 0.7456
+    }
+   ]
+  },
+  "2413": {
+   "title": "MotionLM: Multi-Agent Motion Forecasting as Language Modeling",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "Scene Transformer: A unified architecture for predicting multiple agent trajectories",
+     "year": 2021,
+     "cos": 0.8018
+    },
+    {
+     "title": "Multiple Futures Prediction",
+     "year": 2019,
+     "cos": 0.7992
+    },
+    {
+     "title": "QCNeXt: A Next-Generation Framework For Joint Multi-Agent Trajectory Prediction",
+     "year": 2023,
+     "cos": 0.7973
+    },
+    {
+     "title": "DONUT: A Decoder-Only Model for Trajectory Prediction",
+     "year": 2025,
+     "cos": 0.7958
+    },
+    {
+     "title": "JFP: Joint Future Prediction with Interactive Multi-Agent Modeling for Autonomous Driving",
+     "year": 2022,
+     "cos": 0.7868
+    },
+    {
+     "title": "SSL-Interactions: Pretext Tasks for Interactive Trajectory Prediction",
+     "year": 2024,
+     "cos": 0.7828
+    },
+    {
+     "title": "Domain Knowledge Driven Pseudo Labels for Interpretable Goal-Conditioned Interactive Trajectory Prediction",
+     "year": 2022,
+     "cos": 0.7769
+    },
+    {
+     "title": "ProspectNet: Weighted Conditional Attention for Future Interaction Modeling in Behavior Prediction",
+     "year": 2022,
+     "cos": 0.774
+    },
+    {
+     "title": "Large Scale Interactive Motion Forecasting for Autonomous Driving: The Waymo Open Motion Dataset",
+     "year": 2021,
+     "cos": 0.7699
+    },
+    {
+     "title": "LookOut: Diverse Multi-Future Prediction and Planning for Self-Driving",
+     "year": 2021,
+     "cos": 0.7664
+    }
+   ]
+  },
+  "1129": {
+   "title": "Tri-Perspective View for Vision-Based 3D Semantic Occupancy Prediction",
+   "year": 2023,
+   "neighbours": [
+    {
+     "title": "OccFormer: Dual-path Transformer for Vision-based 3D Semantic Occupancy Prediction",
+     "year": 2023,
+     "cos": 0.8571
+    },
+    {
+     "title": "COTR: Compact Occupancy TRansformer for Vision-based 3D Occupancy Prediction",
+     "year": 2024,
+     "cos": 0.8412
+    },
+    {
+     "title": "A Spatiotemporal Approach to Tri-Perspective Representation for 3D Semantic Occupancy Prediction",
+     "year": 2024,
+     "cos": 0.8286
+    },
+    {
+     "title": "PointOcc: Cylindrical Tri-Perspective View for Point-based 3D Semantic Occupancy Prediction",
+     "year": 2023,
+     "cos": 0.8259
+    },
+    {
+     "title": "SurroundOcc: Multi-camera 3D Occupancy Prediction for Autonomous Driving",
+     "year": 2023,
+     "cos": 0.822
+    },
+    {
+     "title": "BePo: Dual Representation for 3D Occupancy Prediction",
+     "year": 2025,
+     "cos": 0.8149
+    },
+    {
+     "title": "MR-Occ: Efficient Camera-LiDAR 3D Semantic Occupancy Prediction Using Hierarchical Multi-Resolution Voxel Representation",
+     "year": 2024,
+     "cos": 0.8127
+    },
+    {
+     "title": "Real-time 3D semantic occupancy prediction for autonomous vehicles using memory-efficient sparse convolution",
+     "year": 2024,
+     "cos": 0.8111
+    },
+    {
+     "title": "SfmOcc: Vision-Based 3D Semantic Occupancy Prediction in Urban Environments",
+     "year": 2025,
+     "cos": 0.8065
+    },
+    {
+     "title": "GaussianFormer3D: Multi-Modal Gaussian-Based Semantic Occupancy Prediction with 3D Deformable Attention",
+     "year": 2026,
+     "cos": 0.8062
+    }
+   ]
+  },
+  "23030": {
+   "title": "UniAda: Universal Adaptive Multi-objective Adversarial Attack for End-to-End Autonomous Driving Systems",
+   "year": 2026,
+   "neighbours": [
+    {
+     "title": "Adversarial Driving: Attacking End-to-End Autonomous Driving",
+     "year": 2023,
+     "cos": 0.8095
+    },
+    {
+     "title": "AdROD: HyperNetwork-based Adversarially Robust Object Detection for Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8034
+    },
+    {
+     "title": "Module-wise Adaptive Adversarial Training for End-to-end Autonomous Driving",
+     "year": 2024,
+     "cos": 0.8006
+    },
+    {
+     "title": "Adversarial Flow Matching for Imperceptible Attacks on End-to-End Autonomous Driving",
+     "year": 2026,
+     "cos": 0.8004
+    },
+    {
+     "title": "Evaluating Adversarial Attacks on Driving Safety in Vision-Based Autonomous Vehicles",
+     "year": 2021,
+     "cos": 0.7791
+    },
+    {
+     "title": "Adversarial Objects Against LiDAR-Based Autonomous Driving Systems",
+     "year": 2019,
+     "cos": 0.7708
+    },
+    {
+     "title": "Robust Driving Control for Autonomous Vehicles: An Intelligent General-sum Constrained Adversarial Reinforcement Learning Approach",
+     "year": 2025,
+     "cos": 0.7638
+    },
+    {
+     "title": "Adversarial Attacks on Deep Learning Visual Object Detectors: Optimization and Evaluation of Physical Attack Vectors using YOLOv4",
+     "year": 2023,
+     "cos": 0.7635
+    },
+    {
+     "title": "LLM-Attacker: Enhancing Closed-Loop Adversarial Scenario Generation for Autonomous Driving With Large Language Models",
+     "year": 2025,
+     "cos": 0.7633
+    },
+    {
+     "title": "Deep Learning-Based Autonomous Driving Systems: A Survey of Attacks and Defenses",
+     "year": 2021,
+     "cos": 0.7624
+    }
+   ]
+  },
+  "25111": {
+   "title": "SS-DC: Spatial-Spectral Decoupling and Coupling Across Visible-Infrared Gap for Domain Adaptive Object Detection",
+   "year": 2025,
+   "neighbours": [
+    {
+     "title": "FreqKD: Frequency-Decoupled Cross-Modal Knowledge Distillation for Infrared Object Detection",
+     "year": 2026,
+     "cos": 0.6602
+    },
+    {
+     "title": "Mixed Patch Visible-Infrared Modality Agnostic Object Detection",
+     "year": 2025,
+     "cos": 0.6541
+    },
+    {
+     "title": "TripleA: An Unsupervised Domain Adaptation Framework for Nighttime VRU Detection",
+     "year": 2025,
+     "cos": 0.6485
+    },
+    {
+     "title": "WTEFNet: Real-Time Low-Light Object Detection for Advanced Driver Assistance Systems",
+     "year": 2025,
+     "cos": 0.6402
+    },
+    {
+     "title": "Towards All-Day Perception for Off-Road Driving: A Large-Scale Multispectral Dataset and Comprehensive Benchmark",
+     "year": 2026,
+     "cos": 0.6234
+    },
+    {
+     "title": "RASMD: RGB And SWIR Multispectral Driving Dataset for Robust Perception in Adverse Conditions",
+     "year": 2025,
+     "cos": 0.6211
+    },
+    {
+     "title": "An Unsupervised Domain Adaptive Approach for Multimodal 2D Object Detection in Adverse Weather Conditions",
+     "year": 2022,
+     "cos": 0.6194
+    },
+    {
+     "title": "Toward All-Day Perception for Off-Road Driving: A Large-Scale Multispectral Dataset and Comprehensive Benchmark",
+     "year": 2026,
+     "cos": 0.6023
+    },
+    {
+     "title": "Frequency-Guided Fusion For RGB-Thermal Semantic Segmentation",
+     "year": 2026,
+     "cos": 0.598
+    },
+    {
+     "title": "On-chip hyperspectral image segmentation with fully convolutional networks for scene understanding in autonomous driving",
+     "year": 2023,
+     "cos": 0.596
+    }
+   ]
+  }
+ }
+}
