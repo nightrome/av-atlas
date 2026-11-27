@@ -102,7 +102,8 @@ the fresh merge.
 
 ## Git conventions
 
-- Commit author: `holger@it-caesar.com` (nightrome)
-- Always co-author: `Co-Authored-By: Claude <noreply@anthropic.com>`
+- Commit author: Holger Caesar (nightrome), `1212780+nightrome@users.noreply.github.com`
+- No `Co-Authored-By` or "Generated with" lines for Claude in commits or PR descriptions; commits show only the maintainer
+- No researcher names in PR or MR titles; describe the change generically
 - Never commit `.env` (real API keys) or anything under `data/` that's gitignored (see
   `.gitignore` for the reasoning behind each entry)

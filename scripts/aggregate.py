@@ -1432,6 +1432,39 @@ INSTITUTION_ALIASES = {
     # every paper. Not a namesake risk to alias away (the real record is
     # always present alongside it), just OpenAlex noise.
     "Berkeley College": "University of California, Berkeley",
+    # The European Commission's in-house research arm. Authors list the
+    # Commission and the Centre as two institutions (or one of them under
+    # several spellings), but the Commission as a whole publishes almost
+    # nothing in this field apart from the JRC, so both names are one entry.
+    "European Commission": "European Commission Joint Research Centre (JRC)",
+    "Joint Research Centre": "European Commission Joint Research Centre (JRC)",
+    "Joint Research Center": "European Commission Joint Research Centre (JRC)",
+    "Joint Research Centre (JRC)": "European Commission Joint Research Centre (JRC)",
+    "European Commission Joint Research Centre": "European Commission Joint Research Centre (JRC)",
+    "European Commission - Joint Research Centre": "European Commission Joint Research Centre (JRC)",
+    # Units, schools and campuses that belong to a university already listed
+    # under its own name.
+    "Delft Center for Systems and Control": "Delft University of Technology",
+    "University of Toronto Robotics Institute": "University of Toronto",
+    "School of Engineering University of Virginia": "University of Virginia",
+    "Institute of Industrial Science, The University of Tokyo": "University of Tokyo",
+    "Center for Spatial Information Science, The University of Tokyo": "University of Tokyo",
+    "University of Michigan Transportation Research Institute": "University of Michigan",
+    "Shanghai Medical College of Fudan University": "Fudan University",
+    "New York University Tandon School of Engineering": "New York University",
+    "University of Maryland Institute for Advanced Computer Studies": "University of Maryland, College Park",
+    "Institutes of Innovation for Future Society, Nagoya University": "Nagoya University",
+    "School of Vehicle and Mobility Tsinghua University Beijing": "Tsinghua University",
+    "Design and Planning The University of Sydney": "University of Sydney",
+    "Huzhou Institute of Zhejiang University": "Zhejiang University",
+    "Institute for Frontier Science Initiative, Kanazawa University": "Kanazawa University",
+    "Shenzhen Campus of Sun Yat-sen University": "Sun Yat-Sen University",
+    "University of Chinese Academy of Sciences (UCAS)": "University of Chinese Academy of Sciences",
+    "University of Science and Technology of China (USTC)": "University of Science and Technology of China",
+    "Universitat Politècnica de Catalunya (UPC)": "Universitat Politècnica de Catalunya",
+    "German University in Cairo (GUC)": "German University in Cairo",
+    "University of the Basque Country (UPV/EHU)": "University of the Basque Country",
+    "National Institute of Advanced Industrial Science and Technology (AIST)": "National Institute of Advanced Industrial Science and Technology",
     "PSI": "KU Leuven",  # PSI (Processing Speech & Images) is a KU Leuven research group, not a separate institution
     "Cooperative Medianet Innovation Center": "Shanghai Jiao Tong University",
     "Baidu Inc": "Baidu",  # trailing "." already stripped before this lookup runs
@@ -1978,6 +2011,12 @@ LATEX_MACRO_PREFIX_RE = re.compile(r"^\\[A-Za-z]+?\d*(?=[A-Z][a-z])")
 # domain ("... l.name@tudelft.nl", "... foo.ac.uk") trailing an otherwise
 # real institution name -- strip it, keep the name.
 TRAILING_EMAIL_LABEL_RE = re.compile(r"\s*[.,;:]?\s*e-?mails?\s*:.*$", re.I)
+# "Stanford University. Contact:" -- the label that introduces an e-mail
+# address in a paper's author block, left behind once the address is gone.
+TRAILING_CONTACT_LABEL_RE = re.compile(
+    r"\s*[.,;:(\[]*\s*(?:(?:point of|main|corresponding)\s+)?contact(?:\s+(?:author|person))?\s*[:)\]]*\s*$", re.I)
+# A street line ("Ul. Podgórki tynieckie 2") is an address, not an institution.
+POLISH_STREET_RE = re.compile(r"^(ul|ulica|al|aleja)\.?\s", re.I)
 TRAILING_EMAIL_RE = re.compile(
     r"\s+\S*@\S+$|\s+[\w.\-]+\.(?:ac\.[a-z]{2}|edu|edu\.[a-z]{2}|com|org|net|"
     r"de|nl|uk|fr|cn|jp|kr|ch|se|it|es)\b\S*$", re.I)
@@ -2037,6 +2076,7 @@ def normalize_institution(name):
     name = fix_mojibake_diacritics(name)
     name = LATEX_MACRO_PREFIX_RE.sub("", name).strip()
     name = TRAILING_EMAIL_LABEL_RE.sub("", name).strip().rstrip(".,;:").strip()
+    name = TRAILING_CONTACT_LABEL_RE.sub("", name).strip().rstrip(".,;:").strip()
     name = TRAILING_EMAIL_RE.sub("", name).strip()
     # "o f" -> "of" (a PDF-extraction word-break typo). En/em-dash -> ASCII
     # hyphen is done AFTER the alias lookups (some alias keys carry an
@@ -2089,9 +2129,9 @@ def normalize_institution(name):
 # those are handled by the explicit override lists below instead of a
 # keyword that would misclassify them.
 ACADEMIC_KEYWORD_RE = re.compile(
-    r"\b(Universit|College|Institute of Technology|Technical University|"
+    r"\b(Universit\w*|College|Institute of Technology|Technical University|"
     r"Ecole|École|Politecnico|Polytechnic|ETH |EPFL|CNRS|Academy of Sciences|"
-    r"Hochschule|Universitat)\b", re.I,
+    r"Hochschule|Universidad\w*|Ollscoil)\b", re.I,
 )
 # Named research institutes/labs that are academic or nonprofit despite not
 # matching the keyword regex above (no "University" in the name, and some
@@ -2218,6 +2258,8 @@ def is_valid_institution(name):
         return False
     if BARE_STREET_NUMBER_RE.match(name):
         return False
+    if POLISH_STREET_RE.match(name) and re.search(r"\d", name):
+        return False
     if BARE_POSTAL_CODE_RE.match(name):
         return False
     if is_concatenated_multi_institution(name):
@@ -2320,6 +2362,21 @@ def institution_country_map(raw):
         codes.setdefault(normalize_institution(k), v)
     codes.pop("", None)
     return codes
+
+
+def institution_image_map(raw):
+    """data/institution_logos.json keyed the way the site looks institutions up.
+
+    Like the country file, the logo file is keyed by the name that was searched
+    ("Karlsruhe Institute of Technology"), while the site uses the display name
+    after aliases ("Karlsruhe Institute of Technology (KIT)"), so KIT had a logo
+    on file and none on its page. Each logo is also entered under its normalized
+    name; a key that is already a display name wins."""
+    images = {k: v["logo_url"] for k, v in raw.items() if v.get("logo_url")}
+    for k, url in list(images.items()):
+        images.setdefault(normalize_institution(k), url)
+    images.pop("", None)
+    return images
 
 
 def author_country_codes(a):
@@ -4177,12 +4234,9 @@ def main():
         # institution_logos.json also stores confirmed misses internally
         # (logo_url: null) so the fetch script doesn't retry them forever,
         # but there's no reason to ship those nulls to the client.
-        "institution_images": {
-            k: v["logo_url"] for k, v in (
-                json.loads(INSTITUTION_LOGOS_FILE.read_text(encoding="utf-8"))
-                if INSTITUTION_LOGOS_FILE.exists() else {}
-            ).items() if v.get("logo_url")
-        },
+        "institution_images": institution_image_map(
+            json.loads(INSTITUTION_LOGOS_FILE.read_text(encoding="utf-8"))
+            if INSTITUTION_LOGOS_FILE.exists() else {}),
         "venue_images": {
             k: v["logo_url"] for k, v in (
                 json.loads(VENUE_LOGOS_FILE.read_text(encoding="utf-8"))

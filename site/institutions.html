@@ -213,6 +213,15 @@ fetchStatsWithRelevance(relevance).then(stats => {
 // render() below instead. Their own URL params (instCountry/instType) so
 // they don't collide with the paper-level `country` chip param used
 // elsewhere on the site (arriving via links from other pages).
+// The 27 member states, under the names stats.institution_countries uses.
+const EU_GROUP = 'European Union';
+const EU_MEMBERS = new Set([
+  'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czechia', 'Czech Republic', 'Denmark',
+  'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland', 'Italy', 'Latvia',
+  'Lithuania', 'Luxembourg', 'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia',
+  'Slovenia', 'Spain', 'Sweden',
+]);
+
 function addInstitutionFilters(stats) {
   const bar = document.querySelector('#filter-bar-rows .filter-bar');
   if (!bar) return;
@@ -244,8 +253,10 @@ function addInstitutionFilters(stats) {
     bar.insertBefore(wrap, orderStart);
   }
   const countries = [...new Set(Object.values(stats.institution_countries || {}))].sort();
+  // "European Union" first: every member state's institutions together, with
+  // the individual countries still listed below it.
   addField('Country', 'inst-country-filter',
-    [['', 'All countries'], ...countries.map(c => [c, c])], 'instCountry');
+    [['', 'All countries'], [EU_GROUP, 'European Union (all member states)'], ...countries.map(c => [c, c])], 'instCountry');
   addField('Type', 'inst-type-filter',
     [['', 'All types'], ['academic', 'Academic'], ['industry', 'Industry']], 'instType');
 }
@@ -269,7 +280,10 @@ function render() {
   // the Min. floors above are.
   const instCountry = new URLSearchParams(location.search).get('instCountry') || '';
   const instType = new URLSearchParams(location.search).get('instType') || '';
-  if (instCountry) institutions = institutions.filter(x => (stats.institution_countries || {})[x.name] === instCountry);
+  if (instCountry) institutions = institutions.filter(x => {
+    const c = (stats.institution_countries || {})[x.name];
+    return instCountry === EU_GROUP ? EU_MEMBERS.has(c) : c === instCountry;
+  });
   if (instType) institutions = institutions.filter(x => (stats.institution_sector || {})[x.name] === instType);
 
   // Default is total citations, not citations/paper. Ranking by an average
