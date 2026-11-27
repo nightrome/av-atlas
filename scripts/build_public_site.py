@@ -515,7 +515,8 @@ def build_public_site(version):
     # (a dev tool, never meant to publish) briefly shipped to gh-pages this way.
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
         | {"stats.json", "about.json", "theme.css", "theme-light.css",
-           "logo.svg", "og-image.png", "sitemap.xml", "robots.txt", "BUILD_INFO.json"}
+           "logo.svg", "og-image.png", "sitemap.xml", "robots.txt", "BUILD_INFO.json",
+           "similar_groups.json"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()
