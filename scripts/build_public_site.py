@@ -506,8 +506,7 @@ def build_public_site(version):
     if merges_file.exists():
         merges = json.loads(merges_file.read_text(encoding="utf-8")).get("merges", {})
         (page_dir / "author_redirects.json").write_text(
-            json.dumps(merges, ensure_ascii=False, separators=(",", ":")), encoding="utf-8", newline="
-")
+            json.dumps(merges, ensure_ascii=False, separators=(",", ":")), encoding="utf-8", newline="\n")
 
     shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
