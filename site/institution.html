@@ -156,8 +156,16 @@ setDetailPageMeta(name, name
 // roster (institution_authors[name]) plus author_detail for exactly the
 // authors on that roster -- resolved here, in sequence (the second fetch's
 // name list depends on the first fetch's result), before render() runs.
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats =>
-  !(stats.all_papers || []).some(p => (p.institutions || []).includes(name)) && !(stats.institution_countries || {})[name]
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => {
+  const known = (stats.all_papers || []).some(p => (p.institutions || []).includes(name)) || (stats.institution_countries || {})[name];
+  // An old name that now belongs to a larger institution (a department folded into its university,
+  // two spellings merged): go to the current page instead of showing an error.
+  const moved = (stats.institution_redirects || {})[name];
+  if (!known && moved) {
+    location.replace('institution.html?name=' + encodeURIComponent(moved));
+    return new Promise(() => {});
+  }
+  return !known
     ? Promise.reject(new Error('unknown institution'))
     : window.fetchInstitutionAuthors([name]).then(instMap => {
     const preciseAuthors = instMap.get(name);
@@ -182,8 +190,8 @@ fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats =>
       stats.author_detail = Object.fromEntries(detailMap);
       return stats;
     });
-  })
-).then(render).catch(err => {
+  });
+}).then(render).catch(err => {
   if (err && err.message === 'unknown institution') {
     // A name that is not an institution here (a misspelling, or a shortened form of a longer name):
     // say so instead of showing an empty page with "0 papers".

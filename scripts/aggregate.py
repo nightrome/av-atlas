@@ -4234,6 +4234,12 @@ def main():
         # institution_logos.json also stores confirmed misses internally
         # (logo_url: null) so the fetch script doesn't retry them forever,
         # but there's no reason to ship those nulls to the client.
+        # Names that used to be (or could be typed as) their own institution but are
+        # now merged into another one, so old links and bookmarks still land somewhere.
+        "institution_redirects": {
+            old: new for old, new in INSTITUTION_ALIASES.items()
+            if old != new and old not in inst_citations and new in inst_citations
+        },
         "institution_images": institution_image_map(
             json.loads(INSTITUTION_LOGOS_FILE.read_text(encoding="utf-8"))
             if INSTITUTION_LOGOS_FILE.exists() else {}),
