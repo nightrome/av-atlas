@@ -111,6 +111,22 @@
   <tbody id="coauthors-body"></tbody></table>
 </div>
 
+<div class="panel" id="similar-authors-panel" style="display:none;">
+  <div class="panel-title-row"><h2>Similar authors</h2><span class="info-tip" tabindex="0" role="img" aria-label="Authors whose papers read most like this author&#x27;s, by text embeddings of titles and abstracts. Not based on citations or co-authorship." data-tip="Authors whose papers read most like this author&#x27;s, by text embeddings of titles and abstracts. Not based on citations or co-authorship.">i</span></div>
+  <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Authors whose papers are closest in subject to this author&#x27;s (needs at least 3 papers with abstracts). Joint papers shows who has actually worked together.</p>
+  <div id="similar-authors-pagination"></div>
+  <table style="margin-top: 12px;"><thead><tr><th>Author</th><th class="num" title="How closely the two sets of papers match in subject, from the text embeddings of their titles and abstracts. Higher is closer.">Similarity</th><th class="num" title="Papers this author and the other author wrote together.">Joint papers</th><th class="num" title="Papers of the other author that were used for the comparison.">Papers</th></tr></thead>
+  <tbody id="similar-authors-body"></tbody></table>
+</div>
+
+<div class="panel" id="network-authors-panel" style="display:none;">
+  <div class="panel-title-row"><h2>Connected through collaborators</h2><span class="info-tip" tabindex="0" role="img" aria-label="Authors who share co-authors with this author but never wrote a paper with them." data-tip="Authors who share co-authors with this author but never wrote a paper with them.">i</span></div>
+  <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">People who have never co-authored with this author but share collaborators with them: the most likely introductions. Direct co-authors are in the table above.</p>
+  <div id="network-authors-pagination"></div>
+  <table style="margin-top: 12px;"><thead><tr><th>Author</th><th class="num" title="Co-authors both have in common.">Shared co-authors</th><th class="num" title="How closely the two sets of papers match in subject, from the text embeddings of their titles and abstracts. Higher is closer.">Similarity</th></tr></thead>
+  <tbody id="network-authors-body"></tbody></table>
+</div>
+
 <div class="panel">
   <div class="panel-title-row">
     <h2>Citing authors</h2>
@@ -769,6 +785,29 @@ function renderBody(stats, papers) {
   const exportContainer = document.getElementById('export-container');
   renderPapers();
 }
+</script>
+<script>
+(function () {
+  const link = (page, n) => { const a = document.createElement('a'); a.href = `${page}?name=${encodeURIComponent(n)}`; a.textContent = n; a.className = 'truncate-cell'; a.title = n; return a; };
+  function show(pid, rows, columns, cells) {
+    if (!rows.length) return;
+    renderRankedTable({ table: document.getElementById(pid + '-body').closest('table'),
+      body: document.getElementById(pid + '-body'), pagination: document.getElementById(pid + '-pagination'),
+      rows, columns, cells, paramKey: pid + '_page' });
+    document.getElementById(pid + '-panel').style.display = '';
+  }
+  fetchShardEntry('similar_authors', name).then(entry => {
+    if (!entry) return;
+    show('similar-authors', entry.s || [], [
+      { accessor: r => r[0], numeric: false }, { accessor: r => r[1], numeric: true },
+      { accessor: r => r[2], numeric: true }, { accessor: r => r[3], numeric: true },
+    ], r => [link('author.html', r[0]), r[1].toFixed(2), r[2], r[3]]);
+    show('network-authors', entry.n || [], [
+      { accessor: r => r[0], numeric: false }, { accessor: r => r[1], numeric: true },
+      { accessor: r => r[2] == null ? -1 : r[2], numeric: true },
+    ], r => [link('author.html', r[0]), r[1], r[2] == null ? '' : r[2].toFixed(2)]);
+  });
+})();
 </script>
 <script src="nav.js"></script>
 <script src="sortable.js"></script>

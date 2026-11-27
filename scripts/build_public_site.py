@@ -94,7 +94,7 @@ ROBOTS_TXT = "User-agent: *\nAllow: /\n"
 # so they are not candidates in the first place.
 PUBLISHED_HTML = [
     "index.html", "authors.html", "institutions.html", "venues.html",
-    "countries.html", "categories.html", "network.html", "insights.html",
+    "countries.html", "categories.html", "network.html", "map.html", "insights.html",
     "about.html", "author.html", "institution.html", "venue.html", "country.html",
     "paper.html", "compare.html",
 ]
@@ -466,6 +466,15 @@ def build_public_site(version):
     # Nearest-neighbour lists from the text embeddings (paper.html's
     # "Similar papers"). Absent when no vectors have been computed.
     similar_dst = copy_shard_dir("similar")
+    similar_authors_dst = copy_shard_dir("similar_authors")
+    similar_institutions_dst = copy_shard_dir("similar_institutions")
+    # map.html's point cloud and the venue/country similarity lists: single files.
+    map_dst = page_dir / "map"
+    if (BASE / "data" / "map" / "points.json").exists():
+        map_dst.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(BASE / "data" / "map" / "points.json", map_dst / "points.json")
+    if (BASE / "data" / "similar_groups.json").exists():
+        shutil.copy2(BASE / "data" / "similar_groups.json", page_dir / "similar_groups.json")
 
     shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
@@ -531,6 +540,7 @@ def build_public_site(version):
         ("abstracts", abstracts_dst), ("non_av_papers", non_av_dst), ("citations", citations_dst),
         ("author_detail", author_detail_dst), ("institution_authors", institution_authors_dst),
         ("non_av_author_stats", non_av_author_stats_dst), ("similar", similar_dst),
+        ("similar_authors", similar_authors_dst), ("similar_institutions", similar_institutions_dst),
     ):
         if dst is not None:
             print(f"  {name}/ ({len(list(dst.iterdir()))} shards)")
@@ -597,6 +607,8 @@ def main():
         # Similar-paper lists from stored embedding vectors (a no-op when
         # there are none, e.g. on the monthly CI run).
         run_step("Similar papers (build_similar_papers.py)", "build_similar_papers.py")
+        run_step("Similar authors, institutions, venues, countries", "build_entity_similarity.py")
+        run_step("Paper map layout (build_paper_map.py)", "build_paper_map.py")
         print("\n--- Checking the corpus didn't shrink ---")
         publish_gate.check(allow_shrink=args.allow_shrink)
         run_step("Running tests (run_tests.py)", "run_tests.py")

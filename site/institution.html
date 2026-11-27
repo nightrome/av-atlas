@@ -97,6 +97,14 @@
   <tbody id="other-affiliations-body"></tbody></table>
 </div>
 
+<div class="panel" id="similar-institutions-panel" style="display:none;">
+  <div class="panel-title-row"><h2>Similar institutions</h2><span class="info-tip" tabindex="0" role="img" aria-label="Institutions whose papers read most like this one&#x27;s, by text embeddings of titles and abstracts." data-tip="Institutions whose papers read most like this one&#x27;s, by text embeddings of titles and abstracts.">i</span></div>
+  <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Institutions whose papers are closest in subject to this one&#x27;s, ranked by how closely their titles and abstracts match.</p>
+  <div id="similar-institutions-pagination"></div>
+  <table style="margin-top: 12px;"><thead><tr><th>Institution</th><th class="num" title="How closely the two sets of papers match in subject, from the text embeddings of their titles and abstracts. Higher is closer.">Similarity</th><th class="num">Papers</th></tr></thead>
+  <tbody id="similar-institutions-body"></tbody></table>
+</div>
+
 <div class="panel">
   <div class="panel-title-row">
     <h2>Papers</h2>
@@ -441,6 +449,21 @@ function render(stats) {
     bibtexName: `${name}-papers.bib`,
   }), exportContainer.firstChild);
 }
+</script>
+<script>
+(function () {
+  const link = (n) => { const a = document.createElement('a'); a.href = `institution.html?name=${encodeURIComponent(n)}`; a.textContent = n; a.className = 'truncate-cell'; a.title = n; return a; };
+  fetchShardEntry('similar_institutions', name).then(rows => {
+    rows = rows || [];
+    if (!rows.length) return;
+    renderRankedTable({ table: document.getElementById('similar-institutions-body').closest('table'),
+      body: document.getElementById('similar-institutions-body'), pagination: document.getElementById('similar-institutions-pagination'),
+      rows, paramKey: 'similar-institutions_page',
+      columns: [{ accessor: r => r[0], numeric: false }, { accessor: r => r[1], numeric: true }, { accessor: r => r[2], numeric: true }],
+      cells: r => [link(r[0]), r[1].toFixed(2), r[2]] });
+    document.getElementById('similar-institutions-panel').style.display = '';
+  });
+})();
 </script>
 <script src="nav.js"></script>
 <script src="sortable.js"></script>

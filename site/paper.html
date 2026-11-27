@@ -104,7 +104,7 @@
   <div class="panel-title-row"><h2>Similar papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="Papers whose title and abstract read most like this one, found with a text-embedding model. Not based on citations." data-tip="Papers whose title and abstract read most like this one, found with a text-embedding model. Not based on citations.">i</span></div>
   <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Papers on the same subject, ranked by how closely their title and abstract match this one. Similarity runs from 0 to 1; citations are not used.</p>
   <div id="similar-pagination-container"></div>
-  <table style="margin-top: 12px;"><thead><tr><th>Title</th><th class="num" title="Cosine similarity of the two papers' text embeddings: 1 is identical, higher means closer.">Similarity</th><th>Venue</th><th class="num">Year</th><th class="num" title="Citations from other papers in this corpus.">Citations</th><th>Category</th></tr></thead>
+  <table style="margin-top: 12px;"><thead><tr><th>Title</th><th class="num" title="Cosine similarity of the two papers' text embeddings: 1 is identical, higher means closer.">Similarity</th><th>Venue</th><th class="num">Year</th><th class="num" title="Citations from other papers in this corpus.">Citations</th><th>Category</th><th title="Whether either paper cites the other. Similar papers that do not cite each other are often parallel work.">Citation link</th></tr></thead>
   <tbody id="similar-body"></tbody></table>
 </div>
 
@@ -523,17 +523,24 @@ function renderPaperBody(stats, paper, isAdjacent) {
       .map(([t, score]) => ({ p: known.get(t), score }))
       .filter(x => x.p);
     if (!similarRows.length) return;
+    const citedBy = new Set(paper.citing_papers || []);   // papers that cite this one
+    window.fetchCitingPapers(similarRows.map(x => x.p.title)).then(map => {
+    similarRows.forEach(x => {
+      const cites = citedBy.has(x.p.title);                                   // it cites this paper
+      const citedByThis = (map.get(x.p.title) || []).includes(paper.title);   // this paper cites it
+      x.link = cites && citedByThis ? 'Both' : cites ? 'Cites this paper' : citedByThis ? 'Cited by this paper' : 'None';
+    });
     const similarBody = document.getElementById('similar-body');
     function renderSimilarBody(data) {
       similarBody.innerHTML = '';
-      data.forEach(({ p, score }) => {
+      data.forEach(({ p, score, link: linkType }) => {
         const link = document.createElement('a');
         link.href = `paper.html?title=${encodeURIComponent(p.title)}`;
         link.className = 'truncate-cell';
         link.textContent = p.title;
         link.title = p.title;
         similarBody.appendChild(row([link, score.toFixed(2), p.venue || '', p.year || '',
-          (p.citations || 0).toLocaleString(), categoryLabel(p.category || 'uncategorized')]));
+          (p.citations || 0).toLocaleString(), categoryLabel(p.category || 'uncategorized'), linkType]));
       });
     }
     const similarPagination = document.getElementById('similar-pagination-container');
@@ -549,10 +556,12 @@ function renderPaperBody(stats, paper, isAdjacent) {
         { accessor: x => x.p.year || 0, numeric: true },
         { accessor: x => x.p.citations || 0, numeric: true },
         { accessor: x => x.p.category || 'uncategorized', numeric: false },
+        { accessor: x => x.link, numeric: false },
       ], renderSimilarBody);
     }
     renderSimilarTable();
     document.getElementById('similar-panel').style.display = '';
+    });
   }).catch(() => {});
 
   const citingPanel = document.getElementById('citing-panel');

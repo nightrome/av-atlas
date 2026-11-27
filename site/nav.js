@@ -10,6 +10,7 @@
     { href: 'countries.html', label: 'Countries' },
     { href: 'categories.html', label: 'Categories' },
     { href: 'network.html', label: 'Network' },
+    { href: 'map.html', label: 'Map' },
     { href: 'insights.html', label: 'Insights' },
     { href: 'about.html', label: 'About' },
   ];
