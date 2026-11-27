@@ -331,6 +331,10 @@ SITEMAP_LIMITS = {"papers": 5000, "authors": 3000, "institutions": 1000, "venues
 DETAIL_TEMPLATES = {"author.html", "paper.html", "institution.html", "venue.html",
                     "country.html", "compare.html"}
 
+# Pages that only redirect elsewhere (map.html -> the map section of index.html).
+# Old links keep working, but the sitemap should list the destination only.
+REDIRECT_PAGES = {"map.html"}
+
 
 def write_sitemap(page_dir, stats_path):
     """A sitemap.xml covering the listing pages plus the top detail pages.
@@ -343,7 +347,7 @@ def write_sitemap(page_dir, stats_path):
 
     stats = json.loads(stats_path.read_text(encoding="utf-8"))
     urls = [f"{SITE_URL}/{p.name}" for p in sorted(html_pages(), key=lambda p: p.name)
-            if p.name not in DETAIL_TEMPLATES]
+            if p.name not in DETAIL_TEMPLATES and p.name not in REDIRECT_PAGES]
 
     def add(page, key, values):
         for v in values:
