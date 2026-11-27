@@ -3790,7 +3790,10 @@ def main():
             cname for cname, rec in sorted(author_countries[name].items(),
                                             key=lambda kv: (kv[1]["first_year"] is None, kv[1]["first_year"]))
         ]
-        orcid = orcids.get(normalize_name_letters(name))
+        # ORCIDs are looked up by name, so a name shared by several people could carry the wrong person's
+        # iD: none is shown for names known to be shared.
+        shared_name = profile.get("ambiguous") or name in AUTHOR_IDENTITIES or name == "Yue Wang"
+        orcid = None if shared_name else orcids.get(normalize_name_letters(name))
         if not institutions and not countries and not profile and not orcid:
             continue
         author_detail[name] = {
