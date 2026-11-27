@@ -387,7 +387,8 @@ and `version_url` describe another version of the same work (usually its arXiv p
 `similar_paper_id`, with the cosine `similarity` of their embeddings (0 unrelated, 1 identical).
 
 `{embeddings}` and `{embedding_ids}`: row `row` of the matrix is the embedding of the paper with that
-`paper_id`. The embeddings are made from title and abstract by the Qwen3-Embedding-8B model, cut to
+`paper_id`. The matrix also has a row for each preprint that was merged into a published paper;
+their `paper_id` is not in the papers table (see `{versions}`). The embeddings are made from title and abstract by the Qwen3-Embedding-8B model, cut to
 their first 512 dimensions and stored as int8 with one global scale, which does not matter for cosine
 similarity. Load with `numpy.load`. The abstracts themselves are not part of this release.
 
