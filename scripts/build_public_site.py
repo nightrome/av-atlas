@@ -480,6 +480,13 @@ def build_public_site(version):
         shutil.copy2(BASE / "data" / "map" / "points.json", map_dst / "points.json")
     if (BASE / "data" / "similar_groups.json").exists():
         shutil.copy2(BASE / "data" / "similar_groups.json", page_dir / "similar_groups.json")
+    # Old author-page links under a spelling that was merged into another name.
+    merges_file = BASE / "data" / "author_name_merges.json"
+    if merges_file.exists():
+        merges = json.loads(merges_file.read_text(encoding="utf-8")).get("merges", {})
+        (page_dir / "author_redirects.json").write_text(
+            json.dumps(merges, ensure_ascii=False, separators=(",", ":")), encoding="utf-8", newline="
+")
 
     shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
@@ -520,7 +527,7 @@ def build_public_site(version):
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
         | {"stats.json", "about.json", "theme.css", "theme-light.css",
            "logo.svg", "og-image.png", "sitemap.xml", "robots.txt", "BUILD_INFO.json",
-           "similar_groups.json"}
+           "similar_groups.json", "author_redirects.json"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()

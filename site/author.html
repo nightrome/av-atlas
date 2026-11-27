@@ -225,7 +225,17 @@ setDetailPageMeta(name, name
   ? `${name}'s autonomous vehicle research in AV Atlas: papers, citations within AV research, co-authors and career span.`
   : null);
 
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => {
+  // A spelling variant that was merged into one author (an initial instead of the first name, a
+  // hyphen): send old links to the current page.
+  if (name && !(stats.all_papers || []).some(p => (p.authors || []).includes(name))) {
+    return fetch('author_redirects.json').then(r => (r.ok ? r.json() : {})).catch(() => ({})).then(moved => {
+      if (moved[name]) { location.replace('author.html?name=' + encodeURIComponent(moved[name])); return; }
+      render(stats);
+    });
+  }
+  render(stats);
+}).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
 });
 
