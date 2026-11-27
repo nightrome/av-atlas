@@ -11,11 +11,10 @@ LLM) and compares them with what papers_full.json holds.
   --run      fetch the pages (about one per second, resumable) into
              data/affiliations_recheck.json; a page is never fetched twice
   --apply    correct papers_full.json from that file:
-               * an affiliation on an author whose own block on the page does
-                 not mention it is dropped (also when it is another author's
-                 name, or the page shows no note for that author)
-               * an author left without one gets the affiliation of a
-                 co-author whose stored value matches this author's block
+               * an entry that is a co-author's name, an e-mail address or a
+                 corresponding-author note is dropped
+               * an author with no affiliation gets an institution already
+                 stored for a co-author when the author's own block names it
   --report   count what --apply would change
 
 Usage: python recheck_affiliations_arxiv.py --run [--max-hours 3]
@@ -31,6 +30,14 @@ from atomic_write import write_json_atomic
 from fetch_abstracts_web import DATA_DIR, PAPERS_FILE
 
 OUT = DATA_DIR / "affiliations_recheck.json"
+COUNTRY_NAMES = {norm_c for norm_c in (
+    "".join(ch for ch in c.lower() if ch.isalnum()) for c in (
+        "USA", "U.S.A.", "United States", "UK", "United Kingdom", "Germany", "China", "Canada", "France", "Italy",
+        "Spain", "Japan", "Korea", "South Korea", "India", "Australia", "Switzerland", "Netherlands", "The Netherlands",
+        "Sweden", "Norway", "Denmark", "Finland", "Austria", "Belgium", "Israel", "Singapore", "Taiwan", "Hong Kong",
+        "Brazil", "Mexico", "Russia", "Turkey", "Greece", "Portugal", "Poland", "Czech Republic", "Ireland", "Iran",
+        "Saudi Arabia", "UAE", "Egypt", "Pakistan", "Bangladesh", "Vietnam", "Thailand", "Malaysia", "Indonesia",
+        "New Zealand", "South Africa", "Hungary", "Romania", "Ukraine", "Chile", "Argentina", "Colombia"))}
 SPACING = 1.0
 
 
@@ -70,34 +77,36 @@ def is_institution(x, known=None):
     return bool(_INSTITUTION.search(x)) or (known is not None and norm(x) in known)
 
 
-def reconcile(stored, page, known=None):
-    """stored: [{"name", "affiliations"}], page: {name: raw note text}; known: institution names the corpus
-    already has (only those may be added). Returns (affiliations by author name, removals, additions).
+def _junk(x, names):
+    """Not an affiliation at all: a co-author's name, an e-mail address or a corresponding-author note."""
+    return norm(x) in names or "@" in x or "corresponding author" in x.lower()
 
-    Changes are made only where they are certain: an affiliation that is a co-author's name goes; one the
-    author's own block does not mention goes, but only if the author keeps at least one; an author without
-    any gets the institutions of co-authors that their own block mentions."""
+
+def reconcile(stored, page, known=None, countries=None):
+    """stored: [{"name", "affiliations"}], page: {name: raw note text}; known: institution names the corpus
+    already has; countries: normalized country names (never added as an affiliation).
+    Returns (affiliations by author name, removals, additions).
+
+    Only two kinds of change are made, because anything fuzzier added wrong institutions in a sample check:
+      * an entry that is a co-author's name, an e-mail address or a corresponding-author note is dropped;
+      * an author with no affiliation at all gets the institutions already stored for a co-author that this
+        author's own block on the page names in full."""
     names = {norm(a["name"]) for a in stored}
+    countries = countries or set()
     pool = []
     for a in stored:
         for x in a.get("affiliations") or []:
-            if norm(x) not in names and x not in pool and is_institution(x, known):
+            if (not _junk(x, names) and x not in pool and norm(x) not in countries
+                    and is_institution(x, known)):
                 pool.append(x)
     out, removed, added = {}, 0, 0
     for a in stored:
         n, old = a["name"], list(a.get("affiliations") or [])
-        new = old
-        if n in page:
-            clean = [x for x in old if norm(x) not in names]
-            keep = [x for x in clean if mentions(page[n], x)] if norm(page[n]) else clean
-            if norm(page[n]):
-                for x in pool:
-                    if x not in keep and mentions(page[n], x) and not any(norm(x) == norm(y) for y in keep):
-                        keep.append(x)
-            new = keep if keep else clean
-        if new != old:
-            removed += len([x for x in old if x not in new])
-            added += len([x for x in new if x not in old])
+        new = [x for x in old if not _junk(x, names)]
+        if not new and n in page and norm(page[n]):
+            new = [x for x in pool if norm(x) in norm(page[n])]
+        removed += len(old) - len([x for x in old if x in new])
+        added += len([x for x in new if x not in old])
         out[n] = new
     return out, removed, added
 
@@ -161,18 +170,14 @@ def apply(report_only=False, out=OUT):
     state = json.loads(out.read_text(encoding="utf-8"))
     cm = json.loads((DATA_DIR / "institution_countries.json").read_text(encoding="utf-8"))
     cm = {k: v for k, v in cm.items() if not k.startswith("_")}
-    from aggregate import normalize_institution
-    import collections
-    counts = collections.Counter(normalize_institution(x) for p in papers for d in p.get("authors_detail") or []
-                                 for x in d.get("affiliations") or [])
-    known = {norm(x) for x, k in counts.items() if k >= 3}
     known = {norm(x) for x in cm}
+    country_names = {norm(c) for c in cm.values()} | COUNTRY_NAMES
     papers_changed = removed = added = 0
     for aid, p in targets(papers):
         page = (state.get(aid) or {}).get("authors")
         if not page:
             continue
-        new, r, a = reconcile(p["authors_detail"], page, known)
+        new, r, a = reconcile(p["authors_detail"], page, known, country_names)
         if not (r or a):
             continue
         papers_changed += 1
