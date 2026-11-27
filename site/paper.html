@@ -108,6 +108,11 @@
   <p class="abstract" id="abstract-text"></p>
 </div>
 
+<div class="panel" id="similar-panel" style="display:none;">
+  <div class="panel-title-row"><h2>Similar papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="Papers whose title and abstract read most like this one, found with a text-embedding model. Not based on citations." data-tip="Papers whose title and abstract read most like this one, found with a text-embedding model. Not based on citations.">i</span></div>
+  <div class="related-grid" id="similar-grid"></div>
+</div>
+
 <div class="panel" id="related-panel">
   <div class="panel-title-row"><h2>Related papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="Other corpus papers close to this one by category, venue and shared citations." data-tip="Other corpus papers close to this one by category, venue and shared citations.">i</span></div>
   <div class="related-grid" id="related-grid"></div>
@@ -516,6 +521,35 @@ function renderPaperBody(stats, paper, isAdjacent) {
       : 'No author list recorded for this paper.';
     empty.style.display = '';
   }
+
+  // "Similar papers": nearest neighbours by text embedding of title and
+  // abstract, precomputed by scripts/build_similar_papers.py and sharded by
+  // title like abstracts/. Papers added since the last embedding run have no
+  // list, so the panel just stays hidden for them.
+  const similarShard = String(shardIndex(paper.title)).padStart(2, '0');
+  fetch(`similar/shard-${similarShard}.json`).then(r => r.json()).then(shardData => {
+    const known = new Map((stats.all_papers || []).map(p => [p.title, p]));
+    const similar = (shardData[paper.title] || [])
+      .map(([t, score]) => ({ p: known.get(t), score }))
+      .filter(x => x.p);
+    if (!similar.length) return;
+    const grid = document.getElementById('similar-grid');
+    similar.slice(0, 6).forEach(({ p, score }) => {
+      const card = document.createElement('a');
+      card.className = 'related-card';
+      card.href = `paper.html?title=${encodeURIComponent(p.title)}`;
+      const t = document.createElement('div');
+      t.className = 'rtitle';
+      t.textContent = p.title;
+      const meta = document.createElement('div');
+      meta.className = 'rmeta';
+      meta.textContent = [p.venue, p.year, categoryLabel(p.category)].filter(Boolean).join(' · ');
+      card.appendChild(t);
+      card.appendChild(meta);
+      grid.appendChild(card);
+    });
+    document.getElementById('similar-panel').style.display = '';
+  }).catch(() => {});
 
   // "Related" is scored, not just "same category" -- a shared author is a
   // much stronger signal than a shared topic label (categories are broad

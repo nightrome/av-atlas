@@ -463,6 +463,9 @@ def build_public_site(version):
     author_detail_dst = copy_shard_dir("author_detail")
     institution_authors_dst = copy_shard_dir("institution_authors")
     non_av_author_stats_dst = copy_shard_dir("non_av_author_stats")
+    # Nearest-neighbour lists from the text embeddings (paper.html's
+    # "Similar papers"). Absent when no vectors have been computed.
+    similar_dst = copy_shard_dir("similar")
 
     shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
@@ -527,7 +530,7 @@ def build_public_site(version):
     for name, dst in (
         ("abstracts", abstracts_dst), ("non_av_papers", non_av_dst), ("citations", citations_dst),
         ("author_detail", author_detail_dst), ("institution_authors", institution_authors_dst),
-        ("non_av_author_stats", non_av_author_stats_dst),
+        ("non_av_author_stats", non_av_author_stats_dst), ("similar", similar_dst),
     ):
         if dst is not None:
             print(f"  {name}/ ({len(list(dst.iterdir()))} shards)")
@@ -591,6 +594,9 @@ def main():
                  "build_citation_graph.py", "--match-only")
         run_step("Applying citation counts", "apply_citation_sources.py")
         run_step("Rebuilding stats (aggregate.py)", "aggregate.py")
+        # Similar-paper lists from stored embedding vectors (a no-op when
+        # there are none, e.g. on the monthly CI run).
+        run_step("Similar papers (build_similar_papers.py)", "build_similar_papers.py")
         print("\n--- Checking the corpus didn't shrink ---")
         publish_gate.check(allow_shrink=args.allow_shrink)
         run_step("Running tests (run_tests.py)", "run_tests.py")

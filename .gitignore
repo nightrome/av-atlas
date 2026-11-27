@@ -166,3 +166,7 @@ data/affiliations_llm*.json
 
 # Zenodo deposit prepared by scripts/prepare_zenodo.py
 dist/
+
+# Embedding vectors (computed on a GPU by hand) and the neighbour lists built from them.
+data/embeddings/
+data/similar/
