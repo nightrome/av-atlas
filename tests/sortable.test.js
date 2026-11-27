@@ -23,6 +23,8 @@ const vm = require('vm');
 // collapsed any such markup into flat text).
 function fakeHeaderCell(text) {
   const listeners = [];
+  const keyListeners = [];
+  const attrs = {};
   const children = [{ isTextNode: true, text }];
   const classes = new Set();
   return {
@@ -40,8 +42,19 @@ function fakeHeaderCell(text) {
       if (sel !== '.sort-indicator') return null;
       return children.find(c => c && c.className === 'sort-indicator') || null;
     },
-    addEventListener(evt, fn) { if (evt === 'click') listeners.push(fn); },
+    attrs,
+    setAttribute(k, v) { attrs[k] = String(v); },
+    getAttribute(k) { return k in attrs ? attrs[k] : null; },
+    addEventListener(evt, fn) {
+      if (evt === 'click') listeners.push(fn);
+      if (evt === 'keydown') keyListeners.push(fn);
+    },
     click() { listeners.forEach(fn => fn()); },
+    keydown(key) {
+      const e = { key, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; } };
+      keyListeners.forEach(fn => fn(e));
+      return e;
+    },
   };
 }
 
@@ -248,6 +261,104 @@ test('an already-active sort is re-applied to fresh data on the next render, wit
   sandbox.makeSortable(table, [{ citations: 5 }, { citations: 50 }, { citations: 1 }], columns, renderBody);
   assert.deepStrictEqual(Array.from(rendered, r => r.citations), [50, 5, 1],
     "the new render's data must come back already sorted by the previously-active column/direction");
+});
+
+// --- Paginated tables: a click sorts the FULL list, then the page is cut ---
+
+// Mimics a page's render(): sort all rows, slice the current page, hand the
+// slice to makeSortable with a rerender callback that goes back to page 1.
+function paginatedPage(sandbox, table, all, columns, pageSize, state) {
+  const shownRows = [];
+  const draw = () => {
+    const sorted = sandbox.applyTableSort(table, all, columns);
+    const shown = sorted.slice(state.offset, state.offset + pageSize);
+    shownRows.length = 0;
+    shown.forEach(r => shownRows.push(r));
+    sandbox.makeSortable(table, shown, columns, () => {}, {
+      onSort() { state.offset = 0; draw(); },
+    });
+  };
+  draw();
+  return shownRows;
+}
+
+test('paginated: a header click sorts all rows across pages, not just the current page', () => {
+  const sandbox = loadSortable();
+  const yearTh = fakeHeaderCell('Year');
+  const table = makeTable([yearTh]);
+  const all = [2020, 2021, 2023, 2026, 2019, 2025].map(y => ({ year: y }));
+  const columns = [{ accessor: r => r.year, numeric: true }];
+  const state = { offset: 0 };
+  const shown = paginatedPage(sandbox, table, all, columns, 2, state);
+  assert.deepStrictEqual(Array.from(shown, r => r.year), [2020, 2021], 'default order untouched');
+  yearTh.click(); // numeric: descending across ALL rows
+  assert.deepStrictEqual(Array.from(shown, r => r.year), [2026, 2025]);
+  yearTh.click(); // ascending
+  assert.deepStrictEqual(Array.from(shown, r => r.year), [2019, 2020]);
+});
+
+test('paginated: the sort survives a page change and a page-size change', () => {
+  const sandbox = loadSortable();
+  const yearTh = fakeHeaderCell('Year');
+  const table = makeTable([yearTh]);
+  const all = [3, 1, 5, 2, 4, 6].map(y => ({ year: y }));
+  const columns = [{ accessor: r => r.year, numeric: true }];
+  const state = { offset: 0 };
+  let shown = paginatedPage(sandbox, table, all, columns, 2, state);
+  yearTh.click(); // descending: 6 5 4 3 2 1
+  state.offset = 2; // "Next"
+  shown = paginatedPage(sandbox, table, all, columns, 2, state);
+  assert.deepStrictEqual(Array.from(shown, r => r.year), [4, 3]);
+  state.offset = 0; // different page size, back to page 1
+  shown = paginatedPage(sandbox, table, all, columns, 4, state);
+  assert.deepStrictEqual(Array.from(shown, r => r.year), [6, 5, 4, 3]);
+});
+
+test('paginated: a click returns to page 1', () => {
+  const sandbox = loadSortable();
+  const yearTh = fakeHeaderCell('Year');
+  const table = makeTable([yearTh]);
+  const all = [1, 2, 3, 4].map(y => ({ year: y }));
+  const columns = [{ accessor: r => r.year, numeric: true }];
+  const state = { offset: 2 };
+  const shown = paginatedPage(sandbox, table, all, columns, 2, state);
+  yearTh.click();
+  assert.strictEqual(state.offset, 0);
+  assert.deepStrictEqual(Array.from(shown, r => r.year), [4, 3]);
+});
+
+test('applyTableSort returns the rows untouched before any click', () => {
+  const sandbox = loadSortable();
+  const table = makeTable([fakeHeaderCell('Year')]);
+  const rows = [{ year: 2 }, { year: 1 }];
+  assert.strictEqual(sandbox.applyTableSort(table, rows, [{ accessor: r => r.year, numeric: true }]), rows);
+});
+
+test('headers are keyboard operable: tabindex, role, aria-sort, Enter and Space', () => {
+  const sandbox = loadSortable();
+  const nameTh = fakeHeaderCell('Author');
+  const citTh = fakeHeaderCell('Citations');
+  const table = makeTable([nameTh, citTh]);
+  const columns = [
+    { accessor: r => r.name, numeric: false },
+    { accessor: r => r.citations, numeric: true },
+  ];
+  let rendered = null;
+  sandbox.makeSortable(table, [{ name: 'b', citations: 1 }, { name: 'a', citations: 2 }], columns, s => { rendered = s; });
+  assert.strictEqual(nameTh.getAttribute('tabindex'), '0');
+  assert.strictEqual(nameTh.getAttribute('role'), 'columnheader');
+  assert.strictEqual(nameTh.getAttribute('aria-sort'), 'none');
+  const e = nameTh.keydown('Enter');
+  assert.ok(e.defaultPrevented);
+  assert.deepStrictEqual(Array.from(rendered, r => r.name), ['a', 'b']);
+  assert.strictEqual(nameTh.getAttribute('aria-sort'), 'ascending');
+  citTh.keydown(' ');
+  assert.deepStrictEqual(Array.from(rendered, r => r.citations), [2, 1]);
+  assert.strictEqual(citTh.getAttribute('aria-sort'), 'descending');
+  assert.strictEqual(nameTh.getAttribute('aria-sort'), 'none', 'previous column goes back to none');
+  const before = rendered;
+  citTh.keydown('a');
+  assert.strictEqual(rendered, before, 'other keys do nothing');
 });
 
 if (failures > 0) {

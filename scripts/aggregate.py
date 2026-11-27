@@ -894,6 +894,29 @@ except OSError:
     AUTHOR_IDENTITIES = {}
 
 
+ORCID_RE = re.compile(r"\d{4}-\d{4}-\d{4}-\d{3}[\dX]")
+
+
+def author_orcids(openalex_counts, semantic_scholar_orcid):
+    """(main ORCID, every ORCID) for a name.
+
+    OpenAlex attaches ORCIDs to individual papers (about 20k names carry one; the Semantic Scholar
+    lookup by name found a few hundred). A person can have more than one, since people register
+    twice, so all are kept: the main one is the ORCID on the most of their papers, ties going to
+    the Semantic Scholar one and then to the lower number. `every` is a list of
+    {"orcid", "papers"}, main first, "papers" being how many of this name's papers carry it
+    (the Semantic Scholar ORCID counts as 0 papers when OpenAlex never saw it). With no OpenAlex
+    ORCID at all, the Semantic Scholar one is the only one. Names that stand for several people
+    never get here (the caller skips them)."""
+    counts = dict(openalex_counts or {})
+    if semantic_scholar_orcid and semantic_scholar_orcid not in counts:
+        counts[semantic_scholar_orcid] = 0
+    if not counts:
+        return None, []
+    ranked = sorted(counts, key=lambda o: (-counts[o], o != semantic_scholar_orcid, o))
+    return ranked[0], [{"orcid": o, "papers": counts[o]} for o in ranked]
+
+
 def resolve_ambiguous_author_identity(name, title):
     """Applied per-paper (not inside clean_author_name, which has no title
     context) at every site that resolves a specific paper's author list --
@@ -3523,6 +3546,8 @@ def main():
     # name -> set of distinct OpenAlex author ids seen for that cleaned name
     # across all their papers -- see identity_conflicts below.
     author_openalex_ids = defaultdict(set)
+    # ORCIDs OpenAlex attached to this name on individual papers (see author_orcid() below).
+    author_orcid_sets = defaultdict(Counter)
     # name -> OpenAlex id -> evidence (co-authors, institutions) seen with it,
     # so ids that merely fragment ONE person can be told from ids that are
     # really different people -- see identity_conflicts below.
@@ -3565,6 +3590,8 @@ def main():
             oaid = a.get("openalex_id")
             if oaid:
                 author_openalex_ids[name].add(canonical_openalex_id(oaid))
+            if ORCID_RE.fullmatch(a.get("orcid") or ""):
+                author_orcid_sets[name][a["orcid"]] += 1
             own_affs = author_affiliations(a, all_author_names, co_author_names)
             if oaid:
                 ev = author_openalex_evidence[name][canonical_openalex_id(oaid)]
@@ -3804,7 +3831,8 @@ def main():
         # ORCIDs are looked up by name, so a name shared by several people could carry the wrong person's
         # iD: none is shown for names known to be shared.
         shared_name = profile.get("ambiguous") or name in AUTHOR_IDENTITIES or name == "Yue Wang"
-        orcid = None if shared_name else orcids.get(normalize_name_letters(name))
+        orcid, all_orcids = (None, []) if shared_name or name in identity_conflicts else author_orcids(
+            author_orcid_sets.get(name), orcids.get(normalize_name_letters(name)))
         if not institutions and not countries and not profile and not orcid:
             continue
         author_detail[name] = {
@@ -3819,6 +3847,9 @@ def main():
             # already came back empty.
             "scholar_checked": bool(profile.get("scholar_url") or profile.get("not_found")),
             "orcid": orcid,
+            # Every ORCID seen for this person, the main one first, with how many of their papers
+            # carry each (only present when there is more than one: people do register twice).
+            **({"orcids": all_orcids} if len(all_orcids) > 1 else {}),
             # True for a small, manually-reviewed set of names where a real
             # Scholar-profile search turned up multiple plausible different
             # people and no way to tell them apart (common name, no

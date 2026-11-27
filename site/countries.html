@@ -326,8 +326,7 @@ function render() {
     const pg = renderPagination(document.getElementById('countries-pagination'), 'countries.html', tableRows.length,
       { onChange: renderCountriesPage, pageSize: filters.topN || 10, showSizeControl: false });
     pageOffset = pg.offset;
-    const shown = tableRows.slice(pg.offset, pg.offset + pg.pageSize);
-    makeSortableSafe(tbody.closest('table'), shown, [
+    const columns = [
       null,
       { accessor: c => c.name, numeric: false },
       { accessor: c => c.papers, numeric: true },
@@ -335,7 +334,10 @@ function render() {
       { accessor: c => c.citations, numeric: true },
       { accessor: c => c.avg_citations ?? -Infinity, numeric: true },
       { accessor: c => c.h_index, numeric: true },
-    ], renderBody);
+    ];
+    const table = tbody.closest('table');
+    const shown = applyTableSortSafe(table, tableRows, columns).slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(table, shown, columns, renderBody, { rerender: renderCountriesPage });
   }
   renderCountriesPage();
 

@@ -336,16 +336,21 @@ function render() {
     renderCompareSelection({ table: tbody.closest('table'), type: 'institution',
       nameFor: x => x.name, rows: data });
   }
-  // Feed the table the current page's slice, not the whole list -- otherwise
-  // every row renders at once and Prev/Next only move the count label.
-  makeSortableSafe(tbody.closest('table'), shown, [
+  // Sort the whole list by the clicked header, then feed the table just the
+  // current page of it -- otherwise every row renders at once and Prev/Next
+  // only move the count label.
+  const instColumns = [
     null,
     { accessor: x => x.name, numeric: false },
     { accessor: x => x.papers, numeric: true },
     { accessor: x => x.citations, numeric: true },
     { accessor: x => x.avg_citations ?? -Infinity, numeric: true },
     { accessor: x => x.h_index, numeric: true },
-  ], renderBody);
+  ];
+  const instTable = tbody.closest('table');
+  const shownTable = applyTableSortSafe(instTable, institutions, instColumns)
+    .slice(pagination.offset, pagination.offset + pagination.pageSize);
+  makeSortableSafe(instTable, shownTable, instColumns, renderBody, { rerender: render });
 
   const exportContainer = document.getElementById('export-container');
   exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());

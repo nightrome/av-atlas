@@ -628,6 +628,9 @@ def main():
             json.loads(graph_path.read_text(encoding="utf-8")),
             duplicate_papers.alias_map(duplicate_papers.load_pairs())) if graph_path.exists() else {},
         version,
+        author_detail=build_data_release.read_author_detail(build_data_release.AUTHOR_DETAIL_DIR),
+        similar_dir=build_data_release.SIMILAR_DIR,
+        embeddings_dir=build_data_release.EMBEDDINGS_DIR,
     )
 
 

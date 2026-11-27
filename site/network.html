@@ -819,8 +819,7 @@ function renderMetricsTable(nodes, edges, topAuthors, allPapers) {
   // through them rather than rendering all 250 at once.
   function renderMetricsPage() {
     const pg = renderPagination(document.getElementById('metrics-pagination'), 'network.html', rows.length, { onChange: renderMetricsPage, showSizeControl: false });
-    const shown = rows.slice(pg.offset, pg.offset + pg.pageSize);
-    makeSortableSafe(tbody.closest('table'), shown, [
+    const columns = [
       { accessor: r => r.name, numeric: false },
       { accessor: r => r.papers, numeric: true },
       { accessor: r => r.coAuthors, numeric: true },
@@ -829,7 +828,10 @@ function renderMetricsTable(nodes, edges, topAuthors, allPapers) {
       { accessor: r => r.crossCountryPapers, numeric: true },
       { accessor: r => r.countries, numeric: true },
       { accessor: r => r.centrality, numeric: true },
-    ], renderBody);
+    ];
+    const table = tbody.closest('table');
+    const shown = applyTableSortSafe(table, rows, columns).slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(table, shown, columns, renderBody, { rerender: renderMetricsPage });
   }
   renderMetricsPage();
 

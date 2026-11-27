@@ -380,14 +380,16 @@ function render(stats) {
   }
   function renderPapersPage() {
     const pg = renderPagination(document.getElementById('papers-pagination'), 'country.html', sortedPapers.length, { onChange: renderPapersPage });
-    const shown = sortedPapers.slice(pg.offset, pg.offset + pg.pageSize);
-    makeSortableSafe(papersBody.closest('table'), shown, [
+    const columns = [
       { accessor: p => p.title, numeric: false },
       { accessor: p => p.year, numeric: true },
       { accessor: p => p.venue, numeric: false },
       { accessor: p => p.category, numeric: false },
       { accessor: p => p.citations, numeric: true },
-    ], renderBody);
+    ];
+    const table = papersBody.closest('table');
+    const shown = applyTableSortSafe(table, sortedPapers, columns).slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(table, shown, columns, renderBody, { rerender: renderPapersPage });
   }
   renderPapersPage();
 

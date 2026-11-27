@@ -210,6 +210,14 @@
       Scholar doesn't allow automated queries, so these links are now checked and added by hand.
       Most of the paper links were first collected by a script in September 2026, which has since
       been removed.</li>
+  <li><strong>Text embeddings.</strong> The "Similar" tables, the paper map and the duplicate
+      check come from a language model (Qwen3-Embedding-8B) that turns each paper's title and
+      abstract into 512 numbers; papers, authors, institutions and venues are similar when those
+      numbers are close. Citations play no part. The vectors are computed by hand every few months,
+      so papers added since then have no similar papers and no place on the map until the next run.
+      Preprints that duplicate a published paper under another title (similarity 0.95 or higher,
+      one of them on arXiv, at most three years apart) are merged into the published paper, and
+      the preprint title stays visible as "Also appeared as".</li>
   <li><strong>4. Citation graph.</strong> For every paper whose full text is available, its
       reference list is checked against the rest of the corpus to work out which papers cite which.
       Reference lists from Semantic Scholar are added on top; those already point at specific
@@ -370,7 +378,7 @@
 <summary>Download the data</summary>
 <div class="detail-body">
 <p class="section-intro">
-  The whole corpus, as four gzipped CSVs. Every number on this site is computed from these,
+  The whole corpus, as gzipped CSVs plus the text embeddings. Every number on this site is computed from these,
   so anything here can be checked, extended, or plotted a different way without re-running
   the pipeline. <code>paper_id</code> joins the tables.
 </p>
@@ -386,6 +394,16 @@
       &mdash; the in-corpus citation edge list.</li>
   <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-institutions.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-institutions.csv.gz</a>
       &mdash; institutions with country, sector and totals.</li>
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-authors.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-authors.csv.gz</a>
+      &mdash; one row per author name: main and other ORCIDs, institutions, countries, paper and citation totals.</li>
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-paper_versions.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-paper_versions.csv.gz</a>
+      &mdash; other titles and venues of merged papers (arXiv preprint versions).</li>
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-similar_papers.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-similar_papers.csv.gz</a>
+      &mdash; the 20 most similar papers of each paper, with a similarity score.</li>
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-embeddings.npy">av-atlas-v__AV_ATLAS_VERSION__-embeddings.npy</a>
+      &mdash; text embedding of each paper (int8 matrix, 512 columns).</li>
+  <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-embeddings_paper_ids.csv.gz">av-atlas-v__AV_ATLAS_VERSION__-embeddings_paper_ids.csv.gz</a>
+      &mdash; which paper each row of the embedding matrix belongs to.</li>
   <li><a href="download/av-atlas-v__AV_ATLAS_VERSION__-README.md">av-atlas-v__AV_ATLAS_VERSION__-README.md</a>
       &mdash; column definitions and what the numbers are not.</li>
 </ul>

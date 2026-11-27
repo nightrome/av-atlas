@@ -406,6 +406,18 @@ function renderBody(stats, papers) {
     orcidLink.href = `https://orcid.org/${detail.orcid}`;
     orcidLink.textContent = `🆔 ORCID ${detail.orcid}`;
     orcidLink.style.display = '';
+    // A person can have registered more than one ORCID: the main one (on most of their papers) is
+    // the link above, the others follow as smaller links.
+    orcidLink.parentNode.querySelectorAll('.orcid-extra').forEach(el => el.remove());
+    (detail.orcids || []).filter(o => o.orcid !== detail.orcid).forEach(o => {
+      const extra = document.createElement('a');
+      extra.className = 'scholar-link orcid-extra';
+      extra.href = `https://orcid.org/${o.orcid}`;
+      extra.target = '_blank'; extra.rel = 'noopener';
+      extra.textContent = `also ${o.orcid}`;
+      extra.title = 'Another ORCID found for this author name';
+      orcidLink.after(extra);
+    });
   } else {
     orcidLink.style.display = 'none';
   }
@@ -554,15 +566,18 @@ function renderBody(stats, papers) {
   function renderCoauthors() {
     const pg = renderPagination(document.getElementById('coauthors-pagination'), 'author.html', coauthors.length,
       { paramKey: 'coauthors_page', onChange: renderCoauthors });
-    const shown = coauthors.slice(pg.offset, pg.offset + pg.pageSize);
-    makeSortableSafe(coauthorsBody.closest('table'), shown, [
+    const columns = [
       { accessor: c => c.name, numeric: false },
       { accessor: c => c.papers, numeric: true },
       // '￿' sorts after any real name, so rows with no country/
       // institution land at the bottom of an A-Z sort instead of the top.
       { accessor: c => c.country || '￿', numeric: false },
       { accessor: c => c.institution || '￿', numeric: false },
-    ], renderCoauthorsBody);
+    ];
+    const table = coauthorsBody.closest('table');
+    const shown = applyTableSortSafe(table, coauthors, columns).slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(table, shown, columns, renderCoauthorsBody,
+      { rerender: renderCoauthors, paramKey: 'coauthors_page' });
   }
   renderCoauthors();
 
@@ -687,8 +702,7 @@ function renderBody(stats, papers) {
   function renderCitingAuthors() {
     const pg = renderPagination(document.getElementById('citing-authors-pagination'), 'author.html', citingAuthors.length,
       { paramKey: 'citing_page', onChange: renderCitingAuthors });
-    const shown = citingAuthors.slice(pg.offset, pg.offset + pg.pageSize);
-    makeSortableSafe(citingAuthorsBody.closest('table'), shown, [
+    const columns = [
       { accessor: c => c.name, numeric: false },
       { accessor: c => c.count, numeric: true },
       { accessor: c => c.totalCitations, numeric: true },
@@ -697,7 +711,11 @@ function renderBody(stats, papers) {
       // institution land at the bottom of an A-Z sort instead of the top.
       { accessor: c => c.country || '￿', numeric: false },
       { accessor: c => c.institution || '￿', numeric: false },
-    ], renderCitingAuthorsBody);
+    ];
+    const table = citingAuthorsBody.closest('table');
+    const shown = applyTableSortSafe(table, citingAuthors, columns).slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(table, shown, columns, renderCitingAuthorsBody,
+      { rerender: renderCitingAuthors, paramKey: 'citing_page' });
   }
   renderCitingAuthors();
   }
@@ -733,14 +751,17 @@ function renderBody(stats, papers) {
     const sorted = [...currentPapersBase].sort((a, b) => (b.citations ?? -Infinity) - (a.citations ?? -Infinity));
     const pg = renderPagination(document.getElementById('papers-pagination'), 'author.html', sorted.length,
       { paramKey: 'papers_page', onChange: renderPapersPage, leadingControl: papersRelevanceControl });
-    const shown = sorted.slice(pg.offset, pg.offset + pg.pageSize);
-    makeSortableSafe(document.getElementById('papers-body').closest('table'), shown, [
+    const columns = [
       { accessor: p => p.title, numeric: false },
       { accessor: p => p.year, numeric: true },
       { accessor: p => p.venue, numeric: false },
       { accessor: p => p.category, numeric: false },
       { accessor: p => p.citations, numeric: true },
-    ], renderBody);
+    ];
+    const papersTable = document.getElementById('papers-body').closest('table');
+    const shown = applyTableSortSafe(papersTable, sorted, columns).slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(papersTable, shown, columns, renderBody,
+      { rerender: renderPapersPage, paramKey: 'papers_page' });
     exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());
     exportContainer.insertBefore(renderExportButtons({
       table: document.getElementById('papers-body').closest('table'),
@@ -789,23 +810,35 @@ function renderBody(stats, papers) {
 <script>
 (function () {
   const link = (page, n) => { const a = document.createElement('a'); a.href = `${page}?name=${encodeURIComponent(n)}`; a.textContent = n; a.className = 'truncate-cell'; a.title = n; return a; };
-  function show(pid, rows, columns, cells) {
-    if (!rows.length) return;
+  function show(pid, rows, columns, cells, emptyNote) {
+    if (!rows.length) {
+      if (emptyNote) {
+        const panel = document.getElementById(pid + '-panel');
+        const emptyTable = panel.querySelector('table');
+        if (emptyTable) emptyTable.style.display = 'none';
+        const note = document.createElement('p');
+        note.className = 'empty-note'; note.style.color = 'var(--muted)'; note.textContent = emptyNote;
+        panel.appendChild(note);
+        panel.style.display = '';
+      }
+      return;
+    }
     renderRankedTable({ table: document.getElementById(pid + '-body').closest('table'),
       body: document.getElementById(pid + '-body'), pagination: document.getElementById(pid + '-pagination'),
       rows, columns, cells, paramKey: pid + '_page' });
     document.getElementById(pid + '-panel').style.display = '';
   }
   fetchShardEntry('similar_authors', name).then(entry => {
-    if (!entry) return;
+    entry = entry || {};
     show('similar-authors', entry.s || [], [
       { accessor: r => r[0], numeric: false }, { accessor: r => r[1], numeric: true },
       { accessor: r => r[2], numeric: true }, { accessor: r => r[3], numeric: true },
-    ], r => [link('author.html', r[0]), r[1].toFixed(2), r[2], r[3]]);
+    ], r => [link('author.html', r[0]), r[1].toFixed(2), r[2], r[3]],
+    'Not shown: this name is shared by several people, or the author has fewer than 3 papers with abstracts, so there is nothing reliable to compare.');
     show('network-authors', entry.n || [], [
       { accessor: r => r[0], numeric: false }, { accessor: r => r[1], numeric: true },
       { accessor: r => r[2] == null ? -1 : r[2], numeric: true },
-    ], r => [link('author.html', r[0]), r[1], r[2] == null ? '' : r[2].toFixed(2)]);
+    ], r => { const sim = document.createElement('span'); sim.textContent = r[2] == null ? '–' : Math.max(0, r[2]).toFixed(2); if (r[2] == null) sim.title = 'One of the two authors has fewer than 3 papers with abstracts'; return [link('author.html', r[0]), r[1], sim]; });
   });
 })();
 </script>

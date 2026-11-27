@@ -34,7 +34,7 @@ why things are the way they are, see [DECISIONS.md](DECISIONS.md).
 
 ## Downloading the data
 
-The whole corpus is available as four gzipped CSVs: papers, authorship, citations
+The whole corpus is available as gzipped CSVs (and the paper embeddings): papers, authorship, citations
 between papers in the corpus, and institutions. They join on `paper_id`. They are
 linked from the About page's download section. `scripts/build_data_release.py` regenerates them
 on every build, and they come with their own README. The file names include the site

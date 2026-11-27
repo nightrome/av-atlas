@@ -34,6 +34,12 @@
   .bar-header { font-size: 0.78em; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
   .bar-header .bar-num { font-weight: 600; }
   .bar-num.active-metric { color: var(--text); font-weight: 700; }
+  /* The bar table is wider than a phone: let the panel scroll sideways instead of the whole page. */
+  @media (max-width: 700px) {
+    body { padding: 12px; }
+    .panel { overflow-x: auto; padding: 12px; }
+    .bar-row, .bar-header { min-width: 560px; }
+  }
 
   .line-chart-wrap { position: relative; }
   .line-chart-wrap svg { width: 100%; height: auto; display: block; }

@@ -297,7 +297,7 @@ function render() {
     renderCompareSelection({ table: tbody.closest('table'), type: 'venue',
       nameFor: r => r.name, rows: data });
   }
-  makeSortableSafe(tbody.closest('table'), shownRows, [
+  const venueColumns = [
     { accessor: r => r.name, numeric: false },
     { accessor: r => r.yearRange, numeric: false },
     { accessor: r => r.total, numeric: true },
@@ -307,7 +307,11 @@ function render() {
     { accessor: r => r.avg_citations ?? -Infinity, numeric: true },
     { accessor: r => r.h_index, numeric: true },
     { accessor: r => r.best ? r.best.title : '', numeric: false },
-  ], renderBody);
+  ];
+  const venuesTable = tbody.closest('table');
+  const shownVenueRows = applyTableSortSafe(venuesTable, shownRows0, venueColumns)
+    .slice(pagination.offset, pagination.offset + pagination.pageSize);
+  makeSortableSafe(venuesTable, shownVenueRows, venueColumns, renderBody, { rerender: render });
 
   const exportContainer = document.getElementById('export-container');
   exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());

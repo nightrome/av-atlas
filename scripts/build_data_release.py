@@ -11,7 +11,7 @@ pipeline that produces it needs weeks of crawling plus API keys to re-run.
 The site asks to be treated as a research instrument, so it has to hand over
 its data.
 
-Writes four gzipped CSVs plus a README, each named with the site version
+Writes gzipped CSVs, the text embeddings and a README, each named with the site version
 (av-atlas-v0.1.2-papers.csv.gz and so on):
 
   papers.csv.gz        one row per AV paper (title, year, venue, category,
@@ -21,6 +21,10 @@ Writes four gzipped CSVs plus a README, each named with the site version
                        doesn't require re-parsing an author column
   citations.csv.gz     the in-corpus citation edge list
   institutions.csv.gz  one row per institution, with its country
+  authors.csv.gz       one row per author name (ORCIDs, institutions, totals)
+  paper_versions.csv.gz  other titles/venues of merged preprints
+  similar_papers.csv.gz  the 20 nearest papers of each paper by text embedding
+  embeddings.npy + embeddings_paper_ids.csv.gz  the embedding matrix and its row ids
   README.md            what the columns mean and what they are not
 
 The version is in the file name, not only in the README, so a browser or
@@ -65,7 +69,11 @@ SITE_URL = "https://nightrome.github.io/av-atlas"
 
 # The parts of the release, in the order the README and the homepage list them.
 RELEASE_PARTS = ("papers.csv.gz", "authorship.csv.gz", "citations.csv.gz",
-                 "institutions.csv.gz", "README.md")
+                 "institutions.csv.gz", "authors.csv.gz", "paper_versions.csv.gz",
+                 "similar_papers.csv.gz", "embeddings.npy", "embeddings_paper_ids.csv.gz", "README.md")
+EMBEDDINGS_DIR = BASE / "data" / "embeddings"
+SIMILAR_DIR = BASE / "data" / "similar"
+AUTHOR_DETAIL_DIR = BASE / "data" / "author_detail"
 
 
 def release_file_name(version, part):
@@ -100,7 +108,88 @@ def write_csv_gz(path, header, rows):
     return n
 
 
-def build(stats, citation_graph, version, out_dir=None):
+def read_author_detail(directory):
+    """Every author's detail record from the sharded data/author_detail/ files ({} when absent)."""
+    detail = {}
+    if directory and Path(directory).exists():
+        for shard in sorted(Path(directory).glob("shard-*.json")):
+            detail.update(json.loads(shard.read_text(encoding="utf-8")))
+    return detail
+
+
+def write_authors(path, papers, author_detail):
+    """One row per author name: paper and citation totals from the papers table, plus what the
+    pipeline knows about the person (ORCIDs, institutions, countries, Scholar link, flags)."""
+    author_detail = author_detail or {}
+    totals = {}
+    for p in papers:
+        for a in dict.fromkeys(p.get("authors") or []):
+            t = totals.setdefault(a, {"papers": 0, "citations": 0, "first": None, "last": None})
+            t["papers"] += 1
+            t["citations"] += p.get("citations") or 0
+            y = p.get("year")
+            if isinstance(y, int) or (isinstance(y, str) and y.isdigit()):
+                y = int(y)
+                t["first"] = y if t["first"] is None else min(t["first"], y)
+                t["last"] = y if t["last"] is None else max(t["last"], y)
+
+    def rows():
+        for name in sorted(totals, key=lambda n: (-totals[n]["papers"], n)):
+            t, d = totals[name], author_detail.get(name) or {}
+            others = [o["orcid"] for o in (d.get("orcids") or []) if o.get("orcid") != d.get("orcid")]
+            yield [name, d.get("orcid") or "", "; ".join(others), t["papers"], t["citations"],
+                   t["first"] or "", t["last"] or "",
+                   "; ".join(i["name"] for i in d.get("institutions") or []),
+                   "; ".join(d.get("countries") or []), d.get("scholar_url") or "",
+                   int(bool(d.get("ambiguous"))), int(bool(d.get("identity_conflict")))]
+    return write_csv_gz(
+        path, ["author_name", "orcid", "other_orcids", "papers", "in_corpus_citations", "first_year", "last_year",
+               "institutions", "countries", "scholar_url", "ambiguous_name", "identity_conflict"], rows())
+
+
+def similar_rows(similar_dir, paper_ids):
+    """(paper_id, rank, similar_paper_id, similarity) from data/similar/, for papers in the table."""
+    if not similar_dir or not Path(similar_dir).exists():
+        return
+    for shard in sorted(Path(similar_dir).glob("shard-*.json")):
+        for title, neighbours in json.loads(shard.read_text(encoding="utf-8")).items():
+            pid = normalize_title(title)
+            if pid not in paper_ids:
+                continue
+            rank = 0
+            for other, score in neighbours:
+                oid = normalize_title(other)
+                if oid in paper_ids:
+                    rank += 1
+                    yield [pid, rank, oid, score]
+
+
+def empty_npy(columns):
+    """A valid .npy file for an int8 array of shape (0, columns), written without numpy."""
+    header = "{'descr': '|i1', 'fortran_order': False, 'shape': (0, %d), }" % columns
+    header += " " * (63 - (10 + len(header)) % 64) + chr(10)
+    return bytes([0x93]) + b"NUMPY" + bytes([1, 0]) + len(header).to_bytes(2, "little") + header.encode("latin1")
+
+
+def write_embeddings(npy_path, ids_path, embeddings_dir):
+    """The int8 embedding matrix (copied as is) and, row by row, the paper it belongs to."""
+    vectors = Path(embeddings_dir) / "int8_512.npy" if embeddings_dir else None
+    keys = Path(embeddings_dir) / "keys.json" if embeddings_dir else None
+    if vectors and keys and vectors.exists() and keys.exists():
+        npy_path.write_bytes(vectors.read_bytes())
+        titles = json.loads(keys.read_text(encoding="utf-8"))
+    else:
+        npy_path.write_bytes(empty_npy(512))
+        titles = []
+    print(f"  {npy_path.name}: {len(titles):,} vectors ({npy_path.stat().st_size / 1e6:.1f} MB)")
+    return write_csv_gz(ids_path, ["row", "paper_id", "title"],
+                        ([i, normalize_title(t), t] for i, t in enumerate(titles)))
+
+
+def build(stats, citation_graph, version, out_dir=None, author_detail=None, similar_dir=None,
+          embeddings_dir=None):
+    """The optional inputs default to the repo's own data/ folders when called from the build; tests pass
+    nothing and get empty versions of those parts."""
     out_dir = Path(out_dir or OUT_DIR)
     out_dir.mkdir(parents=True, exist_ok=True)
     name = lambda part: out_dir / release_file_name(version, part)  # noqa: E731
@@ -120,10 +209,10 @@ def build(stats, citation_graph, version, out_dir=None):
     n_papers = write_csv_gz(
         name("papers.csv.gz"),
         ["paper_id", "title", "year", "venue", "category", "av_relevance",
-         "in_corpus_citations", "doi", "institutions", "countries"],
+         "in_corpus_citations", "doi", "arxiv_url", "source", "institutions", "countries"],
         ([normalize_title(p.get("title")), p.get("title"), p.get("year"), p.get("venue"),
           p.get("category"), p.get("av_relevance") or "AV", p.get("citations"),
-          p.get("doi") or "",
+          p.get("doi") or "", p.get("arxiv_url") or "", p.get("source") or "",
           "; ".join(p.get("institutions") or []),
           "; ".join(p.get("countries") or [])]
          for p in papers if normalize_title(p.get("title"))))
@@ -168,8 +257,29 @@ def build(stats, citation_graph, version, out_dir=None):
           inst_papers[name], inst_citations[name]]
          for name in sorted(inst_papers, key=lambda k: -inst_papers[k])))
 
+    n_authors = write_authors(name("authors.csv.gz"), papers, author_detail)
+    n_versions = write_csv_gz(
+        name("paper_versions.csv.gz"),
+        ["paper_id", "version_title", "version_venue", "version_year", "version_url"],
+        ((normalize_title(p.get("title")), v.get("title") or "", v.get("venue") or "", v.get("year") or "",
+          v.get("url") or "")
+         for p in papers if normalize_title(p.get("title"))
+         for v in (p.get("also_published_as") or [])))
+    n_similar = write_csv_gz(
+        name("similar_papers.csv.gz"),
+        ["paper_id", "rank", "similar_paper_id", "similarity"],
+        similar_rows(similar_dir, paper_ids))
+    n_embedded = write_embeddings(name("embeddings.npy"), name("embeddings_paper_ids.csv.gz"), embeddings_dir)
+
     readme = name("README.md")
     readme.write_text(README_TEMPLATE.format(
+        n_authors=f"{n_authors:,}", n_versions=f"{n_versions:,}", n_similar=f"{n_similar:,}",
+        n_embedded=f"{n_embedded:,}",
+        authors=release_file_name(version, "authors.csv.gz"),
+        versions=release_file_name(version, "paper_versions.csv.gz"),
+        similar=release_file_name(version, "similar_papers.csv.gz"),
+        embeddings=release_file_name(version, "embeddings.npy"),
+        embedding_ids=release_file_name(version, "embeddings_paper_ids.csv.gz"),
         date=date.today().isoformat(), n_papers=f"{n_papers:,}",
         n_authorship=f"{n_authorship:,}", n_edges=f"{n_edges:,}", n_inst=f"{n_inst:,}",
         license=LICENSE_NAME, site=SITE_URL, version=version,
@@ -201,13 +311,92 @@ Version {version}, generated {date} from <{site}>.
 | `{authorship}` | {n_authorship} | Paper-to-author edges, with author position. |
 | `{citations}` | {n_edges} | In-corpus citation edges (citing -> cited). |
 | `{institutions}` | {n_inst} | Institutions with country, sector and totals. |
+| `{authors}` | {n_authors} | One row per author name: ORCIDs, institutions, countries, totals. |
+| `{versions}` | {n_versions} | Other titles and venues of merged papers (preprint versions). |
+| `{similar}` | {n_similar} | The 20 most similar papers of each paper, with a similarity score. |
+| `{embeddings}` | {n_embedded} | Text embedding of each paper (int8 matrix, 512 columns). |
+| `{embedding_ids}` | {n_embedded} | Which paper each row of the embedding matrix belongs to. |
 
 `paper_id` joins the tables. It is the paper's title lowercased with every
 non-alphanumeric character removed -- the same key the pipeline dedupes on.
 Many papers in this corpus have no DOI or arXiv id, so there is no external
 identifier that covers all of them.
 
+## Columns
+
+`{papers}`
+
+| Column | Meaning |
+| --- | --- |
+| `paper_id` | Key used by all tables (see above). |
+| `title` | Paper title as listed by its venue. |
+| `year` | Publication year of the version in the corpus. |
+| `venue` | Short venue name (for example CVPR, ICRA, T-ITS) or `arXiv` for preprints. |
+| `category` | One topic label from a fixed list of 35, assigned automatically from title and abstract. |
+| `av_relevance` | `AV` for every row: only papers judged to be about autonomous road vehicles are included. |
+| `in_corpus_citations` | Papers in this corpus that cite this paper (see below). |
+| `doi` | DOI where known, otherwise empty. |
+| `arxiv_url` | arXiv link where known, otherwise empty. |
+| `source` | How the paper entered the corpus: `venue_listing` (the venue's own proceedings), `arxiv_author_pull`, `arxiv_s2_citing_discovery` or `arxiv_monthly_intake`. |
+| `institutions` | Institutions of the authors, separated by `; `. Empty when unresolved. |
+| `countries` | Countries of those institutions, separated by `; `. Empty when unresolved. |
+
+`{authorship}`
+
+| Column | Meaning |
+| --- | --- |
+| `paper_id` | The paper. |
+| `author_name` | Author as spelled in the corpus. A few very common names are split into separate people where this could be checked; the rest of a split name appears as `Name (unidentified)`. |
+| `author_position` | 1 for the first author, 2 for the second, and so on. |
+
+`{citations}`
+
+| Column | Meaning |
+| --- | --- |
+| `citing_paper_id` | The paper whose reference list contains the other one. |
+| `cited_paper_id` | The paper being cited. Both ends are in the papers table. |
+
+`{institutions}`
+
+| Column | Meaning |
+| --- | --- |
+| `institution` | Institution name after merging spelling variants. |
+| `country` | Country of the institution, empty when unknown. |
+| `sector` | `academic` or `industry` where classified, otherwise empty (most rows). |
+| `papers` | Papers in the papers table with an author at this institution. |
+| `citations` | Sum of `in_corpus_citations` of those papers. |
+
+`{authors}`
+
+| Column | Meaning |
+| --- | --- |
+| `author_name` | The name as in the authorship table (the key; names are strings, see below). |
+| `orcid` | The main ORCID, the one found on most of the author's papers. Empty when none is known or the name is shared by several people. |
+| `other_orcids` | Further ORCIDs found for the same author (people sometimes register twice), separated by `; `. |
+| `papers`, `in_corpus_citations` | Papers in the papers table with this author and the sum of their in-corpus citations. |
+| `first_year`, `last_year` | Years of the author's first and last paper in the corpus. |
+| `institutions`, `countries` | Affiliations seen on their papers, earliest first, separated by `; `. |
+| `scholar_url` | Google Scholar profile where one was matched by hand, otherwise empty. |
+| `ambiguous_name` | 1 when a hand check found several different people behind the name. |
+| `identity_conflict` | 1 when the data sources disagree on whether the name is one person. |
+
+`{versions}`: `paper_id` is the published paper; `version_title`, `version_venue`, `version_year`
+and `version_url` describe another version of the same work (usually its arXiv preprint).
+
+`{similar}`: for each `paper_id`, its `rank` (1 is closest) among the 20 nearest papers
+`similar_paper_id`, with the cosine `similarity` of their embeddings (0 unrelated, 1 identical).
+
+`{embeddings}` and `{embedding_ids}`: row `row` of the matrix is the embedding of the paper with that
+`paper_id`. The embeddings are made from title and abstract by the Qwen3-Embedding-8B model, cut to
+their first 512 dimensions and stored as int8 with one global scale, which does not matter for cosine
+similarity. Load with `numpy.load`. The abstracts themselves are not part of this release.
+
 ## What these numbers are, and are not
+
+- **Preprints are merged into published versions.** When the same work exists as an
+  arXiv preprint and a published paper under different titles, the preprint is
+  folded into the published one and its citations count for it. The preprint's
+  title is not in these files; the site shows it as "Also appeared as".
 
 - **Citations are internal.** `in_corpus_citations` counts papers *in this
   corpus* that cite a paper, found by parsing reference lists. It is not a
@@ -220,8 +409,9 @@ identifier that covers all of them.
   resolved for well under half the papers; rows with empty values are
   unresolved, not unaffiliated. Any institution- or country-level analysis
   describes that subset.
-- **Author names are not disambiguated.** Names are matched as strings, so
-  common names merge distinct people and spelling variants split one person.
+- **Author names are mostly not disambiguated.** Names are matched as strings, so
+  common names merge distinct people and spelling variants split one person. Only a
+  few very common names have been split by hand.
 - **Categories and AV-relevance are automated,** not manually reviewed. See
   the site's About page for the method and its measured accuracy.
 
@@ -263,7 +453,8 @@ def main():
     stats = json.loads(STATS_FILE.read_text(encoding="utf-8"))
     graph = (json.loads(CITATION_GRAPH_FILE.read_text(encoding="utf-8"))
              if CITATION_GRAPH_FILE.exists() else {})
-    build(stats, graph, version)
+    build(stats, graph, version, author_detail=read_author_detail(AUTHOR_DETAIL_DIR),
+          similar_dir=SIMILAR_DIR, embeddings_dir=EMBEDDINGS_DIR)
 
 
 if __name__ == "__main__":

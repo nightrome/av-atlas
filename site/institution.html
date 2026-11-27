@@ -156,7 +156,9 @@ setDetailPageMeta(name, name
 // authors on that roster -- resolved here, in sequence (the second fetch's
 // name list depends on the first fetch's result), before render() runs.
 fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats =>
-  window.fetchInstitutionAuthors([name]).then(instMap => {
+  !(stats.all_papers || []).some(p => (p.institutions || []).includes(name)) && !(stats.institution_countries || {})[name]
+    ? Promise.reject(new Error('unknown institution'))
+    : window.fetchInstitutionAuthors([name]).then(instMap => {
     const preciseAuthors = instMap.get(name);
     stats.institution_authors = preciseAuthors ? { [name]: preciseAuthors } : {};
     // Same fallback render() itself falls back to when this institution has
@@ -181,6 +183,13 @@ fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats =>
     });
   })
 ).then(render).catch(err => {
+  if (err && err.message === 'unknown institution') {
+    // A name that is not an institution here (a misspelling, or a shortened form of a longer name):
+    // say so instead of showing an empty page with "0 papers".
+    document.getElementById('tags').textContent = 'No institution with this exact name was found.';
+    document.querySelectorAll('.panel, .stat-grid').forEach(el => { el.style.display = 'none'; });
+    return;
+  }
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
 });
 
@@ -429,14 +438,16 @@ function render(stats) {
   // scale institutions have hundreds).
   function renderPapersPage() {
     const pg = renderPagination(document.getElementById('papers-pagination'), 'institution.html', sortedPapers.length, { onChange: renderPapersPage });
-    const shown = sortedPapers.slice(pg.offset, pg.offset + pg.pageSize);
-    makeSortableSafe(document.getElementById('papers-body').closest('table'), shown, [
+    const columns = [
       { accessor: p => p.title, numeric: false },
       { accessor: p => p.year, numeric: true },
       { accessor: p => p.venue, numeric: false },
       { accessor: p => p.category, numeric: false },
       { accessor: p => p.citations, numeric: true },
-    ], renderBody);
+    ];
+    const table = papersBody.closest('table');
+    const shown = applyTableSortSafe(table, sortedPapers, columns).slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(table, shown, columns, renderBody, { rerender: renderPapersPage });
   }
   renderPapersPage();
 

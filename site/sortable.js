@@ -13,10 +13,47 @@
        glance, not just a small arrow easy to miss (user-flagged: "not
        immediately obvious which column is sorted"). */
     table.sortable thead th.sort-active { color: var(--accent); background: var(--panel2); }
+    table.sortable thead th[data-sortable]:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   `;
   document.head.appendChild(style);
 
-  window.makeSortable = function (table, data, columns, renderBody) {
+  function compareBy(col, dir) {
+    return (a, b) => {
+      let av = col.accessor(a);
+      let bv = col.accessor(b);
+      if (col.numeric) {
+        av = av == null ? -Infinity : av;
+        bv = bv == null ? -Infinity : bv;
+        return (av - bv) * dir;
+      }
+      av = av == null ? '' : String(av);
+      bv = bv == null ? '' : String(bv);
+      return av.localeCompare(bv) * dir;
+    };
+  }
+
+  // Sorts a FULL row array by the table's current click-to-sort state and
+  // returns a new array (or `rows` itself when no header has been clicked, so
+  // the page's default order stays untouched). Paginated pages call this on
+  // the whole list BEFORE slicing out the current page, so a header click
+  // orders every row of the table, not just the ones on screen. `columns`
+  // is the same array the page passes to makeSortable.
+  window.applyTableSort = function (table, rows, columns) {
+    const state = table && table._sortableState;
+    if (!state || state.idx == null) return rows;
+    const col = (columns || state.columns)[state.idx];
+    if (!col) return rows;
+    return [...rows].sort(compareBy(col, state.dir));
+  };
+
+  // Usage: makeSortable(table, data, columns, renderBody[, opts])
+  // Without opts the table is not paginated: `data` is the whole table and a
+  // click re-sorts it and hands it to renderBody. With opts.onSort (a paginated
+  // table), `data` is only the current page of an already-sorted full list; a
+  // click just records the new sort column/direction and calls onSort(), which
+  // re-renders the page (resetting to page 1), sorting the full list through
+  // applyTableSort before slicing.
+  window.makeSortable = function (table, data, columns, renderBody, opts) {
     // Every page's render() calls this again on the SAME <table> element on
     // every search keystroke, pagination click, topN change, etc. -- only
     // the <tbody> gets rebuilt each time, the <thead>/<th> nodes persist.
@@ -40,6 +77,9 @@
       state.data = data;
       state.columns = columns;
       state.renderBody = renderBody;
+      state.onSort = opts && opts.onSort ? opts.onSort : null;
+      // A paginated page already sorted the full list before slicing.
+      if (state.onSort) return;
       if (state.idx != null) state.resort(); else renderBody(data);
       return;
     }
@@ -52,30 +92,22 @@
     // to the NEXT column's accessor (user-reported: sorting Venues by Citations
     // actually sorted by Citations / paper).
     const ths = [...table.querySelectorAll('thead th')].filter(th => !th.classList.contains('compare-col'));
-    const state = { idx: null, dir: 1, data, columns, renderBody };
+    const state = { idx: null, dir: 1, data, columns, renderBody, onSort: opts && opts.onSort ? opts.onSort : null };
     table._sortableState = state;
 
     state.resort = function () {
       const col = state.columns[state.idx];
-      const sorted = [...state.data].sort((a, b) => {
-        let av = col.accessor(a);
-        let bv = col.accessor(b);
-        if (col.numeric) {
-          av = av == null ? -Infinity : av;
-          bv = bv == null ? -Infinity : bv;
-          return (av - bv) * state.dir;
-        }
-        av = av == null ? '' : String(av);
-        bv = bv == null ? '' : String(bv);
-        return av.localeCompare(bv) * state.dir;
-      });
-      state.renderBody(sorted);
+      state.renderBody([...state.data].sort(compareBy(col, state.dir)));
     };
 
     ths.forEach((th, idx) => {
       const col = columns[idx];
       if (!col) return;
       th.dataset.sortable = 'true';
+      // Keyboard operable: focusable, announced as a sortable column header.
+      th.setAttribute('tabindex', '0');
+      th.setAttribute('role', 'columnheader');
+      th.setAttribute('aria-sort', 'none');
       const indicator = document.createElement('span');
       indicator.className = 'sort-indicator';
       // Only the column actually driving the current sort ever shows a
@@ -96,7 +128,7 @@
       // the next column -- user-reported as "columns overlap").
       th.appendChild(indicator);
 
-      th.addEventListener('click', () => {
+      const activate = () => {
         // Preferred order first click: numeric columns start high-to-low
         // (most citations/papers/etc. first is what people actually want),
         // text columns start A-Z. A second click on the same column flips it.
@@ -105,6 +137,7 @@
         state.idx = idx;
         ths.forEach(t => {
           t.classList.remove('sort-active');
+          if (t.getAttribute && t.getAttribute('aria-sort') != null) t.setAttribute('aria-sort', 'none');
           const ind = t.querySelector('.sort-indicator');
           if (!ind) return;
           ind.classList.remove('active');
@@ -113,7 +146,15 @@
         th.classList.add('sort-active');
         indicator.classList.add('active');
         indicator.textContent = state.dir === 1 ? '▲' : '▼';
-        state.resort();
+        th.setAttribute('aria-sort', state.dir === 1 ? 'ascending' : 'descending');
+        if (state.onSort) state.onSort(); else state.resort();
+      };
+      th.addEventListener('click', activate);
+      th.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          activate();
+        }
       });
     });
   };
