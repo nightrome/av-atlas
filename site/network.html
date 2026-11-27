@@ -50,15 +50,40 @@
      slivers instead of the table just scrolling horizontally (the
      .table-scroll wrapper on this table is what makes that scroll work). */
   #metrics-table { min-width: 820px; }
-  #clusters-table { min-width: 720px; }
-  #clusters-table th:nth-child(1) { width: 28px; }
-  #clusters-table th:nth-child(2) { width: 72px; }
-  #clusters-table th:nth-child(3) { width: 34%; }
-  .more-members { color: var(--muted); border-bottom: 1px dotted var(--muted); cursor: help; }
+  #clusters-table { min-width: 860px; }
+  #clusters-table th:nth-child(1) { width: 21%; }
+  #clusters-table th:nth-child(2) { width: 12%; }
+  #clusters-table th:nth-child(3) { width: 25%; }
+  #clusters-table th:nth-child(4) { width: 24%; }
+  #clusters-table th:nth-child(5) { width: 18%; }
+  #clusters-table th { font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--border); white-space: nowrap; }
+  #clusters-table td { vertical-align: top; padding-top: 10px; padding-bottom: 10px; }
+  #clusters-table tbody tr:nth-child(even) { background: color-mix(in srgb, var(--panel2) 45%, transparent); }
+  #clusters-table tbody tr:hover { background: var(--panel2); }
+  #clusters-table tbody tr.cluster-row { cursor: pointer; }
+  #clusters-table tbody tr.selected { background: color-mix(in srgb, var(--accent) 10%, var(--panel)); box-shadow: inset 3px 0 0 var(--accent); }
+  .cluster-head { display: flex; gap: 9px; align-items: flex-start; }
+  .cluster-swatch { flex: none; width: 14px; height: 14px; border-radius: 50%; margin-top: 3px; box-shadow: 0 0 0 2px var(--panel); outline: 1px solid var(--border); }
+  .cluster-title { background: none; border: 0; padding: 0; margin: 0; font: inherit; font-weight: 600; color: var(--text); text-align: left; cursor: pointer; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; max-width: 100%; overflow: hidden; line-height: 1.3; }
+  .cluster-title:hover { color: var(--accent); }
+  .cluster-title:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  .cluster-id { display: block; color: var(--muted); font-size: 0.82em; }
+  .cluster-name { min-width: 0; flex: 1; }
+  .size-cell { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .size-cell .val { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .size-bar { width: 100%; max-width: 90px; height: 5px; border-radius: 3px; background: var(--border); overflow: hidden; }
+  .size-bar > span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+  .cl-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .cl-chip { display: inline-block; max-width: 100%; padding: 1px 8px; border-radius: 999px; background: var(--panel2); border: 1px solid var(--border); font-size: 0.92em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  a.cl-chip { color: var(--accent); }
+  a.cl-chip:hover { text-decoration: none; border-color: var(--accent); }
+  .more-members { color: var(--muted); border-bottom: 1px dotted var(--muted); cursor: help; font-size: 0.88em; align-self: center; }
   .more-members:hover, .more-members:focus { color: var(--accent); outline: none; }
-  .cluster-top { display: block; line-height: 1.4; }
-  .cluster-top .n { color: var(--muted); font-size: 0.85em; }
-  .cluster-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: middle; }
+  .cluster-top { display: flex; gap: 6px; justify-content: space-between; line-height: 1.5; min-width: 0; }
+  .cluster-top > a, .cluster-top > .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cluster-top .n { flex: none; color: var(--muted); font-size: 0.85em; font-variant-numeric: tabular-nums; }
+  .cluster-top-more { color: var(--muted); font-size: 0.85em; cursor: help; }
+  @media (max-width: 600px) { #clusters-table td, #clusters-table th { padding-left: 6px; padding-right: 6px; } }
   th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); overflow-wrap: break-word; }
   th { color: var(--muted); font-weight: 600; vertical-align: bottom; }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -104,11 +129,11 @@
   <div class="table-scroll">
   <table id="clusters-table">
     <thead><tr>
-      <th></th>
-      <th class="num">Authors</th>
-      <th>Top members</th>
-      <th>Top institutions</th>
-      <th>Top countries</th>
+      <th scope="col">Cluster</th>
+      <th scope="col" class="num">Authors</th>
+      <th scope="col">Top members</th>
+      <th scope="col">Top institutions <span style="text-transform:none;font-weight:400">(papers)</span></th>
+      <th scope="col">Top countries <span style="text-transform:none;font-weight:400">(papers)</span></th>
     </tr></thead>
     <tbody id="clusters-body"></tbody>
   </table>
@@ -605,7 +630,7 @@ function finishRender(papers, paperCounts, topAuthors, topSet, edgeWeights) {
 
   setupPanZoom(svg, viewport, W, H);
   setupSearch(nodeEls, pos);
-  renderClustersTable(nodes, clusterOf, clusterSizes, papers);
+  renderClustersTable(nodes, clusterOf, clusterSizes, papers, nodeEls, edgeEls);
   renderMetricsTable(nodes, edges, topAuthors, papers);
 }
 
@@ -625,7 +650,7 @@ function finishRender(papers, paperCounts, topAuthors, topSet, edgeWeights) {
 // undercount how mixed a cluster is; it answers "which one institution
 // would a reader guess this cluster is centered on", not "is this cluster
 // one lab".
-function renderClustersTable(nodes, clusterOf, clusterSizes, papers) {
+function renderClustersTable(nodes, clusterOf, clusterSizes, papers, nodeEls, edgeEls) {
   const clusterOfName = new Map(nodes.map(n => [n.id, clusterOf.get(n.id) || 0]));
   const membersOf = new Map();
   // `nodes` is already sorted by paper count descending (see topAuthors
@@ -656,91 +681,174 @@ function renderClustersTable(nodes, clusterOf, clusterSizes, papers) {
     });
   });
   const TOP_SHOWN = 3;
-  const topOf = tally => [...(tally || new Map()).entries()]
-    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, TOP_SHOWN);
+  const topAll = tally => [...(tally || new Map()).entries()]
+    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
 
   const rows = [...membersOf.entries()]
     .filter(([, members]) => members.length > 1)
     .sort((a, b) => b[1].length - a[1].length)
-    .map(([cluster, members]) => ({
-      cluster, members,
-      institutions: topOf(instTally.get(cluster)),
-      countries: topOf(countryTally.get(cluster)),
-    }));
+    .map(([cluster, members], i) => {
+      const institutions = topAll(instTally.get(cluster));
+      const countries = topAll(countryTally.get(cluster));
+      // Title: the cluster's most common institution (else country, else its
+      // most-published author), since the colour alone says nothing.
+      const title = institutions.length ? institutions[0][0]
+        : countries.length ? countries[0][0] : `${members[0]} group`;
+      return { cluster, members, institutions, countries, title, rank: i + 1 };
+    });
+  const maxSize = rows.length ? Math.max(...rows.map(r => r.members.length)) : 1;
 
   const tbody = document.getElementById('clusters-body');
-  tbody.innerHTML = '';
+  const table = tbody.closest('table');
   const TOP_MEMBERS_SHOWN = 3;
-  rows.forEach(r => {
-    const swatch = document.createElement('span');
-    swatch.className = 'cluster-swatch';
-    swatch.style.background = clusterColor(r.cluster);
+  let selected = null;
 
-    const membersCell = document.createElement('span');
-    r.members.slice(0, TOP_MEMBERS_SHOWN).forEach((name, i) => {
-      if (i > 0) membersCell.append(', ');
-      const a = document.createElement('a');
-      a.href = `author.html?name=${encodeURIComponent(name)}`;
-      a.textContent = name;
-      membersCell.appendChild(a);
+  // Clicking a cluster dims every other author and line in the graph above;
+  // clicking it again (or another cluster) clears or changes that.
+  function highlight(cluster) {
+    selected = selected === cluster ? null : cluster;
+    const inCluster = new Set(nodes.filter(n => clusterOfName.get(n.id) === selected).map(n => n.id));
+    nodeEls.forEach(el => el.node.classList.toggle('dim', selected !== null && !inCluster.has(el.name)));
+    edgeEls.forEach(line => {
+      const inside = inCluster.has(line.dataset.source) && inCluster.has(line.dataset.target);
+      line.classList.toggle('highlight', selected !== null && inside);
+      line.classList.toggle('dim', selected !== null && !inside);
     });
-    if (r.members.length > TOP_MEMBERS_SHOWN) {
-      const rest = r.members.slice(TOP_MEMBERS_SHOWN);
-      const more = document.createElement('span');
-      more.className = 'more-members';
+    tbody.querySelectorAll('tr.cluster-row').forEach(tr => {
+      const on = selected !== null && Number(tr.dataset.cluster) === selected;
+      tr.classList.toggle('selected', on);
+      const b = tr.querySelector('.cluster-title');
+      if (b) b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    if (selected !== null) document.getElementById('graph').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function topCell(list, link) {
+    const cell = document.createElement('div');
+    if (!list.length) {
+      cell.textContent = 'n/a';
+      cell.style.color = 'var(--muted)';
+      return cell;
+    }
+    list.slice(0, TOP_SHOWN).forEach(([name, count]) => {
+      const line = document.createElement('div');
+      line.className = 'cluster-top';
+      let label;
+      if (link) {
+        label = document.createElement('a');
+        label.href = `${link}?name=${encodeURIComponent(name)}`;
+      } else {
+        label = document.createElement('span');
+        label.className = 'nm';
+      }
+      label.textContent = name;
+      label.title = name;
+      const n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = count.toLocaleString();
+      n.title = `${count.toLocaleString()} paper${count === 1 ? '' : 's'}`;
+      line.append(label, n);
+      cell.appendChild(line);
+    });
+    if (list.length > TOP_SHOWN) {
+      const rest = list.slice(TOP_SHOWN);
+      const more = document.createElement('div');
+      more.className = 'cluster-top-more';
       more.tabIndex = 0;
       more.textContent = `+${rest.length} more`;
-      more.title = rest.join(', ');
-      membersCell.append(' ');
-      membersCell.appendChild(more);
+      more.title = rest.map(([name, c]) => `${name} (${c})`).join(', ');
+      cell.appendChild(more);
     }
-
-    const topCell = (list, link) => {
-      const cell = document.createElement('span');
-      if (!list.length) {
-        cell.textContent = 'n/a';
-        cell.style.color = 'var(--muted)';
-        return cell;
-      }
-      list.forEach(([name, count]) => {
-        const line = document.createElement('span');
-        line.className = 'cluster-top';
-        if (link) {
-          const a = document.createElement('a');
-          a.href = `${link}?name=${encodeURIComponent(name)}`;
-          a.textContent = name;
-          line.appendChild(a);
-        } else {
-          line.append(name);
-        }
-        const n = document.createElement('span');
-        n.className = 'n';
-        n.textContent = ` ${count}`;
-        n.title = `${count} paper${count === 1 ? '' : 's'}`;
-        line.appendChild(n);
-        cell.appendChild(line);
-      });
-      return cell;
-    };
-
-    const tr = document.createElement('tr');
-    [swatch, r.members.length, membersCell, topCell(r.institutions, 'institution.html'), topCell(r.countries, null)].forEach((c, i) => {
-      const td = document.createElement('td');
-      if (i === 1) td.className = 'num';
-      if (c instanceof Node) td.appendChild(c); else td.textContent = c;
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
-  });
-  if (!rows.length) {
-    const tr = document.createElement('tr');
-    const td = document.createElement('td');
-    td.colSpan = 5;
-    td.style.color = 'var(--muted)';
-    td.textContent = 'No multi-author clusters in the current graph.';
-    tr.appendChild(td);
-    tbody.appendChild(tr);
+    return cell;
   }
+
+  function renderBody(data) {
+    tbody.innerHTML = '';
+    data.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.className = 'cluster-row';
+      tr.dataset.cluster = r.cluster;
+
+      const head = document.createElement('div');
+      head.className = 'cluster-head';
+      const swatch = document.createElement('span');
+      swatch.className = 'cluster-swatch';
+      swatch.style.background = clusterColor(r.cluster);
+      swatch.setAttribute('aria-hidden', 'true');
+      const name = document.createElement('div');
+      name.className = 'cluster-name';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cluster-title';
+      btn.textContent = r.title;
+      btn.title = `${r.title}: click to highlight this cluster in the graph`;
+      btn.setAttribute('aria-pressed', selected === r.cluster ? 'true' : 'false');
+      btn.addEventListener('click', e => { e.stopPropagation(); highlight(r.cluster); });
+      const id = document.createElement('span');
+      id.className = 'cluster-id';
+      id.textContent = `Cluster ${r.rank}`;
+      name.append(btn, id);
+      head.append(swatch, name);
+
+      const size = document.createElement('div');
+      size.className = 'size-cell';
+      const val = document.createElement('span');
+      val.className = 'val';
+      val.textContent = r.members.length.toLocaleString();
+      const bar = document.createElement('span');
+      bar.className = 'size-bar';
+      bar.setAttribute('aria-hidden', 'true');
+      const fill = document.createElement('span');
+      fill.style.width = `${Math.max(4, Math.round(100 * r.members.length / maxSize))}%`;
+      bar.appendChild(fill);
+      size.append(val, bar);
+
+      const chips = document.createElement('div');
+      chips.className = 'cl-chips';
+      r.members.slice(0, TOP_MEMBERS_SHOWN).forEach(m => {
+        const a = document.createElement('a');
+        a.className = 'cl-chip';
+        a.href = `author.html?name=${encodeURIComponent(m)}`;
+        a.textContent = m;
+        a.title = m;
+        chips.appendChild(a);
+      });
+      if (r.members.length > TOP_MEMBERS_SHOWN) {
+        const rest = r.members.slice(TOP_MEMBERS_SHOWN);
+        const more = document.createElement('span');
+        more.className = 'more-members';
+        more.tabIndex = 0;
+        more.textContent = `+${rest.length} more`;
+        more.title = rest.join(', ');
+        chips.appendChild(more);
+      }
+
+      [head, size, chips, topCell(r.institutions, 'institution.html'), topCell(r.countries, null)].forEach((c, i) => {
+        const td = document.createElement('td');
+        if (i === 1) td.className = 'num';
+        td.appendChild(c);
+        tr.appendChild(td);
+      });
+      tr.addEventListener('click', e => { if (!e.target.closest('a')) highlight(r.cluster); });
+      if (selected === r.cluster) tr.classList.add('selected');
+      tbody.appendChild(tr);
+    });
+    if (!data.length) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 5;
+      td.style.cssText = 'color:var(--muted);text-align:center;padding:18px';
+      td.textContent = 'No multi-author clusters in the current graph. Raise "Show top" or loosen the filters to group more authors.';
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+    }
+  }
+  const columns = [
+    { accessor: r => r.title.toLowerCase(), numeric: false },
+    { accessor: r => r.members.length, numeric: true },
+    null, null, null,
+  ];
+  makeSortableSafe(table, rows, columns, renderBody);
 }
 
 // Papers/institutions/countries counted from THIS author's own paper list

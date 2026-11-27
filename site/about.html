@@ -206,10 +206,9 @@
   <li><strong>3. Enrich.</strong> For AV-relevant papers only: each author's affiliation and a
       stable ID that tells apart authors who share a name are looked up where that information can
       be found. Some top-ranked authors also get a link to their Google Scholar profile and its
-      photo, and most of the 100 most-cited papers get a link to their own Scholar page. Google
-      Scholar doesn't allow automated queries, so these links are now checked and added by hand.
-      Most of the paper links were first collected by a script in September 2026, which has since
-      been removed.</li>
+      photo, and most of the 100 most-cited papers get a link to their own Scholar page. For authors
+      who share a name with someone else, the Scholar profile is matched by comparing the papers
+      listed on the profile with the papers in the corpus.</li>
   <li><strong>Text embeddings.</strong> The "Similar" tables, the paper map and the duplicate
       check come from a language model (Qwen3-Embedding-8B) that turns each paper's title and
       abstract into 512 numbers; papers, authors, institutions and venues are similar when those
@@ -441,7 +440,8 @@
   under License below. For some authors it also links their Google Scholar profile and shows the
   photo from it. Holger Caesar (see Contact above) is responsible for this data. It is published
   to give an overview of autonomous-vehicle research, on the basis of legitimate interest
-  (Art. 6(1)(f) GDPR), and an entry stays for as long as its paper is in the corpus.
+  (Art. 6(1)(f) GDPR). An entry is removed on request, and also when its
+  paper leaves the corpus.
 </p>
 <p>
   If you are an author and believe your information is displayed
