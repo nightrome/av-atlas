@@ -80,6 +80,19 @@ class BatchTests(unittest.TestCase):
         self.assertEqual([p["title"] for p in rest], ["C"])
 
 
+class ProfileCountTests(unittest.TestCase):
+    def test_counts_record_every_profile_a_name_appears_under(self):
+        papers = [{"title": "A", "authors": ["Ann Lee"], "arxiv_url": "https://arxiv.org/abs/2401.00001"},
+                  {"title": "B", "authors": ["Ann Lee"], "arxiv_url": "https://arxiv.org/abs/2401.00002"},
+                  {"title": "C", "authors": ["Ann Lee"], "arxiv_url": "https://arxiv.org/abs/2401.00003"}]
+        answer = [{"authors": [{"name": "Ann Lee", "authorId": "1"}]},
+                  {"authors": [{"name": "Ann Lee", "authorId": "9"}]},
+                  {"authors": [{"name": "Ann Lee", "authorId": "9"}]}]
+        counts = {}
+        fsi.resolve_by_id(papers, {}, set(), lambda: None, post=lambda e: answer, counts=counts)
+        self.assertEqual(counts, {"annlee": {"1": 1, "9": 2}})
+
+
 class StringAuthorsTests(unittest.TestCase):
     def test_authors_come_as_one_comma_separated_string(self):
         self.assertEqual(fsi.author_list({"authors": "Ann Lee, Bo Chen"}), ["Ann Lee", "Bo Chen"])

@@ -426,7 +426,26 @@ function render() {
 
   const pagination = renderPagination(document.getElementById('pagination-container'), 'authors.html', authors.length,
     { onChange: render, pageSize: topN, showSizeControl: false });
-  const shown = authors.slice(pagination.offset, pagination.offset + pagination.pageSize);
+  // The table is sorted in full by whichever header was clicked, then paged.
+  // (Columns are declared here so the sort can run before the page is cut.)
+  const authorColumns = [
+    null,
+    { accessor: a => a.name, numeric: false },
+    { accessor: a => a.papers, numeric: true },
+    { accessor: a => a.lifetime ?? -Infinity, numeric: true },
+    { accessor: a => a.citations, numeric: true },
+    { accessor: a => a.avg_citations ?? -Infinity, numeric: true },
+    { accessor: a => a.h_index, numeric: true },
+    { accessor: a => a.selfCitationPct ?? -Infinity, numeric: true },
+    { accessor: a => a.nonAvPapers, numeric: true },
+  ];
+  const authorsTable = document.getElementById('researchers-body').closest('table');
+  // The Non-AV column is only loaded for the rows on screen (it is sharded
+  // by name), so sorting by it first loads it for every listed author.
+  const sortOnNonAv = !!(authorsTable._sortableState && authorsTable._sortableState.idx === 8);
+  const sliceShown = () => applyTableSortSafe(authorsTable, authors, authorColumns)
+    .slice(pagination.offset, pagination.offset + pagination.pageSize);
+  let shown = sortOnNonAv ? [] : sliceShown();
 
   // author_detail (cards' photo_url) and non_av_author_stats (the table's
   // Non-AV papers column) are sharded by name now (see aggregate.py's
@@ -435,15 +454,18 @@ function render() {
   // rendered (topAuthors' cards, shown's table page), not the ~55k names in
   // the corpus. author_detail is only fetched for topAuthors: the table
   // itself never reads it (no institution/country column here).
-  const neededForNonAv = new Set([...topAuthors, ...shown].map(a => a.name));
+  const neededForNonAv = new Set([...topAuthors, ...shown, ...(sortOnNonAv ? authors : [])].map(a => a.name));
   Promise.all([
     window.fetchAuthorDetail(topAuthors.map(a => a.name)),
     window.fetchNonAvAuthorStats([...neededForNonAv]),
   ]).then(([detailMap, nonAvMap]) => {
+    const byName = new Map();
+    [...topAuthors, ...shown, ...(sortOnNonAv ? authors : [])].forEach(a => byName.set(a.name, a));
     neededForNonAv.forEach(n => {
-      const a = (topAuthors.find(x => x.name === n) || shown.find(x => x.name === n));
+      const a = byName.get(n);
       if (a) a.nonAvPapers = (nonAvMap.get(n) || {}).count || 0;
     });
+    if (sortOnNonAv) shown = sliceShown();
     renderBody2(detailMap);
   });
 
@@ -481,19 +503,10 @@ function render() {
     renderCompareSelection({ table: tbody.closest('table'), type: 'author',
       nameFor: a => a.name, rows: data });
   }
-  // Feed the table the current page's slice, not the whole list -- otherwise
-  // every row renders at once and Prev/Next only move the count label.
-  makeSortableSafe(tbody.closest('table'), shown, [
-    null,
-    { accessor: a => a.name, numeric: false },
-    { accessor: a => a.papers, numeric: true },
-    { accessor: a => a.lifetime ?? -Infinity, numeric: true },
-    { accessor: a => a.citations, numeric: true },
-    { accessor: a => a.avg_citations ?? -Infinity, numeric: true },
-    { accessor: a => a.h_index, numeric: true },
-    { accessor: a => a.selfCitationPct ?? -Infinity, numeric: true },
-    { accessor: a => a.nonAvPapers, numeric: true },
-  ], renderBody);
+  // Feed the table the current page's slice (of the fully sorted list), not
+  // the whole list -- otherwise every row renders at once and Prev/Next only
+  // move the count label.
+  makeSortableSafe(authorsTable, shown, authorColumns, renderBody, { rerender: render });
 
   const exportContainer = document.getElementById('export-container');
   exportContainer.querySelectorAll('.export-row').forEach(el => el.remove());

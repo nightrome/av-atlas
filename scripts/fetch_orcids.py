@@ -28,6 +28,7 @@ from functools import lru_cache
 from fetch_common import BASE, HEADERS, normalize_s2_key, s2_request
 
 IDS_FILE = BASE / "data" / "s2_author_ids.json"
+COUNTS_FILE = BASE / "data" / "s2_author_id_counts.json"
 OUT_FILE = BASE / "data" / "orcids.json"
 ENV_FILE = BASE / ".env"
 API_BASE = "https://api.semanticscholar.org/graph/v1"
@@ -57,9 +58,26 @@ def s2_post(path, params, body):
     return s2_request(req, timeout=30)
 
 
+def dominant_id(per_id, min_share=0.5):
+    """The S2 profile most of a name's papers sit under, or None when no profile has at least
+    `min_share` of them (the name then probably stands for several people)."""
+    total = sum(per_id.values())
+    best = max(per_id, key=lambda i: per_id[i])
+    return best if total and per_id[best] / total >= min_share else None
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # titles hold non-ASCII; the Windows console cannot print them
     author_ids = json.loads(IDS_FILE.read_text(encoding="utf-8")) if IDS_FILE.exists() else {}
+    counts = json.loads(COUNTS_FILE.read_text(encoding="utf-8")) if COUNTS_FILE.exists() else {}
+    # With per-profile counts, a name uses the profile most of its papers belong to; without them
+    # (an older run) it keeps the single profile that was stored.
+    for name, per_id in counts.items():
+        chosen = dominant_id(per_id)
+        if chosen:
+            author_ids[name] = chosen
+        else:
+            author_ids.pop(name, None)
     name_by_id = {}
     for name, aid in author_ids.items():
         name_by_id.setdefault(aid, []).append(name)

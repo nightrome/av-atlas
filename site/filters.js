@@ -1657,13 +1657,40 @@
   // (always the first script tag on every page, so always defined) and
   // degrades to "render once, skip sorting" instead of taking the whole
   // page down over one optional feature.
-  window.makeSortableSafe = function (table, data, columns, renderBody) {
+  //
+  // Paginated tables pass a 5th argument { rerender, paramKey }: `data` is then
+  // only the current page of a list the page already sorted IN FULL through
+  // applyTableSortSafe(table, rows, columns) before slicing. A header click
+  // drops the table's page param (back to page 1, via history.replaceState
+  // like renderPagination does) and calls rerender(), which must redraw the
+  // whole table from the full row list. Without it the table is treated as
+  // one unpaginated piece and only `data` is sorted.
+  window.makeSortableSafe = function (table, data, columns, renderBody, opts) {
     renderBody(data);
     if (typeof window.makeSortable === 'function') {
-      window.makeSortable(table, data, columns, renderBody);
+      let sortOpts;
+      if (opts && opts.rerender) {
+        sortOpts = {
+          onSort() {
+            const u = new URL(location.href);
+            u.searchParams.delete(opts.paramKey || 'page');
+            history.replaceState(null, '', u);
+            opts.rerender();
+          },
+        };
+      }
+      window.makeSortable(table, data, columns, renderBody, sortOpts);
     } else {
       console.warn('sortable.js did not load in time -- table is not click-to-sort this pageview.');
     }
+  };
+
+  // Sorts the FULL row list of a paginated table by whatever header the user
+  // last clicked (see makeSortable in sortable.js); returns `rows` unchanged
+  // when nothing was clicked or sortable.js is missing. Call it before slicing
+  // out the current page.
+  window.applyTableSortSafe = function (table, rows, columns) {
+    return typeof window.applyTableSort === 'function' ? window.applyTableSort(table, rows, columns) : rows;
   };
 
   // One entry out of a sharded data directory (similar_authors/ and the like),
@@ -1696,7 +1723,9 @@
     function draw() {
       const pg = renderPagination(o.pagination, location.pathname.split('/').pop(), o.rows.length,
         { paramKey: o.paramKey, pageSizes: o.pageSizes || [5, 10, 20], defaultPageSize: 5, onChange: draw });
-      makeSortableSafe(o.table, o.rows.slice(pg.offset, pg.offset + pg.pageSize), o.columns, renderBody);
+      const sorted = applyTableSortSafe(o.table, o.rows, o.columns);
+      makeSortableSafe(o.table, sorted.slice(pg.offset, pg.offset + pg.pageSize), o.columns, renderBody,
+        { rerender: draw, paramKey: o.paramKey });
     }
     draw();
   };

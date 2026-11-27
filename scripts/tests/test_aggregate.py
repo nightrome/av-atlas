@@ -1749,11 +1749,11 @@ class TestAggregateEndToEnd(unittest.TestCase):
              "citations": 10,
              "authors_detail": [
                  {"name": "Wang", "affiliations": ["Some University"]},
-                 {"name": "Xin Wang", "affiliations": ["Some University"]},
+                 {"name": "Mei Lindqvist", "affiliations": ["Some University"]},
              ]},
         ])
         self.assertNotIn("Wang", self.last_detail["author_detail"])
-        self.assertIn("Xin Wang", self.last_detail["author_detail"])
+        self.assertIn("Mei Lindqvist", self.last_detail["author_detail"])
 
     def test_bare_surname_excluded_from_paper_level_authors_list(self):
         # researchers.html aggregates its leaderboard client-side from each
@@ -1762,13 +1762,13 @@ class TestAggregateEndToEnd(unittest.TestCase):
         # filtering for a bare surname to disappear from the Researchers page.
         stats = self._run([
             {"title": "Paper B", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
-             "authors_detail": [{"name": "Li"}, {"name": "Wei Li"}]},
+             "authors_detail": [{"name": "Li"}, {"name": "Mei Lindqvist"}]},
             {"title": "Paper C", "year": 2024, "venue": "CVPR", "av_relevance": "AV",
              "authors": "Yu, Full Name"},
         ])
         all_authors = {a for p in stats["all_papers"] for a in p["authors"]}
         self.assertNotIn("Li", all_authors)
-        self.assertIn("Wei Li", all_authors)
+        self.assertIn("Mei Lindqvist", all_authors)
         self.assertNotIn("Yu", all_authors)
         self.assertIn("Full Name", all_authors)
 

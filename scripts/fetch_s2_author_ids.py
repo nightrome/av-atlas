@@ -46,6 +46,11 @@ from fetch_common import BASE, HEADERS, by_citations, clean_doi, looks_like_s2_i
 PAPERS_FILE = BASE / "data" / "papers_full.json"
 IDS_FILE = BASE / "data" / "s2_author_ids.json"
 CHECKED_FILE = BASE / "data" / "s2_author_ids_checked_papers.json"
+# {normalizedAuthorName: {S2 authorId: number of our papers it was seen on}}. Semantic Scholar often splits
+# one person over several author profiles and only one of them carries the ORCID, so the name alone is
+# not enough to find it: fetch_orcids.py uses these counts to pick the profile that most of the person's
+# papers belong to.
+COUNTS_FILE = BASE / "data" / "s2_author_id_counts.json"
 ENV_FILE = BASE / ".env"
 API_BASE = "https://api.semanticscholar.org/graph/v1"
 BATCH_SIZE = 20
@@ -128,7 +133,7 @@ def match_authors(authors, api_authors):
             if b and b.get("authorId") and same_person_name(a, b.get("name"))}
 
 
-def resolve_by_id(papers, ids, checked, save, post=s2_post_batch):
+def resolve_by_id(papers, ids, checked, save, post=s2_post_batch, counts=None):
     """One request per PAPER_BATCH papers that carry an arXiv ID or DOI. Papers S2 does not know come back
     as null and count as checked. Returns the papers without any such id (for the title fallback)."""
     with_id = [(external_id(p), p) for p in papers]
@@ -143,7 +148,12 @@ def resolve_by_id(papers, ids, checked, save, post=s2_post_batch):
             continue
         for (_, p), got in zip(chunk, answer):
             if got:
-                ids.update(match_authors(author_list(p), got.get("authors")))
+                matched = match_authors(author_list(p), got.get("authors"))
+                ids.update(matched)
+                if counts is not None:
+                    for name, author_id in matched.items():
+                        per_name = counts.setdefault(name, {})
+                        per_name[author_id] = per_name.get(author_id, 0) + 1
             checked.add(normalize_title(p["title"]))
         save()
         print(f"  [{min(i + PAPER_BATCH, len(todo))}/{len(todo)}] by id, {len(ids)} authors resolved so far", flush=True)
@@ -215,19 +225,29 @@ def main():
 
     ids = load_json(IDS_FILE, {})
     checked = set(load_json(CHECKED_FILE, []))
+    recount = "--recount" in sys.argv
+    counts = {} if recount else load_json(COUNTS_FILE, {})
+    if recount:
+        # Revisit every paper once to count which S2 profile each author name appears under.
+        checked = set()
 
     def unresolved_authors(p):
         return [a for a in author_list(p) if normalize_name(a) not in ids]
 
-    pending = [p for p in av if normalize_title(p["title"]) not in checked and unresolved_authors(p)]
+    pending = [p for p in av if normalize_title(p["title"]) not in checked and (recount or unresolved_authors(p))]
     print(f"{len(pending)} AV papers left to check (of {len(av)} AV papers with an author list, "
           f"{len(ids)} authors already resolved)", flush=True)
 
     def save():
         save_json(IDS_FILE, ids)
         save_json(CHECKED_FILE, sorted(checked))
+        save_json(COUNTS_FILE, counts)
 
-    pending = resolve_by_id(pending, ids, checked, save)
+    pending = resolve_by_id(pending, ids, checked, save, counts=counts)
+    if recount:
+        # The profile most of an author's papers sit under is the one to use.
+        for name, per_id in counts.items():
+            ids[name] = max(per_id, key=lambda i: per_id[i])
     save()
     if "--title-fallback" not in sys.argv:
         print(f"{len(pending)} papers have no arXiv ID or DOI; rerun with --title-fallback to look them up by "

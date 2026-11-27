@@ -32,8 +32,9 @@ def metadata(version):
             "description": (
                 "<p>The corpus behind AV Atlas (https://nightrome.github.io/av-atlas/): autonomous-vehicle "
                 "papers from about 20 computer vision and robotics venues, with authors, institutions, "
-                "countries, and citations counted between papers in the corpus. Four gzipped CSV files and a "
-                "README that explains each column and what the data is not.</p>"
+                "countries, and citations counted between papers in the corpus. Gzipped CSV files (papers, authors, authorship, "
+                "citations, institutions, other paper versions, similar papers), the text embeddings of the papers and a "
+                "README that lists every column and explains what the data is not. Abstracts are not included.</p>"
                 "<p>Institutions and countries are read from paper pages and PDFs and are incomplete and "
                 "approximate; author names are not disambiguated. The paper metadata remains subject to the "
                 "terms of its original sources.</p>"),

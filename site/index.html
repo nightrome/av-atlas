@@ -542,7 +542,21 @@ function renderResults() {
 
   const papersTable = document.querySelector('#papers-body').closest('table');
   const papersBody = document.getElementById('papers-body');
-  const shown = papers.slice(pagination.offset, pagination.offset + pagination.pageSize);
+  // The "#" column sorts by position in the default (most-cited) order.
+  const defaultRank = new Map(papers.map((p, i) => [p, i]));
+  const paperColumns = [
+    { accessor: p => defaultRank.get(p), numeric: true },
+    { accessor: p => p.title, numeric: false },
+    { accessor: p => p.category || '', numeric: false },
+    { accessor: p => p.year, numeric: true },
+    { accessor: p => p.venue, numeric: false },
+    { accessor: p => sourceLinkCount(p), numeric: true },
+    { accessor: p => p.citations, numeric: true },
+    { accessor: p => p.early_citations, numeric: true },
+  ];
+  // Sort the whole list by the clicked header first, then take this page.
+  const shown = applyTableSortSafe(papersTable, papers, paperColumns)
+    .slice(pagination.offset, pagination.offset + pagination.pageSize);
   currentTimelineDraw(shown);
   function renderPapersBody(rows) {
     papersBody.innerHTML = '';
@@ -551,16 +565,7 @@ function renderResults() {
     ])));
     appendSumRow(papersBody, rows, [null, null, null, null, null, null, p => p.citations, p => p.early_citations]);
   }
-  makeSortableSafe(papersTable, shown, [
-    { accessor: (p, i) => pagination.offset + shown.indexOf(p) + 1, numeric: true },
-    { accessor: p => p.title, numeric: false },
-    { accessor: p => p.category || '', numeric: false },
-    { accessor: p => p.year, numeric: true },
-    { accessor: p => p.venue, numeric: false },
-    { accessor: p => sourceLinkCount(p), numeric: true },
-    { accessor: p => p.citations, numeric: true },
-    { accessor: p => p.early_citations, numeric: true },
-  ], renderPapersBody);
+  makeSortableSafe(papersTable, shown, paperColumns, renderPapersBody, { rerender: renderResults });
 
 }
 </script>

@@ -105,7 +105,7 @@
   <div class="panel-title-row"><h2>Similar papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="Papers whose title and abstract read most like this one, found with a text-embedding model. Not based on citations." data-tip="Papers whose title and abstract read most like this one, found with a text-embedding model. Not based on citations.">i</span></div>
   <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Papers on the same subject, ranked by how closely their title and abstract match this one. Similarity runs from 0 to 1; citations are not used.</p>
   <div id="similar-pagination-container"></div>
-  <table style="margin-top: 12px;"><thead><tr><th>Title</th><th class="num" title="Cosine similarity of the two papers' text embeddings: 1 is identical, higher means closer.">Similarity</th><th>Venue</th><th class="num">Year</th><th class="num" title="Citations from other papers in this corpus.">Citations</th><th>Category</th><th title="Whether either paper cites the other. Similar papers that do not cite each other are often parallel work.">Citation link</th></tr></thead>
+  <table style="margin-top: 12px;"><thead><tr><th>Title</th><th class="num" title="Cosine similarity of the two papers' text embeddings: 1 is identical, higher means closer.">Similarity</th><th>Venue</th><th class="num">Year</th><th class="num" title="Citations from other papers in this corpus.">Citations</th><th>Category</th><th title="Whether either paper cites the other. Similar papers that do not cite each other are often parallel work.">Citation relation</th></tr></thead>
   <tbody id="similar-body"></tbody></table>
 </div>
 
@@ -215,13 +215,21 @@ setDetailPageMeta(title, title
 
 function notFound() {
   document.getElementById('venue-meta').textContent = 'No paper found on this site with that exact title.';
-  document.getElementById('abstract-panel').style.display = 'none';
-  document.getElementById('citing-panel').style.display = 'none';
+  ['abstract-panel', 'citing-panel', 'citing-authors-panel', 'similar-panel'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const authorPanel = document.getElementById('author-table').closest('.panel');
+  if (authorPanel) authorPanel.style.display = 'none';
 }
 
 fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => {
   const paper = (stats.all_papers || []).find(p => p.title === title);
   if (paper) { renderPaper(stats, paper, false); return; }
+  // An old link to a preprint that was merged into its published version (see
+  // data/duplicate_papers.json): go to the merged paper instead of "not found".
+  const merged = (stats.all_papers || []).find(p => (p.also_published_as || []).some(a => a.title === title));
+  if (merged) { location.replace(`paper.html?title=${encodeURIComponent(merged.title)}`); return; }
   // Not in the AV-relevant set -- before giving up, also check the much
   // larger non-AV set (see filters.js's fetchStatsWithRelevance for why
   // that's a separate, lazily-fetched file, never bundled into
@@ -546,7 +554,7 @@ function renderPaperBody(stats, paper, isAdjacent) {
     similarRows.forEach(x => {
       const cites = citedBy.has(x.p.title);                                   // it cites this paper
       const citedByThis = (map.get(x.p.title) || []).includes(paper.title);   // this paper cites it
-      x.link = cites && citedByThis ? 'Both' : cites ? 'Cites this paper' : citedByThis ? 'Cited by this paper' : 'None';
+      x.link = cites && citedByThis ? 'Both' : cites ? 'Cites this paper' : citedByThis ? 'Cited by this paper' : 'Neither';
     });
     const similarBody = document.getElementById('similar-body');
     function renderSimilarBody(data) {
@@ -566,8 +574,7 @@ function renderPaperBody(stats, paper, isAdjacent) {
       // Five rows to start with; the Show dropdown reveals up to 20.
       const pg = renderPagination(similarPagination, 'paper.html', similarRows.length,
         { paramKey: 'similar_page', pageSizes: [5, 10, 20], defaultPageSize: 5, onChange: renderSimilarTable });
-      const shown = similarRows.slice(pg.offset, pg.offset + pg.pageSize);
-      makeSortableSafe(similarBody.closest('table'), shown, [
+      const columns = [
         { accessor: x => x.p.title, numeric: false },
         { accessor: x => x.score, numeric: true },
         { accessor: x => x.p.venue || '', numeric: false },
@@ -575,7 +582,11 @@ function renderPaperBody(stats, paper, isAdjacent) {
         { accessor: x => x.p.citations || 0, numeric: true },
         { accessor: x => x.p.category || 'uncategorized', numeric: false },
         { accessor: x => x.link, numeric: false },
-      ], renderSimilarBody);
+      ];
+      const table = similarBody.closest('table');
+      const shown = applyTableSortSafe(table, similarRows, columns).slice(pg.offset, pg.offset + pg.pageSize);
+      makeSortableSafe(table, shown, columns, renderSimilarBody,
+        { rerender: renderSimilarTable, paramKey: 'similar_page' });
     }
     renderSimilarTable();
     document.getElementById('similar-panel').style.display = '';
@@ -640,13 +651,15 @@ function renderPaperBody(stats, paper, isAdjacent) {
     // index tile: a paper with a large in-corpus citer count), and this was
     // rendering every single one into one unpaginated table (user-flagged).
     const pagination = renderPagination(citingPaginationContainer, 'paper.html', citingRows.length, { onChange: renderCitingTable });
-    const shown = citingRows.slice(pagination.offset, pagination.offset + pagination.pageSize);
-    makeSortableSafe(citingBody.closest('table'), shown, [
+    const columns = [
       { accessor: c => c.title, numeric: false },
       { accessor: c => c.venue || '', numeric: false },
       { accessor: c => c.year || 0, numeric: true },
       { accessor: c => c.category || 'uncategorized', numeric: false },
-    ], renderCitingBody);
+    ];
+    const table = citingBody.closest('table');
+    const shown = applyTableSortSafe(table, citingRows, columns).slice(pagination.offset, pagination.offset + pagination.pageSize);
+    makeSortableSafe(table, shown, columns, renderCitingBody, { rerender: renderCitingTable });
   }
   renderCitingTable();
 
@@ -760,8 +773,7 @@ function renderPaperBody(stats, paper, isAdjacent) {
   function renderCitingAuthors() {
     const pg = renderPagination(document.getElementById('citing-authors-pagination'), 'paper.html', citingAuthors.length,
       { paramKey: 'citing_page', onChange: renderCitingAuthors });
-    const shown = citingAuthors.slice(pg.offset, pg.offset + pg.pageSize);
-    makeSortableSafe(citingAuthorsBody.closest('table'), shown, [
+    const columns = [
       { accessor: c => c.name, numeric: false },
       { accessor: c => c.count, numeric: true },
       { accessor: c => c.totalCitations, numeric: true },
@@ -770,7 +782,11 @@ function renderPaperBody(stats, paper, isAdjacent) {
       // institution land at the bottom of an A-Z sort instead of the top.
       { accessor: c => c.country || '￿', numeric: false },
       { accessor: c => c.institution || '￿', numeric: false },
-    ], renderCitingAuthorsBody);
+    ];
+    const table = citingAuthorsBody.closest('table');
+    const shown = applyTableSortSafe(table, citingAuthors, columns).slice(pg.offset, pg.offset + pg.pageSize);
+    makeSortableSafe(table, shown, columns, renderCitingAuthorsBody,
+      { rerender: renderCitingAuthors, paramKey: 'citing_page' });
   }
   renderCitingAuthors();
 }
