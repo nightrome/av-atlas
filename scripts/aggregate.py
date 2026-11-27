@@ -38,6 +38,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from atomic_write import write_json_atomic
+import duplicate_papers
 import regions as region_taxonomy
 from email_addresses import find_email_addresses, strip_email_addresses
 
@@ -2867,6 +2868,13 @@ def main():
     for e in all_entries:
         if e.get("venue"):
             e["venue"] = normalize_venue(e["venue"])
+    # Preprints that duplicate a published paper under another title are folded into it,
+    # keeping the old title and venue as also_published_as (data/duplicate_papers.json).
+    duplicate_pairs = duplicate_papers.load_pairs()
+    n_before_merge = len(all_entries)
+    all_entries = duplicate_papers.merge_entries(all_entries, duplicate_pairs)
+    if len(all_entries) != n_before_merge:
+        print(f"  merged {n_before_merge - len(all_entries)} duplicate papers into their published versions")
     entries = [e for e in all_entries if e.get("av_relevance") == "AV"]
     n_before_completeness = len(entries)
     entries = [e for e in entries if is_fully_processed(e)]
@@ -3077,6 +3085,8 @@ def main():
             "authors": authors,
             "author_verification": (e.get("author_verification") or "no_reference_record"),
             "arxiv_url": e.get("arxiv_url"),
+            # Other title/venue this paper also appeared under (a merged preprint).
+            "also_published_as": e.get("also_published_as"),
             # Only present for papers whose own Scholar page was confirmed
             # (a generic Scholar search link is deliberately never used).
             **scholar_url_field(scholar_paper_links, e.get("title")),
@@ -3127,7 +3137,8 @@ def main():
     # rather than trying to recover it from a count.
     citation_graph = {}
     if CITATION_GRAPH_FILE.exists():
-        citation_graph = rekey_citation_graph(json.loads(CITATION_GRAPH_FILE.read_text(encoding="utf-8")))
+        citation_graph = rekey_citation_graph(duplicate_papers.fold_graph(
+            json.loads(CITATION_GRAPH_FILE.read_text(encoding="utf-8")), duplicate_papers.alias_map(duplicate_pairs)))
     by_norm_title = {normalize_title(p["title"]): p for p in papers}
     citing_by_target = defaultdict(list)
     # A self-citation (the citing paper shares at least one author with the

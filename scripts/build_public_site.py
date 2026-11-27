@@ -67,6 +67,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_data_release  # noqa: E402  (needs the sys.path line above)
+import duplicate_papers  # noqa: E402
 import publish_gate  # noqa: E402
 
 BASE = Path(__file__).resolve().parent.parent
@@ -622,7 +623,9 @@ def main():
     graph_path = BASE / "data" / "citation_graph.json"
     build_data_release.build(
         json.loads((BASE / "data" / "stats.json").read_text(encoding="utf-8")),
-        json.loads(graph_path.read_text(encoding="utf-8")) if graph_path.exists() else {},
+        duplicate_papers.fold_graph(
+            json.loads(graph_path.read_text(encoding="utf-8")),
+            duplicate_papers.alias_map(duplicate_papers.load_pairs())) if graph_path.exists() else {},
         version,
     )
 

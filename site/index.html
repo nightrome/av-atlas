@@ -504,7 +504,7 @@ function renderResults() {
   // requested size. Client-side sort/slice over ~19k AV papers is cheap
   // enough that the server-side shortcut isn't worth the conflict.
   let papers = filterPapers(stats.all_papers || [], filters);
-  if (query) papers = papers.filter(p => matchesSearchQuery(p.title, query));
+  if (query) papers = papers.filter(p => matchesSearchQuery([p.title, ...(p.also_published_as || []).map(a => a.title)].join(' | '), query));
   if (instQuery) papers = papers.filter(p => (p.institutions || []).some(inst => matchesSearchQuery(inst, instQuery)));
 
   // Default sort; the table header cells (via makeSortable below) are the

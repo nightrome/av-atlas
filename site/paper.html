@@ -76,6 +76,7 @@
   <h2 id="title">…</h2>
   <div class="meta" id="venue-meta"></div>
   <div class="meta" id="links-meta"></div>
+  <div class="meta" id="also-meta" style="display:none;"></div>
   <span class="category-chip" id="category-chip"></span>
   <span class="category-chip" id="relevance-chip" style="display:none;"></span>
 </div>
@@ -295,6 +296,23 @@ function renderPaperBody(stats, paper, isAdjacent) {
   try {
     renderRankBadges(document.getElementById('rank-badges'), computeEntityRanks(stats).paper(paper.title));
   } catch (e) { /* ranking is a top-of-page extra, never block the page for it */ }
+
+  // A preprint of this paper that was merged into it (data/duplicate_papers.json): keep
+  // its title and venue visible, so someone who knows the paper by that name finds it.
+  const alsoMeta = document.getElementById('also-meta');
+  const alsoList = paper.also_published_as || [];
+  if (alsoList.length) {
+    alsoMeta.textContent = 'Also appeared as: ';
+    alsoList.forEach((a, i) => {
+      if (i) alsoMeta.append('; ');
+      const label = `${a.title}${[a.venue, a.year].filter(Boolean).length ? ' (' + [a.venue, a.year].filter(Boolean).join(' ') + ')' : ''}`;
+      if (a.url && /^https?:\/\//.test(a.url)) {
+        const link = document.createElement('a'); link.href = a.url; link.textContent = label;
+        link.target = '_blank'; link.rel = 'noopener'; alsoMeta.appendChild(link);
+      } else alsoMeta.append(label);
+    });
+    alsoMeta.style.display = '';
+  }
 
   const linksMeta = document.getElementById('links-meta');
   const links = [];
