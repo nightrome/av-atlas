@@ -408,7 +408,9 @@ function renderBody(stats, papers) {
     orcidLink.style.display = '';
     // A person can have registered more than one ORCID: the main one (on most of their papers) is
     // the link above, the others follow as smaller links.
-    orcidLink.parentNode.querySelectorAll('.orcid-extra').forEach(el => el.remove());
+    if (orcidLink.parentNode && orcidLink.parentNode.querySelectorAll) {
+      orcidLink.parentNode.querySelectorAll('.orcid-extra').forEach(el => el.remove());
+    }
     (detail.orcids || []).filter(o => o.orcid !== detail.orcid).forEach(o => {
       const extra = document.createElement('a');
       extra.className = 'scholar-link orcid-extra';
@@ -416,7 +418,7 @@ function renderBody(stats, papers) {
       extra.target = '_blank'; extra.rel = 'noopener';
       extra.textContent = `also ${o.orcid}`;
       extra.title = 'Another ORCID found for this author name';
-      orcidLink.after(extra);
+      if (orcidLink.after) orcidLink.after(extra);
     });
   } else {
     orcidLink.style.display = 'none';
