@@ -33,6 +33,12 @@
     #pm-tip .m { color: var(--muted); }
     #map .zoombtns { position: absolute; top: 8px; right: 8px; display: flex; flex-direction: column; gap: 4px; }
     #map .zoombtns button { width: 34px; height: 34px; padding: 0; font-size: 1.15em; line-height: 1; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+    @media (pointer: coarse), (max-width: 700px) {
+      #map .zoombtns button { width: 44px; height: 44px; }
+      #map .controls-row button, #map .controls-row select, #map .controls-row input[type=text] { min-height: 44px; font-size: 16px; }
+      #map .controls-row .chk { min-height: 44px; display: inline-flex; align-items: center; }
+    }
+    #map canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     #pm-mini { position: absolute; right: 8px; bottom: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel);
       opacity: 0.92; cursor: pointer; touch-action: none; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
     #pm-hint { position: absolute; left: 8px; bottom: 8px; pointer-events: none; background: var(--panel); color: var(--muted); border: 1px solid var(--border);
@@ -70,7 +76,7 @@
     if (typeof IntersectionObserver === 'function') {
       const io = new IntersectionObserver(entries => {
         if (entries.some(e => e.isIntersecting)) { io.disconnect(); begin(); }
-      }, { rootMargin: '400px 0px' });
+      }, { rootMargin: '150px 0px' });
       io.observe(section);
     } else begin();
   }
@@ -444,9 +450,22 @@
         case '+': case '=': zoomAt(1.4, cx, cy); break;
         case '-': case '_': zoomAt(1 / 1.4, cx, cy); break;
         case '0': case 'Home': resetView(); break;
+        case 'Enter': case ' ': {
+          // The paper under the centre of the map, the same one the tooltip shows.
+          const i = D ? nearest(cx, cy) : -1;
+          if (i >= 0) window.open(`paper.html?title=${encodeURIComponent(D.titles[i])}`, '_blank', 'noopener');
+          break;
+        }
         default: handled = false;
       }
-      if (handled) { e.preventDefault(); hideTip(); }
+      if (handled) {
+        e.preventDefault();
+        // Keyboard users have no pointer, so the middle of the map stands in for it:
+        // the dot nearest the centre is highlighted and named, and Enter opens it.
+        if (e.key === 'Enter' || e.key === ' ') return;
+        hideTip();
+        updateHover(cx, cy);
+      }
     });
     $('pm-zin').addEventListener('click', () => { zoomAt(1.5, W / 2, H / 2); hideTip(); });
     $('pm-zout').addEventListener('click', () => { zoomAt(1 / 1.5, W / 2, H / 2); hideTip(); });

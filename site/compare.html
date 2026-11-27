@@ -70,7 +70,7 @@
 <nav id="topnav"></nav>
 <div id="detail-back-container"></div>
 
-<h1 class="page-title" id="page-title">Compare</h1>
+<h2 class="page-title" id="page-title">Compare</h2>
 <p class="section-intro" id="page-intro"></p>
 <div class="subject-chips" id="subject-chips"></div>
 
@@ -200,7 +200,8 @@ function renderChips() {
     rm.href = removeUrl(name);
     rm.textContent = '×';
     rm.title = `Remove ${name} from this comparison`;
-    rm.style.cssText = 'color:var(--muted);text-decoration:none;padding:2px 4px;';
+    rm.setAttribute('aria-label', rm.title);
+    rm.style.cssText = 'color:var(--muted);text-decoration:none;padding:12px 10px;margin:-10px 0;';
     chip.appendChild(rm);
     wrap.appendChild(chip);
   });
