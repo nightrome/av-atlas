@@ -1666,6 +1666,41 @@
     }
   };
 
+  // One entry out of a sharded data directory (similar_authors/ and the like),
+  // sharded by name exactly like abstracts/. Resolves to undefined when the
+  // directory or the name is missing, so a page can simply hide its panel.
+  window.fetchShardEntry = function (dir, key) {
+    const shard = String(shardIndex(key)).padStart(2, '0');
+    return fetch(`${dir}/shard-${shard}.json`).then(r => r.json()).then(d => d[key]).catch(() => undefined);
+  };
+
+  // A ranked table with the site's usual "Show N" dropdown, Prev/Next and
+  // click-to-sort headers, used by the "similar ..." panels. o = { table, body,
+  // pagination (container), rows, columns (sortable accessors), cells(row) ->
+  // array of strings/numbers/Nodes, paramKey }. Starts at 5 rows; the
+  // dropdown reveals 10 or 20.
+  window.renderRankedTable = function (o) {
+    function renderBody(data) {
+      o.body.innerHTML = '';
+      data.forEach(r => {
+        const tr = document.createElement('tr');
+        o.cells(r).forEach((c, i) => {
+          const td = document.createElement('td');
+          if (i > 0 && typeof c === 'number') td.className = 'num';
+          if (c instanceof Node) td.appendChild(c); else td.textContent = c;
+          tr.appendChild(td);
+        });
+        o.body.appendChild(tr);
+      });
+    }
+    function draw() {
+      const pg = renderPagination(o.pagination, location.pathname.split('/').pop(), o.rows.length,
+        { paramKey: o.paramKey, pageSizes: o.pageSizes || [5, 10, 20], defaultPageSize: 5, onChange: draw });
+      makeSortableSafe(o.table, o.rows.slice(pg.offset, pg.offset + pg.pageSize), o.columns, renderBody);
+    }
+    draw();
+  };
+
   // Appends a "Total" row summing whichever columns have a numeric
   // accessor. accessors is one entry per column, aligned with the table's
   // actual <td>s (including the leading name/link column) -- pass null for

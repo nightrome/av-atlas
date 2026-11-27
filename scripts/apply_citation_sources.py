@@ -27,6 +27,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from atomic_write import write_json_atomic
+import duplicate_papers
 
 BASE = Path(__file__).resolve().parent.parent
 PAPERS_FILE = BASE / "data" / "papers_full.json"
@@ -97,6 +98,9 @@ def main():
         return
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     graph = load_json(GRAPH_FILE, {"edges": {}})
+    # A preprint merged into its published version (data/duplicate_papers.json) must not
+    # keep its own citations; they count for the primary.
+    graph = duplicate_papers.fold_graph(graph, duplicate_papers.alias_map(duplicate_papers.load_pairs()))
     n_changed = apply_counts(papers, graph)
     write_json_atomic(PAPERS_FILE, papers, indent=2)
     print(f"Updated {n_changed} in-corpus counts in {PAPERS_FILE}")

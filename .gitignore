@@ -166,3 +166,12 @@ data/affiliations_llm*.json
 
 # Zenodo deposit prepared by scripts/prepare_zenodo.py
 dist/
+
+# The neighbour lists, map points and similarity files below are rebuilt from the tracked embedding
+# vectors in data/embeddings/ (computed on a GPU by hand, about 17 MB, updated only when refreshed).
+data/similar/
+data/similar_authors/
+data/similar_institutions/
+data/similar_groups.json
+data/map/
+data/embedding_quality.md

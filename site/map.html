@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://av-atlas.goatcounter.com/count; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas: Paper Map</title>
+<meta name="description" content="A map of autonomous vehicle research: every paper is a dot, and papers about similar things sit close together.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AV Atlas">
+<meta property="og:title" content="AV Atlas: Paper Map">
+<meta property="og:description" content="A map of autonomous vehicle research: every paper is a dot, and papers about similar things sit close together.">
+<meta property="og:url" content="https://nightrome.github.io/av-atlas/map.html">
+<link rel="canonical" href="https://nightrome.github.io/av-atlas/map.html">
+<meta property="og:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AV Atlas: Paper Map">
+<meta name="twitter:description" content="A map of autonomous vehicle research: every paper is a dot, and papers about similar things sit close together.">
+<meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preload" href="stats.json" as="fetch" crossorigin>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme-light.css">
+<style>
+  body { max-width: 1900px; margin: 0 auto; padding: 24px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
+  .section-intro { color: var(--muted); font-size: 0.88em; margin: 0 0 10px; line-height: 1.5; }
+  .controls-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.85em; color: var(--muted); }
+  .controls-row select, .controls-row input[type="text"] {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+    padding: 4px 8px; font-size: 0.95em;
+  }
+  .controls-row input[type="text"] { width: 260px; }
+  .controls-row button { background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+  .map-wrap { position: relative; border: 1px solid var(--border); border-radius: 8px; background: var(--panel2); overflow: hidden; }
+  #map { display: block; width: 100%; cursor: grab; touch-action: none; }
+  #map.dragging { cursor: grabbing; }
+  #tip { position: absolute; pointer-events: none; display: none; max-width: 340px; background: var(--panel); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 0.82em; line-height: 1.35; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+  #tip .t { font-weight: 600; }
+  #tip .m { color: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; font-size: 0.82em; }
+  .legend button { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid transparent; border-radius: 12px;
+    color: var(--text); cursor: pointer; padding: 2px 8px; font-size: inherit; }
+  .legend button.active { border-color: var(--accent); }
+  .legend button.off { opacity: 0.45; }
+  .legend .sw { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .status { color: var(--muted); font-size: 0.82em; margin-top: 8px; }
+</style>
+</head>
+<body>
+<nav id="topnav"></nav>
+
+<div class="panel">
+  <div class="panel-title-row"><h2 style="margin-top:0;">Paper map</h2>
+    <span class="info-tip" tabindex="0" role="img" aria-label="Every dot is one AV paper. Papers whose titles and abstracts are alike sit close together; the axes have no meaning. Drag to pan, scroll to zoom, click a dot to open the paper." data-tip="Every dot is one AV paper. Papers whose titles and abstracts are alike sit close together; the axes have no meaning. Drag to pan, scroll to zoom, click a dot to open the paper.">i</span></div>
+  <p class="section-intro">Every dot is a paper. Papers whose titles and abstracts read alike sit close together, so topics show up as islands. Papers added since the text embeddings were last refreshed are not on the map yet.</p>
+  <div class="controls-row">
+    <label for="color-by">Colour by</label>
+    <select id="color-by"><option value="cat">Category</option><option value="year">Year</option></select>
+    <input type="text" id="highlight" placeholder="Highlight an author or institution…" title="Highlights the papers of the matching author or institution; everything else fades.">
+    <button type="button" id="reset" title="Back to the whole map">Reset view</button>
+  </div>
+  <div class="map-wrap"><canvas id="map"></canvas><div id="tip"></div></div>
+  <div class="legend" id="legend"></div>
+  <div class="status" id="status">Loading the map…</div>
+</div>
+
+<script src="filters.js"></script>
+<script>
+(function () {
+  const cv = document.getElementById('map');
+  const ctx = cv.getContext('2d');
+  const tip = document.getElementById('tip');
+  const statusEl = document.getElementById('status');
+  const legendEl = document.getElementById('legend');
+  const params = new URLSearchParams(location.search);
+  const FALLBACK = ['#4f46e5', '#f59e0b', '#10b981', '#ef4444', '#06b6d4', '#a855f7', '#84cc16', '#ec4899',
+                    '#0ea5e9', '#f97316', '#14b8a6', '#6366f1', '#eab308', '#22c55e', '#d946ef', '#64748b'];
+  const catColor = i => FALLBACK[i % FALLBACK.length];
+  let D = null, N = 0, view = { k: 1, tx: 0, ty: 0 }, fit = 1, W = 0, H = 0, dpr = 1;
+  let colorBy = 'cat', onlyCat = null, hiSet = null, hover = -1, grid = null;
+  const CELL = 200, GRID_N = 51;
+  let yearMin = 0, yearMax = 0;
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    W = cv.parentElement.clientWidth;
+    H = Math.max(420, Math.min(820, Math.round(W * 0.62)));
+    cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + 'px';
+    fit = Math.min(W, H) / 10000;
+    draw();
+  }
+  function resetView() {
+    view.k = 1; view.tx = (W - 10000 * fit) / 2; view.ty = (H - 10000 * fit) / 2; draw();
+  }
+  const sx = x => x * fit * view.k + view.tx;
+  const sy = y => y * fit * view.k + view.ty;
+
+  function colorOf(i) {
+    if (colorBy === 'cat') return catColor(D.cat[i]);
+    const y = D.year[i];
+    if (!y) return '#9ca3af';
+    const t = (y - yearMin) / Math.max(1, yearMax - yearMin);
+    return `hsl(${Math.round(260 - t * 230)},72%,50%)`;
+  }
+  function visible(i) { return onlyCat == null || D.cat[i] === onlyCat; }
+
+  function draw() {
+    if (!D) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    const size = Math.max(1.6, Math.min(5, 1.4 + Math.log2(view.k) * 0.7));
+    const dim = hiSet != null;
+    // Faded background first, highlighted dots on top.
+    for (let pass = 0; pass < (dim ? 2 : 1); pass++) {
+      ctx.globalAlpha = dim && pass === 0 ? 0.13 : 0.85;
+      for (let i = 0; i < N; i++) {
+        if (!visible(i)) continue;
+        if (dim && (hiSet.has(i) ? 1 : 0) !== pass) continue;
+        const x = sx(D.x[i]), y = sy(D.y[i]);
+        if (x < -4 || y < -4 || x > W + 4 || y > H + 4) continue;
+        ctx.fillStyle = dim && pass === 0 ? '#9ca3af' : colorOf(i);
+        const s = dim && pass === 1 ? size + 1.2 : size;
+        ctx.fillRect(x - s / 2, y - s / 2, s, s);
+      }
+    }
+    ctx.globalAlpha = 1;
+    if (hover >= 0) {
+      ctx.strokeStyle = getComputedStyle(document.body).color;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(sx(D.x[hover]), sy(D.y[hover]), size + 3, 0, Math.PI * 2); ctx.stroke();
+    }
+  }
+
+  function buildGrid() {
+    grid = new Map();
+    for (let i = 0; i < N; i++) {
+      const key = Math.floor(D.x[i] / CELL) * GRID_N + Math.floor(D.y[i] / CELL);
+      (grid.get(key) || grid.set(key, []).get(key)).push(i);
+    }
+  }
+  function nearest(px, py) {
+    const wx = (px - view.tx) / (fit * view.k), wy = (py - view.ty) / (fit * view.k);
+    const r = 9 / (fit * view.k);
+    const cx = Math.floor(wx / CELL), cy = Math.floor(wy / CELL);
+    let best = -1, bd = r * r;
+    for (let a = cx - 1; a <= cx + 1; a++) for (let b = cy - 1; b <= cy + 1; b++) {
+      const list = grid.get(a * GRID_N + b);
+      if (!list) continue;
+      for (const i of list) {
+        if (!visible(i)) continue;
+        const dx = D.x[i] - wx, dy = D.y[i] - wy, d = dx * dx + dy * dy;
+        if (d < bd) { bd = d; best = i; }
+      }
+    }
+    return best;
+  }
+
+  // Pan, zoom, hover and click.
+  let drag = null, moved = false;
+  cv.addEventListener('pointerdown', e => {
+    drag = { x: e.clientX, y: e.clientY, tx: view.tx, ty: view.ty }; moved = false;
+    cv.setPointerCapture(e.pointerId); cv.classList.add('dragging');
+  });
+  cv.addEventListener('pointermove', e => {
+    const rect = cv.getBoundingClientRect(), px = e.clientX - rect.left, py = e.clientY - rect.top;
+    if (drag) {
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
+      view.tx = drag.tx + dx; view.ty = drag.ty + dy; tip.style.display = 'none'; draw(); return;
+    }
+    const i = D ? nearest(px, py) : -1;
+    if (i !== hover) { hover = i; draw(); }
+    if (i < 0) { tip.style.display = 'none'; return; }
+    tip.innerHTML = '';
+    const t = document.createElement('div'); t.className = 't'; t.textContent = D.titles[i];
+    const m = document.createElement('div'); m.className = 'm';
+    m.textContent = [D.year[i] || null, categoryLabel(D.cats[D.cat[i]]), `${D.cites[i].toLocaleString()} citations`].filter(Boolean).join(' · ');
+    tip.append(t, m);
+    tip.style.display = 'block';
+    tip.style.left = Math.min(px + 14, W - 350) + 'px';
+    tip.style.top = Math.min(py + 14, H - 60) + 'px';
+  });
+  cv.addEventListener('pointerup', e => {
+    cv.classList.remove('dragging'); drag = null;
+    if (!moved && hover >= 0) location.href = `paper.html?title=${encodeURIComponent(D.titles[hover])}`;
+  });
+  cv.addEventListener('pointerleave', () => { tip.style.display = 'none'; if (hover !== -1) { hover = -1; draw(); } });
+  cv.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect = cv.getBoundingClientRect(), px = e.clientX - rect.left, py = e.clientY - rect.top;
+    const factor = Math.exp(-e.deltaY * 0.0015);
+    const k2 = Math.max(1, Math.min(60, view.k * factor)), f = k2 / view.k;
+    view.tx = px - (px - view.tx) * f; view.ty = py - (py - view.ty) * f; view.k = k2; draw();
+  }, { passive: false });
+
+  // Highlight: an exact name from the URL (?author= / ?institution=) or a typed search.
+  let paperMeta = null;
+  function withStats(cb) {
+    if (paperMeta) return cb();
+    fetch('stats.json').then(r => r.json()).then(s => {
+      paperMeta = new Map((s.all_papers || []).map(p => [p.title, p])); cb();
+    });
+  }
+  function applyHighlight(match) {
+    if (!match) { hiSet = null; statusEl.textContent = statusText(); draw(); return; }
+    withStats(() => {
+      const set = new Set();
+      for (let i = 0; i < N; i++) {
+        const p = paperMeta.get(D.titles[i]);
+        if (p && match(p)) set.add(i);
+      }
+      hiSet = set;
+      statusEl.textContent = `${set.size.toLocaleString()} matching papers highlighted. ` + statusText();
+      draw();
+    });
+  }
+  function statusText() { return `${N.toLocaleString()} papers on the map. Drag to pan, scroll to zoom, click a dot to open the paper.`; }
+  const input = document.getElementById('highlight');
+  let timer = null;
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      const q = input.value.trim();
+      applyHighlight(q.length < 3 ? null : p => matchesSearchQuery(
+        [...(p.authors || []), ...(p.institutions || [])].join(' | '), q));
+    }, 250);
+  });
+
+  function buildLegend() {
+    legendEl.innerHTML = '';
+    if (colorBy === 'year') {
+      const span = document.createElement('span');
+      span.textContent = `${yearMin} (purple) to ${yearMax} (orange)`;
+      legendEl.appendChild(span); return;
+    }
+    D.cats.forEach((c, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = onlyCat === i ? 'active' : (onlyCat != null ? 'off' : '');
+      const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = catColor(i);
+      b.append(sw, categoryLabel(c));
+      b.title = 'Show only this category (click again to show all)';
+      b.addEventListener('click', () => { onlyCat = onlyCat === i ? null : i; buildLegend(); draw(); });
+      legendEl.appendChild(b);
+    });
+  }
+  document.getElementById('color-by').addEventListener('change', e => { colorBy = e.target.value; buildLegend(); draw(); });
+  document.getElementById('reset').addEventListener('click', () => { onlyCat = null; input.value = ''; hiSet = null; buildLegend(); resetView(); statusEl.textContent = statusText(); });
+  window.addEventListener('resize', () => { resize(); });
+
+  fetch('map/points.json').then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(d => {
+    D = d; N = d.titles.length;
+    const years = d.year.filter(Boolean); yearMin = Math.min(...years); yearMax = Math.max(...years);
+    buildGrid(); buildLegend(); resize(); resetView();
+    statusEl.textContent = statusText();
+    const a = params.get('author'), inst = params.get('institution');
+    if (a) { input.value = a; applyHighlight(p => (p.authors || []).includes(a)); }
+    else if (inst) { input.value = inst; applyHighlight(p => (p.institutions || []).includes(inst)); }
+  }).catch(() => { statusEl.textContent = 'The paper map is not available in this build.'; });
+})();
+</script>
+<script src="nav.js"></script>
+<script src="sortable.js"></script>
+</body>
+</html>

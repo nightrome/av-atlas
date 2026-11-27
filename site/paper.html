@@ -66,14 +66,6 @@
   .empty-note { color: var(--muted); font-size: 0.9em; }
   /* One line per row in both author tables; long cells are clipped and carry the full text on hover. */
   #author-body td, #citing-authors-body td { white-space: nowrap; vertical-align: middle; }
-  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
-  .related-card {
-    display: block; background: var(--panel2); border: 1px solid var(--border); border-radius: 10px;
-    padding: 10px 12px; text-decoration: none; color: var(--text);
-  }
-  .related-card:hover { border-color: var(--accent); }
-  .related-card .rtitle { font-size: 0.9em; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
-  .related-card .rmeta { font-size: 0.78em; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -84,6 +76,7 @@
   <h2 id="title">…</h2>
   <div class="meta" id="venue-meta"></div>
   <div class="meta" id="links-meta"></div>
+  <div class="meta" id="also-meta" style="display:none;"></div>
   <span class="category-chip" id="category-chip"></span>
   <span class="category-chip" id="relevance-chip" style="display:none;"></span>
 </div>
@@ -108,9 +101,12 @@
   <p class="abstract" id="abstract-text"></p>
 </div>
 
-<div class="panel" id="related-panel">
-  <div class="panel-title-row"><h2>Related papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="Other corpus papers close to this one by category, venue and shared citations." data-tip="Other corpus papers close to this one by category, venue and shared citations.">i</span></div>
-  <div class="related-grid" id="related-grid"></div>
+<div class="panel" id="similar-panel" style="display:none;">
+  <div class="panel-title-row"><h2>Similar papers</h2><span class="info-tip" tabindex="0" role="img" aria-label="Papers whose title and abstract read most like this one, found with a text-embedding model. Not based on citations." data-tip="Papers whose title and abstract read most like this one, found with a text-embedding model. Not based on citations.">i</span></div>
+  <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Papers on the same subject, ranked by how closely their title and abstract match this one. Similarity runs from 0 to 1; citations are not used.</p>
+  <div id="similar-pagination-container"></div>
+  <table style="margin-top: 12px;"><thead><tr><th>Title</th><th class="num" title="Cosine similarity of the two papers' text embeddings: 1 is identical, higher means closer.">Similarity</th><th>Venue</th><th class="num">Year</th><th class="num" title="Citations from other papers in this corpus.">Citations</th><th>Category</th><th title="Whether either paper cites the other. Similar papers that do not cite each other are often parallel work.">Citation link</th></tr></thead>
+  <tbody id="similar-body"></tbody></table>
 </div>
 
 <div class="panel" id="citing-panel">
@@ -214,7 +210,7 @@ const params = new URLSearchParams(location.search);
 const title = params.get('title') || '';
 document.getElementById('title').textContent = title || 'Unknown paper';
 setDetailPageMeta(title, title
-  ? `"${title}" in AV Atlas: citations within autonomous vehicle research, authors, and related papers.`
+  ? `"${title}" in AV Atlas: citations within autonomous vehicle research, authors, and similar papers.`
   : null);
 
 function notFound() {
@@ -300,6 +296,23 @@ function renderPaperBody(stats, paper, isAdjacent) {
   try {
     renderRankBadges(document.getElementById('rank-badges'), computeEntityRanks(stats).paper(paper.title));
   } catch (e) { /* ranking is a top-of-page extra, never block the page for it */ }
+
+  // A preprint of this paper that was merged into it (data/duplicate_papers.json): keep
+  // its title and venue visible, so someone who knows the paper by that name finds it.
+  const alsoMeta = document.getElementById('also-meta');
+  const alsoList = paper.also_published_as || [];
+  if (alsoList.length) {
+    alsoMeta.textContent = 'Also appeared as: ';
+    alsoList.forEach((a, i) => {
+      if (i) alsoMeta.append('; ');
+      const label = `${a.title}${[a.venue, a.year].filter(Boolean).length ? ' (' + [a.venue, a.year].filter(Boolean).join(' ') + ')' : ''}`;
+      if (a.url && /^https?:\/\//.test(a.url)) {
+        const link = document.createElement('a'); link.href = a.url; link.textContent = label;
+        link.target = '_blank'; link.rel = 'noopener'; alsoMeta.appendChild(link);
+      } else alsoMeta.append(label);
+    });
+    alsoMeta.style.display = '';
+  }
 
   const linksMeta = document.getElementById('links-meta');
   const links = [];
@@ -517,44 +530,57 @@ function renderPaperBody(stats, paper, isAdjacent) {
     empty.style.display = '';
   }
 
-  // "Related" is scored, not just "same category" -- a shared author is a
-  // much stronger signal than a shared topic label (categories are broad
-  // keyword buckets, see Methodology), so it's weighted highest, then a
-  // shared institution, then same category, then same venue+year. Purely
-  // client-side over all_papers, no server precomputation needed.
-  const authorSet = new Set(paper.authors || []);
-  const instSet = new Set(paper.institutions || []);
-  const related = [];
-  (stats.all_papers || []).forEach(p => {
-    if (p.title === paper.title) return;
-    let score = 0;
-    (p.authors || []).forEach(a => { if (authorSet.has(a)) score += 5; });
-    (p.institutions || []).forEach(i => { if (instSet.has(i)) score += 2; });
-    if (paper.category && p.category === paper.category) score += 1;
-    if (paper.venue && p.venue === paper.venue && paper.year && p.year === paper.year) score += 1;
-    if (score > 0) related.push({ p, score });
-  });
-  related.sort((a, b) => b.score - a.score || (b.p.citations || 0) - (a.p.citations || 0));
-  const relatedGrid = document.getElementById('related-grid');
-  const relatedPanel = document.getElementById('related-panel');
-  if (!related.length) {
-    relatedPanel.style.display = 'none';
-  } else {
-    related.slice(0, 6).forEach(({ p }) => {
-      const card = document.createElement('a');
-      card.className = 'related-card';
-      card.href = `paper.html?title=${encodeURIComponent(p.title)}`;
-      const title = document.createElement('div');
-      title.className = 'rtitle';
-      title.textContent = p.title;
-      const meta = document.createElement('div');
-      meta.className = 'rmeta';
-      meta.textContent = [p.venue, p.year, categoryLabel(p.category)].filter(Boolean).join(' · ');
-      card.appendChild(title);
-      card.appendChild(meta);
-      relatedGrid.appendChild(card);
+  // "Similar papers": nearest neighbours by text embedding of title and
+  // abstract, precomputed by scripts/build_similar_papers.py and sharded by
+  // title like abstracts/. Papers added since the last embedding run have no
+  // list, so the panel just stays hidden for them.
+  const similarShard = String(shardIndex(paper.title)).padStart(2, '0');
+  fetch(`similar/shard-${similarShard}.json`).then(r => r.json()).then(shardData => {
+    const known = new Map((stats.all_papers || []).map(p => [p.title, p]));
+    const similarRows = (shardData[paper.title] || [])
+      .map(([t, score]) => ({ p: known.get(t), score }))
+      .filter(x => x.p);
+    if (!similarRows.length) return;
+    const citedBy = new Set(paper.citing_papers || []);   // papers that cite this one
+    window.fetchCitingPapers(similarRows.map(x => x.p.title)).then(map => {
+    similarRows.forEach(x => {
+      const cites = citedBy.has(x.p.title);                                   // it cites this paper
+      const citedByThis = (map.get(x.p.title) || []).includes(paper.title);   // this paper cites it
+      x.link = cites && citedByThis ? 'Both' : cites ? 'Cites this paper' : citedByThis ? 'Cited by this paper' : 'None';
     });
-  }
+    const similarBody = document.getElementById('similar-body');
+    function renderSimilarBody(data) {
+      similarBody.innerHTML = '';
+      data.forEach(({ p, score, link: linkType }) => {
+        const link = document.createElement('a');
+        link.href = `paper.html?title=${encodeURIComponent(p.title)}`;
+        link.className = 'truncate-cell';
+        link.textContent = p.title;
+        link.title = p.title;
+        similarBody.appendChild(row([link, score.toFixed(2), p.venue || '', p.year || '',
+          (p.citations || 0).toLocaleString(), categoryLabel(p.category || 'uncategorized'), linkType]));
+      });
+    }
+    const similarPagination = document.getElementById('similar-pagination-container');
+    function renderSimilarTable() {
+      // Five rows to start with; the Show dropdown reveals up to 20.
+      const pg = renderPagination(similarPagination, 'paper.html', similarRows.length,
+        { paramKey: 'similar_page', pageSizes: [5, 10, 20], defaultPageSize: 5, onChange: renderSimilarTable });
+      const shown = similarRows.slice(pg.offset, pg.offset + pg.pageSize);
+      makeSortableSafe(similarBody.closest('table'), shown, [
+        { accessor: x => x.p.title, numeric: false },
+        { accessor: x => x.score, numeric: true },
+        { accessor: x => x.p.venue || '', numeric: false },
+        { accessor: x => x.p.year || 0, numeric: true },
+        { accessor: x => x.p.citations || 0, numeric: true },
+        { accessor: x => x.p.category || 'uncategorized', numeric: false },
+        { accessor: x => x.link, numeric: false },
+      ], renderSimilarBody);
+    }
+    renderSimilarTable();
+    document.getElementById('similar-panel').style.display = '';
+    });
+  }).catch(() => {});
 
   const citingPanel = document.getElementById('citing-panel');
   // citing_papers is just a list of titles (see aggregate.py) -- each
