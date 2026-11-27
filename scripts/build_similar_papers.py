@@ -2,7 +2,7 @@
 
 The vectors come from an occasional GPU run (see dev/embedding_eval/); this
 script only does the cheap part and runs fine on a CPU. For every AV paper it
-finds the 10 nearest papers by cosine similarity and writes them to
+finds the 20 nearest papers by cosine similarity and writes them to
 data/similar/shard-NN.json, sharded by title like abstracts/ (paper.html
 fetches one shard per page view).
 
@@ -32,7 +32,7 @@ sys.path.insert(0, str(BASE / "scripts"))
 VECTORS = BASE / "data" / "embeddings" / "int8_512.npy"
 KEYS = BASE / "data" / "embeddings" / "keys.json"
 OUT_DIR = BASE / "data" / "similar"
-TOP_K = 10
+TOP_K = 20
 
 
 def av_pool_titles(papers, normalize_title):
