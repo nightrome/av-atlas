@@ -43,7 +43,8 @@
   tr:hover { background: var(--panel2); }
   td a { color: var(--accent); text-decoration: none; }
   td a:hover { text-decoration: underline; }
-  .chart { display: flex; align-items: flex-end; gap: 3px; height: 100px; padding: 4px 0 0; border-bottom: 2px solid var(--border); }
+  .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-top: 32px; margin-top: -8px; }
+  .chart { min-width: 300px; display: flex; align-items: flex-end; gap: 3px; height: 100px; padding: 4px 0 0; border-bottom: 2px solid var(--border); }
   .chart .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
   .chart .bar { width: 100%; max-width: 26px; border-radius: 4px 4px 0 0; background: var(--accent); min-height: 2px; }
   .chart .xlabel { font-size: 0.68em; color: var(--muted); margin-top: 4px; white-space: nowrap; }
@@ -55,6 +56,8 @@
   .chart .bar-wrap:hover .tooltip { display: block; }
   .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+  /* A wide table inside a grid cell would stretch the cell (and the page) instead of scrolling in its own box. */
+  .cols > * { min-width: 0; }
 </style>
 </head>
 <body>
@@ -75,12 +78,13 @@
 
 <div class="panel">
   <div class="panel-title-row"><h2>Papers by year</h2><span class="info-tip" tabindex="0" role="img" aria-label="AV-relevant papers crediting this institution, by publication year. Hover a bar for its citation total." data-tip="AV-relevant papers crediting this institution, by publication year. Hover a bar for its citation total.">i</span></div>
-  <div class="chart" id="year-chart"></div>
+  <div class="chart-scroll"><div class="chart" id="year-chart"></div></div>
 </div>
 
 <div class="cols">
   <div class="panel">
-    <div class="panel-title-row"><h2>Top authors here</h2><span class="info-tip" tabindex="0" role="img" aria-label="The most-published authors whose own stated affiliation is this institution." data-tip="The most-published authors whose own stated affiliation is this institution.">i</span></div>
+    <div class="panel-title-row"><h2>Top authors here</h2><span class="info-tip" tabindex="0" role="img" aria-label="Authors who gave this institution as their affiliation, ranked by citations. Papers and citations count only the papers where they listed this institution, so work from an earlier or later employer is not included." data-tip="Authors who gave this institution as their affiliation, ranked by citations. Papers and citations count only the papers where they listed this institution, so work from an earlier or later employer is not included.">i</span></div>
+    <p style="margin:0 0 8px; color:var(--muted); font-size:0.85em;">Only papers where the author listed this institution count here. Work from other employers is not included.</p>
     <table><thead><tr><th>Author</th><th>Years</th><th class="num">Papers</th><th class="num" data-term="citations">Citations</th></tr></thead>
     <tbody id="authors-body"></tbody></table>
   </div>
@@ -155,8 +159,16 @@ setDetailPageMeta(name, name
 // roster (institution_authors[name]) plus author_detail for exactly the
 // authors on that roster -- resolved here, in sequence (the second fetch's
 // name list depends on the first fetch's result), before render() runs.
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats =>
-  !(stats.all_papers || []).some(p => (p.institutions || []).includes(name)) && !(stats.institution_countries || {})[name]
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => {
+  const known = (stats.all_papers || []).some(p => (p.institutions || []).includes(name)) || (stats.institution_countries || {})[name];
+  // An old name that now belongs to a larger institution (a department folded into its university,
+  // two spellings merged): go to the current page instead of showing an error.
+  const moved = (stats.institution_redirects || {})[name];
+  if (!known && moved) {
+    location.replace('institution.html?name=' + encodeURIComponent(moved));
+    return new Promise(() => {});
+  }
+  return !known
     ? Promise.reject(new Error('unknown institution'))
     : window.fetchInstitutionAuthors([name]).then(instMap => {
     const preciseAuthors = instMap.get(name);
@@ -181,8 +193,8 @@ fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats =>
       stats.author_detail = Object.fromEntries(detailMap);
       return stats;
     });
-  })
-).then(render).catch(err => {
+  });
+}).then(render).catch(err => {
   if (err && err.message === 'unknown institution') {
     // A name that is not an institution here (a misspelling, or a shortened form of a longer name):
     // say so instead of showing an empty page with "0 papers".

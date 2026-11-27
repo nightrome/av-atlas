@@ -57,7 +57,8 @@
      than a phone viewport -- scroll inside its own box instead of spilling
      past the panel's padding (user-flagged: "straddles margins on the
      phone"). */
-  .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  /* The padding keeps the hover tooltip above the tallest bar from being clipped by the scroll box. */
+  .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-top: 32px; margin-top: -8px; }
   .chart { display: flex; align-items: flex-end; gap: 3px; height: 100px; padding: 4px 0 0; border-bottom: 2px solid var(--border); min-width: 300px; }
   .chart .bar-wrap { flex: 1 0 18px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
   .chart .bar { width: 100%; max-width: 26px; border-radius: 4px 4px 0 0; background: var(--accent); min-height: 2px; }
@@ -225,7 +226,17 @@ setDetailPageMeta(name, name
   ? `${name}'s autonomous vehicle research in AV Atlas: papers, citations within AV research, co-authors and career span.`
   : null);
 
-fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(render).catch(err => {
+fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => {
+  // A spelling variant that was merged into one author (an initial instead of the first name, a
+  // hyphen): send old links to the current page.
+  if (name && !(stats.all_papers || []).some(p => (p.authors || []).includes(name))) {
+    return fetch('author_redirects.json').then(r => (r.ok ? r.json() : {})).catch(() => ({})).then(moved => {
+      if (moved[name]) { location.replace('author.html?name=' + encodeURIComponent(moved[name])); return; }
+      render(stats);
+    });
+  }
+  render(stats);
+}).catch(err => {
   document.getElementById('papers-body').textContent = 'Could not load stats.json: ' + err;
 });
 

@@ -48,6 +48,8 @@ WIKI_SUMMARY = "https://en.wikipedia.org/api/rest_v1/page/summary/{}"
 # poorly on.
 NAME_ALIASES = {
     "Uber ATG": "Uber",
+    "TU Berlin": "Technische Universität Berlin",
+    "INRIA": "Inria",
     "SenseTime Research": "SenseTime",
     "Huawei Noah’s Ark Lab": "Huawei",
     "Huawei Noah's Ark Lab": "Huawei",
@@ -69,13 +71,21 @@ NAME_ALIASES = {
 
 
 def top_institutions(n):
+    """The n institutions with the most papers plus the n with the most
+    citations, so a high-impact institution with few papers gets a logo too."""
     stats = json.loads(STATS_FILE.read_text(encoding="utf-8"))
-    counts = {}
+    counts, cites = {}, {}
     for p in stats.get("all_papers", []):
+        try:
+            c = int(p.get("citations") or 0)
+        except (TypeError, ValueError):
+            c = 0
         for inst in (p.get("institutions") or []):
             counts[inst] = counts.get(inst, 0) + 1
-    ranked = sorted(counts.items(), key=lambda kv: -kv[1])[:n]
-    return [name for name, _ in ranked]
+            cites[inst] = cites.get(inst, 0) + c
+    by_papers = [name for name, _ in sorted(counts.items(), key=lambda kv: -kv[1])[:n]]
+    by_cites = [name for name, _ in sorted(cites.items(), key=lambda kv: -kv[1])[:n]]
+    return list(dict.fromkeys(by_papers + by_cites))
 
 
 def wikidata_search(name):

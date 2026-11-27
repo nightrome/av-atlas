@@ -97,7 +97,7 @@ PUBLISHED_HTML = [
     "index.html", "authors.html", "institutions.html", "venues.html",
     "countries.html", "categories.html", "network.html", "map.html", "insights.html",
     "about.html", "author.html", "institution.html", "venue.html", "country.html",
-    "paper.html", "compare.html",
+    "paper.html", "compare.html", "404.html",
 ]
 
 
@@ -131,6 +131,25 @@ UNUSED_STATS_KEYS = (
 # checks paper fields with `!= null` or plain truthiness, so a missing key
 # reads the same as a null one.
 UNUSED_PAPER_FIELDS = ("citations_updated", "has_code_link", "cd_n_citers", "venue_status")
+# index.html only draws a badge for these two author_verification values; every
+# other value ("no_reference_record" is on all papers today) is dead weight.
+SHOWN_AUTHOR_VERIFICATION = ("verified_arxiv", "verified_crossref")
+
+
+def slim_paper(p):
+    """One paper as the pages get it: no null or unused fields."""
+    out = {k: v for k, v in p.items() if v is not None and k not in UNUSED_PAPER_FIELDS}
+    if out.get("author_verification") not in SHOWN_AUTHOR_VERIFICATION:
+        out.pop("author_verification", None)
+    # filters.js re-derives `citations` from citations_by_source.in_corpus.count and falls
+    # back to `citations` when the field is missing. Only the in-corpus count is ever
+    # read, so when the two agree the copy can go.
+    by_source = out.get("citations_by_source")
+    if isinstance(by_source, dict) and set(by_source) <= {"in_corpus"}:
+        count = (by_source.get("in_corpus") or {}).get("count") or 0
+        if count == (out.get("citations") or 0):
+            out.pop("citations_by_source")
+    return out
 
 # What about.html reads. It only needs corpus totals and coverage numbers, so
 # it gets its own small file instead of the whole stats.json.
@@ -147,10 +166,7 @@ def is_version_key(key):
 def slim_stats(stats):
     """The stats.json the pages get: data/stats.json minus what no page reads."""
     out = {k: v for k, v in stats.items() if k not in UNUSED_STATS_KEYS}
-    out["all_papers"] = [
-        {k: v for k, v in p.items() if v is not None and k not in UNUSED_PAPER_FIELDS}
-        for p in stats.get("all_papers") or []
-    ]
+    out["all_papers"] = [slim_paper(p) for p in stats.get("all_papers") or []]
     return out
 
 
@@ -189,6 +205,10 @@ def write_page_payloads(stats, page_dir):
 
 
 SITE_URL = "https://nightrome.github.io/av-atlas"
+
+# Shared assets whose references get a ?v= cache-buster in every page.
+ASSET_REF_RE = re.compile(
+    r'((?:src|href)="(?:filters|nav|sortable|papermap)\.js|(?:src|href)="theme(?:-light)?\.css)"')
 
 # Site versioning. VERSION holds major.minor and is only ever changed by the
 # maintainer. The patch number isn't stored anywhere in the repo: it is one
@@ -331,6 +351,11 @@ SITEMAP_LIMITS = {"papers": 5000, "authors": 3000, "institutions": 1000, "venues
 DETAIL_TEMPLATES = {"author.html", "paper.html", "institution.html", "venue.html",
                     "country.html", "compare.html"}
 
+# Pages that only redirect elsewhere (map.html -> the map section of index.html).
+# Old links keep working, but the sitemap should list the destination only.
+# 404.html is the error page GitHub Pages serves for a missing path; it is noindex.
+REDIRECT_PAGES = {"map.html", "404.html"}
+
 
 def write_sitemap(page_dir, stats_path):
     """A sitemap.xml covering the listing pages plus the top detail pages.
@@ -343,7 +368,7 @@ def write_sitemap(page_dir, stats_path):
 
     stats = json.loads(stats_path.read_text(encoding="utf-8"))
     urls = [f"{SITE_URL}/{p.name}" for p in sorted(html_pages(), key=lambda p: p.name)
-            if p.name not in DETAIL_TEMPLATES]
+            if p.name not in DETAIL_TEMPLATES and p.name not in REDIRECT_PAGES]
 
     def add(page, key, values):
         for v in values:
@@ -413,7 +438,6 @@ def build_public_site(version):
     # button. Wall-clock time, not a content hash, is fine here -- this
     # only needs to change on every deploy, not be reproducible.
     build_version = str(int(time.time()))
-    ASSET_REF_RE = re.compile(r'((?:src|href)="(?:filters|nav|sortable)\.js|(?:src|href)="theme(?:-light)?\.css)"')
 
     def add_cache_bust(html):
         return ASSET_REF_RE.sub(lambda m: f'{m.group(1)}?v={build_version}"', html)
@@ -432,6 +456,7 @@ def build_public_site(version):
     # and stats.json, which are.
     (page_dir / "BUILD_INFO.json").write_text(json.dumps({
         "version": version,
+        "content_updated": stats.get("content_updated"),
         "built_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
     }, indent=2), encoding="utf-8", newline="\n")
 
@@ -476,6 +501,12 @@ def build_public_site(version):
         shutil.copy2(BASE / "data" / "map" / "points.json", map_dst / "points.json")
     if (BASE / "data" / "similar_groups.json").exists():
         shutil.copy2(BASE / "data" / "similar_groups.json", page_dir / "similar_groups.json")
+    # Old author-page links under a spelling that was merged into another name.
+    merges_file = BASE / "data" / "author_name_merges.json"
+    if merges_file.exists():
+        merges = json.loads(merges_file.read_text(encoding="utf-8")).get("merges", {})
+        (page_dir / "author_redirects.json").write_text(
+            json.dumps(merges, ensure_ascii=False, separators=(",", ":")), encoding="utf-8", newline="\n")
 
     shutil.copy2(SITE_DIR / "theme.css", page_dir / "theme.css")
     # AV Atlas's own light/modern re-theme, layered on top of theme.css --
@@ -516,7 +547,7 @@ def build_public_site(version):
     expected = {p.name for p in html_pages()} | {p.name for p in SITE_DIR.glob("*.js")} \
         | {"stats.json", "about.json", "theme.css", "theme-light.css",
            "logo.svg", "og-image.png", "sitemap.xml", "robots.txt", "BUILD_INFO.json",
-           "similar_groups.json"}
+           "similar_groups.json", "author_redirects.json"}
     for existing in page_dir.iterdir():
         if existing.is_file() and existing.name not in expected:
             existing.unlink()

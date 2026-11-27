@@ -10,6 +10,16 @@
        page go out of the limits"). Wrap any <table> that might overflow in
        <div class="table-scroll">...</div>. */
     .table-scroll { overflow-x: auto; }
+    /* A soft shadow on whichever edge still has hidden columns, so a table
+       that scrolls sideways on a phone does not look cut off by accident.
+       The "local" layers cover the shadows once the edge is reached. */
+    .table-scroll {
+      background:
+        linear-gradient(to right, var(--panel) 30%, rgba(255,255,255,0)) left center / 32px 100% no-repeat local,
+        linear-gradient(to left, var(--panel) 30%, rgba(255,255,255,0)) right center / 32px 100% no-repeat local,
+        radial-gradient(farthest-side at 0 50%, rgba(0,0,0,0.18), rgba(0,0,0,0)) left center / 10px 100% no-repeat scroll,
+        radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,0.18), rgba(0,0,0,0)) right center / 10px 100% no-repeat scroll;
+    }
 
     /* A long paper title otherwise wraps unpredictably across a table's
        other columns, especially next to narrower numeric ones -- a fixed
@@ -273,7 +283,10 @@
     // paper -- a real 0, not "unknown". aggregate.py's citation_count()
     // makes the same call server-side; kept in sync here for the client's
     // own re-derivation off citations_by_source.
-    const c = ((p.citations_by_source || {})["in_corpus"] || {}).count;
+    // The published stats.json leaves citations_by_source off when it only repeats
+    // `citations`, so a paper without it keeps the number it already has.
+    if (p.citations_by_source == null) return p.citations || 0;
+    const c = (p.citations_by_source["in_corpus"] || {}).count;
     return c != null ? c : 0;
   }
 
@@ -2759,6 +2772,7 @@
     input.min = String(min);
     input.max = String(max);
     input.value = String(current);
+    input.setAttribute('aria-label', 'Number of lines to show in the chart');
     input.style.cssText = 'width:56px;background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px 6px;font-size:0.95em;';
     input.addEventListener('change', () => {
       let n = parseInt(input.value, 10);
@@ -2950,8 +2964,21 @@
   // author remember to do this for every table a FUTURE page adds either.
   // Runs on DOMContentLoaded since filters.js's <script> tag loads before
   // the page's own static <table> markup appears later in the body.
+  // Header cells say which way they apply (column or row), for screen readers.
+  window.markTableHeaders = function (table) {
+    if (!table || !table.querySelectorAll) return;
+    table.querySelectorAll('th').forEach(th => {
+      if (th.getAttribute('scope')) return;
+      const row = th.parentElement;
+      const headerRow = (th.closest && th.closest('thead')) ||
+        (row && row.children && Array.prototype.every.call(row.children, c => c.tagName === 'TH'));
+      th.setAttribute('scope', headerRow ? 'col' : 'row');
+    });
+  };
+
   function autoWrapTables() {
     document.querySelectorAll('table').forEach(table => {
+      window.markTableHeaders(table);
       if (table.parentElement && table.parentElement.classList.contains('table-scroll')) return;
       const wrap = document.createElement('div');
       wrap.className = 'table-scroll';
@@ -2959,10 +2986,26 @@
       wrap.appendChild(table);
     });
   }
+  // Tables whose headers are built after load (compare, insights, the ranked
+  // tables) get their scope attributes as they appear. Debounced, so a page
+  // that renders thousands of rows only pays for one pass.
+  function watchTableHeaders() {
+    if (typeof MutationObserver !== 'function') return;
+    let timer = null;
+    new MutationObserver(() => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        document.querySelectorAll('table').forEach(window.markTableHeaders);
+      }, 250);
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', autoWrapTables);
+    document.addEventListener('DOMContentLoaded', watchTableHeaders);
   } else {
     autoWrapTables();
+    watchTableHeaders();
   }
 
   // A floating "back to top" button -- the longest paginated tables here

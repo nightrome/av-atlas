@@ -10,7 +10,6 @@
     { href: 'countries.html', label: 'Countries' },
     { href: 'categories.html', label: 'Categories' },
     { href: 'network.html', label: 'Network' },
-    { href: 'map.html', label: 'Map' },
     { href: 'insights.html', label: 'Insights' },
     { href: 'about.html', label: 'About' },
   ];
@@ -39,7 +38,7 @@
       display: flex; align-items: center; justify-content: center;
     }
     .topbar #reportIssueBtn:hover { background: var(--panel2); color: var(--text); }
-    .site-brand { display: flex; align-items: center; gap: 9px; margin: 0 0 16px; }
+    .site-brand { display: flex; align-items: center; gap: 9px; margin: 0 0 16px; font-size: 1.15rem; }
     .site-brand svg { width: 26px; height: 26px; flex-shrink: 0; }
     .site-brand span { font-size: 1.5em; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
 
@@ -67,6 +66,42 @@
     }
     .report-issue-actions .cancel-btn { background: none; border: 1px solid var(--border); color: var(--text); }
     .report-issue-actions .send-btn { background: var(--accent); border: 1px solid var(--accent); color: #fff; }
+
+    /* Keyboard users: one visible focus ring everywhere, a skip link to jump
+       past the nav, and a footer that carries the version and data date. */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+    textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+      outline: 2px solid var(--accent); outline-offset: 2px;
+    }
+    .skip-link {
+      position: absolute; left: 8px; top: -60px; z-index: 300; background: var(--accent); color: #fff;
+      padding: 10px 16px; border-radius: 8px; font-weight: 600; text-decoration: none;
+    }
+    .skip-link:focus { top: 8px; }
+    #main-content:focus { outline: none; }
+    .site-footer {
+      margin-top: 32px; padding: 16px 0 8px; border-top: 1px solid var(--border);
+      color: var(--muted); font-size: 0.82em; display: flex; flex-wrap: wrap; gap: 6px 16px;
+    }
+    .site-footer a { color: var(--muted); }
+    .site-footer a:hover { color: var(--accent); }
+
+    /* Phones and touch screens: controls get a 44px target. */
+    @media (max-width: 700px), (pointer: coarse) {
+      /* Three rows of 44px links would cover a fifth of a phone screen if the bar stayed stuck to the top. */
+      .topbar { position: static; }
+      .topbar a { padding: 12px 12px; min-height: 44px; display: inline-flex; align-items: center; }
+      .topbar #hardReload, .topbar #reportIssueBtn { width: 44px; height: 44px; }
+      .report-issue-actions button { min-height: 44px; padding: 10px 16px; }
+      body .pagination-row button, body .export-csv-btn, body .clear-all-btn, body .filter-toggle,
+      body .export-badge, body .legend-toggle-all button { min-height: 44px; }
+      body .pagination-row .page-size select, body .limit-row select, body .filter-bar select,
+      body .filter-bar .search-field input { min-height: 44px; font-size: 16px; }
+      body table.sortable thead th[data-sortable] { padding-top: 14px; padding-bottom: 14px; }
+      body .legend-toggle-all button { min-width: 44px; }
+      body .chip button { width: 28px; height: 28px; }
+      body .info-tip { width: 28px; height: 28px; font-size: 13px; }
+    }
   `;
   document.head.appendChild(style);
 
@@ -136,7 +171,9 @@
   const IDENTITY_PARAMS = ['name', 'title'];
   const reloadBtn = document.createElement('button');
   reloadBtn.id = 'hardReload';
+  reloadBtn.type = 'button';
   reloadBtn.title = 'Reset filters and reload, bypassing the browser cache';
+  reloadBtn.setAttribute('aria-label', 'Reset filters and reload the page');
   reloadBtn.textContent = '↻';
   reloadBtn.addEventListener('click', async () => {
     reloadBtn.disabled = true;
@@ -188,6 +225,7 @@
   const modal = document.createElement('div');
   modal.className = 'report-issue-modal';
   modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
   modal.setAttribute('aria-label', 'Report an error');
 
   const heading = document.createElement('h3');
@@ -276,8 +314,22 @@
   reportBtn.addEventListener('click', () => {
     pageField.value = location.href;
     overlay.classList.add('open');
+    detailField.focus();
   });
-  cancelBtn.addEventListener('click', closeReportModal);
+  // Escape closes the dialog, Tab stays inside it, and focus goes back to
+  // the flag button, so the form works from the keyboard alone.
+  overlay.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') {
+      closeReportModal();
+      reportBtn.focus();
+    } else if (ev.key === 'Tab') {
+      const items = [pageField, detailField, emailField, orcidField, cancelBtn, sendBtn];
+      const first = items[0], last = items[items.length - 1];
+      if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+      else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+    }
+  });
+  cancelBtn.addEventListener('click', () => { closeReportModal(); reportBtn.focus(); });
   overlay.addEventListener('click', ev => { if (ev.target === overlay) closeReportModal(); });
   sendBtn.addEventListener('click', () => {
     const detail = detailField.value.trim();
@@ -304,6 +356,49 @@
     document.body.insertBefore(nav, document.body.firstChild.nextSibling);
     document.body.insertBefore(brand, nav);
   }
+
+  // Landmarks. Pages are plain markup with the nav bar on top, so the page
+  // content is gathered into one <main> here, once, instead of hand-editing
+  // every page. A skip link jumps to it and a footer closes the page. The
+  // movable content is every element after the nav bar except scripts,
+  // styles and the report dialog.
+  function addLandmarks() {
+    const body = document.body;
+    const kids = Array.prototype.slice.call(body.children);
+    const navIdx = kids.indexOf(nav);
+    if (navIdx < 0 || kids.some(k => k.id === 'main-content')) return;
+    const movable = kids.slice(navIdx + 1).filter(k =>
+      !/^(SCRIPT|STYLE|NOSCRIPT)$/.test(k.tagName) && k !== overlay);
+    const main = document.createElement('main');
+    main.id = 'main-content';
+    main.setAttribute('tabindex', '-1');
+    body.insertBefore(main, movable[0] || overlay);
+    movable.forEach(k => main.appendChild(k));
+
+    const skip = document.createElement('a');
+    skip.className = 'skip-link';
+    skip.href = '#main-content';
+    skip.textContent = 'Skip to content';
+    skip.addEventListener('click', ev => { ev.preventDefault(); main.focus(); main.scrollIntoView(); });
+    body.insertBefore(skip, body.firstChild);
+
+    const footer = document.createElement('footer');
+    footer.className = 'site-footer';
+    const about = document.createElement('a');
+    about.href = 'about.html';
+    about.textContent = 'About AV Atlas';
+    footer.appendChild(about);
+    const info = document.createElement('span');
+    footer.appendChild(info);
+    body.insertBefore(footer, overlay);
+    // BUILD_INFO.json is a few hundred bytes, unlike stats.json.
+    if (typeof fetch === 'function') {
+      fetch('BUILD_INFO.json').then(r => (r.ok ? r.json() : null)).then(b => {
+        if (b) info.textContent = window.siteVersionText(b.version, b.content_updated);
+      }).catch(() => {});
+    }
+  }
+  if (typeof document.querySelector === 'function') addLandmarks();
 
 
   // Page view counts (GoatCounter, site code av-atlas). It sets no cookies

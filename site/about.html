@@ -206,10 +206,9 @@
   <li><strong>3. Enrich.</strong> For AV-relevant papers only: each author's affiliation and a
       stable ID that tells apart authors who share a name are looked up where that information can
       be found. Some top-ranked authors also get a link to their Google Scholar profile and its
-      photo, and most of the 100 most-cited papers get a link to their own Scholar page. Google
-      Scholar doesn't allow automated queries, so these links are now checked and added by hand.
-      Most of the paper links were first collected by a script in September 2026, which has since
-      been removed.</li>
+      photo, and most of the 100 most-cited papers get a link to their own Scholar page. For authors
+      who share a name with someone else, the Scholar profile is matched by comparing the papers
+      listed on the profile with the papers in the corpus.</li>
   <li><strong>Text embeddings.</strong> The "Similar" tables, the paper map and the duplicate
       check come from a language model (Qwen3-Embedding-8B) that turns each paper's title and
       abstract into 512 numbers; papers, authors, institutions and venues are similar when those
@@ -278,6 +277,19 @@
   calls do get through, so a small sample can't promise zero.
   The false negatives were borderline computer-vision papers that mention autonomous driving as
   one of several possible applications rather than being about it.
+</p>
+
+<h3>How broad is the AV definition?</h3>
+<p>
+  A paper counts as AV research if it is about automated road driving, or if its own method
+  is evaluated on a driving dataset or simulator as a main experiment. General methods such as
+  point-cloud detectors or depth estimators are therefore included when they are benchmarked on
+  driving data. In a sample of 500 papers (the 300 most cited plus 200 random others), a second,
+  model-based reviewer judged roughly 15 to 19 percent of the AV papers to be general methods
+  rather than driving-specific. That is an estimate, and the two model reviewers agreed on 93
+  percent of the papers. Counting only the driving-specific papers would lower paper and citation
+  totals by about a fifth. It would change the top-20 country and venue rankings very little, and
+  move a few institution and author positions by citations noticeably.
 </p>
 
 <div style="display:flex;align-items:center;gap:8px;position:relative;"><h3>Citation counts vs. Google Scholar</h3><span class="info-tip" tabindex="0" role="img" aria-label="A hand-collected check: this site's in-corpus citation count vs Google Scholar's global count for 52 sampled papers. Scholar is roughly an order of magnitude higher." data-tip="A hand-collected check: this site's in-corpus citation count vs Google Scholar's global count for 52 sampled papers. Scholar is roughly an order of magnitude higher.">i</span></div>
@@ -416,7 +428,7 @@
   incomplete; affiliations are not resolved for every paper; author names are not
   disambiguated. The data is published under
   <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>
-  and stays subject to its original sources' terms — see the licence section below.
+  and stays subject to its original sources' terms; see the licence section below.
 </p>
 <p class="section-intro">
   Citing this: a <a href="https://github.com/nightrome/av-atlas/blob/main/CITATION.cff"
@@ -441,7 +453,8 @@
   under License below. For some authors it also links their Google Scholar profile and shows the
   photo from it. Holger Caesar (see Contact above) is responsible for this data. It is published
   to give an overview of autonomous-vehicle research, on the basis of legitimate interest
-  (Art. 6(1)(f) GDPR), and an entry stays for as long as its paper is in the corpus.
+  (Art. 6(1)(f) GDPR). An entry is removed on request, and also when its
+  paper leaves the corpus.
 </p>
 <p>
   If you are an author and believe your information is displayed
@@ -469,7 +482,7 @@
   Everything here is built by
   <a href="https://github.com/nightrome/av-atlas" style="color: var(--accent);">an open repository</a>:
   the crawlers, the classifier, the aggregation, and these pages. Two files in it are worth reading
-  if you want to judge the method rather than take it on trust —
+  if you want to judge the method rather than take it on trust:
   <a href="https://github.com/nightrome/av-atlas/blob/main/DECISIONS.md" style="color: var(--accent);">DECISIONS.md</a>,
   which records why each non-obvious choice was made and what it was measured against, and
   <a href="https://github.com/nightrome/av-atlas/blob/main/RUBRIC_relevance.md" style="color: var(--accent);">RUBRIC_relevance.md</a>,

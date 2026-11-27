@@ -917,6 +917,36 @@ class TestClassifyInstitutionSector(unittest.TestCase):
     def test_unrecognized_institution_is_unclassified(self):
         self.assertIsNone(ag.classify_institution_sector("Some Regional Robotics Lab"))
 
+    def test_university_in_any_form_is_academic(self):
+        # The keyword used to need the bare word "Universit", so "University"
+        # itself, "Universität" and "Universidad" were all left unclassified.
+        for name in ["Tsinghua University", "Technische Universität Braunschweig",
+                     "Universidad Carlos III de Madrid", "Universidade de São Paulo"]:
+            self.assertEqual(ag.classify_institution_sector(name), "academic", name)
+
+
+class TestInstitutionCleanupRules(unittest.TestCase):
+    def test_contact_label_is_dropped(self):
+        self.assertEqual(ag.normalize_institution("Stanford University. Contact:"), "Stanford University")
+        self.assertEqual(ag.normalize_institution("Zoox. Contact:"), "Zoox")
+
+    def test_street_line_is_not_an_institution(self):
+        self.assertFalse(ag.is_valid_institution(ag.normalize_institution("Ul. Podgórki tynieckie 2")))
+
+    def test_european_commission_and_jrc_are_one_institution(self):
+        names = {ag.normalize_institution(n) for n in [
+            "European Commission", "Joint Research Centre", "Joint Research Center",
+            "European Commission Joint Research Centre", "Joint Research Centre (JRC)"]}
+        self.assertEqual(names, {"European Commission Joint Research Centre (JRC)"})
+
+    def test_unit_folds_into_its_university(self):
+        self.assertEqual(ag.normalize_institution("Delft Center for Systems and Control"),
+                         "Delft University of Technology")
+
+    def test_logo_found_under_the_display_name(self):
+        images = ag.institution_image_map({"Karlsruhe Institute of Technology": {"logo_url": "u"}})
+        self.assertEqual(images["Karlsruhe Institute of Technology (KIT)"], "u")
+
 
 class TestComputeDisruptionIndex(unittest.TestCase):
     def test_mixed_disruptive_and_consolidating_citers(self):

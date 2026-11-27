@@ -435,10 +435,30 @@ test('detail templates ship no static canonical or og:url, listing pages keep th
     if (detail.includes(f.replace('.html', ''))) {
       assert.ok(!hasCanonical && !hasOgUrl, `${f} must leave canonical/og:url to setDetailPageMeta`);
       assert.ok(/setDetailPageMeta\(/.test(html), `${f} must call setDetailPageMeta`);
+    } else if (f === '404.html') {
+      assert.ok(!hasCanonical, '404.html is noindex and has no canonical');
     } else {
       assert.ok(hasCanonical && hasOgUrl, `${f} should keep its static canonical and og:url`);
     }
   });
+});
+
+test('markTableHeaders gives header cells a column or row scope', () => {
+  const mk = (tag, parent, kids) => ({
+    tagName: tag, parentElement: parent, children: kids || [], attrs: {},
+    getAttribute(k) { return this.attrs[k]; }, setAttribute(k, v) { this.attrs[k] = v; },
+    closest(sel) { return sel === 'thead' && this.inThead ? this : null; },
+  });
+  const headRow = mk('TR', null); const th1 = mk('TH', headRow); th1.inThead = true;
+  const bodyRow = mk('TR', null); const rowTh = mk('TH', bodyRow); const td = mk('TD', bodyRow);
+  headRow.children = [th1]; bodyRow.children = [rowTh, td];
+  const table = { querySelectorAll: () => [th1, rowTh] };
+  loadFilters().markTableHeaders(table);
+  assert.strictEqual(th1.attrs.scope, 'col');
+  assert.strictEqual(rowTh.attrs.scope, 'row');
+  th1.attrs.scope = 'colgroup';
+  loadFilters().markTableHeaders(table);
+  assert.strictEqual(th1.attrs.scope, 'colgroup', 'an existing scope is kept');
 });
 
 test('the old separate "Data last updated" helper is gone', () => {
