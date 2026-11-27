@@ -2,12 +2,18 @@ import sys
 import unittest
 from pathlib import Path
 
-import numpy as np
-
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-import build_similar_papers as bsp  # noqa: E402
+try:
+    import numpy as np
+    import build_similar_papers as bsp  # noqa: E402
+except ImportError:   # the CI test job has no third-party packages; these tests then skip
+    np = None
+    bsp = None
+
+NEEDS_NUMPY = unittest.skipIf(np is None, "needs numpy and scipy")
 
 
+@NEEDS_NUMPY
 class NearestTests(unittest.TestCase):
     def test_neighbours_ranked_by_cosine_and_exclude_self(self):
         v = np.array([[10, 0], [9, 1], [0, 10], [1, 9]], dtype=np.int8)
@@ -25,6 +31,7 @@ class NearestTests(unittest.TestCase):
         self.assertEqual(idx[1, 0], 0)
 
 
+@NEEDS_NUMPY
 class PoolTests(unittest.TestCase):
     def test_only_av_papers_one_per_normalised_title(self):
         norm = lambda t: "".join(c for c in t.lower() if c.isalnum())

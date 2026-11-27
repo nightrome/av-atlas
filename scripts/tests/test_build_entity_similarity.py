@@ -2,12 +2,18 @@ import sys
 import unittest
 from pathlib import Path
 
-import numpy as np
-
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-import build_entity_similarity as bes  # noqa: E402
+try:
+    import numpy as np
+    import build_entity_similarity as bes  # noqa: E402
+except ImportError:   # the CI test job has no third-party packages; these tests then skip
+    np = None
+    bes = None
+
+NEEDS_NUMPY = unittest.skipIf(np is None, "needs numpy and scipy")
 
 
+@NEEDS_NUMPY
 class EntityVectorTests(unittest.TestCase):
     def test_entities_below_the_paper_minimum_are_dropped(self):
         vec = bes.unit(np.array([[1, 0], [0, 1], [1, 1]], dtype=np.float32))
@@ -24,6 +30,7 @@ class EntityVectorTests(unittest.TestCase):
         self.assertNotIn("x", [n for n, _, _ in lists["x"]])
 
 
+@NEEDS_NUMPY
 class NetworkTests(unittest.TestCase):
     def papers(self):
         # a-b-c in a chain plus d-b: a and c (and d) share co-author b but never co-authored.
