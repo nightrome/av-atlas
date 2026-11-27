@@ -51,6 +51,17 @@ class WriteSitemapTests(unittest.TestCase):
     def test_redirect_pages_are_left_out(self):
         urls, _ = self._sitemap(STATS)
         self.assertNotIn(f"{bps.SITE_URL}/map.html", urls)
+        self.assertNotIn(f"{bps.SITE_URL}/404.html", urls)
+
+    def test_error_page_ships(self):
+        self.assertIn("404.html", bps.PUBLISHED_HTML)
+        self.assertTrue((bps.SITE_DIR / "404.html").exists())
+
+    def test_every_shared_script_gets_a_cache_buster(self):
+        # papermap.js was missing from the list once, so a stale copy could
+        # run against a new index.html.
+        for name in ("filters", "nav", "sortable", "papermap"):
+            self.assertTrue(bps.ASSET_REF_RE.search(f'<script src="{name}.js"></script>'), name)
 
     def test_paper_url_matches_the_pages_own_canonical_escaping(self):
         # filters.js's detailCanonicalUrl escapes the same way (see

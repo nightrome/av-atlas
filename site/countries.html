@@ -34,6 +34,12 @@
     text-decoration: none; padding: 2px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15);
   }
   .tile:hover { outline: 2px solid var(--accent); }
+  /* On a phone 17 equal columns leave tiles 13px wide with clipped labels. Keep them tappable and scroll the grid sideways instead. */
+  @media (max-width: 700px) {
+    .map-grid { grid-template-columns: repeat(17, minmax(40px, 1fr)); grid-auto-rows: 44px; overflow-x: auto; padding-bottom: 8px; }
+    .tile { font-size: 0.75em; }
+  }
+  .tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .legend { display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.8em; color: var(--muted); }
   .legend .swatch { width: 16px; height: 12px; border-radius: 2px; }
 

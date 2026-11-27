@@ -74,6 +74,27 @@ class SlimStatsTest(unittest.TestCase):
         # The input is left alone: data/stats.json keeps everything.
         self.assertIn("has_code_link", self.STATS["all_papers"][0])
 
+    def test_author_verification_kept_only_when_a_page_shows_it(self):
+        self.assertNotIn("author_verification", bps.slim_paper(
+            {"title": "A", "author_verification": "no_reference_record"}))
+        self.assertEqual(bps.slim_paper(
+            {"title": "A", "author_verification": "verified_arxiv"})["author_verification"],
+            "verified_arxiv")
+
+    def test_citations_by_source_dropped_only_when_it_repeats_citations(self):
+        same = {"title": "A", "citations": 5,
+                "citations_by_source": {"in_corpus": {"count": 5, "updated": "2026-11-01"}}}
+        self.assertNotIn("citations_by_source", bps.slim_paper(same))
+        self.assertEqual(bps.slim_paper(same)["citations"], 5)
+        differs = {"title": "A", "citations": 7,
+                   "citations_by_source": {"in_corpus": {"count": 5}}}
+        self.assertIn("citations_by_source", bps.slim_paper(differs))
+        other_source = {"title": "A", "citations": 5,
+                        "citations_by_source": {"in_corpus": {"count": 5}, "openalex": {"count": 9}}}
+        self.assertIn("citations_by_source", bps.slim_paper(other_source))
+        zero = {"title": "A", "citations_by_source": {}}
+        self.assertNotIn("citations_by_source", bps.slim_paper(zero))
+
     def test_keeps_everything_else(self):
         out = bps.slim_stats(self.STATS)
         for key in ("generated_at", "generated_from", "content_updated", "content_hash",
@@ -132,7 +153,10 @@ class RealDataTest(unittest.TestCase):
     def test_keeps_every_paper_field_but_the_unused_ones(self):
         before = {k for p in self.stats["all_papers"] for k, v in p.items() if v is not None}
         after = {k for p in self.slim["all_papers"] for k in p}
-        self.assertEqual(after, before - set(bps.UNUSED_PAPER_FIELDS))
+        # These two are dropped per paper when they carry nothing a page uses (see slim_paper).
+        self.assertGreaterEqual(after, before - set(bps.UNUSED_PAPER_FIELDS)
+                                - {"author_verification", "citations_by_source"})
+        self.assertLessEqual(after, before - set(bps.UNUSED_PAPER_FIELDS))
 
     def test_about_payload_is_small(self):
         about = json.dumps(bps.about_payload(self.stats))

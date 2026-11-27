@@ -91,6 +91,7 @@
     // be counted here -- otherwise every real column's click handler is wired
     // to the NEXT column's accessor (user-reported: sorting Venues by Citations
     // actually sorted by Citations / paper).
+    if (window.markTableHeaders) window.markTableHeaders(table);
     const ths = [...table.querySelectorAll('thead th')].filter(th => !th.classList.contains('compare-col'));
     const state = { idx: null, dir: 1, data, columns, renderBody, onSort: opts && opts.onSort ? opts.onSort : null };
     table._sortableState = state;

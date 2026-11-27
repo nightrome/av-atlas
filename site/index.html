@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://av-atlas.goatcounter.com/count; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
-<title>AV Atlas</title>
+<title>AV Atlas: autonomous vehicle research papers, authors and institutions</title>
 <meta name="description" content="Autonomous vehicle research, tracked: who's publishing, which institutions and countries are active, how topics have shifted over time, and which papers matter most within AV research specifically.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AV Atlas">
@@ -18,6 +18,23 @@
 <meta name="twitter:description" content="Autonomous vehicle research, tracked: who's publishing, which institutions and countries are active, how topics have shifted over time, and which papers matter most within AV research specifically.">
 <meta name="twitter:image" content="https://nightrome.github.io/av-atlas/og-image.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {"@type": "WebSite", "name": "AV Atlas", "url": "https://nightrome.github.io/av-atlas/index.html"},
+    {"@type": "Dataset",
+     "name": "AV Atlas: autonomous vehicle research papers",
+     "description": "Papers from the complete proceedings of about 20 computer vision and robotics venues, with each paper's authors, institutions, countries, topic category and citations from other papers in the corpus. Updated monthly.",
+     "url": "https://nightrome.github.io/av-atlas/about.html",
+     "keywords": ["autonomous vehicles", "self-driving", "bibliometrics", "computer vision", "robotics"],
+     "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+     "isAccessibleForFree": true,
+     "creator": {"@type": "Person", "name": "Holger Caesar"},
+     "isBasedOn": "https://nightrome.github.io/av-atlas/index.html"}
+  ]
+}
+</script>
 <link rel="preload" href="stats.json" as="fetch" crossorigin>
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="theme-light.css">
@@ -128,7 +145,7 @@
 <div class="panel" id="map">
   <div class="panel-title-row"><h2>Paper map</h2>
     <span class="info-tip" tabindex="0" role="img" aria-label="Every dot is one AV paper. Papers whose titles and abstracts are alike sit close together; the axes have no meaning. Drag to pan, Ctrl and scroll or the plus and minus buttons to zoom, click a dot to open the paper in a new tab. Papers matching the filters above are highlighted." data-tip="Every dot is one AV paper. Papers whose titles and abstracts are alike sit close together; the axes have no meaning. Drag to pan, Ctrl + scroll or the + / - buttons to zoom, click a dot to open the paper in a new tab. Papers matching the filters above are highlighted.">i</span></div>
-  <p class="section-intro" style="color:var(--muted);font-size:0.88em;margin:0 0 10px;line-height:1.5;">Every dot is a paper, and papers whose titles and abstracts read alike sit close together, so topics show up as islands (named in the background). Colour is the category. Use the filters at the top of the page to highlight papers by venue, year, country, institution or author, drag to pan, hold Ctrl and scroll (or use + and -) to zoom, and click a dot to open the paper. Papers added since the text embeddings were last refreshed are not on the map yet.</p>
+  <p class="section-intro" style="color:var(--muted);font-size:0.88em;margin:0 0 10px;line-height:1.5;">Every dot is a paper, and papers whose titles and abstracts read alike sit close together, so topics show up as islands (named in the background). Colour is the category. Use the filters at the top of the page to highlight papers by venue, year, country, institution or author, drag to pan, hold Ctrl and scroll (or use + and -) to zoom, and click a dot to open the paper. With the keyboard, focus the map, use the arrow keys and +/- to move the middle of the view onto a dot and press Enter. Papers added since the text embeddings were last refreshed are not on the map yet.</p>
   <div class="controls-row">
     <span><label for="pm-cat">Category</label> <select id="pm-cat"><option value="">All</option></select></span>
     <span class="hl-box">
@@ -141,7 +158,7 @@
     <button type="button" id="pm-reset" title="Back to the whole map">Reset view</button>
   </div>
   <div class="map-wrap">
-    <canvas id="pm-canvas" tabindex="0" role="img" aria-label="Map of autonomous vehicle papers, one dot per paper; similar papers sit close together. Use the arrow keys to pan, plus and minus to zoom, zero or Home to reset the view."></canvas>
+    <canvas id="pm-canvas" tabindex="0" role="img" aria-label="Map of autonomous vehicle papers, one dot per paper; similar papers sit close together. Use the arrow keys to pan, plus and minus to zoom, zero or Home to reset the view. The dot nearest the middle of the map is highlighted; press Enter to open that paper."></canvas>
     <div class="zoombtns">
       <button type="button" id="pm-zin" aria-label="Zoom in" title="Zoom in">+</button>
       <button type="button" id="pm-zout" aria-label="Zoom out" title="Zoom out">&minus;</button>

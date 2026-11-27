@@ -122,7 +122,8 @@ test("counted path keeps a detail page's identity and drops filters and the cach
 test("every page's CSP allows the counter script and endpoint, and nothing from Google", () => {
   const { scripts } = loadNav('nightrome.github.io', '/av-atlas/index.html');
   const scriptOrigin = new URL(scripts[0].src).origin;
-  pages.forEach(page => {
+  // 404.html loads no counter and no shared script, so it has a tighter CSP.
+  pages.filter(page => page !== '404.html').forEach(page => {
     const csp = readCsp(fs.readFileSync(path.join(SITE, page), 'utf8'));
     assert.ok(csp, `${page}: no Content-Security-Policy meta tag`);
     assert.ok((csp['script-src'] || []).includes(scriptOrigin),
@@ -168,6 +169,50 @@ test('no page has a separate "Data last updated" or "Site version" line any more
     const text = fs.readFileSync(path.join(SITE, f), 'utf8');
     assert.ok(!/Data last updated|Site version v|dataUpdatedText/.test(text), `${f} still has the old line`);
   });
+});
+
+test('nav.js wraps the page content in <main>, adds a skip link and a footer', () => {
+  const body = makeElement('body');
+  body.insertBefore = (child, ref) => {
+    const i = ref ? body.children.indexOf(ref) : -1;
+    if (child.parentNode === body) body.children.splice(body.children.indexOf(child), 1);
+    if (i < 0) body.children.push(child); else body.children.splice(body.children.indexOf(ref), 0, child);
+    child.parentNode = body;
+    return child;
+  };
+  body.appendChild = child => {
+    if (child.parentNode && child.parentNode.children) {
+      child.parentNode.children = child.parentNode.children.filter(c => c !== child);
+    }
+    body.children.push(child); child.parentNode = body; return child;
+  };
+  Object.defineProperty(body, 'firstChild', { get: () => body.children[0] });
+  const topnav = makeElement('nav');
+  const panel = makeElement('div'); panel.id = 'panel';
+  const script = makeElement('script');
+  const late = makeElement('div'); late.id = 'late';
+  [topnav, panel, script, late].forEach(el => body.appendChild(el));
+  const sandbox = {
+    console, URLSearchParams,
+    document: {
+      head: makeElement('head'), body, createElement: makeElement,
+      getElementById: id => (id === 'topnav' ? topnav : null),
+      querySelector: () => null, activeElement: null,
+    },
+    location: { hostname: 'localhost', pathname: '/index.html', search: '', href: 'http://localhost/index.html' },
+  };
+  sandbox.window = sandbox;
+  vm.createContext(sandbox);
+  vm.runInContext(NAV_JS, sandbox, { filename: 'nav.js' });
+  const tags = body.children.map(c => c.tagName);
+  assert.strictEqual(body.children[0].className, 'skip-link', 'skip link comes first');
+  assert.strictEqual(body.children[0].href, '#main-content');
+  const main = body.children.find(c => c.tagName === 'MAIN');
+  assert.ok(main && main.id === 'main-content', 'a <main id="main-content"> exists');
+  assert.deepStrictEqual(main.children.map(c => c.id), ['panel', 'late'], 'page content moved into main, scripts left alone');
+  assert.ok(body.children.includes(script), 'scripts stay in body');
+  assert.ok(tags.includes('FOOTER'), 'footer present');
+  assert.ok(tags.indexOf('MAIN') < tags.indexOf('FOOTER'), 'footer after main');
 });
 
 if (failures > 0) {

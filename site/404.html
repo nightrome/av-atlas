@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas: Page not found</title>
+<meta name="description" content="This page does not exist. Go back to the AV Atlas home page.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/av-atlas/logo.svg">
+<style>
+  :root { --bg: #f7f8fb; --panel: #ffffff; --border: #e4e7ef; --text: #14181f; --muted: #6b7280; --accent: #4f46e5; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+         background: var(--bg); color: var(--text); display: flex; align-items: center; justify-content: center; padding: 16px; }
+  main { max-width: 480px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 28px 24px; }
+  h1 { margin: 0 0 8px; font-size: 1.5em; }
+  p { color: var(--muted); line-height: 1.5; margin: 0 0 16px; }
+  ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 8px;
+      background: var(--accent); color: #fff; font-weight: 600; text-decoration: none; }
+  a.plain { background: none; border: 1px solid var(--border); color: var(--text); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Page not found</h1>
+  <p>There is no page at this address. It may have been renamed, or the link may be mistyped.</p>
+  <ul>
+    <li><a id="home" href="https://nightrome.github.io/av-atlas/index.html">Papers</a></li>
+    <li><a id="authors" class="plain" href="https://nightrome.github.io/av-atlas/authors.html">Authors</a></li>
+    <li><a id="about" class="plain" href="https://nightrome.github.io/av-atlas/about.html">About</a></li>
+  </ul>
+</main>
+<script>
+// This page is served for any missing path, however deep, so relative links
+// would break. Point the links at the site root this copy is running under
+// (production, the staging preview or a local server).
+(function () {
+  var parts = location.pathname.split('/');
+  var root = location.hostname === 'nightrome.github.io' && parts.length > 1 ? '/' + parts[1] + '/' : '/';
+  document.getElementById('home').href = root + 'index.html';
+  document.getElementById('authors').href = root + 'authors.html';
+  document.getElementById('about').href = root + 'about.html';
+})();
+</script>
+</body>
+</html>
