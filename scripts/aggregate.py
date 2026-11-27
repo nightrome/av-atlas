@@ -1671,6 +1671,100 @@ INSTITUTION_ALIASES = {
     # "University" must stay). One real instance observed, handled as a
     # literal post-fix alias rather than a riskier general space-eating rule.
     "Ö rebro University": "Örebro University",
+    # --- Institution audit (top 400 by citations / papers) ---------------
+    # Same institution under another spelling.
+    "Institut national de recherche en sciences et technologies du numérique": "INRIA",
+    "Inria Sophia Antipolis Méditerranée": "INRIA",
+    "Technical Universitity of Berlin": "TU Berlin",
+    "Berlin Institute of Technology": "TU Berlin",
+    "Technische Universität Berlin": "TU Berlin",
+    "Technical University of Berlin": "TU Berlin",
+    "University of Wisconsin -- Madison": "University of Wisconsin - Madison",
+    "University of Wisconsin-Madison": "University of Wisconsin - Madison",
+    "University of the Bundeswehr Munich": "Universität der Bundeswehr München",
+    "Munich University of Applied Science": "University of Applied Sciences Munich",
+    "UT Austin": "University of Texas at Austin",
+    "Purdue University West Lafayette": "Purdue University",
+    "University of Maryland": "University of Maryland, College Park",
+    "University of Minnesota System": "University of Minnesota",
+    "Massachusetts Institute of Techonology": "Massachusetts Institute of Technology",
+    "Computer Vision Center (CVC)": "Computer Vision Center",
+    "Max Planck Institute For Intelligent Systems": "Max Planck Institute for Intelligent Systems",
+    "Max-Planck-Institute for Informatics": "Max Planck Institute for Informatics",
+    "University of Shanghai Jiao Tong": "Shanghai Jiao Tong University",
+    "Shanghai Jiao Tong University (SJTU)": "Shanghai Jiao Tong University",
+    "Shanghai University (SHU)": "Shanghai University",
+    "State Key Laboratory of Multimodal Artificial Intelligence Systems (MAIS)": "State Key Laboratory of Multimodal Artificial Intelligence Systems",
+    "Beijing Academy of Artificial Intelligence (BAAI)": "BeiJing Academy of Artificial Intelligence",
+    "International Institute of Information Technology Hyderabad": "International Institute of Information Technology, Hyderabad",
+    "State Key Laboratory of Information Engineering in Surveying, Mapping, and Remote Sensing (LIESMARS)": "State Key Laboratory of Information Engineering in Surveying Mapping and Remote Sensing",
+    "Sony (Taiwan)": "Sony",
+    "PengCheng Laboratory": "Pengcheng Laboratory",
+    "Seoul National UniversitySeoul": "Seoul National University",
+    "SNU": "Seoul National University",
+    "Electronics and Telecommunications Research Institute (ETRI)": "Electronics and Telecommunications Research Institute",
+    "Daegu Gyeongbuk Institute of Science and Technology (DGIST)": "Daegu Gyeongbuk Institute of Science and Technology",
+    "DGIST": "Daegu Gyeongbuk Institute of Science and Technology",
+    "State Key Laboratory of Computer-aided Design & Computer Graphics": "State Key Laboratory of Computer-Aided Design and Computer Graphics",
+    "State Key Laboratory of Industrial Control and Technology": "State Key Laboratory of Industrial Control Technology",
+    "Fraunhofer Institute of Optronics, System Technologies and Image Exploitation (IOSB)": "Fraunhofer Institute of Optronics, System Technologies and Image Exploitation",
+    "Fraunhofer IOSB": "Fraunhofer Institute of Optronics, System Technologies and Image Exploitation",
+    "Ruhr-Universität Bochum": "Ruhr University Bochum",
+    "University of California Santa Cruz (UCSC)": "University of California, Santa Cruz",
+    "Institut français des sciences et technologies des transports, de l'aménagement et des réseaux": "Institut Français des Sciences et Technologies des Transports, de l'Aménagement et des Réseaux",
+    "National Laboratory of Pattern Recognition (NLPR)": "Chinese Academy of Sciences",
+    "IP Paris": "Institut Polytechnique de Paris",
+    "MINES ParisTech": "École Nationale Supérieure des Mines de Paris",
+    "Ecole des Ponts": "École nationale des ponts et chaussées",
+    "École des Ponts ParisTech": "École nationale des ponts et chaussées",
+    "PSL University": "Université Paris Sciences et Lettres",
+    "Samsung Advanced Institute of Technology (SAIT)": "Samsung Advanced Institute of Technology",
+    "VolvoCars": "Volvo Cars",
+    "Volvo Cars USA": "Volvo Cars",
+    "Safety Center Volvo Car Corporation Gothenburg": "Volvo Cars",
+    "LG Electronics": "LG",
+    "LG Electronics America R&D Lab": "LG",
+    "LG AI Research": "LG",
+    "Technology Shanghai AI Laboratory": "Shanghai AI Laboratory",
+    "Ltd. 3 Shanghai AI Laboratory": "Shanghai AI Laboratory",
+    "PSL Valeo Driving Assistance Research Valeo.ai": "Valeo",
+    # Daimler AG was renamed Mercedes-Benz Group in 2022; Daimler Truck is a
+    # separate company and stays apart.
+    "Daimler": "Mercedes-Benz",
+    "Daimler AG": "Mercedes-Benz",
+    # Chinese Academy of Sciences' Institute of Automation and its labs.
+    "Chinese Academy of Sciences (CASIA)": "Chinese Academy of Sciences",
+    "Chinese Academy of Science (CASIA)": "Chinese Academy of Sciences",
+    "CASIA": "Chinese Academy of Sciences",
+    "Chinese Academy of SciencesBeijing": "Chinese Academy of Sciences",
+    "National Laboratory of Pattern Recognition": "Chinese Academy of Sciences",
+    # Units, labs and campuses that belong to an institution already listed.
+    "Department of Aeronautical & Aviation Engineering The Hong Kong Polytechnic University Kowloon": "The Hong Kong Polytechnic University",
+    "City University of Hong Kong (Dongguan)": "City University of Hong Kong",
+    "City University of Hong Kong, Shenzhen Research Institute": "City University of Hong Kong",
+    "City University of Hong Kong Shenzhen Research Institute": "City University of Hong Kong",
+    "HKUST Aerial Robotics Group": "Hong Kong University of Science and Technology",
+    "Department of Electronic and Computer Engineering, the Hong Kong University of Science and Technology": "Hong Kong University of Science and Technology",
+    "Beijing National Research Center for Information Science and Technology": "Tsinghua University",
+    "National Key Lab for Novel Software Technology": "Nanjing University",
+    "National Key Laboratory for Novel Software Technology": "Nanjing University",
+    "S-Lab": "Nanyang Technological University",
+    "OpenGVLab": "Shanghai AI Laboratory",
+    "DAMO Academy": "Alibaba",
+    "Damo Institute": "Alibaba",
+    "ESAT-PSI": "KU Leuven",
+    "GIPSA-Lab": "Université Grenoble Alpes",
+    "Heuristics and Diagnostics for Complex Systems": "Université de Technologie de Compiègne",
+    "Laboratoire d'Intégration des Systèmes et des Technologies": "CEA",
+    "Technical University of Munich TUM School of Computation": "Technical University of Munich (TUM)",
+    "Institute of Automotive Technology Technical University of Munich Garching bei München": "Technical University of Munich (TUM)",
+    "Robotics Institute Carnegie Mellon University Pittsburgh": "Carnegie Mellon University",
+    "School of Computer ScienceCarnegie Mellon University": "Carnegie Mellon University",
+    "National Robotics Engineering Center Carnegie Mellon University": "Carnegie Mellon University",
+    "Transportation Research Institute University of Michigan": "University of Michigan",
+    "Transportation Research Institute, University of Michigan": "University of Michigan",
+    "Computer Science and Engineering University of Michigan": "University of Michigan",
+    "University of Chinese Academy of Sciences (UCAS) 3School of Future Technology": "University of Chinese Academy of Sciences",
 }
 
 # A LaTeX spacing command (e.g. "[2mm]", "[1ex]") leaking in front of an
@@ -1967,6 +2061,11 @@ _INSTITUTION_SEPARATOR_RE = re.compile(r"\s*;\s*|\s+&\s+")
 KNOWN_INSTITUTION_SPLITS = {
     "Technical University Munich BMW Group BMW Group":
         ["Technical University of Munich (TUM)", "BMW"],
+    "Tsinghua University; System Thurst": ["Tsinghua University"],
+    "Tsinghua University PhiGent Robotics": ["Tsinghua University", "PhiGent Robotics"],
+    "HKUST(GZ); HKUST": ["HKUST (GZ)", "Hong Kong University of Science and Technology"],
+    "HKUST HKUST(GZ)": ["HKUST (GZ)", "Hong Kong University of Science and Technology"],
+    "Chinese University of Hong Kong SenseTime Group": ["The Chinese University of Hong Kong", "SenseTime"],
 }
 
 
@@ -2162,6 +2261,9 @@ ACADEMIC_KEYWORD_RE = re.compile(
     r"Ecole|École|Politecnico|Polytechnic|ETH |EPFL|CNRS|Academy of Sciences|"
     r"Hochschule|Universidad\w*|Ollscoil)\b", re.I,
 )
+# Whole families of research institutes (every Fraunhofer institute is
+# nonprofit research, whatever its own name).
+ACADEMIC_PREFIX_RE = re.compile(r"(Fraunhofer|Helmholtz|Leibniz)\b", re.I)
 # Named research institutes/labs that are academic or nonprofit despite not
 # matching the keyword regex above (no "University" in the name, and some
 # use "Institute" the way a company R&D arm would).
@@ -2179,6 +2281,46 @@ ACADEMIC_INSTITUTION_OVERRIDES = {
     "fraunhofer", "fraunhofer institute", "helmholtz association",
     "shanghai ai laboratory", "shanghai artificial intelligence laboratory",
     "korea institute of science and technology",
+    # Research institutes, labs and a few universities without "University"
+    # in the name that the institution audit found unclassified.
+    "ku leuven", "technion", "computer vision center",
+    "max planck institute for intelligent systems",
+    "max planck institute for informatics", "max planck institute for software systems",
+    "fzi research center for information technology",
+    "german aerospace center (dlr)", "dfki - german research center for artificial intelligence",
+    "fortiss", "hkust (gz)", "shanghai qi zhi institute", "pengcheng laboratory",
+    "zhejiang lab", "pazhou laboratory", "shenzhen research institute of big data",
+    "shenzhen institute of advanced technology", "shenyang institute of automation",
+    "shandong institute of automation", "beijing academy of artificial intelligence",
+    "agency for science, technology and research", "a*star",
+    "national institute of informatics",
+    "national institute of advanced industrial science and technology",
+    "electronics and telecommunications research institute",
+    "gwangju institute of science and technology",
+    "daegu gyeongbuk institute of science and technology",
+    "ulsan national institute of science and technology (unist)",
+    "skolkovo institute of science and technology", "institut polytechnique de paris",
+    "netherlands organisation for applied scientific research", "tno",
+    "rise research institutes of sweden", "virtual vehicle research",
+    "army research laboratory", "oak ridge national laboratory",
+    "australian centre for robotic vision", "data61 csiro", "tecnalia",
+    "lamarr institute for machine learning and artificial intelligence",
+    "canadian institute for advanced research", "vedecom",
+    "state key laboratory of computer-aided design and computer graphics",
+    "state key laboratory of multimodal artificial intelligence systems",
+    "state key laboratory of industrial control technology",
+    "state key laboratory of automotive simulation and control",
+    "state key laboratory of information engineering in surveying mapping and remote sensing",
+    "moe key lab of artificial intelligence", "wangxuan institute of computer technology",
+    "tu berlin", "tu wien", "tu dortmund university", "hkust shenzhen research institute",
+    "university of california", "university of california system",
+    "polytechnique montréal", "international institute of information technology, hyderabad",
+    "cea", "european commission joint research centre (jrc)",
+    "nara institute of science and technology", "unsw sydney",
+    "instituto federal do espírito santo", "inception institute of artificial intelligence",
+    "agency for defense development", "institut pascal", "shanghai innovation institute",
+    "institut français des sciences et technologies des transports, de l'aménagement et des réseaux",
+    "defense innovation institute",
 }
 # Company/industry R&D names, including ones that would otherwise misread
 # as academic under the keyword regex ("Toyota Research Institute") or that
@@ -2214,6 +2356,19 @@ INDUSTRY_INSTITUTION_OVERRIDES = {
     "yandex", "preferred networks", "flir", "flir systems", "avl", "hexagon",
     "trimble", "cepton", "innovusion", "hesai", "quanergy", "velodyne",
     "ouster", "aeva", "aeye",
+    # Companies the institution audit found unclassified.
+    "meituan", "li auto", "ford motor", "mitsubishi electric", "nec", "hikvision",
+    "volvo", "volvo cars", "volvo group", "zenseact", "zenuity", "scania",
+    "hyundai motor", "toyota motor north america research & development",
+    "woven by toyota", "toyota industries", "megvii technology", "phigent robotics",
+    "vi technology", "elektrobit automotive", "qcraft", "akka technologies",
+    "sambanova systems", "sevensense robotics", "fabu", "zongmu technology",
+    "xerox", "samsung electronics", "samsung advanced institute of technology",
+    "samsung ai center moscow", "tier iv", "saic motor", "lg", "jingdong",
+    "youtu lab", "gigaai", "hon hai research institute", "volkswagen group",
+    "skydio", "nomor research", "ingenieurgesellschaft auto und verkehr",
+    "nokia", "huawei noah's ark lab", "qualcomm",
+    "aviation industry corporation of china", "waabi",
 }
 
 
@@ -2230,7 +2385,7 @@ def classify_institution_sector(name):
         return "industry"
     if key in ACADEMIC_INSTITUTION_OVERRIDES:
         return "academic"
-    if ACADEMIC_KEYWORD_RE.search(name or ""):
+    if ACADEMIC_KEYWORD_RE.search(name or "") or ACADEMIC_PREFIX_RE.match(name or ""):
         return "academic"
     return None
 
