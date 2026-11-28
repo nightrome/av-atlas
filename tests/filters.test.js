@@ -311,7 +311,7 @@ test('paper ranks: papers with equal citations share a range, not distinct posit
 
 // The finding this guards: the Researchers/Countries/Institutions/Venues
 // lists divided by cited papers while the detail pages divided by all
-// papers with one decimal, so Holger Caesar read 155 on one page and 118.7
+// papers with one decimal, so one author read 155 on one page and 118.7
 // on the next. Both sides now go through the same helper.
 test('listing and detail pages give the same citations per paper', () => {
   const { aggregateByDimension: agg, avgCitations } = loadFilters();

@@ -48,7 +48,7 @@ print("eligible queries", len(eligible))
 rng = random.Random(42)
 sample = sorted(rng.sample(eligible, min(3000, len(eligible))))
 
-# seed papers: Holger Caesar's AV papers + well-known ones
+# seed papers: a set of AV papers + well-known ones
 def find(sub):
     sub = sub.lower()
     return [p["id"] for p in pool if sub in p["title"].lower()]

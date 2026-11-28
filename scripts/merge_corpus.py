@@ -64,7 +64,7 @@ CATEGORIES_FILE = BASE / "data" / "categories.json"
 # Every entry in a per-venue-year file (e.g. cvpr2024.json) repeated the same
 # "conference"/"year" values 265k times over -- 11.1MB of pure redundancy
 # across data/venues/*.json, already fully determined by the filename
-# (repo-size cleanup, user-requested; see DECISIONS.md). scripts/strip_
+# (repo-size cleanup, requested; see DECISIONS.md). scripts/strip_
 # redundant_venue_fields.py removes them from the tracked files; this dict
 # (derived from the real, once-verified 1:1 filename-prefix -> conference
 # mapping, not guessed) is how they're reconstructed on read.
@@ -573,7 +573,7 @@ def main(argv=None):
                     "source": source,
                     "arxiv_url": arxiv_url,
                     # Exactly which page this paper's data was pulled from,
-                    # when the fetcher recorded one (user-requested) -- most
+                    # when the fetcher recorded one (requested) -- most
                     # fetchers pull from one predictable per-venue URL
                     # pattern already documented in PIPELINE.md, but a
                     # community-maintained GitHub list (fetch_github_paper_

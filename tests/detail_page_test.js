@@ -136,7 +136,7 @@ async function testPaperPageWithoutAuthors() {
   }
 }
 
-// Regression guard for the user-reported bug (institution.html?name=Singapore
+// Regression guard for the reported bug (institution.html?name=Singapore
 // %20%E2%80%A0 -- a bare country name plus a stray footnote marker,
 // surviving as its own fake "institution"): no institution in the actual
 // built stats.json may contain a footnote/reference marker character, or be

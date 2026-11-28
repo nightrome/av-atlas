@@ -191,7 +191,7 @@ test('no column shows a sort indicator before any click', () => {
 });
 
 test('preserves existing header markup instead of collapsing it to plain text', () => {
-  // Real bug, user-reported as "columns overlap": network.html's headers
+  // Real bug, reported as "columns overlap": network.html's headers
   // carry a two-line <span class="th-main">/<span class="th-sub"> structure
   // (e.g. "Papers" / "w/ other institutions"). makeSortable used to reset
   // th.textContent before appending its indicator, which wiped that markup
@@ -218,7 +218,7 @@ test('calling makeSortable again on the same table does not stack a second indic
   // topN change, etc. -- only <tbody> gets rebuilt, <thead>/<th> persist.
   // The old code re-appended a fresh indicator span and a fresh click
   // listener on every call, so after N renders a header carried N
-  // indicators (user-reported: "the triangle symbol occurs 6 times") and a
+  // indicators (reported: "the triangle symbol occurs 6 times") and a
   // click fired N listeners at once.
   const sandbox = loadSortable();
   const citTh = fakeHeaderCell('Citations');

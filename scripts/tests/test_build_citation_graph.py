@@ -110,14 +110,14 @@ class TestMatchEntry(unittest.TestCase):
     def test_glued_pdf_text_matches(self):
         # Two-column CVF PDFs often lose their spaces and hyphenate across lines.
         index = index_of(("nuScenes: A Multimodal Dataset for Autonomous Driving", 2020))
-        reference = ("ancarlo Baldan, and Oscar Beijbom. nuScenes: A Multi-\n"
+        reference = ("ancarlo Example, and Oscar Sample. nuScenes: A Multi-\n"
                      "modalDatasetforAutonomousDriving. InIEEE/CVFCon-")
         self.assertEqual(bcg.match_entry(reference, index),
                          {key("nuScenes: A Multimodal Dataset for Autonomous Driving")})
 
     def test_ar5iv_title_straight_after_the_authors_matches(self):
         index = index_of(("nuScenes: A Multimodal Dataset for Autonomous Driving", 2020))
-        reference = ("Caesar et al. (2020) H. Caesar, V. Bankiti, A. H. Lang, and O. Beijbom "
+        reference = ("Doe et al. (2020) J. Doe, V. Example, A. H. Sample, and O. Roe "
                      "Nuscenes: a multimodal dataset for autonomous driving. In CVPR, 2020.")
         self.assertEqual(len(bcg.match_entry(reference, index)), 1)
 
@@ -224,7 +224,7 @@ class TestMatchPhaseMergesS2(unittest.TestCase):
             tmp = Path(tmp)
             files = {
                 "REFS_CVF_FILE": {"succeeded": ["centerpoint"], "failed": {}, "references": {
-                    "centerpoint": ["[1] H. Caesar et al. nuScenes. In CVPR, 2020."]}},
+                    "centerpoint": ["[1] J. Doe et al. nuScenes. In CVPR, 2020."]}},
                 "REFS_ARXIV_FILE": {},
                 "REFS_S2_FILE": {"references": {"centerpoint": [100, 200], "bevformer": [100]}},
                 "S2_IDS_FILE": {"ids": {"nuscenes": 100, "pointpillars": 200, "centerpoint": 300,

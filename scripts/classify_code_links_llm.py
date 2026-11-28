@@ -192,7 +192,7 @@ def load_targets():
     regex detector runs over, so this is a like-for-like replacement."""
     affil = json.loads(AFFIL_FILE.read_text(encoding="utf-8"))
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
-    # Most-cited-first (user-requested, applied to every crawler in this
+    # Most-cited-first (requested, applied to every crawler in this
     # pipeline -- see fetch_common.by_citations). Was previously an
     # alphabetical-by-key sort (out.sort(), a byproduct of tuples starting
     # with the normalized title) -- as arbitrary an order as corpus order.

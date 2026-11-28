@@ -205,7 +205,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
   document.getElementById('institutions-grid').textContent = 'Could not load stats.json: ' + err;
 });
 
-// Country and academic/industry-type filters (user-requested). Both are a
+// Country and academic/industry-type filters (requested). Both are a
 // property of the INSTITUTION itself (stats.institution_countries /
 // stats.institution_sector), not of any one paper, so they don't fit
 // renderFilterBar's paper-level filterPapers pipeline the way Category/Venue/
@@ -303,7 +303,7 @@ function render() {
 
   // "Show top N" caps the timeline chart/legend only -- the table below is
   // titled "All institutions" and paginates through the FULL filtered set
-  // regardless of this setting (user-flagged: a table that says "all" but
+  // regardless of this setting (flagged in review: a table that says "all" but
   // is actually capped at whatever the chart's top-N happens to be is
   // misleading, and Prev/Next on an already-capped list rarely has a
   // second page to go to). `institutions` (unsliced) feeds the table;

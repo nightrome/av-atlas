@@ -131,7 +131,7 @@ def main():
             if p.get("av_relevance") == "AV" and not (p.get("abstract") or "").strip() and p.get("title")
         )
     ]
-    # Highest-cited first, not corpus order -- user-requested: a run that
+    # Highest-cited first, not corpus order -- requested: a run that
     # gets cut off partway through (this source's own daily/rate budget,
     # see PIPELINE.md) should already have enriched the papers readers
     # actually encounter -- top-cited lists, comparison pages -- first.

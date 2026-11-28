@@ -14,7 +14,7 @@ KTH Royal Institute of Technology, Stockholm, Sweden"), not a flat list of
 independent comma-separated fields, and no amount of regex cleanup after a
 blind split can fully recover what a naive split destroys (confirmed real
 cost: "Perception" surviving as its own fake institution, see
-aggregate.py's INVALID_INSTITUTIONS comment). User-requested: "extract them
+aggregate.py's INVALID_INSTITUTIONS comment). Requested: "extract them
 in the right way" instead of extracting garbage and filtering it after.
 
 Two-tier dedup, not a blind LLM call every time:
@@ -24,7 +24,7 @@ Two-tier dedup, not a blind LLM call every time:
   2. The LLM sees this shortlist alongside the raw text and is asked to
      either return one of them EXACTLY (including by acronym/abbreviation --
      the part token-overlap alone can't do, e.g. "KTH" matching "KTH Royal
-     Institute of Technology") or propose a clean new name. User-requested:
+     Institute of Technology") or propose a clean new name. Requested:
      "tell me if this fits into these existing institutions or add a new
      one" -- this is that, with a cheap shortlist so the prompt doesn't have
      to carry the entire multi-thousand-entry registry every single call.

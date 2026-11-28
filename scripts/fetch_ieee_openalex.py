@@ -108,7 +108,7 @@ def fetch_works(source_id):
                 # citation_count() in aggregate.py), never an external
                 # provider's count. Storing it here anyway once let a paper
                 # rank in the top 50 by this number while displaying 0
-                # citations client-side, a real user-reported bug -- dropped
+                # citations client-side, a real reported bug -- dropped
                 # at the source so it can't recur.
                 "doi": w.get("doi"),
             })

@@ -8,8 +8,8 @@ run-on string, e.g. "UC Berkeley Stanford UCL Virginia Tech Nvidia" as ONE
 affiliations[] entry. normalize_institution() has no way to tell this apart
 from a real (if unusual) institution name, so it survived as-is and showed
 up as one nonsense "institution" wherever affiliations are displayed --
-user-flagged: Boyi Li's and Marco Pavone's author pages both carried this
-exact string from their shared "AccidentBench" paper.
+flagged in review: two co-authors' pages both carried this
+exact string from one shared paper.
 
 Found by scanning data/institution_registry.json for entries containing 2+
 well-known standalone institution/company names with no separator between

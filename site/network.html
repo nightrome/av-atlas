@@ -95,7 +95,7 @@
      columns sharing the width left after the 26%-wide name column, a
      one-line sub-label like "w/ other institutions" doesn't fit its own
      column and visually spills into the next one instead of wrapping
-     (user-reported: "columns overlap each other"). Letting it wrap is the
+     (reported: "columns overlap each other"). Letting it wrap is the
      fix; overflow-wrap on the shared th/td rule below already handles long
      unbroken words if it ever comes to that. */
   th .th-sub { font-weight: 400; font-size: 0.85em; }
@@ -197,7 +197,7 @@ let currentQuery = new URLSearchParams(location.search).get('q') || '';
 // paper.html/insights.html already use for the same field, not a new one
 // invented here. Kept in sessionStorage, not the URL -- an exploratory
 // toggle for looking at the same author set two ways, not a filter that
-// changes which papers/authors are included (user-requested: "propose
+// changes which papers/authors are included (requested: "propose
 // different criteria how to connect the network graph").
 let currentEdgeMode = 'coauthor';
 try { currentEdgeMode = sessionStorage.getItem('network-edge-mode') || 'coauthor'; } catch (e) { /* ignore */ }
@@ -206,13 +206,13 @@ const relevance = new URLSearchParams(location.search).get('relevance') || '';
 fetchStatsWithRelevance(relevance).then(stats => {
   currentStats = stats;
   // Same fields, same order as authors.html's own filter bar
-  // (user-requested: "replicate the SEARCH bar from Authors") -- no Year
+  // (requested: "replicate the SEARCH bar from Authors") -- no Year
   // dropdown, matching Authors exactly.
   currentFilters = renderFilterBar(document.getElementById('filter-bar-container'), stats, 'network.html', {
     search: { placeholder: 'Search author names…', param: 'q', onInput: v => { currentQuery = v; render(); } },
     relevance: true,
     // A floor on paper count before "Show top" caps the result, same
-    // combination Authors already offers (user-requested: "add a MIN
+    // combination Authors already offers (requested: "add a MIN
     // papers counter similar to Authors"). Default 1 is a no-op -- every
     // author here has published at least one paper -- so this doesn't
     // change what the graph shows until a reader raises it.
@@ -416,7 +416,7 @@ function layoutForceGraph(nodes, edges, clusterOf, width, height, iterations, ra
     // all their neighbors by the spring forces alone, and several such hub
     // nodes tend to converge on roughly the same spot near the canvas
     // center -- exactly the nodes a reader most wants to click on, rendered
-    // on top of each other and unclickable (user-reported: "the Network
+    // on top of each other and unclickable (reported: "the Network
     // plot centers too many influential people closely around the center
     // making them not accessible"). The physics above can't fix this on its
     // own since it's an emergent property of degree, not a force term; a
@@ -892,7 +892,7 @@ function renderMetricsTable(nodes, edges, topAuthors, allPapers) {
     countries: countriesOf.get(n.id).size,
     centrality: rank.get(n.id) / maxRank,
   }));
-  // Default sort: centrality descending (user-requested) -- previously
+  // Default sort: centrality descending (requested) -- previously
   // just whatever order `nodes` happened to be in (raw paper count, from
   // the top-N author selection above), unrelated to what this table is
   // actually about.
@@ -978,7 +978,7 @@ function setupPanZoom(svg, viewport, W, H) {
   // was actually under the cursor, which silently ate every node's own
   // click listener: a plain click on a node looked identical to a
   // zero-distance drag, so it always resolved to "pan", never "navigate to
-  // this author" (confirmed: user-reported, node clicks did nothing).
+  // this author" (confirmed: reported, node clicks did nothing).
   // Below the threshold, no capture happens at all, so the pointerup's
   // click event fires on the node exactly like an unhandled click normally
   // would, and the node's own listener runs.

@@ -52,7 +52,7 @@ def in_corpus_counts(graph):
     # citation count (see aggregate.py's self_citations field), there's no
     # need to also suppress them from the total; a reader can see both the
     # full count and how much of it is self-citation, rather than only ever
-    # seeing a total with self-citations silently removed (user-requested).
+    # seeing a total with self-citations silently removed (requested).
     incoming = defaultdict(int)
     for citer_key, targets in graph.get("edges", {}).items():
         for t in targets:

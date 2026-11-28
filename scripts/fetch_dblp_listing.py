@@ -60,13 +60,13 @@ CONF_DBLP_PATH = {
     # conf/ivs/ instead (confirmed live: conf/ivs's own DBLP page says "IEEE
     # Intelligent Vehicles Symposium"). Using "iv" here previously pulled
     # 1131 Information-Visualisation papers under the "IV" venue label,
-    # user-reported as "IV has only 0.4% AV-relevant papers... it is
+    # reported as "IV has only 0.4% AV-relevant papers... it is
     # literally called Intelligent Vehicles" -- the real IV Symposium's
     # papers were never fetched at all.
     "IV": "ivs",
     "GCPR": ("dagm", "gcpr"),
     # Found by mining our own papers' reference lists for venue names that
-    # come up often but aren't covered yet (user-requested) -- ICML showed
+    # come up often but aren't covered yet (requested) -- ICML showed
     # 207 raw citations from this corpus alone, a top-tier ML venue missing
     # entirely; the rest are the next most-cited gaps. All confirmed live
     # against DBLP's own index page before adding, same as every entry

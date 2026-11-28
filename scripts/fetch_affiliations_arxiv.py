@@ -167,7 +167,7 @@ def parse_ar5iv_affiliations(soup, registry, cache):
     # separated field list, and a naive split (this used to call a
     # clean_affiliations() helper that did exactly that) produces
     # unrecoverable garbage fragments no amount of downstream regex cleanup
-    # can fully undo (user-flagged, confirmed real cost: "Perception"
+    # can fully undo (flagged in review, confirmed real cost: "Perception"
     # surviving as its own fake institution -- see aggregate.py's
     # INVALID_INSTITUTIONS comment). `registry` (a set) and `cache` (a dict,
     # affiliation text -> extraction result, keyed by iel.cache_key() so no
@@ -226,7 +226,7 @@ def parse_ar5iv_references(soup):
     return entries
 
 
-# Not just github/gitlab/bitbucket (user-flagged: "code cannot just be at
+# Not just github/gitlab/bitbucket (flagged in review: "code cannot just be at
 # github/gitlab") -- huggingface.co/paperswithcode.com/codeberg.org/gitee.com
 # are all real code/model-hosting destinations that show up in this corpus
 # too (a HuggingFace Space or model repo, a self-hosted Gitee mirror common
@@ -317,7 +317,7 @@ def load_pending(already_done):
     # Most-cited-first. Affiliation coverage is rate-limited and will plateau
     # well short of 100%, so whatever fraction it does reach should be the
     # papers that actually anchor the Institutions/Countries leaderboards --
-    # the top-cited ones -- not a random slice (user-requested, supersedes
+    # the top-cited ones -- not a random slice (requested, supersedes
     # the earlier "random order for representativeness" call now that the
     # ceiling is the binding constraint). papers_full.json's own order
     # clusters by venue, so an explicit sort is needed either way.

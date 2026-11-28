@@ -208,7 +208,7 @@ class TestDetectCodeLink(unittest.TestCase):
         self.assertTrue(fa.detect_code_link(soup))
 
     def test_huggingface_and_other_non_git_hosts_detected(self):
-        # user-flagged: "code cannot just be at github/gitlab".
+        # flagged in review: "code cannot just be at github/gitlab".
         for host in ("https://huggingface.co/us/our-model", "https://paperswithcode.com/paper/ours",
                      "https://codeberg.org/us/our-repo", "https://gitee.com/us/our-repo"):
             soup = BeautifulSoup(f'<p><a href="{host}">link</a></p>', "html.parser")

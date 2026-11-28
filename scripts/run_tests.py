@@ -54,6 +54,11 @@ def main():
     result = subprocess.run(["node", str(nav_test)], cwd=BASE)
     failed = failed or result.returncode != 0
 
+    print("\n=== JS tests (tests/papermap.test.js) ===")
+    papermap_test = BASE / "tests" / "papermap.test.js"
+    result = subprocess.run(["node", str(papermap_test)], cwd=BASE)
+    failed = failed or result.returncode != 0
+
     for label, script in (("QA smoke test", "qa_smoke_test.js"),
                           ("UI regression test", "ui_regression_test.js"),
                           ("Detail page test", "detail_page_test.js")):

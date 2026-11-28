@@ -143,7 +143,7 @@ def load_pending(refetch_ids):
     # Most-cited-first: OpenAlex's rate ceiling means coverage plateaus well
     # short of 100%, so the papers it does reach should be the ones that
     # anchor the Institutions/Countries leaderboards -- the top-cited ones --
-    # not a random slice (user-requested, supersedes the earlier
+    # not a random slice (requested, supersedes the earlier
     # random-order call now that the ceiling is the binding constraint).
     av = by_citations(av)
     if refetch_ids:

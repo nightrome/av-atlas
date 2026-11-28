@@ -236,7 +236,7 @@ fetch('stats.json').then(r => r.json()).then(applyCitationSource).then(stats => 
   // stats.all_papers by default). A paper can legitimately be non-AV and
   // still be part of this corpus -- e.g. discovered purely because some AV
   // paper's own reference list cites it -- so "not in all_papers" isn't
-  // the same claim as "not on this site" (user-reported: a real non-AV
+  // the same claim as "not on this site" (reported: a real non-AV
   // paper reachable this way showed the generic "not found" message,
   // indistinguishable from a genuine typo or a paper this site has never
   // seen at all).
@@ -356,7 +356,7 @@ function renderPaperBody(stats, paper, isAdjacent) {
     // pattern -- currently the community-maintained ICRA/IROS GitHub paper
     // lists (fetch_github_paper_lists.py), one repo per year/venue, so
     // "where did this come from" needs a real per-paper link, not just a
-    // sentence in Methodology (user-requested).
+    // sentence in Methodology (requested).
     const a = document.createElement('a');
     a.href = paper.source_url;
     a.target = '_blank'; a.rel = 'noopener';
@@ -404,7 +404,7 @@ function renderPaperBody(stats, paper, isAdjacent) {
   // citation-graph coverage is partial (see About's crawler-status table),
   // so 0 means "no citers found so far", not "confirmed uncited". A tooltip
   // rather than a separate "n/a" state, since there's no reliable per-paper
-  // signal for "definitely fully scanned" to switch on (user-requested:
+  // signal for "definitely fully scanned" to switch on (requested:
   // state missing citation data clearly, not indistinguishable from zero).
   const withinCorpusTile = stat((paper.citing_papers || []).length, 'Cited by (AV papers)');
   withinCorpusTile.title = 'Of the citers above, how many are themselves AV papers -- the ones listed '
@@ -649,7 +649,7 @@ function renderPaperBody(stats, paper, isAdjacent) {
     // Fixed 50-per-page + Prev/Next, same as every other table on the site
     // -- a citation list can run into the hundreds (see paper.html's own CD
     // index tile: a paper with a large in-corpus citer count), and this was
-    // rendering every single one into one unpaginated table (user-flagged).
+    // rendering every single one into one unpaginated table (flagged in review).
     const pagination = renderPagination(citingPaginationContainer, 'paper.html', citingRows.length, { onChange: renderCitingTable });
     const columns = [
       { accessor: c => c.title, numeric: false },
@@ -673,7 +673,7 @@ function renderPaperBody(stats, paper, isAdjacent) {
   }), exportContainer.firstChild);
 
   // Citing authors: every author of a citing paper, same table shape as
-  // author.html's own "Citing authors" panel (user-requested: design this
+  // author.html's own "Citing authors" panel (requested: design this
   // page similarly, with the same citations/papers columns for each citing
   // author's own overall standing).
   const citingAuthorCounts = {};
