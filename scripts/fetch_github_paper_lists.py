@@ -21,7 +21,7 @@ each family's raw README:
     here so author names read the same way regardless of source, matching
     the convention every other venue in this corpus already uses.
 
-User-requested: save a reference to exactly which page each paper came from,
+Requested: save a reference to exactly which page each paper came from,
 not just that it came from "a venue listing" -- every entry here carries
 source_url (the exact GitHub repo it was pulled from), which merge_corpus.py
 threads through onto papers_full.json.

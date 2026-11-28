@@ -159,7 +159,7 @@ AV_RELEVANCE_TERMS = [
     "roadside perception", "cooperative perception", "lane detection", "lane change",
     "nuscenes", "kitti", "waymo open dataset", "waymo open motion dataset", "waymo motion dataset",
     "argoverse", "bdd100k", "carla simulator",
-    # User-flagged real miss: "A VT-HMM-Based Framework for Countdown Timer
+    # Flagged in review real miss: "A VT-HMM-Based Framework for Countdown Timer
     # Traffic Light State Estimation" -- unambiguously about real-world
     # driving infrastructure (unlike generic CV terms, a paper about traffic
     # lights/signs is essentially never about anything else).
@@ -187,8 +187,8 @@ AV_RELEVANCE_TERMS = [
     # cruise control". Without them a signature AV subfield (4D-radar object
     # detection / odometry / scene flow, ~60+ papers here) fell through to
     # "non-AV" whenever the abstract didn't also happen to say "autonomous
-    # driving" -- user-flagged via Andras Palffy's papers (RaDelft detector,
-    # 4D-RaDiff, CLRNet were all wrongly "non-AV"). "4d radar" also matches
+    # driving" -- flagged in review: several radar-detection papers
+    # were wrongly "non-AV". "4d radar" also matches
     # a handful of radar-based human-pose/gait papers; that's a small,
     # accepted cost for the recall gain (the aerial-nav ones are already
     # held out by OFF_SCOPE_TITLE_TERMS).
@@ -638,7 +638,7 @@ def presents_dataset(title):
 # radar-perception is a GATE (like presents_dataset above), not just a keyword
 # list: a paper whose title says "radar", or whose abstract is radar-dense,
 # is radar-perception outright -- keeping every radar paper in one bucket
-# (user-requested). Non-automotive radars (GPR / SAR / weather) are excluded.
+# (requested). Non-automotive radars (GPR / SAR / weather) are excluded.
 _RADAR_NON_AUTOMOTIVE = re.compile(
     r"\b(ground[- ]penetrating radar|gpr\b|synthetic aperture radar|\bsar imag|"
     r"through[- ]wall radar|over[- ]the[- ]horizon radar)", re.I)
@@ -664,7 +664,7 @@ def is_radar_paper(title, abstract):
 # the same "topic keywords describe what a paper covers, not what it IS"
 # problem presents_dataset() exists for above -- confirmed on real data: 541
 # AV papers have "survey"/"review" in the title, already scattered across
-# every one of the 30 topic categories by keyword luck (user-requested: a
+# every one of the 30 topic categories by keyword luck (requested: a
 # dedicated bucket instead, same paper-type gate as dataset-benchmark-paper).
 # Bare word, not a phrase list -- of 541 titles matching \bsurvey\b|\breview\b,
 # only 2 turned out to be the OTHER sense of "survey" (a questionnaire, not a
@@ -703,7 +703,7 @@ def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known
         return "radar-perception", classify_relevance(title, abstract, normalize_title(title) in llm_av_titles)
 
     # Survey/review gate -- runs after dataset+radar so "A Survey of Radar
-    # Perception Methods" still lands in radar-perception (user-requested:
+    # Perception Methods" still lands in radar-perception (requested:
     # keep every radar paper in one bucket regardless of paper type, same
     # reasoning as the radar gate's own comment above) and a literature
     # review OF a dataset still lands in dataset-benchmark-paper if it
@@ -785,7 +785,7 @@ def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known
         # depth dataset from KITTI to evaluate its own sparse-conv layer)
         # still trips "novel dataset" in the abstract, even though the
         # paper's own subject is the method, not the data -- confirmed on
-        # real data (user-flagged). Anything whose own title presents a
+        # real data (flagged in review). Anything whose own title presents a
         # dataset has already been claimed by presents_dataset() above, so
         # reaching here with this category means the evidence was in the
         # abstract only: fall through to the next-best category.
@@ -829,7 +829,7 @@ def classify_paper(title, abstract, categories, llm_av_titles=frozenset(), known
     # category is named anywhere in that title. "Textual Explanations for
     # Self-Driving Vehicles" is about explanations, but its abstract says
     # "controller" five times (the network being explained), which is enough
-    # to win the abstract-wide count and land it in Control (user-flagged).
+    # to win the abstract-wide count and land it in Control (flagged in review).
     # Papers like "Hint-AD: ... Interpretability in End-to-End Autonomous
     # Driving" also name a normal topic in the title, so they still keep it.
     if last_resort_categories:

@@ -55,7 +55,7 @@
   td a:hover { text-decoration: underline; }
   /* Horizontal safety net: with ~15 year columns the chart can get wider
      than a phone viewport -- scroll inside its own box instead of spilling
-     past the panel's padding (user-flagged: "straddles margins on the
+     past the panel's padding (flagged in review: "straddles margins on the
      phone"). */
   /* The padding keeps the hover tooltip above the tallest bar from being clipped by the scroll box. */
   .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-top: 32px; margin-top: -8px; }
@@ -192,7 +192,7 @@ function stat(value, label, opts) {
   return tile;
 }
 
-// One stat-tile, two numbers side by side (AV / Non-AV pair, user-requested
+// One stat-tile, two numbers side by side (AV / Non-AV pair, requested
 // so the "how much of this author's record is AV work vs. everything else"
 // comparison reads at a glance instead of needing four separate tiles).
 function statPair(avValue, avLabel, nonAvValue, nonAvLabel, opts) {
@@ -340,7 +340,7 @@ function renderBody(stats, papers) {
   }
 
   // Used to show a compact "what's current" summary under the name, with
-  // the full table below as the detailed record. Dropped (user-requested):
+  // the full table below as the detailed record. Dropped (requested):
   // parsed-from-papers affiliation data is noisy enough (see the disclaimer
   // on the Affiliations panel below) that surfacing it a second time, right
   // under the name before a reader has any of that context, did more harm
@@ -348,7 +348,7 @@ function renderBody(stats, papers) {
   // this data lives.
   const institutions = detail.institutions || [];
 
-  // Full affiliation history as a proper table (user-requested: name,
+  // Full affiliation history as a proper table (requested: name,
   // year(s), and academic-vs-industry type) -- the tags row above is a
   // compact "what's current" summary, this is the complete, sortable
   // record. Type comes from stats.institution_sector, the same
@@ -451,7 +451,7 @@ function renderBody(stats, papers) {
   const nonAvCitations = (stats.non_av_paper_citations || {})[name] || 0;
   const nonAvAvg = citationsPerPaper(nonAvCitations, nonAvCount);
 
-  // Three tiles, each an AV/Non-AV pair (user-requested), rather than four
+  // Three tiles, each an AV/Non-AV pair (requested), rather than four
   // separate single-number tiles -- "how much of this is AV work vs.
   // everything else" reads directly off each tile instead of needing to
   // scan two tiles apart from each other.
@@ -468,7 +468,7 @@ function renderBody(stats, papers) {
   hTile.title = (window.GLOSSARY.h_index || {}).short || '';
   grid.appendChild(hTile);
   // Was its own floating icon above the grid, in the page's bare background
-  // rather than inside any bordered box (user-reported: "the i logo must be
+  // rather than inside any bordered box (reported: "the i logo must be
   // inside the white box"). Nesting it in the first tile, which is always
   // the top-left/top-right corner regardless of how many tiles the current
   // viewport width fits per row, keeps it deterministically inside a real
@@ -519,7 +519,7 @@ function renderBody(stats, papers) {
 
   // Top coauthors: every other author who shares a byline with this author
   // on at least one of their AV papers, ranked by how many papers they
-  // coauthored together. "Show" defaults to 10 (user-requested), persisted
+  // coauthored together. "Show" defaults to 10 (requested), persisted
   // the same way as every other small show-N control on this site.
   const coauthorCounts = {};
   const coauthorYears = {};
@@ -649,7 +649,7 @@ function renderBody(stats, papers) {
     });
   }));
   // Each citing author's own overall standing (total papers/citations in
-  // the corpus, user-requested) -- computed once here, not per-row, since
+  // the corpus, requested) -- computed once here, not per-row, since
   // it's the same underlying scan of all_papers regardless of how many
   // citing authors there are.
   const authorPaperStats = computeAuthorPaperStats(stats.all_papers);

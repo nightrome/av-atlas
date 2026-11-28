@@ -59,7 +59,7 @@ def by_citations(papers):
     order across runs. Missing/zero citations sorts to the back rather than
     crashing the comparison or being treated as "unknown, skip".
 
-    User-requested: every external source this pipeline crawls is
+    Requested: every external source this pipeline crawls is
     rate-limited or budget-capped (see PIPELINE.md's "OpenAlex and arXiv
     rate limits" -- OpenAlex's daily budget alone has cut a full
     enrich_av_authors.py run off after ~200 papers of a 15,000+ backlog).
@@ -72,7 +72,7 @@ def by_citations(papers):
     unbiased draw, not a priority order -- see e.g. select_labeling_
     candidates.py/fetch_llm_relevance_labels.py, deliberately NOT switched
     to this) -- and matches enrich_av_authors.py's own load_pending(),
-    which already did this same most-cited-first sort by user request
+    which already did this same most-cited-first sort on request
     before this helper existed.
     """
     return sorted(papers, key=lambda p: (-_in_corpus_citations(p), p.get("title") or ""))

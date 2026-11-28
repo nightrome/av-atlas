@@ -213,7 +213,7 @@ def main():
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # titles hold non-ASCII; the Windows console cannot print them
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     av = [p for p in papers if p.get("av_relevance") == "AV" and p.get("authors")]
-    # Most-cited-first (user-requested, applied to every crawler in this
+    # Most-cited-first (requested, applied to every crawler in this
     # pipeline -- see fetch_common.by_citations). This knowingly reopens
     # the same shape of skew a prior "sort by author-list length" ordering
     # was reverted for (resolves big-collaboration-paper authors first,

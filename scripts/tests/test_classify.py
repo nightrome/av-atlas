@@ -94,7 +94,7 @@ class TestClassifyRelevance(unittest.TestCase):
         self.assertEqual(cl.classify_relevance("Some Paper", None), "non-AV")
 
     def test_traffic_light_and_sign_count_as_av_relevant(self):
-        # user-flagged real miss: "A VT-HMM-Based Framework for Countdown
+        # flagged in review real miss: "A VT-HMM-Based Framework for Countdown
         # Timer Traffic Light State Estimation" had no abstract and no other
         # AV-specific phrase in its title, so it fell through to "non-AV"
         # despite being unambiguously about real-world driving
@@ -188,10 +188,10 @@ class TestClassifyRelevance(unittest.TestCase):
             "non-AV",
         )
 
-    # -- Ground-truth regression cases (real papers, user-confirmed) --------
+    # -- Ground-truth regression cases (real papers, confirmed in review) --------
 
     def test_mechanical_chassis_control_paper_excluded(self):
-        # Real paper, confirmed by the user: was wrongly "AV" purely
+        # Real paper, confirmed in review: was wrongly "AV" purely
         # because the title-strength check matched "Drive" inside
         # "Distributed Drive" (a drivetrain configuration, not a person
         # driving). Scope decision: mechanical/hardware vehicle engineering
@@ -210,7 +210,7 @@ class TestClassifyRelevance(unittest.TestCase):
         # The exclusion above must not blanket-exclude every chassis/vehicle-
         # dynamics paper -- one that applies a learning-based method to the
         # same hardware problem is still in scope (broad interpretation of
-        # "learning-based approaches", per the user's own framing).
+        # "learning-based approaches", per the requested framing).
         self.assertEqual(
             cl.classify_relevance(
                 "Deep Reinforcement Learning for Active Front Steering Control",
@@ -233,7 +233,7 @@ class TestClassifyRelevance(unittest.TestCase):
             self.assertEqual(cl.classify_relevance(title, None), "AV", title)
 
     def test_radar_perception_vocabulary_is_core(self):
-        # User-flagged via Andras Palffy's papers: radar-perception papers
+        # Flagged in review: radar-perception papers
         # (a signature AV subfield) fell through to "non-AV" whenever the
         # abstract didn't also say "autonomous driving".
         for title, abstract in (
@@ -402,7 +402,7 @@ class TestKnownDatasetTitleOverride(unittest.TestCase):
         self.assertEqual(category, "survey-review-paper")
 
     def test_method_paper_deriving_a_dataset_is_not_categorized_as_dataset(self):
-        # Real case, user-flagged: "Sparsity Invariant CNNs" derives a depth
+        # Real case, flagged in review: "Sparsity Invariant CNNs" derives a depth
         # dataset from KITTI purely to evaluate its own sparse-convolution
         # layer -- the abstract's "novel dataset from the KITTI benchmark"
         # phrasing shouldn't outrank the paper's actual subject just because
@@ -672,7 +672,7 @@ class TestClassifyPaper(unittest.TestCase):
         self.assertEqual(category, "segmentation")
 
     def test_motion_planner_matches_planner_not_just_planning(self):
-        # Real case, confirmed by the user: "End-To-End Interpretable Neural
+        # Real case, confirmed in review: "End-To-End Interpretable Neural
         # Motion Planner" was landing in "tracking" because a bare
         # "planning" keyword never matches the word "planner" (different
         # word, not a substring) -- the taxonomy's end-to-end-driving

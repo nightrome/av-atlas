@@ -44,7 +44,7 @@
   .rank { position: absolute; top: 10px; left: 12px; font-size: 0.75em; color: var(--muted); }
   .chart-wrap { overflow-x: auto; position: relative; }
   /* Custom tooltip for the scatter chart, not the browser's native SVG
-     <title> -- user-reported (Chrome on macOS): hovering a bubble showed
+     <title> -- reported (Chrome on macOS): hovering a bubble showed
      no tooltip at all. Native <title> tooltips depend on the OS/browser's
      own hover-delay and hit-testing, both of which are known to be
      unreliable for small/overlapping SVG shapes; a JS-driven positioned div
@@ -285,7 +285,7 @@ function render() {
   // otherwise a real author with fewer papers/cited-papers than the
   // Min./Rows filters currently allow never even enters `authors` for the
   // query to filter, so searching their exact name returns nothing with no
-  // indication why (user-reported: two real corpus authors, each with only
+  // indication why (reported: two real corpus authors, each with only
   // 2-5 papers, were unfindable by name search while the default Min. 10+
   // filter was active). Search should never hide a genuine name match.
   const query = currentQuery.trim().toLowerCase();

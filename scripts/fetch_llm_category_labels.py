@@ -111,7 +111,7 @@ def save_results(r):
 def build_pool(n):
     papers = json.loads(PAPERS_FILE.read_text(encoding="utf-8"))
     by_norm = {}
-    # Most-cited-first (user-requested, applied to every crawler in this
+    # Most-cited-first (requested, applied to every crawler in this
     # pipeline -- see fetch_common.by_citations). This one runs against a
     # local Ollama model, not an external rate limit, so order rarely
     # matters in practice (a run typically finishes the whole pool) -- kept

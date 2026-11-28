@@ -206,7 +206,7 @@ function row(cells) {
     // always numeric-position, even when the cell's actual value is the
     // 'n/a' fallback string from fmtAvg() -- typeof-checking the value
     // missed exactly that case, leaving "no data" rows left-aligned while
-    // every real-number row was right-aligned (user-reported: column not
+    // every real-number row was right-aligned (reported: column not
     // consistently right-aligned).
     if (i > 1) td.className = 'num';
     if (c instanceof Node) td.appendChild(c);

@@ -49,7 +49,7 @@ OUT_FILE = BASE / "data" / "stats.json"
 # non-AV (not AV) papers, now over 80MB as a single file -- versus stats.json's
 # own size for the ~26k AV papers everything else on the site is built from.
 # Bundling that into the page every reader loads by default would make every
-# page slower for a feature only some readers want (user-requested "list the
+# page slower for a feature only some readers want (requested "list the
 # non-AV papers"). Fetched lazily by index.html only when its AV-relevance
 # filter is switched away from the "AV relevant" default.
 #
@@ -206,7 +206,7 @@ COUNTRY_NAMES = {
     "AU": "Australia", "IT": "Italy", "IL": "Israel", "IN": "India", "ES": "Spain",
     "AT": "Austria", "BE": "Belgium", "DK": "Denmark", "FI": "Finland", "NO": "Norway",
     "RU": "Russia", "BR": "Brazil",
-    # User-requested: Hong Kong and Macao merge into China rather than
+    # Requested: Hong Kong and Macao merge into China rather than
     # showing as their own countries -- both are Chinese special
     # administrative regions, not separate countries.
     "HK": "China", "MO": "China",
@@ -243,14 +243,14 @@ def citation_count(entry):
     # differently-scoped counts that aren't comparable to a number computed
     # over this specific corpus, and blending them in previously let a paper
     # rank highly (server-side sort key) while displaying 0 citations
-    # (client always showed in-corpus only) -- a real user-reported mismatch.
+    # (client always showed in-corpus only) -- a real reported mismatch.
     #
     # A paper the in-corpus citation graph has no incoming edge for gets 0,
     # not None: "how many papers in this corpus reference it" is a question
     # the corpus can always answer, and the answer is just often zero. A
     # partial reference-list crawl is a coverage caveat surfaced on the
     # About page ("What's not covered yet"), not a reason to blank the
-    # number. (User-decided; the old None sentinel left ~half the corpus
+    # number. (Decided by the maintainer; the old None sentinel left ~half the corpus
     # reading as "unknown" on every page.)
     return ((entry.get("citations_by_source") or {}).get("in_corpus") or {}).get("count") or 0
 
@@ -272,7 +272,7 @@ VENUE_ALIASES = {
     "Advances in Neural Information Processing Systems": "NeurIPS",
     "IEEE Transactions on Pattern Analysis and Machine Intelligence": "TPAMI",
     "European Conference on Computer Vision": "ECCV",
-    # User-requested: shorten "arXiv preprint" to "arXiv" everywhere the
+    # Requested: shorten "arXiv preprint" to "arXiv" everywhere the
     # venue name is displayed -- every other venue on the site is already
     # shown as its short form (CVPR, not "Conference on Computer Vision and
     # Pattern Recognition"), so the fuller "arXiv preprint" stood out.
@@ -286,7 +286,7 @@ VENUE_ALIASES = {
     # as they're found, same as VENUE_ALIASES' other entries.
     "NeurIPS Datasets and Benchmarks": "NeurIPS",
     "Neural Information Processing Systems": "NeurIPS",
-    # User-requested acronym fixes, plus every other duplicate long-form
+    # Requested acronym fixes, plus every other duplicate long-form
     # spelling found by reviewing the full post-backfill venue list (see
     # the "big_venues" comment below for why this list matters beyond just
     # tidiness -- an unmerged duplicate can knock an otherwise-common venue
@@ -356,7 +356,7 @@ VENUE_ALIASES = {
 
 # A venue string sometimes carries its own year, either leading ("2023
 # IEEE/CVF Conference on ... (CVPRW)") or trailing ("CVPR 2020") -- stripped
-# generically (user-requested: "remove the year from the venue") rather than
+# generically (requested: "remove the year from the venue") rather than
 # needing a per-year alias.
 YEAR_TOKEN_RE = re.compile(r"\b(19[9]\d|20[0-4]\d)\b")
 
@@ -370,7 +370,7 @@ def strip_year(v):
 # Many IEEE/CVF-style venue strings spell out the full name and then repeat
 # its acronym in a trailing "(XXXX)" -- e.g. "2023 IEEE/CVF Conference on
 # Computer Vision and Pattern Recognition Workshops (CVPRW)". Once that's
-# recognized, the acronym is the only part worth keeping (user-requested,
+# recognized, the acronym is the only part worth keeping (requested,
 # generalized to any year/venue rather than one alias per year). Requires
 # the whole parenthesized token to be upper-case letters/digits/hyphens --
 # a real acronym (CVPRW, ICCVW, PLANS, DSN-W, ISC2) is always shouted in
@@ -476,18 +476,15 @@ def strip_trailing_symbol_markers(name):
 # correct spelling is known from this same person's other papers.
 KNOWN_NAME_FIXES = {
     "J. Marius Z�llner": "Marius Zöllner",
-    # User-requested: consolidate every spelling of this one person (FZI/KIT)
-    # found across the corpus -- full name, abbreviated first name(s), and
-    # the oe-for-ö transliteration some sources use -- into one canonical
-    # name. Deliberately does NOT touch "R. Zöllner"/"Raoul Zöllner" (a
-    # different, real person who happens to share the surname) -- excluded
-    # by name, not by the accident of not matching one of these keys.
+    # Requested: consolidate every spelling of one author found across the
+    # corpus -- full name, abbreviated first name(s), and the oe-for-ö
+    # transliteration some sources use -- into one canonical name.
+    # Deliberately does NOT touch a different author who happens to share
+    # the surname -- excluded by name, not by the accident of not matching
+    # one of these keys.
     "J. Marius Zöllner": "Marius Zöllner",
-    # A triple-"n" typo (source: arXiv listing metadata for one paper) --
-    # user-flagged as a duplicate author record split off the real "Johannes
-    # Betz" (Technical University of Munich, autonomous racing research;
-    # confirmed same person via the one paper carrying the typo -- RoboRacer
-    # benchmark work, the same research area as the rest of his corpus).
+    # A triple-"n" typo (source: arXiv listing metadata for one paper) that
+    # split a duplicate author record off the correctly spelled name.
     "Johannnes Betz": "Johannes Betz",
     "Johann Marius Zöllner": "Marius Zöllner",
     "J. M. Zöllner": "Marius Zöllner",
@@ -495,85 +492,72 @@ KNOWN_NAME_FIXES = {
     "J. Zoellner": "Marius Zöllner",
     "J. Marius Zoellner": "Marius Zöllner",
     # Mojibake: a straight ASCII apostrophe standing in for í, same class of
-    # already-lossy-upstream-decode issue as the Zöllner entry above (the
-    # correctly-accented spelling is confirmed from this same person's other
+    # already-lossy-upstream-decode issue as the entry above (the
+    # correctly-accented spelling is confirmed from the same author's other
     # papers' authors_detail).
     "Santiago Montiel-Mar'in": "Santiago Montiel-Marín",
-    # Same ASCII-apostrophe-for-é mojibake, on the Berkeley/traffic-flow
-    # researcher who also shows up all-caps ("NATHAN LICHTLÉ") in the same
-    # papers -- correctly-accented spelling confirmed from his own other
-    # papers' author lists.
+    # Same ASCII-apostrophe-for-é mojibake; the same author also shows up
+    # all-caps in the same papers -- correctly-accented spelling confirmed
+    # from their other papers' author lists.
     "Nathan Lichtl'e": "Nathan Lichtlé",
-    # User-requested: consolidate every spelling of this one person found
-    # across the corpus into the fully-written-out form (per the site's
-    # general preference for full names over abbreviations) -- the
-    # abbreviated "Julian F. P. Kooij" is far more common in the raw data
-    # (39 papers) than the fully spelled-out form (4 papers), but the full
-    # form is what should be canonical, not the more common one.
+    # Requested: consolidate every spelling of one author found across the
+    # corpus into the fully-written-out form (per the site's general
+    # preference for full names over abbreviations), even though the
+    # abbreviated form is far more common in the raw data.
     "Julian F. P. Kooij": "Julian Francisco Pieter Kooij",
     "Julian Kooij": "Julian Francisco Pieter Kooij",
-    # User-requested: merge every Gavrila spelling into the canonical form
-    # already used on the large majority of his papers. Deliberately keyed
+    # Requested: merge every spelling of one author into the canonical form
+    # already used on the large majority of their papers. Deliberately keyed
     # on the exact abbreviated/bare forms only, not a surname-only match --
-    # "Gavrila" alone is ambiguous key material that could collide with
+    # a bare surname is ambiguous key material that could collide with
     # future data, so only the specific confirmed variants are listed.
     "D. Gavrila": "Dariu M. Gavrila",
     "Dariu Gavrila": "Dariu M. Gavrila",
     # "Lastname, Firstname" raw format, broken by a naive comma-split
-    # upstream into two separate name-list entries ("Gavrila" and "Dariu"/
-    # "Dariu M.") -- caught here as a targeted fix for the two confirmed
-    # papers with this exact formatting, not a general comma-order fix.
+    # upstream into two separate name-list entries (surname and given name)
+    # -- caught here as a targeted fix for the two confirmed papers with
+    # this exact formatting, not a general comma-order fix.
     "Gavrila": "Dariu M. Gavrila",
-    # User-requested: the middle-initial form is this person's dominant
-    # publishing name (University of Toronto Robotics Institute, ~11 papers
-    # here) and the one his Google Scholar profile uses; the bare "Steven
-    # Waslander" (~3 papers) is the same person. Confirmed one identity via
-    # scholar.google.com/citations?user=jY_Bcd8AAAAJ.
+    # Requested: the middle-initial form is the dominant publishing name
+    # here and the one the Google Scholar profile uses; the bare form is the
+    # same author.
     "Steven Waslander": "Steven L. Waslander",
-    # User-confirmed: every spelling of TUM's Alois Knoll found across the
-    # corpus, consolidated onto the existing canonical "Alois Knoll" (which
-    # already carries the correct Google Scholar profile,
-    # scholar.google.com/citations?user=-CA8QgwAAAAJ). "Alois C. Knoll" is
-    # actually the MORE common raw form here (59 papers vs. 54 for the bare
-    # "Alois Knoll" spelling) but the canonical key is kept as-is rather than
-    # renamed, to avoid breaking the already-correct profile/links pointing
-    # at it. "A. Knoll" confirmed the same person via shared TUM co-authors
-    # (Tobias Kessler, Klemens Esterle, Liguo Zhou, Gereon Hinz) on all 4 of
-    # its papers; "6th Alois Knoll" is a garbled OCR artifact, not a
-    # different person.
+    # Confirmed in review: every spelling of one author found across the
+    # corpus, consolidated onto the existing canonical name (which already
+    # carries the correct Google Scholar profile). The canonical key is kept
+    # as-is even though another spelling is the more common raw form, to
+    # avoid breaking the profile/links pointing at it. The abbreviated form
+    # was confirmed the same author via shared co-authors; the one with a
+    # leading ordinal is a garbled OCR artifact.
     "Alois C. Knoll": "Alois Knoll",
     "Alois Christian Knoll": "Alois Knoll",
     "A. Knoll": "Alois Knoll",
     "6th Alois Knoll": "Alois Knoll",
-    # User-confirmed: TUM's Matthias Althoff (CommonRoad, motion planning),
-    # scholar.google.com/citations?user=E3zazJAAAAAJ. NOT "Daniel Althoff"
-    # (2 papers) -- a different first name, no evidence of being the same
-    # person, left untouched.
+    # Confirmed in review: the abbreviated form is the same author as the
+    # full name. A different first name with the same surname is left
+    # untouched (no evidence of being the same person).
     "M. Althoff": "Matthias Althoff",
     # NeurIPS "Lastname, Firstname" author strings, comma-split upstream so
     # the surname "Shi" ends up as its own list entry and the given-name
     # entry carries a leftover "Prof " honorific ("Shi, Prof Javen Qinfeng").
-    # LEADING_HONORIFIC_RE strips the title, leaving "Javen Qinfeng" -- the
-    # same person as the 24-paper "Javen Qinfeng Shi" (University of Adelaide),
-    # confirmed via shared co-authors (Zhen Zhang, Anton van den Hengel,
-    # Ehsan Abbasnejad).
+    # LEADING_HONORIFIC_RE strips the title, leaving the given name alone --
+    # the same author as the full-name entry, confirmed via shared
+    # co-authors.
     "Javen Qinfeng": "Javen Qinfeng Shi",
-    # User-confirmed: University of Bonn's Cyrill Stachniss (LiDAR SLAM,
-    # robot perception; scholar.google.com/citations?user=8vib2lAAAAAJ). The
-    # abbreviated "C. Stachniss" is how the Semantic Scholar citing-paper
-    # metadata (data/venues/arxiv_s2_citing.json) renders him on ~30 papers,
-    # splitting him off the full "Cyrill Stachniss" spelling the DBLP venue
-    # listings use. Affiliation/country (University of Bonn, Germany) follow
-    # automatically from his enriched papers once the two names are merged.
+    # Confirmed in review: the abbreviated form is how the Semantic Scholar
+    # citing-paper metadata (data/venues/arxiv_s2_citing.json) renders this
+    # author on ~30 papers, splitting them off the full spelling the DBLP
+    # venue listings use. Affiliation/country follow automatically from the
+    # enriched papers once the two names are merged.
     "C. Stachniss": "Cyrill Stachniss",
 }
 
 # PDF/font text extraction occasionally renders a hyphenated name's hyphen
 # as a different Unicode dash glyph instead of plain ASCII "-" (confirmed on
-# real data: "Yi‐Ting Chen" -- U+2010 HYPHEN -- extracted from a CVF PDF,
-# splitting that author from the correctly-ASCII-hyphenated "Yi-Ting Chen"
-# found on his other papers into two separate leaderboard entries for the
-# same person). Normalized to ASCII hyphen so every source agrees on one
+# real data: a U+2010 HYPHEN extracted from a CVF PDF,
+# splitting that author from the correctly-ASCII-hyphenated spelling
+# found on the same author's other papers into two separate leaderboard
+# entries). Normalized to ASCII hyphen so every source agrees on one
 # spelling.
 UNICODE_HYPHEN_RE = re.compile(r"[‐‑‒–−]")
 
@@ -584,8 +568,8 @@ UNICODE_HYPHEN_RE = re.compile(r"[‐‑‒–−]")
 APOSTROPHE_RE = re.compile(r"['’‘ʼ`´ʹ](?![A-ZÀ-Þ])")
 
 # Some sources prepend an academic/courtesy title to the author's name
-# ("Dr. Andras Palffy", "Prof Javen Qinfeng Shi", "Professor A. R. Harish",
-# "Prof. Em. Eduardo Nebot", "Mr Zhang Guangjian") -- confirmed on real data
+# ("Dr. Jane Doe", "Prof Mei Lindqvist", "Professor A. B. Example",
+# "Prof. Em. Sam Rivera", "Mr Wei Zhang") -- confirmed on real data
 # to split a person off their own untitled leaderboard entry. Strip any run
 # of leading honorifics, plus a trailing "Em[.]" (emeritus, only ever seen
 # after "Prof."). Each token has to be exactly the honorific followed by an
@@ -822,24 +806,15 @@ def split_joined_authors(name):
     return [m.group(1).strip(), m.group(2).strip()]
 
 
-# User-confirmed identity split: this pipeline has no author disambiguation
-# (see flag_ambiguous_authors.py's docstring -- authors are matched by
-# cleaned name string alone), and "Yue Wang" turned out to conflate at least
-# five distinct real people badly enough to actively misattribute credit --
-# a Zhejiang University SLAM/robotics researcher who publishes almost
-# exclusively with Rong Xiong, a Clemson University CACC/platooning
-# researcher, an NYU Abu Dhabi security researcher, an Australia-based one,
-# and the one this splits out: the MIT CSAIL -> USC 3D perception/AV
-# researcher (scholar.google.com/citations?user=v-AEFIEAAAAJ).
+# Identity split for one very common name: this pipeline has no general
+# author disambiguation (see flag_ambiguous_authors.py's docstring -- authors
+# are matched by cleaned name string alone), and this name conflates at least
+# five distinct people badly enough to misattribute credit.
 #
-# YUE_WANG_VERIFIED_TITLES is every paper confirmed to be his: the papers
-# his own Scholar profile lists, plus a handful his Scholar list happens to
-# omit but that share his known recurring collaborators (Hang Zhao/Yilun
-# Wang/Tianyuan Yuan-Zhang/Yicheng Liu, or the Marco Pavone/Yan Wang/Yuxiao
-# Chen/Boyi Li group already confirmed via his own PARA-Drive and "A
-# Language Agent for Autonomous Driving"). Every OTHER "Yue Wang" paper is
-# left in one explicitly-unidentified bucket rather than guessing which of
-# the other several people it belongs to -- see the "ambiguous" flag kept on
+# YUE_WANG_VERIFIED_TITLES lists the papers matched to one of those people
+# through their Scholar profile and recurring co-authors. Every other paper
+# under this name is left in one explicitly-unidentified bucket rather than
+# guessing which person it belongs to -- see the "ambiguous" flag kept on
 # that bucket's own scholar_profiles.json entry.
 YUE_WANG_VERIFIED_TITLES = {
     "DETR3D: 3D Object Detection from Multi-view Images via 3D-to-2D Queries",
@@ -875,8 +850,8 @@ YUE_WANG_VERIFIED_TITLES = {
 
 
 # Papers matched one by one against the Google Scholar profiles of the people
-# called Yue Wang (data/yue_wang_identities.json: title -> the person's name,
-# or "main" for the USC researcher above). A paper in neither this map nor the
+# sharing this name (data/yue_wang_identities.json: title -> the person's name,
+# or "main" for the person the verified set above belongs to). A paper in neither this map nor the
 # verified set above stays in the unidentified bucket.
 try:
     YUE_WANG_IDENTITIES = json.loads((BASE / "data" / "yue_wang_identities.json").read_text(encoding="utf-8"))
@@ -969,9 +944,8 @@ COMMON_NAME_SURNAMES = {
 # unresolved, this trips the identity_conflicts heuristic below (>=2 distinct
 # ids for one cleaned name) as a false positive. Keyed by the duplicate id,
 # valued by the canonical one to fold it into.
-#   A5144375944 ("Holger Caesar", 1 work, no ORCID, TU Delft) is OpenAlex's
-#   unmerged duplicate of A5001917215 ("Holger Caesar", 81 works, ORCID
-#   0000-0001-5099-6297, TU Delft/Motional/EPFL) -- same person.
+#   For example, an id with 1 work and no ORCID can be an unmerged stub of an
+#   established id with the same display name and affiliation.
 KNOWN_DUPLICATE_OPENALEX_IDS = {
     "A5144375944": "A5001917215",
 }
@@ -990,18 +964,16 @@ def canonical_openalex_id(oaid):
 # of the institutions actually confirmed correct for them -- an
 # author_affiliations() result not containing any of these is dropped rather
 # than trusted.
-#   Marco Pavone (confirmed 2026-09-17): Stanford and NVIDIA are his own;
-#   the extracted list also carried co-authors' schools from papers with an
-#   unpartitioned author block (Technion, Vector Institute, UC Berkeley,
-#   UCLA, UCL, Virginia Tech, Qualcomm, and once a co-author's name --
-#   "Claire J. Tomlin" -- leaking through as an "institution").
+#   In the one case handled so far, the extracted list also carried
+#   co-authors' schools from papers with an unpartitioned author block,
+#   and once a co-author's name leaked through as an "institution".
 AUTHOR_AFFILIATION_ALLOWLIST = {
     "Marco Pavone": ("stanford", "nvidia"),
 }
 
 # Real affiliations confirmed correct but never dated by any paper in this
-# corpus -- Pavone's PhD (MIT) and NASA-JPL research years both predate this
-# corpus's coverage of him, so no crawled paper carries them. Added with no
+# corpus -- they predate the corpus's coverage of that author, so no crawled
+# paper carries them. Added with no
 # year range rather than a guessed one (author.html already renders an
 # institution tag with no year suffix when first_year is None -- see
 # makeLink() there); appended only for names in AUTHOR_AFFILIATION_ALLOWLIST,
@@ -1184,7 +1156,7 @@ DISRUPTION_MIN_CITERS = 10
 # most of the corpus rather than only its oldest papers.
 EARLY_CITATION_WINDOW_YEARS = 2
 
-# Abstract-based supplementary code-availability signal (user-flagged: "code
+# Abstract-based supplementary code-availability signal (flagged in review: "code
 # cannot just be at github/gitlab. We should do a keyword search for things
 # like 'code' in the abstract"). has_code_link's primary source
 # (fetch_affiliations_arxiv.py's detect_code_link, see its own comment) only
@@ -1297,10 +1269,10 @@ def paper_short_name(title, authors, year, abstract=None):
     """A short, human-recognizable label for a paper -- the well-known short
     name where the title's own structure gives one away (nuScenes, KITTI,
     PointPillars, ...), then the same signal from the abstract's own text
-    when the title doesn't have one (user-requested: "Planning-Oriented
+    when the title doesn't have one (requested: "Planning-Oriented
     Autonomous Driving" has no colon/dash, but its abstract introduces
     "Unified Autonomous Driving (UniAD)"), otherwise "{Surname}{YY}" from
-    the first author and publication year. User-requested: the text before
+    the first author and publication year. Requested: the text before
     a colon is often this name and is used first; the text before a dash is
     the same signal but noisier (a dash shows up inside plenty of ordinary
     sentence titles too, not just before a short name), so it's only used
@@ -1378,7 +1350,7 @@ INVALID_INSTITUTIONS = {
     # and a bare person's name (like "Ye Li" above -- caught when a
     # comma-split author list leaks one name into the affiliation field).
     "Zhejiang", "Zhengzhou", "Equal contribution✉", "Wei Zhan",
-    # Fourth-pass finds (user-flagged: "provided by the Computer Vision
+    # Fourth-pass finds (flagged in review: "provided by the Computer Vision
     # Foundation" is a PDF-hosting credit line, not an author affiliation --
     # auditing the full institution list surfaced these alongside it): more
     # credit/byline fragments, LaTeX artifacts, and bare initials/codes that
@@ -1388,7 +1360,7 @@ INVALID_INSTITUTIONS = {
     "as a strong baseline to facilitate further research", "in Prague", "ltd (d)",
     "liqy", "wangwen", "zhangli", "Sand 1", "T6G1H9", "ON N2L3G1", "MA", "PRC", "US",
     # Bare city names with no institution attached (same comma-split cause as
-    # the bare-city block above) -- user-flagged (Eindhoven, Waterloo) plus
+    # the bare-city block above) -- flagged in review (Eindhoven, Waterloo) plus
     # the rest of that same pattern found while auditing the full list.
     "Eindhoven", "Waterloo", "Munich", "Boston", "Seoul", "Toronto", "Vancouver",
     "Karlsruhe", "Ulm", "Leuven", "Milano", "Istanbul", "Hangzhou", "Suzhou",
@@ -1398,7 +1370,7 @@ INVALID_INSTITUTIONS = {
     "Parkville", "Pasadena", "Charlottesville", "Wuhan", "Ningbo", "Hillsboro",
     "Kronach", "Renningen", "Sindelfingen", "Delft", "Oslo",
     # Bare country abbreviation, same comma-split cause as the bare full
-    # country names above -- user-flagged.
+    # country names above -- flagged in review.
     "UAE",
     # A generic lab/institute name with a qualifier BEFORE the generic noun
     # (e.g. "Robotics Institute", "Multimedia Laboratory") -- SUBUNIT_PREFIX_RE
@@ -1406,10 +1378,10 @@ INVALID_INSTITUTIONS = {
     # of..."); this word order needs its own exact-match entries since a
     # generic regex here would also reject real institution names that
     # legitimately end the same way (e.g. "Beijing Institute of Technology").
-    # User-flagged.
+    # Flagged in review.
     "Robotics Institute", "Multimedia Laboratory",
     # Fifth-pass finds (from a systematic audit of authors with implausibly
-    # long institution lists, prompted by user-flagged real examples on
+    # long institution lists, prompted by flagged in review real examples on
     # "Tsinghua University" and "Jun Zhu"): a bare Tokyo ward name, a bare
     # building name, a paper-title fragment, and a concatenated-institutions
     # string that neither DOUBLE_UNIVERSITY_RE nor any alias could safely
@@ -1421,7 +1393,7 @@ INVALID_INSTITUTIONS = {
     "Peking University MPI Tübingen TTI Chicago",
     # A bare fragment word left behind when "Division of Robotics,
     # Perception, and Learning (RPL)" -- KTH's real division name -- gets
-    # comma-split into pieces (user-flagged, real example: Qingwen Zhang's
+    # comma-split into pieces (flagged in review, seen in a real
     # affiliations list). "and Learning (RPL)" is separately caught by
     # LEADING_AND_RE; "Perception" alone matches no other pattern, since
     # it's an ordinary English word with no institutional keyword to key a
@@ -1544,7 +1516,7 @@ INSTITUTION_ALIASES = {
     "Alibaba Group Holding Limited": "Alibaba",
     "Google LLC": "Google",
     "Google Research": "Google",
-    # Every Honda unit is one organization, same as Google above (user-requested).
+    # Every Honda unit is one organization, same as Google above (requested).
     # "Sony Honda Mobility" is a separate joint venture and stays apart.
     "Honda Motor": "Honda", "Honda R&D": "Honda", "Honda R&D Co": "Honda", "Honda R&D Co.": "Honda",
     "Honda R&D Co., Ltd": "Honda", "Honda R&D Co., Ltd.": "Honda", "Honda R&D Americas": "Honda",
@@ -1559,7 +1531,7 @@ INSTITUTION_ALIASES = {
     # nuTonomy was acquired by Aptiv in 2017; Aptiv's automated-driving unit
     # (which absorbed nuTonomy) was spun off and merged with Hyundai's ADAS
     # arm to form Motional in 2020 -- same corporate lineage, one canonical
-    # name. User-requested: two different capitalizations of the nuTonomy
+    # name. Requested: two different capitalizations of the nuTonomy
     # byline seen in the raw affiliation data, plus the bare "Aptiv" form.
     "nuTonomy: an APTIV company": "Motional",
     "nuTonomy: an Aptiv Company": "Motional",
@@ -1569,13 +1541,13 @@ INSTITUTION_ALIASES = {
     "nuTonomy: an Aptiv": "Motional",
     "nuTonomy": "Motional",
     "Aptiv (Ireland)": "Motional",
-    # User-flagged: OpenAlex mis-linked "nuTonomy" to an unrelated Canadian
+    # Flagged in review: OpenAlex mis-linked "nuTonomy" to an unrelated Canadian
     # nutraceutical-research company of a similar-sounding name on at least
     # the CoverNet paper -- same class of error as InternetLab/Brazil below
     # (see COUNTRY_MISLABELS), just on the institution-name side instead of
     # the country-code side.
     "Nutrasource": "Motional",
-    # User-requested: every KIT spelling variant found in the raw data
+    # Requested: every KIT spelling variant found in the raw data
     # collapsed to one canonical name. Per the "for very well known acronyms,
     # add them in parentheses" request, the canonical form here now CARRIES
     # the "(KIT)" abbreviation (so does TUM below); everything else -- the
@@ -1611,7 +1583,7 @@ INSTITUTION_ALIASES = {
     "Technion–Israel Institute of Technology": "Technion",
     "Technion Israel Institute of Technology": "Technion",
     "Technion Israel Institute of Technology (IIT)": "Technion",
-    # User-requested one-off merges.
+    # Requested one-off merges.
     "Barcelona Supercomputing Center (BSC)": "Barcelona Supercomputing Center",
     "Autolab": "AutoLab",
     "Carnegie Mellon University Pittsburgh": "Carnegie Mellon University",
@@ -1633,7 +1605,7 @@ INSTITUTION_ALIASES = {
     # Same university, two spellings on different papers (15 papers split 12/3).
     "TU Dortmund": "TU Dortmund University",
     # Tsinghua's own sub-lab/department/center names, seen on their own with
-    # no parent institution attached (user-flagged: these were fragmenting
+    # no parent institution attached (flagged in review: these were fragmenting
     # e.g. "Jun Zhu"'s institution list into 8 separate-looking entries that
     # are really all just Tsinghua). Same pattern as the Bosch/Huawei/EPFL
     # entries above.
@@ -1647,7 +1619,7 @@ INSTITUTION_ALIASES = {
     # Tsinghua (among other universities), not confidently "the same
     # organization" the way BNRist/THBI Lab clearly are. Left as its own
     # institution rather than risk misattributing it.
-    # User-requested groupings: every corporate-lab/division spelling of the
+    # Requested groupings: every corporate-lab/division spelling of the
     # same company folded to one canonical name, same rationale as the
     # Baidu/Alibaba/Google entries above.
     "Huawei Technologies": "Huawei", "Huawei Technologies Ireland": "Huawei",
@@ -1658,7 +1630,7 @@ INSTITUTION_ALIASES = {
     "Huawei Noah's Ark": "Huawei Noah's Ark Lab", "Noah's Ark": "Huawei Noah's Ark Lab",
     "Noah's Ark Lab": "Huawei Noah's Ark Lab",
     "Robert Bosch": "Bosch", "Robert Bosch GmbH": "Bosch",
-    # User-requested: fold the AI-center spelling into the same "Bosch" row
+    # Requested: fold the AI-center spelling into the same "Bosch" row
     # too, not just alias it to its own separate canonical name.
     "Bosch Center for AI": "Bosch", "Bosch Center for Artificial Intelligence": "Bosch",
     "Bosch Mobility Solutions": "Bosch", "Bosch Research": "Bosch",
@@ -1667,13 +1639,13 @@ INSTITUTION_ALIASES = {
     # HKISI-CAS is written with an underscore in some author blocks
     # ("HKISI_CAS"), which normalize_institution already turns into a space
     # ("HKISI CAS") before this lookup runs -- spelled out in full here per
-    # user request, same treatment as any other abbreviation-only entry.
+    # request, same treatment as any other abbreviation-only entry.
     "HKISI CAS": "Hong Kong Institute of Science & Innovation, CAS",
     "HKISI": "Hong Kong Institute of Science & Innovation, CAS",
     "École Polytechnique Fédérale de Lausanne": "EPFL",
     "École Polytechnique Fédérale de Lausanne (EPFL)": "EPFL",
     "EPFL VITA lab": "EPFL", "EPFL VITA Lab": "EPFL",
-    # User-requested: fold every spelling of a given Max Planck Institute
+    # Requested: fold every spelling of a given Max Planck Institute
     # together. The Max Planck Society runs several genuinely distinct
     # institutes (different cities, different research focus) -- these stay
     # SEPARATE canonical names, only same-institute spelling/abbreviation
@@ -1923,7 +1895,7 @@ PERSON_INITIAL_NAME_RE = re.compile(r"^[A-Z]\.\s?[A-Z][a-z'\-]+$")
 
 
 # A legal-form suffix (LLC, Inc, Corp, Co., Ltd, GmbH, AG, SE, S.A., B.V. ...)
-# trailing an otherwise-real company name -- user-flagged, twice: the branding
+# trailing an otherwise-real company name -- flagged in review, twice: the branding
 # a company actually goes by never includes it, so it only fragments one real
 # institution into "Foo" and "Foo Ltd" rows. Several in a row go together
 # ("Foo Co., Ltd."). Short ones are matched case-sensitively so a real word
@@ -1957,7 +1929,7 @@ BARE_DOMAIN_RE = re.compile(r"[a-zA-Z0-9-]+\.(github\.io|com|org|net|edu|io)\b")
 
 # A field label leaking in from a mis-split "affiliation, email" author
 # block ("USAEmail:", "Email: foo@bar.com", "e-mail:") -- the hyphenated
-# spelling is common enough on its own to need matching too (user-flagged:
+# spelling is common enough on its own to need matching too (flagged in review:
 # "Canada. e-mail:" survived as an institution because the un-hyphenated
 # pattern didn't match it).
 EMAIL_LABEL_RE = re.compile(r"e-?mail\s*:", re.I)
@@ -2049,7 +2021,7 @@ BARE_STREET_NUMBER_RE = re.compile(r"^\d{1,3}$")
 # names never legitimately start with "and".
 LEADING_AND_RE = re.compile(r"^and\b", re.I)
 # A PDF/proceedings-hosting credit line ("Copyright ... provided by the
-# Computer Vision Foundation"), not an author affiliation -- user-flagged.
+# Computer Vision Foundation"), not an author affiliation -- flagged in review.
 PROVIDED_BY_RE = re.compile(r"\bprovided by\b", re.I)
 
 # Multiple co-authors' institutions glued into one string with no separator
@@ -2843,7 +2815,7 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
         # -1, -0.33, 0.33, or 1), so a huge share of the corpus is tied at
         # the exact extremes: confirmed on real data, 2,197 papers tied at
         # exactly +1.0 and 1,669 at exactly -1.0 out of 5,249 scored papers
-        # (user-flagged: "probably thousands of works are equally
+        # (flagged in review: "probably thousands of works are equally
         # irrelevant"). Sorting on cd_index alone left the tie order an
         # accident of corpus insertion order -- effectively a random pick
         # from a ~2,000-way tie, not a real "most disruptive" ranking.
@@ -2950,7 +2922,7 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
                           and e.get("av_relevance") == "AV")
     # Ships the full list (not just top/bottom 3) at a shippable floor of 10
     # total papers -- Insights' own "how many papers" threshold is an
-    # adjustable dropdown (user-requested, default 80), not a fixed cutoff,
+    # adjustable dropdown (requested, default 80), not a fixed cutoff,
     # so the client needs every venue that could plausibly qualify at any of
     # the dropdown's choices, not just whatever was highest/lowest at one
     # fixed threshold.
@@ -2964,7 +2936,7 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
 
     # -- Researcher lifetime: the span between an author's first and last
     # AV-relevant publication in this corpus (0 for someone who's only
-    # published in a single year so far) -- user-requested, as a proxy for
+    # published in a single year so far) -- requested, as a proxy for
     # career stage within THIS corpus specifically (not a real age, and not
     # necessarily their whole career: someone active well before this
     # corpus's earliest covered year, or outside the covered venues, reads
@@ -2995,7 +2967,7 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
         # far past the mean for almost every bucket) -- mean-stdev routinely
         # went negative, got clamped to 0 for the chart's log scale, and the
         # lower band edge ended up pinned to the axis for nearly every point
-        # (user-reported: "the lower end of the stdev is not visible").
+        # (reported: "the lower end of the stdev is not visible").
         # Percentiles don't have that failure mode -- p25/p75 are always
         # real values actually present in the data, never a clamped
         # artifact -- and are the more honest summary of a skewed
@@ -3040,7 +3012,7 @@ def compute_insights(papers, all_entries, citation_graph, category_stats,
         # construction -- a paper has to BE AV-relevant to count toward an
         # AV career span -- so this panel can't tell "genuinely new to
         # research" from "established researcher whose lab/career recently
-        # pivoted into AV". Confirmed real case (user-flagged): "Yu Qiao"
+        # pivoted into AV". Confirmed real case (flagged in review): one author
         # showed a 3-year AV career (38 papers, first one 2022, matching
         # Shanghai AI Lab's autonomous-driving push) but the same name has
         # 299 more non-AV papers here back to 2012 -- 13+ years of research,
@@ -3216,7 +3188,7 @@ def main():
 
     # A wrong-paper enrichment match: authors_detail ends up holding some
     # OTHER paper's full author list, not this paper's -- confirmed on real
-    # data, user-flagged twice now: a 7-author CoRL 2025 paper ("Leveraging
+    # data, flagged in review twice now: a 7-author CoRL 2025 paper ("Leveraging
     # Correlation Across Test Platforms...") somehow carried 100
     # authors_detail entries, every one of them a SciPy contributor (Pauli
     # Virtanen, Ralf Gommers, ...); separately, a 6-Chinese-author AAAI 2026
@@ -3264,7 +3236,7 @@ def main():
     # LaTeX doesn't mark which author belongs to which affiliation, every
     # listed author sometimes gets credited with the SAME full multi-
     # institution list instead of their own one -- confirmed on real data
-    # (multiple user reports of an author's page showing a co-author's
+    # (multiple reports of an author's page showing a co-author's
     # institution, or an author's recent affiliations being wrong; one case
     # a 5-way glued string "UC Berkeley Stanford UCL Virginia Tech Nvidia" that
     # split cleanly into 5 real institutions once re-extracted, still
@@ -3447,7 +3419,7 @@ def main():
     # any other edge now -- self-citations used to be excluded outright, but
     # with a separate per-author Self-citation % metric (the Authors table)
     # showing how much of an author's citations are self-citations, there's
-    # no need to also suppress them from the total (user-requested). Still
+    # no need to also suppress them from the total (requested). Still
     # tracked here as its own count so that % column has something to read.
     self_citing_count = defaultdict(int)
     for citer_key, cited_keys in (citation_graph.get("edges") or {}).items():
@@ -3543,7 +3515,7 @@ def main():
         ("CODA", ["CODA: A Real-World Road Corner Case Dataset for Object Detection in Autonomous Driving"]),
         ("Boreas", ["Boreas: A multi-season autonomous driving dataset"]),
         ("TJ4DRadSet", ["TJ4DRadSet: A 4D Radar Dataset for Autonomous Driving"]),
-        # Expanded from 19 (user-requested "up to 100") -- every title below
+        # Expanded from 19 (requested "up to 100") -- every title below
         # was found by searching papers_full.json for the dataset's own
         # name and copying its EXACT stored title, not guessed from memory,
         # since a near-miss title silently fails to match anything
@@ -3724,7 +3696,7 @@ def main():
             year_counts[e["year"]] += 1
 
     # Which venues are common enough to list individually in the UI, vs.
-    # getting folded into one "Other" bucket (user-requested: the venue
+    # getting folded into one "Other" bucket (requested: the venue
     # filter dropdown and the Venues page both used to list every distinct
     # venue string, which -- after backfill_citing_venues.py started filling
     # in real per-paper venues for ~68k citation-discovered papers -- meant
@@ -3800,7 +3772,7 @@ def main():
     # same way author_institutions tracks it per institution (see below),
     # so "which country is this author's CURRENT one" can be answered by
     # chronological order instead of alphabetical order. Confirmed real bug
-    # (user-flagged): an author whose most recent institution is in the
+    # (flagged in review): an author whose most recent institution is in the
     # Netherlands was showing "United States" as their country on a
     # co-author's page, only because it sorts after "Netherlands"
     # alphabetically, not because it's more recent.
@@ -4206,7 +4178,7 @@ def main():
     # An author's EARLIEST year in the whole corpus (every relevance, not
     # just AV) -- needed below to tell a genuinely new researcher from an
     # established one who only recently started publishing AV-relevant work.
-    # Confirmed real case (user-flagged): "Yu Qiao" showed as a "rising
+    # Confirmed real case (flagged in review): one author showed as a "rising
     # star" with a 3-year AV career and 38 papers -- correct as far as
     # AV-relevant papers go (first one in 2022, matching Shanghai AI Lab's
     # autonomous-driving push), but the same name has 299 more non-AV papers
@@ -4250,7 +4222,7 @@ def main():
         papers, all_entries, citation_graph, category_stats,
         # >= 10 papers, stricter than the Authors page's own min-1 floor --
         # "most citations per paper" shouldn't be won by a couple of papers
-        # and one lucky hit (user-requested). min_papers=9 because
+        # and one lucky hit (requested). min_papers=9 because
         # top_authors_by_avg's own test is strictly greater-than.
         top_authors_by_avg(author_citations_all, author_papers_all, n=5, min_papers=9),
         top_authors_by_paper_count,
@@ -4265,10 +4237,10 @@ def main():
     # young_researchers_min_influential below. This ranking's own floor (10
     # papers) is stricter than the Authors page's adjustable one (default
     # 50, but adjustable down to 1), which is exactly why the same author
-    # can show a different rank in each place (user-reported).
+    # can show a different rank in each place (reported).
     insights["highest_impact_author_min_papers"] = 10
 
-    # Not-AV-relevant paper count per author (user-requested, shown on
+    # Not-AV-relevant paper count per author (requested, shown on
     # author.html and the Authors table) -- has to be computed here, not
     # derived client-side, because the non-AV set (~212k records, sharded
     # across NON_AV_DIR -- see that comment) has no per-author index: a
@@ -4280,7 +4252,7 @@ def main():
     non_av_paper_counts = defaultdict(int)
     # Same reasoning, same shape, for citations rather than paper count --
     # author.html's stat tiles pair "AV citations" with "Non-AV citations"
-    # (user-requested), and that pairing needs both numbers available
+    # (requested), and that pairing needs both numbers available
     # synchronously on page load, not behind the lazy non_av_papers/ shard
     # fetches the Papers table below only triggers once a reader actually
     # switches the SHOW filter.
@@ -4397,7 +4369,7 @@ def main():
             # through raw data.
             "by_source": dict(Counter(p["source"] for p in papers)),
             # One sequential answer to "how many papers are where in the
-            # pipeline" (user-requested), instead of having to piece it
+            # pipeline" (requested), instead of having to piece it
             # together from several separately-shaped stats. Every AV
             # paper passes through classify.py immediately on merge (stage
             # 1 == stage 0, always, by construction -- kept as its own
@@ -4572,7 +4544,7 @@ def main():
 
     # Separate, lazily-fetched, sharded set of files for non-AV (not AV)
     # papers -- see NON_AV_DIR's own comment for why this isn't part
-    # of stats.json. No per-paper detail page link (user-requested: no
+    # of stats.json. No per-paper detail page link (requested: no
     # paper.html pages generated for these, "too many"). adjacent_entries
     # itself is computed further up, alongside non_av_paper_counts.
     #

@@ -22,7 +22,7 @@ class TestInCorpusCounts(unittest.TestCase):
         # Self-citations count toward the total -- a separate per-author
         # Self-citation % metric (aggregate.py's self_citations field)
         # covers the "how much of this is self-citation" question now, so
-        # the total no longer silently excludes them (user-requested).
+        # the total no longer silently excludes them (requested).
         graph = {"edges": {"citerkey": ["citedkey"]}}
         counts = acs.in_corpus_counts(graph)
         self.assertEqual(counts.get("citedkey", 0), 1)

@@ -157,7 +157,7 @@ def main():
     data = load_out()
     succeeded = set(data["succeeded"])
     # Most-cited-first, not corpus order -- see build_citation_graph.py's
-    # matching fix for why (user-requested, applied to every incremental
+    # matching fix for why (requested, applied to every incremental
     # crawler). eligible_keys carries the citation order from `eligible`;
     # pending_keys (a set, built only for the print count below) doesn't.
     pending = [k for k in eligible_keys if k in pdf_url_index and k not in succeeded]

@@ -10,7 +10,7 @@
     table.sortable thead th .sort-indicator { opacity: 0.35; font-size: 0.85em; margin-left: 3px; }
     table.sortable thead th .sort-indicator.active { opacity: 1; color: var(--accent); font-size: 1em; font-weight: 700; }
     /* The column actually driving the sort should be unmistakable at a
-       glance, not just a small arrow easy to miss (user-flagged: "not
+       glance, not just a small arrow easy to miss (flagged in review: "not
        immediately obvious which column is sorted"). */
     table.sortable thead th.sort-active { color: var(--accent); background: var(--panel2); }
     table.sortable thead th[data-sortable]:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
@@ -63,13 +63,13 @@
     // independent {idx, dir} state, and each click firing every stacked
     // listener at once. Concretely: a header's clear-all-other-indicators
     // step only ever finds the FIRST indicator span via querySelector, so
-    // later ones never got cleared and stayed lit (user-reported: "the
+    // later ones never got cleared and stayed lit (reported: "the
     // triangle symbol occurs 6 times"); which listener's renderBody(sorted)
     // call won the race depended on registration order, so a click could
-    // as easily appear to do nothing as sort correctly (user-reported:
+    // as easily appear to do nothing as sort correctly (reported:
     // "sorting Venues by paper is not possible"); and on a page where the
     // header never happened to end up with an active-looking survivor, no
-    // triangle showed at all (user-reported on All countries). Guarding
+    // triangle showed at all (reported on All countries). Guarding
     // re-entry and swapping the live data/columns/renderBody into the one
     // state object already on the table fixes all three at the root.
     if (table._sortableState) {
@@ -89,7 +89,7 @@
     // to the header row on pages with row-comparison checkboxes. It carries no
     // data and isn't in the `columns` array the caller passes, so it must not
     // be counted here -- otherwise every real column's click handler is wired
-    // to the NEXT column's accessor (user-reported: sorting Venues by Citations
+    // to the NEXT column's accessor (reported: sorting Venues by Citations
     // actually sorted by Citations / paper).
     if (window.markTableHeaders) window.markTableHeaders(table);
     const ths = [...table.querySelectorAll('thead th')].filter(th => !th.classList.contains('compare-col'));
@@ -115,7 +115,7 @@
       // glyph (▲/▼, filled, accent-colored) -- a hollow glyph on every
       // sortable column at once (a prior version of this) reads as "all of
       // these are sorted simultaneously", which isn't a real state a table
-      // can be in (user-reported: "the triangle can only be shown if the
+      // can be in (reported: "the triangle can only be shown if the
       // table is sorted according to this criteria and thus only on one
       // column at a time"). The cursor-on-hover + header hover color are
       // the only "this is sortable" affordance before the first click.
@@ -126,7 +126,7 @@
       // which silently collapsed any such structure into flat text (real
       // bug: network.html's "Papers"/"w/ other institutions" sub-label
       // lost its own line and its no-wrap CSS target, spilling text into
-      // the next column -- user-reported as "columns overlap").
+      // the next column -- reported as "columns overlap").
       th.appendChild(indicator);
 
       const activate = () => {

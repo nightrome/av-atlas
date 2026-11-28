@@ -209,7 +209,7 @@ function titleCell(p) {
   const wrap = document.createElement('div');
   wrap.className = 'title-cell';
   // Adjacent (not AV) papers have no paper.html detail page
-  // generated for them at all (user-requested: "too many" to build one
+  // generated for them at all (requested: "too many" to build one
   // per paper the way AV papers get) -- plain text, not a dead link.
   const span = document.createElement(p.av_relevance === 'AV' ? 'a' : 'span');
   span.className = 'title-text';
@@ -310,7 +310,7 @@ function venueCell(p) {
 // Citation counts are always whole numbers -- only an average may carry one
 // decimal place (see Methodology). Every paper now carries a real integer:
 // "how many papers in this corpus reference it" always has an answer, and
-// the answer is 0 for a paper nothing here cites (user-decided -- the old
+// the answer is 0 for a paper nothing here cites (decided by the maintainer -- the old
 // null/"n/a" sentinel left half the corpus reading as "unknown"). Reference-
 // list crawl progress is a coverage caveat, shown on the About page.
 function fmtCitations(n) { return n == null ? 'n/a' : Math.round(n); }
@@ -379,7 +379,7 @@ fetchStatsWithRelevance(relevance).then(stats => {
   // Built once per pageview here, not inside renderResults() -- it scans
   // every paper in stats.all_papers to build the title->year map, and
   // renderResults() re-runs on every search keystroke, filter change and
-  // Prev/Next click. Rebuilding it on each of those (user-flagged:
+  // Prev/Next click. Rebuilding it on each of those (flagged in review:
   // Prev/Next visibly freezing the page for several seconds) redid the
   // same O(all_papers) work for no reason, since stats.all_papers only
   // actually changes via the relevance dropdown, which navigates to a new

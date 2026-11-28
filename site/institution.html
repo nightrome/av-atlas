@@ -258,7 +258,7 @@ function render(stats) {
   // union p.countries across every paper crediting this institution
   // instead, which meant one mis-parsed affiliation address on any single
   // paper (out of what can be hundreds for a large institution) polluted
-  // this line permanently (user-reported: "the countries of Tsinghua
+  // this line permanently (reported: "the countries of Tsinghua
   // University are a mess"). Same fix already applied to the coauthor/
   // citing-author Country columns elsewhere on the site, for the same
   // "two independent lookups can disagree" reason.
@@ -347,7 +347,7 @@ function render(stats) {
     : aggregateByDimension(papers, p => p.authors, { minPapers: 0 });
   // By citations, not paper count -- sorting by papers alone buried
   // single-paper authors with a genuinely high-impact paper below dozens of
-  // low-citation multi-paper authors (user-flagged: Tsinghua's "best paper"
+  // low-citation multi-paper authors (flagged in review: Tsinghua's "best paper"
   // stat tile showed 148 citations, but the highest total shown in this
   // table -- sorted by papers -- was only 44; the 148-citation paper's
   // authors were real, just single-paper, so they never made the top 15).
@@ -377,7 +377,7 @@ function render(stats) {
     { accessor: a => a.citations, numeric: true },
   ], renderAuthorsBody);
 
-  // Other affiliations of THIS institution's own members (user-requested:
+  // Other affiliations of THIS institution's own members (requested:
   // "how many people in Google are from MIT etc."), from `authors` (the
   // full member list above, already using the precise per-author source
   // when available -- reusing it keeps the same "don't credit a co-author's
