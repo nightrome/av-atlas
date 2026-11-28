@@ -109,6 +109,8 @@
   <tbody id="similar-institutions-body"></tbody></table>
 </div>
 
+<div id="pm-locked"></div>
+
 <div class="panel">
   <div class="panel-title-row">
     <h2>Papers</h2>
@@ -120,6 +122,7 @@
 </div>
 
 <script src="filters.js"></script>
+<script src="papermap.js"></script>
 <script>
 const backLink = renderBackLink();
 if (backLink) document.getElementById('detail-back-container').appendChild(backLink);
@@ -228,6 +231,8 @@ function titleLink(p) {
 
 function render(stats) {
   const papers = (stats.all_papers || []).filter(p => (p.institutions || []).includes(name));
+  if (window.PaperMap) PaperMap.mountLocked(document.getElementById('pm-locked'), { titles: papers.map(p => p.title), papers,
+    intro: 'Highlighted: this institution’s papers. Faint: all other AV papers. Click a dot for details.', noun: 'papers' });
 
   // Where this institution sits on the Institutions overview page's default ranking.
   try {

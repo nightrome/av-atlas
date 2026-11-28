@@ -142,6 +142,8 @@
   <tbody id="citing-authors-body"></tbody></table>
 </div>
 
+<div id="pm-locked"></div>
+
 <div class="panel">
   <div class="panel-title-row">
     <h2>Papers</h2>
@@ -161,6 +163,7 @@
 </div>
 
 <script src="filters.js"></script>
+<script src="papermap.js"></script>
 <script>
 const backLink = renderBackLink();
 if (backLink) document.getElementById('detail-back-container').appendChild(backLink);
@@ -273,6 +276,9 @@ function titleLink(p) {
 // as before.
 function render(stats) {
   const papers = (stats.all_papers || []).filter(p => (p.authors || []).includes(name));
+  // Lazy: nothing is fetched until the panel nears the viewport, and it stays hidden for fewer than 3 papers on the map.
+  if (window.PaperMap) PaperMap.mountLocked(document.getElementById('pm-locked'), { titles: papers.map(p => p.title), papers,
+    intro: 'Highlighted: this author’s papers. Faint: all other AV papers. Click a dot for details.', noun: 'papers' });
   const coAuthorNames = new Set();
   papers.forEach(p => (p.authors || []).forEach(a => { if (a !== name) coAuthorNames.add(a); }));
   Promise.all([

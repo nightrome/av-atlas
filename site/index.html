@@ -142,23 +142,25 @@
   </div>
 </div>
 
-<div class="panel" id="map">
+<div class="panel pm-root" id="map">
   <div class="panel-title-row"><h2>Paper map</h2>
-    <span class="info-tip" tabindex="0" role="img" aria-label="Every dot is one AV paper. Papers whose titles and abstracts are alike sit close together; the axes have no meaning. Drag to pan, Ctrl and scroll or the plus and minus buttons to zoom, click a dot to open the paper in a new tab. Papers matching the filters above are highlighted." data-tip="Every dot is one AV paper. Papers whose titles and abstracts are alike sit close together; the axes have no meaning. Drag to pan, Ctrl + scroll or the + / - buttons to zoom, click a dot to open the paper in a new tab. Papers matching the filters above are highlighted.">i</span></div>
-  <p class="section-intro" style="color:var(--muted);font-size:0.88em;margin:0 0 10px;line-height:1.5;">Every dot is a paper, and papers whose titles and abstracts read alike sit close together, so topics show up as islands (named in the background). Colour is the category. Use the filters at the top of the page to highlight papers by venue, year, country, institution or author, drag to pan, hold Ctrl and scroll (or use + and -) to zoom, and click a dot to open the paper. With the keyboard, focus the map, use the arrow keys and +/- to move the middle of the view onto a dot and press Enter. Papers added since the text embeddings were last refreshed are not on the map yet.</p>
+    <span class="info-tip" tabindex="0" role="img" aria-label="One dot per AV paper. Similar papers sit close together." data-tip="One dot per AV paper. Similar papers sit close together.">i</span></div>
+  <p class="section-intro" style="color:var(--muted);font-size:0.88em;margin:0 0 6px;line-height:1.5;">Each dot is a paper; similar papers sit close together. Drag to pan, zoom in to see the dots, click one for details.</p>
+  <details class="pm-help"><summary>Help</summary>
+    <p>Zoom with Ctrl + scroll, pinch, or the + and &minus; buttons. Colour is the category, and the filters at the top of the page highlight matching papers. Keyboard: focus the map, use the arrow keys to pan and + / &minus; to zoom, then press Enter to open the card of the dot nearest the middle. Papers added since the text embeddings were last refreshed are not on the map yet.</p>
+  </details>
   <div class="controls-row">
     <span><label for="pm-cat">Category</label> <select id="pm-cat"><option value="">All</option></select></span>
     <span class="hl-box">
-      <input type="text" id="pm-highlight" aria-label="Highlight an author or institution" placeholder="Highlight an author or institution…" title="Highlights the papers of the matching author or institution; everything else fades.">
+      <input type="text" id="pm-highlight" aria-label="Find an author or institution" placeholder="Find an author or institution…" title="Highlights the papers of the matching author or institution; everything else fades.">
       <button type="button" id="pm-hl-clear" aria-label="Clear highlight" title="Clear highlight" hidden>&times;</button>
     </span>
-    <label class="chk"><input type="checkbox" id="pm-size"> Size by citations</label>
     <label class="chk"><input type="checkbox" id="pm-labels" checked> Topic names</label>
     <span class="topn"><label for="pm-top">Show</label><input type="range" id="pm-top" min="0" max="7" step="1" value="7"><output id="pm-top-val" for="pm-top">All papers</output></span>
     <button type="button" id="pm-reset" title="Back to the whole map">Reset view</button>
   </div>
   <div class="map-wrap">
-    <canvas id="pm-canvas" tabindex="0" role="img" aria-label="Map of autonomous vehicle papers, one dot per paper; similar papers sit close together. Use the arrow keys to pan, plus and minus to zoom, zero or Home to reset the view. The dot nearest the middle of the map is highlighted; press Enter to open that paper."></canvas>
+    <canvas id="pm-canvas" tabindex="0" role="img" aria-label="Map of autonomous vehicle papers, one dot per paper. Arrow keys pan, plus and minus zoom, zero resets; Enter selects the dot nearest the middle, Escape closes its card."></canvas>
     <div class="zoombtns">
       <button type="button" id="pm-zin" aria-label="Zoom in" title="Zoom in">+</button>
       <button type="button" id="pm-zout" aria-label="Zoom out" title="Zoom out">&minus;</button>
