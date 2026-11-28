@@ -159,9 +159,8 @@ def main():
     # (IV, ITSC, T-ITS -- unlike CVPR/ICRA/etc., these venues carry no non-AV
     # content at all in the first place) AND whose category score already
     # landed on a specific AV-perception/planning category rather than
-    # "uncategorized". User-flagged real examples (Qingwen Zhang's own
-    # papers -- "DoGFlow: Self-Supervised LiDAR Scene Flow...", "DUFOMap:
-    # Efficient Dynamic Awareness Mapping", several motion-prediction and
+    # "uncategorized". Flagged in review, real examples (LiDAR scene-flow and
+    # dynamic-mapping papers, several motion-prediction and
     # mapping-localization papers) all had no abstract at all, so
     # classify_relevance() had only a short, coined title to go on and none
     # of AV_RELEVANCE_TERMS' specific phrases happened to appear in it --

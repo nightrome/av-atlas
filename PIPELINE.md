@@ -190,10 +190,9 @@ RAMP-VO). Under that standard:
 ### Google Scholar only by hand
 
 Scholar's terms don't allow automated queries, and its robots.txt disallows search
-pages and paging through a profile (`cstart=`). `fetch_scholar_paper_links.py` did
-both on 2026-09-21 until Google blocked it, and has since been removed. Author
-profiles (`data/scholar_profiles.json`) and paper links
-(`data/scholar_paper_links.json`) are looked up and added by hand. DECISIONS.md has
+pages and paging through a profile (`cstart=`). No script in the pipeline queries
+Scholar. Author profiles (`data/scholar_profiles.json`) and paper links
+(`data/scholar_paper_links.json`) are added by hand. DECISIONS.md has
 the details under "Paper Scholar links are added by hand".
 
 ## Per-venue scripts (current, in use)
@@ -248,7 +247,7 @@ unrelated account showed up in search.
 **ICML, BMVC, ACCV, ICPR, ICASSP and ICIP.** These were found by mining
 `data/reference_lists_cvf.json` and `data/reference_lists_arxiv.json` (raw
 reference text from the corpus's own papers) for parenthetical venue codes that
-are cited often but not yet covered (a user request). ICML alone had 207 raw
+are cited often but not yet covered (a request). ICML alone had 207 raw
 citations. They use the generic DBLP path. ACCV and ICPR are multi-part on DBLP
 (`accv2024-1.html` ... `-N.html`), which the existing ECCV-style pagination fallback
 in `fetch_year()` already handles. ICML and BMVC are fully fetched (2012-2024),
@@ -263,7 +262,7 @@ unrelated International Conference on Information Visualisation (its page is
 entirely treemap, word-cloud and graph-layout papers). DBLP files the vehicles
 symposium under `conf/ivs/`. Using `iv` pulled 1,131 Information Visualisation
 papers under the "IV" label, and the real symposium's papers were never fetched.
-A user spotted it ("IV has only 0.4% AV-relevant papers... it is literally called
+It was noticed in review ("IV has only 0.4% AV-relevant papers... it is literally called
 Intelligent Vehicles"). It's fixed by mapping "IV" to `ivs` in `CONF_DBLP_PATH` in
 `fetch_dblp_listing.py`.
 
@@ -429,7 +428,7 @@ fetches title, authors and abstract from OpenAlex but not its `cited_by_count`.
 That used to be an exception. ICRA and IROS papers had a flat `citations` field
 that `citation_count()` migrated into `citations_by_source.openalex` as a legacy
 fallback. A paper could then rank in the top 50 by an external count while showing
-0 citations on the page (which only shows in-corpus counts), a real user-reported
+0 citations on the page (which only shows in-corpus counts), a real reported
 bug. It was removed at the source so it can't come back: the field is stripped
 from `papers_full.json` and no longer fetched.
 

@@ -67,7 +67,7 @@ SELECTION (see near_threshold_pool)
    counted only between papers in the corpus"), and fetch_ieee_openalex.py
    deliberately does NOT capture OpenAlex's cited_by_count for exactly
    that reason -- mixing an external count into anything the site ranks or
-   shows caused a real user-reported bug before. Nothing here touches that
+   shows caused a real reported bug before. Nothing here touches that
    path: this script's only output is its own throwaway candidates file,
    read by nothing else in the pipeline. Building the real in-corpus graph
    instead (build_citation_graph.py) means fetching and parsing thousands

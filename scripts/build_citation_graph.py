@@ -274,7 +274,7 @@ def fetch_pdf_text(url, key):
     raw = fetch_with_retries(url)
     # Archived before parsing, so even a PDF that fails to parse (corrupt,
     # scanned image, whatever) still leaves the raw file on disk for later
-    # reprocessing -- user-requested, this is meant as a general local PDF
+    # reprocessing -- requested, this is meant as a general local PDF
     # cache for this corpus, not just a reference-extraction input.
     PDF_DIR.mkdir(parents=True, exist_ok=True)
     (PDF_DIR / f"{key}.pdf").write_bytes(raw)
@@ -369,7 +369,7 @@ def match_entry(raw, index):
 
     def after_author(i):
         # ar5iv's bibliographies put the title straight after the last
-        # author with only a space ("... and O. Beijbom Nuscenes: a
+        # author with only a space ("... and O. Roe Nuscenes: a
         # multimodal dataset ..."): an initial, a period, a surname, a space.
         # The surname can be several runs ("Moreno-Noguer", or a name with
         # an accented letter, which RUN_RE splits).
@@ -459,7 +459,7 @@ def fetch_phase(cvf_titles, pdf_url_index):
     # an interrupted or session-limited run should have already extracted
     # reference lists for the papers readers actually visit (feeds each
     # paper's own self-citation/CD-index numbers and its detail page),
-    # not whichever ones happen to sort first (user-requested, applied to
+    # not whichever ones happen to sort first (requested, applied to
     # every incremental crawler in this pipeline, not just this one; see
     # fetch_common.by_citations). cvf_titles already carries this order
     # from main() below -- filtered here, not re-sorted, since it's a list
@@ -698,7 +698,7 @@ def main():
         match_phase(index)
         return
 
-    # Whole corpus, not just av_relevance=="AV" -- user-requested: a paper's
+    # Whole corpus, not just av_relevance=="AV" -- requested: a paper's
     # citation count should reflect who cites it anywhere in this corpus,
     # not just its AV-relevant slice (see aggregate.py's citations_by_
     # source.in_corpus_all and DECISIONS.md's "Whole-corpus citations" entry

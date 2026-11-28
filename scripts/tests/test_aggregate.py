@@ -35,7 +35,7 @@ class TestIsValidInstitution(unittest.TestCase):
             self.assertFalse(ag.is_valid_institution(bad), bad)
 
     def test_rejects_generic_lab_names_with_qualifier_first(self):
-        # User-flagged: unlike SUBUNIT_PREFIX_RE's noun-first form
+        # Flagged in review: unlike SUBUNIT_PREFIX_RE's noun-first form
         # ("Institute for AI"), these put the generic noun last.
         for bad in ("Robotics Institute", "Multimedia Laboratory"):
             self.assertFalse(ag.is_valid_institution(bad), bad)
@@ -68,7 +68,7 @@ class TestIsValidInstitution(unittest.TestCase):
 
     def test_rejects_entries_flagged_by_the_llm_review_pass(self):
         # institution_flags_llm.json (a full LLM read-through of the entire
-        # institution list, user-flagged: "a more scalable solution to
+        # institution list, flagged in review: "a more scalable solution to
         # fixing entries" than hand-typing regex/exact-match patterns one at
         # a time) is loaded once at import time into
         # INVALID_INSTITUTIONS_LLM and checked the same way as the
@@ -82,7 +82,7 @@ class TestIsValidInstitution(unittest.TestCase):
 
     def test_redirects_variant_spellings_flagged_by_the_llm_canonicalization_pass(self):
         # institution_aliases_llm.json (an LLM canonicalization pass over
-        # every currently-valid institution name, user-flagged: diacritic
+        # every currently-valid institution name, flagged in review: diacritic
         # variants, abbreviation-vs-spelled-out forms, department-prefixed
         # names, and corporate-lab-vs-parent-company names were all still
         # fragmenting real institutions into separate rows) is loaded once
@@ -115,24 +115,24 @@ class TestIsValidInstitution(unittest.TestCase):
         self.assertTrue(ag.is_valid_institution("California Institute of Technology"))
 
     def test_rejects_garbled_affiliation_sentence_fragments(self):
-        # Real case, confirmed by the user (Chen Lv's institution list):
+        # Real case, confirmed in review (one author's institution list):
         # a failed footnote parse leaked a whole author-affiliation SENTENCE,
         # a bare postal code, and a byline credit into the affiliations list
         # instead of just the institution name.
         self.assertFalse(ag.is_valid_institution(
             "Z. Huang and C. Lv are with the School of Mechanical and Aerospace Engineering"))
         self.assertFalse(ag.is_valid_institution(
-            "and Chen Lv are with the School of Mechanical and Aerospace Engineering"))
+            "and Wei Zhang are with the School of Mechanical and Aerospace Engineering"))
         self.assertFalse(ag.is_valid_institution(
             "Singapore. This work was done during Z. Huang's visit to the University of California"))
-        self.assertFalse(ag.is_valid_institution("Corresponding Author: Chen Lv"))
+        self.assertFalse(ag.is_valid_institution("Corresponding Author: Wei Zhang"))
         self.assertFalse(ag.is_valid_institution("639798"))
         # The one real institution amid that same garbled list must still
         # be accepted -- this isn't a blanket "reject anything unusual" filter.
         self.assertTrue(ag.is_valid_institution("Nanyang Technological University"))
 
     def test_rejects_pdf_hosting_credit_line(self):
-        # User-flagged: a proceedings/PDF-hosting credit line, not an author
+        # Flagged in review: a proceedings/PDF-hosting credit line, not an author
         # affiliation.
         self.assertFalse(ag.is_valid_institution("provided by the Computer Vision Foundation"))
 
@@ -176,9 +176,9 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertEqual(ag.normalize_institution("Baidu Inc."), "Baidu")
         self.assertEqual(ag.normalize_institution("Baidu Research"), "Baidu")
         # Waymo is merged into the combined "Google + Waymo" institution
-        # (user-requested), so this also exercises that merge alias.
+        # (requested), so this also exercises that merge alias.
         self.assertEqual(ag.normalize_institution("Waymo LLC"), "Google + Waymo")
-        # Real case, confirmed by the user: OpenAlex itself mis-splits some
+        # Real case, confirmed in review: OpenAlex itself mis-splits some
         # authors' "UC Berkeley"-shaped affiliation into two institution
         # records -- "Berkeley College" is a real but unrelated small
         # college, always confirmed alongside the correct UC Berkeley
@@ -189,12 +189,12 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertEqual(ag.normalize_institution("University of Oxford"), "University of Oxford")
 
     def test_strips_corresponding_author_footnote_glued_to_a_real_institution(self):
-        # User-flagged, confirmed as a systemic pattern (225+ entries): a
+        # Flagged in review, confirmed as a systemic pattern (225+ entries): a
         # "Corresponding author" footnote glued onto a real institution
         # name with no separator, sometimes with no space at all.
         self.assertEqual(ag.normalize_institution("Tsinghua University Corresponding author"), "Tsinghua University")
         # "NVIDIA Research" is itself further redirected to "NVIDIA" by
-        # INSTITUTION_ALIASES_LLM (user-requested) -- still exercises the
+        # INSTITUTION_ALIASES_LLM (requested) -- still exercises the
         # footnote-stripping regex under test, just against its post-alias
         # canonical form.
         self.assertEqual(ag.normalize_institution("NVIDIA ResearchCorresponding authors:"), "NVIDIA")
@@ -213,7 +213,7 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertFalse(ag.is_valid_institution(ag.normalize_institution("Indicates corresponding author")))
 
     def test_strips_bare_trailing_marker_with_no_footnote_text(self):
-        # User-flagged: "Singapore †" survived as its own fake institution.
+        # Flagged in review: "Singapore †" survived as its own fake institution.
         # A bare marker (no accompanying footnote text) needs a separate
         # strip from the sentence-level one above.
         self.assertEqual(ag.normalize_institution("Pengcheng Laboratory †"), "Pengcheng Laboratory")
@@ -262,7 +262,7 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertTrue(ag.is_valid_institution("Technology and Research (A*STAR)"))
 
     def test_strips_leading_the_article(self):
-        # user-flagged: institution.html?name=the%20Netherlands -- a
+        # flagged in review: institution.html?name=the%20Netherlands -- a
         # comma-split address fragment survived as its own fake institution
         # since the bare-country-name check only ever matched the exact
         # "Netherlands" from COUNTRY_NAMES, never the article-prefixed form.
@@ -274,12 +274,12 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertEqual(ag.normalize_institution("The University of Edinburgh"), "University of Edinburgh")
 
     def test_strips_leading_footnote_number_but_not_real_digit_prefixed_names(self):
-        # user-flagged real example: "3Intelligent Vehicles Lab", a
+        # flagged in review real example: "3Intelligent Vehicles Lab", a
         # superscript footnote reference ("³Intelligent Vehicles Lab")
         # that lost its superscript formatting during PDF extraction.
         self.assertEqual(ag.normalize_institution("3Intelligent Vehicles Lab"), "Intelligent Vehicles Lab")
         # "Bosch Corporate Research" is itself further redirected to "Bosch"
-        # by INSTITUTION_ALIASES_LLM (user-requested) -- this still exercises
+        # by INSTITUTION_ALIASES_LLM (requested) -- this still exercises
         # the footnote-number-stripping regex under test, just against its
         # post-alias canonical form.
         self.assertEqual(ag.normalize_institution("2Bosch Corporate Research"), "Bosch")
@@ -300,20 +300,20 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertFalse(ag.is_valid_institution("j.doe at tudelft.nl"))
 
     def test_rejects_funding_credit_line(self):
-        # user-flagged real example, glued onto the end of a genuine
+        # flagged in review real example, glued onto the end of a genuine
         # institution+email fragment with no separator.
         self.assertFalse(ag.is_valid_institution(ag.normalize_institution(
             "The Netherlands j.doe at tudelft.nl. Her work is supported by the NWO VENI grant (n. 18165).")))
 
     def test_rejects_abbreviated_person_name(self):
-        # user-flagged real example: a neighboring author's name-with-initial
+        # flagged in review real example: a neighboring author's name-with-initial
         # leaking into this author's affiliation field via a footnote-block
         # parsing error.
         for bad in ("E. Eaton", "L. Ferranti"):
             self.assertFalse(ag.is_valid_institution(bad), bad)
 
     def test_rejects_bare_fragment_word_from_a_split_division_name(self):
-        # user-flagged real example: KTH's "Division of Robotics,
+        # flagged in review real example: KTH's "Division of Robotics,
         # Perception, and Learning (RPL)" comma-split into unrecognizable
         # fragments, one of which ("Perception") matched no other pattern.
         self.assertFalse(ag.is_valid_institution("Perception"))
@@ -321,7 +321,7 @@ class TestNormalizeInstitution(unittest.TestCase):
     def test_real_confirmed_junk_institutions_end_to_end(self):
         # A batch of actual institution strings pulled from the live corpus
         # (institution.html?name=Singapore%20%E2%80%A0 was the specific
-        # user-reported bug -- a country listed as its own "institution").
+        # reported bug -- a country listed as its own "institution").
         # Regression guard for the whole normalize_institution ->
         # is_valid_institution pipeline together, not just one mechanism in
         # isolation -- these are real inputs, not synthetic edge cases.
@@ -365,7 +365,7 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertEqual(ag.author_affiliations(a), ["Baidu"])
 
     def test_fixes_mojibake_diacritics(self):
-        # User-flagged: "Osnabru¨ck" -- a PDF-extraction artifact where the
+        # Flagged in review: "Osnabru¨ck" -- a PDF-extraction artifact where the
         # diacritic's spacing glyph (U+00A8) lands right after the base
         # letter instead of composing into one accented character.
         self.assertEqual(ag.normalize_institution("Osnabru¨ck University"), "Osnabrück University")
@@ -385,7 +385,7 @@ class TestNormalizeInstitution(unittest.TestCase):
         # "Aptiv Services Deutschland" is itself further redirected to
         # "Aptiv" by INSTITUTION_ALIASES_LLM (a regional-subsidiary-into-
         # parent-company merge, same pattern as the Bosch/Xiaomi ones
-        # user-requested) -- still exercises the legal-suffix-stripping
+        # requested) -- still exercises the legal-suffix-stripping
         # regex under test, just against its post-alias canonical form.
         # "Aptiv Services Deutschland" -> "Aptiv" (LLM regional-subsidiary
         # merge) -> "Motional" (hand-dict corporate-lineage merge, re-applied
@@ -393,7 +393,7 @@ class TestNormalizeInstitution(unittest.TestCase):
         # Still exercises the GmbH-stripping regex under test.
         self.assertEqual(ag.normalize_institution("Aptiv Services Deutschland GmbH"), "Motional")
         self.assertEqual(ag.normalize_institution("Zoox Inc"), "Zoox")
-        # User-requested later: every legal form goes, several in a row too.
+        # Requested later: every legal form goes, several in a row too.
         self.assertEqual(ag.normalize_institution("Shenzhen Forward Innovation Digital Technology Co. Ltd"),
                           "Shenzhen Forward Innovation Digital Technology")
         self.assertEqual(ag.normalize_institution("Samsung Electronics Co., Ltd."), "Samsung Electronics")
@@ -405,7 +405,7 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertEqual(ag.normalize_institution("HKISI_CAS"), "Hong Kong Institute of Science & Innovation, CAS")
 
     def test_groups_company_lab_variants_under_one_canonical_name(self):
-        # User-requested: fold every corporate-lab spelling of the same
+        # Requested: fold every corporate-lab spelling of the same
         # company into one leaderboard row.
         for variant in ("Huawei Technologies", "Huawei Cloud Computing Technologies Co",
                          "Huawei Paris Research Center"):
@@ -425,7 +425,7 @@ class TestNormalizeInstitution(unittest.TestCase):
         self.assertEqual(ag.normalize_institution("valeo.ai"), "Valeo")
 
     def test_rejects_bare_city_names(self):
-        # User-flagged (Eindhoven, Waterloo) -- same comma-split-affiliation
+        # Flagged in review (Eindhoven, Waterloo) -- same comma-split-affiliation
         # cause as the bare countries/cities already in INVALID_INSTITUTIONS.
         for city in ("Eindhoven", "Waterloo"):
             self.assertFalse(ag.is_valid_institution(city), city)
@@ -478,7 +478,7 @@ class TestNormalizeInstitution(unittest.TestCase):
                          "University of Southern California")
 
     def test_drops_a_city_glued_onto_the_end_of_the_name(self):
-        # User-flagged: "Technical University of Darmstadt" showed up as two
+        # Flagged in review: "Technical University of Darmstadt" showed up as two
         # institutions because one paper's parser kept the city too.
         for glued, real in (
             ("Technical University of Darmstadt Darmstadt", "Technical University of Darmstadt"),
@@ -572,26 +572,26 @@ class TestIsValidInstitutionAddressJunk(unittest.TestCase):
 
 class TestCleanAuthorName(unittest.TestCase):
     def test_unicode_hyphen_variants_normalized_to_ascii(self):
-        # Real case, confirmed by the user: one of Yi-Ting Chen's papers had
-        # his name PDF-extracted with U+2010 HYPHEN instead of the ASCII
-        # hyphen his other papers use, splitting him into two separate
-        # leaderboard entries (4 papers found instead of the correct 5).
-        self.assertEqual(ag.clean_author_name("Yi‐Ting Chen"), "Yi-Ting Chen")
-        self.assertEqual(ag.clean_author_name("Yi-Ting Chen"), "Yi-Ting Chen")
+        # Real case, confirmed in review: one paper had an author
+        # name PDF-extracted with U+2010 HYPHEN instead of the ASCII
+        # hyphen the author's other papers use, splitting them into two
+        # separate leaderboard entries.
+        self.assertEqual(ag.clean_author_name("Mei‐Ling Chen"), "Mei-Ling Chen")
+        self.assertEqual(ag.clean_author_name("Mei-Ling Chen"), "Mei-Ling Chen")
         for dash in ("‐", "‑", "‒", "–", "−"):
             self.assertEqual(ag.clean_author_name(f"Ying{dash}Cong Chen"), "Ying-Cong Chen")
 
     def test_strips_trailing_correspondence_marker_symbols(self):
-        # User-flagged real case: "Jianbing Shen♠", "Jianbing Shen🖂", and
-        # plain "Jianbing Shen" all existed as three separate leaderboard
+        # Flagged in review, real case: "Jane Doe♠", "Jane Doe🖂", and
+        # plain "Jane Doe" all existed as three separate leaderboard
         # entries for the same person -- a spade suit symbol and an
         # envelope emoji are both real LaTeX correspondence-author markers,
         # neither of which FOOTNOTEMARK_SUFFIX_RE catches (it requires the
         # literal word "footnotemark" after the marker; these have nothing
         # after it at all).
-        self.assertEqual(ag.clean_author_name("Jianbing Shen♠"), "Jianbing Shen")
-        self.assertEqual(ag.clean_author_name("Jianbing Shen\U0001F582"), "Jianbing Shen")
-        self.assertEqual(ag.clean_author_name("Jianbing Shen"), "Jianbing Shen")
+        self.assertEqual(ag.clean_author_name("Jane Doe♠"), "Jane Doe")
+        self.assertEqual(ag.clean_author_name("Jane Doe\U0001F582"), "Jane Doe")
+        self.assertEqual(ag.clean_author_name("Jane Doe"), "Jane Doe")
 
     def test_strips_unfamiliar_symbol_markers_too(self):
         # Category-based, not a hardcoded glyph list -- a marker symbol this
@@ -600,17 +600,15 @@ class TestCleanAuthorName(unittest.TestCase):
         self.assertEqual(ag.clean_author_name("Bob Builder✖"), "Bob Builder")  # heavy X
 
     def test_strips_leading_academic_and_courtesy_titles(self):
-        # User-flagged: "Dr. Andras Palffy" (from arXiv-extracted author
-        # metadata) and "Andras Palffy" existed as two separate leaderboard
+        # Flagged in review: a name with a "Dr." prefix (from arXiv-extracted
+        # author metadata) and the plain name existed as two separate leaderboard
         # entries. General honorific strip, not a per-person fix -- covers
-        # "Dr. Holger Caesar", "Professor A. R. Harish", "Prof. Em. Eduardo
-        # Nebot", "Mr Zhang Guangjian" and any future ones the same way.
+        # every prefix the same way.
         for raw, expected in (
-            ("Dr. Andras Palffy", "Andras Palffy"),
-            ("Dr Andras Palffy", "Andras Palffy"),
-            ("Dr. Holger Caesar", "Holger Caesar"),
-            ("Professor A. R. Harish", "A. R. Harish"),
-            ("Prof. Em. Eduardo Nebot", "Eduardo Nebot"),
+            ("Dr. Jane Doe", "Jane Doe"),
+            ("Dr Jane Doe", "Jane Doe"),
+            ("Professor A. B. Example", "A. B. Example"),
+            ("Prof. Em. Sam Rivera", "Sam Rivera"),
             ("Prof. Dr. Xuan Zhang", "Xuan Zhang"),
             ("Mr Zhang Guangjian", "Zhang Guangjian"),
         ):
@@ -702,7 +700,7 @@ class TestCleanAuthorNameCommaCases(unittest.TestCase):
             # (also all-caps -> title-cased, see the dedicated test below)
             ("A. A. MALIKOPOULOS1,2", "A. A. Malikopoulos"),
             ("JONATHAN W. LEE*,1", "Jonathan W. Lee"),
-            ("NATHAN LICHTLÉ*,†,2", "Nathan Lichtlé"),
+            ("ÉMILE ROUX*,†,2", "Émile Roux"),
             ("Andrea Stocco 2,4", "Andrea Stocco"),
             ("Han Lu1,", "Han Lu"),
         ):
@@ -713,14 +711,14 @@ class TestCleanAuthorNameCommaCases(unittest.TestCase):
         # capitals -- a formatting choice that split them off their
         # normally-cased leaderboard entry.
         for raw, expected in (
-            ("NATHAN LICHTLÉ*,†,2", "Nathan Lichtlé"),
+            ("ÉMILE ROUX*,†,2", "Émile Roux"),
             ("JONATHAN W. LEE*,1", "Jonathan W. Lee"),
             ("FANG-CHIEH CHOU*,††,3", "Fang-Chieh Chou"),
             ("HOSSEIN NICK ZINAT MATIN*,3", "Hossein Nick Zinat Matin"),
         ):
             self.assertEqual(ag.clean_author_name(raw), expected, raw)
         # A normally-cased name (or one with initials) is left exactly as-is.
-        for name in ("Nathan Lichtlé", "Jonathan W. Lee", "A. R. Harish", "Zhuoran Li"):
+        for name in ("Émile Roux", "Jonathan W. Lee", "A. B. Example", "Zhuoran Li"):
             self.assertEqual(ag.clean_author_name(name), name, name)
 
     def test_leading_ordinal_and_conjunction_are_stripped(self):
@@ -728,7 +726,7 @@ class TestCleanAuthorNameCommaCases(unittest.TestCase):
         # "and" / "AND" before the last author in citing-paper metadata.
         for raw, expected in (
             ("1st Andrea Matteazzi1,2", "Andrea Matteazzi"),
-            ("and Cyrill Stachniss2,3", "Cyrill Stachniss"),
+            ("and Jane Doe2,3", "Jane Doe"),
             (r"AND Pratik Satam\authorrefmark1,2", "Pratik Satam"),
         ):
             self.assertEqual(ag.clean_author_name(raw), expected, raw)
@@ -755,8 +753,8 @@ class TestCleanAuthorNameCommaCases(unittest.TestCase):
 
     def test_ordinary_names_with_no_comma_are_untouched(self):
         for name in (
-            "Cyrill Stachniss", "Kai-Wei Chang", "A. R. Harish",
-            "Julian Francisco Pieter Kooij", "Marius Zöllner",
+            "Jane Doe", "Kai-Wei Chang", "A. B. Example",
+            "Julian Francisco Pieter Example", "Mats Lindqvist",
         ):
             self.assertEqual(ag.clean_author_name(name), name, name)
 
@@ -866,7 +864,7 @@ class TestPaperShortName(unittest.TestCase):
         self.assertEqual(name, "Unknown21")
 
     def test_abstract_supplies_a_coined_name_when_the_title_has_none(self):
-        # Real case, user-flagged: "Planning-Oriented Autonomous Driving"
+        # Real case, flagged in review: "Planning-Oriented Autonomous Driving"
         # has no colon or dash, but the abstract introduces "Unified
         # Autonomous Driving (UniAD)" -- the name actually used to refer to
         # this paper (UniAD), not derivable from the title alone.
@@ -1087,7 +1085,7 @@ class TestContentHash(unittest.TestCase):
 
 class TestCitationCount(unittest.TestCase):
     def test_no_source_returns_zero(self):
-        # User-decided: "how many papers in this corpus reference it" always
+        # Decided by the maintainer: "how many papers in this corpus reference it" always
         # has an answer, and the answer is 0 when the citation graph has no
         # incoming edge for the paper -- never None. Reference-list crawl
         # progress is a coverage caveat shown on the About page, not a reason
@@ -1388,7 +1386,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertEqual(stats["best_by_year"]["2024"]["title"], "More citations")
 
     def test_abstract_availability_phrase_upgrades_never_checked_to_true(self):
-        # user-flagged: "code cannot just be at github/gitlab. We should do
+        # flagged in review: "code cannot just be at github/gitlab. We should do
         # a keyword search for things like 'code' in the abstract" -- covers
         # papers has_code_link's ar5iv-based primary source never reaches.
         stats = self._run([
@@ -1472,7 +1470,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertEqual(self.last_citations["Sensor Failures"], ["Robustness against Missing Modalities"])
 
     def test_insights_highest_impact_author_requires_more_than_10_papers(self):
-        # User-requested: a two-paper lucky hit shouldn't win "highest
+        # Requested: a two-paper lucky hit shouldn't win "highest
         # average impact" on the Insights page, even though it legitimately
         # can on the Authors page's own (much looser) ranking.
         entries = []
@@ -1486,7 +1484,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertEqual(stats["insights"]["highest_impact_author"]["name"], "Steady Author")
 
     def test_drops_authors_detail_from_a_wrong_paper_enrichment_match(self):
-        # Real case, user-flagged: a 7-author paper carrying 100 unrelated
+        # Real case, flagged in review: a 7-author paper carrying 100 unrelated
         # authors_detail entries (a different paper's full author list),
         # which drove bogus "80 institutions on one paper" leaderboard
         # entries. The mismatched detail must be dropped so it contributes
@@ -1518,7 +1516,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertEqual(paper["institutions"], ["Massachusetts Institute of Technology"])
 
     def test_drops_authors_detail_that_names_completely_different_people(self):
-        # Real case, user-flagged: a 6-Chinese-author AAAI paper carried 8
+        # Real case, flagged in review: a 6-Chinese-author AAAI paper carried 8
         # authors_detail entries that were the real author list of an
         # unrelated ~2012 urban-mobility paper -- close enough in COUNT (8 vs
         # 6) that the count-only guard above didn't catch it, driving a bogus
@@ -1539,8 +1537,8 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertEqual(paper["countries"], [])
 
     def test_blanket_shared_affiliation_excluded_from_individuals_kept_for_paper(self):
-        # User-flagged real case: Yue Wang's, Boyi Li's, and Marco Pavone's
-        # author pages all showed institutions that were really a
+        # Flagged in review, real case: several authors'
+        # pages all showed institutions that were really a
         # co-author's -- some sources (arXiv/ar5iv papers whose LaTeX
         # doesn't mark which author belongs to which affiliation, some
         # legacy/OpenAlex-sourced records) can't map an affiliation block to
@@ -1562,7 +1560,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         ])
         paper = stats["all_papers"][0]
         # "NVIDIA Research" is itself further redirected to "NVIDIA" by
-        # INSTITUTION_ALIASES_LLM (user-requested), incidental to what this
+        # INSTITUTION_ALIASES_LLM (requested), incidental to what this
         # test actually checks.
         self.assertEqual(paper["institutions"], ["NVIDIA", "Stanford University"])
         author_detail = self.last_detail["author_detail"]
@@ -1661,7 +1659,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertEqual([i["name"] for i in author_detail["Grace Diff"]["institutions"]], ["University of Oxford"])
 
     def test_citing_papers_includes_self_citations_but_tracks_them_separately(self):
-        # User-requested: self-citations (citer shares an author with the
+        # Requested: self-citations (citer shares an author with the
         # cited paper) count toward the total like any other citation now --
         # a separate per-author Self-citation % metric (self_citations)
         # covers "how much of this is self-citation" instead of the total
@@ -1822,7 +1820,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertIn("Full Name", all_authors)
 
     def test_institution_top_authors_only_credits_the_authors_own_affiliation(self):
-        # Real case, confirmed by the user: institution.html's "top authors
+        # Real case, confirmed in review: institution.html's "top authors
         # here" used to credit EVERY author on a paper with each OTHER
         # author's institution too -- an author at one company was showing
         # as a top author of an unrelated co-author's company purely because
@@ -1923,7 +1921,7 @@ class TestAggregateEndToEnd(unittest.TestCase):
         self.assertFalse(self.last_detail["author_detail"]["John Smith"]["identity_conflict"])
 
     def test_author_countries_are_chronological_not_alphabetical(self):
-        # user-flagged real case: an author showed "United States" as
+        # flagged in review real case: an author showed "United States" as
         # their country on a co-author's page even though their most recent
         # institution (2023-2025) is in the Netherlands -- "United States"
         # only won because it sorts after "Netherlands" alphabetically, and
@@ -2143,7 +2141,7 @@ class TestComputeInsights(unittest.TestCase):
         self.assertEqual(insights["young_researchers_min_influential"], 3)
 
     def test_young_researchers_excludes_a_researcher_whose_overall_career_is_long(self):
-        # Real case, user-flagged: "Yu Qiao" showed as a 3-year, 38-paper
+        # Real case, flagged in review: one author showed as a 3-year, 38-paper
         # "rising star" -- correct as far as AV-relevant papers go, but the
         # same name has ~300 more non-AV papers here back to 2012, a 13+
         # year research career that recently pivoted into AV, not a new
@@ -2239,7 +2237,7 @@ class TestComputeInsights(unittest.TestCase):
         self.assertEqual(d["most_consolidating"][0]["title"], "Consolidating Paper")
 
     def test_disruption_index_ties_broken_by_citer_count(self):
-        # user-flagged: cd_index only takes a handful of exact fractions, so
+        # flagged in review: cd_index only takes a handful of exact fractions, so
         # huge swaths of the corpus tie at the same score -- the paper with
         # MORE citers unanimously agreeing is the stronger, more meaningful
         # pick among ties, not an arbitrary one.

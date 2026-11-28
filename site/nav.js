@@ -166,7 +166,7 @@
   // The one exception is a detail page's identity param -- author.html/
   // institution.html/venue.html key on ?name=, paper.html on ?title=.
   // That's not a filter, it's WHICH record the page is, so dropping it here
-  // would turn a valid link into "Unknown author" (user-reported). Those
+  // would turn a valid link into "Unknown author" (reported). Those
   // two keys are carried across the reset; everything else still goes.
   const IDENTITY_PARAMS = ['name', 'title'];
   const reloadBtn = document.createElement('button');
@@ -208,7 +208,7 @@
   const reportBtn = document.createElement('button');
   reportBtn.id = 'reportIssueBtn';
   reportBtn.type = 'button';
-  // Icon only (user-requested, was "🚩 Spot an error?") -- the accessible
+  // Icon only (requested, was "🚩 Spot an error?") -- the accessible
   // name still comes through via title (and aria-label below), so a
   // screen reader still announces the full label even though sighted
   // users only see the flag.

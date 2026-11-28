@@ -111,7 +111,7 @@ const SEQ_RAMP = ['#cde2fb', '#9ec5f4', '#6da7ec', '#3987e5', '#256abf', '#184f9
 
 let currentStats = null, currentFilters = null;
 let currentTimelineDraw = null;
-// No "Show" (relevance) filter -- user-requested: a non-AV-relevant paper
+// No "Show" (relevance) filter -- requested: a non-AV-relevant paper
 // isn't meaningfully categorized in the first place (category alone, per
 // About's own Method section, isn't what decides AV-relevance; the non-AV
 // set is mostly generic CV/ML work the taxonomy's broad keywords still match
@@ -141,7 +141,7 @@ fetchStatsWithRelevance('').then(stats => {
 // behave very differently from every other category (a handful of landmark
 // dataset papers accumulate huge citation counts just by being the standard
 // benchmark everyone reports on), which can dominate both the ranking bars
-// and the "over time" chart. User-requested: an explicit toggle to exclude
+// and the "over time" chart. Requested: an explicit toggle to exclude
 // them, applied to both -- not just this page's own display, but the
 // category counts a reader sees reflected in the ranking bars and chart.
 function withoutDatasetsIfExcluded(papers) {
@@ -207,7 +207,7 @@ function renderCategoryTimeline(stats, filters) {
   });
 
   // In memory only for this pageview, not persisted -- a refresh always
-  // starts with every series visible (user-flagged: a struck-out legend
+  // starts with every series visible (flagged in review: a struck-out legend
   // entry surviving a refresh reads as stuck, not remembered).
   const hidden = new Set();
 
@@ -225,7 +225,7 @@ function renderCategoryTimeline(stats, filters) {
     // own -- indistinguishable from having been excluded by the checkbox
     // above. If the reader has chosen to include dataset papers, they
     // should actually see the category here, not have it silently vanish
-    // the same way it would if excluded (user-reported).
+    // the same way it would if excluded (reported).
     if (byCategory['dataset-benchmark-paper'] && !topCategories.includes('dataset-benchmark-paper')) {
       topCategories = topCategories.slice(0, Math.max(0, topN - 1));
       topCategories.push('dataset-benchmark-paper');
@@ -287,7 +287,7 @@ function renderCategoryTimeline(stats, filters) {
 function fmtAvg(v) { return v == null ? 'n/a' : v; }
 
 // Each paper's institutions (not each paper) counts as 1 vote toward its
-// category's industry/academic tally (user-requested) -- a 3-institution
+// category's industry/academic tally (requested) -- a 3-institution
 // collaboration contributes 3 votes, not 1, since the question is "how much
 // of the WORK behind this category is industry vs. academic", not "how many
 // papers have at least one industry co-author". Institutions not in
@@ -365,7 +365,7 @@ function render() {
   // real <table> column header does everywhere else on the site -- this
   // panel renders as CSS-grid divs, not a <table>, so sortable.js doesn't
   // apply to it, but the same click-to-sort expectation still holds
-  // (user-flagged: "Category ranking columns are not sortable").
+  // (flagged in review: "Category ranking columns are not sortable").
   const metricTooltips = {
     total: 'How many other papers in this corpus cite a paper from this category. Counted only within this corpus, never from an external database.',
     papers: 'Number of AV-relevant papers currently assigned this category.',

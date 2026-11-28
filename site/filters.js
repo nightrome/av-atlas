@@ -6,7 +6,7 @@
     /* A wide table (many columns, or long text cells) must scroll inside
        its own box, not push the whole page wider -- without this, a table
        on a narrow/mobile viewport drags the entire <body> into horizontal
-       scroll instead (user-reported: "on my phone all tables on Papers
+       scroll instead (reported: "on my phone all tables on Papers
        page go out of the limits"). Wrap any <table> that might overflow in
        <div class="table-scroll">...</div>. */
     .table-scroll { overflow-x: auto; }
@@ -59,7 +59,7 @@
          leftover row width (past 500px on a typical viewport) purely
          because it came first, at the direct expense of later fields
          (Venue, Year, ...) having room to share that row instead of
-         wrapping (user-reported: "the [Venue field] must be one row up").
+         wrapping (reported: "the [Venue field] must be one row up").
          220-320px is already generous for a title/name search. */
       grid-column: span 2;
     }
@@ -464,8 +464,8 @@
   };
   // Matches if every word in the (already-lowercased) query appears
   // somewhere in text, in any order -- not just as one contiguous
-  // substring. User-flagged: searching "Julian Kooij" found nothing for
-  // "Julian Francisco Pieter Kooij" (a real corpus name, after two prior
+  // substring. Flagged in review: searching a first and last name found nothing for
+  // a name with a middle name in the corpus (after two prior
   // name-spelling variants got merged into this canonical one) because a
   // plain text.includes(query) requires the words to be adjacent with
   // nothing in between. A multi-word name search should work the way a
@@ -808,7 +808,7 @@
     // (not AV) papers are shipped as a separate sharded non_av_papers/ set
     // (see aggregate.py's NON_AV_DIR comment for the size reasoning);
     // fetchStatsWithRelevance below does the actual fetch-and-swap.
-    // "Both" (re-added, user-requested) unions the two sets -- category/venue/
+    // "Both" (re-added, requested) unions the two sets -- category/venue/
     // year counts and chart series computed client-side from the resulting
     // all_papers describe that union same as any other selection; the one
     // place that stays AV-only regardless is the Category dropdown's own
@@ -858,7 +858,7 @@
       // entry. Replaces reading every distinct venue straight off
       // corpus_stats.by_venue, which blew this dropdown from ~60 entries to
       // 3,000+ once backfill_citing_venues.py started filling in real
-      // per-paper venues for ~68k citation-discovered papers (user-reported:
+      // per-paper venues for ~68k citation-discovered papers (reported:
       // "the All Venues menu is messed up (too long)"). Counts shown are
       // still from the CURRENTLY ACTIVE paper set (stats.all_papers, which
       // already respects the AV / non-AV "Show" toggle above) -- only
@@ -942,7 +942,7 @@
     // One optional boolean toggle in the bar (currently only Categories'
     // "Exclude dataset papers") -- used to be its own standalone checkbox
     // sitting above that page's chart, disconnected from every other
-    // control (user-flagged, same complaint and same fix as topN's comment
+    // control (flagged in review, same complaint and same fix as topN's comment
     // above: "the [control] must be in the SEARCH menu"). Like topN, a
     // change here does not navigate -- it persists to sessionStorage and
     // calls onChange directly, since the caller already has what it needs
@@ -1133,7 +1133,7 @@
     // "Show top N" for a page's adoption-over-time chart (or, on Network,
     // how many authors the graph itself draws) -- used to be its own
     // standalone control sitting above that chart/graph, disconnected from
-    // every other control on the page (user-flagged: "the show menu must be
+    // every other control on the page (flagged in review: "the show menu must be
     // in the SEARCH menu", after multiple rounds of consolidating every
     // other control here already). Unlike every other field in this bar, a
     // change here does NOT navigate -- it calls opts.topN.onChange(n)
@@ -1142,7 +1142,7 @@
     // redrawing a chart doesn't need a fresh fetch or a URL change.
     if (opts.topN) {
       const tOpts = opts.topN;
-      // A dropdown of fixed choices (user-requested, replacing the earlier
+      // A dropdown of fixed choices (requested, replacing the earlier
       // free-typed number field) -- also now the same value that caps the
       // page's table/list, not just its chart (see each page's render()),
       // so the choices are round numbers a reader would actually recognize
@@ -1847,7 +1847,7 @@
   // Y) -- the institution whose own year range overlaps the years of the
   // papers that relationship is actually about, not just whichever
   // institution happens to be that author's most recent one on file. Those
-  // can be years apart (user-flagged: a co-author who wrote papers with the
+  // can be years apart (flagged in review: a co-author who wrote papers with the
   // page's subject in 2018-2021 was shown at an institution first credited
   // in 2023, reading like a plainly wrong "current employer" line). Falls
   // back to the latest institution when no overlap exists, same as before.
@@ -2121,7 +2121,7 @@
   };
 
   // markThinAverage's own explanation is a hover title="" -- invisible on
-  // touch, where there's no hover to trigger it at all (user-reported: the
+  // touch, where there's no hover to trigger it at all (reported: the
   // "*" is "not explained and looks bad", on a page checked from a phone).
   // A persistent, visible caption works regardless of input method. Callers
   // compute how many of the CURRENTLY shown rows actually got marked (not
@@ -2324,12 +2324,11 @@
   };
 
   // Who runs this site. Used to disclose, in place, when the maintainer's
-  // own name comes out on top of one of this site's own rankings -- which it
-  // does: they are a first author on nuScenes, the most-cited paper in the
-  // corpus. The ranking is computed by the same code as every other name's
-  // and is not adjusted, but a reader has no way of knowing the person named
-  // built the thing naming them unless the page says so, and a site that
-  // ranks researchers has to be the one to volunteer that.
+  // own name comes out on top of one of this site's own rankings. The ranking
+  // is computed by the same code as every other name's and is not adjusted,
+  // but a reader has no way of knowing the person named built the thing
+  // naming them unless the page says so, and a site that ranks researchers
+  // has to be the one to volunteer that.
   window.SITE_MAINTAINER = 'Holger Caesar';
 
   window.computeSelfCitationStats = function (ownPapers) {
@@ -2345,7 +2344,7 @@
   // Total paper count and total citations for every author in the corpus,
   // computed in one pass over all_papers -- shared so a "Citing authors"
   // table (author.html, paper.html) can show each citing author's own
-  // overall standing (papers/citations columns, user-requested) without
+  // overall standing (papers/citations columns, requested) without
   // each page re-scanning all_papers once per citing author found.
   window.computeAuthorPaperStats = function (allPapers) {
     const stats = {};
@@ -2366,7 +2365,7 @@
   // arriving here from a filtered/searched/sorted/paginated list is a real
   // <a href> navigation, so the browser's own history already has that exact
   // view; a plain link back to e.g. institutions.html would silently drop
-  // whatever filters got the reader here in the first place (user-flagged).
+  // whatever filters got the reader here in the first place (flagged in review).
   // Only rendered when there's actually a same-site page to return to --
   // arriving via a bookmark, a shared link, or a fresh tab has no useful
   // "back" destination, so history.back() there would do nothing or leave
@@ -2598,7 +2597,7 @@
 
     // A left-margin label naming what the numbers actually count -- plain
     // tick numbers with no unit read as ambiguous on a page with several
-    // different metrics nearby (user-flagged on Venues: "the y axis is
+    // different metrics nearby (flagged in review on Venues: "the y axis is
     // unclear" -- a paper count next to a table whose columns include
     // citations, ratios, and "citations/paper" all at once).
     const PAD_L = opts.yLabel ? 56 : 46;
@@ -2794,7 +2793,7 @@
   // Top-N control itself lives in the page's SEARCH filter bar (opts.topN on
   // renderFilterBar), not here -- this used to render its own standalone
   // control via renderTopNControl, disconnected from every other control on
-  // the page (user-flagged, see renderFilterBar's opts.topN comment). Returns
+  // the page (flagged in review, see renderFilterBar's opts.topN comment). Returns
   // `draw` so the caller wires the filter bar's topN.onChange straight to it.
   window.renderDimensionTimeline = function (opts) {
     const { papers, dimensionFn, labelFor, elIds, rankedNames } = opts;
@@ -2878,7 +2877,7 @@
     const tooltip = document.getElementById(elIds.tooltip);
 
     // Which series are toggled off, in memory only for this pageview -- NOT
-    // persisted (user-flagged: a struck-out legend entry surviving a
+    // persisted (flagged in review: a struck-out legend entry surviving a
     // refresh reads as a stuck/broken toggle, not a remembered preference).
     // Every reload starts with every series visible again.
     const hidden = new Set();
@@ -2891,7 +2890,7 @@
       // ranking by raw paper count here only when no ranking was supplied.
       // Without this, the chart always ranked by paper count regardless of
       // the list's own sort, so its #1 could silently differ from the
-      // list's #1 (user-reported: Institutions' chart didn't include
+      // list's #1 (reported: Institutions' chart didn't include
       // Google, #1 in the list by average citations, since Google isn't
       // top-10 by raw paper count).
       const topGroups = rankedNames
@@ -2958,7 +2957,7 @@
 
   // Every <table> on every page gets auto-wrapped in .table-scroll, not
   // just the ones a page author remembered to wrap by hand -- a table this
-  // was missed on (venues.html's, user-flagged: its "Best paper" column
+  // was missed on (venues.html's, flagged in review: its "Best paper" column
   // straddled the table on a laptop-width viewport) is exactly the failure
   // mode a manual per-page wrapper can't prevent, and neither can a page
   // author remember to do this for every table a FUTURE page adds either.

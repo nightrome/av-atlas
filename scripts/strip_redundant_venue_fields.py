@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Repo-size cleanup (user-requested): every entry in a per-venue-year file
+Repo-size cleanup (requested): every entry in a per-venue-year file
 under data/venues/ (e.g. cvpr2024.json) repeated "conference"/"year" even
 though every entry in that file shares the same one -- 11.1MB of pure
 redundancy across 265k entries, fully determined by the filename.

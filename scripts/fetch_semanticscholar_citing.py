@@ -83,7 +83,7 @@ def top_seed_titles(n):
     # still have real citations Semantic Scholar knows about that we don't,
     # which is the whole point of seeding from it.
     #
-    # Sorted by in-corpus citations descending again (user-requested, applied
+    # Sorted by in-corpus citations descending again (requested, applied
     # to every crawler in this pipeline -- see fetch_common.by_citations),
     # after previously being reverted FROM exactly this for a confirmed,
     # self-defeating failure mode: a paper (or whole venue) with zero

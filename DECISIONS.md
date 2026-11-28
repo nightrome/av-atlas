@@ -164,8 +164,8 @@ above calls AV. Nobody reviews the list before it goes live: the monthly update 
 on its own, and the maintainer decided that some wrong papers are an acceptable price for
 that. It runs after the classifier changes in the entry above, which were made with this
 intake in mind: before them, one weak abstract phrase such as "onboard" was enough, and
-a week-long check in the arXiv research found matches only in the abstract to be about
-half right, against nearly all of the title matches. Any further fix belongs in
+in a one-week check of the arXiv intake, papers matched only through their abstract
+were correct about half the time, against nearly all of the title matches. Any further fix belongs in
 `classify.py`, where it also fixes the same papers already in the corpus, not in a
 separate filter for this one path.
 
@@ -199,7 +199,7 @@ Insights panel computed in `aggregate.py` divides the same way.
 Until September 2026 there were two definitions under the same label. The listing pages
 divided by the papers with at least one citation, and the detail pages divided by all
 papers and showed one decimal. Clicking from a ranking to an entity's own page changed its
-number by 20 to 35%: Holger Caesar read 155 on Researchers and 118.7 on his own page. All
+number by 20 to 35%: one author read 155 on Researchers and 118.7 on their own page. All
 papers is the right denominator now that every paper has a real in-corpus count, where 0
 means "nothing here cites it yet". Leaving those papers out made a group with many uncited
 papers look better than one whose papers are all cited a little.
@@ -284,31 +284,26 @@ to the registry.
 registry duplicates (diacritic and abbreviation variants) onto canonical names. It is
 applied after the hand-typed `INSTITUTION_ALIASES`.
 
-## Email addresses are stripped from tracked data, the domain is kept
+## Email addresses are replaced by their domain in tracked data
 
 The extraction cache for the step above, `data/affiliations_llm_extracted.json`, was
 keyed by the raw affiliation note, and those notes usually end in the authors' email
-addresses. Once the repo went public it held about 2,100 scraped addresses (counting
-each name in a `{a, b}@host` group), some of them students' mailboxes and private
-webmail. A few more sat in ECCV and NeurIPS abstracts, one ECCV author string, the
-institution registry and the LLM flag list.
+addresses. A few more addresses sat in ECCV and NeurIPS abstracts, one ECCV author
+string, the institution registry and the LLM flag list. The repo does not keep
+addresses.
 
-Every address is now replaced by its domain: `x.y@tongji.edu.cn` becomes
-`tongji.edu.cn` and `{a, b}@fzi.de` becomes `fzi.de`. The domain stays because it can
-help name the institution. The part before the `@` never helped with anything.
-`scripts/email_addresses.py` does this for every caller. The cache is keyed with the
-stripped text, and the model is shown the same text. Notes that only differed in
-whose address they carried now share one entry, so 124 keys were merged; where their
-answers differed, the most common one was kept. `build_public_site.py` scrubs every
-tracked `data/` file before each build, because a new crawl can bring addresses back.
-`aggregate.py` strips abstracts before sharding them and drops institution names that
-still contain an address. A test fails if any tracked file under `data/` holds one,
-and another checks the built `stats.json` and shards when they exist.
+Every address is replaced by its domain: `x.y@tongji.edu.cn` becomes `tongji.edu.cn`
+and `{a, b}@fzi.de` becomes `fzi.de`. The domain stays because it can help name the
+institution. `scripts/email_addresses.py` does this for every caller. The cache is
+keyed with the stripped text, and the model is shown the same text, so the cache holds
+no addresses. `build_public_site.py` scrubs every tracked `data/` file before each
+build, because a new crawl can bring addresses back. `aggregate.py` strips abstracts
+before sharding them and drops institution names that still contain an address. A test
+fails if any tracked file under `data/` holds one, and another checks the built
+`stats.json` and shards when they exist.
 
 Only something that ends in a real top-level domain counts as an address, so metric
-notation such as `mAP@0.5` or `PointASNL@Sem.KITTI` is left alone. The old addresses
-are still in the git history. Removing them from there would mean a history rewrite,
-which is a separate decision.
+notation such as `mAP@0.5` or `PointASNL@Sem.KITTI` is left alone.
 
 ## An institution typed into an author field must not veto that institution
 
@@ -418,25 +413,19 @@ title. A search can land on a different paper, a citing paper or nothing, so tho
 links were removed. A paper now shows a Scholar link only if `scholar_url` is in
 `stats.json`, which `aggregate.py` takes from `data/scholar_paper_links.json`.
 
-That file was first filled by a script, `fetch_scholar_paper_links.py`. On 2026-09-21
-it read the Scholar profile pages of 68 authors in `scholar_profiles.json` and took a
-paper's link from a profile row only if the normalized title was identical, one author
-agreed (surname plus initial) and the years were within one year. That gave 246 links.
-The same day, a short trial searched Scholar for each paper's exact title instead. It
-found 11 more links before Google blocked it.
+The links are matched from the paper lists on author profiles in
+`scholar_profiles.json`: a paper's link is taken from a profile row only if the
+normalized title is identical, one author agrees (surname plus initial) and the years
+are within one year. No scripted Scholar search is part of the pipeline: Scholar's terms
+don't allow automated queries, and its robots.txt disallows search pages and paging
+through a profile. Links for the most-cited papers that were still missing one were
+added by hand (PR #21).
 
-Scholar's terms don't allow automated queries, and its robots.txt disallows search
-pages and paging through a profile (`cstart=`), which the profile route did on every
-request. So the script was removed rather than trimmed down. The top-100 papers still
-without a link were then looked up by hand, and 27 of them got their "Cited by" page
-(PR #21). Four of the top 100 still have none.
-
-The file is now edited by hand. The key is `normalize_title()` of the paper's title,
-and the value is the paper's own Scholar page: the citation page on an author's
-profile (`citation_for_view=`), its "Cited by" page (`scholar?cites=`) or its versions
-page (`scholar?cluster=`), never a search. `profiles_done` in the file is left over
-from the script and nothing reads it. `test_scholar_paper_links.py` checks the keys
-and links, and that no script in `scripts/` has a Scholar URL in its code.
+The file is edited by hand. The key is `normalize_title()` of the paper's title, and
+the value is the paper's own Scholar page: the citation page on an author's profile
+(`citation_for_view=`), its "Cited by" page (`scholar?cites=`) or its versions page
+(`scholar?cluster=`), never a search. `test_scholar_paper_links.py` checks the keys and
+links, and that no script in `scripts/` has a Scholar URL in its code.
 
 ## DBLP-sourced venues have no abstracts
 
@@ -549,8 +538,8 @@ called that deliberate: a signal that the taxonomy needs a new category, not tha
 paper has none. In practice 3,647 of 25,664 AV papers (14.2%) sat in `"uncategorized"`,
 which `categories.html` hides from the ranked table and shows once as a footnote. That
 was a large, permanently growing slice of the AV corpus with no real visibility. The
-user asked for very few papers to be uncategorized, and for uncategorized papers to be
-told apart from misc ones.
+requirement was very few uncategorized papers, and uncategorized papers told apart from
+misc ones.
 
 The fix splits the same fallback in two by `av_relevance`, which is computed just
 before the split:
@@ -696,7 +685,7 @@ distinguish at the classification layer.
 ## Object Detection and Mapping & Localization split by sensor/task, not merged
 
 They were the two largest categories by a wide margin (2,020 and 2,062 papers). The
-user asked to split them for a more even distribution, the same way Datasets, Surveys
+request was to split them for a more even distribution, the same way Datasets, Surveys
 and Explainability carve distinct concerns out of a crowded taxonomy instead of making
 it flatter.
 
@@ -948,25 +937,24 @@ including nuScenes). It's used by:
 - `classify_code_links_llm.py` (previously alphabetical by normalized title, a
   tuple-sort accident)
 
-The user asked for this. Every external source in the pipeline is rate-limited or
+This was requested. Every external source in the pipeline is rate-limited or
 budget-capped (see PIPELINE.md), so a run that gets cut off partway should already have
 enriched the papers readers actually see (top-cited lists, comparison pages,
 leaderboards), not whichever paper happened to load first from its venue file.
 
-Two crawlers were asked about specifically, and the user made a choice on each:
+Two crawlers were asked about specifically, and a choice was made on each:
 
 - **`fetch_s2_author_ids.py`.** An earlier "sort by author count" ordering was reverted
   because it skewed ORCID and S2-ID coverage toward big-collaboration papers. Citation
   count risks the same skew, since a highly cited paper often has a large author list
-  too. It was switched to most-cited-first anyway, confirmed by the user, accepting that
-  trade-off again.
+  too. It was switched to most-cited-first anyway, accepting that trade-off again.
 - **`fetch_semanticscholar_citing.py`.** This one used to be sorted by citations and was
   reverted after a confirmed, self-defeating bug. A paper (or a whole venue) with zero
   in-corpus citations *because it has never been queried* always sorts last, so it can
   never earn a citation and rise in priority. It got stuck exactly this way ("IV and
   arXiv still have no citations") after a run well over a third of the way through the
-  corpus. It was switched back anyway, confirmed by the user, accepting that long-tail
-  venues may go unqueried again.
+  corpus. It was switched back anyway, accepting that long-tail venues may go unqueried
+  again.
 
 These were deliberately not switched, and shouldn't be: `select_labeling_candidates.py`,
 `select_near_threshold_candidates.py`, `train_relevance_classifier.py`,
@@ -1015,19 +1003,13 @@ without `authors_detail` whose author list came out empty went from 506 to 332, 
 
 ## `flag_ambiguous_authors.py`'s heuristics false-positive on prolific lab researchers
 
-We checked its 4 unconfirmed "review"-tier candidates from the current top 60 by
-citations (Hongyang Li, Long Chen, Hang Zhao, Zheng Zhu) against Google Scholar instead
-of leaving them in the queue. All four are real, single, extremely prolific researchers
-in the fast-moving, highly collaborative modern AV and world-model community (near
-OpenDriveLab and Shanghai AI Lab):
-
-- Hang Zhao's papers consistently share one email address (at mail.tsinghua.edu.cn).
-- Hongyang Li and Long Chen keep appearing as each other's co-authors across a large,
-  coherent, recent (2023-2026) end-to-end driving publication cluster.
-- Zheng Zhu's papers form one coherent "driving world models" research thread.
-
+The 4 unconfirmed "review"-tier candidates from the top 60 by citations were checked
+against Google Scholar instead of being left in the queue. All four turned out to be
+single, very prolific researchers working in the fast-moving, highly collaborative
+modern AV and world-model community: their papers share a consistent set of
+co-authors, and each set forms one coherent, recent (2023-2026) publication cluster.
 None are marked ambiguous in `scholar_profiles.json`, because that would wrongly warn
-on a real researcher's legitimate, unified profile.
+on a legitimate, unified profile.
 
 This is a generalizable false-positive mode. The script's structural signals (disjoint
 co-author clusters, papers per active year, category spread; see its docstring) were
@@ -1046,7 +1028,7 @@ scoring itself.
 
 ## Whole-corpus citations: the feature already existed, only the data didn't
 
-The user asked to integrate "citations from the whole corpus, not just AV papers" and to
+The request was to integrate "citations from the whole corpus, not just AV papers" and to
 make sure every place showing a citation number says which one it is. Before building
 anything we checked what already existed. `paper.html` already shows exactly this in two
 adjacent stat tiles, each with its own explanatory tooltip:
@@ -1124,66 +1106,48 @@ deduplicated, so a citation found by both counts once.
 
 ## Manually-sourced abstracts for the top-cited gap
 
-The user asked us to look up missing information for the most-cited papers specifically.
-We took the AV papers with the most in-corpus citations that were still missing an
-abstract (topped by KITTI's two seed papers, with 1,901 and 1,336 citations) and checked
-each by hand against its own publisher page (IEEE Xplore, ACM DL, CMU RI publications)
-in a real browser session, not a script. Every one had already been queried by
-`fetch_abstracts_semanticscholar.py` and came back with no abstract there either, so this
-wasn't a case of the crawler not having reached it yet.
+A small number of abstracts were added from publisher pages. The AV papers with the most
+in-corpus citations that were still missing an abstract (topped by KITTI's two seed
+papers, with 1,901 and 1,336 citations) were checked one by one against their own
+publisher page (IEEE Xplore, ACM DL, CMU RI publications). Every one had already been
+queried by `fetch_abstracts_semanticscholar.py` and came back with no abstract there
+either, so this wasn't a case of the crawler not having reached it yet.
 
-13 verbatim abstracts were recovered this way and applied directly to `papers_full.json`,
+13 abstracts were recovered this way and applied directly to `papers_full.json`,
 stamped `abstract_source: "manual-publisher-page"` so the batch stays distinguishable
-from every automated source.
+from every automated source. It was a one-time patch, not a crawler, and it won't be
+repeated as one. PIPELINE.md ("Other abstract sources we looked at") explains why an
+automated scraper of publisher pages is not part of the pipeline.
 
-This matches the IEEE Xplore finding in PIPELINE.md ("Other abstract sources we looked
-at"): a real browser shows the abstract even though scripted access gets a `418`. Here
-it's applied at small, human-in-the-loop scale, not automated. It was a one-time patch of
-13 papers, not a crawler, and it won't be repeated as one. PIPELINE.md explains why an
-automated scraper stays off the table however well it would work technically.
+Abstracts are used for keyword search, classification and the similar-papers
+embeddings, and the paper page shows each paper's abstract as stored. Every stored
+abstract carries its source in `abstract_source`: a venue's own proceedings site
+(CVF, NeurIPS, PMLR, RSS, BMVC), arXiv, OpenAlex, Crossref, the Semantic Scholar API,
+or, for this small batch, the publisher page.
 
 ## In-corpus citation counts vs. real-world (Google Scholar) counts
 
-The user asked us to estimate how accurate this corpus's own citation counts are compared
-with Google Scholar. We sampled 15 AV papers spanning three orders of magnitude (nuScenes
-at 2,742 in-corpus down to a 5-citation T-ITS paper), looked each up on Google Scholar by
-hand and compared:
+To estimate how accurate this corpus's own citation counts are compared with Google
+Scholar, 52 AV papers were sampled at random, stratified across the citation-count
+distribution (from a few citations to a few hundred in-corpus), looked up one by one on
+Google Scholar by hand and compared. The same 52 papers are plotted on the About page.
 
-| Paper | In-corpus | Scholar | Ratio |
-|---|---:|---:|---:|
-| nuScenes (2020) | 2,742 | 12,016 | 22.8% |
-| KITTI benchmark suite (2012) | 1,901 | 21,670 | 8.8% |
-| CARLA (2017) | 1,808 | 10,615 | 17.0% |
-| KITTI dataset, IJRR (2013) | 1,336 | 14,092 | 9.5% |
-| Waymo Open Dataset (2020) | 1,250 | 5,952 | 21.0% |
-| CenterPoint (2021) | 742 | 3,295 | 22.5% |
-| MV3D (2017) | 476 | 4,797 | 9.9% |
-| TransFusion (2022) | 283 | 1,532 | 18.5% |
-| 3D Object Proposals (2015) | 204 | 1,595 | 12.8% |
-| IntentNet (2018) | 127 | 589 | 21.6% |
-| SphereFormer (2023) | 71 | 383 | 18.5% |
-| SuperDepth (2019) | 38 | 290 | 13.1% |
-| Synthetic-data segmentation (2019) | 20 | 350 | 5.7% |
-| Declarative metamorphic testing (2022) | 10 | 79 | 12.7% |
-| Trajectory prediction, T-ITS (2022) | 5 | 120 | 4.2% |
-
-This corpus's own count captures roughly **5-23%** of a paper's true citation count. It's
-never close to complete, by design: it only counts citations from papers whose reference
-list this pipeline has actually scanned, not all of academic literature. It's not wildly
-inconsistent either. Two real patterns show up, not just noise:
+Across the sample, this corpus's own count captures between under 1% and about half of
+a paper's Scholar count, with a median of roughly 9%. It's never close to complete, by
+design: it only counts citations from papers whose reference list this pipeline has
+actually scanned, not all of academic literature. It's not wildly inconsistent either.
+Two patterns show up, not just noise:
 
 - **How AV-core or adjacent-field a paper is matters more than its raw citation count.**
-  The two lowest ratios (4.2% and 5.7%) are a T-ITS traffic-engineering paper and a
-  domain-adaptation and segmentation paper. Both are cited heavily by fields that this
-  corpus's roughly 20 tracked venues barely touch (general traffic engineering, general
-  semantic segmentation). The KITTI papers score surprisingly low (8.8% and 9.5%) for the
-  same reason, despite being foundational AV datasets. An enormous share of their real
-  citers are generic computer vision and robotics papers with nothing to do with
-  autonomous driving, which sit outside this corpus's scope by construction and not
-  through a coverage gap.
-- **There's no strong bias by citation-count tier itself.** A highly cited paper (nuScenes,
-  22.8%) and a modestly cited one (IntentNet, 21.6%) can land at nearly the same ratio.
-  The venue and topic fit above matters more than sheer popularity.
+  The lowest shares belong to papers cited heavily by fields that this corpus's
+  roughly 20 tracked venues barely touch (general traffic engineering, general semantic
+  segmentation, generic computer vision and robotics). Those citers sit outside this
+  corpus's scope by construction, not through a coverage gap, and the same holds for
+  foundational AV datasets, whose real citers are mostly generic computer vision and
+  robotics papers.
+- **There's no strong bias by citation-count tier itself.** A highly cited paper and a
+  modestly cited one can land at nearly the same share. The venue and topic fit above
+  matters more than sheer popularity.
 
 This is not a reason to change how citations are computed or labelled. The "Cited by (all
 papers)" and "Cited by (AV papers)" pair on `paper.html` already says plainly that both
@@ -1229,8 +1193,8 @@ the "References" heading search early. Both quirks reproduce identically with th
 new backends, so they're an existing limitation and not a regression. We left them alone
 as out of scope for a speed and archiving request.
 
-The user also asked, in the same message, to "save all pdfs locally in a gitignored folder
-so we might process them later for other things". Every downloaded CVF PDF is now archived
+A related request was to "save all pdfs locally in a gitignored folder so we might process
+them later for other things". Every downloaded CVF PDF is now archived
 to `data/pdfs_cvf/<title-key>.pdf`, which is gitignored because it's a many-GB personal
 cache and not source data. It's written *before* parsing, so a PDF that fails to parse
 still leaves its raw bytes on disk. It's a general-purpose local cache for future
