@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://av-atlas.goatcounter.com/count; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+<title>AV Atlas: Paper Map</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://nightrome.github.io/av-atlas/index.html#map">
+<meta property="og:url" content="https://nightrome.github.io/av-atlas/index.html#map">
+<meta http-equiv="refresh" content="0; url=index.html#map">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+</head>
+<body>
+<p>The paper map now lives at the bottom of the <a href="index.html#map">Papers page</a>.</p>
+<script>
+// Old map links: carry the view over. The map's own parameters get an "m" prefix on the Papers
+// page (its filter bar already uses q, author and institution), the old colour option is dropped,
+// and author / institution simply become filters, which the map highlights.
+(function () {
+  var old = new URLSearchParams(location.search), q = new URLSearchParams();
+  var rename = { q: 'mq', cat: 'mcat', z: 'mz', x: 'mx', y: 'my', author: 'author', institution: 'institution' };
+  Object.keys(rename).forEach(function (k) { if (old.get(k)) q.set(rename[k], old.get(k)); });
+  var s = q.toString();
+  location.replace('index.html' + (s ? '?' + s : '') + '#map');
+})();
+</script>
+</body>
+</html>
