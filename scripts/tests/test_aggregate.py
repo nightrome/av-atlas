@@ -925,6 +925,25 @@ class TestClassifyInstitutionSector(unittest.TestCase):
             self.assertEqual(ag.classify_institution_sector(name), "academic", name)
 
 
+class TestAuthorsDetailMatchesListing(unittest.TestCase):
+    def test_same_authors_match(self):
+        e = {"authors": "Jane Doe, Wei Zhang 0001",
+             "authors_detail": [{"name": "Jane Doe"}, {"name": "Wei Zhang"}]}
+        self.assertTrue(ag.authors_detail_matches_listing(e))
+
+    def test_other_papers_authors_do_not_match(self):
+        e = {"authors": "Junyin Wang, Jinlei Yu, Hao Lin",
+             "authors_detail": [{"name": "Michael Batty"}, {"name": "Kay W. Axhausen"}, {"name": "Fosca Giannotti"}]}
+        self.assertFalse(ag.authors_detail_matches_listing(e))
+
+    def test_initials_and_name_order_still_match(self):
+        e = {"authors": "C Sima, Zhang Wei", "authors_detail": [{"name": "Chonghao Sima"}, {"name": "Wei Zhang"}]}
+        self.assertTrue(ag.authors_detail_matches_listing(e))
+
+    def test_missing_listing_is_not_judged(self):
+        self.assertTrue(ag.authors_detail_matches_listing({"authors_detail": [{"name": "Jane Doe"}]}))
+
+
 class TestInstitutionCleanupRules(unittest.TestCase):
     def test_contact_label_is_dropped(self):
         self.assertEqual(ag.normalize_institution("Stanford University. Contact:"), "Stanford University")

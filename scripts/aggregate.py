@@ -1029,6 +1029,38 @@ BAD_AUTHOR_NAME_RE = re.compile(
 )
 
 
+def _name_keys(names):
+    """Lower-case ASCII surname and first-name tokens, so 'Last, First', Chinese order and
+    DBLP's '0001' homonym numbers all compare equal."""
+    keys = set()
+    for n in names:
+        folded = unicodedata.normalize("NFKD", n or "").encode("ascii", "ignore").decode().lower()
+        toks = re.sub(r"[^a-z ]", " ", folded).split()
+        if toks:
+            keys.add(toks[-1])
+            keys.add(toks[0])
+    return keys
+
+
+def authors_detail_matches_listing(e):
+    """False when a paper's enriched authors (authors_detail) are plainly another paper's.
+
+    The enrichment looks a paper up by title, and a near-identical title sometimes returns a
+    different paper: one AAAI planning paper carried the author list of an urban-mobility book
+    chapter, so unrelated researchers and a European Commission affiliation were credited to it.
+    When fewer than half of the enriched authors share a surname or first name with the authors the
+    venue listing gave, the enriched list is not used."""
+    details = e.get("authors_detail") or []
+    listed = e.get("authors")
+    if isinstance(listed, str):
+        listed = [x for x in re.split(r",| and |;", listed) if x.strip()]
+    if not details or not listed:
+        return True
+    listed_keys = _name_keys(listed)
+    shared = sum(1 for a in details if _name_keys([a.get("name")]) & listed_keys)
+    return shared / len(details) >= 0.5
+
+
 def is_full_name(name):
     name = name or ""
     if len(name.split()) < 2:
@@ -3134,6 +3166,13 @@ def main():
             e["venue"] = normalize_venue(e["venue"])
     # Preprints that duplicate a published paper under another title are folded into it,
     # keeping the old title and venue as also_published_as (data/duplicate_papers.json).
+    n_wrong_authors = 0
+    for e in all_entries:
+        if e.get("authors_detail") and not authors_detail_matches_listing(e):
+            e["authors_detail"] = []
+            n_wrong_authors += 1
+    if n_wrong_authors:
+        print(f"  ignored the enriched authors of {n_wrong_authors} papers that belong to a different paper")
     duplicate_pairs = duplicate_papers.load_pairs()
     n_before_merge = len(all_entries)
     all_entries = duplicate_papers.merge_entries(all_entries, duplicate_pairs)
