@@ -317,7 +317,7 @@ had no row at all on the Institutions page (71 AV papers), Southeast 41, Graz 29
 
 The set of author names now skips anything that reads as an institution (the same
 `_LOOKS_ACADEMICISH_RE` that `is_valid_institution` uses). The check that catches real
-leaked names ("Ben Sapp" showing up as an institution) is unchanged.
+leaked names ("Jane Doe" showing up as an institution) is unchanged.
 
 ## A city glued onto an institution name
 
@@ -850,7 +850,7 @@ Any manual fix to `papers_full.json` (an author merge, an institution-name corre
 goes in a tracked, tested, idempotent `repair_*.py` script. It's wired into
 `build_public_site.py` between `merge_corpus.py` and `aggregate.py`, so a corpus rebuilt
 from scratch after data loss comes back with every correction applied. Author-name
-fixes live in `KNOWN_NAME_FIXES` in `aggregate.py` and institution aliases in the
+fixes live in `data/author_name_fixes.json` and institution aliases in the
 tracked JSON maps, and both are re-applied on every build.
 
 ## One build command, always with tests
@@ -970,9 +970,9 @@ Geiger 0001" in the raw `authors` field of `papers_full.json`. That's a DBLP
 disambiguation suffix, present on 2,377 distinct base names and several thousand raw
 occurrences. Before writing a fix we checked the output this feeds.
 `clean_author_name()` in `aggregate.py` already strips a trailing `\s+\d{4}`
-unconditionally (`DBLP_DISAMBIG_SUFFIX_RE`). In `stats.json`, "Andreas Geiger 0001"
-appears nowhere in `all_papers[].authors`, and the real "Andreas Geiger" entry already
-carries the correct, unified 7,098 citations and 56 papers. Nothing fragmented reaches
+unconditionally (`DBLP_DISAMBIG_SUFFIX_RE`). In `stats.json`, "Jane Doe 0001"
+appears nowhere in `all_papers[].authors`, and the real "Jane Doe" entry already
+carries the correct, unified totals. Nothing fragmented reaches
 the live site.
 
 This is written down so it doesn't get "fixed" again from the same starting point. It

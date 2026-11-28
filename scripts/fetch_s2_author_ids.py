@@ -90,7 +90,7 @@ def author_list(p):
 
 
 def same_person_name(ours, theirs):
-    """Same surname and same first initial: S2 often shortens given names ("A. Lang" for "Alex H. Lang")."""
+    """Same surname and same first initial: S2 often shortens given names ("J. Doe" for "Jane Q. Doe")."""
     a = re.sub(r"[^a-z ]", "", (ours or "").lower().replace("-", " ")).split()
     b = re.sub(r"[^a-z ]", "", (theirs or "").lower().replace("-", " ")).split()
     return bool(a and b) and a[-1] == b[-1] and a[0][0] == b[0][0]

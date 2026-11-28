@@ -5,15 +5,13 @@ One-off repair for a real, already-shipped data bug from OpenAlex itself
 (not our own extraction code): OpenAlex's own per-work `authorships[].
 institutions` field -- the exact field enrich_av_authors.py reads verbatim,
 see openalex_authors() -- returns "TH Bingen University of Applied
-Sciences" for several papers by the University of Tübingen / MPI-IS
-Autonomous Vision group (Andreas Geiger, Kashyap Chitta, Bernhard Jaeger,
-Aditya Prakash, Katrin Renz, Yiyi Liao, Zehao Yu -- KITTI-360, TransFuser,
-DepthSplat, "End-to-End Autonomous Driving: Challenges and Frontiers").
-Confirmed on real data: every single occurrence of this institution string
-anywhere in the corpus belongs to one of these seven names -- likely
+Sciences" for several papers by authors of one University of Tübingen /
+MPI-IS research group. Confirmed on real data: every single occurrence of
+this institution string anywhere in the corpus belongs to a short, fixed
+list of those authors -- likely
 OpenAlex's own affiliation-to-ROR matching confusing "Tübingen"/"Tuebingen"
 with the similarly-spelled but unrelated town of Bingen, since a small
-teaching-focused Fachhochschule has no plausible reason to co-author seven
+teaching-focused Fachhochschule has no plausible reason to co-author these
 CV/robotics papers with the same well-documented Tübingen research group
 and no one else. Discarded rather than replaced with a guessed correct
 institution: we don't have reliable per-paper affiliation history for every

@@ -175,3 +175,6 @@ data/similar_institutions/
 data/similar_groups.json
 data/map/
 data/embedding_quality.md
+
+# Hand-annotation sheet with raw reference strings (author names); regenerate with eval/make_eval_samples.py
+eval/citation_eval_sample.csv
