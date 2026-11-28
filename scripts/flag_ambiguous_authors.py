@@ -5,9 +5,9 @@ Flags authors in the top-N-by-citations list whose single name-keyed record
 most likely conflates two or more different real people.
 
 The corpus has no author disambiguation: authors are matched by cleaned name
-string alone (see aggregate.py's clean_author_name / KNOWN_NAME_FIXES). For a
+string alone (see aggregate.py's clean_author_name and data/author_name_fixes.json). For a
 distinctive name that is almost always fine. For a common romanized name
-("Bo Li", "Wei Wang", "Yang Liu", ...) it silently merges several
+("Jane Kim", "John Lee", ...) it silently merges several
 researchers into one leaderboard row, so that row's citation total, paper
 count, institution history and co-author network are a blend of people.
 
@@ -76,15 +76,13 @@ HIGH_COLLISION_SURNAMES = {
 }
 
 # Full given+surname pairs already seen (or highly likely) to be several
-# prominent AV researchers at once. Adds extra weight beyond the surname
+# prominent AV researchers at once (data/common_colliding_names.json). Adds extra weight beyond the surname
 # prior. Lower-cased, whitespace-collapsed.
-KNOWN_COLLIDING_NAMES = {
-    "bo li", "wei wang", "yang liu", "lei zhang", "jun li", "jun wang",
-    "wei li", "tao wang", "yu zhang", "hao chen", "rui li", "xin wang",
-    "jian sun", "yi yang", "wei zhang", "qian zhang", "peng wang",
-    "chao zhang", "yang li", "kai zhang", "yue wang", "jun ma", "hao li",
-    "xiang li", "bin yang", "ziwei liu",
-}
+COLLIDING_NAMES_FILE = BASE / "data" / "common_colliding_names.json"
+try:
+    KNOWN_COLLIDING_NAMES = set(json.loads(COLLIDING_NAMES_FILE.read_text(encoding="utf-8")))
+except OSError:
+    KNOWN_COLLIDING_NAMES = set()
 
 
 def norm(s):
@@ -157,7 +155,7 @@ def score_author(name, author_papers, detail):
     """Return (score, tier, clusters, reasons).
 
     A name prior is a GATE, not just a bonus: a distinctive name
-    ("Luc Van Gool", "Marc Pollefeys") that happens to have a wide,
+    ("Jane Doe", "Richard Roe") that happens to have a wide,
     loosely-connected collaboration network is one prolific person, not
     several, so its structural signals are discounted hard and it never
     reaches the review threshold on structure alone. Structural evidence

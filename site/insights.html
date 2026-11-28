@@ -214,7 +214,6 @@
   <div class="panel-title-row"><h2>Leadership</h2><span class="info-tip" tabindex="0" role="img" aria-label="The top author, institution and paper by a few different measures, from the same underlying data as the Authors and Institutions pages -- though some cards use a stricter minimum-papers floor than those pages default to, noted on the card where it applies." data-tip="The top author, institution and paper by a few different measures, from the same underlying data as the Authors and Institutions pages -- though some cards use a stricter minimum-papers floor than those pages default to, noted on the card where it applies.">i</span></div>
   <p class="section-intro">Leading people, institutions and papers in the field.</p>
   <div class="fact-grid" id="people-facts"></div>
-  <p class="section-intro" id="maintainer-disclosure" style="margin-bottom:0;" hidden></p>
 </div>
 
 <div class="panel">
@@ -852,20 +851,6 @@ function render(ins, stats) {
     const i = ins.leading_institution;
     statTile(pf, i.name, 'Institution with most citations', `${i.papers} papers, ${i.citations} total citations.`,
       `institution.html?name=${encodeURIComponent(i.name)}`);
-  }
-  // Conflict-of-interest disclosure, rendered only when it actually applies
-  // -- i.e. when this site's own maintainer is one of the names the site has
-  // just put at the top of a ranking. Checked against the rendered tiles
-  // rather than hard-coded to a position, so it appears and disappears on
-  // its own as the corpus changes.
-  const maintainerTile = [ins.most_prolific_author, ins.highest_impact_author]
-    .some(a => a && a.name === window.SITE_MAINTAINER);
-  const disclosure = document.getElementById('maintainer-disclosure');
-  if (maintainerTile && disclosure) {
-    disclosure.textContent = `Disclosure: ${window.SITE_MAINTAINER}, named above, built and maintains `
-      + `AV Atlas. That ranking is produced by the same code as every other name on this site and is `
-      + `not adjusted either way, but you should know who is counting.`;
-    disclosure.hidden = false;
   }
   if (ins.most_cited_paper) {
     const p = ins.most_cited_paper;

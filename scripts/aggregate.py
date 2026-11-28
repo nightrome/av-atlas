@@ -45,6 +45,16 @@ from email_addresses import find_email_addresses, strip_email_addresses
 BASE = Path(__file__).resolve().parent.parent
 IN_FILE = BASE / "data" / "papers_full.json"
 OUT_FILE = BASE / "data" / "stats.json"
+
+
+def load_data_json(filename, default, base=BASE):
+    """Read data/<filename> (UTF-8 JSON); `default` when the file is missing.
+    Name fixes, identity splits, affiliation overrides and id merges are data,
+    not code: they live in data/*.json and every name is treated the same."""
+    try:
+        return json.loads((base / "data" / filename).read_text(encoding="utf-8"))
+    except OSError:
+        return default
 # Separate from stats.json (not a field inside it) because of scale: ~212k
 # non-AV (not AV) papers, now over 80MB as a single file -- versus stats.json's
 # own size for the ~26k AV papers everything else on the site is built from.
@@ -424,10 +434,10 @@ COUNTRY_MISLABELS = {
 # prolific "authors" on the Researchers leaderboard. Require at least two
 # whitespace-separated name parts before an author is counted at all.
 # DBLP disambiguates same-named authors with a trailing 4-digit number baked
-# into the name string itself (e.g. "Cheng-Zhong Xu 0001") -- an artifact of
+# into the name string itself (e.g. "Jane Doe 0001") -- an artifact of
 # DBLP's own ID scheme, not part of the person's actual name. Stripped before
 # display/aggregation so the same person doesn't also show up correctly
-# elsewhere as just "Cheng-Zhong Xu".
+# elsewhere as just "Jane Doe".
 DBLP_DISAMBIG_SUFFIX_RE = re.compile(r"\s+\d{4}$")
 
 # A LaTeX \footnotemark superscript-reference command, glued onto the name
@@ -439,7 +449,7 @@ FOOTNOTEMARK_SUFFIX_RE = re.compile(r"[�†‡*§¶✉]?\d*footnotemark:?\s*\d
 
 # A trailing footnote/correspondence-marker symbol glued onto a name with no
 # accompanying "footnotemark" text for FOOTNOTEMARK_SUFFIX_RE above to key
-# off of -- e.g. "Jianbing Shen♠" and "Jianbing Shen🖂" (a spade suit symbol
+# off of -- e.g. "Jane Doe♠" and "Jane Doe🖂" (a spade suit symbol
 # and an envelope emoji respectively, both real LaTeX correspondence-author
 # markers), confirmed on real data as three separate leaderboard entries for
 # the same person. Category-based (Unicode Symbol: "So"/"Sk"/"Sm") rather
@@ -466,91 +476,14 @@ def strip_trailing_symbol_markers(name):
     return name
 
 
-# Some sources (confirmed: DBLP-derived venue listings) leak raw numeric
-# HTML entities into the author-name field instead of decoding them, e.g.
-# "Marius Z&#246;llner" instead of "Marius Zöllner" -- html.unescape() below
-# fixes those. A separate, unrecoverable case: one paper's author string has
-# an actual U+FFFD replacement character where an umlaut should be
-# ("J. Marius Z�llner") -- that's what an already-lossy decode upstream
-# produces, no entity to unescape, so it's hand-corrected here since the
-# correct spelling is known from this same person's other papers.
-KNOWN_NAME_FIXES = {
-    "J. Marius Z�llner": "Marius Zöllner",
-    # Requested: consolidate every spelling of one author found across the
-    # corpus -- full name, abbreviated first name(s), and the oe-for-ö
-    # transliteration some sources use -- into one canonical name.
-    # Deliberately does NOT touch a different author who happens to share
-    # the surname -- excluded by name, not by the accident of not matching
-    # one of these keys.
-    "J. Marius Zöllner": "Marius Zöllner",
-    # A triple-"n" typo (source: arXiv listing metadata for one paper) that
-    # split a duplicate author record off the correctly spelled name.
-    "Johannnes Betz": "Johannes Betz",
-    "Johann Marius Zöllner": "Marius Zöllner",
-    "J. M. Zöllner": "Marius Zöllner",
-    "J. Zollner": "Marius Zöllner",
-    "J. Zoellner": "Marius Zöllner",
-    "J. Marius Zoellner": "Marius Zöllner",
-    # Mojibake: a straight ASCII apostrophe standing in for í, same class of
-    # already-lossy-upstream-decode issue as the entry above (the
-    # correctly-accented spelling is confirmed from the same author's other
-    # papers' authors_detail).
-    "Santiago Montiel-Mar'in": "Santiago Montiel-Marín",
-    # Same ASCII-apostrophe-for-é mojibake; the same author also shows up
-    # all-caps in the same papers -- correctly-accented spelling confirmed
-    # from their other papers' author lists.
-    "Nathan Lichtl'e": "Nathan Lichtlé",
-    # Requested: consolidate every spelling of one author found across the
-    # corpus into the fully-written-out form (per the site's general
-    # preference for full names over abbreviations), even though the
-    # abbreviated form is far more common in the raw data.
-    "Julian F. P. Kooij": "Julian Francisco Pieter Kooij",
-    "Julian Kooij": "Julian Francisco Pieter Kooij",
-    # Requested: merge every spelling of one author into the canonical form
-    # already used on the large majority of their papers. Deliberately keyed
-    # on the exact abbreviated/bare forms only, not a surname-only match --
-    # a bare surname is ambiguous key material that could collide with
-    # future data, so only the specific confirmed variants are listed.
-    "D. Gavrila": "Dariu M. Gavrila",
-    "Dariu Gavrila": "Dariu M. Gavrila",
-    # "Lastname, Firstname" raw format, broken by a naive comma-split
-    # upstream into two separate name-list entries (surname and given name)
-    # -- caught here as a targeted fix for the two confirmed papers with
-    # this exact formatting, not a general comma-order fix.
-    "Gavrila": "Dariu M. Gavrila",
-    # Requested: the middle-initial form is the dominant publishing name
-    # here and the one the Google Scholar profile uses; the bare form is the
-    # same author.
-    "Steven Waslander": "Steven L. Waslander",
-    # Confirmed in review: every spelling of one author found across the
-    # corpus, consolidated onto the existing canonical name (which already
-    # carries the correct Google Scholar profile). The canonical key is kept
-    # as-is even though another spelling is the more common raw form, to
-    # avoid breaking the profile/links pointing at it. The abbreviated form
-    # was confirmed the same author via shared co-authors; the one with a
-    # leading ordinal is a garbled OCR artifact.
-    "Alois C. Knoll": "Alois Knoll",
-    "Alois Christian Knoll": "Alois Knoll",
-    "A. Knoll": "Alois Knoll",
-    "6th Alois Knoll": "Alois Knoll",
-    # Confirmed in review: the abbreviated form is the same author as the
-    # full name. A different first name with the same surname is left
-    # untouched (no evidence of being the same person).
-    "M. Althoff": "Matthias Althoff",
-    # NeurIPS "Lastname, Firstname" author strings, comma-split upstream so
-    # the surname "Shi" ends up as its own list entry and the given-name
-    # entry carries a leftover "Prof " honorific ("Shi, Prof Javen Qinfeng").
-    # LEADING_HONORIFIC_RE strips the title, leaving the given name alone --
-    # the same author as the full-name entry, confirmed via shared
-    # co-authors.
-    "Javen Qinfeng": "Javen Qinfeng Shi",
-    # Confirmed in review: the abbreviated form is how the Semantic Scholar
-    # citing-paper metadata (data/venues/arxiv_s2_citing.json) renders this
-    # author on ~30 papers, splitting them off the full spelling the DBLP
-    # venue listings use. Affiliation/country follow automatically from the
-    # enriched papers once the two names are merged.
-    "C. Stachniss": "Cyrill Stachniss",
-}
+# Name spelling fixes, read from data/author_name_fixes.json (raw spelling ->
+# canonical spelling). They cover three cases: a raw spelling broken upstream
+# (a U+FFFD replacement character or an ASCII apostrophe where an accented
+# letter should be, which no HTML entity can repair), several spellings of
+# one author (abbreviated first names, transliterations) folded into one
+# name, and a surname-only fragment left by a naive "Last, First" split.
+# Every entry is an exact match on the whole string, never a surname match.
+KNOWN_NAME_FIXES = load_data_json("author_name_fixes.json", {})
 
 # PDF/font text extraction occasionally renders a hyphenated name's hyphen
 # as a different Unicode dash glyph instead of plain ASCII "-" (confirmed on
@@ -569,7 +502,7 @@ APOSTROPHE_RE = re.compile(r"['’‘ʼ`´ʹ](?![A-ZÀ-Þ])")
 
 # Some sources prepend an academic/courtesy title to the author's name
 # ("Dr. Jane Doe", "Prof Mei Lindqvist", "Professor A. B. Example",
-# "Prof. Em. Sam Rivera", "Mr Wei Zhang") -- confirmed on real data
+# "Prof. Em. Sam Rivera", "Mr John Smith") -- confirmed on real data
 # to split a person off their own untitled leaderboard entry. Strip any run
 # of leading honorifics, plus a trailing "Em[.]" (emeritus, only ever seen
 # after "Prof."). Each token has to be exactly the honorific followed by an
@@ -577,7 +510,7 @@ APOSTROPHE_RE = re.compile(r"['’‘ʼ`´ʹ](?![A-ZÀ-Þ])")
 # the same letters ("Drew ...", "Emerson ...") is untouched. "Dr." only, not
 # "Md." -- "Md."/"Mohd." are given-name abbreviations, kept. "Dame" and
 # "Sir" are deliberately NOT included: "Dame" is a real given name in this
-# corpus (Dame Seck Diop) and the damehood/knighthood titles are vanishingly
+# corpus (a name like "Dame Jane Doe") and the damehood/knighthood titles are vanishingly
 # rare in CS/robotics venues -- not worth the false positives.
 LEADING_HONORIFIC_RE = re.compile(
     r"^(?:(?:Prof|Professor|Dr|Dr\.-Ing|PD|Priv\.-Doz|Doz|Docent|Assoc\.?\s*Prof"
@@ -621,9 +554,9 @@ IEEE_MEMBERSHIP_RE = re.compile(
 
 # Trailing affiliation-superscript / correspondence-marker run: a mix of
 # digits, commas, spaces and footnote glyphs hanging off the end of a name
-# ("Raquel Urtasun1,2", "JONATHAN W. LEE*,1", "NATHAN LICHTLÉ*,†,2",
-# "Andrea Stocco 2,4"), plus a short run of digits glued straight onto the
-# last word ("Duc-Khai Lam23"). Only stripped when the trailing run holds a
+# ("Jane Doe1,2", "JANE Q. DOE*,1", "JANE DOE*,†,2",
+# "Jane Doe 2,4"), plus a short run of digits glued straight onto the
+# last word ("Jane Doe23"). Only stripped when the trailing run holds a
 # digit and no letters, so a real name is never shortened.
 TRAILING_AFFIL_MARKS_RE = re.compile(r"[\s*∗†‡§¶‖·,，\d]+$")
 GLUED_TRAILING_DIGITS_RE = re.compile(r"(?<=[^\W\d_])\d{1,3}$")
@@ -786,17 +719,14 @@ def clean_author_name(name):
 
 # Two names run together with no separator at all (a missing comma in the
 # source author string) -- can't be split by shape without wrecking real
-# 3-4 word names, so only the confirmed cases are listed.
-KNOWN_AUTHOR_SPLITS = {
-    # eccv2020.json: "..., Han Xue, Zheng Zhang Raquel Urtasun, Liwei Wang, ..."
-    "Zheng Zhang Raquel Urtasun": ["Zheng Zhang", "Raquel Urtasun"],
-}
+# 3-4 word names, so only the confirmed cases are listed, in
+# data/author_name_splits.json (joined string -> list of names).
+KNOWN_AUTHOR_SPLITS = load_data_json("author_name_splits.json", {})
 
 
 def split_joined_authors(name):
     """One authors_detail entry that is really two names joined together
-    ("Dawei Chen, Kyungtae Han", or the comma-less "Zheng Zhang Raquel
-    Urtasun") -> the list of names. Returns [name] when it is not that
+    ("Jane Doe, John Roe", or a comma-less "Jane Doe John Roe") -> the list of names. Returns [name] when it is not that
     shape, so callers can flat-map unconditionally."""
     if name in KNOWN_AUTHOR_SPLITS:
         return list(KNOWN_AUTHOR_SPLITS[name])
@@ -806,67 +736,14 @@ def split_joined_authors(name):
     return [m.group(1).strip(), m.group(2).strip()]
 
 
-# Identity split for one very common name: this pipeline has no general
-# author disambiguation (see flag_ambiguous_authors.py's docstring -- authors
-# are matched by cleaned name string alone), and this name conflates at least
-# five distinct people badly enough to misattribute credit.
-#
-# YUE_WANG_VERIFIED_TITLES lists the papers matched to one of those people
-# through their Scholar profile and recurring co-authors. Every other paper
-# under this name is left in one explicitly-unidentified bucket rather than
-# guessing which person it belongs to -- see the "ambiguous" flag kept on
-# that bucket's own scholar_profiles.json entry.
-YUE_WANG_VERIFIED_TITLES = {
-    "DETR3D: 3D Object Detection from Multi-view Images via 3D-to-2D Queries",
-    "GPT-Driver: Learning to Drive with GPT",
-    "HDMapNet: An Online HD Map Construction and Evaluation Framework",
-    "Occ3D: A Large-Scale 3D Occupancy Prediction Benchmark for Autonomous Driving",
-    "PARA-Drive: Parallelized Architecture for Real-time Autonomous Driving",
-    "VectorMapNet: End-to-end Vectorized HD Map Learning",
-    "FUTR3D: A Unified Sensor Fusion Framework for 3D Detection",
-    "A Language Agent for Autonomous Driving",
-    "Pillar-based Object Detection for Autonomous Driving",
-    "ViP3D: End-to-End Visual Trajectory Prediction via 3D Agent Queries",
-    "Neural Map Prior for Autonomous Driving",
-    "Towards Realistic Scene Generation with LiDAR Diffusion Models",
-    "SSCBench: A Large-Scale 3D Semantic Scene Completion Benchmark for Autonomous Driving",
-    "Object DGCNN: 3D Object Detection using Dynamic Graphs",
-    "Driving Everywhere with Large Language Model Policy Adaptation",
-    "InfiniCube: Unbounded and Controllable Dynamic 3D Driving Scene Generation with World-Guided Video Models",
-    "Multi-Robot Scene Completion: Towards Task-Agnostic Collaborative Perception",
-    "GeoMAE: Masked Geometric Target Prediction for Self-Supervised Point Cloud Pre-Training",
-    "PreSight: Enhancing Autonomous Vehicle Perception with City-Scale NeRF Priors",
-    "Extrapolated Urban View Synthesis Benchmark",
-    "Multi-Frame to Single-Frame: Knowledge Distillation for 3D Object Detection",
-    "StreamMapNet: Streaming Mapping Network for Vectorized Online HD Map Construction",
-    "MUTR3D: A Multi-camera Tracking Framework via 3D-to-2D Queries",
-    "Cross-Dataset Sensor Alignment: Making Visual 3D Object Detector Generalizable",
-    "Learning Personalized Driving Styles via Reinforcement Learning from Human Feedback",
-    "Discrete Diffusion for Reflective Vision-Language-Action Models in Autonomous Driving",
-    "ReflectDrive-2: Reinforcement-Learning-Aligned Self-Editing for Discrete Diffusion Driving",
-    "Towards Efficient and Effective Multi-Camera Encoding for End-to-End Driving",
-    "Accelerating Structured Chain-of-Thought in Autonomous Vehicles",
-}
-
-
-# Papers matched one by one against the Google Scholar profiles of the people
-# sharing this name (data/yue_wang_identities.json: title -> the person's name,
-# or "main" for the person the verified set above belongs to). A paper in neither this map nor the
-# verified set above stays in the unidentified bucket.
-try:
-    YUE_WANG_IDENTITIES = json.loads((BASE / "data" / "yue_wang_identities.json").read_text(encoding="utf-8"))
-except OSError:
-    YUE_WANG_IDENTITIES = {}
-
-
-# Other common names handled the same way: data/author_identities.json lists,
+# Names shared by several people: this pipeline has no general author
+# disambiguation (see flag_ambiguous_authors.py's docstring -- authors are
+# matched by cleaned name string alone), so data/author_identities.json lists,
 # per name, each paper confirmed against a Google Scholar profile: "main" is
-# the highly cited person, another value names a second person. Every other paper with that name goes to a catch-all
-# "<name> (unidentified)" entry instead of inflating that person's record.
-try:
-    AUTHOR_IDENTITIES = json.loads((BASE / "data" / "author_identities.json").read_text(encoding="utf-8"))
-except OSError:
-    AUTHOR_IDENTITIES = {}
+# the highly cited person, another value names a second person. Every other
+# paper with that name goes to a catch-all "<name> (unidentified)" entry
+# instead of inflating one person's record.
+AUTHOR_IDENTITIES = load_data_json("author_identities.json", {})
 
 
 ORCID_RE = re.compile(r"\d{4}-\d{4}-\d{4}-\d{3}[\dX]")
@@ -893,7 +770,7 @@ def author_orcids(openalex_counts, semantic_scholar_orcid):
 
 
 # Spelling variants of one researcher folded into their fullest spelling
-# ("D. Fernandez-Llorca" -> "David Fernandez Llorca"). Generated by
+# ("J. Doe" -> "Jane Doe"). Generated by
 # scripts/merge_author_name_variants.py, which only merges names with
 # independent evidence of being one person (see author_name_variants.py).
 try:
@@ -910,16 +787,11 @@ def canonical_author_name(name):
 def resolve_ambiguous_author_identity(name, title):
     """Applied per-paper (not inside clean_author_name, which has no title
     context) at every site that resolves a specific paper's author list --
-    see YUE_WANG_VERIFIED_TITLES above. Also folds name spellings of one
+    see AUTHOR_IDENTITIES above. Also folds name spellings of one
     person into one entry (AUTHOR_NAME_MERGES)."""
     if name in AUTHOR_IDENTITIES:
         who = AUTHOR_IDENTITIES[name].get(title)
         return name if who == "main" else who or f"{name} (unidentified)"
-    if name == "Yue Wang" and title not in YUE_WANG_VERIFIED_TITLES:
-        who = YUE_WANG_IDENTITIES.get(title)
-        if who == "main":
-            return name
-        return who or "Yue Wang (unidentified)"
     return canonical_author_name(name)
 
 
@@ -946,9 +818,7 @@ COMMON_NAME_SURNAMES = {
 # valued by the canonical one to fold it into.
 #   For example, an id with 1 work and no ORCID can be an unmerged stub of an
 #   established id with the same display name and affiliation.
-KNOWN_DUPLICATE_OPENALEX_IDS = {
-    "A5144375944": "A5001917215",
-}
+KNOWN_DUPLICATE_OPENALEX_IDS = load_data_json("openalex_id_merges.json", {})
 
 
 def canonical_openalex_id(oaid):
@@ -967,9 +837,9 @@ def canonical_openalex_id(oaid):
 #   In the one case handled so far, the extracted list also carried
 #   co-authors' schools from papers with an unpartitioned author block,
 #   and once a co-author's name leaked through as an "institution".
+_AFFILIATION_OVERRIDES = load_data_json("author_affiliation_overrides.json", {})
 AUTHOR_AFFILIATION_ALLOWLIST = {
-    "Marco Pavone": ("stanford", "nvidia"),
-}
+    name: tuple(subs) for name, subs in _AFFILIATION_OVERRIDES.get("allowed_institution_substrings", {}).items()}
 
 # Real affiliations confirmed correct but never dated by any paper in this
 # corpus -- they predate the corpus's coverage of that author, so no crawled
@@ -980,8 +850,7 @@ AUTHOR_AFFILIATION_ALLOWLIST = {
 # after the real per-paper-derived entries, so the honestly-dated ones still
 # come first.
 AUTHOR_UNDATED_AFFILIATIONS = {
-    "Marco Pavone": ("Massachusetts Institute of Technology", "NASA Jet Propulsion Laboratory"),
-}
+    name: tuple(insts) for name, insts in _AFFILIATION_OVERRIDES.get("undated_institutions", {}).items()}
 
 
 def filter_author_affiliations(name, affs):
@@ -1331,7 +1200,7 @@ INVALID_INSTITUTIONS = {
     "Merced", "College Park", "Pittsburgh", "West Lafayette", "University Park",
     "Telangana", "Shanghai", "Berkeley", "Tubingen", "Tübingen", "Atsugi", "Fujian",
     "Department of Computer Science", "College of Computer Science and Electronic Engineering",
-    "AI Group", "Ye Li", "Otto-Hahn-Str. 1", "Inc", "Ltd.",
+    "AI Group", "Otto-Hahn-Str. 1", "Inc", "Ltd.",
     # A bare corporate suffix with nothing before it -- same comma-split
     # cause as the bare countries/cities above (e.g. "..., Some Co., Ltd"
     # splitting into a real name and a stray "Ltd" fragment). Note this is
@@ -1347,9 +1216,10 @@ INVALID_INSTITUTIONS = {
     "Computer Science &\\& Engineering",
     # Third-pass finds: more bare Chinese provinces/cities, an
     # affiliation-block co-authorship marker with a stray symbol attached,
-    # and a bare person's name (like "Ye Li" above -- caught when a
-    # comma-split author list leaks one name into the affiliation field).
-    "Zhejiang", "Zhengzhou", "Equal contribution✉", "Wei Zhan",
+    # and bare person names (caught when a comma-split author list leaks
+    # one name into the affiliation field; those live in
+    # data/non_institution_names.json).
+    "Zhejiang", "Zhengzhou", "Equal contribution✉",
     # Fourth-pass finds (flagged in review: "provided by the Computer Vision
     # Foundation" is a PDF-hosting credit line, not an author affiliation --
     # auditing the full institution list surfaced these alongside it): more
@@ -1382,7 +1252,7 @@ INVALID_INSTITUTIONS = {
     "Robotics Institute", "Multimedia Laboratory",
     # Fifth-pass finds (from a systematic audit of authors with implausibly
     # long institution lists, prompted by flagged in review real examples on
-    # "Tsinghua University" and "Jun Zhu"): a bare Tokyo ward name, a bare
+    # "Tsinghua University" and a bare person name): a bare Tokyo ward name, a bare
     # building name, a paper-title fragment, and a concatenated-institutions
     # string that neither DOUBLE_UNIVERSITY_RE nor any alias could safely
     # generalize (Peking University / MPI Tübingen / TTI Chicago are three
@@ -1400,6 +1270,8 @@ INVALID_INSTITUTIONS = {
     # general regex off of.
     "Perception",
 }
+# Bare person names that leaked into an affiliation field.
+INVALID_INSTITUTIONS |= set(load_data_json("non_institution_names.json", []))
 
 # Loaded once at import time, same as the hand-typed INVALID_INSTITUTIONS
 # set above conceptually -- just sourced from institution_flags_llm.json
@@ -1553,7 +1425,7 @@ INSTITUTION_ALIASES = {
     # the "(KIT)" abbreviation (so does TUM below); everything else -- the
     # bare English name, the German name, the hyphenated/prefixed forms, the
     # bare acronym -- maps onto it. Leaked-footnote-sentence variants
-    # ("Authors are with the Karlsruhe Institute of Technology", "Eric Sax
+    # ("Authors are with the Karlsruhe Institute of Technology", "Jane Doe
     # is with...") are handled by the corresponding-author/footnote strip in
     # normalize_institution() instead, not listed here individually.
     "Karlsruhe Institute of Technology": "Karlsruhe Institute of Technology (KIT)",
@@ -1606,7 +1478,7 @@ INSTITUTION_ALIASES = {
     "TU Dortmund": "TU Dortmund University",
     # Tsinghua's own sub-lab/department/center names, seen on their own with
     # no parent institution attached (flagged in review: these were fragmenting
-    # e.g. "Jun Zhu"'s institution list into 8 separate-looking entries that
+    # e.g. one author's institution list into 8 separate-looking entries that
     # are really all just Tsinghua). Same pattern as the Bosch/Huawei/EPFL
     # entries above.
     "Dept. of Comp. Sci. and Tech": "Tsinghua University",
@@ -1788,7 +1660,7 @@ LATEX_SPACING_SUFFIX_RE = re.compile(r"\s*\[-?(\d+(\.\d+)?|\.\d+)(mm|cm|pt|ex|in
 # convention, just a different symbol/font choice.
 FOOTNOTE_MARKER_RE = re.compile(r"^[†‡*§¶✉⋆∗]+\s*")
 # The same marker glued onto the END instead, with nothing else following it
-# ("Singapore †", "Pengcheng Laboratory †", "Yingcong Chen†") -- unlike
+# ("Singapore †", "Pengcheng Laboratory †", "Jane Doe†") -- unlike
 # TRAILING_FOOTNOTE_ARTIFACT_RE below, there's no accompanying footnote TEXT
 # here to key off of, just a bare marker. Safe to strip unconditionally
 # (no MIN_STRIPPED_INSTITUTION_LENGTH gate) since a real, standalone marker
@@ -1804,7 +1676,7 @@ TRAILING_FOOTNOTE_MARKER_RE = re.compile(r"\s*[†‡*§¶✉⋆∗]+$")
 # decode leaves behind -- glued onto the END of a real institution name with
 # no separator ("Tsinghua University Corresponding author",
 # "NVIDIA ResearchCorresponding authors:", "Nankai University. �\dagger:
-# Corresponding authors: Diange Yang"). Confirmed on real data as a
+# Corresponding authors: Jane Doe"). Confirmed on real data as a
 # systemic pattern (225+ authors_detail entries), not a one-off. No leading
 # \b -- the contamination is sometimes glued directly onto the institution
 # name with no space ("ResearchCorresponding"), so a word-boundary
@@ -1975,7 +1847,7 @@ WORK_DONE_ASIDE_RE = re.compile(r"\bthis work was (done|performed|conducted)\b",
 # rejected on keyword content alone; the "X and Y are/is with the" phrasing
 # is the actual tell that it's a sentence fragment, not a name.
 # Up to a few interjected words between "are/is" and "with" ("are all with",
-# "is currently with") -- confirmed on real data: "Yaru Niu and Ding Zhao are
+# "is currently with") -- confirmed on real data: "Jane Doe and John Roe are
 # all with the Department of Mechanical Engineering" survived because the
 # original exact-adjacency version only matched "are with", not "are all
 # with".
@@ -2016,7 +1888,7 @@ BARE_POSTAL_CODE_RE = re.compile(r"^\d{4,6}$")
 # only starts at 4 digits) since a real street number is usually 1-3 digits.
 BARE_STREET_NUMBER_RE = re.compile(r"^\d{1,3}$")
 # A sentence fragment continuing from a previous, separately-split footnote
-# ("and Diange Yang are with State Key Laboratory...", "and also with the
+# ("and Jane Doe are with State Key Laboratory...", "and also with the
 # Department of..."), not a name in its own right -- English institution
 # names never legitimately start with "and".
 LEADING_AND_RE = re.compile(r"^and\b", re.I)
@@ -2489,7 +2361,7 @@ def is_valid_institution(name):
     # (A*STAR)", "University at Buffalo (SUNY)"). A lone "(" with nothing to
     # close it is what's left of a footnote/sentence fragment that got cut
     # off mid-string by an earlier split or strip (confirmed on real data:
-    # "China. (Yu Pan* is the", "Cleveland State University (*" -- the
+    # "China. (Jane Doe* is the", "Cleveland State University (*" -- the
     # latter only surfaces this way after FOOTNOTE_MARKER_RE above strips
     # the trailing "*", exposing the dangling "(" it was attached to).
     if name.count("(") != name.count(")"):
@@ -2611,7 +2483,7 @@ def author_affiliations(a, all_author_names=None, co_author_names=None):
     # affiliation-block parse regularly glues a name (a co-author's, or even
     # someone NOT on this specific paper -- e.g. a whole team's byline
     # attached to one author) onto the affiliation list instead of the
-    # institution it belongs with ("Ben Sapp", "Christos Sakaridis", dozens
+    # institution it belongs with ("Jane Doe", "John Roe", dozens
     # more). all_author_names is every real author name in the WHOLE
     # corpus (computed once, see the top of main()) -- an exact-match
     # reject, not a name-SHAPE heuristic ("two capitalized words, no
@@ -3162,7 +3034,7 @@ def main():
     # regularly glues a co-author's (or even an unrelated team member's,
     # not necessarily anyone on THIS paper) name onto the affiliation list
     # instead of the institution it belongs with (confirmed on real data:
-    # "Ben Sapp", "Christos Sakaridis", "Tim Brädermann" and dozens more
+    # "Jane Doe", "John Roe", "Jim Poe" and dozens more
     # were showing up as "institutions" this way). Exact-match against real
     # corpus author names, not a name-SHAPE heuristic (e.g. "two capitalized
     # words, no institutional keyword") -- a shape-only rule would also
@@ -3313,7 +3185,7 @@ def main():
         # Prefer full names from authors_detail (OpenAlex enrichment) over the
         # plain "authors" string, which for several venue-listing sources
         # (e.g. DBLP-sourced CVPR 2018-2020) is first-initial-abbreviated
-        # ("C Sima" instead of "Chonghao Sima") -- using the abbreviated form
+        # ("J Doe" instead of "Jane Doe") -- using the abbreviated form
         # would both misrepresent the person and fail to match the full-name
         # keys used in author_institutions/author_countries/author_detail.
         details = e.get("authors_detail")
@@ -4021,7 +3893,7 @@ def main():
     # disambiguation suffix) that clean_author_name() strips later. Digits
     # and punctuation are exactly the kind of artifact that differs between
     # the raw and cleaned forms, so stripping down to bare letters is what
-    # lets "Cheng-Zhong Xu 0001" (raw) and "Cheng-Zhong Xu" (cleaned) still
+    # lets "Jane Doe 0001" (raw) and "Jane Doe" (cleaned) still
     # land on the same key.
     def normalize_name_letters(n):
         return re.sub(r"[^a-z]", "", (n or "").lower())
@@ -4078,7 +3950,7 @@ def main():
         ]
         # ORCIDs are looked up by name, so a name shared by several people could carry the wrong person's
         # iD: none is shown for names known to be shared.
-        shared_name = profile.get("ambiguous") or name in AUTHOR_IDENTITIES or name == "Yue Wang"
+        shared_name = profile.get("ambiguous") or name in AUTHOR_IDENTITIES
         orcid, all_orcids = (None, []) if shared_name or name in identity_conflicts else author_orcids(
             author_orcid_sets.get(name), orcids.get(normalize_name_letters(name)))
         if not institutions and not countries and not profile and not orcid:
@@ -4137,7 +4009,7 @@ def main():
     # Insights page's "author with most papers" tile read the enriched-only
     # counts while the Authors page computes its own from all_papers, so the
     # same person was reported with two different paper counts and two
-    # different citation totals on two pages (Raquel Urtasun: 68 papers /
+    # different citation totals on two pages (one author: 68 papers /
     # 2,649 citations on one, 96 / 6,090 on the other), and the "most papers"
     # winner was not even the person with the most papers. Affiliation
     # coverage is the right restriction for institution and country rollups;

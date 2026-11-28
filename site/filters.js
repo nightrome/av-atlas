@@ -2323,14 +2323,6 @@
     set('meta[name="twitter:description"]', description);
   };
 
-  // Who runs this site. Used to disclose, in place, when the maintainer's
-  // own name comes out on top of one of this site's own rankings. The ranking
-  // is computed by the same code as every other name's and is not adjusted,
-  // but a reader has no way of knowing the person named built the thing
-  // naming them unless the page says so, and a site that ranks researchers
-  // has to be the one to volunteer that.
-  window.SITE_MAINTAINER = 'Holger Caesar';
-
   window.computeSelfCitationStats = function (ownPapers) {
     let selfCitations = 0, otherCitations = 0;
     (ownPapers || []).forEach(p => {

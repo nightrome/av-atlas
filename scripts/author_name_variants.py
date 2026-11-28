@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Finds author names that are probably spellings of one person and should share
-one entry ("D. Fernandez-Llorca" next to "David Fernandez Llorca").
+one entry ("J. Doe" next to "Jane Doe").
 
 The corpus matches authors by cleaned name string, so every spelling used by a
 venue listing, OpenAlex, DBLP or a PDF becomes its own author. This module
@@ -83,7 +83,7 @@ _EMAILISH_RE = re.compile(r"[a-z]\.[a-z]")
 
 
 def looks_junky(name):
-    """A name with an e-mail local part glued on ("Ganesh Sistu ganesh.sistu")
+    """A name with an e-mail local part glued on ("Jane Doe jane.doe")
     or a repeated word: never merged and never chosen as the display name."""
     toks = name_tokens(name)
     return bool(_EMAILISH_RE.search(name)) or len(set(toks)) < len(toks)
@@ -91,7 +91,7 @@ def looks_junky(name):
 
 def drops_spelled_out_name(a, b):
     """True when one name has a spelled-out given name the other lacks
-    entirely ("Hao Cheng" vs "Hao Bo Cheng"). That may be one person, or
+    entirely ("Jane Doe" vs "Jane Q Doe"). That may be one person, or
     two, or an Asian given name split in two; an initial standing in for the
     extra name ("Luis M. Bergasa") is fine."""
     ga, gb = name_tokens(a)[:-1], name_tokens(b)[:-1]

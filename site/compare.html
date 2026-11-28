@@ -216,7 +216,7 @@ function metricsFor(papers, subjectName) {
   const years = papers.map(p => p.year).filter(Boolean);
   const citations = papers.reduce((n, p) => n + (p.citations || 0), 0);
   // For a researcher this is their co-authors, so the person themselves is
-  // not counted -- "Andreas Geiger: 161 distinct authors" reads as a claim
+  // not counted -- "Jane Doe: 161 distinct authors" reads as a claim
   // about a group rather than about one person's collaborators.
   const authors = new Set();
   papers.forEach(p => (p.authors || []).forEach(a => { if (a !== subjectName) authors.add(a); }));

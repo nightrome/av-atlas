@@ -183,8 +183,8 @@ def parse_ar5iv_affiliations(soup, registry, cache):
         name = re.sub(r"\s+", " ", name_el.get_text()).strip()
         # Some LaTeX templates (IEEE-style \IEEEauthorblockN with several
         # authors sharing one block) render as a single ltx_personname
-        # containing multiple people run together, e.g. "Julian Wiederer Arij
-        # Bouazizi Marco Troina" -- a real person's name is essentially never
+        # containing multiple people run together, e.g. "Jane Doe John Roe
+        # Jim Poe" -- a real person's name is essentially never
         # more than 4 words, so treat that as a template ar5iv can't parse
         # cleanly and skip it rather than record a garbled non-person.
         if not name or len(name.split()) > 4:

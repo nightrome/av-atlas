@@ -142,7 +142,7 @@ class AggregateIntegrationTests(unittest.TestCase):
 
     def test_committed_merges_never_touch_shared_names(self):
         import aggregate
-        shared = set(aggregate.AUTHOR_IDENTITIES) | {"Yue Wang"}
+        shared = set(aggregate.AUTHOR_IDENTITIES)
         for variant, shown in aggregate.AUTHOR_NAME_MERGES.items():
             self.assertNotIn(variant, shared)
             self.assertNotIn(shown, shared)

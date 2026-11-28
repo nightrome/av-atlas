@@ -8,7 +8,7 @@ Reads data/papers_full.json (the AV papers only, the same ones aggregate.py
 uses), collects per name the OpenAlex ids, ORCIDs, co-authors and
 institution years, and asks author_name_variants.find_merges which spellings
 belong together. Names listed as shared or ambiguous are never merged:
-data/author_identities.json, the "ambiguous" Scholar profiles, "Yue Wang" and,
+data/author_identities.json, the "ambiguous" Scholar profiles and,
 when data/stats.json exists, identity_conflicted_authors.
 
 Run it after merge_corpus.py and before aggregate.py when the corpus has
@@ -98,7 +98,7 @@ def collect(entries):
 
 
 def excluded_names():
-    out = set(aggregate.AUTHOR_IDENTITIES) | {"Yue Wang"}
+    out = set(aggregate.AUTHOR_IDENTITIES)
     prof = BASE / "data" / "scholar_profiles.json"
     if prof.exists():
         for raw, p in json.loads(prof.read_text(encoding="utf-8")).items():
