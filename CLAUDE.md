@@ -107,3 +107,16 @@ the fresh merge.
 - No researcher names in PR or MR titles; describe the change generically
 - Never commit `.env` (real API keys) or anything under `data/` that's gitignored (see
   `.gitignore` for the reasoning behind each entry)
+
+## Personal information
+
+- Avoid saving information about specific people anywhere in the repo: no notes such as "we
+  spot-checked X", no remarks about a named researcher, no special handling described by name.
+  All authors are treated the same way.
+- What the site needs to identify a researcher (names on papers, ORCID, Google Scholar profile
+  links, affiliations from the papers) is bibliographic data and stays. Notes, examples and
+  comments that single out a person do not.
+- Use synthetic names ("Jane Doe") in docs, comments and tests.
+- Never store e-mail addresses. Scraped text keeps only the domain
+  (`scripts/email_addresses.py`), and a test fails if a tracked data file holds an address.
+- This applies to Claude's own notes, commit messages and PR text as well.

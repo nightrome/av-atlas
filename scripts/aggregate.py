@@ -1344,6 +1344,7 @@ def paper_short_name(title, authors, year, abstract=None):
 # every institution to its top-level entity (see DECISIONS.md); this is a
 # stopgap for the worst, most obviously-wrong entries.
 INVALID_INSTITUTIONS = {
+    "European Commission",  # a funder and a political body, not a research group
     # Bare countries -- an affiliation field split on commas sometimes leaves
     # just the country as its own entry (e.g. "..., Beijing, China" splitting
     # into "Beijing" and "China" instead of one string).
@@ -1493,16 +1494,13 @@ INSTITUTION_ALIASES = {
     # every paper. Not a namesake risk to alias away (the real record is
     # always present alongside it), just OpenAlex noise.
     "Berkeley College": "University of California, Berkeley",
-    # The European Commission's in-house research arm. Authors list the
-    # Commission and the Centre as two institutions (or one of them under
-    # several spellings), but the Commission as a whole publishes almost
-    # nothing in this field apart from the JRC, so both names are one entry.
-    "European Commission": "European Commission Joint Research Centre (JRC)",
-    "Joint Research Centre": "European Commission Joint Research Centre (JRC)",
-    "Joint Research Center": "European Commission Joint Research Centre (JRC)",
-    "Joint Research Centre (JRC)": "European Commission Joint Research Centre (JRC)",
-    "European Commission Joint Research Centre": "European Commission Joint Research Centre (JRC)",
-    "European Commission - Joint Research Centre": "European Commission Joint Research Centre (JRC)",
+    # The Joint Research Centre is an institution of its own. A bare "European
+    # Commission" is not kept as an institution: it mostly comes from funding notes
+    # and from the Commission as a whole, not from a research group.
+    "Joint Research Center": "Joint Research Centre",
+    "Joint Research Centre (JRC)": "Joint Research Centre",
+    "European Commission Joint Research Centre": "Joint Research Centre",
+    "European Commission - Joint Research Centre": "Joint Research Centre",
     # Units, schools and campuses that belong to a university already listed
     # under its own name.
     "Delft Center for Systems and Control": "Delft University of Technology",

@@ -952,11 +952,14 @@ class TestInstitutionCleanupRules(unittest.TestCase):
     def test_street_line_is_not_an_institution(self):
         self.assertFalse(ag.is_valid_institution(ag.normalize_institution("Ul. Podgórki tynieckie 2")))
 
-    def test_european_commission_and_jrc_are_one_institution(self):
+    def test_joint_research_centre_spellings_are_one_institution(self):
         names = {ag.normalize_institution(n) for n in [
-            "European Commission", "Joint Research Centre", "Joint Research Center",
+            "Joint Research Centre", "Joint Research Center",
             "European Commission Joint Research Centre", "Joint Research Centre (JRC)"]}
-        self.assertEqual(names, {"European Commission Joint Research Centre (JRC)"})
+        self.assertEqual(names, {"Joint Research Centre"})
+
+    def test_bare_european_commission_is_not_an_institution(self):
+        self.assertFalse(ag.is_valid_institution(ag.normalize_institution("European Commission")))
 
     def test_unit_folds_into_its_university(self):
         self.assertEqual(ag.normalize_institution("Delft Center for Systems and Control"),
